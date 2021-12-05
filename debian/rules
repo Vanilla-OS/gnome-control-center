@@ -18,6 +18,3 @@ override_dh_auto_configure:
 		-Dprivileged_group=sudo \
 		-Ddocumentation=true \
 		$(MALCONTENT)
-
-override_dh_missing:
-	dh_missing --fail-missing
