@@ -13,7 +13,6 @@ endif
 %:
 	dh $@
 
-# -Dgnome_session_libexecdir can be removed after Bullseye release
 override_dh_auto_configure:
 	dh_auto_configure -- \
 		-Dprivileged_group=sudo \
