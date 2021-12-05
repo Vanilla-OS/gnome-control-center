@@ -2,7 +2,7 @@
 
 export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 export DEB_CPPFLAGS_MAINT_APPEND = -DSSHD_SERVICE=\"ssh.service\"
-export DEB_LDFLAGS_MAINT_APPEND = -Wl,-O1 -Wl,-z,defs -Wl,--as-needed
+export DEB_LDFLAGS_MAINT_APPEND = -Wl,-O1 -Wl,-z,defs
 
 ifneq (,$(filter $(DEB_HOST_ARCH), amd64 arm64 armel armhf i386 mips mipsel mips64el ppc64el s390x hppa powerpc powerpcspe ppc64))
 MALCONTENT := -Dmalcontent=true
