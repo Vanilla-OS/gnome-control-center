@@ -1,8 +1,10 @@
-gnome-control-center (1:41.2-1) UNRELEASED; urgency=medium
+gnome-control-center (1:41.2-1) unstable; urgency=medium
 
   * New upstream release
+  * Bump debhelper-compat to 13
+  * debian/rules: Drop unneeded -Wl,--as-needed
 
- -- Jeremy Bicha <jbicha@debian.org>  Sun, 05 Dec 2021 09:41:45 -0500
+ -- Jeremy Bicha <jbicha@debian.org>  Sun, 05 Dec 2021 09:54:38 -0500
 
 gnome-control-center (1:41.1-1) unstable; urgency=medium
 
