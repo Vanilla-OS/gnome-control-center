@@ -1,0 +1,39 @@
+From: Felipe Borges <felipeborges@gnome.org>
+Date: Fri, 14 Jan 2022 13:28:24 +0100
+Subject: applications: Set the Icon key in desktop file to a icon that exists
+
+While we dynamically append --symbolic to the icons while creating
+the sidebar model in
+https://gitlab.gnome.org/GNOME/gnome-control-center/-/blob/master/shell/cc-shell-model.c#L270
+There are automation tools (such as rpmdiff) that parse desktop files
+and verify whether their Icon= matches to an existing file in the
+icon theme package.
+
+preferences-desktop-apps doesn't exist in adwaita-icon-theme but
+preferences-desktop-apps-symbolic does.
+
+Origin: upstream, 41.3, commit:0e2562c2c5ff081561424c625b090f089ef45fe7
+---
+ panels/applications/gnome-applications-panel.desktop.in.in | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/panels/applications/gnome-applications-panel.desktop.in.in b/panels/applications/gnome-applications-panel.desktop.in.in
+index 86e8166..83616c8 100644
+--- a/panels/applications/gnome-applications-panel.desktop.in.in
++++ b/panels/applications/gnome-applications-panel.desktop.in.in
+@@ -4,7 +4,7 @@ Comment=Control various application permissions and settings
+ Exec=gnome-control-center applications
+ # FIXME
+ # Translators: Do NOT translate or transliterate this text (this is an icon file name)!
+-Icon=preferences-desktop-apps
++icon=preferences-desktop-apps-symbolic
+ Terminal=false
+ Type=Application
+ NoDisplay=true
+@@ -13,4 +13,4 @@ Categories=GNOME;GTK;Settings;DesktopSettings;X-GNOME-Settings-Panel;X-GNOME-Acc
+ OnlyShowIn=GNOME;Unity;
+ # Translators: Search terms to find the Privacy panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+ Keywords=application;flatpak;permission;setting;
+-X-GNOME-ControlCenter-HasSidebar=true
+\ No newline at end of file
++X-GNOME-ControlCenter-HasSidebar=true

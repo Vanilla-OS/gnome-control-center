@@ -1,0 +1,34 @@
+From: Hui Wang <hui.wang@canonical.com>
+Date: Tue, 4 Jan 2022 16:17:28 +0800
+Subject: sound: clear the value on level_bar when stream is empty
+
+We met an Input Device level_bar display issue on a machine which has
+no internal mic. At first there is no external mic plugged, so the
+Input Device list is empty and level_bar is gray color, after we plug
+an external mic, the level_bar has red color ripples, then we unplug
+the external mic, the Input Device list changes to empty and we
+expect the level_bar changes back to gray color, but some bars are
+still red color.
+
+Here clear the self->value to 0 if the stream is empty, then the
+level_bar will change back to gray color when Input/Output device
+list is empty.
+
+Signed-off-by: Hui Wang <hui.wang@canonical.com>
+Origin: upstream, 41.3, commit:600b0a014ef4e165deb0ae76b833a9ce30a23a87
+---
+ panels/sound/cc-level-bar.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/panels/sound/cc-level-bar.c b/panels/sound/cc-level-bar.c
+index 8d8b2c9..4a71968 100644
+--- a/panels/sound/cc-level-bar.c
++++ b/panels/sound/cc-level-bar.c
+@@ -232,6 +232,7 @@ cc_level_bar_set_stream (CcLevelBar     *self,
+ 
+   if (stream == NULL)
+    {
++     self->value = 0.0;
+      gtk_widget_queue_draw (GTK_WIDGET (self));
+      return;
+    }
