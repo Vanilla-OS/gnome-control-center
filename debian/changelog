@@ -1,3 +1,9 @@
+gnome-control-center (1:41.4-1) UNRELEASED; urgency=medium
+
+  * New upstream release
+
+ -- Simon McVittie <smcv@debian.org>  Wed, 16 Feb 2022 09:50:32 +0000
+
 gnome-control-center (1:41.2-2) unstable; urgency=medium
 
   * Team upload
