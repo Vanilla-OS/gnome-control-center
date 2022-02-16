@@ -1,5 +1,6 @@
-gnome-control-center (1:41.4-1) UNRELEASED; urgency=medium
+gnome-control-center (1:41.4-1) unstable; urgency=medium
 
+  * Team upload
   * New upstream release
     - Only show network configuration button for active/connecting
       connections
@@ -7,8 +8,13 @@ gnome-control-center (1:41.4-1) UNRELEASED; urgency=medium
     - Translation updates
     - Other changes were already included in 1:41.2-2
   * Drop patches that came from upstream
+  * d/copyright: Update
+    - Document that some files are now GPL-3+ (Closes: #1005755)
+  * Mark a Debian-specific patch as deliberately not forwarded
+  * Standards-Version: 4.6.0 (no changes required)
+  * Silence some Lintian tags
 
- -- Simon McVittie <smcv@debian.org>  Wed, 16 Feb 2022 09:50:32 +0000
+ -- Simon McVittie <smcv@debian.org>  Wed, 16 Feb 2022 10:54:42 +0000
 
 gnome-control-center (1:41.2-2) unstable; urgency=medium
 
