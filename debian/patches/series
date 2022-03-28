@@ -1,3 +1,12 @@
+Update-Portuguese-translation.patch
+Update-Portuguese-translation-1.patch
+Update-Portuguese-translation-2.patch
+Update-Occitan-translation.patch
+info-overview-Allow-changing-Device-Name-by-pressing-Ente.patch
+Update-Norwegian-Bokm-l-translation.patch
+Update-Norwegian-Bokm-l-translation-1.patch
+Update-Brazilian-Portuguese-translation.patch
+Update-Japanese-translation.patch
 keyboard-Remove-01-screenshot.xml.patch
 debian/Expose-touchpad-settings-if-synaptics-is-in-use.patch
 debian/Debian-s-adduser-doesn-t-allow-uppercase-letters-by-defau.patch

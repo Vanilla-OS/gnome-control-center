@@ -1,0 +1,36 @@
+From: sicklylife <translation@sicklylife.jp>
+Date: Wed, 16 Mar 2022 12:01:54 +0000
+Subject: Update Japanese translation
+
+Origin: upstream, 41.5, commit:3c47db21a21c5063505584de4d08c1d31a57fd79
+---
+ po/ja.po | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/po/ja.po b/po/ja.po
+index be0ada0..0368a3f 100644
+--- a/po/ja.po
++++ b/po/ja.po
+@@ -33,7 +33,7 @@ msgstr ""
+ "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-control-center/"
+ "issues\n"
+ "POT-Creation-Date: 2022-01-24 13:03+0000\n"
+-"PO-Revision-Date: 2022-02-05 22:00+0900\n"
++"PO-Revision-Date: 2022-03-16 20:30+0900\n"
+ "Last-Translator: sicklylife <translation@sicklylife.jp>\n"
+ "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
+ "Language: ja\n"
+@@ -2847,11 +2847,11 @@ msgstr "アプリケーションの切り替え"
+ 
+ #: panels/multitasking/cc-multitasking-panel.ui:307
+ msgid "Include applications from all _workspaces"
+-msgstr "すべてのワークスペースのアプリケーションを含める(_W)"
++msgstr "すべてのワークスペースのアプリケーションを含む(_W)"
+ 
+ #: panels/multitasking/cc-multitasking-panel.ui:325
+ msgid "Include applications from the _current workspace only"
+-msgstr "現在のワークスペースのアプリケーションのみを含める(_C)"
++msgstr "現在のワークスペースのアプリケーションのみを含む(_C)"
+ 
+ #: panels/multitasking/gnome-multitasking-panel.desktop.in.in:3
+ msgid "Multitasking"
