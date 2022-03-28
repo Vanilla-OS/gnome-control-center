@@ -9,13 +9,22 @@ gnome-control-center (1:41.4-2) UNRELEASED; urgency=medium
     This update is harmless for GNOME 41, but useful for GNOME 42.
 
   [ Simon McVittie ]
+  * Update to upstream gnome-41 branch commit 41.4-10-g3c47db21a2
+    - Improve keyboard accessibility for setting hostname
+    - Translation updates
   * Stop installing configuration for keyboard shortcuts for screenshots.
     With GNOME Shell 42, this duplicates a similar file shipped by GNOME
     Shell itself; and with gnome-settings-daemon 42, it causes a
     gnome-control-center assertion failure, because those keyboard shortcuts
     have been removed from g-s-d's settings schema. (Closes: #1008493)
+  * d/patches: Add various bug fixes from upstream 42.0, via Ubuntu.
+    Ubuntu 22.04 is going to stick with gnome-control-center 41.x, so we're
+    not upgrading to 42 in Debian either until Ubuntu is further into its
+    freeze.
+    - This includes a dependency on gsettings-desktop-schemas, so update
+      d/control accordingly.
 
- -- Simon McVittie <smcv@debian.org>  Mon, 28 Mar 2022 15:39:34 +0100
+ -- Simon McVittie <smcv@debian.org>  Mon, 28 Mar 2022 19:11:49 +0100
 
 gnome-control-center (1:41.4-1) unstable; urgency=medium
 
