@@ -1,0 +1,55 @@
+From: Simon McVittie <smcv@debian.org>
+Date: Wed, 30 Mar 2022 16:34:53 +0100
+Subject: Disable colord panel until colord GTK4 client library is available
+
+Forwarded: not-needed
+---
+ panels/meson.build      | 1 -
+ shell/cc-panel-list.c   | 1 -
+ shell/cc-panel-loader.c | 2 --
+ 3 files changed, 4 deletions(-)
+
+diff --git a/panels/meson.build b/panels/meson.build
+index 75941ed..b17b76a 100644
+--- a/panels/meson.build
++++ b/panels/meson.build
+@@ -4,7 +4,6 @@ panels = [
+   'applications',
+   'background',
+   'camera',
+-  'color',
+   'datetime',
+   'default-apps',
+   'diagnostics',
+diff --git a/shell/cc-panel-list.c b/shell/cc-panel-list.c
+index 6cbc16b..e5955b7 100644
+--- a/shell/cc-panel-list.c
++++ b/shell/cc-panel-list.c
+@@ -408,7 +408,6 @@ static const gchar * const panel_order[] = {
+   "printers",
+   "removable-media",
+   "wacom",
+-  "color",
+ 
+   /* Details page */
+   "region",
+diff --git a/shell/cc-panel-loader.c b/shell/cc-panel-loader.c
+index 66c513e..5080118 100644
+--- a/shell/cc-panel-loader.c
++++ b/shell/cc-panel-loader.c
+@@ -36,7 +36,6 @@ extern GType cc_background_panel_get_type (void);
+ #ifdef BUILD_BLUETOOTH
+ extern GType cc_bluetooth_panel_get_type (void);
+ #endif /* BUILD_BLUETOOTH */
+-extern GType cc_color_panel_get_type (void);
+ extern GType cc_date_time_panel_get_type (void);
+ extern GType cc_default_apps_panel_get_type (void);
+ extern GType cc_display_panel_get_type (void);
+@@ -103,7 +102,6 @@ static CcPanelLoaderVtable default_panels[] =
+   PANEL_TYPE("bluetooth",        cc_bluetooth_panel_get_type,            NULL),
+ #endif
+   PANEL_TYPE("camera",           cc_camera_panel_get_type,               NULL),
+-  PANEL_TYPE("color",            cc_color_panel_get_type,                NULL),
+   PANEL_TYPE("datetime",         cc_date_time_panel_get_type,            NULL),
+   PANEL_TYPE("default-apps",     cc_default_apps_panel_get_type,         NULL),
+   PANEL_TYPE("diagnostics",      cc_diagnostics_panel_get_type,          cc_diagnostics_panel_static_init_func),
