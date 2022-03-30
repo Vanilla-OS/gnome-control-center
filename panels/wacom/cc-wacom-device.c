@@ -23,6 +23,8 @@
 #include <string.h>
 #include "cc-wacom-device.h"
 
+#include <glib/gi18n.h>
+
 enum {
 	PROP_0,
 	PROP_DEVICE,
@@ -136,16 +138,21 @@ cc_wacom_device_initable_init (GInitable     *initable,
 {
 	CcWacomDevice *device = CC_WACOM_DEVICE (initable);
 	WacomDeviceDatabase *wacom_db;
+	WacomError *wacom_error;
 	const gchar *node_path;
 
 	wacom_db = cc_wacom_device_database_get ();
 	node_path = gsd_device_get_device_file (device->device);
-	device->wdevice = libwacom_new_from_path (wacom_db, node_path, FALSE, NULL);
+	wacom_error = libwacom_error_new ();
+	device->wdevice = libwacom_new_from_path (wacom_db, node_path, FALSE, wacom_error);
 
 	if (!device->wdevice) {
+		g_debug ("libwacom_new_from_path() failed: %s", libwacom_error_get_message (wacom_error));
+		libwacom_error_free (&wacom_error);
 		g_set_error (error, 0, 0, "Tablet description not found");
 		return FALSE;
 	}
+	libwacom_error_free (&wacom_error);
 
 	return TRUE;
 }
@@ -170,14 +177,20 @@ cc_wacom_device_new_fake (const gchar *name)
 {
 	CcWacomDevice *device;
 	WacomDevice *wacom_device;
+	WacomError *wacom_error;
 
 	device = g_object_new (CC_TYPE_WACOM_DEVICE,
 			       NULL);
 
+	wacom_error = libwacom_error_new ();
 	wacom_device = libwacom_new_from_name (cc_wacom_device_database_get(),
-					       name, NULL);
-	if (wacom_device == NULL)
+					       name, wacom_error);
+	if (wacom_device == NULL) {
+		g_debug ("libwacom_new_fake() failed: %s", libwacom_error_get_message (wacom_error));
+		libwacom_error_free (&wacom_error);
 		return NULL;
+	}
+	libwacom_error_free (&wacom_error);
 
 	device->wdevice = wacom_device;
 
@@ -328,7 +341,7 @@ cc_wacom_device_get_output (CcWacomDevice *device,
 	GnomeRRCrtc *crtc;
 
         g_return_val_if_fail (CC_IS_WACOM_DEVICE (device), NULL);
-        g_return_val_if_fail (GNOME_IS_RR_SCREEN (rr_screen), NULL);
+        g_return_val_if_fail (GNOME_RR_IS_SCREEN (rr_screen), NULL);
 
 	rr_output = find_output (rr_screen, device);
 	if (rr_output == NULL) {
@@ -403,4 +416,22 @@ cc_wacom_device_get_button_settings (CcWacomDevice *device,
 					     button_path);
 
 	return settings;
+}
+
+const gchar *
+cc_wacom_device_get_description (CcWacomDevice *device)
+{
+	WacomIntegrationFlags integration_flags;
+
+	g_return_val_if_fail (CC_IS_WACOM_DEVICE (device), NULL);
+
+	integration_flags = libwacom_get_integration_flags (device->wdevice);
+
+	if (integration_flags & WACOM_DEVICE_INTEGRATED_SYSTEM) {
+		return _("Tablet mounted on laptop panel");
+	} else if (integration_flags & WACOM_DEVICE_INTEGRATED_DISPLAY) {
+		return _("Tablet mounted on external display");
+	} else {
+		return _("External tablet device");
+	}
 }

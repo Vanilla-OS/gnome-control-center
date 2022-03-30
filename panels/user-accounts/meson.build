@@ -101,7 +101,6 @@ common_sources = files(
 resource_data = files(
   'cc-add-user-dialog.ui',
   'cc-avatar-chooser.ui',
-  'cc-carousel.ui',
   'cc-login-history-dialog.ui',
   'cc-password-dialog.ui',
   'cc-user-panel.ui',
@@ -109,7 +108,6 @@ resource_data = files(
   'data/icons/fingerprint-detection-complete-symbolic.svg',
   'data/icons/fingerprint-detection-symbolic.svg',
   'data/icons/fingerprint-detection-warning-symbolic.svg',
-  'data/carousel.css',
   'data/join-dialog.ui',
   'data/user-accounts-dialog.css',
   'data/cc-fingerprint-dialog.css',
@@ -152,13 +150,11 @@ enum_headers = [
 
 sources = common_sources + files(
   'cc-avatar-chooser.c',
-  'cc-carousel.c',
   'cc-crop-area.c',
   'cc-fingerprint-manager.c',
   'cc-fingerprint-dialog.c',
   'cc-login-history-dialog.c',
   'cc-password-dialog.c',
-  'cc-user-image.c',
   'cc-user-panel.c',
   'run-passwd.c',
 )
@@ -179,12 +175,8 @@ deps = common_deps + [
   krb_dep,
   m_dep,
   polkit_gobject_dep,
-  dependency('pwquality', version: '>= 1.2.2')
+  pwquality_dep,
 ]
-
-if enable_cheese
-  deps += cheese_deps
-endif
 
 if enable_malcontent
   deps += malcontent_dep
@@ -203,3 +195,5 @@ panels_libs += static_library(
   dependencies: deps,
   c_args: cflags
 )
+
+subdir('icons')

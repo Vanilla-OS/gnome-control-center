@@ -37,7 +37,6 @@ sources = files(
   'cc-level-bar.c',
   'cc-output-test-dialog.c',
   'cc-profile-combo-box.c',
-  'cc-sound-button.c',
   'cc-sound-panel.c',
   'cc-speaker-test-button.c',
   'cc-stream-list-box.c',
@@ -72,7 +71,6 @@ resource_data = files(
   'cc-fade-slider.ui',
   'cc-output-test-dialog.ui',
   'cc-profile-combo-box.ui',
-  'cc-sound-button.ui',
   'cc-sound-panel.ui',
   'cc-speaker-test-button.ui',
   'cc-stream-row.ui',
@@ -106,4 +104,9 @@ sound_data = files(
 install_data(
   sound_data,
   install_dir: join_paths(control_center_datadir, 'sounds', 'gnome', 'default', 'alerts')
+)
+
+install_data(
+  'icons/org.gnome.Settings-sound-symbolic.svg',
+  install_dir: join_paths(control_center_icondir, 'hicolor', 'scalable', 'apps')
 )

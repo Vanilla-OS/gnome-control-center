@@ -19,7 +19,6 @@
  */
 
 #include "cc-search-locations-dialog.h"
-#include "list-box-helper.h"
 
 #include <glib/gi18n.h>
 
@@ -43,22 +42,45 @@ typedef struct {
   const gchar *settings_key;
 } Place;
 
+typedef struct {
+  GtkWidget *row;
+  GtkWidget *switch_;
+} PlaceRowWidgets;
+
 struct _CcSearchLocationsDialog {
-  GtkDialog parent;
+  AdwPreferencesWindow parent;
 
-  GSettings *tracker_preferences;
+  GSettings           *tracker_preferences;
 
-  GtkWidget *places_list;
-  GtkWidget *bookmarks_list;
-  GtkWidget *others_list;
-  GtkWidget *locations_add;
+  GtkWidget           *places_group;
+  GtkWidget           *places_list;
+  GtkWidget           *bookmarks_group;
+  GtkWidget           *bookmarks_list;
+  GtkWidget           *others_list;
+  GtkWidget           *locations_add;
 };
 
 struct _CcSearchLocationsDialogClass {
-  GtkDialogClass parent_class;
+  AdwPreferencesWindowClass parent_class;
 };
 
-G_DEFINE_TYPE (CcSearchLocationsDialog, cc_search_locations_dialog, GTK_TYPE_DIALOG)
+G_DEFINE_TYPE (CcSearchLocationsDialog, cc_search_locations_dialog, ADW_TYPE_PREFERENCES_WINDOW)
+
+static gboolean
+keynav_failed_cb (CcSearchLocationsDialog *self,
+                  GtkDirectionType         direction)
+{
+  GtkWidget *toplevel = GTK_WIDGET (gtk_widget_get_root (GTK_WIDGET (self)));
+
+  if (!toplevel)
+    return FALSE;
+
+  if (direction != GTK_DIR_UP && direction != GTK_DIR_DOWN)
+    return FALSE;
+
+  return gtk_widget_child_focus (toplevel, direction == GTK_DIR_UP ?
+                                 GTK_DIR_TAB_BACKWARD : GTK_DIR_TAB_FORWARD);
+}
 
 static void
 cc_search_locations_dialog_finalize (GObject *object)
@@ -457,36 +479,28 @@ place_query_info_ready (GObject *source,
                         GAsyncResult *res,
                         gpointer user_data)
 {
-  GtkWidget *row, *box, *w;
-  Place *place;
   g_autoptr(GFileInfo) info = NULL;
-  g_autofree gchar *path = NULL;
+  PlaceRowWidgets *widgets;
+  Place *place;
 
   info = g_file_query_info_finish (G_FILE (source), res, NULL);
   if (!info)
     return;
 
-  row = user_data;
-  place = g_object_get_data (G_OBJECT (row), "place");
+  widgets = user_data;
+  place = g_object_get_data (G_OBJECT (widgets->row), "place");
   g_clear_object (&place->cancellable);
 
-  box = gtk_bin_get_child (GTK_BIN (row));
-  gtk_widget_show (box);
-
-  w = gtk_label_new (place->display_name);
-  gtk_widget_show (w);
-  gtk_container_add (GTK_CONTAINER (box), w);
-
-  w = gtk_switch_new ();
-  gtk_widget_show (w);
-  gtk_widget_set_valign (w, GTK_ALIGN_CENTER);
-  gtk_box_pack_end (GTK_BOX (box), w, FALSE, FALSE, 0);
+  gtk_widget_set_visible (widgets->switch_, TRUE);
   g_settings_bind_with_mapping (place->dialog->tracker_preferences, place->settings_key,
-                                w, "active",
+                                widgets->switch_, "active",
                                 G_SETTINGS_BIND_DEFAULT,
                                 switch_tracker_get_mapping,
                                 switch_tracker_set_mapping,
                                 place, NULL);
+
+  adw_preferences_row_set_title (ADW_PREFERENCES_ROW (widgets->row),
+                                 place->display_name);
 }
 
 static void
@@ -538,25 +552,33 @@ place_compare_func (gconstpointer a,
 static GtkWidget *
 create_row_for_place (CcSearchLocationsDialog *self, Place *place)
 {
-  GtkWidget *child, *row, *remove_button;
+  PlaceRowWidgets *widgets;
+  GtkWidget *remove_button, *separator;
 
-  row = gtk_list_box_row_new ();
-  gtk_widget_show (row);
-  gtk_list_box_row_set_selectable (GTK_LIST_BOX_ROW (row), FALSE);
-  gtk_list_box_row_set_activatable (GTK_LIST_BOX_ROW (row), FALSE);
-  child = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
-  gtk_widget_show (child);
-  gtk_container_add (GTK_CONTAINER (row), child);
-  g_object_set (row, "margin", 5, "margin-left", 16, NULL);
-  g_object_set_data_full (G_OBJECT (row), "place", place, (GDestroyNotify) place_free);
+  widgets = g_new0 (PlaceRowWidgets, 1);
+
+  widgets->row = adw_action_row_new ();
+  widgets->switch_ = gtk_switch_new ();
+
+  gtk_widget_set_visible (widgets->switch_, FALSE);
+  gtk_widget_set_valign (widgets->switch_, GTK_ALIGN_CENTER);
+  adw_action_row_add_suffix (ADW_ACTION_ROW (widgets->row), widgets->switch_);
+  adw_action_row_set_activatable_widget (ADW_ACTION_ROW (widgets->row), widgets->switch_);
+
+  g_object_set_data_full (G_OBJECT (widgets->row), "place", place, (GDestroyNotify) place_free);
 
   if (place->place_type == PLACE_OTHER)
     {
-      remove_button = gtk_button_new_from_icon_name ("window-close-symbolic", GTK_ICON_SIZE_MENU);
-      gtk_widget_show (remove_button);
+      separator = gtk_separator_new (GTK_ORIENTATION_VERTICAL);
+      gtk_widget_set_margin_top (separator, 12);
+      gtk_widget_set_margin_bottom (separator, 12);
+      adw_action_row_add_suffix (ADW_ACTION_ROW (widgets->row), separator);
+
+      remove_button = gtk_button_new_from_icon_name ("window-close-symbolic");
       g_object_set_data (G_OBJECT (remove_button), "place", place);
+      gtk_widget_set_valign (remove_button, GTK_ALIGN_CENTER);
       gtk_style_context_add_class (gtk_widget_get_style_context (remove_button), "flat");
-      gtk_box_pack_end (GTK_BOX (child), remove_button, FALSE, FALSE, 2);
+      adw_action_row_add_suffix (ADW_ACTION_ROW (widgets->row), remove_button);
 
       g_signal_connect_swapped (remove_button, "clicked",
                                 G_CALLBACK (remove_button_clicked), self);
@@ -565,9 +587,23 @@ create_row_for_place (CcSearchLocationsDialog *self, Place *place)
   place->cancellable = g_cancellable_new ();
   g_file_query_info_async (place->location, G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME,
                            G_FILE_QUERY_INFO_NONE, G_PRIORITY_DEFAULT,
-                           place->cancellable, place_query_info_ready, row);
+                           place->cancellable, place_query_info_ready, widgets);
 
-  return row;
+  return widgets->row;
+}
+
+static void
+update_list_visibility (CcSearchLocationsDialog *self)
+{
+  gtk_widget_set_visible (self->places_group,
+                          gtk_list_box_get_row_at_index (GTK_LIST_BOX (self->places_list), 0)
+                          != NULL);
+  gtk_widget_set_visible (self->bookmarks_group,
+                          gtk_list_box_get_row_at_index (GTK_LIST_BOX (self->bookmarks_list), 0)
+                          != NULL);
+  gtk_widget_set_visible (self->others_list,
+                          gtk_list_box_get_row_at_index (GTK_LIST_BOX (self->others_list), 0)
+                          != NULL);
 }
 
 static void
@@ -587,18 +623,20 @@ populate_list_boxes (CcSearchLocationsDialog *self)
       switch (place->place_type)
         {
           case PLACE_XDG:
-            gtk_container_add (GTK_CONTAINER (self->places_list), row);
+            gtk_list_box_append (GTK_LIST_BOX (self->places_list), row);
             break;
           case PLACE_BOOKMARKS:
-            gtk_container_add (GTK_CONTAINER (self->bookmarks_list), row);
+            gtk_list_box_append (GTK_LIST_BOX (self->bookmarks_list), row);
             break;
           case PLACE_OTHER:
-            gtk_container_add (GTK_CONTAINER (self->others_list), row);
+            gtk_list_box_append (GTK_LIST_BOX (self->others_list), row);
             break;
           default:
             g_assert_not_reached ();
         }
     }
+
+  update_list_visibility (self);
 }
 
 static void
@@ -611,7 +649,7 @@ add_file_chooser_response (CcSearchLocationsDialog *self,
 
   if (response != GTK_RESPONSE_OK)
     {
-      gtk_widget_destroy (GTK_WIDGET (widget));
+      gtk_window_destroy (GTK_WINDOW (widget));
       return;
     }
 
@@ -625,7 +663,7 @@ add_file_chooser_response (CcSearchLocationsDialog *self,
   new_values = place_get_new_settings_values (self, place, FALSE);
   g_settings_set_strv (self->tracker_preferences, place->settings_key, (const gchar **) new_values->pdata);
 
-  gtk_widget_destroy (GTK_WIDGET (widget));
+  gtk_window_destroy (GTK_WINDOW (widget));
 }
 
 static void
@@ -634,7 +672,7 @@ add_button_clicked (CcSearchLocationsDialog *self)
   GtkWidget *file_chooser;
 
   file_chooser = gtk_file_chooser_dialog_new (_("Select Location"),
-                                              GTK_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (self))),
+                                              GTK_WINDOW (self),
                                               GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER,
                                               _("_Cancel"), GTK_RESPONSE_CANCEL,
                                               _("_OK"), GTK_RESPONSE_OK,
@@ -642,7 +680,7 @@ add_button_clicked (CcSearchLocationsDialog *self)
   gtk_window_set_modal (GTK_WINDOW (file_chooser), TRUE);
   g_signal_connect_swapped (file_chooser, "response",
                             G_CALLBACK (add_file_chooser_response), self);
-  gtk_widget_show (file_chooser);
+  gtk_window_present (GTK_WINDOW (file_chooser));
 }
 
 static void
@@ -650,21 +688,26 @@ other_places_refresh (CcSearchLocationsDialog *self)
 {
   g_autoptr(GList) places = NULL;
   GList *l;
-  Place *place;
-  GtkWidget *row;
+  GtkListBoxRow *widget;
 
-  gtk_container_foreach (GTK_CONTAINER (self->others_list), (GtkCallback) gtk_widget_destroy, NULL);
+  while ((widget = gtk_list_box_get_row_at_index (GTK_LIST_BOX (self->others_list), 0)))
+    gtk_list_box_remove (GTK_LIST_BOX (self->others_list), GTK_WIDGET (widget));
 
   places = get_places_list (self);
   for (l = places; l != NULL; l = l->next)
     {
+      GtkWidget *row;
+      Place *place;
+
       place = l->data;
       if (place->place_type != PLACE_OTHER)
         continue;
 
       row = create_row_for_place (self, place);
-      gtk_container_add (GTK_CONTAINER (self->others_list), row);
+      gtk_list_box_append (GTK_LIST_BOX (self->others_list), row);
     }
+
+  update_list_visibility (self);
 }
 
 CcSearchLocationsDialog *
@@ -673,10 +716,10 @@ cc_search_locations_dialog_new (CcSearchPanel *panel)
   CcSearchLocationsDialog *self;
   GSettingsSchemaSource *source;
   g_autoptr(GSettingsSchema) schema = NULL;
+  GtkWidget *toplevel;
+  CcShell *shell;
 
-  self = g_object_new (CC_SEARCH_LOCATIONS_DIALOG_TYPE,
-                       "use-header-bar", TRUE,
-                       NULL);
+  self = g_object_new (CC_SEARCH_LOCATIONS_DIALOG_TYPE, NULL);
 
   source = g_settings_schema_source_get_default ();
   schema = g_settings_schema_source_lookup (source, TRACKER3_SCHEMA, TRUE);
@@ -690,13 +733,12 @@ cc_search_locations_dialog_new (CcSearchPanel *panel)
   gtk_list_box_set_sort_func (GTK_LIST_BOX (self->others_list),
                               (GtkListBoxSortFunc)place_compare_func, NULL, NULL);
 
-  gtk_list_box_set_header_func (GTK_LIST_BOX (self->others_list), cc_list_box_update_header_func, NULL, NULL);
-
   g_signal_connect_swapped (self->tracker_preferences, "changed::" TRACKER_KEY_RECURSIVE_DIRECTORIES,
                             G_CALLBACK (other_places_refresh), self);
 
-  gtk_window_set_transient_for (GTK_WINDOW (self),
-                                GTK_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (panel))));
+  shell = cc_panel_get_shell (CC_PANEL (panel));
+  toplevel = cc_shell_get_toplevel (shell);
+  gtk_window_set_transient_for (GTK_WINDOW (self), GTK_WINDOW (toplevel));
 
   return self;
 }
@@ -733,10 +775,13 @@ cc_search_locations_dialog_class_init (CcSearchLocationsDialogClass *klass)
   gtk_widget_class_set_template_from_resource (widget_class,
                                                "/org/gnome/control-center/search/cc-search-locations-dialog.ui");
 
+  gtk_widget_class_bind_template_child (widget_class, CcSearchLocationsDialog, places_group);
   gtk_widget_class_bind_template_child (widget_class, CcSearchLocationsDialog, places_list);
+  gtk_widget_class_bind_template_child (widget_class, CcSearchLocationsDialog, bookmarks_group);
   gtk_widget_class_bind_template_child (widget_class, CcSearchLocationsDialog, bookmarks_list);
   gtk_widget_class_bind_template_child (widget_class, CcSearchLocationsDialog, others_list);
   gtk_widget_class_bind_template_child (widget_class, CcSearchLocationsDialog, locations_add);
 
   gtk_widget_class_bind_template_callback (widget_class, add_button_clicked);
+  gtk_widget_class_bind_template_callback (widget_class, keynav_failed_cb);
 }

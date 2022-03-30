@@ -37,7 +37,6 @@ xml_files = [
   '00-multimedia.xml',
   '01-input-sources.xml',
   '01-launchers.xml',
-  '01-screenshot.xml',
   '01-system.xml',
   '50-accessibility.xml'
 ]
@@ -61,7 +60,6 @@ sources = files(
   'cc-keyboard-item.c',
   'cc-keyboard-manager.c',
   'cc-keyboard-shortcut-editor.c',
-  'wm-common.c',
   'keyboard-shortcuts.c',
   'cc-ibus-utils.c',
   'cc-input-chooser.c',
@@ -103,3 +101,5 @@ panels_libs += static_library(
   dependencies: deps,
   c_args: cflags
 )
+
+subdir('icons')

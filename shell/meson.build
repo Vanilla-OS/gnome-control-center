@@ -4,7 +4,7 @@ subdir('completions')
 service_conf = configuration_data()
 service_conf.set('bindir', control_center_bindir)
 
-service = 'org.gnome.ControlCenter.service'
+service = 'org.gnome.Settings.service'
 
 configure_file(
           input : service + '.in',
@@ -14,7 +14,7 @@ configure_file(
   configuration : service_conf
 )
 
-desktop = 'gnome-control-center.desktop'
+desktop = 'org.gnome.Settings.desktop'
 
 desktop_in = configure_file(
           input : desktop + '.in.in',
@@ -114,10 +114,6 @@ shell_deps = common_deps + [
   libshell_dep,
 ]
 
-if enable_cheese
-  shell_deps += cheese_deps
-endif
-
 if host_is_linux_not_s390
   shell_deps += wacom_deps
 endif
@@ -170,6 +166,6 @@ libtestshell_deps = common_deps + [ libwidgets_dep, libtestshell_dep ]
 
 
 install_data (
-  'org.gnome.ControlCenter.gschema.xml',
+  'org.gnome.Settings.gschema.xml',
   install_dir : control_center_schemadir
 )

@@ -19,11 +19,12 @@
  * Author: Matthias Clasen <mclasen@redhat.com>
  */
 
-#include "list-box-helper.h"
 #include "cc-lock-panel.h"
+#include "cc-lock-panel-enums.h"
 #include "cc-lock-resources.h"
 #include "cc-util.h"
 
+#include <adwaita.h>
 #include <gio/gdesktopappinfo.h>
 #include <glib/gi18n.h>
 
@@ -39,9 +40,8 @@ struct _CcLockPanel
   GCancellable  *cancellable;
 
   GtkSwitch     *automatic_screen_lock_switch;
-  GtkComboBox   *blank_screen_combo;
-  GtkComboBox   *lock_after_combo;
-  GtkListBox    *lock_list_box;
+  AdwComboRow   *blank_screen_row;
+  AdwComboRow   *lock_after_row;
   GtkSwitch     *show_notifications_switch;
   GtkSwitch     *usb_protection_switch;
   GDBusProxy    *usb_proxy;
@@ -50,139 +50,136 @@ struct _CcLockPanel
 
 CC_PANEL_REGISTER (CcLockPanel, cc_lock_panel)
 
+static char *
+lock_after_name_cb (AdwEnumListItem *item,
+                    gpointer         user_data)
+{
+
+  switch (adw_enum_list_item_get_value (item))
+    {
+    case CC_LOCK_PANEL_LOCK_AFTER_SCREEN_OFF:
+      /* Translators: Option for "Lock screen after blank" in "Screen Lock" panel */
+      return g_strdup(C_("lock_screen", "Screen Turns Off"));
+    case CC_LOCK_PANEL_LOCK_AFTER_30_SEC:
+      /* Translators: Option for "Lock screen after blank" in "Screen Lock" panel */
+      return g_strdup (C_("lock_screen", "30 seconds"));
+    case CC_LOCK_PANEL_LOCK_AFTER_1_MIN:
+      /* Translators: Option for "Lock screen after blank" in "Screen Lock" panel */
+      return g_strdup (C_("lock_screen", "1 minute"));
+    case CC_LOCK_PANEL_LOCK_AFTER_2_MIN:
+      /* Translators: Option for "Lock screen after blank" in "Screen Lock" panel */
+      return g_strdup (C_("lock_screen", "2 minutes"));
+    case CC_LOCK_PANEL_LOCK_AFTER_3_MIN:
+      /* Translators: Option for "Lock screen after blank" in "Screen Lock" panel */
+      return g_strdup (C_("lock_screen", "3 minutes"));
+    case CC_LOCK_PANEL_LOCK_AFTER_5_MIN:
+      /* Translators: Option for "Lock screen after blank" in "Screen Lock" panel */
+      return g_strdup (C_("lock_screen", "3 minutes"));
+    case CC_LOCK_PANEL_LOCK_AFTER_30_MIN:
+      /* Translators: Option for "Lock screen after blank" in "Screen Lock" panel */
+      return g_strdup (C_("lock_screen", "30 minutes"));
+    case CC_LOCK_PANEL_LOCK_AFTER_1_HR:
+      /* Translators: Option for "Lock screen after blank" in "Screen Lock" panel */
+      return g_strdup (C_("lock_screen", "1 hour"));
+    default:
+      return NULL;
+    }
+}
+
 static void
-on_lock_combo_changed_cb (GtkWidget   *widget,
+on_lock_combo_changed_cb (AdwComboRow *combo_row,
+                          GParamSpec  *pspec,
                           CcLockPanel *self)
 {
-  GtkTreeIter iter;
-  GtkTreeModel *model;
-  guint delay;
-  gboolean ret;
+  AdwEnumListItem *item;
+  CcLockPanelLockAfter delay;
 
-  ret = gtk_combo_box_get_active_iter (GTK_COMBO_BOX (widget), &iter);
-  if (!ret)
-    return;
+  item = ADW_ENUM_LIST_ITEM (adw_combo_row_get_selected_item (combo_row));
+  delay = adw_enum_list_item_get_value (item);
 
-  model = gtk_combo_box_get_model (GTK_COMBO_BOX (widget));
-  gtk_tree_model_get (model, &iter,
-                      1, &delay,
-                      -1);
   g_settings_set (self->lock_settings, "lock-delay", "u", delay);
 }
 
 static void
-set_lock_value_for_combo (GtkComboBox *combo_box,
+set_lock_value_for_combo (AdwComboRow *combo_row,
                           CcLockPanel *self)
 {
-  GtkTreeIter iter;
-  GtkTreeModel *model;
+  AdwEnumListModel *model;
   guint value;
-  gint value_tmp, value_prev;
-  gboolean ret;
-  guint i;
 
-  model = gtk_combo_box_get_model (combo_box);
-  ret = gtk_tree_model_get_iter_first (model, &iter);
-  if (!ret)
-    return;
-
-  value_prev = 0;
-  i = 0;
+  model = ADW_ENUM_LIST_MODEL (adw_combo_row_get_model (combo_row));
 
   g_settings_get (self->lock_settings, "lock-delay", "u", &value);
-  do
-    {
-      gtk_tree_model_get (model,
-                          &iter,
-                          1, &value_tmp,
-                          -1);
-      if (value == value_tmp ||
-          (value_tmp > value_prev && value < value_tmp))
-        {
-          gtk_combo_box_set_active_iter (combo_box, &iter);
-          return;
-        }
-      value_prev = value_tmp;
-      i++;
-    }
-  while (gtk_tree_model_iter_next (model, &iter));
+  adw_combo_row_set_selected (combo_row,
+                              adw_enum_list_model_find_position (model, value));
+}
 
-  gtk_combo_box_set_active (combo_box, i - 1);
+static char *
+screen_delay_name_cb (AdwEnumListItem *item,
+                      gpointer         user_data)
+{
+
+  switch (adw_enum_list_item_get_value (item))
+    {
+    case CC_LOCK_PANEL_BLANK_SCREEN_DELAY_1_MIN:
+      /* Translators: Option for "Blank screen" in "Screen Lock" panel */
+      return g_strdup (C_("blank_screen", "1 minute"));
+    case CC_LOCK_PANEL_BLANK_SCREEN_DELAY_2_MIN:
+      /* Translators: Option for "Blank screen" in "Screen Lock" panel */
+      return g_strdup (C_("blank_screen", "2 minutes"));
+    case CC_LOCK_PANEL_BLANK_SCREEN_DELAY_3_MIN:
+      /* Translators: Option for "Blank screen" in "Screen Lock" panel */
+      return g_strdup (C_("blank_screen", "3 minutes"));
+    case CC_LOCK_PANEL_BLANK_SCREEN_DELAY_4_MIN:
+      /* Translators: Option for "Blank screen" in "Screen Lock" panel */
+      return g_strdup (C_("blank_screen", "4 minutes"));
+    case CC_LOCK_PANEL_BLANK_SCREEN_DELAY_5_MIN:
+      /* Translators: Option for "Blank screen" in "Screen Lock" panel */
+      return g_strdup (C_("blank_screen", "5 minutes"));
+    case CC_LOCK_PANEL_BLANK_SCREEN_DELAY_8_MIN:
+      /* Translators: Option for "Blank screen" in "Screen Lock" panel */
+      return g_strdup (C_("blank_screen", "8 minutes"));
+    case CC_LOCK_PANEL_BLANK_SCREEN_DELAY_10_MIN:
+      /* Translators: Option for "Blank screen" in "Screen Lock" panel */
+      return g_strdup (C_("blank_screen", "10 minutes"));
+    case CC_LOCK_PANEL_BLANK_SCREEN_DELAY_12_MIN:
+      /* Translators: Option for "Blank screen" in "Screen Lock" panel */
+      return g_strdup (C_("blank_screen", "12 minutes"));
+    case CC_LOCK_PANEL_BLANK_SCREEN_DELAY_15_MIN:
+      /* Translators: Option for "Blank screen" in "Screen Lock" panel */
+      return g_strdup (C_("blank_screen", "15 minutes"));
+    case CC_LOCK_PANEL_BLANK_SCREEN_DELAY_NEVER:
+      /* Translators: Option for "Blank screen" in "Screen Lock" panel */
+      return g_strdup (C_("blank_screen", "Never"));
+    default:
+      return NULL;
+    }
 }
 
 static void
 set_blank_screen_delay_value (CcLockPanel *self,
                               gint         value)
 {
-  g_autoptr(GtkTreeIter) insert = NULL;
-  g_autofree gchar *text = NULL;
-  GtkTreeIter iter;
-  GtkTreeIter new;
-  GtkTreeModel *model;
-  gint value_tmp;
-  gint value_last = 0;
-  gboolean ret;
+  AdwEnumListModel *model;
 
-  /* get entry */
-  model = gtk_combo_box_get_model (self->blank_screen_combo);
-  ret = gtk_tree_model_get_iter_first (model, &iter);
-  if (!ret)
-    return;
+  model = ADW_ENUM_LIST_MODEL (adw_combo_row_get_model (self->blank_screen_row));
 
-  /* try to make the UI match the setting */
-  do
-    {
-      gtk_tree_model_get (model,
-                          &iter,
-                          1, &value_tmp,
-                          -1);
-      if (value_tmp == value)
-        {
-          gtk_combo_box_set_active_iter (self->blank_screen_combo, &iter);
-          return;
-        }
-
-      /* Insert before if the next value is larger or the value is lower
-       * again (i.e. "Never" is zero and last). */
-      if (!insert && (value_tmp > value || value_last > value_tmp))
-        insert = gtk_tree_iter_copy (&iter);
-
-      value_last = value_tmp;
-    } while (gtk_tree_model_iter_next (model, &iter));
-
-  /* The value is not listed, so add it at the best point (or the end). */
-  gtk_list_store_insert_before (GTK_LIST_STORE (model), &new, insert);
-
-  text = cc_util_time_to_string_text (value * 1000);
-  gtk_list_store_set (GTK_LIST_STORE (model), &new,
-                      0, text,
-                      1, value,
-                      -1);
-  gtk_combo_box_set_active_iter (self->blank_screen_combo, &new);
+  adw_combo_row_set_selected (self->blank_screen_row,
+                              adw_enum_list_model_find_position (model, value));
 }
 
 static void
-on_blank_screen_delay_changed_cb (GtkWidget   *widget,
+on_blank_screen_delay_changed_cb (AdwComboRow *combo_row,
+                                  GParamSpec  *pspec,
                                   CcLockPanel *self)
 {
-  GtkTreeIter iter;
-  GtkTreeModel *model;
-  gint value;
-  gboolean ret;
+  AdwEnumListItem *item;
+  CcLockPanelBlankScreenDelay delay;
 
-  /* no selection */
-  ret = gtk_combo_box_get_active_iter (GTK_COMBO_BOX (widget), &iter);
-  if (!ret)
-    return;
+  item = ADW_ENUM_LIST_ITEM (adw_combo_row_get_selected_item (combo_row));
+  delay = adw_enum_list_item_get_value (item);
 
-  /* get entry */
-  model = gtk_combo_box_get_model (GTK_COMBO_BOX(widget));
-  gtk_tree_model_get (model, &iter,
-                      1, &value,
-                      -1);
-
-  /* set both keys */
-  g_settings_set_uint (self->session_settings, "idle-delay", value);
+  g_settings_set_uint (self->session_settings, "idle-delay", delay);
 }
 
 static void
@@ -261,17 +258,21 @@ cc_lock_panel_class_init (CcLockPanelClass *klass)
 
   oclass->finalize = cc_lock_panel_finalize;
 
+  g_type_ensure (CC_TYPE_LOCK_PANEL_LOCK_AFTER);
+  g_type_ensure (CC_TYPE_LOCK_PANEL_BLANK_SCREEN_DELAY);
+
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/lock/cc-lock-panel.ui");
 
   gtk_widget_class_bind_template_child (widget_class, CcLockPanel, automatic_screen_lock_switch);
-  gtk_widget_class_bind_template_child (widget_class, CcLockPanel, blank_screen_combo);
-  gtk_widget_class_bind_template_child (widget_class, CcLockPanel, lock_after_combo);
-  gtk_widget_class_bind_template_child (widget_class, CcLockPanel, lock_list_box);
+  gtk_widget_class_bind_template_child (widget_class, CcLockPanel, blank_screen_row);
+  gtk_widget_class_bind_template_child (widget_class, CcLockPanel, lock_after_row);
   gtk_widget_class_bind_template_child (widget_class, CcLockPanel, show_notifications_switch);
   gtk_widget_class_bind_template_child (widget_class, CcLockPanel, usb_protection_switch);
   gtk_widget_class_bind_template_child (widget_class, CcLockPanel, usb_protection_row);
 
+  gtk_widget_class_bind_template_callback (widget_class, screen_delay_name_cb);
   gtk_widget_class_bind_template_callback (widget_class, on_blank_screen_delay_changed_cb);
+  gtk_widget_class_bind_template_callback (widget_class, lock_after_name_cb);
   gtk_widget_class_bind_template_callback (widget_class, on_lock_combo_changed_cb);
 }
 
@@ -283,10 +284,6 @@ cc_lock_panel_init (CcLockPanel *self)
   g_resources_register (cc_lock_get_resource ());
 
   gtk_widget_init_template (GTK_WIDGET (self));
-
-  gtk_list_box_set_header_func (self->lock_list_box,
-                                cc_list_box_update_header_func,
-                                NULL, NULL);
 
   self->cancellable = g_cancellable_new ();
 
@@ -303,11 +300,11 @@ cc_lock_panel_init (CcLockPanel *self)
 
   g_settings_bind (self->lock_settings,
                    "lock-enabled",
-                   self->lock_after_combo,
+                   self->lock_after_row,
                    "sensitive",
                    G_SETTINGS_BIND_GET);
 
-  set_lock_value_for_combo (self->lock_after_combo, self);
+  set_lock_value_for_combo (self->lock_after_row, self);
 
   g_settings_bind (self->notification_settings,
                    "show-in-lock-screen",

@@ -20,7 +20,6 @@
 #include <config.h>
 
 #include <shell/cc-panel.h>
-#include <list-box-helper.h>
 
 #include <glib/gi18n.h>
 #include <polkit/polkit.h>
@@ -49,8 +48,7 @@ struct _CcBoltPanel
   GtkStack           *container;
 
   /* empty state */
-  GtkLabel           *notb_caption;
-  GtkLabel           *notb_details;
+  AdwStatusPage      *notb_page;
 
   /* notifications */
   GtkLabel           *notification_label;
@@ -59,7 +57,7 @@ struct _CcBoltPanel
   /* authmode */
   GtkSwitch          *authmode_switch;
   GtkSpinner         *authmode_spinner;
-  GtkStack           *authmode_mode;
+  GtkStack           *direct_access_row;
 
   /* device list */
   GHashTable         *devices;
@@ -127,10 +125,6 @@ static gboolean on_authmode_state_set_cb (CcBoltPanel *panel,
 static void     on_device_entry_row_activated_cb (CcBoltPanel   *panel,
                                                   GtkListBoxRow *row);
 
-static gboolean  on_device_dialog_delete_event_cb (GtkWidget   *widget,
-                                                   GdkEvent    *event,
-                                                   CcBoltPanel *panel);
-
 static void     on_device_entry_status_changed_cb (CcBoltDeviceEntry *entry,
                                                    BoltStatus         new_status,
                                                    CcBoltPanel       *panel);
@@ -175,7 +169,7 @@ bolt_client_ready (GObject      *source,
       text = _("The Thunderbolt subsystem (boltd) is not installed or "
                "not set up properly.");
 
-      gtk_label_set_label (panel->notb_details, text);
+      adw_status_page_set_description (panel->notb_page, text);
       gtk_stack_set_visible_child_name (panel->container, "no-thunderbolt");
 
       return;
@@ -310,15 +304,15 @@ devices_table_synchronize (CcBoltPanel *panel)
 }
 
 static gboolean
-list_box_sync_visible (GtkListBox *lstbox)
+list_box_sync_visible (GtkListBox *listbox)
 {
-  g_autoptr(GList) children = NULL;
+  GtkWidget *child;
   gboolean show;
 
-  children = gtk_container_get_children (GTK_CONTAINER (lstbox));
-  show = g_list_length (children) > 0;
+  child = gtk_widget_get_first_child (GTK_WIDGET (listbox));
+  show = child != NULL;
 
-  gtk_widget_set_visible (GTK_WIDGET (lstbox), show);
+  gtk_widget_set_visible (GTK_WIDGET (listbox), show);
 
   return show;
 }
@@ -353,19 +347,17 @@ cc_bolt_panel_add_device (CcBoltPanel *panel,
   path = g_dbus_proxy_get_object_path (G_DBUS_PROXY (dev));
 
   /* add to the list box */
-  gtk_widget_show (GTK_WIDGET (entry));
-
   status = bolt_device_get_status (dev);
 
   if (bolt_status_is_pending (status))
     {
-      gtk_container_add (GTK_CONTAINER (panel->pending_list), GTK_WIDGET (entry));
+      gtk_list_box_append (panel->pending_list, GTK_WIDGET (entry));
       gtk_widget_show (GTK_WIDGET (panel->pending_list));
       gtk_widget_show (GTK_WIDGET (panel->pending_box));
     }
   else
     {
-      gtk_container_add (GTK_CONTAINER (panel->devices_list), GTK_WIDGET (entry));
+      gtk_list_box_append (panel->devices_list, GTK_WIDGET (entry));
       gtk_widget_show (GTK_WIDGET (panel->devices_list));
       gtk_widget_show (GTK_WIDGET (panel->devices_box));
     }
@@ -399,7 +391,7 @@ cc_bolt_panel_del_device_entry (CcBoltPanel       *panel,
     }
 
   p = gtk_widget_get_parent (GTK_WIDGET (entry));
-  gtk_widget_destroy (GTK_WIDGET (entry));
+  gtk_list_box_remove (GTK_LIST_BOX (p), GTK_WIDGET (entry));
 
   box = cc_bolt_panel_box_for_listbox (panel, GTK_LIST_BOX (p));
   show = list_box_sync_visible (GTK_LIST_BOX (p));
@@ -418,7 +410,6 @@ cc_bolt_panel_authmode_sync (CcBoltPanel *panel)
   BoltClient *client = panel->client;
   BoltAuthMode mode;
   gboolean enabled;
-  const char *name;
 
   mode = bolt_client_get_authmode (client);
   enabled = (mode & BOLT_AUTH_ENABLED) != 0;
@@ -429,8 +420,10 @@ cc_bolt_panel_authmode_sync (CcBoltPanel *panel)
 
   g_signal_handlers_unblock_by_func (panel->authmode_switch, on_authmode_state_set_cb, panel);
 
-  name = enabled ? "enabled" : "disabled";
-  gtk_stack_set_visible_child_name (panel->authmode_mode, name);
+  adw_preferences_row_set_title (ADW_PREFERENCES_ROW (panel->direct_access_row),
+                                 enabled ?
+                                 _("Allow direct access to devices such as docks and external GPUs.") :
+                                 _("Only USB and Display Port devices can attach."));
 }
 
 static void
@@ -446,8 +439,8 @@ cc_panel_list_box_migrate (CcBoltPanel       *panel,
 
   target = GTK_WIDGET (entry);
 
-  gtk_container_remove (GTK_CONTAINER (from), target);
-  gtk_container_add (GTK_CONTAINER (to), target);
+  gtk_list_box_remove (from, target);
+  gtk_list_box_append (to, target);
   gtk_widget_show (GTK_WIDGET (to));
 
   from_box = cc_bolt_panel_box_for_listbox (panel, from);
@@ -471,7 +464,7 @@ cc_bolt_panel_set_no_thunderbolt (CcBoltPanel *panel,
               "an unsupported security level in the BIOS.");
     }
 
-  gtk_label_set_label (panel->notb_details, msg);
+  adw_status_page_set_description (panel->notb_page, msg);
   gtk_stack_set_visible_child_name (panel->container, "no-thunderbolt");
 }
 
@@ -698,23 +691,8 @@ on_device_entry_row_activated_cb (CcBoltPanel   *panel,
 
   cc_bolt_device_dialog_set_device (panel->device_dialog, device, parents);
 
-  gtk_window_resize (GTK_WINDOW (panel->device_dialog), 1, 1);
+  gtk_window_set_default_size (GTK_WINDOW (panel->device_dialog), 1, 1);
   gtk_widget_show (GTK_WIDGET (panel->device_dialog));
-}
-
-static gboolean
-on_device_dialog_delete_event_cb (GtkWidget   *widget,
-                                  GdkEvent    *event,
-                                  CcBoltPanel *panel)
-{
-  CcBoltDeviceDialog *dialog;
-
-  dialog = CC_BOLT_DEVICE_DIALOG (widget);
-
-  cc_bolt_device_dialog_set_device (dialog, NULL, NULL);
-  gtk_widget_hide (widget);
-
-  return TRUE;
 }
 
 static void
@@ -898,7 +876,8 @@ cc_bolt_panel_dispose (GObject *object)
   CcBoltPanel *panel = CC_BOLT_PANEL (object);
 
   /* Must be destroyed in dispose, not finalize. */
-  g_clear_pointer ((GtkWidget **) &panel->device_dialog, gtk_widget_destroy);
+  cc_bolt_device_dialog_set_device (panel->device_dialog, NULL, NULL);
+  g_clear_pointer ((GtkWindow **) &panel->device_dialog, gtk_window_destroy);
 
   G_OBJECT_CLASS (cc_bolt_panel_parent_class)->dispose (object);
 }
@@ -910,13 +889,11 @@ cc_bolt_panel_constructed (GObject *object)
   GtkWindow *parent;
   CcShell *shell;
 
-  parent = GTK_WINDOW (cc_shell_get_toplevel (cc_panel_get_shell (CC_PANEL (panel))));
-  gtk_window_set_transient_for (GTK_WINDOW (panel->device_dialog), parent);
-
   G_OBJECT_CLASS (cc_bolt_panel_parent_class)->constructed (object);
 
   shell = cc_panel_get_shell (CC_PANEL (panel));
-  cc_shell_embed_widget_in_header (shell, GTK_WIDGET (panel->headerbar_box), GTK_POS_RIGHT);
+  parent = GTK_WINDOW (cc_shell_get_toplevel (shell));
+  gtk_window_set_transient_for (GTK_WINDOW (panel->device_dialog), parent);
 }
 
 static void
@@ -931,17 +908,16 @@ cc_bolt_panel_class_init (CcBoltPanelClass *klass)
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/thunderbolt/cc-bolt-panel.ui");
 
-  gtk_widget_class_bind_template_child (widget_class, CcBoltPanel, authmode_mode);
   gtk_widget_class_bind_template_child (widget_class, CcBoltPanel, authmode_spinner);
   gtk_widget_class_bind_template_child (widget_class, CcBoltPanel, authmode_switch);
   gtk_widget_class_bind_template_child (widget_class, CcBoltPanel, container);
   gtk_widget_class_bind_template_child (widget_class, CcBoltPanel, devices_list);
   gtk_widget_class_bind_template_child (widget_class, CcBoltPanel, devices_box);
   gtk_widget_class_bind_template_child (widget_class, CcBoltPanel, devices_stack);
+  gtk_widget_class_bind_template_child (widget_class, CcBoltPanel, direct_access_row);
   gtk_widget_class_bind_template_child (widget_class, CcBoltPanel, headerbar_box);
   gtk_widget_class_bind_template_child (widget_class, CcBoltPanel, lock_button);
-  gtk_widget_class_bind_template_child (widget_class, CcBoltPanel, notb_caption);
-  gtk_widget_class_bind_template_child (widget_class, CcBoltPanel, notb_details);
+  gtk_widget_class_bind_template_child (widget_class, CcBoltPanel, notb_page);
   gtk_widget_class_bind_template_child (widget_class, CcBoltPanel, notification_label);
   gtk_widget_class_bind_template_child (widget_class, CcBoltPanel, notification_revealer);
   gtk_widget_class_bind_template_child (widget_class, CcBoltPanel, pending_box);
@@ -961,16 +937,6 @@ cc_bolt_panel_init (CcBoltPanel *panel)
 
   gtk_stack_set_visible_child_name (panel->container, "loading");
 
-  gtk_list_box_set_header_func (panel->devices_list,
-                                cc_list_box_update_header_func,
-                                NULL,
-                                NULL);
-
-  gtk_list_box_set_header_func (panel->pending_list,
-                                cc_list_box_update_header_func,
-                                NULL,
-                                NULL);
-
   gtk_list_box_set_sort_func (panel->devices_list,
                               device_entries_sort_by_recency_cb,
                               panel,
@@ -984,11 +950,6 @@ cc_bolt_panel_init (CcBoltPanel *panel)
   panel->devices = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, NULL);
 
   panel->device_dialog = cc_bolt_device_dialog_new ();
-  g_signal_connect_object (panel->device_dialog,
-                           "delete-event",
-                           G_CALLBACK (on_device_dialog_delete_event_cb),
-                           panel, 0);
 
   bolt_client_new_async (cc_panel_get_cancellable (CC_PANEL (panel)), bolt_client_ready, g_object_ref (panel));
-
 }

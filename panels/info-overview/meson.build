@@ -40,7 +40,8 @@ sources += gnome.compile_resources(
 
 deps = common_deps + [
   dependency('udisks2', version: '>= 2.8.2'),
-  dependency('libgtop-2.0')
+  dependency('libgtop-2.0'),
+  gudev_dep,
 ]
 
 info_panel_lib = static_library(
@@ -53,7 +54,7 @@ info_panel_lib = static_library(
 panels_libs += info_panel_lib
 
 print_renderer_deps = [
-  dependency('gtk+-3.0'),
+  dependency('gtk4'),
   epoxy_dep
 ]
 
@@ -71,3 +72,5 @@ install_data(
   [ 'gnome-logo-text.svg', 'gnome-logo-text-dark.svg' ],
   install_dir: join_paths(control_center_datadir, 'icons')
 )
+
+subdir('icons')

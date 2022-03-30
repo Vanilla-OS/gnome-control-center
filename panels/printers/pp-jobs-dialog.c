@@ -31,7 +31,6 @@
 
 #include <cups/cups.h>
 
-#include "list-box-helper.h"
 #include "pp-jobs-dialog.h"
 #include "pp-utils.h"
 #include "pp-job.h"
@@ -70,6 +69,7 @@ struct _PpJobsDialog {
   gchar    **actual_auth_info_required;
   gboolean   jobs_filled;
   gboolean   pop_up_authentication_popup;
+  gint       max_priority;
 
   GCancellable *get_jobs_cancellable;
 };
@@ -143,7 +143,7 @@ static void
 auth_entries_activated (PpJobsDialog *self)
 {
   if (auth_popup_filled (self))
-    gtk_button_clicked (self->authenticate_button);
+    g_signal_emit_by_name (self->authenticate_button, "activate");
 }
 
 static void
@@ -160,26 +160,69 @@ authenticate_popover_update (PpJobsDialog *self)
   gtk_widget_set_visible (GTK_WIDGET (self->domain_label), domain_required);
   gtk_widget_set_visible (GTK_WIDGET (self->domain_entry), domain_required);
   if (domain_required)
-    gtk_entry_set_text (self->domain_entry, "");
+    gtk_editable_set_text (GTK_EDITABLE (self->domain_entry), "");
 
   gtk_widget_set_visible (GTK_WIDGET (self->username_label), username_required);
   gtk_widget_set_visible (GTK_WIDGET (self->username_entry), username_required);
   if (username_required)
-    gtk_entry_set_text (self->username_entry, cupsUser ());
+    gtk_editable_set_text (GTK_EDITABLE (self->username_entry), cupsUser ());
 
   gtk_widget_set_visible (GTK_WIDGET (self->password_label), password_required);
   gtk_widget_set_visible (GTK_WIDGET (self->password_entry), password_required);
   if (password_required)
-    gtk_entry_set_text (self->password_entry, "");
+    gtk_editable_set_text (GTK_EDITABLE (self->password_entry), "");
 
   gtk_widget_set_sensitive (GTK_WIDGET (self->authenticate_button), FALSE);
+}
+
+static void
+pp_job_update_cb (GObject      *source_object,
+                  GAsyncResult *res,
+                  gpointer      user_data)
+{
+  PpJobsDialog     *self = user_data;
+  gboolean          result;
+  g_autoptr(GError) error = NULL;
+  PpJob            *job = PP_JOB (source_object);
+
+  result = pp_job_set_priority_finish (job, res, &error);
+  if (result)
+    {
+      pp_jobs_dialog_update (self);
+    }
+  else if (error != NULL)
+    {
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        {
+          g_warning ("Could not set job priority: %s", error->message);
+        }
+    }
+}
+
+static void
+on_priority_changed (PpJobRow     *job_row,
+                     PpJobsDialog *self)
+{
+  PpJob *job;
+
+  job = pp_job_row_get_job (job_row);
+  pp_job_set_priority_async (job, ++self->max_priority, NULL, pp_job_update_cb, self);
 }
 
 static GtkWidget *
 create_listbox_row (gpointer item,
                     gpointer user_data)
 {
-  return GTK_WIDGET (pp_job_row_new (PP_JOB (item)));
+  PpJobRow *job_row;
+
+  job_row = pp_job_row_new (PP_JOB (item));
+
+  g_signal_connect (job_row,
+                    "priority-changed",
+                    G_CALLBACK (on_priority_changed),
+                    user_data);
+
+  return GTK_WIDGET (job_row);
 }
 
 static void
@@ -200,7 +243,11 @@ update_jobs_list_cb (GObject      *source_object,
   g_autoptr(GPtrArray) jobs;
   PpJob               *job;
   gint                 num_of_auth_jobs = 0;
+  gint                 job_priority;
+  guint                state;
   guint                i;
+  gint                 current_max_value = 1;
+  gint                 first_unprocessed_job = -1;
 
   g_list_store_remove_all (self->store);
 
@@ -227,8 +274,30 @@ update_jobs_list_cb (GObject      *source_object,
     }
 
   for (i = 0; i < jobs->len; i++)
+  {
+    job = PP_JOB (g_ptr_array_index (jobs, i));
+    state = pp_job_get_state (job);
+
+    if (state == IPP_JOB_PENDING || state == IPP_JOB_HELD)
+      {
+        if (first_unprocessed_job == -1)
+          {
+            first_unprocessed_job = i;
+            break;
+          }
+      }
+  }
+
+  for (i = 0; i < jobs->len; i++)
     {
       job = PP_JOB (g_ptr_array_index (jobs, i));
+      job_priority = pp_job_get_priority (job);
+      pp_job_priority_set_sensitive (job, (pp_job_get_state (job) == IPP_JOB_PENDING ||
+                                     pp_job_get_state (job) == IPP_JOB_HELD) &&
+                                     i > first_unprocessed_job);
+
+      if (job_priority >= current_max_value && job_priority != 100)
+        current_max_value = job_priority;
 
       g_list_store_append (self->store, g_object_ref (job));
 
@@ -240,7 +309,7 @@ update_jobs_list_cb (GObject      *source_object,
             self->actual_auth_info_required = g_strdupv (pp_job_get_auth_info_required (job));
         }
     }
-
+  self->max_priority = current_max_value;
   if (num_of_auth_jobs > 0)
     {
       g_autofree gchar *text = NULL;
@@ -346,11 +415,11 @@ authenticate_button_clicked (PpJobsDialog *self)
   for (i = 0; self->actual_auth_info_required[i] != NULL; i++)
     {
       if (g_strcmp0 (self->actual_auth_info_required[i], "domain") == 0)
-        auth_info[i] = g_strdup (gtk_entry_get_text (GTK_ENTRY (self->domain_entry)));
+        auth_info[i] = g_strdup (gtk_editable_get_text (GTK_EDITABLE (self->domain_entry)));
       else if (g_strcmp0 (self->actual_auth_info_required[i], "username") == 0)
-        auth_info[i] = g_strdup (gtk_entry_get_text (GTK_ENTRY (self->username_entry)));
+        auth_info[i] = g_strdup (gtk_editable_get_text (GTK_EDITABLE (self->username_entry)));
       else if (g_strcmp0 (self->actual_auth_info_required[i], "password") == 0)
-        auth_info[i] = g_strdup (gtk_entry_get_text (GTK_ENTRY (self->password_entry)));
+        auth_info[i] = g_strdup (gtk_editable_get_text (GTK_EDITABLE (self->password_entry)));
     }
 
   num_items = g_list_model_get_n_items (G_LIST_MODEL (self->store));
@@ -365,17 +434,6 @@ authenticate_button_clicked (PpJobsDialog *self)
     }
 
   g_strfreev (auth_info);
-}
-
-static gboolean
-key_press_event_cb (GtkWidget   *widget,
-                    GdkEventKey *event,
-                    gpointer     user_data)
-{
-  if (event->keyval == GDK_KEY_Escape)
-    gtk_dialog_response (GTK_DIALOG (widget), GTK_RESPONSE_CLOSE);
-
-  return FALSE;
 }
 
 PpJobsDialog *
@@ -394,9 +452,6 @@ pp_jobs_dialog_new (const gchar *printer_name)
   self->jobs_filled = FALSE;
   self->pop_up_authentication_popup = FALSE;
 
-  /* connect signals */
-  g_signal_connect (self, "key-press-event", G_CALLBACK (key_press_event_cb), NULL);
-
   /* Translators: This is the printer name for which we are showing the active jobs */
   title = g_strdup_printf (C_("Printer jobs dialog title", "%s — Active Jobs"), printer_name);
   gtk_window_set_title (GTK_WINDOW (self), title);
@@ -405,11 +460,9 @@ pp_jobs_dialog_new (const gchar *printer_name)
   text = g_strdup_printf (_("Enter credentials to print from %s."), printer_name);
   gtk_label_set_text (self->authentication_label, text);
 
-  gtk_list_box_set_header_func (self->jobs_listbox,
-                                cc_list_box_update_header_func, NULL, NULL);
   self->store = g_list_store_new (pp_job_get_type ());
   gtk_list_box_bind_model (self->jobs_listbox, G_LIST_MODEL (self->store),
-                           create_listbox_row, NULL, NULL);
+                           create_listbox_row, self, NULL);
 
   update_jobs_list (self);
 
@@ -481,4 +534,6 @@ pp_jobs_dialog_class_init (PpJobsDialogClass *klass)
   gtk_widget_class_bind_template_callback (widget_class, auth_entries_changed);
 
   object_class->dispose = pp_jobs_dialog_dispose;
+
+  gtk_widget_class_add_binding_action (widget_class, GDK_KEY_Escape, 0, "window.close", NULL);
 }

@@ -18,7 +18,6 @@
  * Author: Matthias Clasen <mclasen@redhat.com>
  */
 
-#include "list-box-helper.h"
 #include "cc-microphone-panel.h"
 #include "cc-microphone-resources.h"
 #include "cc-util.h"
@@ -33,6 +32,7 @@ struct _CcMicrophonePanel
 {
   CcPanel       parent_instance;
 
+  GtkSwitch    *main_switch;
   GtkListBox   *microphone_apps_list_box;
   GtkStack     *stack;
 
@@ -150,7 +150,7 @@ add_microphone_app (CcMicrophonePanel *self,
 {
   GDesktopAppInfo *app_info;
   char *desktop_id;
-  GtkWidget *box, *row, *w;
+  GtkWidget *row, *w;
   GIcon *icon;
   MicrophoneAppStateData *data;
 
@@ -168,41 +168,22 @@ add_microphone_app (CcMicrophonePanel *self,
   if (app_info == NULL)
       return;
 
-  row = gtk_list_box_row_new ();
-  gtk_widget_show (row);
-  box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-  gtk_widget_show (box);
-  gtk_widget_set_margin_start (box, 12);
-  gtk_widget_set_margin_end (box, 6);
-  gtk_widget_set_margin_top (box, 12);
-  gtk_widget_set_margin_bottom (box, 12);
-  gtk_container_add (GTK_CONTAINER (row), box);
-  gtk_widget_set_hexpand (box, TRUE);
-  gtk_container_add (GTK_CONTAINER (self->microphone_apps_list_box), row);
+  row = adw_action_row_new ();
+  gtk_list_box_append (self->microphone_apps_list_box, row);
 
   icon = g_app_info_get_icon (G_APP_INFO (app_info));
-  w = gtk_image_new_from_gicon (icon, GTK_ICON_SIZE_LARGE_TOOLBAR);
-  gtk_widget_show (w);
-  gtk_widget_set_halign (w, GTK_ALIGN_CENTER);
+  w = gtk_image_new_from_gicon (icon);
   gtk_widget_set_valign (w, GTK_ALIGN_CENTER);
   gtk_size_group_add_widget (self->microphone_icon_size_group, w);
-  gtk_box_pack_start (GTK_BOX (box), w, FALSE, FALSE, 0);
+  adw_action_row_add_prefix (ADW_ACTION_ROW (row), w);
 
-  w = gtk_label_new (g_app_info_get_name (G_APP_INFO (app_info)));
-  gtk_widget_show (w);
-  gtk_widget_set_margin_start (w, 12);
-  gtk_widget_set_margin_end (w, 12);
-  gtk_widget_set_halign (w, GTK_ALIGN_START);
-  gtk_widget_set_valign (w, GTK_ALIGN_CENTER);
-  gtk_label_set_xalign (GTK_LABEL (w), 0);
-  gtk_box_pack_start (GTK_BOX (box), w, TRUE, TRUE, 0);
+  adw_preferences_row_set_title (ADW_PREFERENCES_ROW (row),
+                                 g_app_info_get_name (G_APP_INFO (app_info)));
 
   w = gtk_switch_new ();
-  gtk_widget_show (w);
   gtk_switch_set_active (GTK_SWITCH (w), enabled);
-  gtk_widget_set_halign (w, GTK_ALIGN_END);
   gtk_widget_set_valign (w, GTK_ALIGN_CENTER);
-  gtk_box_pack_start (GTK_BOX (box), w, FALSE, FALSE, 0);
+  adw_action_row_add_suffix (ADW_ACTION_ROW (row), w);
   g_settings_bind (self->privacy_settings,
                    "disable-microphone",
                    w,
@@ -372,37 +353,6 @@ cc_microphone_panel_get_help_uri (CcPanel *panel)
 }
 
 static void
-cc_microphone_panel_constructed (GObject *object)
-{
-  CcMicrophonePanel *self = CC_MICROPHONE_PANEL (object);
-  GtkWidget *box, *widget;
-
-  G_OBJECT_CLASS (cc_microphone_panel_parent_class)->constructed (object);
-
-  box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
-  gtk_widget_show (box);
-
-  widget = gtk_switch_new ();
-  gtk_widget_show (widget);
-  gtk_widget_set_valign (widget, GTK_ALIGN_CENTER);
-  gtk_box_pack_start (GTK_BOX (box), widget, FALSE, FALSE, 4);
-
-  g_settings_bind (self->privacy_settings, "disable-microphone",
-                   widget, "active",
-                   G_SETTINGS_BIND_INVERT_BOOLEAN);
-  g_object_bind_property_full  (widget, "active",
-                                self->stack, "visible-child-name",
-                                G_BINDING_SYNC_CREATE,
-                                to_child_name,
-                                NULL,
-                                NULL, NULL);
-
-  cc_shell_embed_widget_in_header (cc_panel_get_shell (CC_PANEL (self)),
-                                   box,
-                                   GTK_POS_RIGHT);
-}
-
-static void
 cc_microphone_panel_class_init (CcMicrophonePanelClass *klass)
 {
   CcPanelClass *panel_class = CC_PANEL_CLASS (klass);
@@ -412,10 +362,10 @@ cc_microphone_panel_class_init (CcMicrophonePanelClass *klass)
   panel_class->get_help_uri = cc_microphone_panel_get_help_uri;
 
   object_class->finalize = cc_microphone_panel_finalize;
-  object_class->constructed = cc_microphone_panel_constructed;
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/microphone/cc-microphone-panel.ui");
 
+  gtk_widget_class_bind_template_child (widget_class, CcMicrophonePanel, main_switch);
   gtk_widget_class_bind_template_child (widget_class, CcMicrophonePanel, stack);
   gtk_widget_class_bind_template_child (widget_class, CcMicrophonePanel, microphone_apps_list_box);
 }
@@ -427,13 +377,24 @@ cc_microphone_panel_init (CcMicrophonePanel *self)
 
   gtk_widget_init_template (GTK_WIDGET (self));
 
-  gtk_list_box_set_header_func (self->microphone_apps_list_box,
-                                cc_list_box_update_header_func,
-                                NULL, NULL);
   self->microphone_icon_size_group = gtk_size_group_new (GTK_SIZE_GROUP_BOTH);
 
   self->privacy_settings = g_settings_new ("org.gnome.desktop.privacy");
 
+  g_settings_bind (self->privacy_settings,
+                   "disable-microphone",
+                   self->main_switch,
+                   "active",
+                   G_SETTINGS_BIND_INVERT_BOOLEAN);
+
+  g_object_bind_property_full  (self->main_switch,
+                                "active",
+                                self->stack,
+                                "visible-child-name",
+                                G_BINDING_SYNC_CREATE,
+                                to_child_name,
+                                NULL,
+                                NULL, NULL);
 
   self->microphone_app_switches = g_hash_table_new_full (g_str_hash,
                                                        g_str_equal,

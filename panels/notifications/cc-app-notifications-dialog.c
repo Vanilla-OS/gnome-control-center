@@ -26,7 +26,6 @@
 #include <gio/gio.h>
 #include <gio/gdesktopappinfo.h>
 
-#include "list-box-helper.h"
 #include "cc-notifications-panel.h"
 #include "cc-app-notifications-dialog.h"
 
@@ -56,7 +55,6 @@ struct _CcAppNotificationsDialog {
   gchar               *app_id;
   GDBusProxy          *perm_store;
 
-  GtkWidget           *main_listbox;
   GtkWidget           *notifications_switch;
   GtkWidget           *sound_alerts_switch;
   GtkWidget           *notification_banners_switch;
@@ -355,7 +353,6 @@ cc_app_notifications_dialog_class_init (CcAppNotificationsDialogClass *klass)
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/notifications/cc-app-notifications-dialog.ui");
 
-  gtk_widget_class_bind_template_child (widget_class, CcAppNotificationsDialog, main_listbox);
   gtk_widget_class_bind_template_child (widget_class, CcAppNotificationsDialog, notifications_switch);
   gtk_widget_class_bind_template_child (widget_class, CcAppNotificationsDialog, sound_alerts_switch);
   gtk_widget_class_bind_template_child (widget_class, CcAppNotificationsDialog, notification_banners_switch);
@@ -375,10 +372,6 @@ void
 cc_app_notifications_dialog_init (CcAppNotificationsDialog *dialog)
 {
   gtk_widget_init_template (GTK_WIDGET (dialog));
-
-  gtk_list_box_set_header_func (GTK_LIST_BOX (dialog->main_listbox),
-                                cc_list_box_update_header_func,
-                                NULL, NULL);
 }
 
 CcAppNotificationsDialog *

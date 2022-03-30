@@ -7,14 +7,14 @@
     <file preprocess="xml-stripblanks">cc-fade-slider.ui</file>
     <file preprocess="xml-stripblanks">cc-output-test-dialog.ui</file>
     <file preprocess="xml-stripblanks">cc-profile-combo-box.ui</file>
-    <file preprocess="xml-stripblanks">cc-sound-button.ui</file>
     <file preprocess="xml-stripblanks">cc-sound-panel.ui</file>
     <file preprocess="xml-stripblanks">cc-speaker-test-button.ui</file>
+    <file preprocess="xml-stripblanks">cc-stream-list-box.ui</file>
     <file preprocess="xml-stripblanks">cc-stream-row.ui</file>
     <file preprocess="xml-stripblanks">cc-subwoofer-slider.ui</file>
     <file preprocess="xml-stripblanks">cc-volume-slider.ui</file>
   </gresource>
-  <gresource prefix="/org/gnome/ControlCenter/icons/scalable/devices">
+  <gresource prefix="/org/gnome/Settings/icons/scalable/devices">
     <file alias="audio-speaker-center-back.svg">icons/audio-speaker-center-back.svg</file>
     <file alias="audio-speaker-center-back-testing.svg">icons/audio-speaker-center-back-testing.svg</file>
     <file alias="audio-speaker-center.svg">icons/audio-speaker-center.svg</file>

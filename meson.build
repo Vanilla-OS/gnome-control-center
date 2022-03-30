@@ -1,6 +1,6 @@
 project(
   'gnome-control-center', 'c',
-        version : '41.4',
+        version : '42.0',
         license : 'GPL2+',
   meson_version : '>= 0.53.0'
 )
@@ -99,35 +99,28 @@ libgvc = subproject(
 )
 libgvc_dep = libgvc.get_variable('libgvc_dep')
 
-libhandy_dep = dependency('libhandy-1', version: '>= 1.2.0', required: false)
-if not libhandy_dep.found()
-  libhandy = subproject(
-    'libhandy',
-    default_options: [
-      'examples=false',
-      'glade_catalog=disabled',
-      'introspection=disabled',
-      'tests=false',
-      'vapi=false',
-    ]
-  )
-  libhandy_dep = libhandy.get_variable('libhandy_dep')
-endif
-
 goa_req_version = '>= 3.25.3'
 pulse_req_version = '>= 2.0'
+
+libadwaita_dep = dependency(
+  'libadwaita-1',
+  version: '>= 1.1',
+  fallback: ['libadwaita', 'libadwaita_dep'],
+  default_options: ['examples=false', 'introspection=disabled', 'tests=false', 'vapi=false'],
+)
 
 accounts_dep = dependency('accountsservice', version: '>= 0.6.39')
 colord_dep = dependency('colord', version: '>= 0.1.34')
 gdk_pixbuf_dep = dependency('gdk-pixbuf-2.0', version: '>= 2.23.0')
 gio_dep = dependency('gio-2.0')
 glib_dep = dependency('glib-2.0', version: '>= 2.68.0')
-gnome_desktop_dep = dependency('gnome-desktop-3.0', version: '>= 3.33.4')
-gnome_settings_dep = dependency('gnome-settings-daemon', version: '>= 3.27.90')
+gnome_desktop_dep = dependency('gnome-desktop-4')
+gnome_bg_dep = dependency('gnome-bg-4')
+gnome_rr_dep = dependency('gnome-rr-4')
+gnome_settings_dep = dependency('gnome-settings-daemon', version: '>= 41.0')
 goa_dep = dependency('goa-1.0', version: goa_req_version)
-gsettings_desktop_dep = dependency('gsettings-desktop-schemas', version: '>= 40.alpha')
+gsettings_desktop_dep = dependency('gsettings-desktop-schemas', version: '>= 42.alpha')
 libxml_dep = dependency('libxml-2.0')
-polkit_gobject_dep = dependency('polkit-gobject-1', version: '>= 0.114')
 pulse_dep = dependency('libpulse', version: pulse_req_version)
 pulse_mainloop_dep = dependency('libpulse-mainloop-glib', version: pulse_req_version)
 upower_glib_dep = dependency('upower-glib', version: '>= 0.99.8')
@@ -135,6 +128,8 @@ gudev_dep = dependency('gudev-1.0', version: '>= 232')
 x11_dep = dependency('x11')
 xi_dep = dependency('xi', version: '>= 1.2')
 epoxy_dep = dependency('epoxy')
+gcr_dep = dependency('gcr-base-3')
+pwquality_dep = dependency('pwquality', version: '>= 1.2.2')
 
 m_dep = cc.find_library('m')
 
@@ -142,11 +137,20 @@ common_deps = [
   gio_dep,
   glib_dep,
   gsettings_desktop_dep,
-  libhandy_dep,
+  libadwaita_dep,
   dependency('gio-unix-2.0'),
   dependency('gthread-2.0'),
-  dependency('gtk+-3.0', version: '>= 3.22.20')
+  dependency('gtk4', version: '>= 4.4'),
 ]
+
+polkit_gobject_dep = dependency('polkit-gobject-1', version: '>= 0.103')
+# Also verify that polkit ITS files exist:
+# https://gitlab.gnome.org/GNOME/gnome-control-center/-/issues/491
+polkit_files = [ 'gettext/its/polkit.its', 'gettext/its/polkit.loc' ]
+foreach polkit_file: polkit_files
+  r = run_command('build-aux/meson/find_xdg_file.py', polkit_file, check: true)
+  assert(r.returncode() == 0, 'ITS support missing from polkit, please upgrade or contact your distribution')
+endforeach
 
 # Check for CUPS 1.4 or newer
 cups_dep = dependency('cups', version : '>= 1.4', required: false)
@@ -171,17 +175,6 @@ endforeach
 config_h.set10('HAVE_CUPS_HTTPCONNECT2',
                cc.has_function('httpConnect2', dependencies: cups_dep),
                description: 'Define if httpConnect2() is available in CUPS')
-
-# Optional dependency for the user accounts panel
-enable_cheese = get_option('cheese')
-if enable_cheese
-  cheese_deps = [
-    dependency('cheese', version: '>= 3.28.0'),
-    dependency('cheese-gtk', version: '>= 3.5.91')
-  ]
-endif
-config_h.set('HAVE_CHEESE', enable_cheese,
-             description: 'Define to 1 to enable cheese webcam support')
 
 # IBus support
 enable_ibus = get_option('ibus')
@@ -220,7 +213,7 @@ if host_is_linux
   # network manager
   network_manager_deps = [
     dependency('libnm', version: '>= 1.24.0'),
-    dependency('libnma', version: '>= 1.8.0'),
+    dependency('libnma-gtk4', version: '>= 1.8.0'),
     dependency('mm-glib', version: '>= 0.7')
   ]
 endif
@@ -235,7 +228,7 @@ config_h.set('HAVE_WWAN', host_is_linux,
 
 if host_is_linux_not_s390
   # gnome-bluetooth
-  gnome_bluetooth_dep = dependency('gnome-bluetooth-1.0', version: '>= 3.18.2')
+  gnome_bluetooth_dep = dependency('gnome-bluetooth-ui-3.0')
 
   libwacom_dep = dependency('libwacom', version: '>= 0.7')
 
@@ -311,7 +304,6 @@ summary({
 }, section: 'Dependencies')
 
 summary({
-  'Cheese': enable_cheese,
   'IBus': enable_ibus,
   'Snap': enable_snap,
   'Malcontent': enable_malcontent,

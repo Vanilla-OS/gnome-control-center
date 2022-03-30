@@ -39,7 +39,6 @@ sources = files(
 )
 
 resource_data = files(
-  'authentication-dialog.ui',
   'new-printer-dialog.ui',
   'ppd-selection-dialog.ui',
   'pp-details-dialog.ui',
@@ -74,3 +73,4 @@ printers_panel_lib = static_library(
 )
 panels_libs += [ printers_panel_lib ]
 
+subdir('icons')

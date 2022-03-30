@@ -18,11 +18,11 @@
  * Author: Matthias Clasen <mclasen@redhat.com>
  */
 
-#include "list-box-helper.h"
 #include "cc-location-panel.h"
 #include "cc-location-resources.h"
 #include "cc-util.h"
 
+#include <adwaita.h>
 #include <gio/gdesktopappinfo.h>
 #include <glib/gi18n.h>
 
@@ -36,6 +36,7 @@ struct _CcLocationPanel
 
   GtkStack     *stack;
   GtkListBox   *location_apps_list_box;
+  GtkSwitch    *main_switch;
 
   GSettings    *location_settings;
 
@@ -151,7 +152,7 @@ add_location_app (CcLocationPanel *self,
   LocationAppStateData *data;
   GDesktopAppInfo *app_info;
   GDateTime *t;
-  GtkWidget *box, *row, *w;
+  GtkWidget *row, *w;
   GIcon *icon;
   gchar *last_used_str;
   gchar *desktop_id;
@@ -169,53 +170,32 @@ add_location_app (CcLocationPanel *self,
   if (app_info == NULL)
       return;
 
-  row = gtk_list_box_row_new ();
-  gtk_widget_show (row);
-  box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-  gtk_widget_show (box);
-  gtk_widget_set_margin_start (box, 12);
-  gtk_widget_set_margin_end (box, 6);
-  gtk_widget_set_margin_top (box, 12);
-  gtk_widget_set_margin_bottom (box, 12);
-  gtk_container_add (GTK_CONTAINER (row), box);
-  gtk_widget_set_hexpand (box, TRUE);
-  gtk_container_add (GTK_CONTAINER (self->location_apps_list_box), row);
+  row = adw_action_row_new ();
+  gtk_list_box_append (self->location_apps_list_box, row);
 
   icon = g_app_info_get_icon (G_APP_INFO (app_info));
-  w = gtk_image_new_from_gicon (icon, GTK_ICON_SIZE_LARGE_TOOLBAR);
-  gtk_widget_show (w);
-  gtk_widget_set_halign (w, GTK_ALIGN_CENTER);
+  w = gtk_image_new_from_gicon (icon);
   gtk_widget_set_valign (w, GTK_ALIGN_CENTER);
   gtk_size_group_add_widget (self->location_icon_size_group, w);
-  gtk_box_pack_start (GTK_BOX (box), w, FALSE, FALSE, 0);
+  adw_action_row_add_prefix (ADW_ACTION_ROW (row), w);
 
-  w = gtk_label_new (g_app_info_get_name (G_APP_INFO (app_info)));
-  gtk_widget_show (w);
-  gtk_widget_set_margin_start (w, 12);
-  gtk_widget_set_margin_end (w, 12);
-  gtk_widget_set_halign (w, GTK_ALIGN_START);
-  gtk_widget_set_valign (w, GTK_ALIGN_CENTER);
-  gtk_label_set_xalign (GTK_LABEL (w), 0);
-  gtk_box_pack_start (GTK_BOX (box), w, FALSE, FALSE, 0);
+  adw_preferences_row_set_title (ADW_PREFERENCES_ROW (row),
+                                 g_app_info_get_name (G_APP_INFO (app_info)));
 
   t = g_date_time_new_from_unix_utc (last_used);
   last_used_str = cc_util_get_smart_date (t);
   w = gtk_label_new (last_used_str);
-  gtk_widget_show (w);
   g_free (last_used_str);
   gtk_style_context_add_class (gtk_widget_get_style_context (w), "dim-label");
   gtk_widget_set_margin_start (w, 12);
   gtk_widget_set_margin_end (w, 12);
-  gtk_widget_set_halign (w, GTK_ALIGN_END);
   gtk_widget_set_valign (w, GTK_ALIGN_CENTER);
-  gtk_box_pack_start (GTK_BOX (box), w, TRUE, TRUE, 0);
+  adw_action_row_add_suffix (ADW_ACTION_ROW (row), w);
 
   w = gtk_switch_new ();
-  gtk_widget_show (w);
   gtk_switch_set_active (GTK_SWITCH (w), enabled);
-  gtk_widget_set_halign (w, GTK_ALIGN_END);
   gtk_widget_set_valign (w, GTK_ALIGN_CENTER);
-  gtk_box_pack_start (GTK_BOX (box), w, FALSE, FALSE, 0);
+  adw_action_row_add_suffix (ADW_ACTION_ROW (row), w);
   g_settings_bind (self->location_settings, LOCATION_ENABLED,
                    w, "sensitive",
                    G_SETTINGS_BIND_DEFAULT);
@@ -388,42 +368,6 @@ cc_location_panel_get_help_uri (CcPanel *panel)
 }
 
 static void
-cc_location_panel_constructed (GObject *object)
-{
-  CcLocationPanel *self = CC_LOCATION_PANEL (object);
-  GtkWidget *box, *widget;
-
-  G_OBJECT_CLASS (cc_location_panel_parent_class)->constructed (object);
-
-  box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
-  gtk_widget_show (box);
-
-  widget = gtk_switch_new ();
-  gtk_widget_show (widget);
-  gtk_widget_set_valign (widget, GTK_ALIGN_CENTER);
-  gtk_container_add (GTK_CONTAINER (box), widget);
-
-  g_settings_bind (self->location_settings,
-                   LOCATION_ENABLED,
-                   widget,
-                   "active",
-                   G_SETTINGS_BIND_DEFAULT);
-
-  g_object_bind_property_full  (widget,
-                                "active",
-                                self->stack,
-                                "visible-child-name",
-                                G_BINDING_SYNC_CREATE,
-                                to_child_name,
-                                NULL,
-                                NULL, NULL);
-
-  cc_shell_embed_widget_in_header (cc_panel_get_shell (CC_PANEL (self)),
-                                   box,
-                                   GTK_POS_RIGHT);
-}
-
-static void
 cc_location_panel_class_init (CcLocationPanelClass *klass)
 {
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
@@ -433,12 +377,12 @@ cc_location_panel_class_init (CcLocationPanelClass *klass)
   panel_class->get_help_uri = cc_location_panel_get_help_uri;
 
   object_class->finalize = cc_location_panel_finalize;
-  object_class->constructed = cc_location_panel_constructed;
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/location/cc-location-panel.ui");
 
   gtk_widget_class_bind_template_child (widget_class, CcLocationPanel, stack);
   gtk_widget_class_bind_template_child (widget_class, CcLocationPanel, location_apps_list_box);
+  gtk_widget_class_bind_template_child (widget_class, CcLocationPanel, main_switch);
 }
 
 static void
@@ -448,11 +392,23 @@ cc_location_panel_init (CcLocationPanel *self)
 
   gtk_widget_init_template (GTK_WIDGET (self));
 
-  gtk_list_box_set_header_func (self->location_apps_list_box,
-                                cc_list_box_update_header_func,
-                                NULL, NULL);
   self->location_icon_size_group = gtk_size_group_new (GTK_SIZE_GROUP_BOTH);
   self->location_settings = g_settings_new ("org.gnome.system.location");
+
+  g_settings_bind (self->location_settings,
+                   LOCATION_ENABLED,
+                   self->main_switch,
+                   "active",
+                   G_SETTINGS_BIND_DEFAULT);
+
+  g_object_bind_property_full  (self->main_switch,
+                                "active",
+                                self->stack,
+                                "visible-child-name",
+                                G_BINDING_SYNC_CREATE,
+                                to_child_name,
+                                NULL,
+                                NULL, NULL);
 
   self->location_app_switches = g_hash_table_new_full (g_str_hash,
                                                        g_str_equal,

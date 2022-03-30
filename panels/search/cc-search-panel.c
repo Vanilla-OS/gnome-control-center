@@ -22,22 +22,22 @@
 #include "cc-search-panel-row.h"
 #include "cc-search-locations-dialog.h"
 #include "cc-search-resources.h"
-#include "list-box-helper.h"
 
 #include <gio/gdesktopappinfo.h>
 #include <glib/gi18n.h>
 
 struct _CcSearchPanel
 {
-  CcPanel     parent_instance;
+  CcPanel           parent_instance;
 
-  GtkWidget  *list_box;
-  GtkWidget  *search_vbox;
-  GtkWidget  *settings_button;
-  CcSearchPanelRow  *selected_row;
+  GtkWidget        *list_box;
+  GtkSwitch        *main_switch;
+  GtkWidget        *search_group;
+  GtkWidget        *settings_row;
+  CcSearchPanelRow *selected_row;
 
-  GSettings  *search_settings;
-  GHashTable *sort_order;
+  GSettings        *search_settings;
+  GHashTable       *sort_order;
 
   CcSearchLocationsDialog  *locations_dialog;
 };
@@ -45,6 +45,21 @@ struct _CcSearchPanel
 CC_PANEL_REGISTER (CcSearchPanel, cc_search_panel)
 
 #define SHELL_PROVIDER_GROUP "Shell Search Provider"
+
+static gboolean
+keynav_failed_cb (CcSearchPanel *self, GtkDirectionType direction, GtkWidget *list)
+{
+  GtkWidget *toplevel = GTK_WIDGET (gtk_widget_get_root (GTK_WIDGET (self)));
+
+  if (!toplevel)
+    return FALSE;
+
+  if (direction != GTK_DIR_UP && direction != GTK_DIR_DOWN)
+    return FALSE;
+
+  return gtk_widget_child_focus (toplevel, direction == GTK_DIR_UP ?
+                                 GTK_DIR_TAB_BACKWARD : GTK_DIR_TAB_FORWARD);
+}
 
 static gint
 list_sort_func (gconstpointer a,
@@ -143,47 +158,36 @@ search_panel_propagate_sort_order (CcSearchPanel *self)
 static void
 search_panel_set_no_providers (CcSearchPanel *self)
 {
-  GtkWidget *w;
-
   /* center the list box in the scrolled window */
   gtk_widget_set_valign (self->list_box, GTK_ALIGN_CENTER);
 
-  w = gtk_label_new (_("No applications found"));
-  gtk_widget_show (w);
-
-  gtk_container_add (GTK_CONTAINER (self->list_box), w);
+  gtk_list_box_append (GTK_LIST_BOX (self->list_box),
+                       gtk_label_new (_("No applications found")));
 }
 
 static void
 search_panel_move_selected (CcSearchPanel *self,
                             gboolean down)
 {
-  GtkListBoxRow *row, *other_row;
+  GtkListBoxRow *other_row;
   GAppInfo *app_info, *other_app_info;
   const gchar *app_id, *other_app_id;
   const gchar *last_good_app, *target_app;
+  GtkWidget *aux;
   gint idx, other_idx;
   gpointer idx_ptr;
   gboolean found;
-  g_autoptr(GList) children = NULL;
-  GList *l, *other;
 
-  row = GTK_LIST_BOX_ROW (self->selected_row);
-  app_info = cc_search_panel_row_get_app_info (CC_SEARCH_PANEL_ROW (row));
+  app_info = cc_search_panel_row_get_app_info (self->selected_row);
   app_id = g_app_info_get_id (app_info);
-
-  children = gtk_container_get_children (GTK_CONTAINER (self->list_box));
 
   /* The assertions are valid only as long as we don't move the first
      or the last item. */
 
-  l = g_list_find (children, row);
-  g_assert (l != NULL);
+  aux = GTK_WIDGET (self->selected_row);
+  other_row = down ? GTK_LIST_BOX_ROW (gtk_widget_get_next_sibling (aux)) :
+                     GTK_LIST_BOX_ROW (gtk_widget_get_prev_sibling (aux));
 
-  other = down ? g_list_next(l) : g_list_previous(l);
-  g_assert (other != NULL);
-
-  other_row = other->data;
   other_app_info = cc_search_panel_row_get_app_info (CC_SEARCH_PANEL_ROW (other_row));
   other_app_id = g_app_info_get_id (other_app_info);
 
@@ -203,14 +207,14 @@ search_panel_move_selected (CcSearchPanel *self,
       GAppInfo *tmp;
       const char *tmp_id;
 
-      l = g_list_previous (l);
-      if (l == NULL)
+      aux = gtk_widget_get_prev_sibling (aux);
+      if (aux == NULL)
         {
           last_good_app = NULL;
           break;
         }
 
-      tmp = cc_search_panel_row_get_app_info (CC_SEARCH_PANEL_ROW (l->data));
+      tmp = cc_search_panel_row_get_app_info (CC_SEARCH_PANEL_ROW (aux));
       tmp_id = g_app_info_get_id (tmp);
 
       last_good_app = tmp_id;
@@ -235,7 +239,7 @@ search_panel_move_selected (CcSearchPanel *self,
          Sort orders are 1 based, so that 0 (NULL) is not a valid value.
       */
       idx = 1;
-      l = children;
+      aux = gtk_widget_get_first_child (GTK_WIDGET (self->list_box));
     }
 
   while (last_good_app != target_app)
@@ -243,12 +247,12 @@ search_panel_move_selected (CcSearchPanel *self,
       GAppInfo *tmp;
       const char *tmp_id;
 
-      tmp = cc_search_panel_row_get_app_info (CC_SEARCH_PANEL_ROW (l->data));
+      tmp = cc_search_panel_row_get_app_info (CC_SEARCH_PANEL_ROW (aux));
       tmp_id = g_app_info_get_id (tmp);
 
       g_hash_table_replace (self->sort_order, g_strdup (tmp_id), GINT_TO_POINTER (idx));
 
-      l = g_list_next (l);
+      aux = gtk_widget_get_next_sibling (aux);
       idx++;
       last_good_app = tmp_id;
     }
@@ -279,8 +283,8 @@ row_moved_cb (CcSearchPanel    *self,
 }
 
 static void
-settings_button_clicked (GtkWidget *widget,
-                         gpointer user_data)
+settings_row_activated (GtkWidget *widget,
+                        gpointer   user_data)
 {
   CcSearchPanel *self = user_data;
 
@@ -404,7 +408,6 @@ search_panel_add_one_app_info (CcSearchPanel *self,
                                gboolean default_enabled)
 {
   CcSearchPanelRow *row;
-  g_autoptr(GIcon) icon = NULL;
 
   /* gnome-control-center is special cased in the shell,
      and is not configurable */
@@ -420,7 +423,7 @@ search_panel_add_one_app_info (CcSearchPanel *self,
                            G_CALLBACK (row_moved_cb), self,
                            G_CONNECT_SWAPPED);
   g_object_set_data (G_OBJECT (row), "self", self);
-  gtk_container_add (GTK_CONTAINER (self->list_box), GTK_WIDGET (row));
+  gtk_list_box_append (GTK_LIST_BOX (self->list_box), GTK_WIDGET (row));
 
   if (default_enabled)
     {
@@ -618,40 +621,9 @@ cc_search_panel_finalize (GObject *object)
   g_hash_table_destroy (self->sort_order);
 
   if (self->locations_dialog)
-    gtk_widget_destroy (GTK_WIDGET (self->locations_dialog));
+    gtk_window_destroy (GTK_WINDOW (self->locations_dialog));
 
   G_OBJECT_CLASS (cc_search_panel_parent_class)->finalize (object);
-}
-
-static void
-cc_search_panel_constructed (GObject *object)
-{
-  CcSearchPanel *self = CC_SEARCH_PANEL (object);
-  GtkWidget *box, *widget;
-
-  G_OBJECT_CLASS (cc_search_panel_parent_class)->constructed (object);
-
-  /* add the disable all switch */
-  box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
-  gtk_widget_show (box);
-
-  widget = gtk_switch_new ();
-  gtk_widget_show (widget);
-  gtk_widget_set_valign (widget, GTK_ALIGN_CENTER);
-  gtk_box_pack_start (GTK_BOX (box), widget, FALSE, FALSE, 4);
-
-  g_settings_bind (self->search_settings, "disable-external",
-                   widget, "active",
-                   G_SETTINGS_BIND_DEFAULT |
-                   G_SETTINGS_BIND_INVERT_BOOLEAN);
-
-  g_object_bind_property (widget, "active",
-                          self->search_vbox, "sensitive",
-                          G_BINDING_DEFAULT |
-                          G_BINDING_SYNC_CREATE);
-
-  cc_shell_embed_widget_in_header (cc_panel_get_shell (CC_PANEL (self)), self->settings_button, GTK_POS_LEFT);
-  cc_shell_embed_widget_in_header (cc_panel_get_shell (CC_PANEL (self)), box, GTK_POS_RIGHT);
 }
 
 static void
@@ -664,9 +636,23 @@ cc_search_panel_init (CcSearchPanel *self)
   gtk_list_box_set_sort_func (GTK_LIST_BOX (self->list_box),
                               (GtkListBoxSortFunc)list_sort_func, self, NULL);
 
-  gtk_widget_set_sensitive (self->settings_button, cc_search_locations_dialog_is_available ());
+  gtk_widget_set_sensitive (self->settings_row, cc_search_locations_dialog_is_available ());
 
   self->search_settings = g_settings_new ("org.gnome.desktop.search-providers");
+  g_settings_bind (self->search_settings,
+                   "disable-external",
+                   self->main_switch,
+                   "active",
+                   G_SETTINGS_BIND_DEFAULT |
+                   G_SETTINGS_BIND_INVERT_BOOLEAN);
+
+  g_object_bind_property (self->main_switch,
+                          "active",
+                          self->search_group,
+                          "sensitive",
+                          G_BINDING_DEFAULT |
+                          G_BINDING_SYNC_CREATE);
+
   self->sort_order = g_hash_table_new_full (g_str_hash, g_str_equal,
                                                   g_free, NULL);
   g_signal_connect_swapped (self->search_settings, "changed::sort-order",
@@ -682,15 +668,16 @@ cc_search_panel_class_init (CcSearchPanelClass *klass)
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
   GObjectClass *oclass = G_OBJECT_CLASS (klass);
 
-  oclass->constructed = cc_search_panel_constructed;
   oclass->finalize = cc_search_panel_finalize;
 
   gtk_widget_class_set_template_from_resource (widget_class,
                                                "/org/gnome/control-center/search/cc-search-panel.ui");
 
   gtk_widget_class_bind_template_child (widget_class, CcSearchPanel, list_box);
-  gtk_widget_class_bind_template_child (widget_class, CcSearchPanel, search_vbox);
-  gtk_widget_class_bind_template_child (widget_class, CcSearchPanel, settings_button);
+  gtk_widget_class_bind_template_child (widget_class, CcSearchPanel, main_switch);
+  gtk_widget_class_bind_template_child (widget_class, CcSearchPanel, search_group);
+  gtk_widget_class_bind_template_child (widget_class, CcSearchPanel, settings_row);
 
-  gtk_widget_class_bind_template_callback (widget_class, settings_button_clicked);
+  gtk_widget_class_bind_template_callback (widget_class, settings_row_activated);
+  gtk_widget_class_bind_template_callback (widget_class, keynav_failed_cb);
 }

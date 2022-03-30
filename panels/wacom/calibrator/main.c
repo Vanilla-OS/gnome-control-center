@@ -34,6 +34,8 @@
 #include "calibrator-gui.h"
 #include "calibrator.h"
 
+static GMainLoop *mainloop = NULL;
+
 /**
  * find a calibratable touchscreen device (using XInput)
  *
@@ -367,50 +369,51 @@ static gboolean finish_data(const XYinfo new_axis, int swap_xy)
 }
 
 static void
-calibration_finished_cb (CalibArea *area,
-			 gpointer   user_data)
+calibration_finished_cb (CcCalibArea *area,
+			 gpointer     user_data)
 {
 	gboolean success;
 	XYinfo axis;
 	gboolean swap_xy;
 
-	success = calib_area_finish (area);
+	success = cc_calib_area_finish (area);
 	if (success)
 	{
-		calib_area_get_axis (area, &axis, &swap_xy);
+		cc_calib_area_get_axis (area, &axis, &swap_xy);
 		success = finish_data (axis, swap_xy);
 	}
 	else
 		fprintf(stderr, "Error: unable to apply or save configuration values\n");
 
-	gtk_main_quit ();
+	g_main_loop_quit (mainloop);
 }
 
 int main(int argc, char** argv)
 {
 
     struct Calib* calibrator = main_common(argc, argv);
-    CalibArea *calib_area;
+    CcCalibArea *calib_area;
 
     bindtextdomain (GETTEXT_PACKAGE, GNOMELOCALEDIR);
     bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
     textdomain (GETTEXT_PACKAGE);
 
-    gtk_init (&argc, &argv);
+    gtk_init ();
 
     g_setenv ("G_MESSAGES_DEBUG", "all", TRUE);
 
-    calib_area = calib_area_new (NULL,
-				 0,  /* monitor */
-				 NULL, /* NULL to accept input from any device */
-				 calibration_finished_cb,
-				 NULL,
-				 calibrator->threshold_doubleclick,
-				 calibrator->threshold_misclick);
+    calib_area = cc_calib_area_new (NULL,
+                                    NULL,  /* monitor */
+                                    NULL, /* NULL to accept input from any device */
+                                    calibration_finished_cb,
+                                    NULL,
+                                    calibrator->threshold_doubleclick,
+                                    calibrator->threshold_misclick);
 
-    gtk_main ();
+		mainloop = g_main_loop_new (NULL, FALSE);
+		g_main_loop_run (mainloop);
 
-    calib_area_free (calib_area);
+    cc_calib_area_free (calib_area);
 
     free(calibrator);
 
