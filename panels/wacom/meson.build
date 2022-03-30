@@ -1,5 +1,5 @@
-deps = wacom_deps + [
-  gnome_desktop_dep,
+deps = common_deps + wacom_deps + [
+  gnome_rr_dep,
   gnome_settings_dep,
   x11_dep,
   xi_dep
@@ -42,8 +42,6 @@ common_sources = files(
   'cc-tablet-tool-map.c',
   'cc-wacom-button-row.c',
   'cc-wacom-device.c',
-  'cc-wacom-mapping-panel.c',
-  'cc-wacom-nav-button.c',
   'cc-wacom-page.c',
   'cc-wacom-stylus-page.c',
   'cc-wacom-tool.c',
@@ -55,7 +53,6 @@ resource_data = files(
   'calibrator/calibrator.css',
   'calibrator/target.svg',
   'button-mapping.ui',
-  'gnome-wacom-properties.ui',
   'wacom-stylus-3btn.svg',
   'wacom-stylus-3btn-no-eraser.svg',
   'wacom-stylus-airbrush.svg',
@@ -63,7 +60,6 @@ resource_data = files(
   'wacom-stylus-classic.svg',
   'wacom-stylus-inking.svg',
   'wacom-stylus-no-eraser.svg',
-  'wacom-stylus-page.ui',
   'wacom-stylus.svg',
   'wacom-tablet-cintiq.svg',
   'wacom-tablet-pc.svg',
@@ -105,3 +101,5 @@ executable(
                c_args : test_cflags,
             link_with : [ libwacom_calibrator_test ]
 )
+
+subdir('icons')

@@ -20,11 +20,9 @@
  */
 
 #include <float.h>
-#include <handy.h>
 #include <glib/gi18n.h>
 #include <float.h>
 #include <math.h>
-#include "list-box-helper.h"
 #include "cc-display-settings.h"
 #include "cc-display-config.h"
 
@@ -32,20 +30,25 @@
 
 struct _CcDisplaySettings
 {
-  GtkDrawingArea    object;
+  GtkBox            object;
 
   gboolean          updating;
+  gboolean          num_scales;
+  gboolean          folded;
   guint             idle_udpate_id;
 
   gboolean          has_accelerometer;
   CcDisplayConfig  *config;
   CcDisplayMonitor *selected_output;
 
-  GListStore       *orientation_list;
+  GListModel       *orientation_list;
   GListStore       *refresh_rate_list;
   GListStore       *resolution_list;
-  GListStore       *scale_list;
+  GListModel       *scale_list;
 
+  GtkWidget        *enabled_listbox;
+  AdwActionRow     *enabled_row;
+  GtkSwitch        *enabled_switch;
   GtkWidget        *orientation_row;
   GtkWidget        *refresh_rate_row;
   GtkWidget        *resolution_row;
@@ -66,7 +69,7 @@ enum {
   PROP_LAST
 };
 
-G_DEFINE_TYPE (CcDisplaySettings, cc_display_settings, GTK_TYPE_LIST_BOX)
+G_DEFINE_TYPE (CcDisplaySettings, cc_display_settings, GTK_TYPE_BOX)
 
 static GParamSpec *props[PROP_LAST];
 
@@ -168,26 +171,27 @@ make_aspect_string (gint width,
   return aspect;
 }
 
-static char *
+static gchar *
+make_refresh_rate_string (CcDisplayMode *mode)
+{
+  return g_strdup_printf (_("%.2lf Hz"), cc_display_mode_get_freq_f (mode));
+}
+
+static gchar *
 make_resolution_string (CcDisplayMode *mode)
 {
-  const char *interlaced = cc_display_mode_is_interlaced (mode) ? "i" : "";
+  const char *interlaced;
   const char *aspect;
   int width, height;
 
   cc_display_mode_get_resolution (mode, &width, &height);
   aspect = make_aspect_string (width, height);
+  interlaced = cc_display_mode_is_interlaced (mode) ? "i" : "";
 
   if (aspect != NULL)
     return g_strdup_printf ("%d × %d%s (%s)", width, height, interlaced, aspect);
   else
     return g_strdup_printf ("%d × %d%s", width, height, interlaced);
-}
-
-static gchar *
-get_frequency_string (CcDisplayMode *mode)
-{
-  return g_strdup_printf (_("%.2lf Hz"), cc_display_mode_get_freq_f (mode));
 }
 
 static double
@@ -230,11 +234,12 @@ sort_modes_by_freq_desc (CcDisplayMode *a, CcDisplayMode *b)
 static gboolean
 cc_display_settings_rebuild_ui (CcDisplaySettings *self)
 {
+  GtkWidget *child;
   GList *modes;
   GList *item;
   gint width, height;
   CcDisplayMode *current_mode;
-  GtkRadioButton *group = NULL;
+  GtkToggleButton *group = NULL;
   g_autoptr(GArray) scales = NULL;
   gint i;
 
@@ -242,6 +247,7 @@ cc_display_settings_rebuild_ui (CcDisplaySettings *self)
 
   if (!self->config || !self->selected_output)
     {
+      gtk_widget_set_visible (self->enabled_listbox, FALSE);
       gtk_widget_set_visible (self->orientation_row, FALSE);
       gtk_widget_set_visible (self->refresh_rate_row, FALSE);
       gtk_widget_set_visible (self->resolution_row, FALSE);
@@ -252,6 +258,7 @@ cc_display_settings_rebuild_ui (CcDisplaySettings *self)
       return G_SOURCE_REMOVE;
     }
 
+  g_object_freeze_notify ((GObject*) self->enabled_switch);
   g_object_freeze_notify ((GObject*) self->orientation_row);
   g_object_freeze_notify ((GObject*) self->refresh_rate_row);
   g_object_freeze_notify ((GObject*) self->resolution_row);
@@ -271,6 +278,13 @@ cc_display_settings_rebuild_ui (CcDisplaySettings *self)
     current_mode = CC_DISPLAY_MODE (modes->data);
   }
 
+  /* Enabled Switch */
+  gtk_widget_set_visible (self->enabled_listbox, TRUE);
+  adw_preferences_row_set_title (ADW_PREFERENCES_ROW (self->enabled_row),
+                                 cc_display_monitor_get_ui_name (self->selected_output));
+  gtk_switch_set_active (GTK_SWITCH (self->enabled_switch),
+                         cc_display_monitor_is_active (self->selected_output));
+
   if (should_show_rotation (self))
     {
       guint i;
@@ -281,21 +295,25 @@ cc_display_settings_rebuild_ui (CcDisplaySettings *self)
 
       gtk_widget_set_visible (self->orientation_row, TRUE);
 
-      g_list_store_remove_all (self->orientation_list);
+      gtk_string_list_splice (GTK_STRING_LIST (self->orientation_list),
+                              0,
+                              g_list_model_get_n_items (self->orientation_list),
+                              NULL);
       for (i = 0; i < G_N_ELEMENTS (rotations); i++)
         {
-          g_autoptr(HdyValueObject) obj = NULL;
+          g_autoptr(GObject) obj = NULL;
 
           if (!cc_display_monitor_supports_rotation (self->selected_output, rotations[i]))
             continue;
 
-          obj = hdy_value_object_new_collect (G_TYPE_STRING, string_for_rotation (rotations[i]));
-          g_list_store_append (self->orientation_list, obj);
+          gtk_string_list_append (GTK_STRING_LIST (self->orientation_list),
+                                  string_for_rotation (rotations[i]));
+          obj = g_list_model_get_item (self->orientation_list, i);
           g_object_set_data (G_OBJECT (obj), "rotation-value", GINT_TO_POINTER (rotations[i]));
 
           if (cc_display_monitor_get_rotation (self->selected_output) == rotations[i])
-            hdy_combo_row_set_selected_index (HDY_COMBO_ROW (self->orientation_row),
-                                              g_list_model_get_n_items (G_LIST_MODEL (self->orientation_list)) - 1);
+            adw_combo_row_set_selected (ADW_COMBO_ROW (self->orientation_row),
+                                        g_list_model_get_n_items (G_LIST_MODEL (self->orientation_list)) - 1);
         }
     }
   else
@@ -333,12 +351,10 @@ cc_display_settings_rebuild_ui (CcDisplaySettings *self)
                                             (GCompareDataFunc) sort_modes_by_freq_desc,
                                             NULL);
           if (freq == cc_display_mode_get_freq_f (mode))
-            hdy_combo_row_set_selected_index (HDY_COMBO_ROW (self->refresh_rate_row), new);
+            adw_combo_row_set_selected (ADW_COMBO_ROW (self->refresh_rate_row), new);
         }
 
-      /* Show if we have more than one frequency to choose from. */
-      gtk_widget_set_visible (self->refresh_rate_row,
-                              g_list_model_get_n_items (G_LIST_MODEL (self->refresh_rate_list)) > 1);
+      gtk_widget_set_visible (self->refresh_rate_row, TRUE);
     }
   else
     {
@@ -355,7 +371,7 @@ cc_display_settings_rebuild_ui (CcDisplaySettings *self)
 
   g_list_store_remove_all (self->resolution_list);
   g_list_store_append (self->resolution_list, current_mode);
-  hdy_combo_row_set_selected_index (HDY_COMBO_ROW (self->resolution_row), 0);
+  adw_combo_row_set_selected (ADW_COMBO_ROW (self->resolution_row), 0);
   for (item = modes; item != NULL; item = item->next)
     {
       gint ins;
@@ -391,59 +407,55 @@ cc_display_settings_rebuild_ui (CcDisplaySettings *self)
 
 
   /* Scale row is usually shown. */
-  gtk_container_foreach (GTK_CONTAINER (self->scale_bbox), (GtkCallback) gtk_widget_destroy, NULL);
-  g_list_store_remove_all (self->scale_list);
-  gtk_widget_set_visible (self->scale_buttons_row, FALSE);
-  gtk_widget_set_visible (self->scale_combo_row, FALSE);
+  while ((child = gtk_widget_get_first_child (self->scale_bbox)) != NULL)
+    gtk_box_remove (GTK_BOX (self->scale_bbox), child);
+
+  gtk_string_list_splice (GTK_STRING_LIST (self->scale_list),
+                          0,
+                          g_list_model_get_n_items (self->scale_list),
+                          NULL);
   scales = cc_display_mode_get_supported_scales (current_mode);
+  self->num_scales = scales->len;
   for (i = 0; i < scales->len; i++)
     {
       g_autofree gchar *scale_str = NULL;
+      g_autoptr(GObject) value_object = NULL;
       double scale = g_array_index (scales, double, i);
+      GtkWidget *scale_btn;
       gboolean is_selected;
 
+      /* ComboRow */
       scale_str = make_scale_string (scale);
       is_selected = G_APPROX_VALUE (cc_display_monitor_get_scale (self->selected_output),
                                     scale, DBL_EPSILON);
 
-      if (scales->len > MAX_SCALE_BUTTONS)
-        {
-          g_autoptr(HdyValueObject) value_object = NULL;
+      gtk_string_list_append (GTK_STRING_LIST (self->scale_list), scale_str);
+      value_object = g_list_model_get_item (self->scale_list, i);
+      g_object_set_data_full (G_OBJECT (value_object), "scale",
+                              g_memdup2 (&scale, sizeof (double)), g_free);
+      if (is_selected)
+        adw_combo_row_set_selected (ADW_COMBO_ROW (self->scale_combo_row),
+                                    g_list_model_get_n_items (G_LIST_MODEL (self->scale_list)) - 1);
 
-          value_object = hdy_value_object_new_collect (G_TYPE_STRING, scale_str);
-          g_list_store_append (self->scale_list, value_object);
-          g_object_set_data_full (G_OBJECT (value_object), "scale",
-                                  g_memdup2 (&scale, sizeof (double)), g_free);
-          if (is_selected)
-            hdy_combo_row_set_selected_index (HDY_COMBO_ROW (self->scale_combo_row),
-                                              g_list_model_get_n_items (G_LIST_MODEL (self->scale_list)) - 1);
-        }
-      else
-        {
-          GtkWidget *scale_btn = gtk_radio_button_new_with_label_from_widget (group, scale_str);
-          g_object_set_data_full (G_OBJECT (scale_btn), "scale",
-                                  g_memdup2 (&scale, sizeof (double)), g_free);
+      /* ButtonBox */
+      scale_btn = gtk_toggle_button_new_with_label (scale_str);
+      gtk_toggle_button_set_group (GTK_TOGGLE_BUTTON (scale_btn), group);
+      g_object_set_data_full (G_OBJECT (scale_btn), "scale",
+                              g_memdup2 (&scale, sizeof (double)), g_free);
 
-          if (!group)
-            group = GTK_RADIO_BUTTON (scale_btn);
-          gtk_toggle_button_set_mode (GTK_TOGGLE_BUTTON (scale_btn), FALSE);
-          gtk_widget_show (scale_btn);
-          gtk_container_add (GTK_CONTAINER (self->scale_bbox), scale_btn);
-          /* Set active before connecting the signal */
-          if (is_selected)
-            gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (scale_btn), TRUE);
+      if (!group)
+        group = GTK_TOGGLE_BUTTON (scale_btn);
+      gtk_box_append (GTK_BOX (self->scale_bbox), scale_btn);
+      /* Set active before connecting the signal */
+      if (is_selected)
+        gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (scale_btn), TRUE);
 
-          g_signal_connect_object (scale_btn,
-                                   "notify::active",
-                                   G_CALLBACK (on_scale_btn_active_changed_cb),
-                                   self, 0);
-        }
+      g_signal_connect_object (scale_btn,
+                               "notify::active",
+                               G_CALLBACK (on_scale_btn_active_changed_cb),
+                               self, 0);
     }
-
-  if (scales->len > MAX_SCALE_BUTTONS)
-    gtk_widget_set_visible (self->scale_combo_row, TRUE);
-  else
-    gtk_widget_set_visible (self->scale_buttons_row, scales->len > 1);
+  cc_display_settings_refresh_layout (self, self->folded);
 
   gtk_widget_set_visible (self->underscanning_row,
                           cc_display_monitor_supports_underscanning (self->selected_output) &&
@@ -452,6 +464,7 @@ cc_display_settings_rebuild_ui (CcDisplaySettings *self)
                          cc_display_monitor_get_underscanning (self->selected_output));
 
   self->updating = TRUE;
+  g_object_thaw_notify ((GObject*) self->enabled_switch);
   g_object_thaw_notify ((GObject*) self->orientation_row);
   g_object_thaw_notify ((GObject*) self->refresh_rate_row);
   g_object_thaw_notify ((GObject*) self->resolution_row);
@@ -477,18 +490,35 @@ on_output_changed_cb (CcDisplaySettings *self,
 }
 
 static void
+on_enabled_switch_active_changed_cb (GtkWidget         *widget,
+                                     GParamSpec        *pspec,
+                                     CcDisplaySettings *self)
+{
+  if (self->updating)
+    return;
+
+  cc_display_monitor_set_active (self->selected_output,
+                                 gtk_switch_get_active (self->enabled_switch));
+
+  g_signal_emit_by_name (G_OBJECT (self), "updated", self->selected_output);
+}
+
+static void
 on_orientation_selection_changed_cb (GtkWidget         *widget,
                                      GParamSpec        *pspec,
                                      CcDisplaySettings *self)
 {
   gint idx;
-  g_autoptr(HdyValueObject) obj = NULL;
+  g_autoptr(GObject) obj = NULL;
 
   if (self->updating)
     return;
 
-  idx = hdy_combo_row_get_selected_index (HDY_COMBO_ROW (self->orientation_row));
+  idx = adw_combo_row_get_selected (ADW_COMBO_ROW (self->orientation_row));
   obj = g_list_model_get_item (G_LIST_MODEL (self->orientation_list), idx);
+
+  if (!obj)
+    return;
 
   cc_display_monitor_set_rotation (self->selected_output,
                                    GPOINTER_TO_INT (g_object_get_data (G_OBJECT (obj), "rotation-value")));
@@ -507,8 +537,11 @@ on_refresh_rate_selection_changed_cb (GtkWidget         *widget,
   if (self->updating)
     return;
 
-  idx = hdy_combo_row_get_selected_index (HDY_COMBO_ROW (self->refresh_rate_row));
+  idx = adw_combo_row_get_selected (ADW_COMBO_ROW (self->refresh_rate_row));
   mode = g_list_model_get_item (G_LIST_MODEL (self->refresh_rate_list), idx);
+
+  if (!mode)
+    return;
 
   cc_display_monitor_set_mode (self->selected_output, mode);
 
@@ -526,8 +559,11 @@ on_resolution_selection_changed_cb (GtkWidget         *widget,
   if (self->updating)
     return;
 
-  idx = hdy_combo_row_get_selected_index (HDY_COMBO_ROW (self->resolution_row));
+  idx = adw_combo_row_get_selected (ADW_COMBO_ROW (self->resolution_row));
   mode = g_list_model_get_item (G_LIST_MODEL (self->resolution_list), idx);
+
+  if (!mode)
+    return;
 
   /* This is the only row that can be changed when in cloning mode. */
   if (!cc_display_config_is_cloning (self->config))
@@ -564,13 +600,15 @@ on_scale_selection_changed_cb (GtkWidget         *widget,
 {
   int idx;
   double scale;
-  g_autoptr(HdyValueObject) obj = NULL;
+  g_autoptr(GObject) obj = NULL;
 
   if (self->updating)
     return;
 
-  idx = hdy_combo_row_get_selected_index (HDY_COMBO_ROW (self->scale_combo_row));
+  idx = adw_combo_row_get_selected (ADW_COMBO_ROW (self->scale_combo_row));
   obj = g_list_model_get_item (G_LIST_MODEL (self->scale_list), idx);
+  if (!obj)
+    return;
   scale = *(gdouble*) g_object_get_data (G_OBJECT (obj), "scale");
 
   cc_display_monitor_set_scale (self->selected_output, scale);
@@ -705,6 +743,9 @@ cc_display_settings_class_init (CcDisplaySettingsClass *klass)
                 0, NULL, NULL, NULL,
                 G_TYPE_NONE, 1, CC_TYPE_DISPLAY_MONITOR);
 
+  gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, enabled_listbox);
+  gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, enabled_row);
+  gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, enabled_switch);
   gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, orientation_row);
   gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, refresh_rate_row);
   gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, resolution_row);
@@ -714,6 +755,7 @@ cc_display_settings_class_init (CcDisplaySettingsClass *klass)
   gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, underscanning_row);
   gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, underscanning_switch);
 
+  gtk_widget_class_bind_template_callback (widget_class, on_enabled_switch_active_changed_cb);
   gtk_widget_class_bind_template_callback (widget_class, on_orientation_selection_changed_cb);
   gtk_widget_class_bind_template_callback (widget_class, on_refresh_rate_selection_changed_cb);
   gtk_widget_class_bind_template_callback (widget_class, on_resolution_selection_changed_cb);
@@ -724,35 +766,37 @@ cc_display_settings_class_init (CcDisplaySettingsClass *klass)
 static void
 cc_display_settings_init (CcDisplaySettings *self)
 {
+  GtkExpression *expression;
+
   gtk_widget_init_template (GTK_WIDGET (self));
 
-  gtk_list_box_set_header_func (GTK_LIST_BOX (self),
-                                cc_list_box_update_header_func,
-                                NULL, NULL);
-
-  self->orientation_list = g_list_store_new (HDY_TYPE_VALUE_OBJECT);
+  self->orientation_list = G_LIST_MODEL (gtk_string_list_new (NULL));
   self->refresh_rate_list = g_list_store_new (CC_TYPE_DISPLAY_MODE);
   self->resolution_list = g_list_store_new (CC_TYPE_DISPLAY_MODE);
-  self->scale_list = g_list_store_new (HDY_TYPE_VALUE_OBJECT);
+  self->scale_list = G_LIST_MODEL (gtk_string_list_new (NULL));
 
   self->updating = TRUE;
 
-  hdy_combo_row_bind_name_model (HDY_COMBO_ROW (self->orientation_row),
-                                 G_LIST_MODEL (self->orientation_list),
-                                 (HdyComboRowGetNameFunc) hdy_value_object_dup_string,
-                                 NULL, NULL);
-  hdy_combo_row_bind_name_model (HDY_COMBO_ROW (self->refresh_rate_row),
-                                 G_LIST_MODEL (self->refresh_rate_list),
-                                 (HdyComboRowGetNameFunc) get_frequency_string,
-                                 NULL, NULL);
-  hdy_combo_row_bind_name_model (HDY_COMBO_ROW (self->resolution_row),
-                                 G_LIST_MODEL (self->resolution_list),
-                                 (HdyComboRowGetNameFunc) make_resolution_string,
-                                 NULL, NULL);
-  hdy_combo_row_bind_name_model (HDY_COMBO_ROW (self->scale_combo_row),
-                                 G_LIST_MODEL (self->scale_list),
-                                 (HdyComboRowGetNameFunc) hdy_value_object_dup_string,
-                                 NULL, NULL);
+  adw_combo_row_set_model (ADW_COMBO_ROW (self->orientation_row),
+                           G_LIST_MODEL (self->orientation_list));
+  adw_combo_row_set_model (ADW_COMBO_ROW (self->scale_combo_row),
+                           G_LIST_MODEL (self->scale_list));
+
+  expression = gtk_cclosure_expression_new (G_TYPE_STRING,
+                                            NULL, 0, NULL,
+                                            G_CALLBACK (make_refresh_rate_string),
+                                            self, NULL);
+  adw_combo_row_set_expression (ADW_COMBO_ROW (self->refresh_rate_row), expression);
+  adw_combo_row_set_model (ADW_COMBO_ROW (self->refresh_rate_row),
+                           G_LIST_MODEL (self->refresh_rate_list));
+
+  expression = gtk_cclosure_expression_new (G_TYPE_STRING,
+                                            NULL, 0, NULL,
+                                            G_CALLBACK (make_resolution_string),
+                                            self, NULL);
+  adw_combo_row_set_expression (ADW_COMBO_ROW (self->resolution_row), expression);
+  adw_combo_row_set_model (ADW_COMBO_ROW (self->resolution_row),
+                           G_LIST_MODEL (self->resolution_list));
 
   self->updating = FALSE;
 }
@@ -843,3 +887,25 @@ cc_display_settings_set_selected_output (CcDisplaySettings *self,
   g_object_notify_by_pspec (G_OBJECT (self), props[PROP_SELECTED_OUTPUT]);
 }
 
+void
+cc_display_settings_refresh_layout (CcDisplaySettings *self,
+                                    gboolean           folded)
+{
+  gboolean use_combo;
+
+  self->folded = folded;
+  use_combo = self->num_scales > MAX_SCALE_BUTTONS || (self->num_scales > 2 && folded);
+
+  gtk_widget_set_visible (self->scale_combo_row, use_combo);
+  gtk_widget_set_visible (self->scale_buttons_row, self->num_scales > 1 && !use_combo);
+}
+
+void
+cc_display_settings_set_multimonitor (CcDisplaySettings *self,
+                                      gboolean           multimonitor)
+{
+  gtk_widget_set_visible (self->enabled_listbox, multimonitor);
+
+  if (!multimonitor)
+    gtk_switch_set_active (GTK_SWITCH (self->enabled_switch), TRUE);
+}

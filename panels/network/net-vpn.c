@@ -33,12 +33,10 @@
 
 struct _NetVpn
 {
-        GtkBox                   parent;
+        AdwActionRow             parent;
 
         GtkBox                  *box;
-        GtkLabel                *device_label;
         GtkSwitch               *device_off_switch;
-        GtkSeparator            *separator;
 
         NMClient                *client;
         NMConnection            *connection;
@@ -46,7 +44,7 @@ struct _NetVpn
         gboolean                 updating_device;
 };
 
-G_DEFINE_TYPE (NetVpn, net_vpn, GTK_TYPE_BOX)
+G_DEFINE_TYPE (NetVpn, net_vpn, ADW_TYPE_ACTION_ROW)
 
 static void
 nm_device_refresh_vpn_ui (NetVpn *self)
@@ -55,15 +53,10 @@ nm_device_refresh_vpn_ui (NetVpn *self)
         NMActiveConnection *a;
         gint i;
         NMVpnConnectionState state;
-        g_autofree gchar *title = NULL;
 
         /* update title */
-        /* Translators: this is the title of the connection details
-         * window for vpn connections, it is also used to display
-         * vpn connections in the device list.
-         */
-        title = g_strdup_printf (_("%s VPN"), nm_connection_get_id (self->connection));
-        gtk_label_set_label (self->device_label, title);
+        adw_preferences_row_set_title (ADW_PREFERENCES_ROW (self),
+                                       nm_connection_get_id (self->connection));
 
         if (self->active_connection) {
                 g_signal_handlers_disconnect_by_func (self->active_connection,
@@ -151,12 +144,10 @@ static void
 edit_connection (NetVpn *self)
 {
         NetConnectionEditor *editor;
-        g_autofree gchar *title = NULL;
 
         editor = net_connection_editor_new (self->connection, NULL, NULL, self->client);
-        gtk_window_set_transient_for (GTK_WINDOW (editor), GTK_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (self))));
-        title = g_strdup_printf (_("%s VPN"), nm_connection_get_id (self->connection));
-        net_connection_editor_set_title (editor, title);
+        gtk_window_set_transient_for (GTK_WINDOW (editor), GTK_WINDOW (gtk_widget_get_native (GTK_WIDGET (self))));
+        net_connection_editor_set_title (editor, nm_connection_get_id (self->connection));
 
         g_signal_connect_object (editor, "done", G_CALLBACK (editor_done), self, G_CONNECT_SWAPPED);
         gtk_window_present (GTK_WINDOW (editor));
@@ -189,9 +180,7 @@ net_vpn_class_init (NetVpnClass *klass)
 
         gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/network/network-vpn.ui");
 
-        gtk_widget_class_bind_template_child (widget_class, NetVpn, device_label);
         gtk_widget_class_bind_template_child (widget_class, NetVpn, device_off_switch);
-        gtk_widget_class_bind_template_child (widget_class, NetVpn, separator);
 
         gtk_widget_class_bind_template_callback (widget_class, device_off_toggled);
         gtk_widget_class_bind_template_callback (widget_class, edit_connection);
@@ -233,12 +222,4 @@ net_vpn_get_connection (NetVpn *self)
 {
         g_return_val_if_fail (NET_IS_VPN (self), NULL);
         return self->connection;
-}
-
-void
-net_vpn_set_show_separator (NetVpn   *self,
-                            gboolean  show_separator)
-{
-        g_return_if_fail (NET_IS_VPN (self));
-        gtk_widget_set_visible (GTK_WIDGET (self->separator), show_separator);
 }

@@ -1,45 +1,54 @@
 ================
-Version 41.4
+Version 42.0
 ================
 
-- Drop unused argument for i18n.merge_file() in Meson rules
+- Updated AppData screenshots
+- Re-enable tests
 - Updated translations
 
-Applications
-- Set the Icon key in desktop file to a icon that exists
+================
+Version 42.rc
+================
+
+- Updated translations
+
+Keyboard
+- Restore _GNOME_WM_KEYBINDINGS support
+
+User Accounts
+- Bring back Fingerprint dialog
+- Fix avatar loading
+
+Wacom
+- Bring back empty state
+
+================
+Version 42.beta
+================
+
+- Port to GTK4
+- Various UI polish changes
+- New symbolic icons for panels
+- Updated translations
+
+Application
+- Implement new design
+
+Background
+- Introduce dark & light mode selector
+- Rename to Appearance
 
 Display
-- Do not invert order when constructing modes
+- Implement new design
 
-Network
-- Show configuration button only for active/connecting connections
+Region & Language
+- Implement new design
 
-Printers
-- Fix error cancelling PPD dialog
+User Accounts
+- New design for the User Accounts panel
 
-Sound
-- Clear level bar when stream is empty
-
-================
-Version 41.2
-================
-
-- Updated translations
-
-================
-Version 41.1
-================
-
-- Updated translations
-
-Mouse & Touchpad
-- Avoid cropping illustration
-
-Network
-- Fix enabling data after APN is set
-
-Power
-- Use translated strings for power button action behaviors
+Wacom
+- Implement new design
 
 ================
 Version 41.0

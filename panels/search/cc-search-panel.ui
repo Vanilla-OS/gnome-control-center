@@ -1,47 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <!-- interface-requires gtk+ 3.0 -->
   <template class="CcSearchPanel" parent="CcPanel">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-
-    <child>
-      <object class="GtkScrolledWindow" id="search_vbox">
-        <property name="visible">True</property>
-        <property name="hscrollbar_policy">never</property>
-        <property name="can_focus">False</property>
+    <child type="content">
+      <object class="AdwPreferencesPage">
         <child>
-          <object class="HdyClamp">
-            <property name="visible">True</property>
-            <property name="margin_top">32</property>
-            <property name="margin_bottom">32</property>
-            <property name="margin_start">12</property>
-            <property name="margin_end">12</property>
+          <object class="AdwPreferencesGroup">
             <child>
-              <object class="GtkBox">
-                <property name="visible">True</property>
-                <property name="orientation">vertical</property>
-                <property name="hexpand">True</property>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="visible">True</property>
-                    <property name="xalign">0.0</property>
-                    <property name="margin-bottom">20</property>
-                    <property name="wrap">True</property>
-                    <property name="label" translatable="yes">Control which search results are shown in the Activities Overview. The order of search results can also be changed by moving rows in the list.</property>
-                    <style>
-                      <class name="dim-label"/>
-                    </style>
+              <object class="AdwActionRow">
+                <property name="title" translatable="yes">Application Search</property>
+                <property name="subtitle" translatable="yes">Include application-provided search results.</property>
+                <property name="activatable-widget">main_switch</property>
+                <child type="suffix">
+                  <object class="GtkSwitch" id="main_switch">
+                    <property name="valign">center</property>
                   </object>
                 </child>
-                <child>
-                  <object class="GtkListBox" id="list_box">
-                    <property name="visible">True</property>
-                    <style>
-                      <class name="content"/>
-                    </style>
+              </object>
+            </child>
+            <child>
+              <object class="AdwActionRow" id="settings_row">
+                <property name="title" translatable="yes">Search Locations</property>
+                <property name="subtitle" translatable="yes">Folders which are searched by system applications.</property>
+                <property name="activatable">True</property>
+                <signal name="activated" handler="settings_row_activated" object="CcSearchPanel" swapped="no"/>
+                <child type="suffix">
+                  <object class="GtkImage">
+                    <property name="icon-name">go-next-symbolic</property>
                   </object>
                 </child>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="AdwPreferencesGroup" id="search_group">
+            <property name="title" translatable="yes">Search Results</property>
+            <property name="description" translatable="yes">Results are displayed according to the list order.</property>
+            <child>
+              <object class="GtkListBox" id="list_box">
+                <property name="selection-mode">none</property>
+                <signal name="keynav-failed" handler="keynav_failed_cb" object="CcSearchPanel" swapped="yes"/>
+                <accessibility name="labelled-by">search_group</accessibility>
+                <style>
+                  <class name="boxed-list"/>
+                </style>
               </object>
             </child>
           </object>
@@ -50,11 +52,4 @@
     </child>
   </template>
 
-  <!-- Header widget -->
-  <object class="GtkButton" id="settings_button">
-    <property name="visible">True</property>
-    <property name="can-focus">True</property>
-    <property name="label" translatable="yes">Search Locations</property>
-    <signal name="clicked" handler="settings_button_clicked" object="CcSearchPanel" swapped="no"/>
-  </object>
 </interface>
