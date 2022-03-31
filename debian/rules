@@ -10,6 +10,12 @@ else
 MALCONTENT := -Dmalcontent=false
 endif
 
+ifeq ($(DEB_HOST_ARCH_OS),linux)
+ENABLE_SELINUX := -Dsnap=true
+else
+ENABLE_SELINUX := -Dsnap=false
+endif
+
 %:
 	dh $@
 
@@ -17,4 +23,5 @@ override_dh_auto_configure:
 	dh_auto_configure -- \
 		-Dprivileged_group=sudo \
 		-Ddocumentation=true \
-		$(MALCONTENT)
+		$(MALCONTENT) \
+		$(SNAP)
