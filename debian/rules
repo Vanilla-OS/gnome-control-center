@@ -16,9 +16,9 @@ endif
 endif
 
 ifeq ($(DEB_HOST_ARCH_OS),linux)
-ENABLE_SELINUX := -Dsnap=true
+SNAP := -Dsnap=true
 else
-ENABLE_SELINUX := -Dsnap=false
+SNAP := -Dsnap=false
 endif
 
 %:
