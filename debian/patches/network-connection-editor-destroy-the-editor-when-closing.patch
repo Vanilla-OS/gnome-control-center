@@ -1,0 +1,28 @@
+From: Jonathan Kang <jonathankang@gnome.org>
+Date: Wed, 16 Mar 2022 11:09:19 +0800
+Subject: network/connection-editor: destroy the editor when closing
+
+If an user opens an connection editor and then closes it, repeat this
+multiple times causes lots of unused hidden editor windows.
+
+Fix that by destroying the connection editor instead of hiding them
+when closing.
+
+(cherry picked from commit 6f1567f23696eb4a5f52721606c80686265c64c0)
+---
+ panels/network/connection-editor/net-connection-editor.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/panels/network/connection-editor/net-connection-editor.c b/panels/network/connection-editor/net-connection-editor.c
+index 4b7fadc..ac02a78 100644
+--- a/panels/network/connection-editor/net-connection-editor.c
++++ b/panels/network/connection-editor/net-connection-editor.c
+@@ -81,7 +81,7 @@ static void page_changed (NetConnectionEditor *self);
+ static void
+ cancel_editing (NetConnectionEditor *self)
+ {
+-        gtk_widget_hide (GTK_WIDGET (self));
++        gtk_window_destroy (GTK_WINDOW (self));
+         g_signal_emit (self, signals[DONE], 0, FALSE);
+ }
+ 
