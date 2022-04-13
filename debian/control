@@ -101,7 +101,8 @@ Recommends: cups-pk-helper,
 Suggests: gnome-software | gnome-packagekit,
           gstreamer1.0-pulseaudio,
           x11-xserver-utils
-Breaks: gnome-shell (<< 3.37.92)
+Breaks: gnome-remote-desktop (<< 42),
+        gnome-shell (<< 3.37.92)
 Description: utilities to configure the GNOME desktop
  This package contains configuration applets for the GNOME desktop,
  allowing to set accessibility configuration, desktop fonts, keyboard
