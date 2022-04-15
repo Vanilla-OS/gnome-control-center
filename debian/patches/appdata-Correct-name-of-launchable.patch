@@ -1,0 +1,25 @@
+From: Simon McVittie <smcv@debian.org>
+Date: Fri, 15 Apr 2022 11:44:07 +0100
+Subject: appdata: Correct name of launchable
+
+Fixes: acd59aec "Rename app-id to org.gnome.Settings"
+Bug: https://gitlab.gnome.org/GNOME/gnome-control-center/-/issues/1766
+Forwarded: https://gitlab.gnome.org/GNOME/gnome-control-center/-/merge_requests/1279
+Signed-off-by: Simon McVittie <smcv@debian.org>
+---
+ shell/appdata/org.gnome.Settings.appdata.xml.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/shell/appdata/org.gnome.Settings.appdata.xml.in b/shell/appdata/org.gnome.Settings.appdata.xml.in
+index d22d943..99c594a 100644
+--- a/shell/appdata/org.gnome.Settings.appdata.xml.in
++++ b/shell/appdata/org.gnome.Settings.appdata.xml.in
+@@ -30,7 +30,7 @@
+   <url type="translate">https://wiki.gnome.org/TranslationProject</url>
+   <update_contact>gnomecc-list_at_gnome.org</update_contact>
+   <project_group>GNOME</project_group>
+-  <launchable type="desktop-id">gnome-control-center.desktop</launchable>
++  <launchable type="desktop-id">org.gnome.Settings.desktop</launchable>
+   <developer_name>The GNOME Project</developer_name>
+   <compulsory_for_desktop>GNOME</compulsory_for_desktop>
+   <kudos>
