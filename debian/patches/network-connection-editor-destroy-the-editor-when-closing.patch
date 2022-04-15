@@ -8,7 +8,7 @@ multiple times causes lots of unused hidden editor windows.
 Fix that by destroying the connection editor instead of hiding them
 when closing.
 
-(cherry picked from commit 6f1567f23696eb4a5f52721606c80686265c64c0)
+Origin: upstream, 42.1, commit:6f1567f23696eb4a5f52721606c80686265c64c0
 ---
  panels/network/connection-editor/net-connection-editor.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)

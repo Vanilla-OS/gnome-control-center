@@ -10,7 +10,7 @@ plugin, the new VPN plugin won't show up in the VPN plugin list.
 Fix that by always load all avilable VPN plugins when showing the
 "Add VPN" dialog.
 
-(cherry picked from commit ce93dbb3a0628ca611d91d01c2569d3c26204ff3)
+Origin: upstream, 42.1, commit:ce93dbb3a0628ca611d91d01c2569d3c26204ff3
 ---
  panels/network/connection-editor/vpn-helpers.c | 5 -----
  1 file changed, 5 deletions(-)

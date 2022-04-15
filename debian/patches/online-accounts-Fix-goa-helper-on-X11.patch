@@ -8,8 +8,8 @@ Content-Transfer-Encoding: 8bit
 The handle_str contains the “x11:” prefix so strtol would return 0.
 We need to pass it the numeric substring.
 
-Fixes: https://gitlab.gnome.org/GNOME/gnome-control-center/-/issues/1651
-(cherry picked from commit 7fe322b9cedae313cd9af6f403eab9bfc6027674)
+Bug: https://gitlab.gnome.org/GNOME/gnome-control-center/-/issues/1651
+Origin: upstream, 41.2, commit:7fe322b9cedae313cd9af6f403eab9bfc6027674
 ---
  panels/online-accounts/gnome-control-center-goa-helper.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
