@@ -1,3 +1,14 @@
+gnome-control-center (1:42.0-3) unstable; urgency=medium
+
+  * Team upload
+  * d/p/appdata-Correct-name-of-launchable.patch:
+    Add proposed patch to correct name of .desktop file in appdata
+  * d/p/debian/Ignore-result-of-test-network-panel.patch:
+    Add patch to work around build-time test failure
+  * Reorder patch series so patches from upstream come first
+
+ -- Simon McVittie <smcv@debian.org>  Fri, 15 Apr 2022 11:54:13 +0100
+
 gnome-control-center (1:42.0-2) unstable; urgency=medium
 
   * Team upload
