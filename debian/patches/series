@@ -5,3 +5,4 @@ debian/info-overview-Use-the-Vendor-logo-prominently.patch
 online-accounts-Fix-goa-helper-on-X11.patch
 network-connection-editor-destroy-the-editor-when-closing.patch
 network-connection-editor-always-load-all-available-VPN-p.patch
+debian/Ignore-result-of-test-network-panel.patch
