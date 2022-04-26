@@ -129,7 +129,7 @@ set_external_parent_from_handle (GtkApplication *application,
           int xid;
 
           errno = 0;
-          xid = strtol (handle_str, NULL, 16);
+          xid = strtol (handle_str + strlen (x11_prefix), NULL, 16);
           if (errno != 0)
             {
               g_warning ("Failed to reference external X11 window, invalid XID %s", handle_str);
@@ -385,7 +385,7 @@ on_application_activate_show_account_cb (GtkApplication  *application,
     }
 
   /* Find the provider with a matching type */
-  account = goa_object_peek_account (object);
+  account = goa_object_get_account (object);
   provider_type = goa_account_get_provider_type (account);
   provider = goa_provider_get_for_provider_type (provider_type);
   if (!provider)
@@ -398,6 +398,8 @@ on_application_activate_show_account_cb (GtkApplication  *application,
   dialog = g_object_new (GTK_TYPE_DIALOG,
                          "use-header-bar", 1,
                          NULL);
+  /* Keep account alive so that the switches are still bound to it */
+  g_object_set_data_full (G_OBJECT (dialog), "goa-account", account, g_object_unref);
   g_signal_connect_swapped (dialog, "response", G_CALLBACK (g_application_quit), application);
   set_external_parent_from_handle (application, GTK_WINDOW (dialog), argv[3]);
 

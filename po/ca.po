@@ -1,11 +1,6 @@
 # Traducció del gnome-control-center de l'equip de Softcatalà.
 # Copyright © 1999-2009 Free Software Foundation, Inc.
 #
-# Terminologia
-#
-#   Hotspot -> punt d'accés Wi-Fi
-#   Plugged In -> endollat (si es refereix al corrent)
-#
 # Ivan Vilata i Balaguer <ivan@selidor.net>, 1999, 2000.
 # Softcatalà <linux@softcatala.org>, 2000, 2001.
 # Jordi Mallach <jordi@sindominio.net>, 2002, 2003, 2004, 2005.
@@ -17,12 +12,23 @@
 # Jordi Mas i Hernàndez <jmas@softcatala.org>, 2015-2022
 # Gil Forcada <gilforcada@guifi.net>, 2013-2020.
 # Carles Ferrando Garcia <carles.ferrando@gmail.com>, 2018.
+#
+#
+# Terminologia utilitzada
+#
+#   Anglès           |  Català
+#   -----------------+---------------------------------
+#   disabled         | inhabilitat
+#   enabled          | habilitat
+#   hotspot          | punt d'accés Wi-Fi
+#   login            | inici de sessió
+#   plugged In       | endollat (si es refereix al corrent)
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-control-center\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-control-center/issues\n"
-"POT-Creation-Date: 2022-03-04 15:37+0000\n"
-"PO-Revision-Date: 2022-02-13 09:28+0100\n"
+"POT-Creation-Date: 2022-04-19 17:02+0000\n"
+"PO-Revision-Date: 2022-04-20 09:28+0100\n"
 "Last-Translator: Jordi Mas i Hernàndez <jmas@softcatala.org>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
 "Language: ca\n"
@@ -179,7 +185,7 @@ msgstr "Rebre cerques del sistema i enviar resultats."
 #: panels/user-accounts/cc-user-panel.c:789
 #: panels/user-accounts/cc-user-panel.c:879
 #: panels/wwan/cc-wwan-device-page.c:478
-#: subprojects/gvc/gvc-mixer-control.c:1900
+#: subprojects/gvc/gvc-mixer-control.c:1908
 msgid "Disabled"
 msgstr "Inhabilitat"
 
@@ -347,13 +353,13 @@ msgstr "Selecciona una imatge"
 #: panels/color/cc-color-calibrate.ui:22 panels/color/cc-color-panel.c:284
 #: panels/color/cc-color-panel.c:844 panels/common/cc-language-chooser.ui:21
 #: panels/display/cc-display-panel.ui:31
-#: panels/info-overview/cc-info-overview-panel.ui:197
+#: panels/info-overview/cc-info-overview-panel.ui:198
 #: panels/keyboard/cc-input-chooser.ui:11
 #: panels/network/cc-wifi-hotspot-dialog.ui:123
 #: panels/network/cc-wifi-panel.c:881
 #: panels/network/connection-editor/connection-editor.ui:14
-#: panels/network/connection-editor/vpn-helpers.c:226
-#: panels/network/connection-editor/vpn-helpers.c:346
+#: panels/network/connection-editor/vpn-helpers.c:221
+#: panels/network/connection-editor/vpn-helpers.c:341
 #: panels/network/net-device-wifi.c:860
 #: panels/printers/new-printer-dialog.ui:50
 #: panels/printers/pp-details-dialog.c:263
@@ -375,7 +381,7 @@ msgid "_Cancel"
 msgstr "_Cancel·la"
 
 #: panels/background/cc-background-chooser.c:311
-#: panels/network/connection-editor/vpn-helpers.c:227
+#: panels/network/connection-editor/vpn-helpers.c:222
 #: panels/printers/pp-details-dialog.c:264
 #: panels/sharing/cc-sharing-panel.c:524
 #: panels/user-accounts/cc-avatar-chooser.c:168
@@ -728,7 +734,7 @@ msgid "Save Profile"
 msgstr "Desa el perfil"
 
 #: panels/color/cc-color-panel.c:845
-#: panels/network/connection-editor/vpn-helpers.c:347
+#: panels/network/connection-editor/vpn-helpers.c:342
 #: panels/wwan/cc-wwan-apn-dialog.ui:43
 msgid "_Save"
 msgstr "De_sa"
@@ -1538,22 +1544,22 @@ msgstr ""
 #: panels/display/cc-display-panel.c:512
 #: panels/notifications/cc-notifications-panel.c:217
 #: panels/power/cc-power-panel.c:734 panels/power/cc-power-panel.c:741
-#: panels/universal-access/cc-ua-panel.c:337
-#: panels/universal-access/cc-ua-panel.c:469
-#: panels/universal-access/cc-ua-panel.c:479
-#: panels/universal-access/cc-ua-panel.c:491
-#: panels/universal-access/cc-ua-panel.c:527
+#: panels/universal-access/cc-ua-panel.c:336
+#: panels/universal-access/cc-ua-panel.c:468
+#: panels/universal-access/cc-ua-panel.c:478
+#: panels/universal-access/cc-ua-panel.c:490
+#: panels/universal-access/cc-ua-panel.c:526
 msgid "On"
 msgstr "Activat"
 
 #: panels/display/cc-display-panel.c:514 panels/network/net-proxy.c:69
 #: panels/notifications/cc-notifications-panel.c:217
 #: panels/power/cc-power-panel.c:728 panels/power/cc-power-panel.c:739
-#: panels/universal-access/cc-ua-panel.c:337
-#: panels/universal-access/cc-ua-panel.c:469
-#: panels/universal-access/cc-ua-panel.c:479
-#: panels/universal-access/cc-ua-panel.c:491
-#: panels/universal-access/cc-ua-panel.c:527
+#: panels/universal-access/cc-ua-panel.c:336
+#: panels/universal-access/cc-ua-panel.c:468
+#: panels/universal-access/cc-ua-panel.c:478
+#: panels/universal-access/cc-ua-panel.c:490
+#: panels/universal-access/cc-ua-panel.c:526
 msgid "Off"
 msgstr "Desactivat"
 
@@ -1863,7 +1869,7 @@ msgstr ""
 "El nom del dispositiu s'utilitza per a identificar aquest dispositiu quan es"
 " visualitza en xarxa, o quan s'emparella amb dispositius Bluetooth."
 
-#: panels/info-overview/cc-info-overview-panel.ui:189
+#: panels/info-overview/cc-info-overview-panel.ui:190
 msgid "_Rename"
 msgstr "_Canvia el nom"
 
@@ -2042,7 +2048,8 @@ msgstr "Afegeix una font d'entrada"
 
 #: panels/keyboard/cc-input-chooser.ui:81
 msgid "Input methods can’t be used on the login screen"
-msgstr "Els mètodes d'entrada no es poden utilitzar a la pantalla d'entrada"
+msgstr ""
+"Els mètodes d'entrada no es poden utilitzar a la pantalla d'inici de sessió"
 
 #: panels/keyboard/cc-input-list-box.ui:24
 msgid "No input source selected"
@@ -2069,9 +2076,9 @@ msgstr "Visualitza la disposició del teclat"
 msgid "Remove"
 msgstr "Suprimeix"
 
-#: panels/keyboard/cc-keyboard-manager.c:483
-#: panels/keyboard/cc-keyboard-manager.c:491
-#: panels/keyboard/cc-keyboard-manager.c:757
+#: panels/keyboard/cc-keyboard-manager.c:485
+#: panels/keyboard/cc-keyboard-manager.c:493
+#: panels/keyboard/cc-keyboard-manager.c:922
 msgid "Custom Shortcuts"
 msgstr "Dreceres personalitzades"
 
@@ -2310,7 +2317,7 @@ msgstr "Premeu Esc o Retrocés per a inhabilitar la drecera de teclat."
 #: panels/keyboard/cc-keyboard-shortcut-editor.ui:153
 #: panels/printers/pp-details-dialog.ui:39
 #: panels/user-accounts/cc-add-user-dialog.ui:68
-#: panels/user-accounts/cc-user-panel.ui:122
+#: panels/user-accounts/cc-user-panel.ui:132
 #: panels/wwan/cc-wwan-apn-dialog.ui:96
 msgid "Name"
 msgstr "Nom"
@@ -2412,10 +2419,16 @@ msgid "2 minutes"
 msgstr "2 minuts"
 
 #. Translators: Option for "Lock screen after blank" in "Screen Lock" panel
-#: panels/lock/cc-lock-panel.c:74 panels/lock/cc-lock-panel.c:77
+#: panels/lock/cc-lock-panel.c:74
 msgctxt "lock_screen"
 msgid "3 minutes"
 msgstr "3 minuts"
+
+#. Translators: Option for "Lock screen after blank" in "Screen Lock" panel
+#: panels/lock/cc-lock-panel.c:77
+msgctxt "lock_screen"
+msgid "5 minutes"
+msgstr "5 minuts"
 
 #. Translators: Option for "Lock screen after blank" in "Screen Lock" panel
 #: panels/lock/cc-lock-panel.c:80
@@ -3429,11 +3442,11 @@ msgstr "Afegeix VPN"
 msgid "S_ecurity"
 msgstr "S_eguretat"
 
-#: panels/network/connection-editor/vpn-helpers.c:191
+#: panels/network/connection-editor/vpn-helpers.c:186
 msgid "Cannot import VPN connection"
 msgstr "No es pot importar la connexió VPN"
 
-#: panels/network/connection-editor/vpn-helpers.c:193
+#: panels/network/connection-editor/vpn-helpers.c:188
 #, c-format
 msgid ""
 "The file “%s” could not be read or does not contain recognized VPN connection information\n"
@@ -3444,29 +3457,29 @@ msgstr ""
 "\n"
 "Error: %s."
 
-#: panels/network/connection-editor/vpn-helpers.c:223
+#: panels/network/connection-editor/vpn-helpers.c:218
 msgid "Select file to import"
 msgstr "Seleccioneu el fitxer a importar"
 
-#: panels/network/connection-editor/vpn-helpers.c:276
+#: panels/network/connection-editor/vpn-helpers.c:271
 #, c-format
 msgid "A file named “%s” already exists."
 msgstr "Ja existeix un fitxer amb el nom «%s»."
 
-#: panels/network/connection-editor/vpn-helpers.c:278
+#: panels/network/connection-editor/vpn-helpers.c:273
 msgid "_Replace"
 msgstr "_Substitueix"
 
-#: panels/network/connection-editor/vpn-helpers.c:280
+#: panels/network/connection-editor/vpn-helpers.c:275
 #, c-format
 msgid "Do you want to replace %s with the VPN connection you are saving?"
 msgstr "Voleu substituir %s amb la connexió VPN que esteu desant?"
 
-#: panels/network/connection-editor/vpn-helpers.c:315
+#: panels/network/connection-editor/vpn-helpers.c:310
 msgid "Cannot export VPN connection"
 msgstr "No es pot exportar la connexió VPN"
 
-#: panels/network/connection-editor/vpn-helpers.c:317
+#: panels/network/connection-editor/vpn-helpers.c:312
 #, c-format
 msgid ""
 "The VPN connection “%s” could not be exported to %s.\n"
@@ -3477,7 +3490,7 @@ msgstr ""
 "\n"
 "Error: %s."
 
-#: panels/network/connection-editor/vpn-helpers.c:343
+#: panels/network/connection-editor/vpn-helpers.c:338
 msgid "Export VPN connection"
 msgstr "Exporta la connexió VPN"
 
@@ -4036,7 +4049,7 @@ msgstr "Nom d'_usuari"
 #: panels/network/wireless-security/ws-sae.ui:10
 #: panels/network/wireless-security/ws-wpa-psk.ui:10
 #: panels/sharing/cc-sharing-panel.ui:152
-#: panels/user-accounts/cc-user-panel.ui:165
+#: panels/user-accounts/cc-user-panel.ui:175
 msgid "_Password"
 msgstr "_Contrasenya"
 
@@ -5555,7 +5568,9 @@ msgstr ""
 msgid "Formats"
 msgstr "Formats"
 
-#: panels/region/cc-format-chooser.ui:37 panels/wwan/cc-wwan-apn-dialog.ui:21
+#: panels/region/cc-format-chooser.ui:37
+#: panels/wacom/cc-wacom-stylus-page.ui:136
+#: panels/wwan/cc-wwan-apn-dialog.ui:21
 msgid "Back"
 msgstr "Enrere"
 
@@ -5619,7 +5634,7 @@ msgstr "L'idioma i el format es canviaran després del proper inici de sessió"
 
 #: panels/region/cc-region-panel.ui:29
 msgid "Logout…"
-msgstr "Desconnecta..."
+msgstr "Surt…"
 
 #: panels/region/cc-region-panel.ui:45
 msgid ""
@@ -5634,7 +5649,7 @@ msgid "Your Account"
 msgstr "El teu compte"
 
 #: panels/region/cc-region-panel.ui:56 panels/region/cc-region-panel.ui:95
-#: panels/user-accounts/cc-user-panel.ui:289
+#: panels/user-accounts/cc-user-panel.ui:299
 msgid "_Language"
 msgstr "_Idioma"
 
@@ -5961,7 +5976,7 @@ msgstr "_Compartició multimèdia"
 
 #: panels/sharing/cc-sharing-panel.ui:79
 msgid "_Remote Login"
-msgstr "_Entrada remota"
+msgstr "_Inici de sessió remot"
 
 #: panels/sharing/cc-sharing-panel.ui:92
 msgid "File Sharing"
@@ -5974,7 +5989,7 @@ msgstr "_Demana contrasenya"
 #: panels/sharing/cc-sharing-panel.ui:195
 #: panels/sharing/cc-sharing-panel.ui:231
 msgid "Remote Login"
-msgstr "Entrada remota"
+msgstr "Inici de sessió remot"
 
 #: panels/sharing/cc-sharing-panel.ui:250
 #: panels/sharing/cc-sharing-panel.ui:267
@@ -6073,11 +6088,12 @@ msgstr ""
 
 #: panels/sharing/org.gnome.controlcenter.remote-login-helper.policy.in.in:11
 msgid "Enable or disable remote login"
-msgstr "Habilita o inhabilita l'entrada remota"
+msgstr "Habilita o inhabilita l'inici de sessió remot"
 
 #: panels/sharing/org.gnome.controlcenter.remote-login-helper.policy.in.in:12
 msgid "Authentication is required to enable or disable remote login"
-msgstr "Cal autenticació per a habilitar o inhabilitar l'entrada remota"
+msgstr ""
+"Cal autenticació per a habilitar o inhabilitar l'inici de sessió remot"
 
 #: panels/sound/cc-alert-chooser.c:150
 msgid "Custom"
@@ -6569,32 +6585,32 @@ msgstr "Activa i desactiva les funcions d'accessibilitat utilitzant el teclat"
 
 #. translators: the labels will read:
 #. * Cursor Size: Default
-#: panels/universal-access/cc-ua-panel.c:357
+#: panels/universal-access/cc-ua-panel.c:356
 msgctxt "cursor size"
 msgid "Default"
 msgstr "Per defecte"
 
-#: panels/universal-access/cc-ua-panel.c:360
+#: panels/universal-access/cc-ua-panel.c:359
 msgctxt "cursor size"
 msgid "Medium"
 msgstr "Mitjà"
 
-#: panels/universal-access/cc-ua-panel.c:363
+#: panels/universal-access/cc-ua-panel.c:362
 msgctxt "cursor size"
 msgid "Large"
 msgstr "Gran"
 
-#: panels/universal-access/cc-ua-panel.c:366
+#: panels/universal-access/cc-ua-panel.c:365
 msgctxt "cursor size"
 msgid "Larger"
 msgstr "Més gran"
 
-#: panels/universal-access/cc-ua-panel.c:369
+#: panels/universal-access/cc-ua-panel.c:368
 msgctxt "cursor size"
 msgid "Largest"
 msgstr "El més gran"
 
-#: panels/universal-access/cc-ua-panel.c:373
+#: panels/universal-access/cc-ua-panel.c:372
 #, c-format
 msgid "%d pixel"
 msgid_plural "%d pixels"
@@ -7105,7 +7121,7 @@ msgid "Failed to add account"
 msgstr "No s'ha pogut afegir el compte"
 
 #: panels/user-accounts/cc-add-user-dialog.c:679
-#: panels/user-accounts/cc-password-dialog.c:258
+#: panels/user-accounts/cc-password-dialog.c:260
 msgid "The passwords do not match."
 msgstr "Les contrasenyes no coincideixen."
 
@@ -7179,7 +7195,7 @@ msgstr "Confirma"
 
 #: panels/user-accounts/cc-add-user-dialog.ui:278
 msgid "Enterprise Login"
-msgstr "Inici de sessió empresa"
+msgstr "Inici de sessió corporatiu"
 
 #: panels/user-accounts/cc-add-user-dialog.ui:279
 msgid "User accounts which are managed by a company or organisation."
@@ -7195,7 +7211,7 @@ msgid ""
 "used on this device. You can also use this account to access company "
 "resources on the internet."
 msgstr ""
-"Els accessos corporatius permeten utilitzar comptes d'usuari corporatius "
+"L'inici de sessió corporatiu permete utilitzar comptes d'usuari corporatius "
 "centralitzats en aquest dispositiu. També podeu usar aquest compte per a "
 "accedir als recursos de l'empresa a Internet."
 
@@ -7229,7 +7245,7 @@ msgid ""
 "disabled?"
 msgstr ""
 "Voleu suprimir les empremtes dactilars registrades de manera que "
-"s'inhabiliti l'entrada amb empremta dactilar?"
+"s'inhabiliti l'inici de sessió amb empremta dactilar?"
 
 #: panels/user-accounts/cc-fingerprint-dialog.ui:172
 msgid "No fingerprint device"
@@ -7255,7 +7271,7 @@ msgstr "Trieu el dispositiu d'empremtes que voleu configurar"
 
 #: panels/user-accounts/cc-fingerprint-dialog.ui:243
 msgid "Fingerprint Login"
-msgstr "Entrada amb empremta dactilar"
+msgstr "Inici de sessió amb empremta dactilar"
 
 #: panels/user-accounts/cc-fingerprint-dialog.ui:249
 msgid ""
@@ -7679,23 +7695,23 @@ msgid "Restart Now"
 msgstr "Reinicia ara"
 
 #. FIXME
-#: panels/user-accounts/cc-user-panel.ui:185
+#: panels/user-accounts/cc-user-panel.ui:195
 msgid "_Fingerprint Login"
-msgstr "Entrada amb _empremta dactilar"
+msgstr "Inici de sessió amb _empremta dactilar"
 
-#: panels/user-accounts/cc-user-panel.ui:208
+#: panels/user-accounts/cc-user-panel.ui:218
 msgid "A_utomatic Login"
-msgstr "Entrada a_utomàtica"
+msgstr "Inici de sessió a_utomàtic"
 
-#: panels/user-accounts/cc-user-panel.ui:221
+#: panels/user-accounts/cc-user-panel.ui:231
 msgid "Account Activity"
 msgstr "Activitat del compte"
 
-#: panels/user-accounts/cc-user-panel.ui:249
+#: panels/user-accounts/cc-user-panel.ui:259
 msgid "_Administrator"
 msgstr "_Administrador"
 
-#: panels/user-accounts/cc-user-panel.ui:250
+#: panels/user-accounts/cc-user-panel.ui:260
 msgid ""
 "Administrators can add and remove other users, and can change settings for "
 "all users."
@@ -7703,33 +7719,33 @@ msgstr ""
 "Els administradors poden afegir i suprimir altres usuaris, i poden canviar "
 "els paràmetres de tots els usuaris."
 
-#: panels/user-accounts/cc-user-panel.ui:266
+#: panels/user-accounts/cc-user-panel.ui:276
 msgid "_Parental Controls"
 msgstr "_Controls parentals"
 
-#: panels/user-accounts/cc-user-panel.ui:267
+#: panels/user-accounts/cc-user-panel.ui:277
 msgid "Open the Parental Controls application."
 msgstr "Obre l'aplicació de controls parentals."
 
-#: panels/user-accounts/cc-user-panel.ui:318
+#: panels/user-accounts/cc-user-panel.ui:328
 msgid "Remove User…"
 msgstr "Suprimeix l'usuari..."
 
-#: panels/user-accounts/cc-user-panel.ui:330
+#: panels/user-accounts/cc-user-panel.ui:340
 msgid "Other Users"
 msgstr "Altres usuaris"
 
-#: panels/user-accounts/cc-user-panel.ui:343
+#: panels/user-accounts/cc-user-panel.ui:353
 msgid "Add User…"
 msgstr "Afegeix usuari…"
 
 #. Translators: This is the empty state page label which states that there are
 #. no users to show in the panel.
-#: panels/user-accounts/cc-user-panel.ui:371
+#: panels/user-accounts/cc-user-panel.ui:381
 msgid "No Users Found"
 msgstr "No s'ha trobat cap usuari"
 
-#: panels/user-accounts/cc-user-panel.ui:380
+#: panels/user-accounts/cc-user-panel.ui:390
 msgid "Unlock to add a user account."
 msgstr "Desbloqueja per a afegir un compte d'usuari."
 
@@ -7757,7 +7773,7 @@ msgstr "_Afegeix-lo"
 
 #: panels/user-accounts/data/join-dialog.ui:59
 msgid "Domain Administrator Login"
-msgstr "Entrada de l'administrador del domini"
+msgstr "Inici de sessió de l'administrador del domini"
 
 #: panels/user-accounts/data/join-dialog.ui:72
 msgid ""
@@ -7765,7 +7781,7 @@ msgid ""
 "enrolled in the domain. Please have your network administrator\n"
 "type their domain password here."
 msgstr ""
-"Per a poder utilitzar entrades corporatives, aquest ordinador\n"
+"Per a poder utilitzar inicis de sessió corporatius, aquest ordinador\n"
 "necessita formar part del domini. Demaneu a l'administrador que\n"
 "introdueixi aquí la seva contrasenya."
 
@@ -8081,6 +8097,10 @@ msgstr "Connecteu o activeu la tauleta Wacom."
 msgid "Tip Pressure Feel"
 msgstr "Sensibilitat de pressió del llapis"
 
+#: panels/wacom/cc-wacom-stylus-page.ui:35
+msgid "Stylus tip pressure"
+msgstr "Pressió del llapis"
+
 #: panels/wacom/cc-wacom-stylus-page.ui:54
 msgctxt "display setting"
 msgid "Button 1"
@@ -8099,6 +8119,34 @@ msgstr "Botó 3"
 #: panels/wacom/cc-wacom-stylus-page.ui:77
 msgid "Eraser Pressure Feel"
 msgstr "Sensibilitat de pressió de l'esborrador"
+
+#: panels/wacom/cc-wacom-stylus-page.ui:82
+msgid "Soft"
+msgstr "Suau"
+
+#: panels/wacom/cc-wacom-stylus-page.ui:96
+msgid "Eraser pressure"
+msgstr "Pressió de l'esborrador"
+
+#: panels/wacom/cc-wacom-stylus-page.ui:102
+msgid "Firm"
+msgstr "Ferma"
+
+#: panels/wacom/cc-wacom-stylus-page.ui:133
+msgid "Default"
+msgstr "Per defecte"
+
+#: panels/wacom/cc-wacom-stylus-page.ui:134
+msgid "Middle Mouse Button Click"
+msgstr "Clic del botó del mig del ratolí"
+
+#: panels/wacom/cc-wacom-stylus-page.ui:135
+msgid "Right Mouse Button Click"
+msgstr "Clic del botó dret del ratolí"
+
+#: panels/wacom/cc-wacom-stylus-page.ui:137
+msgid "Forward"
+msgstr "Endavant"
 
 #: panels/wacom/cc-wacom-tool.c:321
 msgid "Airbrush stylus with pressure, tilt, and integrated slider"
@@ -8523,7 +8571,7 @@ msgstr "Assegureu-vos de tenir un dispositiu de xarxa o mòbil sense fil"
 
 #: panels/wwan/cc-wwan-panel.ui:145
 msgid "Wireless Wan is disabled when airplane mode is on"
-msgstr "El Wan sense fil està desactivat quan el mode d'avió està activat"
+msgstr "El Wan sense fil està inhabilitat quan el mode d'avió està activat"
 
 #: panels/wwan/cc-wwan-panel.ui:153
 msgid "_Turn off Airplane Mode"
@@ -8581,23 +8629,7 @@ msgstr "Utilitats per a configurar l'escriptori GNOME"
 msgid "Settings is the primary interface for configuring your system."
 msgstr "El Paràmetres és la interfície principal per a configurar el sistema."
 
-#: shell/appdata/org.gnome.Settings.appdata.xml.in:17
-msgid "GNOME Settings Sound Panel"
-msgstr "Quadre de so del Paràmetres del GNOME"
-
-#: shell/appdata/org.gnome.Settings.appdata.xml.in:21
-msgid "GNOME Settings Mouse &amp; Touchpad Panel"
-msgstr "Quadre dels ratolins i ratolins tàctils del Paràmetres del GNOME"
-
-#: shell/appdata/org.gnome.Settings.appdata.xml.in:25
-msgid "GNOME Settings Background Panel"
-msgstr "Quadre del fons del Paràmetres del GNOME"
-
-#: shell/appdata/org.gnome.Settings.appdata.xml.in:29
-msgid "GNOME Settings Keyboard Panel"
-msgstr "Quadre del teclat del Paràmetres del GNOME"
-
-#: shell/appdata/org.gnome.Settings.appdata.xml.in:38
+#: shell/appdata/org.gnome.Settings.appdata.xml.in:34
 msgid "The GNOME Project"
 msgstr "El projecte GNOME"
 
@@ -8734,7 +8766,7 @@ msgstr ""
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1907
+#: subprojects/gvc/gvc-mixer-control.c:1915
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -8743,13 +8775,25 @@ msgstr[1] "%u sortides"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1917
+#: subprojects/gvc/gvc-mixer-control.c:1925
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u entrada"
 msgstr[1] "%u entrades"
 
-#: subprojects/gvc/gvc-mixer-control.c:2867
+#: subprojects/gvc/gvc-mixer-control.c:2876
 msgid "System Sounds"
 msgstr "Sons del sistema"
+
+#~ msgid "GNOME Settings Sound Panel"
+#~ msgstr "Quadre de so del Paràmetres del GNOME"
+
+#~ msgid "GNOME Settings Mouse &amp; Touchpad Panel"
+#~ msgstr "Quadre dels ratolins i ratolins tàctils del Paràmetres del GNOME"
+
+#~ msgid "GNOME Settings Background Panel"
+#~ msgstr "Quadre del fons del Paràmetres del GNOME"
+
+#~ msgid "GNOME Settings Keyboard Panel"
+#~ msgstr "Quadre del teclat del Paràmetres del GNOME"
