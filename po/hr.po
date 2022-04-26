@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: gnome-control-center 2.0\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-control-center/"
 "issues\n"
-"POT-Creation-Date: 2022-03-16 12:04+0000\n"
-"PO-Revision-Date: 2022-03-17 12:25+0100\n"
+"POT-Creation-Date: 2022-04-20 17:29+0000\n"
+"PO-Revision-Date: 2022-04-21 19:48+0200\n"
 "Last-Translator: gogo <trebelnik2@gmail.com>\n"
 "Language-Team: Croatian <lokalizacija@linux.hr>\n"
 "Language: hr\n"
@@ -167,7 +167,7 @@ msgstr "Primajte pretrage sustava i šaljite rezultate."
 #: panels/user-accounts/cc-user-panel.c:789
 #: panels/user-accounts/cc-user-panel.c:879
 #: panels/wwan/cc-wwan-device-page.c:478
-#: subprojects/gvc/gvc-mixer-control.c:1900
+#: subprojects/gvc/gvc-mixer-control.c:1908
 msgid "Disabled"
 msgstr "Onemogućen"
 
@@ -341,8 +341,8 @@ msgstr "Odaberi sliku"
 #: panels/network/cc-wifi-hotspot-dialog.ui:123
 #: panels/network/cc-wifi-panel.c:881
 #: panels/network/connection-editor/connection-editor.ui:14
-#: panels/network/connection-editor/vpn-helpers.c:226
-#: panels/network/connection-editor/vpn-helpers.c:346
+#: panels/network/connection-editor/vpn-helpers.c:221
+#: panels/network/connection-editor/vpn-helpers.c:341
 #: panels/network/net-device-wifi.c:860
 #: panels/printers/new-printer-dialog.ui:50
 #: panels/printers/pp-details-dialog.c:263
@@ -364,7 +364,7 @@ msgid "_Cancel"
 msgstr "_Odustani"
 
 #: panels/background/cc-background-chooser.c:311
-#: panels/network/connection-editor/vpn-helpers.c:227
+#: panels/network/connection-editor/vpn-helpers.c:222
 #: panels/printers/pp-details-dialog.c:264
 #: panels/sharing/cc-sharing-panel.c:524
 #: panels/user-accounts/cc-avatar-chooser.c:168
@@ -718,7 +718,7 @@ msgid "Save Profile"
 msgstr "Spremi profil"
 
 #: panels/color/cc-color-panel.c:845
-#: panels/network/connection-editor/vpn-helpers.c:347
+#: panels/network/connection-editor/vpn-helpers.c:342
 #: panels/wwan/cc-wwan-apn-dialog.ui:43
 msgid "_Save"
 msgstr "_Spremi"
@@ -1145,12 +1145,11 @@ msgstr "Više…"
 
 #: panels/common/cc-permission-infobar.c:109
 msgid "Unlock to Change Settings"
-msgstr "Otključaj za primjenjivanje postavki"
+msgstr "Otključaj za promjenu postavki"
 
 #: panels/common/cc-permission-infobar.ui:40
 msgid "Some settings must be unlocked before they can be changed."
-msgstr ""
-"Određene postavke moraju biti otključane prije nego što se mogu promijeniti."
+msgstr "Pojedine postavke moraju biti otključane kako bi se mogle promijeniti."
 
 #: panels/common/cc-permission-infobar.ui:57
 msgid "Unlock…"
@@ -1522,22 +1521,22 @@ msgstr ""
 #: panels/display/cc-display-panel.c:512
 #: panels/notifications/cc-notifications-panel.c:217
 #: panels/power/cc-power-panel.c:734 panels/power/cc-power-panel.c:741
-#: panels/universal-access/cc-ua-panel.c:337
-#: panels/universal-access/cc-ua-panel.c:469
-#: panels/universal-access/cc-ua-panel.c:479
-#: panels/universal-access/cc-ua-panel.c:491
-#: panels/universal-access/cc-ua-panel.c:527
+#: panels/universal-access/cc-ua-panel.c:336
+#: panels/universal-access/cc-ua-panel.c:468
+#: panels/universal-access/cc-ua-panel.c:478
+#: panels/universal-access/cc-ua-panel.c:490
+#: panels/universal-access/cc-ua-panel.c:526
 msgid "On"
 msgstr "Uključeno"
 
 #: panels/display/cc-display-panel.c:514 panels/network/net-proxy.c:69
 #: panels/notifications/cc-notifications-panel.c:217
 #: panels/power/cc-power-panel.c:728 panels/power/cc-power-panel.c:739
-#: panels/universal-access/cc-ua-panel.c:337
-#: panels/universal-access/cc-ua-panel.c:469
-#: panels/universal-access/cc-ua-panel.c:479
-#: panels/universal-access/cc-ua-panel.c:491
-#: panels/universal-access/cc-ua-panel.c:527
+#: panels/universal-access/cc-ua-panel.c:336
+#: panels/universal-access/cc-ua-panel.c:468
+#: panels/universal-access/cc-ua-panel.c:478
+#: panels/universal-access/cc-ua-panel.c:490
+#: panels/universal-access/cc-ua-panel.c:526
 msgid "Off"
 msgstr "Isključeno"
 
@@ -2399,10 +2398,16 @@ msgid "2 minutes"
 msgstr "2 minute"
 
 #. Translators: Option for "Lock screen after blank" in "Screen Lock" panel
-#: panels/lock/cc-lock-panel.c:74 panels/lock/cc-lock-panel.c:77
+#: panels/lock/cc-lock-panel.c:74
 msgctxt "lock_screen"
 msgid "3 minutes"
 msgstr "3 minute"
+
+#. Translators: Option for "Lock screen after blank" in "Screen Lock" panel
+#: panels/lock/cc-lock-panel.c:77
+msgctxt "lock_screen"
+msgid "5 minutes"
+msgstr "5 minuta"
 
 #. Translators: Option for "Lock screen after blank" in "Screen Lock" panel
 #: panels/lock/cc-lock-panel.c:80
@@ -3407,11 +3412,11 @@ msgstr "Dodaj VPN"
 msgid "S_ecurity"
 msgstr "S_igurnost"
 
-#: panels/network/connection-editor/vpn-helpers.c:191
+#: panels/network/connection-editor/vpn-helpers.c:186
 msgid "Cannot import VPN connection"
 msgstr "Nemoguć uvoz VPN povezivanja"
 
-#: panels/network/connection-editor/vpn-helpers.c:193
+#: panels/network/connection-editor/vpn-helpers.c:188
 #, c-format
 msgid ""
 "The file “%s” could not be read or does not contain recognized VPN "
@@ -3424,29 +3429,29 @@ msgstr ""
 "\n"
 "Greška: %s."
 
-#: panels/network/connection-editor/vpn-helpers.c:223
+#: panels/network/connection-editor/vpn-helpers.c:218
 msgid "Select file to import"
 msgstr "Odaberi datoteku za uvoz"
 
-#: panels/network/connection-editor/vpn-helpers.c:276
+#: panels/network/connection-editor/vpn-helpers.c:271
 #, c-format
 msgid "A file named “%s” already exists."
 msgstr "Datoteka naziva \"%s\" već postoji."
 
-#: panels/network/connection-editor/vpn-helpers.c:278
+#: panels/network/connection-editor/vpn-helpers.c:273
 msgid "_Replace"
 msgstr "_Zamijeni"
 
-#: panels/network/connection-editor/vpn-helpers.c:280
+#: panels/network/connection-editor/vpn-helpers.c:275
 #, c-format
 msgid "Do you want to replace %s with the VPN connection you are saving?"
 msgstr "Želite li zamijeniti %s s VPN povezivanjem kojeg spremate?"
 
-#: panels/network/connection-editor/vpn-helpers.c:315
+#: panels/network/connection-editor/vpn-helpers.c:310
 msgid "Cannot export VPN connection"
 msgstr "Nemoguć izvoz VPN povezivanja"
 
-#: panels/network/connection-editor/vpn-helpers.c:317
+#: panels/network/connection-editor/vpn-helpers.c:312
 #, c-format
 msgid ""
 "The VPN connection “%s” could not be exported to %s.\n"
@@ -3457,7 +3462,7 @@ msgstr ""
 "\n"
 "Greška: %s."
 
-#: panels/network/connection-editor/vpn-helpers.c:343
+#: panels/network/connection-editor/vpn-helpers.c:338
 msgid "Export VPN connection"
 msgstr "Izvezi VPN povezivanje"
 
@@ -4400,12 +4405,12 @@ msgstr "Dodaj račun"
 
 #. translators: This is the title of the "Show Account" dialog. The
 #. * %s is the name of the provider. e.g., 'Google'.
-#: panels/online-accounts/gnome-control-center-goa-helper.c:426
+#: panels/online-accounts/gnome-control-center-goa-helper.c:428
 #, c-format
 msgid "%s Account"
 msgstr "%s račun"
 
-#: panels/online-accounts/gnome-control-center-goa-helper.c:429
+#: panels/online-accounts/gnome-control-center-goa-helper.c:431
 msgid "Remove Account"
 msgstr "Ukloni račun"
 
@@ -5515,7 +5520,9 @@ msgstr ""
 msgid "Formats"
 msgstr "Formati"
 
-#: panels/region/cc-format-chooser.ui:37 panels/wwan/cc-wwan-apn-dialog.ui:21
+#: panels/region/cc-format-chooser.ui:37
+#: panels/wacom/cc-wacom-stylus-page.ui:136
+#: panels/wwan/cc-wwan-apn-dialog.ui:21
 msgid "Back"
 msgstr "Natrag"
 
@@ -6524,32 +6531,32 @@ msgstr ""
 
 #. translators: the labels will read:
 #. * Cursor Size: Default
-#: panels/universal-access/cc-ua-panel.c:357
+#: panels/universal-access/cc-ua-panel.c:356
 msgctxt "cursor size"
 msgid "Default"
 msgstr "Uobičajena"
 
-#: panels/universal-access/cc-ua-panel.c:360
+#: panels/universal-access/cc-ua-panel.c:359
 msgctxt "cursor size"
 msgid "Medium"
 msgstr "Srednja"
 
-#: panels/universal-access/cc-ua-panel.c:363
+#: panels/universal-access/cc-ua-panel.c:362
 msgctxt "cursor size"
 msgid "Large"
 msgstr "Velika"
 
-#: panels/universal-access/cc-ua-panel.c:366
+#: panels/universal-access/cc-ua-panel.c:365
 msgctxt "cursor size"
 msgid "Larger"
 msgstr "Veća"
 
-#: panels/universal-access/cc-ua-panel.c:369
+#: panels/universal-access/cc-ua-panel.c:368
 msgctxt "cursor size"
 msgid "Largest"
 msgstr "Najveća"
 
-#: panels/universal-access/cc-ua-panel.c:373
+#: panels/universal-access/cc-ua-panel.c:372
 #, c-format
 msgid "%d pixel"
 msgid_plural "%d pixels"
@@ -6983,7 +6990,7 @@ msgid ""
 "might want to use."
 msgstr ""
 "Povijest datoteka čuva podatke korištenja datoteka. Te informacije se dijele "
-"između aplikacija i čini lakšom pretragu datoteka koje želite koristiti."
+"između aplikacija što olakšava pretragu datoteka koje želite koristiti."
 
 #: panels/usage/cc-usage-panel.ui:13
 msgid "File H_istory"
@@ -7048,7 +7055,7 @@ msgid "Failed to add account"
 msgstr "Dodavanje računa nije upjelo"
 
 #: panels/user-accounts/cc-add-user-dialog.c:679
-#: panels/user-accounts/cc-password-dialog.c:258
+#: panels/user-accounts/cc-password-dialog.c:260
 msgid "The passwords do not match."
 msgstr "Lozinka se ne podudara."
 
@@ -8012,6 +8019,15 @@ msgstr "Priključite ili upalite svoj Wacom tablet."
 msgid "Tip Pressure Feel"
 msgstr "Osjet pritiska vrha"
 
+#: panels/wacom/cc-wacom-stylus-page.ui:21
+#: panels/wacom/cc-wacom-stylus-page.ui:82
+msgid "Soft"
+msgstr "Mekan"
+
+#: panels/wacom/cc-wacom-stylus-page.ui:35
+msgid "Stylus tip pressure"
+msgstr "Vrsta pritiska pisaljke"
+
 #: panels/wacom/cc-wacom-stylus-page.ui:54
 msgctxt "display setting"
 msgid "Button 1"
@@ -8030,6 +8046,30 @@ msgstr "Tipka 3"
 #: panels/wacom/cc-wacom-stylus-page.ui:77
 msgid "Eraser Pressure Feel"
 msgstr "Osjet pritiska gumice brisanja"
+
+#: panels/wacom/cc-wacom-stylus-page.ui:96
+msgid "Eraser pressure"
+msgstr "Pritisk gumice brisanja"
+
+#: panels/wacom/cc-wacom-stylus-page.ui:102
+msgid "Firm"
+msgstr "Čvrst"
+
+#: panels/wacom/cc-wacom-stylus-page.ui:133
+msgid "Default"
+msgstr "Uobičajena"
+
+#: panels/wacom/cc-wacom-stylus-page.ui:134
+msgid "Middle Mouse Button Click"
+msgstr "Klik srednjom tipkom miša"
+
+#: panels/wacom/cc-wacom-stylus-page.ui:135
+msgid "Right Mouse Button Click"
+msgstr "Klik desnom tipkom miša"
+
+#: panels/wacom/cc-wacom-stylus-page.ui:137
+msgid "Forward"
+msgstr "Naprijed"
 
 #: panels/wacom/cc-wacom-tool.c:321
 msgid "Airbrush stylus with pressure, tilt, and integrated slider"
@@ -8510,23 +8550,7 @@ msgstr "Pomagalo za podešavanje GNOME radne površine"
 msgid "Settings is the primary interface for configuring your system."
 msgstr "Postavke su glavno sučelje za podešavanje vašeg sustava."
 
-#: shell/appdata/org.gnome.Settings.appdata.xml.in:17
-msgid "GNOME Settings Sound Panel"
-msgstr "GNOME postavke panel zvuka"
-
-#: shell/appdata/org.gnome.Settings.appdata.xml.in:21
-msgid "GNOME Settings Mouse &amp; Touchpad Panel"
-msgstr "GNOME postavke panel miša i touchpada"
-
-#: shell/appdata/org.gnome.Settings.appdata.xml.in:25
-msgid "GNOME Settings Background Panel"
-msgstr "GNOME postavke panel pozadine"
-
-#: shell/appdata/org.gnome.Settings.appdata.xml.in:29
-msgid "GNOME Settings Keyboard Panel"
-msgstr "GNOME postavke panel tipkovnice"
-
-#: shell/appdata/org.gnome.Settings.appdata.xml.in:38
+#: shell/appdata/org.gnome.Settings.appdata.xml.in:34
 msgid "The GNOME Project"
 msgstr "GNOME projekt"
 
@@ -8659,7 +8683,7 @@ msgstr ""
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1907
+#: subprojects/gvc/gvc-mixer-control.c:1915
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -8669,7 +8693,7 @@ msgstr[2] "%u izlaza"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1917
+#: subprojects/gvc/gvc-mixer-control.c:1925
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
@@ -8677,9 +8701,21 @@ msgstr[0] "%u ulaz"
 msgstr[1] "%u ulaza"
 msgstr[2] "%u ulaza"
 
-#: subprojects/gvc/gvc-mixer-control.c:2867
+#: subprojects/gvc/gvc-mixer-control.c:2876
 msgid "System Sounds"
 msgstr "Zvukovi sustava"
+
+#~ msgid "GNOME Settings Sound Panel"
+#~ msgstr "GNOME postavke panel zvuka"
+
+#~ msgid "GNOME Settings Mouse &amp; Touchpad Panel"
+#~ msgstr "GNOME postavke panel miša i touchpada"
+
+#~ msgid "GNOME Settings Background Panel"
+#~ msgstr "GNOME postavke panel pozadine"
+
+#~ msgid "GNOME Settings Keyboard Panel"
+#~ msgstr "GNOME postavke panel tipkovnice"
 
 #~ msgid "Web Links"
 #~ msgstr "Web poveznice"
@@ -8848,10 +8884,6 @@ msgstr "Zvukovi sustava"
 
 #~ msgid "Allow the applications below to determine your location."
 #~ msgstr "Dopusti aplikacijama ispod otkrivanje vaše lokacije."
-
-#~ msgctxt "lock_screen"
-#~ msgid "5 minutes"
-#~ msgstr "5 minuta"
 
 #~ msgid "Allow the applications below to use your microphone."
 #~ msgstr "Dopusti aplikacijama ispod korištenje svojeg mikrofona."
@@ -9041,30 +9073,12 @@ msgstr "Zvukovi sustava"
 #~ msgid "Adjust display resolution"
 #~ msgstr "Prilagodi razlučivost zaslona"
 
-#~ msgid "Default"
-#~ msgstr "Uobičajena"
-
-#~ msgid "Middle Mouse Button Click"
-#~ msgstr "Klik srednjom tipkom miša"
-
-#~ msgid "Right Mouse Button Click"
-#~ msgstr "Klik desnom tipkom miša"
-
-#~ msgid "Forward"
-#~ msgstr "Naprijed"
-
 #~ msgid "No stylus found"
 #~ msgstr "Nema pronađenih pisaljka"
 
 #~ msgid ""
 #~ "Please move your stylus to the proximity of the tablet to configure it"
 #~ msgstr "Pomičite svoju pisaljku u blizini vašeg tableta kako bi ju podesili"
-
-#~ msgid "Soft"
-#~ msgstr "Mekan"
-
-#~ msgid "Firm"
-#~ msgstr "Čvrst"
 
 #~ msgid "Top Button"
 #~ msgstr "Gornja tipka"

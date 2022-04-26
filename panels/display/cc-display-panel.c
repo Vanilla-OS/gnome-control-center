@@ -375,7 +375,7 @@ ensure_monitor_labels (CcDisplayPanel *self)
 
   for (w = windows; w; w = w->next)
     {
-      if (gtk_widget_has_focus (GTK_WIDGET (w->data)))
+      if (gtk_window_is_active (GTK_WINDOW (w->data)))
         {
           monitor_labeler_show (self);
           break;
@@ -387,7 +387,7 @@ ensure_monitor_labels (CcDisplayPanel *self)
 }
 
 static void
-dialog_toplevel_focus_changed (CcDisplayPanel *self)
+dialog_toplevel_is_active_changed (CcDisplayPanel *self)
 {
   ensure_monitor_labels (self);
 }
@@ -651,6 +651,9 @@ set_current_output (CcDisplayPanel   *panel,
     {
       cc_display_settings_set_selected_output (panel->settings, panel->current_output);
       cc_display_arrangement_set_selected_output (panel->arrangement, panel->current_output);
+
+      adw_window_title_set_title (panel->display_settings_title_widget,
+                                  output ? cc_display_monitor_get_ui_name (output) : "");
     }
 
   panel->rebuilding_counter--;
@@ -664,9 +667,6 @@ on_monitor_row_activated_cb (GtkListBoxRow  *row,
 
   monitor = g_object_get_data (G_OBJECT (row), "monitor");
   set_current_output (self, monitor, FALSE);
-
-  adw_window_title_set_title (self->display_settings_title_widget,
-                              cc_display_monitor_get_ui_name (monitor));
 
   adw_leaflet_set_visible_child_name (self->leaflet, "display-settings");
 }
@@ -991,6 +991,8 @@ apply_current_configuration (CcDisplayPanel *self)
 
   if (error)
     g_warning ("Error applying configuration: %s", error->message);
+
+  adw_leaflet_set_visible_child_name (self->leaflet, "displays");
 }
 
 static void
@@ -1002,8 +1004,8 @@ mapped_cb (CcDisplayPanel *panel)
   shell = cc_panel_get_shell (CC_PANEL (panel));
   toplevel = cc_shell_get_toplevel (shell);
   if (toplevel && !panel->focus_id)
-    panel->focus_id = g_signal_connect_object (toplevel, "notify::has-toplevel-focus",
-                                               G_CALLBACK (dialog_toplevel_focus_changed), panel, G_CONNECT_SWAPPED);
+    panel->focus_id = g_signal_connect_object (toplevel, "notify::is-active",
+                                               G_CALLBACK (dialog_toplevel_is_active_changed), panel, G_CONNECT_SWAPPED);
 }
 
 static void

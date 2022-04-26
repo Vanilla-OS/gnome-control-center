@@ -52,7 +52,7 @@ stages:
     # stable branch.
     # Could probably also switch away from rawhide,
     # to stable fedora branch as well.
-    FDO_DISTRIBUTION_TAG: '2022-01-19.0-main'
+    FDO_DISTRIBUTION_TAG: '2022-03-29.0-main'
     FDO_DISTRIBUTION_VERSION: rawhide
 
 #############################################
@@ -161,6 +161,12 @@ build.container.fedora@x86_64:
         ninja -C _build && \
         ninja -C _build install && \
         cd .. && \
+      git clone https://gitlab.gnome.org/GNOME/libgweather.git && \
+        cd libgweather && \
+        meson . _build --prefix=/usr -Denable_vala=false -Dgtk_doc=false -Dintrospection=false && \
+        ninja -C _build && \
+        ninja -C _build install && \
+        cd .. && \
       git clone https://gitlab.gnome.org/GNOME/gnome-settings-daemon.git && \
         cd gnome-settings-daemon && \
         meson . _build --prefix=/usr && \
@@ -184,7 +190,6 @@ build:
   stage: build
 
   script:
-    - dnf -y install gcr-devel
     - *environment_information
     - *build_procedure
 
@@ -217,7 +222,6 @@ test:
     - build
 
   script:
-    - dnf -y install gcr-devel
     - *environment_information
     - *run_tests
 
@@ -246,7 +250,6 @@ coverage:
     - master@GNOME/gnome-control-center
 
   script:
-    - dnf -y install gcr-devel
     - *environment_information
     - *build_procedure
     - *run_tests
@@ -362,7 +365,6 @@ flatpak:
   stage: manual
   when: manual
   script:
-    - dnf -y install gcr-devel
     - *environment_information
     - *build_procedure
     - *run_tests

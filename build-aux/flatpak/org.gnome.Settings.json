@@ -134,7 +134,7 @@
             "sources" : [
                 {
                     "type" : "git",
-                    "url" : "git://github.com/libusb/libusb.git"
+                    "url" : "https://github.com/libusb/libusb.git"
                 }
             ]
         },
@@ -149,7 +149,7 @@
             "sources" : [
                 {
                     "type" : "git",
-                    "url" : "git://github.com/hughsie/libgusb.git",
+                    "url" : "https://github.com/hughsie/libgusb.git",
                     "branch" : "main"
                 }
             ]
@@ -182,7 +182,7 @@
             "sources" : [
                 {
                     "type" : "git",
-                    "url" : "git://github.com/gentoo/eudev.git"
+                    "url" : "https://github.com/gentoo/eudev.git"
                 }
             ]
         },
@@ -218,7 +218,7 @@
                 {
                     "type" : "git",
                     "branch" : "main",
-                    "url" : "git://github.com/hughsie/colord.git"
+                    "url" : "https://github.com/hughsie/colord.git"
                 }
             ]
         },
@@ -231,7 +231,8 @@
             "sources" : [
                 {
                     "type" : "git",
-                    "url" : "git://github.com/hughsie/colord-gtk.git"
+                    "branch" : "main",
+                    "url" : "https://github.com/hughsie/colord-gtk.git"
                 }
             ]
         },
@@ -301,7 +302,7 @@
                 {
                     "type" : "git",
                     "url" : "https://gitlab.gnome.org/GNOME/libgweather.git",
-                    "branch" : "libgweather-3"
+                    "branch" : "main"
                 }
             ]
         },
@@ -391,6 +392,7 @@
             "sources" : [
                 {
                     "type" : "git",
+                    "branch": "main",
                     "url" : "https://gitlab.gnome.org/GNOME/mobile-broadband-provider-info.git"
                 }
             ]
@@ -443,6 +445,7 @@
                 "-Dmbim=false",
                 "-Dplugin_dell=disabled",
                 "-Dplugin_foxconn=disabled",
+                "-Dplugin_fibocom=disabled",
                 "-Dqmi=false",
                 "-Dqrtr=false"
             ],
@@ -515,9 +518,9 @@
             ],
             "sources" : [
                 {
-                    "type" : "archive",
-                    "url" : "https://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-2.4.46.tgz",
-                    "sha256" : "9a90dcb86b99ae790ccab93b7585a31fbcbeec8c94bf0f7ab0ca0a87ea0c4b2d"
+                    "type": "archive",
+                    "url": "https://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-2.6.1.tgz",
+                    "sha256": "9d576ea6962d7db8a2e2808574e8c257c15aef55f403a1fb5a0faf35de70e6f3"
                 }
             ]
         },
