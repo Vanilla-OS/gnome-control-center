@@ -1,3 +1,10 @@
+gnome-control-center (1:42.1-2) unstable; urgency=high
+
+  * Add patch to turn off RDP gsettings key when turning off RDP Sharing
+    (LP: #1971415)
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Tue, 10 May 2022 21:56:10 -0400
+
 gnome-control-center (1:42.1-1) unstable; urgency=medium
 
   * New upstream release
