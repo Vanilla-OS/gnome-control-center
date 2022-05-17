@@ -1,3 +1,10 @@
+gnome-control-center (1:41.4-1ubuntu15) kinetic; urgency=medium
+
+  * Don't depend on gedit-common. We fixed bug 1947519 differently.
+  * Don't recommend pulseaudio-module-bluetooth; we are switching to PipeWire
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Tue, 17 May 2022 16:33:11 -0400
+
 gnome-control-center (1:41.4-1ubuntu14) kinetic; urgency=medium
 
   * Add patch to turn off RDP gsettings key when turning off RDP (LP: #1971415)
