@@ -1,8 +1,9 @@
-gnome-control-center (1:41.7-1) UNRELEASED; urgency=medium
+gnome-control-center (1:41.7-0ubuntu1) kinetic; urgency=medium
 
-  * New upstream release
+  * New upstream release (LP: #1975945)
+  * Drop 6 patches applied in new release
 
- -- Jeremy Bicha <jbicha@ubuntu.com>  Fri, 27 May 2022 09:07:09 -0400
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Fri, 27 May 2022 09:17:14 -0400
 
 gnome-control-center (1:41.4-1ubuntu15) kinetic; urgency=medium
 
