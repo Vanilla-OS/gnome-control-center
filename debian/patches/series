@@ -22,7 +22,6 @@ ubuntu/shell-Change-the-default-height-so-all-category-are-on-sc.patch
 ubuntu/connectivity-add-network-connectivity-checking-toggle.patch
 ubuntu/diagnostics-Add-Whoopsie-support.patch
 ubuntu/online-accounts-Hide-window-after-adding-an-online-accoun.patch
-ubuntu/applications-Add-hack-detect-snaps-before-X-SnapInstanceN.patch
 ubuntu/display-Support-UI-scaled-logical-monitor-mode.patch
 ubuntu/Disable-non-working-camera-microphones-panels.patch
 ubuntu/info-overview-Show-updates-in-software-propeties-instead-.patch

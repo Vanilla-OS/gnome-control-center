@@ -7,7 +7,7 @@ Subject: applications: Launch snap-store if it is installed
  1 file changed, 14 insertions(+), 2 deletions(-)
 
 diff --git a/panels/applications/cc-applications-panel.c b/panels/applications/cc-applications-panel.c
-index 36c49c0..da6931f 100644
+index c9352c1..2ebe02e 100644
 --- a/panels/applications/cc-applications-panel.c
 +++ b/panels/applications/cc-applications-panel.c
 @@ -156,6 +156,13 @@ gnome_software_is_installed (void)
@@ -34,7 +34,7 @@ index 36c49c0..da6931f 100644
    if (self->current_app_id == NULL)
      argv[1] = NULL;
    else
-@@ -1395,7 +1405,8 @@ update_panel (CcApplicationsPanel *self,
+@@ -1384,7 +1394,8 @@ update_panel (CcApplicationsPanel *self,
  
    adw_window_title_set_title (self->header_title, g_app_info_get_display_name (info));
    gtk_stack_set_visible_child (self->stack, self->settings_box);
@@ -44,7 +44,7 @@ index 36c49c0..da6931f 100644
  
    g_clear_pointer (&self->current_app_id, g_free);
    g_clear_pointer (&self->current_portal_app_id, g_free);
-@@ -1806,7 +1817,8 @@ cc_applications_panel_init (CcApplicationsPanel *self)
+@@ -1795,7 +1806,8 @@ cc_applications_panel_init (CcApplicationsPanel *self)
  
    gtk_widget_init_template (GTK_WIDGET (self));
  
