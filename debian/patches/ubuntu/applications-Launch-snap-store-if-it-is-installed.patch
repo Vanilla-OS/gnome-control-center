@@ -3,14 +3,14 @@ Date: Mon, 6 Apr 2020 10:30:27 +1200
 Subject: applications: Launch snap-store if it is installed
 
 ---
- panels/applications/cc-applications-panel.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ panels/applications/cc-applications-panel.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
 diff --git a/panels/applications/cc-applications-panel.c b/panels/applications/cc-applications-panel.c
-index 4cbb95a..bf1e9ea 100644
+index 36c49c0..da6931f 100644
 --- a/panels/applications/cc-applications-panel.c
 +++ b/panels/applications/cc-applications-panel.c
-@@ -161,6 +161,13 @@ gnome_software_is_installed (void)
+@@ -156,6 +156,13 @@ gnome_software_is_installed (void)
    return path != NULL;
  }
  
@@ -24,7 +24,7 @@ index 4cbb95a..bf1e9ea 100644
  /* Callbacks */
  
  static gboolean
-@@ -180,6 +187,9 @@ open_software_cb (CcApplicationsPanel *self)
+@@ -175,6 +182,9 @@ open_software_cb (CcApplicationsPanel *self)
  {
    const gchar *argv[] = { "gnome-software", "--details", "appid", NULL };
  
@@ -34,21 +34,23 @@ index 4cbb95a..bf1e9ea 100644
    if (self->current_app_id == NULL)
      argv[1] = NULL;
    else
-@@ -1678,7 +1688,7 @@ update_panel (CcApplicationsPanel *self,
+@@ -1395,7 +1405,8 @@ update_panel (CcApplicationsPanel *self,
  
-   gtk_label_set_label (self->title_label, g_app_info_get_display_name (info));
-   gtk_stack_set_visible_child (self->stack, GTK_WIDGET (self->settings_box));
--  gtk_widget_set_visible (GTK_WIDGET (self->header_button), gnome_software_is_installed ());
-+  gtk_widget_set_visible (GTK_WIDGET (self->header_button), gnome_software_is_installed () || snap_store_is_installed ());
+   adw_window_title_set_title (self->header_title, g_app_info_get_display_name (info));
+   gtk_stack_set_visible_child (self->stack, self->settings_box);
+-  gtk_widget_set_visible (GTK_WIDGET (self->view_details_button), gnome_software_is_installed ());
++  gtk_widget_set_visible (GTK_WIDGET (self->view_details_button),
++                          gnome_software_is_installed () || snap_store_is_installed ());
  
    g_clear_pointer (&self->current_app_id, g_free);
    g_clear_pointer (&self->current_portal_app_id, g_free);
-@@ -2064,7 +2074,7 @@ cc_applications_panel_init (CcApplicationsPanel *self)
+@@ -1806,7 +1817,8 @@ cc_applications_panel_init (CcApplicationsPanel *self)
  
    gtk_widget_init_template (GTK_WIDGET (self));
  
 -  gtk_widget_set_visible (GTK_WIDGET (self->install_button), gnome_software_is_installed ());
-+  gtk_widget_set_visible (GTK_WIDGET (self->install_button), gnome_software_is_installed () || snap_store_is_installed ());
++  gtk_widget_set_visible (GTK_WIDGET (self->install_button),
++    gnome_software_is_installed () || snap_store_is_installed ());
  
-   provider = GTK_STYLE_PROVIDER (gtk_css_provider_new ());
-   gtk_css_provider_load_from_resource (GTK_CSS_PROVIDER (provider),
+   g_signal_connect_object (self->sidebar_listbox, "row-activated",
+                            G_CALLBACK (row_activated_cb), self, G_CONNECT_SWAPPED);

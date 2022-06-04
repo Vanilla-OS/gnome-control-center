@@ -11,10 +11,10 @@ Bug-Ubuntu: https://launchpad.net/bugs/1934761
  1 file changed, 10 insertions(+)
 
 diff --git a/panels/keyboard/cc-xkb-modifier-dialog.c b/panels/keyboard/cc-xkb-modifier-dialog.c
-index dc5a91e..16b89a4 100644
+index d5b865d..5951444 100644
 --- a/panels/keyboard/cc-xkb-modifier-dialog.c
 +++ b/panels/keyboard/cc-xkb-modifier-dialog.c
-@@ -38,6 +38,7 @@ struct _CcXkbModifierDialog
+@@ -36,6 +36,7 @@ struct _CcXkbModifierDialog
    GSettings      *input_source_settings;
    const CcXkbModifier *modifier;
    GSList         *radio_group;
@@ -22,7 +22,7 @@ index dc5a91e..16b89a4 100644
  };
  
  G_DEFINE_TYPE (CcXkbModifierDialog, cc_xkb_modifier_dialog, GTK_TYPE_DIALOG)
-@@ -87,6 +88,9 @@ update_active_radio (CcXkbModifierDialog *self)
+@@ -85,6 +86,9 @@ update_active_radio (CcXkbModifierDialog *self)
    guint i;
    gboolean have_nodefault_option = FALSE;
  
@@ -32,15 +32,15 @@ index dc5a91e..16b89a4 100644
    options = g_settings_get_strv (self->input_source_settings, "xkb-options");
  
    for (i = 0; options != NULL && options[i] != NULL; i++)
-@@ -106,6 +110,7 @@ update_active_radio (CcXkbModifierDialog *self)
+@@ -104,6 +108,7 @@ update_active_radio (CcXkbModifierDialog *self)
  
-       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (radio), TRUE);
+       gtk_check_button_set_active (GTK_CHECK_BUTTON (radio), TRUE);
        gtk_switch_set_active (self->default_switch, FALSE);
 +      self->updating_active_radio = FALSE;
        return;
      }
  
-@@ -119,6 +124,8 @@ update_active_radio (CcXkbModifierDialog *self)
+@@ -117,6 +122,8 @@ update_active_radio (CcXkbModifierDialog *self)
      {
        gtk_switch_set_active (self->default_switch, TRUE);
      }
@@ -49,7 +49,7 @@ index dc5a91e..16b89a4 100644
  }
  
  static void
-@@ -183,6 +190,9 @@ on_active_radio_changed_cb (CcXkbModifierDialog *self,
+@@ -181,6 +188,9 @@ on_active_radio_changed_cb (CcXkbModifierDialog *self,
    if (gtk_switch_get_state (self->default_switch))
      return;
  

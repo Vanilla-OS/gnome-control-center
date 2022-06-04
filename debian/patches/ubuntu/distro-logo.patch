@@ -17,11 +17,11 @@ this.
 ---
  meson.build                                   | 11 +++++++++++
  meson_options.txt                             |  2 ++
- panels/info-overview/cc-info-overview-panel.c | 13 +++++++++++++
- 3 files changed, 26 insertions(+)
+ panels/info-overview/cc-info-overview-panel.c | 14 ++++++++++++++
+ 3 files changed, 27 insertions(+)
 
 diff --git a/meson.build b/meson.build
-index cde84d9..4fffa43 100644
+index d56f0cb..e74ce49 100644
 --- a/meson.build
 +++ b/meson.build
 @@ -50,6 +50,17 @@ foreach define: set_defines
@@ -43,20 +43,20 @@ index cde84d9..4fffa43 100644
  # string. See: https://github.com/mesonbuild/meson/issues/2047
  config_h.set('USER_DIR_MODE', '0700',
 diff --git a/meson_options.txt b/meson_options.txt
-index 1b7b548..5305c86 100644
+index dbca723..461ae34 100644
 --- a/meson_options.txt
 +++ b/meson_options.txt
-@@ -8,3 +8,5 @@ option('tracing', type: 'boolean', value: false, description: 'add extra debuggi
+@@ -7,3 +7,5 @@ option('tracing', type: 'boolean', value: false, description: 'add extra debuggi
  option('wayland', type: 'boolean', value: true, description: 'build with Wayland support')
  option('profile', type: 'combo', choices: ['default','development'], value: 'default')
  option('malcontent', type: 'boolean', value: false, description: 'build with malcontent support')
 +option('distributor_logo', type: 'string', description: 'absolute path to distributor logo for the About panel')
 +option('dark_mode_distributor_logo', type: 'string', description: 'absolute path to distributor logo dark mode variant')
 diff --git a/panels/info-overview/cc-info-overview-panel.c b/panels/info-overview/cc-info-overview-panel.c
-index 35969b8..79d6616 100644
+index b348c0f..5ff649d 100644
 --- a/panels/info-overview/cc-info-overview-panel.c
 +++ b/panels/info-overview/cc-info-overview-panel.c
-@@ -917,6 +917,7 @@ cc_info_panel_row_activated_cb (CcInfoOverviewPanel *self,
+@@ -937,6 +937,7 @@ cc_info_panel_row_activated_cb (CcInfoOverviewPanel *self,
      open_software_update (self);
  }
  
@@ -64,9 +64,9 @@ index 35969b8..79d6616 100644
  static gboolean
  use_dark_theme (CcInfoOverviewPanel *panel)
  {
-@@ -934,10 +935,21 @@ use_dark_theme (CcInfoOverviewPanel *panel)
-   g_object_get (settings, "gtk-theme-name", &theme_name, NULL);
-   return (theme_name != NULL && g_str_has_suffix (theme_name, "dark")) ? TRUE : FALSE;
+@@ -944,10 +945,22 @@ use_dark_theme (CcInfoOverviewPanel *panel)
+ 
+   return adw_style_manager_get_dark (style_manager);
  }
 +#endif
  
@@ -77,19 +77,20 @@ index 35969b8..79d6616 100644
 +#ifdef DARK_MODE_DISTRIBUTOR_LOGO
 +  if (use_dark_theme (panel))
 +    {
-+      gtk_image_set_from_file (panel->os_logo, DARK_MODE_DISTRIBUTOR_LOGO);
++      gtk_picture_set_filename (panel->os_logo, DARK_MODE_DISTRIBUTOR_LOGO);
 +      return;
 +    }
 +#endif
-+  gtk_image_set_from_file (panel->os_logo, DISTRIBUTOR_LOGO);
++  gtk_picture_set_filename (panel->os_logo, DISTRIBUTOR_LOGO);
++  return;
 +#else
+   GtkIconTheme *icon_theme;
    g_autofree char *logo_name = g_get_os_info ("LOGO");
-   g_autoptr(GPtrArray) array = NULL;
-   g_autoptr(GIcon) icon = NULL;
-@@ -957,6 +969,7 @@ setup_os_logo (CcInfoOverviewPanel *panel)
- 
-   icon = g_themed_icon_new_from_names ((char **) array->pdata, array->len);
-   gtk_image_set_from_gicon (panel->os_logo, icon, GTK_ICON_SIZE_INVALID);
+   g_autoptr(GtkIconPaintable) icon_paintable = NULL;
+@@ -975,6 +988,7 @@ setup_os_logo (CcInfoOverviewPanel *panel)
+                                                    gtk_widget_get_direction (GTK_WIDGET (panel)),
+                                                    0);
+   gtk_picture_set_paintable (panel->os_logo, GDK_PAINTABLE (icon_paintable));
 +#endif
  }
  

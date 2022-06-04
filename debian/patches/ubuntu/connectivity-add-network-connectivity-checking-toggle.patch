@@ -13,14 +13,14 @@ https://bugzilla.gnome.org/show_bug.cgi?id=737362
 ---
  panels/connectivity/cc-connectivity-panel.c        | 131 +++++++++++++++++++++
  panels/connectivity/cc-connectivity-panel.h        |  28 +++++
- panels/connectivity/cc-connectivity-panel.ui       |  65 ++++++++++
+ panels/connectivity/cc-connectivity-panel.ui       |  21 ++++
  panels/connectivity/connectivity.gresource.xml     |   6 +
  .../gnome-connectivity-panel.desktop.in.in         |  19 +++
  panels/connectivity/meson.build                    |  44 +++++++
  panels/meson.build                                 |   1 +
  po/POTFILES.in                                     |   2 +
  shell/cc-panel-loader.c                            |   2 +
- 9 files changed, 298 insertions(+)
+ 9 files changed, 254 insertions(+)
  create mode 100644 panels/connectivity/cc-connectivity-panel.c
  create mode 100644 panels/connectivity/cc-connectivity-panel.h
  create mode 100644 panels/connectivity/cc-connectivity-panel.ui
@@ -30,7 +30,7 @@ https://bugzilla.gnome.org/show_bug.cgi?id=737362
 
 diff --git a/panels/connectivity/cc-connectivity-panel.c b/panels/connectivity/cc-connectivity-panel.c
 new file mode 100644
-index 0000000..6db7e74
+index 0000000..6abb6e8
 --- /dev/null
 +++ b/panels/connectivity/cc-connectivity-panel.c
 @@ -0,0 +1,131 @@
@@ -59,7 +59,7 @@ index 0000000..6db7e74
 +#endif
 +
 +#include "shell/cc-object-storage.h"
-+#include "list-box-helper.h"
++
 +#include "cc-connectivity-panel.h"
 +#include "cc-connectivity-resources.h"
 +
@@ -69,7 +69,7 @@ index 0000000..6db7e74
 +{
 +  CcPanel parent_instance;
 +
-+  GtkSwitch *connectivity_switch;
++  GtkWidget *connectivity_switch;
 +
 +#ifdef HAVE_NETWORK_MANAGER
 +  GCancellable *cancellable;
@@ -201,67 +201,23 @@ index 0000000..1a21b5b
 +G_END_DECLS
 diff --git a/panels/connectivity/cc-connectivity-panel.ui b/panels/connectivity/cc-connectivity-panel.ui
 new file mode 100644
-index 0000000..fcb562d
+index 0000000..709dc2d
 --- /dev/null
 +++ b/panels/connectivity/cc-connectivity-panel.ui
-@@ -0,0 +1,65 @@
+@@ -0,0 +1,21 @@
 +<?xml version="1.0" encoding="UTF-8"?>
 +<interface>
-+  <requires lib="gtk+" version="3.14"/>
 +  <template class="CcConnectivityPanel" parent="CcPanel">
-+    <property name="visible">True</property>
-+    <child>
-+      <object class="GtkScrolledWindow">
-+        <property name="visible">True</property>
-+        <property name="hscrollbar-policy">never</property>
++    <child type="content">
++      <object class="AdwPreferencesPage">
 +        <child>
-+          <object class="HdyClamp">
-+            <property name="visible">True</property>
-+            <property name="margin_top">32</property>
-+            <property name="margin_bottom">32</property>
-+            <property name="margin_start">12</property>
-+            <property name="margin_end">12</property>
++          <object class="AdwPreferencesGroup">
++            <property name="description" translatable="yes">Connectivity checking is used to detect connection issues and helps you to stay online. If your network communications are being monitored, it could be used to gather technical information about this computer.</property>
 +            <child>
-+              <object class="GtkBox">
-+                <property name="visible">True</property>
-+                <property name="orientation">vertical</property>
-+                <property name="hexpand">True</property>
-+                <child>
-+                  <object class="GtkLabel">
-+                    <property name="visible">True</property>
-+                    <property name="margin-bottom">12</property>
-+                    <property name="label" translatable="yes">Connectivity checking is used to detect connection issues and helps you to stay online. If your network communications are being monitored, it could be used to gather technical information about this computer.</property>
-+                    <property name="wrap">True</property>
-+                    <property name="max-width-chars">50</property>
-+                    <property name="xalign">0</property>
-+                  </object>
-+                </child>
-+                <child>
-+                  <object class="GtkListBox">
-+                    <property name="visible">True</property>
-+                    <property name="can-focus">True</property>
-+                    <property name="selection-mode">none</property>
-+                    <child>
-+                      <object class="HdyActionRow">
-+                        <property name="visible">true</property>
-+                        <property name="title" translatable="yes">_Connectivity Checking</property>
-+                        <property name="activatable-widget">connectivity_switch</property>
-+                        <property name="use-underline">true</property>
-+                        <child>
-+                          <object class="GtkSwitch" id="connectivity_switch">
-+                            <property name="visible">True</property>
-+                            <property name="halign">end</property>
-+                            <property name="valign">center</property>
-+                          </object>
-+                        </child>
-+                      </object>
-+                    </child>
-+                    <style>
-+                      <class name="view"/>
-+                      <class name="frame"/>
-+                    </style>
-+                  </object>
-+                </child>
++              <object class="CcListRow" id="connectivity_switch">
++                <property name="title" translatable="yes">_Connectivity Checking</property>
++                <property name="use-underline">True</property>
++                <property name="show-switch">True</property>
 +              </object>
 +            </child>
 +          </object>
@@ -358,7 +314,7 @@ index 0000000..4d0194b
 +  c_args: cflags
 +)
 diff --git a/panels/meson.build b/panels/meson.build
-index c21910a..cfe81ab 100644
+index e063476..46607de 100644
 --- a/panels/meson.build
 +++ b/panels/meson.build
 @@ -5,6 +5,7 @@ panels = [
@@ -370,7 +326,7 @@ index c21910a..cfe81ab 100644
    'default-apps',
    'diagnostics',
 diff --git a/po/POTFILES.in b/po/POTFILES.in
-index e62bfd9..e25e710 100644
+index e2306e6..cce713c 100644
 --- a/po/POTFILES.in
 +++ b/po/POTFILES.in
 @@ -32,6 +32,8 @@ panels/common/cc-time-editor.ui
@@ -383,7 +339,7 @@ index e62bfd9..e25e710 100644
  panels/datetime/cc-datetime-panel.ui
  panels/datetime/gnome-datetime-panel.desktop.in.in
 diff --git a/shell/cc-panel-loader.c b/shell/cc-panel-loader.c
-index b571ceb..db90b27 100644
+index 3a74ac1..29bfa2d 100644
 --- a/shell/cc-panel-loader.c
 +++ b/shell/cc-panel-loader.c
 @@ -37,6 +37,7 @@ extern GType cc_background_panel_get_type (void);

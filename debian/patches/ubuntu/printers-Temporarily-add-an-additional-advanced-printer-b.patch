@@ -10,12 +10,12 @@ Origin: ubuntu
 Bug-Ubuntu: https://launchpad.net/bugs/1706524a
 Bug: https://bugzilla.gnome.org/show_bug.cgi?id=692532
 ---
- panels/printers/cc-printers-panel.c | 28 ++++++++++++++++++++++++
- panels/printers/printers.ui         | 43 +++++++++++++++++++++++++++++++++++++
- 2 files changed, 71 insertions(+)
+ panels/printers/cc-printers-panel.c | 24 ++++++++++++++++++++++++
+ panels/printers/printers.ui         | 13 +++++++++++++
+ 2 files changed, 37 insertions(+)
 
 diff --git a/panels/printers/cc-printers-panel.c b/panels/printers/cc-printers-panel.c
-index 880d5a4..e8a3b72 100644
+index 4337633..0b87b4f 100644
 --- a/panels/printers/cc-printers-panel.c
 +++ b/panels/printers/cc-printers-panel.c
 @@ -25,6 +25,7 @@
@@ -26,7 +26,7 @@ index 880d5a4..e8a3b72 100644
  #include <glib/gi18n-lib.h>
  #include <glib/gstdio.h>
  #include <polkit/polkit.h>
-@@ -977,6 +978,25 @@ printer_add_cb (CcPrintersPanel *self)
+@@ -979,6 +980,25 @@ printer_add_cb (CcPrintersPanel *self)
    gtk_widget_show (GTK_WIDGET (self->pp_new_printer_dialog));
  }
  
@@ -52,7 +52,7 @@ index 880d5a4..e8a3b72 100644
  static void
  update_sensitivity (gpointer user_data)
  {
-@@ -1229,6 +1249,14 @@ cc_printers_panel_init (CcPrintersPanel *self)
+@@ -1233,6 +1253,10 @@ cc_printers_panel_init (CcPrintersPanel *self)
    self->notification = (GtkRevealer*)
      gtk_builder_get_object (self->builder, "notification");
  
@@ -60,78 +60,37 @@ index 880d5a4..e8a3b72 100644
 +  g_signal_connect_swapped (widget, "clicked",
 +                            G_CALLBACK (show_system_config_printer), NULL);
 +
-+  widget = (GtkWidget*) gtk_builder_get_object (self->builder, "system-config-printer-button2");
-+  g_signal_connect_swapped (widget, "clicked",
-+                            G_CALLBACK (show_system_config_printer), NULL);
-+
    widget = (GtkWidget*)
      gtk_builder_get_object (self->builder, "notification-undo-button");
    g_signal_connect_object (widget, "clicked", G_CALLBACK (on_printer_deletion_undone), self, G_CONNECT_SWAPPED);
 diff --git a/panels/printers/printers.ui b/panels/printers/printers.ui
-index 5fbaafb..7eae37b 100644
+index accbad7..e2cfd37 100644
 --- a/panels/printers/printers.ui
 +++ b/panels/printers/printers.ui
-@@ -135,6 +135,7 @@
-             <child>
-               <object class="GtkBox">
-                 <property name="visible">True</property>
-+                <property name="orientation">vertical</property>
+@@ -125,6 +125,7 @@
+                 <property name="vexpand">True</property>
                  <child>
-                   <object class="GtkListBox" id="content">
-                     <property name="visible">True</property>
-@@ -147,6 +148,32 @@
-                     </style>
-                   </object>
-                 </child>
-+                <child>
-+                  <object class="GtkBox">
-+                    <property name="visible">True</property>
-+                    <property name="can_focus">False</property>
-+                    <property name="orientation">horizontal</property>
+                   <object class="GtkBox">
++                    <property name="orientation">vertical</property>
+                     <child>
+                       <object class="GtkListBox" id="content">
+                         <property name="selection-mode">GTK_SELECTION_NONE</property>
+@@ -135,6 +136,18 @@
+                         </style>
+                       </object>
+                     </child>
++
 +                    <child>
 +                      <object class="GtkButton" id="system-config-printer-button1">
 +                        <property name="label" translatable="yes">Additional Printer Settings…</property>
-+                        <property name="visible">True</property>
 +                        <property name="can_focus">True</property>
 +                        <property name="receives_default">True</property>
-+                        <property name="margin-start">60</property>
++                        <property name="hexpand">False</property>
++                        <property name="halign">end</property>
 +                        <property name="margin-end">60</property>
++                        <property name="margin-bottom">24</property>
 +                      </object>
-+                      <packing>
-+                        <property name="expand">False</property>
-+                        <property name="fill">True</property>
-+                        <property name="pack_type">end</property>
-+                      </packing>
 +                    </child>
-+                  </object>
-+                  <packing>
-+                    <property name="expand">False</property>
-+                    <property name="fill">True</property>
-+                  </packing>
-+                </child>
+                   </object>
+                 </child>
                </object>
-             </child>
-           </object>
-@@ -214,6 +241,22 @@
-             <property name="position">2</property>
-           </packing>
-         </child>
-+        <child>
-+          <object class="GtkButton" id="system-config-printer-button2">
-+            <property name="label" translatable="yes">Additional Printer Settings…</property>
-+            <property name="visible">True</property>
-+            <property name="can_focus">True</property>
-+            <property name="receives_default">False</property>
-+            <property name="halign">center</property>
-+            <property name="relief">normal</property>
-+            <property name="margin-top">30</property>
-+          </object>
-+          <packing>
-+            <property name="expand">False</property>
-+            <property name="fill">False</property>
-+            <property name="position">3</property>
-+          </packing>
-+        </child>
-       </object>
-       <packing>
-         <property name="name">empty-state</property>

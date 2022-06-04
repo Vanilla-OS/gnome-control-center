@@ -9,7 +9,7 @@ so that it can be at upper levels.
 This is a backport of the gtk4 version proposed upstream, and can be
 safely removed post GNOME-41.
 
-Origin: https://gitlab.gnome.org/GNOME/gnome-control-center/-/merge_requests/1032/diffs?diff_id=241907
+Origin: https://gitlab.gnome.org/GNOME/gnome-control-center/-/merge_requests/1032
 ---
  panels/display/cc-display-config-dbus.c | 24 ++++++++++++++++++++++++
  panels/display/cc-display-config.c      |  6 ++++++
@@ -17,7 +17,7 @@ Origin: https://gitlab.gnome.org/GNOME/gnome-control-center/-/merge_requests/103
  3 files changed, 41 insertions(+)
 
 diff --git a/panels/display/cc-display-config-dbus.c b/panels/display/cc-display-config-dbus.c
-index 5cee57c..a3690f1 100644
+index 83a49ad..02761f5 100644
 --- a/panels/display/cc-display-config-dbus.c
 +++ b/panels/display/cc-display-config-dbus.c
 @@ -303,6 +303,7 @@ struct _CcDisplayMonitorDBus
@@ -73,10 +73,10 @@ index 5cee57c..a3690f1 100644
  
    return self;
 diff --git a/panels/display/cc-display-config.c b/panels/display/cc-display-config.c
-index 86a80b3..82c14e2 100644
+index a78b33f..381c9e0 100644
 --- a/panels/display/cc-display-config.c
 +++ b/panels/display/cc-display-config.c
-@@ -327,6 +327,12 @@ cc_display_monitor_set_underscanning (CcDisplayMonitor *self,
+@@ -322,6 +322,12 @@ cc_display_monitor_set_underscanning (CcDisplayMonitor *self,
    return CC_DISPLAY_MONITOR_GET_CLASS (self)->set_underscanning (self, underscanning);
  }
  
@@ -90,7 +90,7 @@ index 86a80b3..82c14e2 100644
  cc_display_monitor_set_mode (CcDisplayMonitor *self, CcDisplayMode *m)
  {
 diff --git a/panels/display/cc-display-config.h b/panels/display/cc-display-config.h
-index 96f2293..dc3a924 100644
+index d83fa8e..2587916 100644
 --- a/panels/display/cc-display-config.h
 +++ b/panels/display/cc-display-config.h
 @@ -68,6 +68,14 @@ typedef enum _CcDisplayRotation
@@ -116,7 +116,7 @@ index 96f2293..dc3a924 100644
    CcDisplayMode*    (*get_mode)               (CcDisplayMonitor  *self);
    CcDisplayMode*    (*get_preferred_mode)     (CcDisplayMonitor  *self);
    GList*            (*get_modes)              (CcDisplayMonitor  *self);
-@@ -229,6 +238,8 @@ gboolean          cc_display_monitor_get_underscanning      (CcDisplayMonitor  *
+@@ -214,6 +223,8 @@ gboolean          cc_display_monitor_get_underscanning      (CcDisplayMonitor  *
  void              cc_display_monitor_set_underscanning      (CcDisplayMonitor  *monitor,
                                                               gboolean           underscanning);
  

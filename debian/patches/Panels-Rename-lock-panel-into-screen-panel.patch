@@ -1,0 +1,1325 @@
+From: =?utf-8?b?Ik1hcmNvIFRyZXZpc2FuIChUcmV2acOxbyki?= <mail@3v1n0.net>
+Date: Tue, 25 Jan 2022 02:30:09 +0100
+Subject: Panels: Rename lock panel into screen panel
+
+This was designed some time ago [1] but never actually implemented, so:
+ - Change the screen lock section to "screen"
+ - Move the screen section up, so it's next to the other types of
+   hardware
+ - Added a Screen lock section in there
+
+[1] https://gitlab.gnome.org/GNOME/gnome-control-center/-/issues/909#note_737827
+
+Origin: https://gitlab.gnome.org/GNOME/gnome-control-center/-/merge_requests/1032
+---
+ panels/lock/cc-lock-panel.c                        | 333 ---------------------
+ panels/lock/cc-lock-panel.h                        |  55 ----
+ panels/lock/cc-lock-panel.ui                       |  98 ------
+ panels/lock/gnome-lock-panel.desktop.in.in         |  19 --
+ panels/lock/icons/meson.build                      |   4 -
+ .../org.gnome.Settings-screen-lock-symbolic.svg    |   4 -
+ panels/lock/lock.gresource.xml                     |   6 -
+ panels/lock/meson.build                            |  46 ---
+ panels/meson.build                                 |   2 +-
+ panels/screen/cc-screen-panel.c                    | 332 ++++++++++++++++++++
+ panels/screen/cc-screen-panel.h                    |  55 ++++
+ panels/screen/cc-screen-panel.ui                   |  99 ++++++
+ panels/screen/gnome-screen-panel.desktop.in.in     |  19 ++
+ panels/screen/icons/meson.build                    |   4 +
+ .../org.gnome.Settings-screen-symbolic.svg         |   4 +
+ panels/screen/meson.build                          |  46 +++
+ panels/screen/screen.gresource.xml                 |   6 +
+ shell/cc-panel-loader.c                            |   4 +-
+ 18 files changed, 568 insertions(+), 568 deletions(-)
+ delete mode 100644 panels/lock/cc-lock-panel.c
+ delete mode 100644 panels/lock/cc-lock-panel.h
+ delete mode 100644 panels/lock/cc-lock-panel.ui
+ delete mode 100644 panels/lock/gnome-lock-panel.desktop.in.in
+ delete mode 100644 panels/lock/icons/meson.build
+ delete mode 100644 panels/lock/icons/scalable/org.gnome.Settings-screen-lock-symbolic.svg
+ delete mode 100644 panels/lock/lock.gresource.xml
+ delete mode 100644 panels/lock/meson.build
+ create mode 100644 panels/screen/cc-screen-panel.c
+ create mode 100644 panels/screen/cc-screen-panel.h
+ create mode 100644 panels/screen/cc-screen-panel.ui
+ create mode 100644 panels/screen/gnome-screen-panel.desktop.in.in
+ create mode 100644 panels/screen/icons/meson.build
+ create mode 100644 panels/screen/icons/scalable/org.gnome.Settings-screen-symbolic.svg
+ create mode 100644 panels/screen/meson.build
+ create mode 100644 panels/screen/screen.gresource.xml
+
+diff --git a/panels/lock/cc-lock-panel.c b/panels/lock/cc-lock-panel.c
+deleted file mode 100644
+index 24dcc7a..0000000
+--- a/panels/lock/cc-lock-panel.c
++++ /dev/null
+@@ -1,333 +0,0 @@
+-/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*-
+- *
+- * Copyright (C) 2018 Red Hat, Inc
+- * Copyright (C) 2020 Collabora Ltd.
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, see <http://www.gnu.org/licenses/>.
+- *
+- * Author: Matthias Clasen <mclasen@redhat.com>
+- */
+-
+-#include "cc-lock-panel.h"
+-#include "cc-lock-panel-enums.h"
+-#include "cc-lock-resources.h"
+-#include "cc-util.h"
+-
+-#include <adwaita.h>
+-#include <gio/gdesktopappinfo.h>
+-#include <glib/gi18n.h>
+-
+-struct _CcLockPanel
+-{
+-  CcPanel        parent_instance;
+-
+-  GSettings     *lock_settings;
+-  GSettings     *notification_settings;
+-  GSettings     *privacy_settings;
+-  GSettings     *session_settings;
+-
+-  GCancellable  *cancellable;
+-
+-  GtkSwitch     *automatic_screen_lock_switch;
+-  AdwComboRow   *blank_screen_row;
+-  AdwComboRow   *lock_after_row;
+-  GtkSwitch     *show_notifications_switch;
+-  GtkSwitch     *usb_protection_switch;
+-  GDBusProxy    *usb_proxy;
+-  GtkListBoxRow *usb_protection_row;
+-};
+-
+-CC_PANEL_REGISTER (CcLockPanel, cc_lock_panel)
+-
+-static char *
+-lock_after_name_cb (AdwEnumListItem *item,
+-                    gpointer         user_data)
+-{
+-
+-  switch (adw_enum_list_item_get_value (item))
+-    {
+-    case CC_LOCK_PANEL_LOCK_AFTER_SCREEN_OFF:
+-      /* Translators: Option for "Lock screen after blank" in "Screen Lock" panel */
+-      return g_strdup(C_("lock_screen", "Screen Turns Off"));
+-    case CC_LOCK_PANEL_LOCK_AFTER_30_SEC:
+-      /* Translators: Option for "Lock screen after blank" in "Screen Lock" panel */
+-      return g_strdup (C_("lock_screen", "30 seconds"));
+-    case CC_LOCK_PANEL_LOCK_AFTER_1_MIN:
+-      /* Translators: Option for "Lock screen after blank" in "Screen Lock" panel */
+-      return g_strdup (C_("lock_screen", "1 minute"));
+-    case CC_LOCK_PANEL_LOCK_AFTER_2_MIN:
+-      /* Translators: Option for "Lock screen after blank" in "Screen Lock" panel */
+-      return g_strdup (C_("lock_screen", "2 minutes"));
+-    case CC_LOCK_PANEL_LOCK_AFTER_3_MIN:
+-      /* Translators: Option for "Lock screen after blank" in "Screen Lock" panel */
+-      return g_strdup (C_("lock_screen", "3 minutes"));
+-    case CC_LOCK_PANEL_LOCK_AFTER_5_MIN:
+-      /* Translators: Option for "Lock screen after blank" in "Screen Lock" panel */
+-      return g_strdup (C_("lock_screen", "5 minutes"));
+-    case CC_LOCK_PANEL_LOCK_AFTER_30_MIN:
+-      /* Translators: Option for "Lock screen after blank" in "Screen Lock" panel */
+-      return g_strdup (C_("lock_screen", "30 minutes"));
+-    case CC_LOCK_PANEL_LOCK_AFTER_1_HR:
+-      /* Translators: Option for "Lock screen after blank" in "Screen Lock" panel */
+-      return g_strdup (C_("lock_screen", "1 hour"));
+-    default:
+-      return NULL;
+-    }
+-}
+-
+-static void
+-on_lock_combo_changed_cb (AdwComboRow *combo_row,
+-                          GParamSpec  *pspec,
+-                          CcLockPanel *self)
+-{
+-  AdwEnumListItem *item;
+-  CcLockPanelLockAfter delay;
+-
+-  item = ADW_ENUM_LIST_ITEM (adw_combo_row_get_selected_item (combo_row));
+-  delay = adw_enum_list_item_get_value (item);
+-
+-  g_settings_set (self->lock_settings, "lock-delay", "u", delay);
+-}
+-
+-static void
+-set_lock_value_for_combo (AdwComboRow *combo_row,
+-                          CcLockPanel *self)
+-{
+-  AdwEnumListModel *model;
+-  guint value;
+-
+-  model = ADW_ENUM_LIST_MODEL (adw_combo_row_get_model (combo_row));
+-
+-  g_settings_get (self->lock_settings, "lock-delay", "u", &value);
+-  adw_combo_row_set_selected (combo_row,
+-                              adw_enum_list_model_find_position (model, value));
+-}
+-
+-static char *
+-screen_delay_name_cb (AdwEnumListItem *item,
+-                      gpointer         user_data)
+-{
+-
+-  switch (adw_enum_list_item_get_value (item))
+-    {
+-    case CC_LOCK_PANEL_BLANK_SCREEN_DELAY_1_MIN:
+-      /* Translators: Option for "Blank screen" in "Screen Lock" panel */
+-      return g_strdup (C_("blank_screen", "1 minute"));
+-    case CC_LOCK_PANEL_BLANK_SCREEN_DELAY_2_MIN:
+-      /* Translators: Option for "Blank screen" in "Screen Lock" panel */
+-      return g_strdup (C_("blank_screen", "2 minutes"));
+-    case CC_LOCK_PANEL_BLANK_SCREEN_DELAY_3_MIN:
+-      /* Translators: Option for "Blank screen" in "Screen Lock" panel */
+-      return g_strdup (C_("blank_screen", "3 minutes"));
+-    case CC_LOCK_PANEL_BLANK_SCREEN_DELAY_4_MIN:
+-      /* Translators: Option for "Blank screen" in "Screen Lock" panel */
+-      return g_strdup (C_("blank_screen", "4 minutes"));
+-    case CC_LOCK_PANEL_BLANK_SCREEN_DELAY_5_MIN:
+-      /* Translators: Option for "Blank screen" in "Screen Lock" panel */
+-      return g_strdup (C_("blank_screen", "5 minutes"));
+-    case CC_LOCK_PANEL_BLANK_SCREEN_DELAY_8_MIN:
+-      /* Translators: Option for "Blank screen" in "Screen Lock" panel */
+-      return g_strdup (C_("blank_screen", "8 minutes"));
+-    case CC_LOCK_PANEL_BLANK_SCREEN_DELAY_10_MIN:
+-      /* Translators: Option for "Blank screen" in "Screen Lock" panel */
+-      return g_strdup (C_("blank_screen", "10 minutes"));
+-    case CC_LOCK_PANEL_BLANK_SCREEN_DELAY_12_MIN:
+-      /* Translators: Option for "Blank screen" in "Screen Lock" panel */
+-      return g_strdup (C_("blank_screen", "12 minutes"));
+-    case CC_LOCK_PANEL_BLANK_SCREEN_DELAY_15_MIN:
+-      /* Translators: Option for "Blank screen" in "Screen Lock" panel */
+-      return g_strdup (C_("blank_screen", "15 minutes"));
+-    case CC_LOCK_PANEL_BLANK_SCREEN_DELAY_NEVER:
+-      /* Translators: Option for "Blank screen" in "Screen Lock" panel */
+-      return g_strdup (C_("blank_screen", "Never"));
+-    default:
+-      return NULL;
+-    }
+-}
+-
+-static void
+-set_blank_screen_delay_value (CcLockPanel *self,
+-                              gint         value)
+-{
+-  AdwEnumListModel *model;
+-
+-  model = ADW_ENUM_LIST_MODEL (adw_combo_row_get_model (self->blank_screen_row));
+-
+-  adw_combo_row_set_selected (self->blank_screen_row,
+-                              adw_enum_list_model_find_position (model, value));
+-}
+-
+-static void
+-on_blank_screen_delay_changed_cb (AdwComboRow *combo_row,
+-                                  GParamSpec  *pspec,
+-                                  CcLockPanel *self)
+-{
+-  AdwEnumListItem *item;
+-  CcLockPanelBlankScreenDelay delay;
+-
+-  item = ADW_ENUM_LIST_ITEM (adw_combo_row_get_selected_item (combo_row));
+-  delay = adw_enum_list_item_get_value (item);
+-
+-  g_settings_set_uint (self->session_settings, "idle-delay", delay);
+-}
+-
+-static void
+-on_usb_protection_properties_changed_cb (GDBusProxy  *usb_proxy,
+-                                         GVariant    *changed_properties,
+-                                         GStrv        invalidated_properties,
+-                                         CcLockPanel *self)
+-{
+-  gboolean available = FALSE;
+-
+-  if (self->usb_proxy)
+-    {
+-      g_autoptr(GVariant) variant = NULL;
+-
+-      variant = g_dbus_proxy_get_cached_property (self->usb_proxy, "Available");
+-      if (variant != NULL)
+-        available = g_variant_get_boolean (variant);
+-    }
+-
+-  /* Show the USB protection row only if the required daemon is up and running */
+-  gtk_widget_set_visible (GTK_WIDGET (self->usb_protection_row), available);
+-}
+-
+-static void
+-on_usb_protection_param_ready (GObject      *source_object,
+-                               GAsyncResult *res,
+-                               gpointer      user_data)
+-{
+-  g_autoptr(GError) error = NULL;
+-  CcLockPanel *self;
+-  GDBusProxy *proxy;
+-
+-  self = user_data;
+-  proxy = g_dbus_proxy_new_for_bus_finish (res, &error);
+-  if (error)
+-    {
+-      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+-        {
+-          g_warning ("Failed to connect to SettingsDaemon.UsbProtection: %s",
+-                     error->message);
+-        }
+-
+-      gtk_widget_hide (GTK_WIDGET (self->usb_protection_row));
+-      return;
+-    }
+-  self->usb_proxy = proxy;
+-
+-  g_signal_connect_object (self->usb_proxy,
+-                           "g-properties-changed",
+-                           G_CALLBACK (on_usb_protection_properties_changed_cb),
+-                           self,
+-                           0);
+-  on_usb_protection_properties_changed_cb (self->usb_proxy, NULL, NULL, self);
+-}
+-
+-static void
+-cc_lock_panel_finalize (GObject *object)
+-{
+-  CcLockPanel *self = CC_LOCK_PANEL (object);
+-
+-  g_cancellable_cancel (self->cancellable);
+-  g_clear_object (&self->cancellable);
+-  g_clear_object (&self->lock_settings);
+-  g_clear_object (&self->notification_settings);
+-  g_clear_object (&self->session_settings);
+-  g_clear_object (&self->usb_proxy);
+-
+-  G_OBJECT_CLASS (cc_lock_panel_parent_class)->finalize (object);
+-}
+-
+-static void
+-cc_lock_panel_class_init (CcLockPanelClass *klass)
+-{
+-  GObjectClass *oclass = G_OBJECT_CLASS (klass);
+-  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
+-
+-  oclass->finalize = cc_lock_panel_finalize;
+-
+-  g_type_ensure (CC_TYPE_LOCK_PANEL_LOCK_AFTER);
+-  g_type_ensure (CC_TYPE_LOCK_PANEL_BLANK_SCREEN_DELAY);
+-
+-  gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/lock/cc-lock-panel.ui");
+-
+-  gtk_widget_class_bind_template_child (widget_class, CcLockPanel, automatic_screen_lock_switch);
+-  gtk_widget_class_bind_template_child (widget_class, CcLockPanel, blank_screen_row);
+-  gtk_widget_class_bind_template_child (widget_class, CcLockPanel, lock_after_row);
+-  gtk_widget_class_bind_template_child (widget_class, CcLockPanel, show_notifications_switch);
+-  gtk_widget_class_bind_template_child (widget_class, CcLockPanel, usb_protection_switch);
+-  gtk_widget_class_bind_template_child (widget_class, CcLockPanel, usb_protection_row);
+-
+-  gtk_widget_class_bind_template_callback (widget_class, screen_delay_name_cb);
+-  gtk_widget_class_bind_template_callback (widget_class, on_blank_screen_delay_changed_cb);
+-  gtk_widget_class_bind_template_callback (widget_class, lock_after_name_cb);
+-  gtk_widget_class_bind_template_callback (widget_class, on_lock_combo_changed_cb);
+-}
+-
+-static void
+-cc_lock_panel_init (CcLockPanel *self)
+-{
+-  guint value;
+-
+-  g_resources_register (cc_lock_get_resource ());
+-
+-  gtk_widget_init_template (GTK_WIDGET (self));
+-
+-  self->cancellable = g_cancellable_new ();
+-
+-  self->lock_settings = g_settings_new ("org.gnome.desktop.screensaver");
+-  self->privacy_settings = g_settings_new ("org.gnome.desktop.privacy");
+-  self->notification_settings = g_settings_new ("org.gnome.desktop.notifications");
+-  self->session_settings = g_settings_new ("org.gnome.desktop.session");
+-
+-  g_settings_bind (self->lock_settings,
+-                   "lock-enabled",
+-                   self->automatic_screen_lock_switch,
+-                   "active",
+-                   G_SETTINGS_BIND_DEFAULT);
+-
+-  g_settings_bind (self->lock_settings,
+-                   "lock-enabled",
+-                   self->lock_after_row,
+-                   "sensitive",
+-                   G_SETTINGS_BIND_GET);
+-
+-  set_lock_value_for_combo (self->lock_after_row, self);
+-
+-  g_settings_bind (self->notification_settings,
+-                   "show-in-lock-screen",
+-                   self->show_notifications_switch,
+-                   "active",
+-                   G_SETTINGS_BIND_DEFAULT);
+-
+-  value = g_settings_get_uint (self->session_settings, "idle-delay");
+-  set_blank_screen_delay_value (self, value);
+-
+-  g_settings_bind (self->privacy_settings,
+-                   "usb-protection",
+-                   self->usb_protection_switch,
+-                   "active",
+-                   G_SETTINGS_BIND_DEFAULT);
+-
+-  g_dbus_proxy_new_for_bus (G_BUS_TYPE_SESSION,
+-                            G_DBUS_PROXY_FLAGS_NONE,
+-                            NULL,
+-                            "org.gnome.SettingsDaemon.UsbProtection",
+-                            "/org/gnome/SettingsDaemon/UsbProtection",
+-                            "org.gnome.SettingsDaemon.UsbProtection",
+-                            self->cancellable,
+-                            on_usb_protection_param_ready,
+-                            self);
+-}
+diff --git a/panels/lock/cc-lock-panel.h b/panels/lock/cc-lock-panel.h
+deleted file mode 100644
+index 0174863..0000000
+--- a/panels/lock/cc-lock-panel.h
++++ /dev/null
+@@ -1,55 +0,0 @@
+-/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*-
+- *
+- * Copyright (C) 2018 Red Hat, Inc
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, see <http://www.gnu.org/licenses/>.
+- *
+- * Author: Matthias Clasen <mclasen@redhat.com>
+- */
+-
+-#pragma once
+-
+-#include <shell/cc-panel.h>
+-
+-G_BEGIN_DECLS
+-
+-#define CC_TYPE_LOCK_PANEL (cc_lock_panel_get_type ())
+-G_DECLARE_FINAL_TYPE (CcLockPanel, cc_lock_panel, CC, LOCK_PANEL, CcPanel)
+-
+-typedef enum {
+-  CC_LOCK_PANEL_LOCK_AFTER_SCREEN_OFF = 0,
+-  CC_LOCK_PANEL_LOCK_AFTER_30_SEC     = 30,
+-  CC_LOCK_PANEL_LOCK_AFTER_1_MIN      = 60,
+-  CC_LOCK_PANEL_LOCK_AFTER_2_MIN      = 120,
+-  CC_LOCK_PANEL_LOCK_AFTER_3_MIN      = 180,
+-  CC_LOCK_PANEL_LOCK_AFTER_5_MIN      = 300,
+-  CC_LOCK_PANEL_LOCK_AFTER_30_MIN     = 1800,
+-  CC_LOCK_PANEL_LOCK_AFTER_1_HR       = 3600,
+-} CcLockPanelLockAfter;
+-
+-typedef enum {
+-  CC_LOCK_PANEL_BLANK_SCREEN_DELAY_1_MIN  = 60,
+-  CC_LOCK_PANEL_BLANK_SCREEN_DELAY_2_MIN  = 120,
+-  CC_LOCK_PANEL_BLANK_SCREEN_DELAY_3_MIN  = 180,
+-  CC_LOCK_PANEL_BLANK_SCREEN_DELAY_4_MIN  = 240,
+-  CC_LOCK_PANEL_BLANK_SCREEN_DELAY_5_MIN  = 300,
+-  CC_LOCK_PANEL_BLANK_SCREEN_DELAY_8_MIN  = 480,
+-  CC_LOCK_PANEL_BLANK_SCREEN_DELAY_10_MIN = 600,
+-  CC_LOCK_PANEL_BLANK_SCREEN_DELAY_12_MIN = 720,
+-  CC_LOCK_PANEL_BLANK_SCREEN_DELAY_15_MIN = 900,
+-  CC_LOCK_PANEL_BLANK_SCREEN_DELAY_NEVER  = 0,
+-} CcLockPanelBlankScreenDelay;
+-
+-
+-G_END_DECLS
+diff --git a/panels/lock/cc-lock-panel.ui b/panels/lock/cc-lock-panel.ui
+deleted file mode 100644
+index 40d07e1..0000000
+--- a/panels/lock/cc-lock-panel.ui
++++ /dev/null
+@@ -1,98 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<interface>
+-  <template class="CcLockPanel" parent="CcPanel">
+-    <child type="content">
+-      <object class="AdwPreferencesPage">
+-        <child>
+-          <object class="AdwPreferencesGroup">
+-            <property name="description" translatable="yes">Automatically locking the screen prevents others from accessing the computer while you're away.</property>
+-
+-            <!-- Blank Screen Delay row -->
+-            <child>
+-              <object class="AdwComboRow" id="blank_screen_row">
+-                <property name="title" translatable="yes">Blank Screen Delay</property>
+-                <property name="subtitle" translatable="yes">Period of inactivity after which the screen will go blank.</property>
+-                <property name="subtitle-lines">2</property>
+-                <property name="use-underline">true</property>
+-                <signal name="notify::selected-item" handler="on_blank_screen_delay_changed_cb"/>
+-                <property name="model">
+-                  <object class="AdwEnumListModel">
+-                    <property name="enum-type">CcLockPanelBlankScreenDelay</property>
+-                  </object>
+-                </property>
+-                <property name="expression">
+-                  <closure type="gchararray" function="screen_delay_name_cb"/>
+-                </property>
+-              </object>
+-            </child>
+-
+-            <!-- Automatic Screen Lock row -->
+-            <child>
+-              <object class="AdwActionRow">
+-                <property name="title" translatable="yes">Automatic Screen _Lock</property>
+-                <property name="activatable-widget">automatic_screen_lock_switch</property>
+-                <property name="use-underline">true</property>
+-                <child>
+-                  <object class="GtkSwitch" id="automatic_screen_lock_switch">
+-                    <property name="valign">center</property>
+-                  </object>
+-                </child>
+-              </object>
+-            </child>
+-
+-            <!-- Automatic Screen Lock Delay row -->
+-            <child>
+-              <object class="AdwComboRow" id="lock_after_row">
+-                <property name="title" translatable="yes">Automatic _Screen Lock Delay</property>
+-                <property name="subtitle" translatable="yes">Period after the screen blanks when the screen is automatically locked.</property>
+-                <property name="subtitle-lines">2</property>
+-                <property name="use-underline">true</property>
+-                <signal name="notify::selected-item" handler="on_lock_combo_changed_cb"/>
+-                <property name="model">
+-                  <object class="AdwEnumListModel">
+-                    <property name="enum-type">CcLockPanelLockAfter</property>
+-                  </object>
+-                </property>
+-                <property name="expression">
+-                  <closure type="gchararray" function="lock_after_name_cb"/>
+-                </property>
+-              </object>
+-            </child>
+-
+-            <!-- Show Notifications row -->
+-            <child>
+-              <object class="AdwActionRow">
+-                <property name="title" translatable="yes">Show _Notifications on Lock Screen</property>
+-                <property name="activatable-widget">show_notifications_switch</property>
+-                <property name="use-underline">true</property>
+-                <child>
+-                  <object class="GtkSwitch" id="show_notifications_switch">
+-                    <property name="valign">center</property>
+-                  </object>
+-                </child>
+-              </object>
+-            </child>
+-
+-            <!-- USB protection row -->
+-            <child>
+-              <object class="AdwActionRow" id="usb_protection_row">
+-                <property name="visible">false</property>
+-                <property name="title" translatable="yes">Forbid new _USB devices</property>
+-                <property name="subtitle" translatable="yes">Prevent new USB devices from interacting with the system when the screen is locked.</property>
+-                <property name="subtitle-lines">2</property>
+-                <property name="activatable-widget">usb_protection_switch</property>
+-                <property name="use-underline">true</property>
+-                <child>
+-                  <object class="GtkSwitch" id="usb_protection_switch">
+-                    <property name="valign">center</property>
+-                  </object>
+-                </child>
+-              </object>
+-            </child>
+-
+-          </object>
+-        </child>
+-      </object>
+-    </child>
+-  </template>
+-</interface>
+diff --git a/panels/lock/gnome-lock-panel.desktop.in.in b/panels/lock/gnome-lock-panel.desktop.in.in
+deleted file mode 100644
+index b533a54..0000000
+--- a/panels/lock/gnome-lock-panel.desktop.in.in
++++ /dev/null
+@@ -1,19 +0,0 @@
+-[Desktop Entry]
+-Name=Screen Lock
+-Comment=Lock your screen
+-Exec=gnome-control-center lock
+-# FIXME
+-# Translators: Do NOT translate or transliterate this text (this is an icon file name)!
+-Icon=org.gnome.Settings-screen-lock-symbolic
+-Terminal=false
+-Type=Application
+-NoDisplay=true
+-StartupNotify=true
+-Categories=GNOME;GTK;Settings;DesktopSettings;X-GNOME-Settings-Panel;X-GNOME-PrivacySettings;
+-OnlyShowIn=GNOME;Unity;
+-X-GNOME-Bugzilla-Bugzilla=GNOME
+-X-GNOME-Bugzilla-Product=gnome-control-center
+-X-GNOME-Bugzilla-Component=privacy
+-X-GNOME-Bugzilla-Version=@VERSION@
+-# Translators: Search terms to find the Privacy panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+-Keywords=screen;lock;diagnostics;crash;private;recent;temporary;tmp;index;name;network;identity;privacy;
+diff --git a/panels/lock/icons/meson.build b/panels/lock/icons/meson.build
+deleted file mode 100644
+index df54c56..0000000
+--- a/panels/lock/icons/meson.build
++++ /dev/null
+@@ -1,4 +0,0 @@
+-install_data(
+-  'scalable/org.gnome.Settings-screen-lock-symbolic.svg',
+-  install_dir: join_paths(control_center_icondir, 'hicolor', 'scalable', 'apps')
+-)
+diff --git a/panels/lock/icons/scalable/org.gnome.Settings-screen-lock-symbolic.svg b/panels/lock/icons/scalable/org.gnome.Settings-screen-lock-symbolic.svg
+deleted file mode 100644
+index e12554e..0000000
+--- a/panels/lock/icons/scalable/org.gnome.Settings-screen-lock-symbolic.svg
++++ /dev/null
+@@ -1,4 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<svg height="16px" viewBox="0 0 16 16" width="16px" xmlns="http://www.w3.org/2000/svg">
+-    <path d="m 8 1 c -2.199219 0 -4 1.800781 -4 4 v 2 c -1.109375 0 -2 0.890625 -2 2 v 5 c 0 0.554688 0.445312 1 1 1 h 10 c 0.554688 0 1 -0.445312 1 -1 v -5 c 0 -1.109375 -0.890625 -2 -2 -2 v -2 c 0 -2.199219 -1.800781 -4 -4 -4 z m 0 2 c 1.125 0 2 0.875 2 2 v 2 h -4 v -2 c 0 -1.125 0.875 -2 2 -2 z m 0 0" fill="#2e3436"/>
+-</svg>
+diff --git a/panels/lock/lock.gresource.xml b/panels/lock/lock.gresource.xml
+deleted file mode 100644
+index 8b25a21..0000000
+--- a/panels/lock/lock.gresource.xml
++++ /dev/null
+@@ -1,6 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<gresources>
+-  <gresource prefix="/org/gnome/control-center/lock">
+-    <file preprocess="xml-stripblanks">cc-lock-panel.ui</file>
+-  </gresource>
+-</gresources>
+diff --git a/panels/lock/meson.build b/panels/lock/meson.build
+deleted file mode 100644
+index 07bda6f..0000000
+--- a/panels/lock/meson.build
++++ /dev/null
+@@ -1,46 +0,0 @@
+-panels_list += cappletname
+-desktop = 'gnome-@0@-panel.desktop'.format(cappletname)
+-
+-desktop_in = configure_file(
+-  input: desktop + '.in.in',
+-  output: desktop + '.in',
+-  configuration: desktop_conf
+-)
+-
+-i18n.merge_file(
+-  type: 'desktop',
+-  input: desktop_in,
+-  output: desktop,
+-  po_dir: po_dir,
+-  install: true,
+-  install_dir: control_center_desktopdir
+-)
+-
+-sources = files('cc-lock-panel.c')
+-
+-resource_data = files('cc-lock-panel.ui')
+-
+-sources += gnome.mkenums_simple(
+-  'cc-lock-panel-enums',
+-  sources: ['cc-lock-panel.h'],
+-)
+-
+-sources += gnome.compile_resources(
+-  'cc-' + cappletname + '-resources',
+-  cappletname + '.gresource.xml',
+-  c_name: 'cc_' + cappletname,
+-  dependencies: resource_data,
+-  export: true
+-)
+-
+-cflags += '-DGNOMELOCALEDIR="@0@"'.format(control_center_localedir)
+-
+-panels_libs += static_library(
+-  cappletname,
+-  sources: sources,
+-  include_directories: [top_inc, common_inc],
+-  dependencies: common_deps,
+-  c_args: cflags
+-)
+-
+-subdir('icons')
+diff --git a/panels/meson.build b/panels/meson.build
+index 75941ed..d8e35a6 100644
+--- a/panels/meson.build
++++ b/panels/meson.build
+@@ -12,7 +12,6 @@ panels = [
+   'info-overview',
+   'keyboard',
+   'location',
+-  'lock',
+   'microphone',
+   'mouse',
+   'multitasking',
+@@ -22,6 +21,7 @@ panels = [
+   'printers',
+   'region',
+   'removable-media',
++  'screen',
+   'search',
+   'sharing',
+   'sound',
+diff --git a/panels/screen/cc-screen-panel.c b/panels/screen/cc-screen-panel.c
+new file mode 100644
+index 0000000..891cb71
+--- /dev/null
++++ b/panels/screen/cc-screen-panel.c
+@@ -0,0 +1,332 @@
++/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*-
++ *
++ * Copyright (C) 2018 Red Hat, Inc
++ * Copyright (C) 2020 Collabora Ltd.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, see <http://www.gnu.org/licenses/>.
++ *
++ * Author: Matthias Clasen <mclasen@redhat.com>
++ */
++
++#include "cc-screen-panel.h"
++#include "cc-screen-panel-enums.h"
++#include "cc-screen-resources.h"
++#include "cc-util.h"
++
++#include <adwaita.h>
++#include <gio/gdesktopappinfo.h>
++#include <glib/gi18n.h>
++
++struct _CcScreenPanel
++{
++  CcPanel        parent_instance;
++
++  GSettings     *lock_settings;
++  GSettings     *notification_settings;
++  GSettings     *privacy_settings;
++  GSettings     *session_settings;
++
++  GCancellable  *cancellable;
++
++  AdwComboRow   *blank_screen_row;
++  AdwComboRow   *lock_after_row;
++  GDBusProxy    *usb_proxy;
++  GtkListBoxRow *usb_protection_row;
++  GtkSwitch     *automatic_screen_lock_switch;
++  GtkSwitch     *show_notifications_switch;
++  GtkSwitch     *usb_protection_switch;
++};
++
++CC_PANEL_REGISTER (CcScreenPanel, cc_screen_panel)
++
++static char *
++lock_after_name_cb (AdwEnumListItem *item,
++                    gpointer         user_data)
++{
++
++  switch (adw_enum_list_item_get_value (item))
++    {
++    case CC_SCREEN_PANEL_LOCK_AFTER_SCREEN_OFF:
++      /* Translators: Option for "Lock screen after blank" in "Screen Lock" panel */
++      return g_strdup(C_("lock_screen", "Screen Turns Off"));
++    case CC_SCREEN_PANEL_LOCK_AFTER_30_SEC:
++      /* Translators: Option for "Lock screen after blank" in "Screen Lock" panel */
++      return g_strdup (C_("lock_screen", "30 seconds"));
++    case CC_SCREEN_PANEL_LOCK_AFTER_1_MIN:
++      /* Translators: Option for "Lock screen after blank" in "Screen Lock" panel */
++      return g_strdup (C_("lock_screen", "1 minute"));
++    case CC_SCREEN_PANEL_LOCK_AFTER_2_MIN:
++      /* Translators: Option for "Lock screen after blank" in "Screen Lock" panel */
++      return g_strdup (C_("lock_screen", "2 minutes"));
++    case CC_SCREEN_PANEL_LOCK_AFTER_3_MIN:
++      /* Translators: Option for "Lock screen after blank" in "Screen Lock" panel */
++      return g_strdup (C_("lock_screen", "3 minutes"));
++    case CC_SCREEN_PANEL_LOCK_AFTER_5_MIN:
++      /* Translators: Option for "Lock screen after blank" in "Screen Lock" panel */
++      return g_strdup (C_("lock_screen", "5 minutes"));
++    case CC_SCREEN_PANEL_LOCK_AFTER_30_MIN:
++      /* Translators: Option for "Lock screen after blank" in "Screen Lock" panel */
++      return g_strdup (C_("lock_screen", "30 minutes"));
++    case CC_SCREEN_PANEL_LOCK_AFTER_1_HR:
++      /* Translators: Option for "Lock screen after blank" in "Screen Lock" panel */
++      return g_strdup (C_("lock_screen", "1 hour"));
++    default:
++      return NULL;
++    }
++}
++
++static void
++on_lock_combo_changed_cb (AdwComboRow   *combo_row,
++                          GParamSpec    *pspec,
++                          CcScreenPanel *self)
++{
++  AdwEnumListItem *item;
++  CcScreenPanelLockAfter delay;
++
++  item = ADW_ENUM_LIST_ITEM (adw_combo_row_get_selected_item (combo_row));
++  delay = adw_enum_list_item_get_value (item);
++
++  g_settings_set (self->lock_settings, "lock-delay", "u", delay);
++}
++
++static void
++set_lock_value_for_combo (AdwComboRow   *combo_row,
++                          CcScreenPanel *self)
++{
++  AdwEnumListModel *model;
++  guint value;
++
++  model = ADW_ENUM_LIST_MODEL (adw_combo_row_get_model (combo_row));
++
++  g_settings_get (self->lock_settings, "lock-delay", "u", &value);
++  adw_combo_row_set_selected (combo_row,
++                              adw_enum_list_model_find_position (model, value));
++}
++
++static char *
++screen_delay_name_cb (AdwEnumListItem *item,
++                      gpointer         user_data)
++{
++
++  switch (adw_enum_list_item_get_value (item))
++    {
++    case CC_SCREEN_PANEL_BLANK_SCREEN_DELAY_1_MIN:
++      /* Translators: Option for "Blank screen" in "Screen Lock" panel */
++      return g_strdup (C_("blank_screen", "1 minute"));
++    case CC_SCREEN_PANEL_BLANK_SCREEN_DELAY_2_MIN:
++      /* Translators: Option for "Blank screen" in "Screen Lock" panel */
++      return g_strdup (C_("blank_screen", "2 minutes"));
++    case CC_SCREEN_PANEL_BLANK_SCREEN_DELAY_3_MIN:
++      /* Translators: Option for "Blank screen" in "Screen Lock" panel */
++      return g_strdup (C_("blank_screen", "3 minutes"));
++    case CC_SCREEN_PANEL_BLANK_SCREEN_DELAY_4_MIN:
++      /* Translators: Option for "Blank screen" in "Screen Lock" panel */
++      return g_strdup (C_("blank_screen", "4 minutes"));
++    case CC_SCREEN_PANEL_BLANK_SCREEN_DELAY_5_MIN:
++      /* Translators: Option for "Blank screen" in "Screen Lock" panel */
++      return g_strdup (C_("blank_screen", "5 minutes"));
++    case CC_SCREEN_PANEL_BLANK_SCREEN_DELAY_8_MIN:
++      /* Translators: Option for "Blank screen" in "Screen Lock" panel */
++      return g_strdup (C_("blank_screen", "8 minutes"));
++    case CC_SCREEN_PANEL_BLANK_SCREEN_DELAY_10_MIN:
++      /* Translators: Option for "Blank screen" in "Screen Lock" panel */
++      return g_strdup (C_("blank_screen", "10 minutes"));
++    case CC_SCREEN_PANEL_BLANK_SCREEN_DELAY_12_MIN:
++      /* Translators: Option for "Blank screen" in "Screen Lock" panel */
++      return g_strdup (C_("blank_screen", "12 minutes"));
++    case CC_SCREEN_PANEL_BLANK_SCREEN_DELAY_15_MIN:
++      /* Translators: Option for "Blank screen" in "Screen Lock" panel */
++      return g_strdup (C_("blank_screen", "15 minutes"));
++    case CC_SCREEN_PANEL_BLANK_SCREEN_DELAY_NEVER:
++      /* Translators: Option for "Blank screen" in "Screen Lock" panel */
++      return g_strdup (C_("blank_screen", "Never"));
++    default:
++      return NULL;
++    }
++}
++
++static void
++set_blank_screen_delay_value (CcScreenPanel *self,
++                              gint           value)
++{
++  AdwEnumListModel *model;
++
++  model = ADW_ENUM_LIST_MODEL (adw_combo_row_get_model (self->blank_screen_row));
++
++  adw_combo_row_set_selected (self->blank_screen_row,
++                              adw_enum_list_model_find_position (model, value));
++}
++
++static void
++on_blank_screen_delay_changed_cb (AdwComboRow   *combo_row,
++                                  GParamSpec    *pspec,
++                                  CcScreenPanel *self)
++{
++  AdwEnumListItem *item;
++  CcScreenPanelBlankScreenDelay delay;
++
++  item = ADW_ENUM_LIST_ITEM (adw_combo_row_get_selected_item (combo_row));
++  delay = adw_enum_list_item_get_value (item);
++
++  g_settings_set_uint (self->session_settings, "idle-delay", delay);
++}
++
++static void
++on_usb_protection_properties_changed_cb (GDBusProxy    *usb_proxy,
++                                         GVariant      *changed_properties,
++                                         GStrv          invalidated_properties,
++                                         CcScreenPanel *self)
++{
++  gboolean available = FALSE;
++
++  if (self->usb_proxy)
++    {
++      g_autoptr(GVariant) variant = NULL;
++
++      variant = g_dbus_proxy_get_cached_property (self->usb_proxy, "Available");
++      if (variant != NULL)
++        available = g_variant_get_boolean (variant);
++    }
++
++  /* Show the USB protection row only if the required daemon is up and running */
++  gtk_widget_set_visible (GTK_WIDGET (self->usb_protection_row), available);
++}
++
++static void
++on_usb_protection_param_ready (GObject      *source_object,
++                               GAsyncResult *res,
++                               gpointer      user_data)
++{
++  g_autoptr(GError) error = NULL;
++  CcScreenPanel *self;
++  GDBusProxy *proxy;
++
++  self = user_data;
++  proxy = g_dbus_proxy_new_for_bus_finish (res, &error);
++  if (error)
++    {
++      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
++        {
++          g_warning ("Failed to connect to SettingsDaemon.UsbProtection: %s",
++                     error->message);
++        }
++
++      gtk_widget_hide (GTK_WIDGET (self->usb_protection_row));
++      return;
++    }
++  self->usb_proxy = proxy;
++
++  g_signal_connect_object (self->usb_proxy,
++                           "g-properties-changed",
++                           G_CALLBACK (on_usb_protection_properties_changed_cb),
++                           self,
++                           0);
++  on_usb_protection_properties_changed_cb (self->usb_proxy, NULL, NULL, self);
++}
++
++static void
++cc_screen_panel_finalize (GObject *object)
++{
++  CcScreenPanel *self = CC_SCREEN_PANEL (object);
++
++  g_cancellable_cancel (self->cancellable);
++  g_clear_object (&self->cancellable);
++  g_clear_object (&self->lock_settings);
++  g_clear_object (&self->notification_settings);
++  g_clear_object (&self->session_settings);
++  g_clear_object (&self->usb_proxy);
++
++  G_OBJECT_CLASS (cc_screen_panel_parent_class)->finalize (object);
++}
++
++static void
++cc_screen_panel_class_init (CcScreenPanelClass *klass)
++{
++  GObjectClass *oclass = G_OBJECT_CLASS (klass);
++  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
++
++  oclass->finalize = cc_screen_panel_finalize;
++
++  g_type_ensure (CC_TYPE_SCREEN_PANEL_LOCK_AFTER);
++  g_type_ensure (CC_TYPE_SCREEN_PANEL_BLANK_SCREEN_DELAY);
++  gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/screen/cc-screen-panel.ui");
++
++  gtk_widget_class_bind_template_child (widget_class, CcScreenPanel, automatic_screen_lock_switch);
++  gtk_widget_class_bind_template_child (widget_class, CcScreenPanel, blank_screen_row);
++  gtk_widget_class_bind_template_child (widget_class, CcScreenPanel, lock_after_row);
++  gtk_widget_class_bind_template_child (widget_class, CcScreenPanel, show_notifications_switch);
++  gtk_widget_class_bind_template_child (widget_class, CcScreenPanel, usb_protection_row);
++  gtk_widget_class_bind_template_child (widget_class, CcScreenPanel, usb_protection_switch);
++
++  gtk_widget_class_bind_template_callback (widget_class, lock_after_name_cb);
++  gtk_widget_class_bind_template_callback (widget_class, on_blank_screen_delay_changed_cb);
++  gtk_widget_class_bind_template_callback (widget_class, on_lock_combo_changed_cb);
++  gtk_widget_class_bind_template_callback (widget_class, screen_delay_name_cb);
++}
++
++static void
++cc_screen_panel_init (CcScreenPanel *self)
++{
++  guint value;
++
++  g_resources_register (cc_screen_get_resource ());
++
++  gtk_widget_init_template (GTK_WIDGET (self));
++
++  self->cancellable = g_cancellable_new ();
++
++  self->lock_settings = g_settings_new ("org.gnome.desktop.screensaver");
++  self->privacy_settings = g_settings_new ("org.gnome.desktop.privacy");
++  self->notification_settings = g_settings_new ("org.gnome.desktop.notifications");
++  self->session_settings = g_settings_new ("org.gnome.desktop.session");
++
++  g_settings_bind (self->lock_settings,
++                   "lock-enabled",
++                   self->automatic_screen_lock_switch,
++                   "active",
++                   G_SETTINGS_BIND_DEFAULT);
++
++  g_settings_bind (self->lock_settings,
++                   "lock-enabled",
++                   self->lock_after_row,
++                   "sensitive",
++                   G_SETTINGS_BIND_GET);
++
++  set_lock_value_for_combo (self->lock_after_row, self);
++
++  g_settings_bind (self->notification_settings,
++                   "show-in-lock-screen",
++                   self->show_notifications_switch,
++                   "active",
++                   G_SETTINGS_BIND_DEFAULT);
++
++  value = g_settings_get_uint (self->session_settings, "idle-delay");
++  set_blank_screen_delay_value (self, value);
++
++  g_settings_bind (self->privacy_settings,
++                   "usb-protection",
++                   self->usb_protection_switch,
++                   "active",
++                   G_SETTINGS_BIND_DEFAULT);
++
++  g_dbus_proxy_new_for_bus (G_BUS_TYPE_SESSION,
++                            G_DBUS_PROXY_FLAGS_NONE,
++                            NULL,
++                            "org.gnome.SettingsDaemon.UsbProtection",
++                            "/org/gnome/SettingsDaemon/UsbProtection",
++                            "org.gnome.SettingsDaemon.UsbProtection",
++                            self->cancellable,
++                            on_usb_protection_param_ready,
++                            self);
++}
+diff --git a/panels/screen/cc-screen-panel.h b/panels/screen/cc-screen-panel.h
+new file mode 100644
+index 0000000..c1917f9
+--- /dev/null
++++ b/panels/screen/cc-screen-panel.h
+@@ -0,0 +1,55 @@
++/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*-
++ *
++ * Copyright (C) 2018 Red Hat, Inc
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, see <http://www.gnu.org/licenses/>.
++ *
++ * Author: Matthias Clasen <mclasen@redhat.com>
++ */
++
++#pragma once
++
++#include <shell/cc-panel.h>
++
++G_BEGIN_DECLS
++
++#define CC_TYPE_LOCK_PANEL (cc_screen_panel_get_type ())
++G_DECLARE_FINAL_TYPE (CcScreenPanel, cc_screen_panel, CC, SCREEN_PANEL, CcPanel)
++
++typedef enum {
++  CC_SCREEN_PANEL_LOCK_AFTER_SCREEN_OFF = 0,
++  CC_SCREEN_PANEL_LOCK_AFTER_30_SEC     = 30,
++  CC_SCREEN_PANEL_LOCK_AFTER_1_MIN      = 60,
++  CC_SCREEN_PANEL_LOCK_AFTER_2_MIN      = 120,
++  CC_SCREEN_PANEL_LOCK_AFTER_3_MIN      = 180,
++  CC_SCREEN_PANEL_LOCK_AFTER_5_MIN      = 300,
++  CC_SCREEN_PANEL_LOCK_AFTER_30_MIN     = 1800,
++  CC_SCREEN_PANEL_LOCK_AFTER_1_HR       = 3600,
++} CcScreenPanelLockAfter;
++
++typedef enum {
++  CC_SCREEN_PANEL_BLANK_SCREEN_DELAY_1_MIN  = 60,
++  CC_SCREEN_PANEL_BLANK_SCREEN_DELAY_2_MIN  = 120,
++  CC_SCREEN_PANEL_BLANK_SCREEN_DELAY_3_MIN  = 180,
++  CC_SCREEN_PANEL_BLANK_SCREEN_DELAY_4_MIN  = 240,
++  CC_SCREEN_PANEL_BLANK_SCREEN_DELAY_5_MIN  = 300,
++  CC_SCREEN_PANEL_BLANK_SCREEN_DELAY_8_MIN  = 480,
++  CC_SCREEN_PANEL_BLANK_SCREEN_DELAY_10_MIN = 600,
++  CC_SCREEN_PANEL_BLANK_SCREEN_DELAY_12_MIN = 720,
++  CC_SCREEN_PANEL_BLANK_SCREEN_DELAY_15_MIN = 900,
++  CC_SCREEN_PANEL_BLANK_SCREEN_DELAY_NEVER  = 0,
++} CcScreenPanelBlankScreenDelay;
++
++
++G_END_DECLS
+diff --git a/panels/screen/cc-screen-panel.ui b/panels/screen/cc-screen-panel.ui
+new file mode 100644
+index 0000000..bf03192
+--- /dev/null
++++ b/panels/screen/cc-screen-panel.ui
+@@ -0,0 +1,99 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<interface>
++  <template class="CcScreenPanel" parent="CcPanel">
++    <child type="content">
++      <object class="AdwPreferencesPage">
++        <child>
++          <object class="AdwPreferencesGroup">
++            <property name="title" translatable="yes">Screen Lock</property>
++            <property name="description" translatable="yes">Automatically locking the screen prevents others from accessing the computer while you're away.</property>
++
++            <!-- Blank Screen Delay row -->
++            <child>
++              <object class="AdwComboRow" id="blank_screen_row">
++                <property name="title" translatable="yes">Blank Screen Delay</property>
++                <property name="subtitle" translatable="yes">Period of inactivity after which the screen will go blank.</property>
++                <property name="subtitle-lines">2</property>
++                <property name="use-underline">true</property>
++                <signal name="notify::selected-item" handler="on_blank_screen_delay_changed_cb"/>
++                <property name="model">
++                  <object class="AdwEnumListModel">
++                    <property name="enum-type">CcScreenPanelBlankScreenDelay</property>
++                  </object>
++                </property>
++                <property name="expression">
++                  <closure type="gchararray" function="screen_delay_name_cb"/>
++                </property>
++              </object>
++            </child>
++
++            <!-- Automatic Screen Lock row -->
++            <child>
++              <object class="AdwActionRow">
++                <property name="title" translatable="yes">Automatic Screen _Lock</property>
++                <property name="activatable-widget">automatic_screen_lock_switch</property>
++                <property name="use-underline">true</property>
++                <child>
++                  <object class="GtkSwitch" id="automatic_screen_lock_switch">
++                    <property name="valign">center</property>
++                  </object>
++                </child>
++              </object>
++            </child>
++
++            <!-- Automatic Screen Lock Delay row -->
++            <child>
++              <object class="AdwComboRow" id="lock_after_row">
++                <property name="title" translatable="yes">Automatic _Screen Lock Delay</property>
++                <property name="subtitle" translatable="yes">Period after the screen blanks when the screen is automatically locked.</property>
++                <property name="subtitle-lines">2</property>
++                <property name="use-underline">true</property>
++                <signal name="notify::selected-item" handler="on_lock_combo_changed_cb"/>
++                <property name="model">
++                  <object class="AdwEnumListModel">
++                    <property name="enum-type">CcScreenPanelLockAfter</property>
++                  </object>
++                </property>
++                <property name="expression">
++                  <closure type="gchararray" function="lock_after_name_cb"/>
++                </property>
++              </object>
++            </child>
++
++            <!-- Show Notifications row -->
++            <child>
++              <object class="AdwActionRow">
++                <property name="title" translatable="yes">Show _Notifications on Lock Screen</property>
++                <property name="activatable-widget">show_notifications_switch</property>
++                <property name="use-underline">true</property>
++                <child>
++                  <object class="GtkSwitch" id="show_notifications_switch">
++                    <property name="valign">center</property>
++                  </object>
++                </child>
++              </object>
++            </child>
++
++            <!-- USB protection row -->
++            <child>
++              <object class="AdwActionRow" id="usb_protection_row">
++                <property name="visible">false</property>
++                <property name="title" translatable="yes">Forbid new _USB devices</property>
++                <property name="subtitle" translatable="yes">Prevent new USB devices from interacting with the system when the screen is locked.</property>
++                <property name="subtitle-lines">2</property>
++                <property name="activatable-widget">usb_protection_switch</property>
++                <property name="use-underline">true</property>
++                <child>
++                  <object class="GtkSwitch" id="usb_protection_switch">
++                    <property name="valign">center</property>
++                  </object>
++                </child>
++              </object>
++            </child>
++
++          </object>
++        </child>
++      </object>
++    </child>
++  </template>
++</interface>
+diff --git a/panels/screen/gnome-screen-panel.desktop.in.in b/panels/screen/gnome-screen-panel.desktop.in.in
+new file mode 100644
+index 0000000..e095264
+--- /dev/null
++++ b/panels/screen/gnome-screen-panel.desktop.in.in
+@@ -0,0 +1,19 @@
++[Desktop Entry]
++Name=Screen
++Comment=Screen Settings
++Exec=gnome-control-center screen
++# FIXME
++# Translators: Do NOT translate or transliterate this text (this is an icon file name)!
++Icon=org.gnome.Settings-screen-symbolic
++Terminal=false
++Type=Application
++NoDisplay=true
++StartupNotify=true
++Categories=GNOME;GTK;Settings;DesktopSettings;X-GNOME-Settings-Panel;X-GNOME-PrivacySettings;
++OnlyShowIn=GNOME;Unity;
++X-GNOME-Bugzilla-Bugzilla=GNOME
++X-GNOME-Bugzilla-Product=gnome-control-center
++X-GNOME-Bugzilla-Component=screen
++X-GNOME-Bugzilla-Version=@VERSION@
++# Translators: Search terms to find the Screen panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
++Keywords=screen;lock;private;privacy;
+diff --git a/panels/screen/icons/meson.build b/panels/screen/icons/meson.build
+new file mode 100644
+index 0000000..f0e4593
+--- /dev/null
++++ b/panels/screen/icons/meson.build
+@@ -0,0 +1,4 @@
++install_data(
++  'scalable/org.gnome.Settings-screen-symbolic.svg',
++  install_dir: join_paths(control_center_icondir, 'hicolor', 'scalable', 'apps')
++)
+diff --git a/panels/screen/icons/scalable/org.gnome.Settings-screen-symbolic.svg b/panels/screen/icons/scalable/org.gnome.Settings-screen-symbolic.svg
+new file mode 100644
+index 0000000..b27a2bc
+--- /dev/null
++++ b/panels/screen/icons/scalable/org.gnome.Settings-screen-symbolic.svg
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<svg height="16px" viewBox="0 0 16 16" width="16px" xmlns="http://www.w3.org/2000/svg">
++    <path d="m 3 0 c -1.660156 0 -3 1.339844 -3 3 v 7 c 0 1.660156 1.339844 3 3 3 h 10 c 1.660156 0 3 -1.339844 3 -3 v -7 c 0 -1.660156 -1.339844 -3 -3 -3 z m 0 2 h 10 c 0.554688 0 1 0.445312 1 1 v 7 c 0 0.554688 -0.445312 1 -1 1 h -10 c -0.554688 0 -1 -0.445312 -1 -1 v -7 c 0 -0.554688 0.445312 -1 1 -1 z m 2 12 c -1.105469 0 -2 0.894531 -2 2 h 10 c 0 -1.105469 -0.894531 -2 -2 -2 z m 0 0" fill="#2e3436"/>
++</svg>
+diff --git a/panels/screen/meson.build b/panels/screen/meson.build
+new file mode 100644
+index 0000000..48482b8
+--- /dev/null
++++ b/panels/screen/meson.build
+@@ -0,0 +1,46 @@
++panels_list += cappletname
++desktop = 'gnome-@0@-panel.desktop'.format(cappletname)
++
++desktop_in = configure_file(
++  input: desktop + '.in.in',
++  output: desktop + '.in',
++  configuration: desktop_conf
++)
++
++i18n.merge_file(
++  type: 'desktop',
++  input: desktop_in,
++  output: desktop,
++  po_dir: po_dir,
++  install: true,
++  install_dir: control_center_desktopdir
++)
++
++sources = files('cc-screen-panel.c')
++
++resource_data = files('cc-screen-panel.ui')
++
++sources += gnome.mkenums_simple(
++  'cc-screen-panel-enums',
++  sources: ['cc-screen-panel.h'],
++)
++
++sources += gnome.compile_resources(
++  'cc-' + cappletname + '-resources',
++  cappletname + '.gresource.xml',
++  c_name: 'cc_' + cappletname,
++  dependencies: resource_data,
++  export: true
++)
++
++cflags += '-DGNOMELOCALEDIR="@0@"'.format(control_center_localedir)
++
++panels_libs += static_library(
++  cappletname,
++  sources: sources,
++  include_directories: [top_inc, common_inc],
++  dependencies: common_deps,
++  c_args: cflags
++)
++
++subdir('icons')
+diff --git a/panels/screen/screen.gresource.xml b/panels/screen/screen.gresource.xml
+new file mode 100644
+index 0000000..9d1500f
+--- /dev/null
++++ b/panels/screen/screen.gresource.xml
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<gresources>
++  <gresource prefix="/org/gnome/control-center/screen">
++    <file preprocess="xml-stripblanks">cc-screen-panel.ui</file>
++  </gresource>
++</gresources>
+diff --git a/shell/cc-panel-loader.c b/shell/cc-panel-loader.c
+index 66c513e..5fdf7f4 100644
+--- a/shell/cc-panel-loader.c
++++ b/shell/cc-panel-loader.c
+@@ -72,7 +72,7 @@ extern GType cc_location_panel_get_type (void);
+ extern GType cc_camera_panel_get_type (void);
+ extern GType cc_microphone_panel_get_type (void);
+ extern GType cc_usage_panel_get_type (void);
+-extern GType cc_lock_panel_get_type (void);
++extern GType cc_screen_panel_get_type (void);
+ extern GType cc_diagnostics_panel_get_type (void);
+ 
+ /* Static init functions */
+@@ -111,7 +111,6 @@ static CcPanelLoaderVtable default_panels[] =
+   PANEL_TYPE("info-overview",    cc_info_overview_panel_get_type,        NULL),
+   PANEL_TYPE("keyboard",         cc_keyboard_panel_get_type,             NULL),
+   PANEL_TYPE("location",         cc_location_panel_get_type,             NULL),
+-  PANEL_TYPE("lock",             cc_lock_panel_get_type,                 NULL),
+   PANEL_TYPE("microphone",       cc_microphone_panel_get_type,           NULL),
+   PANEL_TYPE("mouse",            cc_mouse_panel_get_type,                NULL),
+   PANEL_TYPE("multitasking",     cc_multitasking_panel_get_type,         NULL),
+@@ -125,6 +124,7 @@ static CcPanelLoaderVtable default_panels[] =
+   PANEL_TYPE("printers",         cc_printers_panel_get_type,             NULL),
+   PANEL_TYPE("region",           cc_region_panel_get_type,               NULL),
+   PANEL_TYPE("removable-media",  cc_removable_media_panel_get_type,      NULL),
++  PANEL_TYPE("screen",           cc_screen_panel_get_type,               NULL),
+   PANEL_TYPE("search",           cc_search_panel_get_type,               NULL),
+   PANEL_TYPE("sharing",          cc_sharing_panel_get_type,              NULL),
+   PANEL_TYPE("sound",            cc_sound_panel_get_type,                NULL),
