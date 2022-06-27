@@ -9,10 +9,10 @@ Bug-Debian: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=910141
  1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/panels/user-accounts/cc-add-user-dialog.c b/panels/user-accounts/cc-add-user-dialog.c
-index 3d1daa4..c9d52bf 100644
+index e462015..031eaa7 100644
 --- a/panels/user-accounts/cc-add-user-dialog.c
 +++ b/panels/user-accounts/cc-add-user-dialog.c
-@@ -217,6 +217,7 @@ create_user_done (ActUserManager  *manager,
+@@ -229,6 +229,7 @@ create_user_done (ActUserManager  *manager,
  static void
  local_create_user (CcAddUserDialog *self)
  {
@@ -20,9 +20,9 @@ index 3d1daa4..c9d52bf 100644
          ActUserManager *manager;
          const gchar *username;
          const gchar *name;
-@@ -228,11 +229,12 @@ local_create_user (CcAddUserDialog *self)
+@@ -240,11 +241,12 @@ local_create_user (CcAddUserDialog *self)
          username = gtk_combo_box_text_get_active_text (self->local_username_combo);
-         account_type = (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (self->local_account_type_standard)) ? ACT_USER_ACCOUNT_TYPE_STANDARD : ACT_USER_ACCOUNT_TYPE_ADMINISTRATOR);
+         account_type = gtk_switch_get_active (self->local_account_type_switch) ? ACT_USER_ACCOUNT_TYPE_ADMINISTRATOR : ACT_USER_ACCOUNT_TYPE_STANDARD;
  
 -        g_debug ("Creating local user: %s", username);
 +        debian_username = g_ascii_strdown (username, -1);

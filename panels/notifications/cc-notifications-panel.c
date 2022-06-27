@@ -19,6 +19,7 @@
 
 #include "config.h"
 
+#include <adwaita.h>
 #include <string.h>
 #include <glib/gi18n-lib.h>
 #include <glib.h>
@@ -26,7 +27,6 @@
 #include <gio/gdesktopappinfo.h>
 
 #include "cc-list-row.h"
-#include "list-box-helper.h"
 #include "cc-notifications-panel.h"
 #include "cc-notifications-resources.h"
 #include "cc-app-notifications-dialog.h"
@@ -39,11 +39,7 @@ struct _CcNotificationsPanel {
   CcPanel            parent_instance;
 
   GtkListBox        *app_listbox;
-  GtkAdjustment     *focus_adjustment;
   CcListRow         *lock_screen_row;
-  GtkScrolledWindow *main_scrolled_window;
-  GtkBox            *main_box;
-  GtkListBox        *options_listbox;
   CcListRow         *dnd_row;
   GtkSizeGroup      *sizegroup1;
 
@@ -52,9 +48,6 @@ struct _CcNotificationsPanel {
   GCancellable      *cancellable;
 
   GHashTable        *known_applications;
-
-  GList             *sections;
-  GList             *sections_reverse;
 
   GDBusProxy        *perm_store;
 };
@@ -79,6 +72,22 @@ static int  sort_apps       (gconstpointer one, gconstpointer two, gpointer user
 
 CC_PANEL_REGISTER (CcNotificationsPanel, cc_notifications_panel);
 
+static gboolean
+keynav_failed_cb (CcNotificationsPanel *self,
+                  GtkDirectionType      direction)
+{
+  GtkWidget *toplevel = GTK_WIDGET (gtk_widget_get_root (GTK_WIDGET (self)));
+
+  if (!toplevel)
+    return FALSE;
+
+  if (direction != GTK_DIR_UP && direction != GTK_DIR_DOWN)
+    return FALSE;
+
+  return gtk_widget_child_focus (toplevel, direction == GTK_DIR_UP ?
+                                 GTK_DIR_TAB_BACKWARD : GTK_DIR_TAB_FORWARD);
+}
+
 static void
 cc_notifications_panel_dispose (GObject *object)
 {
@@ -86,8 +95,6 @@ cc_notifications_panel_dispose (GObject *object)
 
   g_clear_object (&panel->master_settings);
   g_clear_pointer (&panel->known_applications, g_hash_table_unref);
-  g_clear_pointer (&panel->sections, g_list_free);
-  g_clear_pointer (&panel->sections_reverse, g_list_free);
 
   G_OBJECT_CLASS (cc_notifications_panel_parent_class)->dispose (object);
 }
@@ -100,47 +107,6 @@ cc_notifications_panel_finalize (GObject *object)
   g_clear_object (&panel->perm_store);
 
   G_OBJECT_CLASS (cc_notifications_panel_parent_class)->finalize (object);
-}
-
-static gboolean
-keynav_failed (CcNotificationsPanel *panel,
-               GtkDirectionType      direction,
-               GtkWidget            *widget)
-{
-  gdouble  value, lower, upper, page;
-  GList   *item, *sections;
-
-  /* Find the widget in the list of GtkWidgets */
-  if (direction == GTK_DIR_DOWN)
-    sections = panel->sections;
-  else
-    sections = panel->sections_reverse;
-
-  item = g_list_find (sections, widget);
-  g_assert (item);
-  if (item->next)
-    {
-      gtk_widget_child_focus (GTK_WIDGET (item->next->data), direction);
-      return TRUE;
-    }
-
-  value = gtk_adjustment_get_value (panel->focus_adjustment);
-  lower = gtk_adjustment_get_lower (panel->focus_adjustment);
-  upper = gtk_adjustment_get_upper (panel->focus_adjustment);
-  page  = gtk_adjustment_get_page_size (panel->focus_adjustment);
-
-  if (direction == GTK_DIR_UP && value > lower)
-    {
-      gtk_adjustment_set_value (panel->focus_adjustment, lower);
-      return TRUE;
-    }
-  else if (direction == GTK_DIR_DOWN && value < upper - page)
-    {
-      gtk_adjustment_set_value (panel->focus_adjustment, upper - page);
-      return TRUE;
-    }
-
-  return FALSE;
 }
 
 static void
@@ -183,13 +149,6 @@ cc_notifications_panel_init (CcNotificationsPanel *panel)
                    panel->lock_screen_row,
                    "active", G_SETTINGS_BIND_DEFAULT);
 
-  gtk_container_set_focus_vadjustment (GTK_CONTAINER (panel->main_box), panel->focus_adjustment);
-
-  panel->sections = g_list_append (panel->sections, panel->options_listbox);
-  panel->sections_reverse = g_list_prepend (panel->sections_reverse, panel->options_listbox);
-
-  panel->sections = g_list_append (panel->sections, panel->app_listbox);
-  panel->sections_reverse = g_list_prepend (panel->sections_reverse, panel->app_listbox);
   gtk_list_box_set_sort_func (panel->app_listbox, (GtkListBoxSortFunc)sort_apps, NULL, NULL);
 
   build_app_store (panel);
@@ -226,19 +185,17 @@ cc_notifications_panel_class_init (CcNotificationsPanelClass *klass)
   object_class->dispose = cc_notifications_panel_dispose;
   object_class->finalize = cc_notifications_panel_finalize;
 
+  g_type_ensure (CC_TYPE_LIST_ROW);
+
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/notifications/cc-notifications-panel.ui");
 
   gtk_widget_class_bind_template_child (widget_class, CcNotificationsPanel, app_listbox);
-  gtk_widget_class_bind_template_child (widget_class, CcNotificationsPanel, focus_adjustment);
   gtk_widget_class_bind_template_child (widget_class, CcNotificationsPanel, lock_screen_row);
-  gtk_widget_class_bind_template_child (widget_class, CcNotificationsPanel, main_scrolled_window);
-  gtk_widget_class_bind_template_child (widget_class, CcNotificationsPanel, main_box);
-  gtk_widget_class_bind_template_child (widget_class, CcNotificationsPanel, options_listbox);
   gtk_widget_class_bind_template_child (widget_class, CcNotificationsPanel, dnd_row);
   gtk_widget_class_bind_template_child (widget_class, CcNotificationsPanel, sizegroup1);
 
-  gtk_widget_class_bind_template_callback (widget_class, keynav_failed);
   gtk_widget_class_bind_template_callback (widget_class, select_app);
+  gtk_widget_class_bind_template_callback (widget_class, keynav_failed_cb);
 }
 
 static inline GQuark
@@ -278,10 +235,9 @@ static void
 add_application (CcNotificationsPanel *panel,
                  Application          *app)
 {
-  GtkWidget *box, *w, *row;
+  GtkWidget *w, *row;
   g_autoptr(GIcon) icon = NULL;
   const gchar *app_name;
-  int size;
 
   app_name = g_app_info_get_name (app->app_info);
   if (app_name == NULL || *app_name == '\0')
@@ -293,34 +249,22 @@ add_application (CcNotificationsPanel *panel,
   else
     g_object_ref (icon);
 
-  box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 10);
-  gtk_widget_show (box);
-  gtk_container_set_border_width (GTK_CONTAINER (box), 10);
+  row = adw_action_row_new ();
+  gtk_list_box_row_set_activatable (GTK_LIST_BOX_ROW (row), TRUE);
+  adw_preferences_row_set_title (ADW_PREFERENCES_ROW (row),
+                                 g_markup_escape_text (app_name, -1));
 
-  row = gtk_list_box_row_new ();
-  gtk_widget_show (row);
   g_object_set_qdata_full (G_OBJECT (row), application_quark (),
                            app, (GDestroyNotify) application_free);
 
-  gtk_container_add (GTK_CONTAINER (panel->app_listbox), row);
-  gtk_container_add (GTK_CONTAINER (row), box);
+  gtk_list_box_append (panel->app_listbox, row);
 
-  w = gtk_image_new_from_gicon (icon, GTK_ICON_SIZE_DIALOG);
+  w = gtk_image_new_from_gicon (icon);
   gtk_style_context_add_class (gtk_widget_get_style_context (w), "lowres-icon");
-  gtk_widget_show (w);
-  gtk_icon_size_lookup (GTK_ICON_SIZE_DND, &size, NULL);
-  gtk_image_set_pixel_size (GTK_IMAGE (w), size);
-  gtk_size_group_add_widget (panel->sizegroup1, w);
-  gtk_container_add (GTK_CONTAINER (box), w);
-
-  w = gtk_label_new (app_name);
-  gtk_widget_show (w);
-  gtk_label_set_ellipsize (GTK_LABEL (w), PANGO_ELLIPSIZE_END);
-  gtk_label_set_xalign (GTK_LABEL (w), 0.0f);
-  gtk_container_add (GTK_CONTAINER (box), w);
+  gtk_image_set_icon_size (GTK_IMAGE (w), GTK_ICON_SIZE_LARGE);
+  adw_action_row_add_prefix (ADW_ACTION_ROW (row), w);
 
   w = gtk_label_new ("");
-  gtk_widget_show (w);
   g_settings_bind_with_mapping (app->settings, "enable",
                                 w, "label",
                                 G_SETTINGS_BIND_GET |
@@ -329,9 +273,10 @@ add_application (CcNotificationsPanel *panel,
                                 NULL,
                                 NULL,
                                 NULL);
-  gtk_widget_set_margin_end (w, 12);
-  gtk_widget_set_valign (w, GTK_ALIGN_CENTER);
-  gtk_box_pack_end (GTK_BOX (box), w, FALSE, FALSE, 0);
+  adw_action_row_add_suffix (ADW_ACTION_ROW (row), w);
+
+  w = gtk_image_new_from_icon_name ("go-next-symbolic");
+  adw_action_row_add_suffix (ADW_ACTION_ROW (row), w);
 
   g_hash_table_add (panel->known_applications, g_strdup (app->canonical_app_id));
 }
@@ -499,6 +444,11 @@ select_app (CcNotificationsPanel *panel,
   Application *app;
   g_autofree gchar *app_id = NULL;
   CcAppNotificationsDialog *dialog;
+  GtkWidget *toplevel;
+  CcShell *shell;
+
+  shell = cc_panel_get_shell (CC_PANEL (panel));
+  toplevel = cc_shell_get_toplevel (shell);
 
   app = g_object_get_qdata (G_OBJECT (row), application_quark ());
 
@@ -507,7 +457,7 @@ select_app (CcNotificationsPanel *panel,
     app_id[strlen (app_id) - strlen (".desktop")] = '\0';
 
   dialog = cc_app_notifications_dialog_new (app_id, g_app_info_get_name (app->app_info), app->settings, panel->master_settings, panel->perm_store);
-  gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (panel))));
+  gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (toplevel));
   gtk_widget_show (GTK_WIDGET (dialog));
 }
 

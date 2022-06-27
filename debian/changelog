@@ -1,9 +1,114 @@
+gnome-control-center (1:42.2-1) unstable; urgency=medium
+
+  * New upstream release
+  * Drop the snap & RDP patches: applied in new release
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Fri, 27 May 2022 08:06:29 -0400
+
+gnome-control-center (1:42.1-3) unstable; urgency=medium
+
+  * Cherry-pick patch to fix snap support
+  * Enable snap support in the Applications panel
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Wed, 25 May 2022 20:33:19 -0400
+
+gnome-control-center (1:42.1-2) unstable; urgency=high
+
+  * Add patch to turn off RDP gsettings key when turning off RDP Sharing
+    (LP: #1971415)
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Tue, 10 May 2022 21:56:10 -0400
+
+gnome-control-center (1:42.1-1) unstable; urgency=medium
+
+  * New upstream release
+    - Fix On switch for RDP Sharing
+  * Drop 4 patches applied in new release
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Tue, 26 Apr 2022 14:17:10 -0400
+
+gnome-control-center (1:42.0-3) unstable; urgency=medium
+
+  * Team upload
+  * d/p/appdata-Correct-name-of-launchable.patch:
+    Add proposed patch to correct name of .desktop file in appdata
+  * d/p/debian/Ignore-result-of-test-network-panel.patch:
+    Add patch to work around build-time test failure
+  * Reorder patch series so patches from upstream come first
+
+ -- Simon McVittie <smcv@debian.org>  Fri, 15 Apr 2022 11:54:13 +0100
+
+gnome-control-center (1:42.0-2) unstable; urgency=medium
+
+  * Team upload
+
+  [ Jeremy Bicha ]
+  * Update build-dependencies
+  * Revert "Disable colord panel until colord GTK4 client library is available"
+  * debian/control.in: Recommend power-profiles-daemon for power mode feature
+  * debian/rules: Disable malcontent on Ubuntu: it's not in main there yet
+  * d/p/online-accounts-Fix-goa-helper-on-X11.patch:
+    Cherry-pick a patch to fix GNOME Online Accounts in Xorg
+  * d/p/network-connection-editor-destroy-the-editor-when-closing.patch,
+    d/p/network-connection-editor-always-load-all-available-VPN-p.patch:
+    Cherry-pick two network connection-editor fixes
+
+  [ Simon McVittie ]
+  * Add a Breaks to upgrade -control-center and -remote-desktop together
+  * Add a Breaks to get gnome-shell upgraded to version 42
+  * Release to unstable
+
+ -- Simon McVittie <smcv@debian.org>  Wed, 13 Apr 2022 16:48:13 +0100
+
+gnome-control-center (1:42.0-1) experimental; urgency=medium
+
+  * Team upload
+  * New upstream release
+  * Refresh patch series
+  * d/copyright: Update
+  * Update build-dependencies
+  * Update colord dependency
+  * Disable colord panel until colord GTK4 client library is available
+    (this is a known regression, blocked by #1008678).
+
+ -- Simon McVittie <smcv@debian.org>  Wed, 30 Mar 2022 20:24:07 +0100
+
 gnome-control-center (1:41.7-0ubuntu1) kinetic; urgency=medium
 
   * New upstream release (LP: #1975945)
   * Drop 6 patches applied in new release
 
  -- Jeremy Bicha <jbicha@ubuntu.com>  Fri, 27 May 2022 09:17:14 -0400
+
+gnome-control-center (1:41.4-2) unstable; urgency=medium
+
+  * Team upload
+
+  [ Marco Trevisan (Treviño) ]
+  * d/p/debian/Debian-s-adduser-doesn-t-allow-uppercase-letters-by-defau.patch:
+    Fix a memory leak when creating a new user
+
+  [ Jeremy Bicha ]
+  * Update Lintian override for new gnome-control-center .desktop name.
+    This update is harmless for GNOME 41, but useful for GNOME 42.
+
+  [ Simon McVittie ]
+  * Update to upstream gnome-41 branch commit 41.4-10-g3c47db21a2
+    - Improve keyboard accessibility for setting hostname
+    - Translation updates
+  * Stop installing configuration for keyboard shortcuts for screenshots.
+    With GNOME Shell 42, this duplicates a similar file shipped by GNOME
+    Shell itself; and with gnome-settings-daemon 42, it causes a
+    gnome-control-center assertion failure, because those keyboard shortcuts
+    have been removed from g-s-d's settings schema. (Closes: #1008493)
+  * d/patches: Add various bug fixes from upstream 42.0, via Ubuntu.
+    Ubuntu 22.04 is going to stick with gnome-control-center 41.x, so we're
+    not upgrading to 42 in Debian either until Ubuntu is further into its
+    freeze.
+    - This includes a dependency on gsettings-desktop-schemas, so update
+      d/control accordingly.
+
+ -- Simon McVittie <smcv@debian.org>  Mon, 28 Mar 2022 19:13:05 +0100
 
 gnome-control-center (1:41.4-1ubuntu15) kinetic; urgency=medium
 

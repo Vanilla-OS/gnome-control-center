@@ -36,30 +36,28 @@ typedef struct
 	gdouble y_max;
 } XYinfo;
 
-typedef struct CalibArea CalibArea;
-typedef void (*FinishCallback) (CalibArea *area, gpointer user_data);
+#define CC_TYPE_CALIB_AREA cc_calib_area_get_type ()
+G_DECLARE_FINAL_TYPE (CcCalibArea, cc_calib_area, CC, CALIB_AREA, GtkWindow)
 
-CalibArea * calib_area_new (GdkScreen      *screen,
-			    int             monitor,
-			    GdkDevice      *device,
-			    FinishCallback  callback,
-			    gpointer        user_data,
-			    int             threshold_doubleclick,
-			    int             threshold_misclick);
+typedef void (*FinishCallback) (CcCalibArea *area, gpointer user_data);
 
-gboolean calib_area_finish (CalibArea *area);
+CcCalibArea * cc_calib_area_new (GdkDisplay      *display,
+                                 GdkMonitor     *monitor,
+                                 GdkDevice      *device,
+                                 FinishCallback  callback,
+                                 gpointer        user_data,
+                                 int             threshold_doubleclick,
+                                 int             threshold_misclick);
 
-void calib_area_free (CalibArea *area);
+gboolean cc_calib_area_finish (CcCalibArea *area);
 
-void calib_area_get_display_size (CalibArea *area,
-				  gint      *width,
-				  gint      *height);
+void cc_calib_area_free (CcCalibArea *area);
 
-void calib_area_get_axis (CalibArea *area,
-                          XYinfo    *new_axis,
-                          gboolean  *swap_xy);
+void cc_calib_area_get_axis (CcCalibArea *area,
+                             XYinfo      *new_axis,
+                             gboolean    *swap_xy);
 
-void calib_area_get_padding (CalibArea *area,
-                             XYinfo    *padding);
+void cc_calib_area_get_padding (CcCalibArea *area,
+                                XYinfo      *padding);
 
 G_END_DECLS

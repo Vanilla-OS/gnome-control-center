@@ -22,16 +22,13 @@
 #include "config.h"
 
 #include <stdlib.h>
+#include <locale.h>
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
 #ifdef GDK_WINDOWING_X11
 #include <X11/Xlib.h>
 #endif
-
-#ifdef HAVE_CHEESE
-#include <cheese-gtk.h>
-#endif /* HAVE_CHEESE */
 
 #include "cc-application.h"
 
@@ -42,10 +39,6 @@ initialize_dependencies (gint    *argc,
   #ifdef GDK_WINDOWING_X11
     XInitThreads ();
   #endif
-
-  #ifdef HAVE_CHEESE
-    cheese_gtk_init (argc, argv);
-  #endif /* HAVE_CHEESE */
 }
 
 int
@@ -57,6 +50,8 @@ main (gint    argc,
   bindtextdomain (GETTEXT_PACKAGE, GNOMELOCALEDIR);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   textdomain (GETTEXT_PACKAGE);
+
+  setlocale (LC_ALL, "");
 
   initialize_dependencies (&argc, &argv);
 

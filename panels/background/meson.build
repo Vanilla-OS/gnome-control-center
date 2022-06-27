@@ -17,16 +17,6 @@ i18n.merge_file(
 )
 
 install_data(
-  'slideshow-symbolic.svg',
-  install_dir: join_paths(control_center_icondir, 'hicolor', 'scalable', 'categories')
-)
-
-install_data(
-  'slideshow-emblem.svg',
-  install_dir: join_paths(control_center_icondir, 'hicolor', 'scalable', 'emblems')
-)
-
-install_data(
   'noise-texture-light.png',
   install_dir: join_paths(control_center_pkgdatadir, 'pixmaps')
 )
@@ -80,6 +70,7 @@ sources = common_sources + files(
   'bg-wallpapers-source.c',
   'cc-background-chooser.c',
   'cc-background-item.c',
+  'cc-background-paintable.c',
   'cc-background-panel.c',
   'cc-background-preview.c',
   'cc-background-xml.c',
@@ -87,7 +78,7 @@ sources = common_sources + files(
 
 deps = common_deps + [
   gdk_pixbuf_dep,
-  gnome_desktop_dep,
+  gnome_bg_dep,
   libxml_dep,
   dependency('cairo-gobject'),
 ]
@@ -97,10 +88,6 @@ cflags += [
   '-DGNOME_DESKTOP_USE_UNSTABLE_API'
 ]
 
-if gnome_desktop_dep.version().version_compare('>=3.35.4')
-  cflags += '-DGNOME_DESKTOP_BG_API_BREAK'
-endif
-
 panels_libs += static_library(
   cappletname,
   sources: sources,
@@ -108,3 +95,5 @@ panels_libs += static_library(
   dependencies: deps,
   c_args: cflags,
 )
+
+subdir('icons')

@@ -1,69 +1,107 @@
 ================
-Version 41.7
+Version 42.2
 ================
 
-- Updated translations
-
-Cellular
-- Remove duplicate line from .desktop
-
-Info
-- Allow changing "Device Name" by pressing "Enter"
-- Remove trailing space after CPU name
-
-Keyboard
-- Fix crash resetting all keyboard shortcuts
-- Fix leaks
-
-Network
-- Fix saving passwords for non-wifi connections
-- Fix critical when opening VPN details page
-
-Wacom:
-- Fix leaks
-
-================
-Version 41.4
-================
-
-- Drop unused argument for i18n.merge_file() in Meson rules
 - Updated translations
 
 Applications
-- Set the Icon key in desktop file to a icon that exists
+- Fix Snap permissions support failing to compile
+- Fix CcInfoRow having the wrong parent
+- Fix crash crash when switching between two apps
 
-Display
-- Do not invert order when constructing modes
+Background
+- Make sure the size of the light/dark previews are the same
 
-Network
-- Show configuration button only for active/connecting connections
+Keyboard
+- Fix crash resetting all keyboard shortcuts
 
-Printers
-- Fix error cancelling PPD dialog
+Network:
+- Stop freeze when closing wired connection properties with Escape
+
+Sharing
+- Fix close button on Verify Encryption dialog
+- Turn off RDP gsettings key when turning off RDP
+
+Shell
+- Initialise locale early
 
 Sound
-- Clear level bar when stream is empty
+- Update theme correctly so other apps respond to change
 
 ================
-Version 41.2
-================
-
-- Updated translations
-
-================
-Version 41.1
+Version 42.1
 ================
 
 - Updated translations
 
-Mouse & Touchpad
-- Avoid cropping illustration
+Display
+- Various small behavior improvements
+- Fix monitor labels
 
 Network
-- Fix enabling data after APN is set
+- Improve handling of VPN connections
 
-Power
-- Use translated strings for power button action behaviors
+Online Accounts
+- Fix behavior of helper application on X11
+- Fix changes to online accounts services not applying correctly
+
+User Accounts
+- Various small polishments
+
+Wacom
+- Properly translate various strings
+
+================
+Version 42.0
+================
+
+- Updated AppData screenshots
+- Re-enable tests
+- Updated translations
+
+================
+Version 42.rc
+================
+
+- Updated translations
+
+Keyboard
+- Restore _GNOME_WM_KEYBINDINGS support
+
+User Accounts
+- Bring back Fingerprint dialog
+- Fix avatar loading
+
+Wacom
+- Bring back empty state
+
+================
+Version 42.beta
+================
+
+- Port to GTK4
+- Various UI polish changes
+- New symbolic icons for panels
+- Updated translations
+
+Application
+- Implement new design
+
+Background
+- Introduce dark & light mode selector
+- Rename to Appearance
+
+Display
+- Implement new design
+
+Region & Language
+- Implement new design
+
+User Accounts
+- New design for the User Accounts panel
+
+Wacom
+- Implement new design
 
 ================
 Version 41.0

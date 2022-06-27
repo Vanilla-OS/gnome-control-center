@@ -150,26 +150,3 @@ cc_shell_get_toplevel (CcShell *shell)
 
   return NULL;
 }
-
-void
-cc_shell_embed_widget_in_header (CcShell         *shell,
-                                 GtkWidget       *widget,
-                                 GtkPositionType  position)
-{
-  CcShellInterface *iface;
-
-  g_return_if_fail (CC_IS_SHELL (shell));
-
-  iface = CC_SHELL_GET_IFACE (shell);
-
-  if (!iface->embed_widget_in_header)
-    {
-      g_warning ("Object of type \"%s\" does not implement required interface"
-                 " method \"embed_widget_in_header\",",
-                 G_OBJECT_TYPE_NAME (shell));
-    }
-  else
-    {
-      iface->embed_widget_in_header (shell, widget, position);
-    }
-}

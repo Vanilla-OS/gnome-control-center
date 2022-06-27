@@ -55,7 +55,6 @@ sources += gnome.compile_resources(
 )
 
 deps = common_deps + [
-  gnome_desktop_dep,
   polkit_gobject_dep,
   m_dep,
 ]
@@ -67,3 +66,5 @@ panels_libs += static_library(
   dependencies: deps,
   c_args: cflags
 )
+
+subdir('icons')

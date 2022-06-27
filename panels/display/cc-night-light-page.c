@@ -26,12 +26,11 @@
 #include <math.h>
 
 #include "cc-night-light-page.h"
-#include "list-box-helper.h"
 
 #include "shell/cc-object-storage.h"
 
 struct _CcNightLightPage {
-  GtkBin               parent;
+  AdwBin               parent;
 
   GtkWidget           *box_manual;
   GtkButton           *button_from_am;
@@ -43,8 +42,10 @@ struct _CcNightLightPage {
   GtkWidget           *scale_color_temperature;
   GtkWidget           *night_light_toggle_switch;
   GtkComboBox         *schedule_type_combo;
+  GtkWidget           *from_spinbuttons_box;
   GtkWidget           *spinbutton_from_hours;
   GtkWidget           *spinbutton_from_minutes;
+  GtkWidget           *to_spinbuttons_box;
   GtkWidget           *spinbutton_to_hours;
   GtkWidget           *spinbutton_to_minutes;
   GtkStack            *stack_from;
@@ -66,7 +67,7 @@ struct _CcNightLightPage {
   GDesktopClockFormat  clock_format;
 };
 
-G_DEFINE_TYPE (CcNightLightPage, cc_night_light_page, GTK_TYPE_BIN);
+G_DEFINE_TYPE (CcNightLightPage, cc_night_light_page, ADW_TYPE_BIN);
 
 #define CLOCK_SCHEMA     "org.gnome.desktop.interface"
 #define DISPLAY_SCHEMA   "org.gnome.settings-daemon.plugins.color"
@@ -438,7 +439,7 @@ dialog_format_minutes_combobox (GtkSpinButton    *spin,
   g_autofree gchar *text = NULL;
   adjustment = gtk_spin_button_get_adjustment (spin);
   text = g_strdup_printf ("%02.0f", gtk_adjustment_get_value (adjustment));
-  gtk_entry_set_text (GTK_ENTRY (spin), text);
+  gtk_editable_set_text (GTK_EDITABLE (spin), text);
   return TRUE;
 }
 
@@ -453,7 +454,7 @@ dialog_format_hours_combobox (GtkSpinButton      *spin,
     text = g_strdup_printf ("%.0f", gtk_adjustment_get_value (adjustment));
   else
     text = g_strdup_printf ("%02.0f", gtk_adjustment_get_value (adjustment));
-  gtk_entry_set_text (GTK_ENTRY (spin), text);
+  gtk_editable_set_text (GTK_EDITABLE (spin), text);
   return TRUE;
 }
 
@@ -593,8 +594,10 @@ cc_night_light_page_class_init (CcNightLightPageClass *klass)
   gtk_widget_class_bind_template_child (widget_class, CcNightLightPage, night_light_toggle_switch);
   gtk_widget_class_bind_template_child (widget_class, CcNightLightPage, schedule_type_combo);
   gtk_widget_class_bind_template_child (widget_class, CcNightLightPage, scale_color_temperature);
+  gtk_widget_class_bind_template_child (widget_class, CcNightLightPage, from_spinbuttons_box);
   gtk_widget_class_bind_template_child (widget_class, CcNightLightPage, spinbutton_from_hours);
   gtk_widget_class_bind_template_child (widget_class, CcNightLightPage, spinbutton_from_minutes);
+  gtk_widget_class_bind_template_child (widget_class, CcNightLightPage, to_spinbuttons_box);
   gtk_widget_class_bind_template_child (widget_class, CcNightLightPage, spinbutton_to_hours);
   gtk_widget_class_bind_template_child (widget_class, CcNightLightPage, spinbutton_to_minutes);
   gtk_widget_class_bind_template_child (widget_class, CcNightLightPage, stack_from);
@@ -620,11 +623,9 @@ cc_night_light_page_init (CcNightLightPage *self)
 
   gtk_widget_init_template (GTK_WIDGET (self));
 
-  gtk_list_box_set_header_func (self->listbox, cc_list_box_update_header_func, NULL, NULL);
-
   gtk_scale_add_mark (GTK_SCALE (self->scale_color_temperature),
                       1700, GTK_POS_BOTTOM,
-                      _("More Warm"));
+                      NULL);
 
   gtk_scale_add_mark (GTK_SCALE (self->scale_color_temperature),
                       2700, GTK_POS_BOTTOM,
@@ -636,7 +637,7 @@ cc_night_light_page_init (CcNightLightPage *self)
 
   gtk_scale_add_mark (GTK_SCALE (self->scale_color_temperature),
                       4700, GTK_POS_BOTTOM,
-                      _("Less Warm"));
+                      NULL);
 
   self->cancellable = g_cancellable_new ();
   self->settings_display = g_settings_new (DISPLAY_SCHEMA);
@@ -669,9 +670,9 @@ cc_night_light_page_init (CcNightLightPage *self)
   /* use custom CSS */
   provider = gtk_css_provider_new ();
   gtk_css_provider_load_from_resource (provider, "/org/gnome/control-center/display/night-light.css");
-  gtk_style_context_add_provider_for_screen (gdk_screen_get_default (),
-                                             GTK_STYLE_PROVIDER (provider),
-                                             GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+  gtk_style_context_add_provider_for_display (gdk_display_get_default (),
+                                              GTK_STYLE_PROVIDER (provider),
+                                              GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 
   cc_object_storage_create_dbus_proxy (G_BUS_TYPE_SESSION,
                                        G_DBUS_PROXY_FLAGS_NONE,
@@ -699,6 +700,12 @@ cc_night_light_page_init (CcNightLightPage *self)
                            "changed::" CLOCK_FORMAT_KEY,
                            G_CALLBACK (dialog_clock_settings_changed_cb),
                            self, G_CONNECT_SWAPPED);
+
+  if (gtk_widget_get_default_direction () == GTK_TEXT_DIR_RTL)
+    {
+      gtk_widget_set_direction (self->to_spinbuttons_box, GTK_TEXT_DIR_LTR);
+      gtk_widget_set_direction (self->from_spinbuttons_box, GTK_TEXT_DIR_LTR);
+    }
 
   dialog_update_state (self);
 }

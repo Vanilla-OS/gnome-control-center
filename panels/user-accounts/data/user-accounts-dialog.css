@@ -15,14 +15,9 @@ levelbar .strength-high {
   border-color: #73d216;
 }
 
-.user-icon-button {
-  background: transparent;
-  box-shadow: none;
-  border: 1px solid @borders;
-  border-radius: 50%;
-  padding: 3px;
-}
-
-.user-icon-button > .user-icon-button {
-  padding: 0;
+/* This is used for user_avatar_edit_button */
+.cutout-button {
+  background-color: @window_bg_color;
+  border-radius: 9999px;
+  padding: 2px;
 }

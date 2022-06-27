@@ -22,8 +22,7 @@
 
 #pragma once
 
-#include <glib-object.h>
-#include <gtk/gtk.h>
+#include <adwaita.h>
 
 /**
  * Utility macro used to register panels
@@ -47,7 +46,7 @@ typedef void (*CcPanelStaticInitFunc) (void);
 
 
 #define CC_TYPE_PANEL (cc_panel_get_type())
-G_DECLARE_DERIVABLE_TYPE (CcPanel, cc_panel, CC, PANEL, GtkBin)
+G_DECLARE_DERIVABLE_TYPE (CcPanel, cc_panel, CC, PANEL, AdwBin)
 
 /**
  * CcPanelVisibility:
@@ -76,11 +75,10 @@ G_BEGIN_DECLS
 struct _CcPanelClass
 {
   /*< private >*/
-  GtkBinClass   parent_class;
+  AdwBinClass   parent_class;
 
   const gchar* (*get_help_uri)       (CcPanel *panel);
 
-  GtkWidget*   (*get_title_widget)   (CcPanel *panel);
   GtkWidget*   (*get_sidebar_widget) (CcPanel *panel);
 };
 
@@ -90,11 +88,20 @@ GPermission*  cc_panel_get_permission     (CcPanel     *panel);
 
 const gchar*  cc_panel_get_help_uri       (CcPanel     *panel);
 
-GtkWidget*    cc_panel_get_title_widget   (CcPanel     *panel);
-
 GtkWidget*    cc_panel_get_sidebar_widget (CcPanel     *panel);
 
 GCancellable *cc_panel_get_cancellable    (CcPanel     *panel);
 
-G_END_DECLS
+gboolean      cc_panel_get_folded         (CcPanel     *panel);
 
+GtkWidget*    cc_panel_get_content        (CcPanel     *panel);
+
+void          cc_panel_set_content        (CcPanel     *panel,
+                                           GtkWidget   *content);
+
+GtkWidget*    cc_panel_get_titlebar       (CcPanel     *panel);
+
+void          cc_panel_set_titlebar       (CcPanel     *panel,
+                                           GtkWidget   *titlebar);
+
+G_END_DECLS

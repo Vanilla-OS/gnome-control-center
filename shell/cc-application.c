@@ -24,7 +24,7 @@
 #include <glib.h>
 #include <glib/gi18n.h>
 #include <gio/gio.h>
-#include <handy.h>
+#include <adwaita.h>
 
 #include "cc-application.h"
 #include "cc-log.h"
@@ -34,7 +34,7 @@
 
 struct _CcApplication
 {
-  GtkApplication  parent;
+  AdwApplication  parent;
 
   CcShellModel   *model;
 
@@ -53,7 +53,7 @@ static void help_activated         (GSimpleAction *action,
                                     GVariant      *parameter,
                                     gpointer       user_data);
 
-G_DEFINE_TYPE (CcApplication, cc_application, GTK_TYPE_APPLICATION)
+G_DEFINE_TYPE (CcApplication, cc_application, ADW_TYPE_APPLICATION)
 
 const GOptionEntry all_options[] = {
   { "version", 0, 0, G_OPTION_ARG_NONE, NULL, N_("Display version number"), NULL },
@@ -85,10 +85,9 @@ help_activated (GSimpleAction *action,
     uri = cc_panel_get_help_uri (panel);
 
   window = cc_shell_get_toplevel (CC_SHELL (self->window));
-  gtk_show_uri_on_window (GTK_WINDOW (window),
-                          uri ? uri : "help:gnome-help/prefs",
-                          GDK_CURRENT_TIME,
-                          NULL);
+  gtk_show_uri (GTK_WINDOW (window),
+                uri ? uri : "help:gnome-help/prefs",
+                GDK_CURRENT_TIME);
 }
 
 static void
@@ -200,7 +199,7 @@ cc_application_quit (GSimpleAction *simple,
 {
   CcApplication *self = CC_APPLICATION (user_data);
 
-  gtk_widget_destroy (GTK_WIDGET (self->window));
+  gtk_window_destroy (GTK_WINDOW (self->window));
 }
 
 
@@ -217,6 +216,7 @@ cc_application_startup (GApplication *application)
 {
   CcApplication *self = CC_APPLICATION (application);
   const gchar *help_accels[] = { "F1", NULL };
+  g_autoptr(GtkCssProvider) provider = NULL;
 
   g_action_map_add_action_entries (G_ACTION_MAP (self),
                                    cc_app_actions,
@@ -225,13 +225,17 @@ cc_application_startup (GApplication *application)
 
   G_APPLICATION_CLASS (cc_application_parent_class)->startup (application);
 
-  hdy_init ();
-
   gtk_application_set_accels_for_action (GTK_APPLICATION (application),
                                          "app.help", help_accels);
 
   self->model = cc_shell_model_new ();
   self->window = cc_window_new (GTK_APPLICATION (application), self->model);
+
+  provider = gtk_css_provider_new ();
+  gtk_css_provider_load_from_resource (provider, "/org/gnome/Settings/gtk/style.css");
+  gtk_style_context_add_provider_for_display (gdk_display_get_default (),
+                                              GTK_STYLE_PROVIDER (provider),
+                                              GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 }
 
 static void
@@ -279,24 +283,16 @@ cc_application_class_init (CcApplicationClass *klass)
 static void
 cc_application_init (CcApplication *self)
 {
-  g_autoptr(GtkCssProvider) provider = NULL;
-
   cc_object_storage_initialize ();
 
   g_application_add_main_option_entries (G_APPLICATION (self), all_options);
-
-  provider = gtk_css_provider_new ();
-  gtk_css_provider_load_from_resource (provider, "/org/gnome/ControlCenter/gtk/style.css");
-  gtk_style_context_add_provider_for_screen (gdk_screen_get_default (),
-                                             GTK_STYLE_PROVIDER (provider),
-                                             GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 }
 
 GtkApplication *
 cc_application_new (void)
 {
   return g_object_new (CC_TYPE_APPLICATION,
-                       "application-id", "org.gnome.ControlCenter",
+                       "application-id", "org.gnome.Settings",
                        "flags", G_APPLICATION_HANDLES_COMMAND_LINE,
                        NULL);
 }

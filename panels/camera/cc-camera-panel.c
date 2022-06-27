@@ -18,11 +18,11 @@
  * Author: Matthias Clasen <mclasen@redhat.com>
  */
 
-#include "list-box-helper.h"
 #include "cc-camera-panel.h"
 #include "cc-camera-resources.h"
 #include "cc-util.h"
 
+#include <adwaita.h>
 #include <gio/gdesktopappinfo.h>
 #include <glib/gi18n.h>
 
@@ -35,6 +35,7 @@ struct _CcCameraPanel
 
   GtkStack     *stack;
   GtkListBox   *camera_apps_list_box;
+  GtkSwitch    *main_switch;
 
   GSettings    *privacy_settings;
 
@@ -158,7 +159,7 @@ add_camera_app (CcCameraPanel *self,
   g_autofree gchar *desktop_id = NULL;
   CameraAppStateData *data;
   GDesktopAppInfo *app_info;
-  GtkWidget *box, *row, *w;
+  GtkWidget *row, *w;
   GIcon *icon;
 
   w = g_hash_table_lookup (self->camera_app_switches, app_id);
@@ -173,41 +174,22 @@ add_camera_app (CcCameraPanel *self,
   if (!app_info)
     return;
 
-  row = gtk_list_box_row_new ();
-  gtk_widget_show (row);
-  box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-  gtk_widget_show (box);
-  gtk_widget_set_margin_start (box, 12);
-  gtk_widget_set_margin_end (box, 6);
-  gtk_widget_set_margin_top (box, 12);
-  gtk_widget_set_margin_bottom (box, 12);
-  gtk_container_add (GTK_CONTAINER (row), box);
-  gtk_widget_set_hexpand (box, TRUE);
-  gtk_container_add (GTK_CONTAINER (self->camera_apps_list_box), row);
+  row = adw_action_row_new ();
+  gtk_list_box_append (self->camera_apps_list_box, row);
 
   icon = g_app_info_get_icon (G_APP_INFO (app_info));
-  w = gtk_image_new_from_gicon (icon, GTK_ICON_SIZE_LARGE_TOOLBAR);
-  gtk_widget_show (w);
-  gtk_widget_set_halign (w, GTK_ALIGN_CENTER);
+  w = gtk_image_new_from_gicon (icon);
   gtk_widget_set_valign (w, GTK_ALIGN_CENTER);
   gtk_size_group_add_widget (self->camera_icon_size_group, w);
-  gtk_box_pack_start (GTK_BOX (box), w, FALSE, FALSE, 0);
+  adw_action_row_add_prefix (ADW_ACTION_ROW (row), w);
 
-  w = gtk_label_new (g_app_info_get_name (G_APP_INFO (app_info)));
-  gtk_widget_show (w);
-  gtk_widget_set_margin_start (w, 12);
-  gtk_widget_set_margin_end (w, 12);
-  gtk_widget_set_halign (w, GTK_ALIGN_START);
-  gtk_widget_set_valign (w, GTK_ALIGN_CENTER);
-  gtk_label_set_xalign (GTK_LABEL (w), 0);
-  gtk_box_pack_start (GTK_BOX (box), w, TRUE, TRUE, 0);
+  adw_preferences_row_set_title (ADW_PREFERENCES_ROW (row),
+                                 g_app_info_get_name (G_APP_INFO (app_info)));
 
   w = gtk_switch_new ();
-  gtk_widget_show (w);
   gtk_switch_set_active (GTK_SWITCH (w), enabled);
-  gtk_widget_set_halign (w, GTK_ALIGN_END);
   gtk_widget_set_valign (w, GTK_ALIGN_CENTER);
-  gtk_box_pack_start (GTK_BOX (box), w, FALSE, FALSE, 0);
+  adw_action_row_add_suffix (ADW_ACTION_ROW (row), w);
   g_settings_bind (self->privacy_settings,
                    "disable-camera",
                    w,
@@ -378,37 +360,6 @@ cc_camera_panel_get_help_uri (CcPanel *panel)
 }
 
 static void
-cc_camera_panel_constructed (GObject *object)
-{
-  CcCameraPanel *self = CC_CAMERA_PANEL (object);
-  GtkWidget *box, *widget;
-
-  G_OBJECT_CLASS (cc_camera_panel_parent_class)->constructed (object);
-
-  box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
-  gtk_widget_show (box);
-
-  widget = gtk_switch_new ();
-  gtk_widget_show (widget);
-  gtk_widget_set_valign (widget, GTK_ALIGN_CENTER);
-  gtk_box_pack_start (GTK_BOX (box), widget, FALSE, FALSE, 4);
-
-  g_settings_bind (self->privacy_settings, "disable-camera",
-                   widget, "active",
-                   G_SETTINGS_BIND_INVERT_BOOLEAN);
-  g_object_bind_property_full  (widget, "active",
-                                self->stack, "visible-child-name",
-                                G_BINDING_SYNC_CREATE,
-                                to_child_name,
-                                NULL,
-                                NULL, NULL);
-
-  cc_shell_embed_widget_in_header (cc_panel_get_shell (CC_PANEL (self)),
-                                   box,
-                                   GTK_POS_RIGHT);
-}
-
-static void
 cc_camera_panel_class_init (CcCameraPanelClass *klass)
 {
   CcPanelClass *panel_class = CC_PANEL_CLASS (klass);
@@ -418,12 +369,12 @@ cc_camera_panel_class_init (CcCameraPanelClass *klass)
   panel_class->get_help_uri = cc_camera_panel_get_help_uri;
 
   object_class->finalize = cc_camera_panel_finalize;
-  object_class->constructed = cc_camera_panel_constructed;
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/camera/cc-camera-panel.ui");
 
   gtk_widget_class_bind_template_child (widget_class, CcCameraPanel, stack);
   gtk_widget_class_bind_template_child (widget_class, CcCameraPanel, camera_apps_list_box);
+  gtk_widget_class_bind_template_child (widget_class, CcCameraPanel, main_switch);
 }
 
 static void
@@ -433,14 +384,20 @@ cc_camera_panel_init (CcCameraPanel *self)
 
   gtk_widget_init_template (GTK_WIDGET (self));
 
-  gtk_list_box_set_header_func (self->camera_apps_list_box,
-                                cc_list_box_update_header_func,
-                                NULL,
-                                NULL);
   self->camera_icon_size_group = gtk_size_group_new (GTK_SIZE_GROUP_BOTH);
 
   self->privacy_settings = g_settings_new ("org.gnome.desktop.privacy");
 
+  g_settings_bind (self->privacy_settings, "disable-camera",
+                   self->main_switch, "active",
+                   G_SETTINGS_BIND_INVERT_BOOLEAN);
+
+  g_object_bind_property_full  (self->main_switch, "active",
+                                self->stack, "visible-child-name",
+                                G_BINDING_SYNC_CREATE,
+                                to_child_name,
+                                NULL,
+                                NULL, NULL);
 
   self->camera_app_switches = g_hash_table_new_full (g_str_hash,
                                                      g_str_equal,

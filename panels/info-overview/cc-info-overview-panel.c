@@ -38,18 +38,18 @@
 #include <glibtop/mem.h>
 #include <glibtop/sysinfo.h>
 #include <udisks/udisks.h>
+#include <gudev/gudev.h>
 
 #include <gdk/gdk.h>
 
 #ifdef GDK_WINDOWING_WAYLAND
-#include <gdk/gdkwayland.h>
+#include <gdk/wayland/gdkwayland.h>
 #endif
 #ifdef GDK_WINDOWING_X11
-#include <gdk/gdkx.h>
+#include <gdk/x11/gdkx.h>
 #endif
 
 #include "cc-list-row.h"
-#include "list-box-helper.h"
 #include "cc-info-overview-panel.h"
 
 struct _CcInfoOverviewPanel
@@ -61,14 +61,12 @@ struct _CcInfoOverviewPanel
   CcListRow       *disk_row;
   CcListRow       *gnome_version_row;
   CcListRow       *graphics_row;
-  GtkListBox      *hardware_box;
   CcListRow       *hardware_model_row;
   GtkDialog       *hostname_editor;
   CcHostnameEntry *hostname_entry;
   CcListRow       *hostname_row;
   CcListRow       *memory_row;
-  GtkListBox      *os_box;
-  GtkImage        *os_logo;
+  GtkPicture      *os_logo;
   CcListRow       *os_name_row;
   CcListRow       *os_type_row;
   CcListRow       *processor_row;
@@ -728,11 +726,44 @@ get_windowing_system (void)
   return C_("Windowing system (Wayland, X11, or Unknown)", "Unknown");
 }
 
+static guint64
+get_ram_size_libgtop (void)
+{
+  glibtop_mem mem;
+
+  glibtop_get_mem (&mem);
+  return mem.total;
+}
+
+static guint64
+get_ram_size_dmi (void)
+{
+  g_autoptr(GUdevClient) client = NULL;
+  g_autoptr(GUdevDevice) dmi = NULL;
+  const gchar * const subsystems[] = {"dmi", NULL };
+  guint64 ram_total = 0;
+  guint64 num_ram;
+  guint i;
+
+  client = g_udev_client_new (subsystems);
+  dmi = g_udev_client_query_by_sysfs_path (client, "/sys/devices/virtual/dmi/id");
+  if (!dmi)
+    return 0;
+  num_ram = g_udev_device_get_property_as_uint64 (dmi, "MEMORY_ARRAY_NUM_DEVICES");
+  for (i = 0; i < num_ram ; i++) {
+    g_autofree char *prop = NULL;
+
+    prop = g_strdup_printf ("MEMORY_DEVICE_%d_SIZE", i);
+    ram_total += g_udev_device_get_property_as_uint64 (dmi, prop);
+  }
+  return ram_total;
+}
+
 static void
 info_overview_panel_setup_overview (CcInfoOverviewPanel *self)
 {
   g_autofree gchar *gnome_version = NULL;
-  glibtop_mem mem;
+  guint64 ram_size;
   const glibtop_sysinfo *info;
   g_autofree char *memory_text = NULL;
   g_autofree char *cpu_text = NULL;
@@ -747,8 +778,10 @@ info_overview_panel_setup_overview (CcInfoOverviewPanel *self)
 
   get_hardware_model (self);
 
-  glibtop_get_mem (&mem);
-  memory_text = g_format_size_full (mem.total, G_FORMAT_SIZE_IEC_UNITS);
+  ram_size = get_ram_size_dmi ();
+  if (ram_size == 0)
+    ram_size = get_ram_size_libgtop ();
+  memory_text = g_format_size_full (ram_size, G_FORMAT_SIZE_IEC_UNITS);
   cc_list_row_set_secondary_label (self->memory_row, memory_text);
 
   info = glibtop_get_sysinfo ();
@@ -832,8 +865,8 @@ on_device_name_entry_changed (CcInfoOverviewPanel *self)
 {
   const gchar *current_hostname, *new_hostname;
 
-  current_hostname = gtk_entry_get_text (GTK_ENTRY (self->hostname_entry));
-  new_hostname = gtk_entry_get_text (GTK_ENTRY (self->device_name_entry));
+  current_hostname = gtk_editable_get_text (GTK_EDITABLE (self->hostname_entry));
+  new_hostname = gtk_editable_get_text (GTK_EDITABLE (self->device_name_entry));
   gtk_widget_set_sensitive (self->rename_button,
                             g_strcmp0 (current_hostname, new_hostname) != 0);
 }
@@ -846,8 +879,8 @@ update_device_name (CcInfoOverviewPanel *self)
   /* We simply change the CcHostnameEntry text. CcHostnameEntry
    * listens to changes and updates hostname on change.
    */
-  hostname = gtk_entry_get_text (self->device_name_entry);
-  gtk_entry_set_text (GTK_ENTRY (self->hostname_entry), hostname);
+  hostname = gtk_editable_get_text (GTK_EDITABLE (self->device_name_entry));
+  gtk_editable_set_text (GTK_EDITABLE (self->hostname_entry), hostname);
 }
 
 static void
@@ -876,7 +909,6 @@ open_hostname_edit_dialog (CcInfoOverviewPanel *self)
   GtkWindow *toplevel;
   CcShell *shell;
   const gchar *hostname;
-  gint response;
 
   g_assert (CC_IS_INFO_OVERVIEW_PANEL (self));
 
@@ -884,21 +916,12 @@ open_hostname_edit_dialog (CcInfoOverviewPanel *self)
   toplevel = GTK_WINDOW (cc_shell_get_toplevel (shell));
   gtk_window_set_transient_for (GTK_WINDOW (self->hostname_editor), toplevel);
 
-  hostname = gtk_entry_get_text (GTK_ENTRY (self->hostname_entry));
-  gtk_entry_set_text (self->device_name_entry, hostname);
+  hostname = gtk_editable_get_text (GTK_EDITABLE (self->hostname_entry));
+  gtk_editable_set_text (GTK_EDITABLE (self->device_name_entry), hostname);
   gtk_widget_grab_focus (GTK_WIDGET (self->device_name_entry));
 
-  response = gtk_dialog_run (self->hostname_editor);
-  gtk_widget_hide (GTK_WIDGET (self->hostname_editor));
+  gtk_window_present (GTK_WINDOW (self->hostname_editor));
 
-  if (response != GTK_RESPONSE_APPLY)
-    return;
-
-  /* We simply change the CcHostnameEntry text.  CcHostnameEntry
-   * listens to changes and updates hostname on change.
-   */
-  hostname = gtk_entry_get_text (self->device_name_entry);
-  gtk_entry_set_text (GTK_ENTRY (self->hostname_entry), hostname);
 }
 
 static void
@@ -917,25 +940,17 @@ cc_info_panel_row_activated_cb (CcInfoOverviewPanel *self,
 static gboolean
 use_dark_theme (CcInfoOverviewPanel *panel)
 {
-  GdkScreen *screen;
-  GtkSettings *settings;
-  g_autofree char *theme_name = NULL;
+  AdwStyleManager *style_manager = adw_style_manager_get_default ();
 
-  theme_name = g_strdup (g_getenv ("GTK_THEME"));
-  if (theme_name != NULL)
-    return g_str_has_suffix (theme_name, "dark") ? TRUE : FALSE;
-
-  screen = gtk_widget_get_screen (GTK_WIDGET (panel));
-  settings = gtk_settings_get_for_screen (screen);
-
-  g_object_get (settings, "gtk-theme-name", &theme_name, NULL);
-  return (theme_name != NULL && g_str_has_suffix (theme_name, "dark")) ? TRUE : FALSE;
+  return adw_style_manager_get_dark (style_manager);
 }
 
 static void
 setup_os_logo (CcInfoOverviewPanel *panel)
 {
+  GtkIconTheme *icon_theme;
   g_autofree char *logo_name = g_get_os_info ("LOGO");
+  g_autoptr(GtkIconPaintable) icon_paintable = NULL;
   g_autoptr(GPtrArray) array = NULL;
   g_autoptr(GIcon) icon = NULL;
   gboolean dark;
@@ -953,7 +968,13 @@ setup_os_logo (CcInfoOverviewPanel *panel)
   g_ptr_array_add (array, (gpointer) g_strdup_printf ("%s", logo_name));
 
   icon = g_themed_icon_new_from_names ((char **) array->pdata, array->len);
-  gtk_image_set_from_gicon (panel->os_logo, icon, GTK_ICON_SIZE_INVALID);
+  icon_theme = gtk_icon_theme_get_for_display (gdk_display_get_default ());
+  icon_paintable = gtk_icon_theme_lookup_by_gicon (icon_theme, icon,
+                                                   192,
+                                                   gtk_widget_get_scale_factor (GTK_WIDGET (panel)),
+                                                   gtk_widget_get_direction (GTK_WIDGET (panel)),
+                                                   0);
+  gtk_picture_set_paintable (panel->os_logo, GDK_PAINTABLE (icon_paintable));
 }
 
 static void
@@ -967,13 +988,11 @@ cc_info_overview_panel_class_init (CcInfoOverviewPanelClass *klass)
   gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, disk_row);
   gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, gnome_version_row);
   gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, graphics_row);
-  gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, hardware_box);
   gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, hardware_model_row);
   gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, hostname_editor);
   gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, hostname_entry);
   gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, hostname_row);
   gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, memory_row);
-  gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, os_box);
   gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, os_logo);
   gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, os_name_row);
   gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, os_type_row);
