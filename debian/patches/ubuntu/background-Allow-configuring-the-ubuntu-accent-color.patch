@@ -11,13 +11,13 @@ given that these are per-process anyways.
 ---
  panels/background/cc-background-panel.c  |  12 +
  panels/background/cc-background-panel.ui |   4 +
- panels/ubuntu/cc-ubuntu-colors-row.c     | 504 +++++++++++++++++++++++++++++++
+ panels/ubuntu/cc-ubuntu-colors-row.c     | 538 +++++++++++++++++++++++++++++++
  panels/ubuntu/cc-ubuntu-colors-row.css   |  24 ++
- panels/ubuntu/cc-ubuntu-colors-row.h     |  34 +++
- panels/ubuntu/cc-ubuntu-colors-row.ui    | 289 ++++++++++++++++++
+ panels/ubuntu/cc-ubuntu-colors-row.h     |  34 ++
+ panels/ubuntu/cc-ubuntu-colors-row.ui    | 289 +++++++++++++++++
  panels/ubuntu/meson.build                |   3 +
  po/POTFILES.in                           |   2 +
- 8 files changed, 872 insertions(+)
+ 8 files changed, 906 insertions(+)
  create mode 100644 panels/ubuntu/cc-ubuntu-colors-row.c
  create mode 100644 panels/ubuntu/cc-ubuntu-colors-row.css
  create mode 100644 panels/ubuntu/cc-ubuntu-colors-row.h
@@ -97,10 +97,10 @@ index 7efbb64..a049736 100644
  
 diff --git a/panels/ubuntu/cc-ubuntu-colors-row.c b/panels/ubuntu/cc-ubuntu-colors-row.c
 new file mode 100644
-index 0000000..694cdc0
+index 0000000..2d64912
 --- /dev/null
 +++ b/panels/ubuntu/cc-ubuntu-colors-row.c
-@@ -0,0 +1,504 @@
+@@ -0,0 +1,538 @@
 +/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 +/*
 + * Copyright (C) 2022 Canonical Ltd
@@ -161,6 +161,8 @@ index 0000000..694cdc0
 +struct _CcUbuntuColorsRow {
 +  AdwActionRow parent_instance;
 +
++  gboolean startup;
++
 +  GtkFlowBox      *color_box;
 +  GtkFlowBoxChild *accent_bark;
 +  GtkFlowBoxChild *accent_blue;
@@ -200,6 +202,7 @@ index 0000000..694cdc0
 +  g_autoptr(GString) icon_theme = NULL;
 +  g_autoptr(GString) gedit_theme = NULL;
 +  g_autofree char *current_gtk_theme = NULL;
++  g_autofree char *current_icon_theme = NULL;
 +
 +  gtk_theme = g_string_new ("Yaru");
 +  icon_theme = g_string_new ("Yaru");
@@ -225,6 +228,12 @@ index 0000000..694cdc0
 +        }
 +    }
 +
++  if (accent_color == NULL)
++    {
++      /* No selection, do not change anything */
++      return;
++    }
++
 +  if (self->color_scheme == G_DESKTOP_COLOR_SCHEME_PREFER_DARK)
 +    {
 +      g_string_append (gtk_theme, "-dark");
@@ -239,10 +248,31 @@ index 0000000..694cdc0
 +      g_settings_set_string (self->interface_settings, GTK_THEME_KEY, gtk_theme->str);
 +    }
 +
-+  if (self->gedit_settings)
-+    g_settings_set_string (self->gedit_settings, GEDIT_THEME_KEY, gedit_theme->str);
++  current_icon_theme = g_settings_get_string (self->interface_settings, ICON_THEME_KEY);
 +
-+  g_settings_set_string (self->interface_settings, ICON_THEME_KEY, icon_theme->str);
++  if (!current_icon_theme || !self->startup ||
++      g_str_has_prefix (current_icon_theme, "Yaru"))
++    g_settings_set_string (self->interface_settings, ICON_THEME_KEY, icon_theme->str);
++
++  if (self->gedit_settings)
++    {
++      g_autoptr(GVariant) gedit_user_value = NULL;
++      const char *gedit_theme_name = NULL;
++
++      gedit_user_value = g_settings_get_user_value (self->gedit_settings,
++                                                    GEDIT_THEME_KEY);
++
++      if (gedit_user_value)
++        gedit_theme_name = g_variant_get_string (gedit_user_value, NULL);
++
++      if (!gedit_theme_name || *gedit_theme_name == '\0' ||
++          g_str_has_prefix (gedit_theme_name, "Yaru"))
++        {
++          /* Only change the gedit setting if user is using a Yaru theme, or unset */
++          g_settings_set_string (self->gedit_settings, GEDIT_THEME_KEY,
++                                 gedit_theme->str);
++        }
++    }
 +}
 +
 +static void
@@ -506,6 +536,8 @@ index 0000000..694cdc0
 +      return;
 +    }
 +
++  self->startup = TRUE;
++
 +  g_resources_register (cc_ubuntu_get_resource ());
 +
 +  gtk_widget_init_template (GTK_WIDGET (self));
@@ -547,6 +579,8 @@ index 0000000..694cdc0
 +
 +  load_custom_css (self);
 +  on_interface_settings_changed (self);
++
++  self->startup = FALSE;
 +}
 +
 +static void
