@@ -11,6 +11,7 @@ ubuntu/distro-logo.patch
 ubuntu/keyboard-Add-launch-terminal-shortcut.patch
 ubuntu/sound-Allow-volume-to-be-set-above-100.patch
 ubuntu/Allow-tweaking-some-settings-for-Ubuntu-Dock.patch
+ubuntu/background-Allow-configuring-the-ubuntu-accent-color.patch
 ubuntu/multitasking-panel-Sync-workspace-and-monitor-isolation-d.patch
 ubuntu/Modify-Mulitasking-assets-for-accent-colors.patch
 ubuntu/lock-Add-Lock-Screen-on-Suspend-option.patch
