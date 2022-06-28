@@ -1,4 +1,4 @@
-gnome-control-center (1:42.2-1ubuntu1) UNRELEASED; urgency=medium
+gnome-control-center (1:42.2-1ubuntu1) kinetic; urgency=medium
 
   * debian/patches: Drop applied upstream and update old to use Gtk4 and Adw.
     Some have been dropped as not relevant anymore.
@@ -28,7 +28,7 @@ gnome-control-center (1:42.2-1ubuntu1) UNRELEASED; urgency=medium
     (LP: #1971415)
   * debian/patches: Move the VNC support patch under the ubuntu topic
 
- -- Marco Trevisan (Treviño) <marco@ubuntu.com>  Tue, 28 Jun 2022 02:06:15 +0200
+ -- Marco Trevisan (Treviño) <marco@ubuntu.com>  Tue, 28 Jun 2022 02:24:04 +0200
 
 gnome-control-center (1:42.2-1) unstable; urgency=medium
 
