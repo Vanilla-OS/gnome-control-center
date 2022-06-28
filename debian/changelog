@@ -1,3 +1,35 @@
+gnome-control-center (1:42.2-1ubuntu1) UNRELEASED; urgency=medium
+
+  * debian/patches: Drop applied upstream and update old to use Gtk4 and Adw.
+    Some have been dropped as not relevant anymore.
+    While usage of AdwLeaf is now too invasive to do a revert as per
+     debian/patches/ubuntu/window-Stop-using-HdyLeaflet.patch so it's better
+    if we just help fixing the issues upstream.
+  * debian/patches: Ensure VNC/RDP remote control setting is honored
+    (LP: #1977663)
+  * debian/patches: Drop workaround for X-SnapInstanceName.
+    It's in snapd for 3 years now, we can safely assume we support it.
+  * background: Allow configuring the ubuntu accent color.
+    Move the ubuntu colors configuration to a single widget
+    (CcUbuntuColorsRow) so that it can be easily included in other widgets
+    with minimal changes.
+    We keep resources and the widget itself compiled together with the ubuntu
+    panel, so that there's no need to change multiple panels build scripts,
+    given that these are per-process anyways.
+    Helps with LP: #1968213
+  * ubuntu-colors-row: Do not change themes on startup (or on user changes)
+    Do not override user themes unless an user has explicitly selected a
+    color theme. This applies to both the user theme and the icons, as we
+    want a consistent experience. But users could still use tweaks to change
+    them.
+    At the same time, avoid changing the gedit color scheme if an user
+    previously set a non-Yaru theme. (LP: #1968213)
+  * debian/patches: Ensure both VNC and RDP settings are disabled if requested
+    (LP: #1971415)
+  * debian/patches: Move the VNC support patch under the ubuntu topic
+
+ -- Marco Trevisan (Treviño) <marco@ubuntu.com>  Tue, 28 Jun 2022 02:06:15 +0200
+
 gnome-control-center (1:42.2-1) unstable; urgency=medium
 
   * New upstream release
