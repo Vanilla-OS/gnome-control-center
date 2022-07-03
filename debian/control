@@ -6,7 +6,7 @@ Source: gnome-control-center
 Section: gnome
 Priority: optional
 Maintainer: Debian GNOME Maintainers <pkg-gnome-maintainers@lists.alioth.debian.org>
-Uploaders: Iain Lane <laney@debian.org>, Laurent Bigonville <bigon@debian.org>, Michael Biebl <biebl@debian.org>, Sebastien Bacher <seb128@debian.org>
+Uploaders: Iain Lane <laney@debian.org>, Jeremy Bicha <jbicha@ubuntu.com>, Laurent Bigonville <bigon@debian.org>, Sebastien Bacher <seb128@debian.org>
 Build-Depends: debhelper-compat (= 13),
                dh-sequence-gnome (>= 0.22.2),
                libaccountsservice-dev (>= 0.6.39),
@@ -80,6 +80,7 @@ Depends: ${misc:Depends},
          gnome-control-center-data (<< ${gnome:NextVersion}),
          gnome-control-center-data (>= ${source:Version}),
          gnome-desktop3-data,
+         gnome-remote-desktop (>= 42),
          gnome-settings-daemon (>= 41),
          gsettings-desktop-schemas (>= 42~),
 Recommends: cups-pk-helper,
