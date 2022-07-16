@@ -1,3 +1,11 @@
+gnome-control-center (1:42.3-2) unstable; urgency=medium
+
+  * Lower gnome-remote-desktop from Depends to Recommends (Closes: #1014879)
+  * Cherry-pick patches to use gnome-shell version number as
+    the GNOME Version in the About page
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Sat, 16 Jul 2022 16:24:18 +0200
+
 gnome-control-center (1:42.3-1) unstable; urgency=medium
 
   [ Jeremy Bicha ]
