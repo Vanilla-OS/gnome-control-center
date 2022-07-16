@@ -2,3 +2,6 @@ debian/Expose-touchpad-settings-if-synaptics-is-in-use.patch
 debian/Debian-s-adduser-doesn-t-allow-uppercase-letters-by-defau.patch
 debian/info-overview-add-build-option-to-control-distributor-log.patch
 debian/Ignore-result-of-test-network-panel.patch
+info-overview-Don-t-load-version.xml-info-we-don-t-use.patch
+info-overview-Load-GNOME-version-from-gnome-shell.patch
+info-overview-Remove-old-version.xml-loading-code.patch
