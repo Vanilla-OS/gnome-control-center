@@ -1,3 +1,9 @@
+gnome-control-center (1:42.2-1ubuntu2) kinetic; urgency=medium
+
+  * Rebuild against latest gnome-desktop
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Thu, 28 Jul 2022 07:22:14 -0400
+
 gnome-control-center (1:42.2-1ubuntu1) kinetic; urgency=medium
 
   * debian/patches: Drop applied upstream and update old to use Gtk4 and Adw.
