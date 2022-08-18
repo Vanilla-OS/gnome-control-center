@@ -11,10 +11,10 @@ Subject: display: Allow fractional scaling to be enabled
  5 files changed, 351 insertions(+), 1 deletion(-)
 
 diff --git a/panels/display/cc-display-config-dbus.c b/panels/display/cc-display-config-dbus.c
-index 8e2385b..07e534b 100644
+index 2b4addc..96f69bf 100644
 --- a/panels/display/cc-display-config-dbus.c
 +++ b/panels/display/cc-display-config-dbus.c
-@@ -918,6 +918,8 @@ struct _CcDisplayConfigDBus
+@@ -994,6 +994,8 @@ struct _CcDisplayConfigDBus
    gboolean supports_changing_layout_mode;
    gboolean global_scale_required;
    CcDisplayLayoutMode layout_mode;
@@ -23,7 +23,7 @@ index 8e2385b..07e534b 100644
  
    GList *monitors;
    CcDisplayMonitorDBus *primary;
-@@ -1086,6 +1088,9 @@ cc_display_config_dbus_equal (CcDisplayConfig *pself,
+@@ -1160,6 +1162,9 @@ cc_display_config_dbus_equal (CcDisplayConfig *pself,
    g_return_val_if_fail (pself, FALSE);
    g_return_val_if_fail (pother, FALSE);
  
@@ -33,7 +33,7 @@ index 8e2385b..07e534b 100644
    cc_display_config_dbus_ensure_non_offset_coords (self);
    cc_display_config_dbus_ensure_non_offset_coords (other);
  
-@@ -1235,6 +1240,29 @@ cc_display_config_dbus_is_layout_logical (CcDisplayConfig *pself)
+@@ -1458,6 +1463,29 @@ cc_display_config_dbus_is_layout_logical (CcDisplayConfig *pself)
           self->layout_mode == CC_DISPLAY_LAYOUT_MODE_GLOBAL_UI_LOGICAL;
  }
  
@@ -63,7 +63,7 @@ index 8e2385b..07e534b 100644
  static gboolean
  cc_display_config_dbus_layout_use_ui_scale (CcDisplayConfig *pself)
  {
-@@ -1242,6 +1270,20 @@ cc_display_config_dbus_layout_use_ui_scale (CcDisplayConfig *pself)
+@@ -1465,6 +1493,20 @@ cc_display_config_dbus_layout_use_ui_scale (CcDisplayConfig *pself)
    return self->layout_mode == CC_DISPLAY_LAYOUT_MODE_GLOBAL_UI_LOGICAL;
  }
  
@@ -84,7 +84,7 @@ index 8e2385b..07e534b 100644
  static gboolean
  is_scale_allowed_by_active_monitors (CcDisplayConfigDBus *self,
                                       CcDisplayMode       *mode,
-@@ -1409,6 +1451,11 @@ cc_display_config_dbus_init (CcDisplayConfigDBus *self)
+@@ -1632,6 +1674,11 @@ cc_display_config_dbus_init (CcDisplayConfigDBus *self)
    self->global_scale_required = FALSE;
    self->layout_mode = CC_DISPLAY_LAYOUT_MODE_LOGICAL;
    self->logical_monitors = g_hash_table_new (NULL, NULL);
@@ -96,7 +96,7 @@ index 8e2385b..07e534b 100644
  }
  
  static void
-@@ -1625,6 +1672,15 @@ cc_display_config_dbus_constructed (GObject *object)
+@@ -1816,6 +1863,15 @@ cc_display_config_dbus_constructed (GObject *object)
          {
            g_variant_get (v, "b", &self->global_scale_required);
          }
@@ -112,17 +112,17 @@ index 8e2385b..07e534b 100644
        else if (g_str_equal (s, "layout-mode"))
          {
            guint32 u = 0;
-@@ -1729,6 +1785,7 @@ cc_display_config_dbus_finalize (GObject *object)
+@@ -1919,6 +1975,7 @@ cc_display_config_dbus_finalize (GObject *object)
+ 
    g_clear_list (&self->monitors, g_object_unref);
    g_clear_pointer (&self->logical_monitors, g_hash_table_destroy);
-   g_clear_pointer (&self->clone_modes, g_list_free);
 +  g_clear_pointer (&self->renderer, g_free);
  
    G_OBJECT_CLASS (cc_display_config_dbus_parent_class)->finalize (object);
  }
-@@ -1754,11 +1811,14 @@ cc_display_config_dbus_class_init (CcDisplayConfigDBusClass *klass)
+@@ -1944,11 +2001,14 @@ cc_display_config_dbus_class_init (CcDisplayConfigDBusClass *klass)
    parent_class->set_cloning = cc_display_config_dbus_set_cloning;
-   parent_class->get_cloning_modes = cc_display_config_dbus_get_cloning_modes;
+   parent_class->generate_cloning_modes = cc_display_config_dbus_generate_cloning_modes;
    parent_class->is_layout_logical = cc_display_config_dbus_is_layout_logical;
 +  parent_class->set_layout_logical = cc_display_config_dbus_set_layout_logical;
    parent_class->is_scaled_mode_valid = cc_display_config_dbus_is_scaled_mode_valid;
@@ -136,7 +136,7 @@ index 8e2385b..07e534b 100644
    pspec = g_param_spec_variant ("state",
                                  "GVariant",
 diff --git a/panels/display/cc-display-config.c b/panels/display/cc-display-config.c
-index 69ca9c1..82c14e2 100644
+index 4c21aa8..5743869 100644
 --- a/panels/display/cc-display-config.c
 +++ b/panels/display/cc-display-config.c
 @@ -17,6 +17,11 @@
@@ -151,7 +151,7 @@ index 69ca9c1..82c14e2 100644
  #include <gio/gio.h>
  #include <math.h>
  #include "cc-display-config.h"
-@@ -425,6 +430,10 @@ cc_display_monitor_set_ui_info (CcDisplayMonitor *self, gint ui_number, gchar *u
+@@ -443,6 +448,10 @@ cc_display_monitor_set_ui_info (CcDisplayMonitor *self, gint ui_number, gchar *u
  
  struct _CcDisplayConfigPrivate {
    GList *ui_sorted_monitors;
@@ -162,7 +162,7 @@ index 69ca9c1..82c14e2 100644
  };
  typedef struct _CcDisplayConfigPrivate CcDisplayConfigPrivate;
  
-@@ -432,6 +441,68 @@ G_DEFINE_TYPE_WITH_PRIVATE (CcDisplayConfig,
+@@ -450,6 +459,68 @@ G_DEFINE_TYPE_WITH_PRIVATE (CcDisplayConfig,
                              cc_display_config,
                              G_TYPE_OBJECT)
  
@@ -231,7 +231,7 @@ index 69ca9c1..82c14e2 100644
  static void
  cc_display_config_init (CcDisplayConfig *self)
  {
-@@ -469,6 +540,10 @@ cc_display_config_constructed (GObject *object)
+@@ -487,6 +558,10 @@ cc_display_config_constructed (GObject *object)
  
        ui_number += 1;
      }
@@ -242,7 +242,7 @@ index 69ca9c1..82c14e2 100644
  }
  
  static void
-@@ -478,6 +553,7 @@ cc_display_config_finalize (GObject *object)
+@@ -496,6 +571,7 @@ cc_display_config_finalize (GObject *object)
    CcDisplayConfigPrivate *priv = cc_display_config_get_instance_private (self);
  
    g_list_free (priv->ui_sorted_monitors);
@@ -250,7 +250,7 @@ index 69ca9c1..82c14e2 100644
  
    G_OBJECT_CLASS (cc_display_config_parent_class)->finalize (object);
  }
-@@ -568,9 +644,16 @@ gboolean
+@@ -587,9 +663,16 @@ gboolean
  cc_display_config_equal (CcDisplayConfig *self,
                           CcDisplayConfig *other)
  {
@@ -267,7 +267,7 @@ index 69ca9c1..82c14e2 100644
    return CC_DISPLAY_CONFIG_GET_CLASS (self)->equal (self, other);
  }
  
-@@ -578,6 +661,8 @@ gboolean
+@@ -597,6 +680,8 @@ gboolean
  cc_display_config_apply (CcDisplayConfig *self,
                           GError **error)
  {
@@ -276,7 +276,7 @@ index 69ca9c1..82c14e2 100644
    if (!CC_IS_DISPLAY_CONFIG (self))
      {
        g_warning ("Cannot apply invalid configuration");
-@@ -588,6 +673,12 @@ cc_display_config_apply (CcDisplayConfig *self,
+@@ -607,6 +692,12 @@ cc_display_config_apply (CcDisplayConfig *self,
        return FALSE;
      }
  
@@ -289,7 +289,7 @@ index 69ca9c1..82c14e2 100644
    return CC_DISPLAY_CONFIG_GET_CLASS (self)->apply (self, error);
  }
  
-@@ -620,6 +711,14 @@ cc_display_config_is_layout_logical (CcDisplayConfig *self)
+@@ -639,6 +730,14 @@ cc_display_config_is_layout_logical (CcDisplayConfig *self)
    return CC_DISPLAY_CONFIG_GET_CLASS (self)->is_layout_logical (self);
  }
  
@@ -304,7 +304,7 @@ index 69ca9c1..82c14e2 100644
  void
  cc_display_config_set_minimum_size (CcDisplayConfig *self,
                                      int              width,
-@@ -629,13 +728,37 @@ cc_display_config_set_minimum_size (CcDisplayConfig *self,
+@@ -648,13 +747,37 @@ cc_display_config_set_minimum_size (CcDisplayConfig *self,
    CC_DISPLAY_CONFIG_GET_CLASS (self)->set_minimum_size (self, width, height);
  }
  
@@ -342,7 +342,7 @@ index 69ca9c1..82c14e2 100644
    return CC_DISPLAY_CONFIG_GET_CLASS (self)->is_scaled_mode_valid (self, mode, scale);
  }
  
-@@ -670,3 +793,124 @@ cc_display_config_get_maximum_scaling (CcDisplayConfig *self)
+@@ -689,3 +812,124 @@ cc_display_config_get_maximum_scaling (CcDisplayConfig *self)
  
    return max_scale;
  }
@@ -468,19 +468,19 @@ index 69ca9c1..82c14e2 100644
 +  return priv->fractional_scaling;
 +}
 diff --git a/panels/display/cc-display-config.h b/panels/display/cc-display-config.h
-index 2ad35d1..dc3a924 100644
+index c136f57..e206a02 100644
 --- a/panels/display/cc-display-config.h
 +++ b/panels/display/cc-display-config.h
-@@ -163,6 +163,8 @@ struct _CcDisplayConfigClass
+@@ -167,6 +167,8 @@ struct _CcDisplayConfigClass
                                   gboolean          clone);
-   GList*   (*get_cloning_modes) (CcDisplayConfig  *self);
+   GList*   (*generate_cloning_modes) (CcDisplayConfig  *self);
    gboolean (*is_layout_logical) (CcDisplayConfig  *self);
 +  void     (*set_layout_logical) (CcDisplayConfig  *self,
 +                                 gboolean          enabled);
    void     (*set_minimum_size)  (CcDisplayConfig  *self,
                                   int               width,
                                   int               height);
-@@ -171,6 +173,8 @@ struct _CcDisplayConfigClass
+@@ -175,6 +177,8 @@ struct _CcDisplayConfigClass
                                      double            scale);
    gboolean (* get_panel_orientation_managed) (CcDisplayConfig    *self);
    gboolean (*layout_use_ui_scale) (CcDisplayConfig  *self);
@@ -489,7 +489,7 @@ index 2ad35d1..dc3a924 100644
  };
  
  
-@@ -191,6 +195,8 @@ void              cc_display_config_set_mode_on_all_outputs (CcDisplayConfig *co
+@@ -195,6 +199,8 @@ void              cc_display_config_set_mode_on_all_outputs (CcDisplayConfig *co
                                                               CcDisplayMode   *mode);
  
  gboolean          cc_display_config_is_layout_logical       (CcDisplayConfig    *self);
@@ -498,7 +498,7 @@ index 2ad35d1..dc3a924 100644
  void              cc_display_config_set_minimum_size        (CcDisplayConfig    *self,
                                                               int                 width,
                                                               int                 height);
-@@ -200,8 +206,13 @@ gboolean          cc_display_config_is_scaled_mode_valid    (CcDisplayConfig
+@@ -204,8 +210,13 @@ gboolean          cc_display_config_is_scaled_mode_valid    (CcDisplayConfig
  gboolean          cc_display_config_get_panel_orientation_managed
                                                              (CcDisplayConfig    *self);
  gboolean          cc_display_config_layout_use_ui_scale     (CcDisplayConfig    *self);
@@ -513,7 +513,7 @@ index 2ad35d1..dc3a924 100644
  const char*       cc_display_monitor_get_display_name       (CcDisplayMonitor   *monitor);
  gboolean          cc_display_monitor_is_active              (CcDisplayMonitor   *monitor);
 diff --git a/panels/display/cc-display-settings.c b/panels/display/cc-display-settings.c
-index 54301b3..b7158a4 100644
+index 21a0a1a..5861e49 100644
 --- a/panels/display/cc-display-settings.c
 +++ b/panels/display/cc-display-settings.c
 @@ -23,6 +23,7 @@
@@ -540,7 +540,7 @@ index 54301b3..b7158a4 100644
  static gboolean
  should_show_rotation (CcDisplaySettings *self)
  {
-@@ -253,6 +254,7 @@ cc_display_settings_rebuild_ui (CcDisplaySettings *self)
+@@ -254,6 +255,7 @@ cc_display_settings_rebuild_ui (CcDisplaySettings *self)
        gtk_widget_set_visible (self->resolution_row, FALSE);
        gtk_widget_set_visible (self->scale_combo_row, FALSE);
        gtk_widget_set_visible (self->scale_buttons_row, FALSE);
@@ -548,7 +548,7 @@ index 54301b3..b7158a4 100644
        gtk_widget_set_visible (self->underscanning_row, FALSE);
  
        return G_SOURCE_REMOVE;
-@@ -457,6 +459,11 @@ cc_display_settings_rebuild_ui (CcDisplaySettings *self)
+@@ -463,6 +465,11 @@ cc_display_settings_rebuild_ui (CcDisplaySettings *self)
      }
    cc_display_settings_refresh_layout (self, self->folded);
  
@@ -560,7 +560,7 @@ index 54301b3..b7158a4 100644
    gtk_widget_set_visible (self->underscanning_row,
                            cc_display_monitor_supports_underscanning (self->selected_output) &&
                            !cc_display_config_is_cloning (self->config));
-@@ -752,6 +759,7 @@ cc_display_settings_class_init (CcDisplaySettingsClass *klass)
+@@ -758,6 +765,7 @@ cc_display_settings_class_init (CcDisplaySettingsClass *klass)
    gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, scale_bbox);
    gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, scale_buttons_row);
    gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, scale_combo_row);
@@ -568,7 +568,7 @@ index 54301b3..b7158a4 100644
    gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, underscanning_row);
    gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, underscanning_switch);
  
-@@ -763,6 +771,19 @@ cc_display_settings_class_init (CcDisplaySettingsClass *klass)
+@@ -769,6 +777,19 @@ cc_display_settings_class_init (CcDisplaySettingsClass *klass)
    gtk_widget_class_bind_template_callback (widget_class, on_underscanning_switch_active_changed_cb);
  }
  
@@ -588,7 +588,7 @@ index 54301b3..b7158a4 100644
  static void
  cc_display_settings_init (CcDisplaySettings *self)
  {
-@@ -798,6 +819,11 @@ cc_display_settings_init (CcDisplaySettings *self)
+@@ -804,6 +825,11 @@ cc_display_settings_init (CcDisplaySettings *self)
    adw_combo_row_set_model (ADW_COMBO_ROW (self->resolution_row),
                             G_LIST_MODEL (self->resolution_list));
  
