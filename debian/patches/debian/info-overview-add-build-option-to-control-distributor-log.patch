@@ -1,7 +1,6 @@
 From: Michael Catanzaro <mcatanzaro@gnome.org>
 Date: Tue, 9 Mar 2021 14:51:54 -0600
-Subject: [PATCH 1/2] info-overview: add build option to control distributor
- logo
+Subject: info-overview: add build option to control distributor logo
 
 Currently, we display a 256x256 version of the OS icon from
 /etc/os-release. This is too big for my taste, and it's also not
@@ -9,11 +8,14 @@ sufficient for distros that want to display a logo that is not an icon.
 For instance, because we no longer display the operating system name
 immediately beneath the logo, it may be desirable to use a logo variant
 that includes text. This patch adds a meson build option that
-distributions can use to override the logo.
+distributions can use to override the logo, and a second build option to
+specify a different logo for use in dark mode.
 
-Because the logo might include text, distributions may want to vary the
-logo used in dark mode. A subsequent commit will add a second option for
-this.
+This may be removed when debian will expose the LOGO property in
+/etc/os-release (as per upstream commit f39cd5a93)
+
+Bug-Debian: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=989690
+Bug-Ubuntu: https://bugs.launchpad.net/ubuntu/+source/base-files/+bug/1931582
 ---
  meson.build                                   | 11 +++++++++++
  meson_options.txt                             |  2 ++

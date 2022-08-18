@@ -7,7 +7,7 @@ Section: gnome
 Priority: optional
 Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
 XSBC-Original-Maintainer: Debian GNOME Maintainers <pkg-gnome-maintainers@lists.alioth.debian.org>
-Uploaders: Jeremy Bicha <jbicha@ubuntu.com>, Laurent Bigonville <bigon@debian.org>, Sebastien Bacher <seb128@debian.org>
+Uploaders: Jeremy Bicha <jbicha@ubuntu.com>
 Build-Depends: debhelper-compat (= 13),
                dh-sequence-gnome (>= 0.22.2),
                libaccountsservice-dev (>= 0.6.39),
@@ -91,6 +91,7 @@ Depends: ${misc:Depends},
          whoopsie-preferences,
 Recommends: cups-pk-helper,
             gnome-online-accounts (>= 3.25.3),
+            gnome-remote-desktop (>= 42),
             gnome-user-docs,
 #            gnome-user-share,
             gkbd-capplet,

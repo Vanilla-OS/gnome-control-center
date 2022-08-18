@@ -6,8 +6,12 @@ export DEB_LDFLAGS_MAINT_APPEND = -Wl,-O1 -Wl,-z,defs
 
 # Not in Ubuntu main yet https://launchpad.net/bugs/1892456
 ifeq ($(shell dpkg-vendor --is Ubuntu && echo yes),yes)
+DISTRIBUTOR_LOGO := /usr/share/pixmaps/ubuntu-logo-icon.png
+DISTRIBUTOR_LOGO_DARK := /usr/share/pixmaps/ubuntu-logo-dark.png
 MALCONTENT := -Dmalcontent=false
 else
+DISTRIBUTOR_LOGO := /usr/share/icons/vendor/scalable/emblems/emblem-vendor.svg
+DISTRIBUTOR_LOGO_DARK := /usr/share/icons/vendor/scalable/emblems/emblem-vendor.svg
 ifneq (,$(filter $(DEB_HOST_ARCH), amd64 arm64 armel armhf i386 mips mipsel mips64el ppc64el s390x hppa powerpc powerpcspe ppc64))
 MALCONTENT := -Dmalcontent=true
 else
@@ -30,6 +34,7 @@ override_dh_auto_configure:
 		-Ddocumentation=true \
 		-Dwhoopsie=true \
 		-Ddistributor_logo=/usr/share/pixmaps/ubuntu-logo-icon.png \
-		-Ddark_mode_distributor_logo=/usr/share/pixmaps/ubuntu-logo-dark.png \
+		-Ddistributor_logo=$(DISTRIBUTOR_LOGO) \
+		-Ddark_mode_distributor_logo=$(DISTRIBUTOR_LOGO) \
 		$(MALCONTENT) \
 		$(SNAP)
