@@ -28,6 +28,8 @@
 #include <goa/goa.h>
 
 #include "cc-online-accounts-panel.h"
+#include "cc-online-account-provider-row.h"
+#include "cc-online-account-row.h"
 #include "cc-online-accounts-resources.h"
 
 #ifdef GDK_WINDOWING_X11
@@ -37,7 +39,7 @@
 #include <gdk/wayland/gdkwayland.h>
 #endif
 
-struct _CcGoaPanel
+struct _CcOnlineAccountsPanel
 {
   CcPanel parent_instance;
 
@@ -64,7 +66,7 @@ struct _CcGoaPanel
 
 static gboolean remove_account_timeout_cb (gpointer user_data);
 
-CC_PANEL_REGISTER (CcGoaPanel, cc_goa_panel);
+CC_PANEL_REGISTER (CcOnlineAccountsPanel, cc_online_accounts_panel);
 
 enum {
   PROP_0,
@@ -73,37 +75,37 @@ enum {
 
 /* Rows methods */
 
-typedef void (*RowForAccountCallback) (CcGoaPanel *self, GtkWidget *row, GList *other_rows);
+typedef void (*RowForAccountCallback) (CcOnlineAccountsPanel *self, GtkWidget *row, GList *other_rows);
 
 static void
-hide_row_for_account_cb (CcGoaPanel *self,
-                         GtkWidget  *row,
-                         GList      *other_rows)
+hide_row_for_account_cb (CcOnlineAccountsPanel *self,
+                         GtkWidget             *row,
+                         GList                 *other_rows)
 {
   gtk_widget_hide (row);
   gtk_widget_set_visible (GTK_WIDGET (self->accounts_frame), other_rows != NULL);
 }
 
 static void
-remove_row_for_account_cb (CcGoaPanel *self,
-                           GtkWidget  *row,
-                           GList      *other_rows)
+remove_row_for_account_cb (CcOnlineAccountsPanel *self,
+                           GtkWidget             *row,
+                           GList                 *other_rows)
 {
   gtk_list_box_remove (self->accounts_listbox, row);
   gtk_widget_set_visible (GTK_WIDGET (self->accounts_frame), other_rows != NULL);
 }
 
 static void
-show_row_for_account_cb (CcGoaPanel *self,
-                         GtkWidget  *row,
-                         GList      *other_rows)
+show_row_for_account_cb (CcOnlineAccountsPanel *self,
+                         GtkWidget             *row,
+                         GList                 *other_rows)
 {
   gtk_widget_show (row);
   gtk_widget_show (GTK_WIDGET (self->accounts_frame));
 }
 
 static void
-modify_row_for_account (CcGoaPanel            *self,
+modify_row_for_account (CcOnlineAccountsPanel *self,
                         GoaObject             *object,
                         RowForAccountCallback  callback)
 {
@@ -124,7 +126,7 @@ modify_row_for_account (CcGoaPanel            *self,
     {
       GoaObject *row_object;
 
-      row_object = g_object_get_data (G_OBJECT (l->data), "goa-object");
+      row_object = cc_online_account_row_get_object (CC_ONLINE_ACCOUNT_ROW (l->data));
       if (row_object == object)
         {
           GtkWidget *row = GTK_WIDGET (l->data);
@@ -141,6 +143,7 @@ modify_row_for_account (CcGoaPanel            *self,
 
 /* Auxiliary methods */
 
+G_GNUC_NULL_TERMINATED
 static char *
 run_goa_helper_sync (const char *command,
                      ...)
@@ -248,14 +251,14 @@ run_goa_helper_async (const gchar         *command,
 }
 
 static void
-cancel_notification_timeout (CcGoaPanel *self)
+cancel_notification_timeout (CcOnlineAccountsPanel *self)
 {
   g_clear_handle_id (&self->remove_account_timeout_id, g_source_remove);
   self->removed_object = NULL;
 }
 
 static void
-start_remove_account_timeout (CcGoaPanel *self)
+start_remove_account_timeout (CcOnlineAccountsPanel *self)
 {
   GoaAccount *account;
   g_autofree gchar *id = NULL;
@@ -287,7 +290,7 @@ on_show_account_finish_cb (GObject      *source_object,
                            GAsyncResult *result,
                            gpointer      user_data)
 {
-  CcGoaPanel *self = CC_GOA_PANEL (user_data);
+  CcOnlineAccountsPanel *self = CC_ONLINE_ACCOUNTS_PANEL (user_data);
   g_autofree char *output = NULL;
   g_autoptr(GError) error = NULL;
 
@@ -306,8 +309,8 @@ on_show_account_finish_cb (GObject      *source_object,
 }
 
 static void
-show_account (CcGoaPanel *self,
-              GoaObject  *object)
+show_account (CcOnlineAccountsPanel *self,
+              GoaObject             *object)
 {
   GoaAccount *account;
 
@@ -330,7 +333,7 @@ on_create_account_finish_cb (GObject      *source_object,
                              GAsyncResult *result,
                              gpointer      user_data)
 {
-  CcGoaPanel *self = CC_GOA_PANEL (user_data);
+  CcOnlineAccountsPanel *self = CC_ONLINE_ACCOUNTS_PANEL (user_data);
   g_autofree char *new_account_id = NULL;
   g_autoptr(GoaObject) object = NULL;
   g_autoptr(GError) error = NULL;
@@ -351,8 +354,8 @@ on_create_account_finish_cb (GObject      *source_object,
 }
 
 static void
-create_account (CcGoaPanel *self,
-                GVariant   *provider)
+create_account (CcOnlineAccountsPanel *self,
+                GVariant              *provider)
 {
   g_autofree char *provider_type = NULL;
 
@@ -369,83 +372,20 @@ create_account (CcGoaPanel *self,
                         self);
 }
 
-static gboolean
-is_gicon_symbolic (GtkWidget *widget,
-                   GIcon     *icon)
+static void
+add_provider_row (CcOnlineAccountsPanel *self,
+                  GVariant              *provider)
 {
-  g_autoptr(GtkIconPaintable) icon_paintable = NULL;
-  GtkIconTheme *icon_theme;
+  CcOnlineAccountProviderRow *row;
 
-  icon_theme = gtk_icon_theme_get_for_display (gdk_display_get_default ());
-  icon_paintable = gtk_icon_theme_lookup_by_gicon (icon_theme,
-                                                   icon,
-                                                   32,
-                                                   gtk_widget_get_scale_factor (widget),
-                                                   gtk_widget_get_direction (widget),
-                                                   0);
+  row = cc_online_account_provider_row_new (provider);
 
-  return icon_paintable && gtk_icon_paintable_is_symbolic (icon_paintable);
+  gtk_widget_show (GTK_WIDGET (row));
+  gtk_list_box_append (self->providers_listbox, GTK_WIDGET (row));
 }
 
 static void
-add_provider_row (CcGoaPanel *self,
-                  GVariant   *provider)
-{
-  g_autofree char *name = NULL;
-  g_autoptr(GIcon) icon = NULL;
-  GtkWidget *image;
-  GtkWidget *row;
-
-  row = adw_action_row_new ();
-  gtk_list_box_row_set_activatable (GTK_LIST_BOX_ROW (row), TRUE);
-
-  if (provider == NULL)
-    {
-      g_object_set_data (G_OBJECT (row), "goa-provider", NULL);
-      icon = g_themed_icon_new_with_default_fallbacks ("goa-account");
-      name = g_strdup (C_("Online Account", "Other"));
-    }
-  else
-    {
-      g_autoptr(GVariant) icon_variant = NULL;
-
-      g_object_set_data_full (G_OBJECT (row),
-                              "goa-provider",
-                              g_variant_ref (provider),
-                              (GDestroyNotify) g_variant_unref);
-
-      g_variant_get (provider, "(ssviu)",
-                     NULL,
-                     &name,
-                     &icon_variant,
-                     NULL,
-                     NULL);
-
-      icon = g_icon_deserialize (icon_variant);
-    }
-
-  image = gtk_image_new_from_gicon (icon);
-  gtk_widget_set_halign (image, GTK_ALIGN_CENTER);
-  gtk_widget_set_valign (image, GTK_ALIGN_CENTER);
-  if (is_gicon_symbolic (image, icon))
-    {
-      gtk_image_set_icon_size (GTK_IMAGE (image), GTK_ICON_SIZE_NORMAL);
-      gtk_widget_add_css_class (image, "symbolic-circular");
-    }
-  else
-    {
-      gtk_image_set_icon_size (GTK_IMAGE (image), GTK_ICON_SIZE_LARGE);
-      gtk_widget_add_css_class (image, "lowres-icon");
-    }
-  adw_action_row_add_prefix (ADW_ACTION_ROW (row), image);
-
-  adw_preferences_row_set_title (ADW_PREFERENCES_ROW (row), name);
-
-  gtk_list_box_append (self->providers_listbox, row);
-}
-
-static void
-list_providers (CcGoaPanel *self)
+list_providers (CcOnlineAccountsPanel *self)
 {
   g_autoptr(GVariant) providers_variant = NULL;
   g_autoptr(GError) error = NULL;
@@ -473,72 +413,20 @@ list_providers (CcGoaPanel *self)
 }
 
 static void
-add_account (CcGoaPanel *self,
-             GoaObject  *object)
+add_account (CcOnlineAccountsPanel *self,
+             GoaObject             *object)
 {
-  g_autoptr(GError) error = NULL;
-  g_autoptr(GIcon) gicon = NULL;
-  GoaAccount *account;
-  GtkWidget *row, *icon;
+  CcOnlineAccountRow *row;
 
-  account = goa_object_peek_account (object);
-
-  row = adw_action_row_new ();
-  g_object_set_data (G_OBJECT (row), "goa-object", object);
-  gtk_list_box_row_set_activatable (GTK_LIST_BOX_ROW (row), TRUE);
-
-  adw_preferences_row_set_title (ADW_PREFERENCES_ROW (row),
-                                 goa_account_get_provider_name (account));
-  adw_action_row_set_subtitle (ADW_ACTION_ROW (row),
-                               goa_account_get_presentation_identity (account));
-
-  /* The provider icon */
-  icon = gtk_image_new ();
-  gtk_widget_set_halign (icon, GTK_ALIGN_CENTER);
-  gtk_widget_set_valign (icon, GTK_ALIGN_CENTER);
-
-  gicon = g_icon_new_for_string (goa_account_get_provider_icon (account), &error);
-  if (error != NULL)
-    {
-      g_warning ("Error creating GIcon for account: %s (%s, %d)",
-                 error->message,
-                 g_quark_to_string (error->domain),
-                 error->code);
-    }
-  else
-    {
-      gtk_image_set_from_gicon (GTK_IMAGE (icon), gicon);
-
-      if (is_gicon_symbolic (icon, gicon))
-        {
-          gtk_image_set_icon_size (GTK_IMAGE (icon), GTK_ICON_SIZE_NORMAL);
-          gtk_widget_add_css_class (icon, "symbolic-circular");
-        }
-      else
-        {
-          gtk_image_set_icon_size (GTK_IMAGE (icon), GTK_ICON_SIZE_LARGE);
-          gtk_widget_add_css_class (icon, "lowres-icon");
-        }
-
-    }
-  adw_action_row_add_prefix (ADW_ACTION_ROW (row), icon);
-
-  /* "Needs attention" icon */
-  icon = gtk_image_new_from_icon_name ("dialog-warning-symbolic");
-  g_object_bind_property (account,
-                          "attention-needed",
-                          icon,
-                          "visible",
-                          G_BINDING_DEFAULT | G_BINDING_SYNC_CREATE);
-  adw_action_row_add_suffix (ADW_ACTION_ROW (row), icon);
+  row = cc_online_account_row_new (object);
 
   /* Add to the listbox */
-  gtk_list_box_append (self->accounts_listbox, row);
+  gtk_list_box_append (self->accounts_listbox, GTK_WIDGET (row));
   gtk_widget_show (GTK_WIDGET (self->accounts_frame));
 }
 
 static void
-fill_accounts_listbox (CcGoaPanel *self)
+fill_accounts_listbox (CcOnlineAccountsPanel *self)
 {
   g_autolist(GoaAccount) accounts = NULL;
   GList *l;
@@ -556,14 +444,14 @@ wayland_window_exported_cb (GdkToplevel *toplevel,
                             gpointer     data)
 
 {
-  CcGoaPanel *self = data;
+  CcOnlineAccountsPanel *self = data;
 
   self->window_export_handle = g_strdup_printf ("wayland:%s", handle);
 }
 #endif
 
 static void
-export_window_handle (CcGoaPanel *self)
+export_window_handle (CcOnlineAccountsPanel *self)
 {
   GtkNative *native = gtk_widget_get_native (GTK_WIDGET (self));
 
@@ -590,7 +478,7 @@ export_window_handle (CcGoaPanel *self)
 }
 
 static void
-unexport_window_handle (CcGoaPanel *self)
+unexport_window_handle (CcOnlineAccountsPanel *self)
 {
   if (!self->window_export_handle)
     return;
@@ -607,8 +495,8 @@ unexport_window_handle (CcGoaPanel *self)
 }
 
 static void
-select_account_by_id (CcGoaPanel  *self,
-                      const gchar *account_id)
+select_account_by_id (CcOnlineAccountsPanel  *self,
+                      const gchar            *account_id)
 {
   GtkWidget *child;
 
@@ -619,7 +507,7 @@ select_account_by_id (CcGoaPanel  *self,
       GoaAccount *account;
       GoaObject *row_object;
 
-      row_object = g_object_get_data (G_OBJECT (child), "goa-object");
+      row_object = cc_online_account_row_get_object (CC_ONLINE_ACCOUNT_ROW (child));
       account = goa_object_peek_account (row_object);
 
       if (g_strcmp0 (goa_account_get_id (account), account_id) == 0)
@@ -631,11 +519,11 @@ select_account_by_id (CcGoaPanel  *self,
 }
 
 static void
-command_add (CcGoaPanel *self,
-             GVariant   *parameters)
+command_add (CcOnlineAccountsPanel *self,
+             GVariant              *parameters)
 {
   const gchar *provider_name = NULL;
-  GVariant *v = NULL;
+  g_autoptr(GVariant) v = NULL;
 
   g_assert (self != NULL);
   g_assert (parameters != NULL);
@@ -649,7 +537,6 @@ command_add (CcGoaPanel *self,
         else
           g_warning ("Wrong type for the second argument (provider name) GVariant, expected 's' but got '%s'",
                      (gchar *)g_variant_get_type (v));
-        g_variant_unref (v);
         break;
 
       default:
@@ -668,7 +555,7 @@ command_add (CcGoaPanel *self,
         {
           g_autofree gchar *provider_type = NULL;
 
-          provider = g_object_get_data (G_OBJECT (child), "goa-provider");
+          provider = cc_online_account_provider_row_get_provider (CC_ONLINE_ACCOUNT_PROVIDER_ROW (child));
           g_variant_get (provider, "(ssviu)", &provider_type, NULL, NULL, NULL, NULL);
 
           if (g_strcmp0 (provider_type, provider_name) == 0)
@@ -707,10 +594,10 @@ sort_accounts_func (GtkListBoxRow *a,
   GoaAccount *a_account, *b_account;
   GoaObject *a_object, *b_object;
 
-  a_object = g_object_get_data (G_OBJECT (a), "goa-object");
+  a_object = cc_online_account_row_get_object (CC_ONLINE_ACCOUNT_ROW (a));
   a_account = goa_object_peek_account (a_object);
 
-  b_object = g_object_get_data (G_OBJECT (b), "goa-object");
+  b_object = cc_online_account_row_get_object (CC_ONLINE_ACCOUNT_ROW (b));
   b_account = goa_object_peek_account (b_object);
 
   return g_strcmp0 (goa_account_get_id (a_account), goa_account_get_id (b_account));
@@ -725,8 +612,8 @@ sort_providers_func (GtkListBoxRow *a,
   gboolean a_branded, b_branded;
   gint a_features, b_features;
 
-  a_provider = g_object_get_data (G_OBJECT (a), "goa-provider");
-  b_provider = g_object_get_data (G_OBJECT (b), "goa-provider");
+  a_provider = cc_online_account_provider_row_get_provider (CC_ONLINE_ACCOUNT_PROVIDER_ROW (a));
+  b_provider = cc_online_account_provider_row_get_provider (CC_ONLINE_ACCOUNT_PROVIDER_ROW (b));
 
   g_variant_get (a_provider, "(ssviu)", NULL, NULL, NULL, &a_features, NULL);
   g_variant_get (b_provider, "(ssviu)", NULL, NULL, NULL, &b_features, NULL);
@@ -751,35 +638,35 @@ sort_providers_func (GtkListBoxRow *a,
 }
 
 static void
-on_account_added_cb (GoaClient  *client,
-                     GoaObject  *object,
-                     CcGoaPanel *self)
+on_account_added_cb (GoaClient             *client,
+                     GoaObject             *object,
+                     CcOnlineAccountsPanel *self)
 {
   add_account (self, object);
 }
 
 static void
-on_account_changed_cb (GoaClient *client,
-                       GoaObject *object,
-                       CcGoaPanel *self)
+on_account_changed_cb (GoaClient             *client,
+                       GoaObject             *object,
+                       CcOnlineAccountsPanel *self)
 {
   if (self->active_object == object)
     show_account (self, self->active_object);
 }
 
 static void
-on_account_removed_cb (GoaClient  *client,
-                       GoaObject  *object,
-                       CcGoaPanel *self)
+on_account_removed_cb (GoaClient             *client,
+                       GoaObject             *object,
+                       CcOnlineAccountsPanel *self)
 {
   modify_row_for_account (self, object, remove_row_for_account_cb);
 }
 
 static void
-on_accounts_listbox_row_activated (CcGoaPanel    *self,
-                                   GtkListBoxRow *activated_row)
+on_accounts_listbox_row_activated (CcOnlineAccountsPanel *self,
+                                   GtkListBoxRow         *activated_row)
 {
-  GoaObject *object = g_object_get_data (G_OBJECT (activated_row), "goa-object");
+  GoaObject *object = cc_online_account_row_get_object (CC_ONLINE_ACCOUNT_ROW (activated_row));
 
   show_account (self, object);
 }
@@ -787,8 +674,9 @@ on_accounts_listbox_row_activated (CcGoaPanel    *self,
 static void
 on_client_remove_account_finish_cb (GoaAccount   *account,
                                     GAsyncResult *res,
-                                    CcGoaPanel   *self)
+                                    gpointer      user_data)
 {
+  g_autoptr(CcOnlineAccountsPanel) self = CC_ONLINE_ACCOUNTS_PANEL (user_data);
   g_autoptr(GError) error = NULL;
 
   goa_account_call_remove_finish (account, res, &error);
@@ -806,13 +694,11 @@ on_client_remove_account_finish_cb (GoaAccount   *account,
                                                 error->message);
       gtk_window_present (GTK_WINDOW (dialog));
     }
-
-  g_object_unref (self);
 }
 
 static void
-on_notification_closed_cb (GtkButton  *button,
-                           CcGoaPanel *self)
+on_notification_closed_cb (GtkButton             *button,
+                           CcOnlineAccountsPanel *self)
 {
   goa_account_call_remove (goa_object_peek_account (self->removed_object),
                            cc_panel_get_cancellable (CC_PANEL (self)),
@@ -826,8 +712,8 @@ on_notification_closed_cb (GtkButton  *button,
 }
 
 static void
-on_undo_button_clicked_cb (GtkButton  *button,
-                           CcGoaPanel *self)
+on_undo_button_clicked_cb (GtkButton             *button,
+                           CcOnlineAccountsPanel *self)
 {
   /* Simply show the account row and hide the notification */
   modify_row_for_account (self, self->removed_object, show_row_for_account_cb);
@@ -838,10 +724,10 @@ on_undo_button_clicked_cb (GtkButton  *button,
 }
 
 static void
-on_provider_row_activated_cb (CcGoaPanel    *self,
-                              GtkListBoxRow *activated_row)
+on_provider_row_activated_cb (CcOnlineAccountsPanel *self,
+                              GtkListBoxRow         *activated_row)
 {
-  GVariant *provider = g_object_get_data (G_OBJECT (activated_row), "goa-provider");
+  GVariant *provider = cc_online_account_provider_row_get_provider (CC_ONLINE_ACCOUNT_PROVIDER_ROW (activated_row));
 
   create_account (self, provider);
 }
@@ -849,7 +735,7 @@ on_provider_row_activated_cb (CcGoaPanel    *self,
 static gboolean
 remove_account_timeout_cb (gpointer user_data)
 {
-  CcGoaPanel *self = CC_GOA_PANEL (user_data);
+  CcOnlineAccountsPanel *self = CC_ONLINE_ACCOUNTS_PANEL (user_data);
 
   gtk_widget_activate (self->close_notification_button);
 
@@ -859,7 +745,7 @@ remove_account_timeout_cb (gpointer user_data)
 /* CcPanel overrides */
 
 static const char *
-cc_goa_panel_get_help_uri (CcPanel *panel)
+cc_online_accounts_panel_get_help_uri (CcPanel *panel)
 {
   return "help:gnome-help/accounts";
 }
@@ -867,34 +753,35 @@ cc_goa_panel_get_help_uri (CcPanel *panel)
 /* GtkWidget overrides */
 
 static void
-cc_goa_panel_realize (GtkWidget *widget)
+cc_online_accounts_panel_realize (GtkWidget *widget)
 {
-  GTK_WIDGET_CLASS (cc_goa_panel_parent_class)->realize (widget);
+  GTK_WIDGET_CLASS (cc_online_accounts_panel_parent_class)->realize (widget);
 
-  export_window_handle (CC_GOA_PANEL (widget));
+  export_window_handle (CC_ONLINE_ACCOUNTS_PANEL (widget));
 }
 
 static void
-cc_goa_panel_unrealize (GtkWidget *widget)
+cc_online_accounts_panel_unrealize (GtkWidget *widget)
 {
-  unexport_window_handle (CC_GOA_PANEL (widget));
+  unexport_window_handle (CC_ONLINE_ACCOUNTS_PANEL (widget));
 
-  GTK_WIDGET_CLASS (cc_goa_panel_parent_class)->unrealize (widget);
+  GTK_WIDGET_CLASS (cc_online_accounts_panel_parent_class)->unrealize (widget);
 }
 
 /* GObject overrides */
 
 static void
-cc_goa_panel_set_property (GObject      *object,
-                           guint         property_id,
-                           const GValue *value,
-                           GParamSpec   *pspec)
+cc_online_accounts_panel_set_property (GObject      *object,
+                                       guint         property_id,
+                                       const GValue *value,
+                                       GParamSpec   *pspec)
 {
   switch (property_id)
     {
       case PROP_PARAMETERS:
         {
-          GVariant *parameters, *v;
+          GVariant *parameters;
+          g_autoptr(GVariant) v = NULL;
           const gchar *first_arg = NULL;
 
           parameters = g_value_get_variant (value);
@@ -909,13 +796,12 @@ cc_goa_panel_set_property (GObject      *object,
                 else
                   g_warning ("Wrong type for the second argument GVariant, expected 's' but got '%s'",
                              (gchar *)g_variant_get_type (v));
-                g_variant_unref (v);
             }
 
           if (g_strcmp0 (first_arg, "add") == 0)
-            command_add (CC_GOA_PANEL (object), parameters);
+            command_add (CC_ONLINE_ACCOUNTS_PANEL (object), parameters);
           else if (first_arg != NULL)
-            select_account_by_id (CC_GOA_PANEL (object), first_arg);
+            select_account_by_id (CC_ONLINE_ACCOUNTS_PANEL (object), first_arg);
 
           return;
         }
@@ -925,19 +811,19 @@ cc_goa_panel_set_property (GObject      *object,
 }
 
 static void
-cc_goa_panel_constructed (GObject *object)
+cc_online_accounts_panel_constructed (GObject *object)
 {
-  CcGoaPanel *self = CC_GOA_PANEL (object);
+  CcOnlineAccountsPanel *self = CC_ONLINE_ACCOUNTS_PANEL (object);
 
-  G_OBJECT_CLASS (cc_goa_panel_parent_class)->constructed (object);
+  G_OBJECT_CLASS (cc_online_accounts_panel_parent_class)->constructed (object);
 
   list_providers (self);
 }
 
 static void
-cc_goa_panel_finalize (GObject *object)
+cc_online_accounts_panel_finalize (GObject *object)
 {
-  CcGoaPanel *panel = CC_GOA_PANEL (object);
+  CcOnlineAccountsPanel *panel = CC_ONLINE_ACCOUNTS_PANEL (object);
 
   if (panel->removed_object != NULL)
     {
@@ -957,36 +843,36 @@ cc_goa_panel_finalize (GObject *object)
 
   g_clear_object (&panel->client);
 
-  G_OBJECT_CLASS (cc_goa_panel_parent_class)->finalize (object);
+  G_OBJECT_CLASS (cc_online_accounts_panel_parent_class)->finalize (object);
 }
 
 static void
-cc_goa_panel_class_init (CcGoaPanelClass *klass)
+cc_online_accounts_panel_class_init (CcOnlineAccountsPanelClass *klass)
 {
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   CcPanelClass *panel_class = CC_PANEL_CLASS (klass);
 
-  panel_class->get_help_uri = cc_goa_panel_get_help_uri;
+  panel_class->get_help_uri = cc_online_accounts_panel_get_help_uri;
 
-  object_class->set_property = cc_goa_panel_set_property;
-  object_class->finalize = cc_goa_panel_finalize;
-  object_class->constructed = cc_goa_panel_constructed;
+  object_class->set_property = cc_online_accounts_panel_set_property;
+  object_class->finalize = cc_online_accounts_panel_finalize;
+  object_class->constructed = cc_online_accounts_panel_constructed;
 
-  widget_class->realize = cc_goa_panel_realize;
-  widget_class->unrealize = cc_goa_panel_unrealize;
+  widget_class->realize = cc_online_accounts_panel_realize;
+  widget_class->unrealize = cc_online_accounts_panel_unrealize;
 
   g_object_class_override_property (object_class, PROP_PARAMETERS, "parameters");
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/online-accounts/cc-online-accounts-panel.ui");
 
-  gtk_widget_class_bind_template_child (widget_class, CcGoaPanel, accounts_frame);
-  gtk_widget_class_bind_template_child (widget_class, CcGoaPanel, accounts_listbox);
-  gtk_widget_class_bind_template_child (widget_class, CcGoaPanel, close_notification_button);
-  gtk_widget_class_bind_template_child (widget_class, CcGoaPanel, notification_label);
-  gtk_widget_class_bind_template_child (widget_class, CcGoaPanel, notification_revealer);
-  gtk_widget_class_bind_template_child (widget_class, CcGoaPanel, offline_label);
-  gtk_widget_class_bind_template_child (widget_class, CcGoaPanel, providers_listbox);
+  gtk_widget_class_bind_template_child (widget_class, CcOnlineAccountsPanel, accounts_frame);
+  gtk_widget_class_bind_template_child (widget_class, CcOnlineAccountsPanel, accounts_listbox);
+  gtk_widget_class_bind_template_child (widget_class, CcOnlineAccountsPanel, close_notification_button);
+  gtk_widget_class_bind_template_child (widget_class, CcOnlineAccountsPanel, notification_label);
+  gtk_widget_class_bind_template_child (widget_class, CcOnlineAccountsPanel, notification_revealer);
+  gtk_widget_class_bind_template_child (widget_class, CcOnlineAccountsPanel, offline_label);
+  gtk_widget_class_bind_template_child (widget_class, CcOnlineAccountsPanel, providers_listbox);
 
   gtk_widget_class_bind_template_callback (widget_class, on_accounts_listbox_row_activated);
   gtk_widget_class_bind_template_callback (widget_class, on_notification_closed_cb);
@@ -995,7 +881,7 @@ cc_goa_panel_class_init (CcGoaPanelClass *klass)
 }
 
 static void
-cc_goa_panel_init (CcGoaPanel *self)
+cc_online_accounts_panel_init (CcOnlineAccountsPanel *self)
 {
   g_autoptr(GError) error = NULL;
   GNetworkMonitor *monitor;

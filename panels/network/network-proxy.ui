@@ -57,11 +57,13 @@
                 <child>
                   <object class="GtkButton">
                     <signal name="clicked" handler="show_dialog_cb" object="NetProxy" swapped="yes"/>
-                    <child>
-                      <object class="GtkImage">
-                        <property name="icon_name">emblem-system-symbolic</property>
-                      </object>
-                    </child>
+                    <property name="icon_name">emblem-system-symbolic</property>
+                    <accessibility>
+                      <property name="label" translatable="yes">Options…</property>
+                    </accessibility>
+                    <style>
+                      <class name="flat"/>
+                    </style>
                   </object>
                 </child>
               </object>

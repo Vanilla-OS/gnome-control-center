@@ -130,9 +130,16 @@
                 </child>
                 <child>
                   <object class="CcToggleRow" id="background">
-                    <property name="title" translatable="yes">Run in background</property>
+                    <property name="title" translatable="yes">Run in Background</property>
                     <property name="subtitle" translatable="yes">Allow activity when the app is closed.</property>
                     <signal name="notify::allowed" handler="background_cb" swapped="yes"/>
+                  </object>
+                </child>
+                <child>
+                  <object class="CcToggleRow" id="screenshot">
+                    <property name="title" translatable="yes">Screenshots</property>
+                    <property name="subtitle" translatable="yes">Take pictures of the screen at any time.</property>
+                    <signal name="notify::allowed" handler="screenshot_cb" object="CcApplicationsPanel" swapped="yes"/>
                   </object>
                 </child>
                 <child>

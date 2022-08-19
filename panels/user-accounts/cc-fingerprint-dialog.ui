@@ -39,17 +39,14 @@
             <property name="receives_default">False</property>
             <property name="valign">center</property>
             <property name="use-underline">True</property>
+            <property name="icon_name">go-previous-symbolic</property>
+            <accessibility>
+              <property name="label" translatable="yes">Back</property>
+            </accessibility>
             <signal name="clicked" handler="back_button_clicked_cb" object="CcFingerprintDialog" swapped="yes" />
             <style>
               <class name="image-button"/>
             </style>
-            <child>
-              <object class="GtkImage">
-                <property name="can_focus">False</property>
-                <property name="icon_name">go-previous-symbolic</property>
-                <property name="icon_size">1</property>
-              </object>
-            </child>
           </object>
         </child>
 
