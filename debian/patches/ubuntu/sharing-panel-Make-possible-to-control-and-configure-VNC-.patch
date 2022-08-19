@@ -11,14 +11,14 @@ limits its length.
 
 Bug-Ubuntu: https://bugs.launchpad.net/ubuntu/+source/gnome-control-center/+bug/1968518
 ---
- panels/sharing/cc-gnome-remote-desktop.c |  59 ++++++++++++++
+ panels/sharing/cc-gnome-remote-desktop.c |  58 ++++++++++++++
  panels/sharing/cc-gnome-remote-desktop.h |   8 ++
  panels/sharing/cc-sharing-panel.c        | 128 +++++++++++++++++++++++++++++++
- panels/sharing/cc-sharing-panel.ui       |  98 +++++++++++++++++++++++
- 4 files changed, 293 insertions(+)
+ panels/sharing/cc-sharing-panel.ui       |  93 ++++++++++++++++++++++
+ 4 files changed, 287 insertions(+)
 
 diff --git a/panels/sharing/cc-gnome-remote-desktop.c b/panels/sharing/cc-gnome-remote-desktop.c
-index ef7bc53..e0d9b77 100644
+index ef7bc53..6fb76b0 100644
 --- a/panels/sharing/cc-gnome-remote-desktop.c
 +++ b/panels/sharing/cc-gnome-remote-desktop.c
 @@ -36,6 +36,21 @@ cc_grd_rdp_credentials_get_schema (void)
@@ -43,7 +43,7 @@ index ef7bc53..e0d9b77 100644
  void
  cc_grd_store_rdp_credentials (const gchar  *username,
                                const gchar  *password,
-@@ -122,3 +137,47 @@ cc_grd_lookup_rdp_password (GCancellable *cancellable)
+@@ -122,3 +137,46 @@ cc_grd_lookup_rdp_password (GCancellable *cancellable)
  
    return password;
  }
@@ -90,7 +90,6 @@ index ef7bc53..e0d9b77 100644
 +
 +  return g_steal_pointer (&password);
 +}
-+
 diff --git a/panels/sharing/cc-gnome-remote-desktop.h b/panels/sharing/cc-gnome-remote-desktop.h
 index 592da34..5144240 100644
 --- a/panels/sharing/cc-gnome-remote-desktop.h
@@ -116,7 +115,7 @@ index 592da34..5144240 100644
 +
  G_END_DECLS
 diff --git a/panels/sharing/cc-sharing-panel.c b/panels/sharing/cc-sharing-panel.c
-index e04580e..3e688dc 100644
+index 1ac744c..b0b6024 100644
 --- a/panels/sharing/cc-sharing-panel.c
 +++ b/panels/sharing/cc-sharing-panel.c
 @@ -55,6 +55,7 @@ static GtkWidget *cc_sharing_panel_new_media_sharing_row (const char     *uri_or
@@ -127,7 +126,7 @@ index e04580e..3e688dc 100644
  
  #define REMOTE_DESKTOP_STORE_CREDENTIALS_TIMEOUT_S 1
  
-@@ -95,8 +96,13 @@ struct _CcSharingPanel
+@@ -97,8 +98,13 @@ struct _CcSharingPanel
    GtkWidget *remote_desktop_device_name_copy;
    GtkWidget *remote_desktop_address_label;
    GtkWidget *remote_desktop_address_copy;
@@ -141,7 +140,7 @@ index e04580e..3e688dc 100644
    GtkWidget *remote_desktop_verify_encryption;
    GtkWidget *remote_desktop_fingerprint_dialog;
    GtkWidget *remote_desktop_fingerprint_left;
-@@ -245,6 +251,50 @@ remote_desktop_show_encryption_fingerprint (CcSharingPanel *self)
+@@ -247,6 +253,50 @@ remote_desktop_show_encryption_fingerprint (CcSharingPanel *self)
    gtk_window_present (GTK_WINDOW (self->remote_desktop_fingerprint_dialog));
  }
  
@@ -192,10 +191,10 @@ index e04580e..3e688dc 100644
  static void
  cc_sharing_panel_class_init (CcSharingPanelClass *klass)
  {
-@@ -280,6 +330,11 @@ cc_sharing_panel_class_init (CcSharingPanelClass *klass)
-   gtk_widget_class_bind_template_child (widget_class, CcSharingPanel, remote_desktop_dialog);
+@@ -283,6 +333,11 @@ cc_sharing_panel_class_init (CcSharingPanelClass *klass)
+   gtk_widget_class_bind_template_child (widget_class, CcSharingPanel, remote_desktop_toast_overlay);
    gtk_widget_class_bind_template_child (widget_class, CcSharingPanel, remote_desktop_switch);
-   gtk_widget_class_bind_template_child (widget_class, CcSharingPanel, remote_control_checkbutton);
+   gtk_widget_class_bind_template_child (widget_class, CcSharingPanel, remote_control_switch);
 +  gtk_widget_class_bind_template_child (widget_class, CcSharingPanel, remote_desktop_vnc_check);
 +  gtk_widget_class_bind_template_child (widget_class, CcSharingPanel, remote_desktop_vnc_authentication_prompt);
 +  gtk_widget_class_bind_template_child (widget_class, CcSharingPanel, remote_desktop_vnc_authentication_password);
@@ -204,7 +203,7 @@ index e04580e..3e688dc 100644
    gtk_widget_class_bind_template_child (widget_class, CcSharingPanel, remote_desktop_username_entry);
    gtk_widget_class_bind_template_child (widget_class, CcSharingPanel, remote_desktop_username_copy);
    gtk_widget_class_bind_template_child (widget_class, CcSharingPanel, remote_desktop_password_entry);
-@@ -296,6 +351,8 @@ cc_sharing_panel_class_init (CcSharingPanelClass *klass)
+@@ -299,6 +354,8 @@ cc_sharing_panel_class_init (CcSharingPanelClass *klass)
    gtk_widget_class_bind_template_child (widget_class, CcSharingPanel, shared_folders_listbox);
  
    gtk_widget_class_bind_template_callback (widget_class, remote_desktop_show_encryption_fingerprint);
@@ -213,7 +212,7 @@ index e04580e..3e688dc 100644
  
    g_type_ensure (CC_TYPE_LIST_ROW);
    g_type_ensure (CC_TYPE_HOSTNAME_ENTRY);
-@@ -310,6 +367,8 @@ cc_sharing_panel_run_dialog (CcSharingPanel *self,
+@@ -313,6 +370,8 @@ cc_sharing_panel_run_dialog (CcSharingPanel *self,
    /* ensure labels with the hostname are updated if the hostname has changed */
    cc_sharing_panel_setup_label_with_hostname (self,
                                                self->remote_desktop_address_label);
@@ -222,7 +221,7 @@ index e04580e..3e688dc 100644
    cc_sharing_panel_setup_label_with_hostname (self, self->remote_login_label);
    cc_sharing_panel_setup_label_with_hostname (self,
                                                self->personal_file_sharing_label);
-@@ -753,6 +812,10 @@ cc_sharing_panel_setup_label (CcSharingPanel *self,
+@@ -765,6 +824,10 @@ cc_sharing_panel_setup_label (CcSharingPanel *self,
      {
        text = g_strdup_printf ("ms-rd://%s", hostname);
      }
@@ -233,7 +232,7 @@ index e04580e..3e688dc 100644
    else
      g_assert_not_reached ();
  
-@@ -990,6 +1053,8 @@ store_remote_desktop_credentials_timeout (gpointer user_data)
+@@ -1005,6 +1068,8 @@ store_remote_desktop_credentials_timeout (gpointer user_data)
                                      cc_panel_get_cancellable (CC_PANEL (self)));
      }
  
@@ -242,7 +241,7 @@ index e04580e..3e688dc 100644
    self->remote_desktop_store_credentials_id = 0;
  
    return G_SOURCE_REMOVE;
-@@ -1039,10 +1104,13 @@ disable_gnome_remote_desktop_service (CcSharingPanel *self)
+@@ -1054,10 +1119,13 @@ disable_gnome_remote_desktop_service (CcSharingPanel *self)
  {
    g_autoptr(GError) error = NULL;
    g_autoptr(GSettings) rdp_settings = NULL;
@@ -256,7 +255,7 @@ index e04580e..3e688dc 100644
  
    if (!cc_disable_service (REMOTE_DESKTOP_SERVICE,
                             G_BUS_TYPE_SESSION,
-@@ -1336,20 +1404,37 @@ pw_generate (void)
+@@ -1387,20 +1455,37 @@ pw_generate (void)
    return res;
  }
  
@@ -294,9 +293,9 @@ index e04580e..3e688dc 100644
  
    g_settings_bind (rdp_settings,
                     "view-only",
-@@ -1360,17 +1445,53 @@ cc_sharing_panel_setup_remote_desktop_dialog (CcSharingPanel *self)
-                           self->remote_control_checkbutton, "sensitive",
-                           G_BINDING_SYNC_CREATE);
+@@ -1415,13 +1500,49 @@ cc_sharing_panel_setup_remote_desktop_dialog (CcSharingPanel *self)
+   gtk_label_set_label (GTK_LABEL (self->remote_desktop_device_name_label),
+                        hostname);
  
 +  g_settings_bind (vnc_settings,
 +                   "enable",
@@ -315,10 +314,6 @@ index e04580e..3e688dc 100644
 +  else if (g_strcmp0 (vnc_auth_method, "password") == 0)
 +    g_object_set (self->remote_desktop_vnc_authentication_password, "active", TRUE, NULL);
 +
-   hostname = get_hostname ();
-   gtk_label_set_label (GTK_LABEL (self->remote_desktop_device_name_label),
-                        hostname);
- 
    username = cc_grd_lookup_rdp_username (cc_panel_get_cancellable (CC_PANEL (self)));
    password = cc_grd_lookup_rdp_password (cc_panel_get_cancellable (CC_PANEL (self)));
 +
@@ -348,17 +343,17 @@ index e04580e..3e688dc 100644
    g_signal_connect_swapped (self->remote_desktop_username_entry,
                              "notify::text",
                              G_CALLBACK (remote_desktop_credentials_changed),
-@@ -1403,6 +1524,9 @@ cc_sharing_panel_setup_remote_desktop_dialog (CcSharingPanel *self)
+@@ -1457,6 +1578,9 @@ cc_sharing_panel_setup_remote_desktop_dialog (CcSharingPanel *self)
    g_signal_connect (self->remote_desktop_address_copy,
-                     "clicked", G_CALLBACK (on_copy_clicked_label),
-                     self->remote_desktop_address_label);
+                     "clicked", G_CALLBACK (on_device_address_copy_clicked),
+                     self);
 +  g_signal_connect (self->remote_desktop_vnc_address_copy,
-+                    "clicked", G_CALLBACK (on_copy_clicked_label),
-+                    self->remote_desktop_vnc_address_label);
++                    "clicked", G_CALLBACK (on_device_address_copy_clicked),
++                    self);
    g_signal_connect (self->remote_desktop_username_copy,
-                     "clicked", G_CALLBACK (on_copy_clicked_editable),
-                     self->remote_desktop_username_entry);
-@@ -1418,6 +1542,10 @@ cc_sharing_panel_setup_remote_desktop_dialog (CcSharingPanel *self)
+                     "clicked", G_CALLBACK (on_username_copy_clicked),
+                     self);
+@@ -1472,6 +1596,10 @@ cc_sharing_panel_setup_remote_desktop_dialog (CcSharingPanel *self)
        gtk_switch_set_active (GTK_SWITCH (self->remote_desktop_switch),
                               TRUE);
      }
@@ -370,58 +365,53 @@ index e04580e..3e688dc 100644
  
  static void
 diff --git a/panels/sharing/cc-sharing-panel.ui b/panels/sharing/cc-sharing-panel.ui
-index e8899c2..29e4abf 100644
+index e02ca68..48d5d0b 100644
 --- a/panels/sharing/cc-sharing-panel.ui
 +++ b/panels/sharing/cc-sharing-panel.ui
-@@ -275,6 +275,47 @@
-               </object>
-             </child>
+@@ -279,6 +279,42 @@
+                   </object>
+                 </child>
  
-+            <child>
-+              <object class="AdwActionRow" id="vnc_row">
-+                <property name="use_underline">True</property>
-+                <property name="can_focus">True</property>
-+                <property name="title" translatable="yes">Enable Legacy VNC Protocol</property>
-+                <property name="activatable">True</property>
-+                <property name="activatable_widget">remote_desktop_vnc_check</property>
-+                <property name="sensitive" bind-source="remote_desktop_switch" bind-property="active" bind-flags="default|sync-create" />
-+                <signal name="notify::active" handler="store_remote_desktop_vnc_credentials" swapped="yes"/>
-+                <child type="prefix">
-+                  <object class="GtkCheckButton" id="remote_desktop_vnc_check">
-+                    <property name="visible">True</property>
-+                    <property name="can_focus">True</property>
-+                    <property name="valign">center</property>
-+                  </object>
-+                  <!-- <packing>
-+                    <property name="expand">False</property>
-+                    <property name="fill">True</property>
-+                    <property name="position">1</property>
-+                  </packing> -->
-+                </child>
 +                <child>
-+                  <object class="GtkMenuButton">
-+                    <property name="visible">True</property>
-+                    <property name="can-focus">True</property>
-+                    <property name="popover">remote_desktop_vnc_authentication_menu</property>
-+                    <style>
-+                      <class name="flat"/>
-+                    </style>
-+                    <child>
-+                      <object class="GtkImage">
++                  <object class="AdwActionRow" id="vnc_row">
++                    <property name="use_underline">True</property>
++                    <property name="can_focus">True</property>
++                    <property name="title" translatable="yes">Enable Legacy VNC Protocol</property>
++                    <property name="activatable">True</property>
++                    <property name="activatable_widget">remote_desktop_vnc_check</property>
++                    <property name="sensitive" bind-source="remote_desktop_switch" bind-property="active" bind-flags="default|sync-create" />
++                    <signal name="notify::active" handler="store_remote_desktop_vnc_credentials" swapped="yes"/>
++                    <child type="prefix">
++                      <object class="GtkCheckButton" id="remote_desktop_vnc_check">
 +                        <property name="visible">True</property>
-+                        <property name="can-focus">False</property>
-+                        <property name="icon-name">view-more-symbolic</property>
++                        <property name="can_focus">True</property>
++                        <property name="valign">center</property>
++                      </object>
++                    </child>
++                    <child>
++                      <object class="GtkMenuButton">
++                        <property name="visible">True</property>
++                        <property name="can-focus">True</property>
++                        <property name="popover">remote_desktop_vnc_authentication_menu</property>
++                        <style>
++                          <class name="flat"/>
++                        </style>
++                        <child>
++                          <object class="GtkImage">
++                            <property name="visible">True</property>
++                            <property name="can-focus">False</property>
++                            <property name="icon-name">view-more-symbolic</property>
++                          </object>
++                        </child>
 +                      </object>
 +                    </child>
 +                  </object>
 +                </child>
-+              </object>
-+            </child>
 +
-             <child>
-               <object class="AdwActionRow">
-                 <property name="title" translatable="yes">Remote Control</property>
-@@ -341,6 +382,30 @@
+                 <child>
+                   <object class="AdwActionRow">
+                     <property name="title" translatable="yes">Remote Control</property>
+@@ -407,6 +443,30 @@
                    </object>
                  </child>
                </object>
@@ -452,7 +442,7 @@ index e8899c2..29e4abf 100644
              </child>
            </object>
          </child>
-@@ -528,4 +593,37 @@
+@@ -534,4 +594,37 @@
        </object>
      </child>
    </object>

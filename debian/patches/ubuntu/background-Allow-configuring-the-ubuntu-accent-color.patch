@@ -24,7 +24,7 @@ given that these are per-process anyways.
  create mode 100644 panels/ubuntu/cc-ubuntu-colors-row.ui
 
 diff --git a/panels/background/cc-background-panel.c b/panels/background/cc-background-panel.c
-index 2314e3c..76a20f4 100644
+index f748e9a..db2dbd6 100644
 --- a/panels/background/cc-background-panel.c
 +++ b/panels/background/cc-background-panel.c
 @@ -35,6 +35,8 @@
@@ -38,15 +38,15 @@ index 2314e3c..76a20f4 100644
  #define WP_URI_KEY "picture-uri"
 @@ -67,6 +69,8 @@ struct _CcBackgroundPanel
    CcBackgroundPreview *dark_preview;
-   GtkToggleButton *light_toggle;
+   GtkToggleButton *default_toggle;
    GtkToggleButton *dark_toggle;
 +
 +  CcUbuntuColorsRow *ubuntu_colors;
  };
  
  CC_PANEL_REGISTER (CcBackgroundPanel, cc_background_panel)
-@@ -103,6 +107,8 @@ reload_light_dark_toggles (CcBackgroundPanel *self)
-       gtk_toggle_button_set_active (self->light_toggle, FALSE);
+@@ -103,6 +107,8 @@ reload_color_scheme_toggles (CcBackgroundPanel *self)
+       gtk_toggle_button_set_active (self->default_toggle, FALSE);
        gtk_toggle_button_set_active (self->dark_toggle, FALSE);
      }
 +
@@ -64,11 +64,11 @@ index 2314e3c..76a20f4 100644
  
 @@ -393,6 +400,7 @@ cc_background_panel_class_init (CcBackgroundPanelClass *klass)
    gtk_widget_class_bind_template_child (widget_class, CcBackgroundPanel, dark_preview);
-   gtk_widget_class_bind_template_child (widget_class, CcBackgroundPanel, light_toggle);
+   gtk_widget_class_bind_template_child (widget_class, CcBackgroundPanel, default_toggle);
    gtk_widget_class_bind_template_child (widget_class, CcBackgroundPanel, dark_toggle);
 +  gtk_widget_class_bind_template_child (widget_class, CcBackgroundPanel, ubuntu_colors);
  
-   gtk_widget_class_bind_template_callback (widget_class, on_light_dark_toggle_active_cb);
+   gtk_widget_class_bind_template_callback (widget_class, on_color_scheme_toggle_active_cb);
    gtk_widget_class_bind_template_callback (widget_class, on_chooser_background_chosen_cb);
 @@ -451,5 +459,9 @@ cc_background_panel_init (CcBackgroundPanel *panel)
                              got_transition_proxy_cb,
@@ -81,10 +81,10 @@ index 2314e3c..76a20f4 100644
    load_custom_css (panel);
  }
 diff --git a/panels/background/cc-background-panel.ui b/panels/background/cc-background-panel.ui
-index 7efbb64..a049736 100644
+index 33a8638..89a5ef5 100644
 --- a/panels/background/cc-background-panel.ui
 +++ b/panels/background/cc-background-panel.ui
-@@ -84,6 +84,10 @@
+@@ -90,6 +90,10 @@
                </object>
              </child>
  
@@ -1026,10 +1026,10 @@ index 1fc83df..34d509f 100644
    'cc-ubuntu-dock-dialog.ui',
  )
 diff --git a/po/POTFILES.in b/po/POTFILES.in
-index e2306e6..4cec75b 100644
+index 92f5b7d..6968b2a 100644
 --- a/po/POTFILES.in
 +++ b/po/POTFILES.in
-@@ -225,6 +225,8 @@ panels/ubuntu/cc-ubuntu-panel.c
+@@ -238,6 +238,8 @@ panels/ubuntu/cc-ubuntu-panel.c
  panels/ubuntu/cc-ubuntu-panel.ui
  panels/ubuntu/cc-ubuntu-dock-dialog.c
  panels/ubuntu/cc-ubuntu-dock-dialog.ui

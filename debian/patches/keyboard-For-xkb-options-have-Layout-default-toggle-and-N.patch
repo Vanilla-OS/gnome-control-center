@@ -275,10 +275,10 @@ index 91efbcd..fd05b32 100644
  
  #define CC_TYPE_XKB_MODIFIER_DIALOG (cc_xkb_modifier_dialog_get_type())
 diff --git a/panels/keyboard/cc-xkb-modifier-dialog.ui b/panels/keyboard/cc-xkb-modifier-dialog.ui
-index 4e78216..1d3b6ce 100644
+index e5612ba..a0b6cf3 100644
 --- a/panels/keyboard/cc-xkb-modifier-dialog.ui
 +++ b/panels/keyboard/cc-xkb-modifier-dialog.ui
-@@ -36,10 +36,11 @@
+@@ -36,13 +36,14 @@
                    <object class="AdwActionRow" id="switch_row">
                      <property name="activatable">False</property>
                      <property name="selectable">False</property>
@@ -287,6 +287,9 @@ index 4e78216..1d3b6ce 100644
 -                      <object class="GtkSwitch" id="enabled_switch">
 +                      <object class="GtkSwitch" id="default_switch">
                          <property name="valign">center</property>
+                         <accessibility>
+                           <property name="label" translatable="yes">Enabled</property>
+                         </accessibility>
 -                        <signal name="state-set" handler="enable_switch_changed_cb" object="CcXkbModifierDialog" swapped="no"/>
 +                        <signal name="state-set" handler="default_switch_changed_cb" object="CcXkbModifierDialog" swapped="no"/>
                        </object>

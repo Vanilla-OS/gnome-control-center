@@ -48,10 +48,10 @@ Forwarded: not-needed
  create mode 100644 panels/ubuntu/ubuntu.gresource.xml
 
 diff --git a/panels/meson.build b/panels/meson.build
-index d8e35a6..e063476 100644
+index cb732f2..c825ee2 100644
 --- a/panels/meson.build
 +++ b/panels/meson.build
-@@ -25,6 +25,7 @@ panels = [
+@@ -26,6 +26,7 @@ panels = [
    'search',
    'sharing',
    'sound',
@@ -1968,10 +1968,10 @@ index 0000000..a636e9c
 +  </gresource>
 +</gresources>
 diff --git a/po/POTFILES.in b/po/POTFILES.in
-index 619a611..e2306e6 100644
+index a3c380b..92f5b7d 100644
 --- a/po/POTFILES.in
 +++ b/po/POTFILES.in
-@@ -221,6 +221,11 @@ panels/thunderbolt/cc-bolt-device-entry.c
+@@ -234,6 +234,11 @@ panels/thunderbolt/cc-bolt-device-entry.c
  panels/thunderbolt/cc-bolt-panel.c
  panels/thunderbolt/cc-bolt-panel.ui
  panels/thunderbolt/gnome-thunderbolt-panel.desktop.in.in
@@ -1984,7 +1984,7 @@ index 619a611..e2306e6 100644
  panels/universal-access/cc-cursor-size-dialog.ui
  panels/universal-access/cc-pointing-dialog.ui
 diff --git a/shell/cc-panel-list.c b/shell/cc-panel-list.c
-index 6cbc16b..2ec8a19 100644
+index 64bf7ae..1118fa9 100644
 --- a/shell/cc-panel-list.c
 +++ b/shell/cc-panel-list.c
 @@ -382,6 +382,7 @@ static const gchar * const panel_order[] = {
@@ -1996,7 +1996,7 @@ index 6cbc16b..2ec8a19 100644
    "search",
    "multitasking",
 diff --git a/shell/cc-panel-loader.c b/shell/cc-panel-loader.c
-index 5fdf7f4..3a74ac1 100644
+index 17f9601..feb8a23 100644
 --- a/shell/cc-panel-loader.c
 +++ b/shell/cc-panel-loader.c
 @@ -61,6 +61,7 @@ extern GType cc_sound_panel_get_type (void);
@@ -2007,15 +2007,15 @@ index 5fdf7f4..3a74ac1 100644
  extern GType cc_user_panel_get_type (void);
  #ifdef BUILD_WACOM
  extern GType cc_wacom_panel_get_type (void);
-@@ -86,6 +87,7 @@ extern void cc_wacom_panel_static_init_func (void);
+@@ -68,6 +69,7 @@ extern GType cc_wacom_panel_get_type (void);
  #ifdef BUILD_WWAN
- extern void cc_wwan_panel_static_init_func (void);
+ extern GType cc_wwan_panel_get_type (void);
  #endif /* BUILD_WWAN */
-+extern void cc_ubuntu_panel_static_init_func (void);
- 
- #define PANEL_TYPE(name, get_type, init_func) { name, get_type, init_func }
- 
-@@ -128,6 +130,7 @@ static CcPanelLoaderVtable default_panels[] =
++extern GType cc_ubuntu_panel_static_init_func (void);
+ extern GType cc_location_panel_get_type (void);
+ extern GType cc_firmware_security_panel_get_type (void);
+ extern GType cc_camera_panel_get_type (void);
+@@ -131,6 +133,7 @@ static CcPanelLoaderVtable default_panels[] =
    PANEL_TYPE("search",           cc_search_panel_get_type,               NULL),
    PANEL_TYPE("sharing",          cc_sharing_panel_get_type,              NULL),
    PANEL_TYPE("sound",            cc_sound_panel_get_type,                NULL),
