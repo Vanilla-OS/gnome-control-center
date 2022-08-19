@@ -48,6 +48,14 @@ panels/display/cc-display-settings.ui
 panels/display/cc-night-light-page.c
 panels/display/cc-night-light-page.ui
 panels/display/gnome-display-panel.desktop.in.in
+panels/firmware-security/cc-firmware-security-boot-dialog.c
+panels/firmware-security/cc-firmware-security-boot-dialog.ui
+panels/firmware-security/cc-firmware-security-dialog.c
+panels/firmware-security/cc-firmware-security-dialog.ui
+panels/firmware-security/cc-firmware-security-panel.c
+panels/firmware-security/cc-firmware-security-panel.ui
+panels/firmware-security/cc-firmware-security-utils.c
+panels/firmware-security/gnome-firmware-security-panel.desktop.in.in
 panels/info-overview/cc-info-overview-panel.c
 panels/info-overview/cc-info-overview-panel.ui
 panels/info-overview/gnome-info-overview-panel.desktop.in.in
@@ -69,13 +77,11 @@ panels/keyboard/cc-keyboard-shortcut-editor.c
 panels/keyboard/cc-keyboard-shortcut-editor.ui
 panels/keyboard/cc-keyboard-shortcut-row.ui
 panels/keyboard/cc-xkb-modifier-dialog.c
+panels/keyboard/cc-xkb-modifier-dialog.ui
 panels/keyboard/gnome-keyboard-panel.desktop.in.in
 panels/keyboard/keyboard-shortcuts.c
 panels/location/cc-location-panel.ui
 panels/location/gnome-location-panel.desktop.in.in
-panels/lock/cc-lock-panel.c
-panels/lock/cc-lock-panel.ui
-panels/lock/gnome-lock-panel.desktop.in.in
 panels/microphone/cc-microphone-panel.ui
 panels/microphone/gnome-microphone-panel.desktop.in.in
 panels/mouse/cc-mouse-panel.ui
@@ -155,6 +161,7 @@ panels/notifications/cc-app-notifications-dialog.ui
 panels/notifications/cc-notifications-panel.c
 panels/notifications/cc-notifications-panel.ui
 panels/notifications/gnome-notifications-panel.desktop.in.in
+panels/online-accounts/cc-online-account-provider-row.c
 panels/online-accounts/cc-online-accounts-panel.c
 panels/online-accounts/cc-online-accounts-panel.ui
 panels/online-accounts/gnome-control-center-goa-helper.c
@@ -163,6 +170,7 @@ panels/power/cc-battery-row.c
 panels/power/cc-power-panel.c
 panels/power/cc-power-panel.ui
 panels/power/cc-power-profile-row.c
+panels/power/cc-power-profile-row.ui
 panels/power/gnome-power-panel.desktop.in.in
 panels/printers/cc-printers-panel.c
 panels/printers/gnome-printers-panel.desktop.in.in
@@ -194,6 +202,9 @@ panels/region/gnome-region-panel.desktop.in.in
 panels/removable-media/cc-removable-media-panel.c
 panels/removable-media/cc-removable-media-panel.ui
 panels/removable-media/gnome-removable-media-panel.desktop.in.in
+panels/screen/cc-screen-panel.c
+panels/screen/cc-screen-panel.ui
+panels/screen/gnome-screen-panel.desktop.in.in
 panels/search/cc-search-locations-dialog.c
 panels/search/cc-search-locations-dialog.ui
 panels/search/cc-search-panel.c
@@ -213,7 +224,9 @@ panels/sound/cc-fade-slider.ui
 panels/sound/cc-output-test-dialog.c
 panels/sound/cc-output-test-dialog.ui
 panels/sound/cc-sound-panel.ui
+panels/sound/cc-subwoofer-slider.ui
 panels/sound/cc-volume-slider.c
+panels/sound/cc-volume-slider.ui
 panels/sound/gnome-sound-panel.desktop.in.in
 panels/thunderbolt/cc-bolt-device-dialog.c
 panels/thunderbolt/cc-bolt-device-dialog.ui
@@ -268,6 +281,7 @@ panels/wacom/cc-wacom-stylus-page.ui
 panels/wacom/cc-wacom-tool.c
 panels/wacom/gnome-wacom-panel.desktop.in.in
 panels/wacom/gsd-wacom-key-shortcut-button.c
+panels/wwan/cc-wwan-apn-dialog.c
 panels/wwan/cc-wwan-apn-dialog.ui
 panels/wwan/cc-wwan-data.c
 panels/wwan/cc-wwan-details-dialog.c

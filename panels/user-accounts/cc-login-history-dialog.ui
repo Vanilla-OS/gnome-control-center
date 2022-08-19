@@ -5,12 +5,18 @@
     <property name="default-height">400</property>
     <property name="modal">True</property>
     <property name="icon_name">system-users</property>
+    <accessibility>
+      <relation name="labeled-by">title_label</relation>
+    </accessibility>
     <child internal-child="headerbar">
       <object class="GtkHeaderBar" id="header_bar">
-        <child type="title">
+        <property name="title-widget">
           <object class="GtkLabel" id="title_label">
+            <style>
+              <class name="title"/>
+            </style>
           </object>
-        </child>
+        </property>
         <child>
           <object class="GtkBox">
             <style>
@@ -20,6 +26,9 @@
               <object class="GtkButton" id="previous_button">
                 <property name="icon_name">go-previous-symbolic</property>
                 <property name="valign">center</property>
+                <accessibility>
+                  <property name="label" translatable="yes">Previous</property>
+                </accessibility>
                 <signal name="clicked" handler="previous_button_clicked_cb" object="CcLoginHistoryDialog" swapped="yes"/>
               </object>
             </child>
@@ -27,6 +36,9 @@
               <object class="GtkButton" id="next_button">
                 <property name="icon_name">go-next-symbolic</property>
                 <property name="valign">center</property>
+                <accessibility>
+                  <property name="label" translatable="yes">Next</property>
+                </accessibility>
                 <signal name="clicked" handler="next_button_clicked_cb" object="CcLoginHistoryDialog" swapped="yes"/>
               </object>
             </child>

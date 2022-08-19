@@ -92,11 +92,11 @@ struct _CcDisplayPanel
 
   GtkWidget      *display_settings_disabled_group;
 
-  GtkWidget      *arrangement_group;
+  GtkWidget      *arrangement_row;
   AdwBin         *arrangement_bin;
   GtkToggleButton *config_type_join;
   GtkToggleButton *config_type_mirror;
-  GtkWidget      *config_type_switcher_row;
+  GtkWidget      *display_multiple_displays;
   AdwBin         *display_settings_bin;
   GtkWidget      *display_settings_group;
   AdwWindowTitle *display_settings_title_widget;
@@ -607,10 +607,10 @@ cc_display_panel_class_init (CcDisplayPanelClass *klass)
   gtk_widget_class_bind_template_child (widget_class, CcDisplayPanel, apply_titlebar);
   gtk_widget_class_bind_template_child (widget_class, CcDisplayPanel, apply_titlebar_title_widget);
   gtk_widget_class_bind_template_child (widget_class, CcDisplayPanel, display_settings_disabled_group);
-  gtk_widget_class_bind_template_child (widget_class, CcDisplayPanel, arrangement_group);
   gtk_widget_class_bind_template_child (widget_class, CcDisplayPanel, arrangement_bin);
+  gtk_widget_class_bind_template_child (widget_class, CcDisplayPanel, arrangement_row);
   gtk_widget_class_bind_template_child (widget_class, CcDisplayPanel, cancel_button);
-  gtk_widget_class_bind_template_child (widget_class, CcDisplayPanel, config_type_switcher_row);
+  gtk_widget_class_bind_template_child (widget_class, CcDisplayPanel, display_multiple_displays);
   gtk_widget_class_bind_template_child (widget_class, CcDisplayPanel, config_type_join);
   gtk_widget_class_bind_template_child (widget_class, CcDisplayPanel, config_type_mirror);
   gtk_widget_class_bind_template_child (widget_class, CcDisplayPanel, display_settings_bin);
@@ -692,6 +692,7 @@ add_display_row (CcDisplayPanel   *self,
   number_string = g_strdup_printf ("%d", cc_display_monitor_get_ui_number (monitor));
   number_label = gtk_label_new (number_string);
   gtk_widget_set_valign (number_label, GTK_ALIGN_CENTER);
+  gtk_widget_set_halign (number_label, GTK_ALIGN_CENTER);
   gtk_widget_add_css_class (number_label, "monitor-label");
   adw_action_row_add_prefix (ADW_ACTION_ROW (row), number_label);
 
@@ -752,7 +753,7 @@ rebuild_ui (CcDisplayPanel *panel)
     {
       gtk_widget_set_visible (panel->display_settings_disabled_group, TRUE);
       gtk_widget_set_visible (panel->display_settings_group, FALSE);
-      gtk_widget_set_visible (panel->arrangement_group, FALSE);
+      gtk_widget_set_visible (panel->arrangement_row, FALSE);
       return;
     }
 
@@ -822,11 +823,14 @@ rebuild_ui (CcDisplayPanel *panel)
       if (type > CC_DISPLAY_CONFIG_LAST_VALID)
         type = CC_DISPLAY_CONFIG_JOIN;
 
-      gtk_widget_set_visible (panel->display_settings_group, TRUE);
-      gtk_widget_set_visible (panel->config_type_switcher_row, TRUE);
-      gtk_widget_set_visible (panel->arrangement_group, type == CC_DISPLAY_CONFIG_JOIN);
+      gtk_widget_set_visible (panel->display_settings_group, type == CC_DISPLAY_CONFIG_JOIN);
+      gtk_widget_set_visible (panel->display_multiple_displays, TRUE);
+      gtk_widget_set_visible (panel->arrangement_row, type == CC_DISPLAY_CONFIG_JOIN);
 
-      move_display_settings_to_separate_page (panel);
+      if (type == CC_DISPLAY_CONFIG_CLONE)
+        move_display_settings_to_main_page (panel);
+      else
+        move_display_settings_to_separate_page (panel);
     }
   else if (n_usable_outputs > 1)
     {
@@ -834,8 +838,8 @@ rebuild_ui (CcDisplayPanel *panel)
        * and we always show the arrangement widget.
        */
       gtk_widget_set_visible (panel->display_settings_group, TRUE);
-      gtk_widget_set_visible (panel->config_type_switcher_row, FALSE);
-      gtk_widget_set_visible (panel->arrangement_group, TRUE);
+      gtk_widget_set_visible (panel->display_multiple_displays, FALSE);
+      gtk_widget_set_visible (panel->arrangement_row, TRUE);
 
       /* Mirror is also invalid as it cannot be configured using this UI. */
       if (type == CC_DISPLAY_CONFIG_CLONE || type > CC_DISPLAY_CONFIG_LAST_VALID)
@@ -848,13 +852,15 @@ rebuild_ui (CcDisplayPanel *panel)
       type = CC_DISPLAY_CONFIG_JOIN;
 
       gtk_widget_set_visible (panel->display_settings_group, FALSE);
-      gtk_widget_set_visible (panel->config_type_switcher_row, FALSE);
-      gtk_widget_set_visible (panel->arrangement_group, FALSE);
+      gtk_widget_set_visible (panel->display_multiple_displays, FALSE);
+      gtk_widget_set_visible (panel->arrangement_row, FALSE);
 
       move_display_settings_to_main_page (panel);
     }
 
-  cc_display_settings_set_multimonitor (panel->settings, n_outputs > 1);
+  cc_display_settings_set_multimonitor (panel->settings,
+                                        n_outputs > 1 &&
+                                        type != CC_DISPLAY_CONFIG_CLONE);
 
   cc_panel_set_selected_type (panel, type);
 
@@ -1084,7 +1090,7 @@ cc_display_panel_init (CcDisplayPanel *self)
   gtk_widget_init_template (GTK_WIDGET (self));
 
   self->arrangement = cc_display_arrangement_new (NULL);
-  gtk_widget_set_size_request (GTK_WIDGET (self->arrangement), 400, 175);
+  gtk_widget_set_size_request (GTK_WIDGET (self->arrangement), 375, 175);
   adw_bin_set_child (self->arrangement_bin, GTK_WIDGET (self->arrangement));
 
   g_signal_connect_object (self->arrangement, "updated",

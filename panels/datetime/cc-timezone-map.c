@@ -48,10 +48,7 @@ struct _CcTimezoneMap
   GdkTexture *orig_background_dim;
 
   GdkTexture *background;
-  GdkTexture *color_map;
   GdkTexture *pin;
-
-  gdouble selected_offset;
 
   TzDB *tzdb;
   TzLocation *location;
@@ -85,7 +82,6 @@ cc_timezone_map_dispose (GObject *object)
 {
   CcTimezoneMap *self = CC_TIMEZONE_MAP (object);
 
-  g_clear_object (&self->color_map);
   g_clear_object (&self->orig_background);
   g_clear_object (&self->orig_background_dim);
   g_clear_object (&self->background);
@@ -286,12 +282,8 @@ cc_timezone_map_snapshot (GtkWidget   *widget,
                           GtkSnapshot *snapshot)
 {
   CcTimezoneMap *map = CC_TIMEZONE_MAP (widget);
-  g_autoptr(GdkTexture) orig_highlight = NULL;
-  g_autofree gchar *file = NULL;
-  g_autoptr(GError) err = NULL;
   gdouble pointx, pointy;
   gint width, height;
-  char buf[16];
 
   width = gtk_widget_get_width (widget);
   height = gtk_widget_get_height (widget);
@@ -300,35 +292,6 @@ cc_timezone_map_snapshot (GtkWidget   *widget,
   gtk_snapshot_append_texture (snapshot,
                                map->background,
                                &GRAPHENE_RECT_INIT (0, 0, width, height));
-
-  /* paint highlight */
-  if (gtk_widget_is_sensitive (widget))
-    {
-      file = g_strdup_printf (DATETIME_RESOURCE_PATH "/timezone_%s.png",
-                              g_ascii_formatd (buf, sizeof (buf),
-                                               "%g", map->selected_offset));
-    }
-  else
-    {
-      file = g_strdup_printf (DATETIME_RESOURCE_PATH "/timezone_%s_dim.png",
-                              g_ascii_formatd (buf, sizeof (buf),
-                                               "%g", map->selected_offset));
-
-    }
-
-  orig_highlight = texture_from_resource (file, &err);
-
-  if (!orig_highlight)
-    {
-      g_warning ("Could not load highlight: %s",
-                 (err) ? err->message : "Unknown Error");
-    }
-  else
-    {
-      gtk_snapshot_append_texture (snapshot,
-                                   orig_highlight,
-                                   &GRAPHENE_RECT_INIT (0, 0, width, height));
-    }
 
   if (map->location)
     {
@@ -426,8 +389,6 @@ set_location (CcTimezoneMap *map,
 
   info = tz_info_from_location (map->location);
 
-  map->selected_offset = tz_location_get_base_utc_offset (map->location)
-    / (60.0*60.0);
   gtk_widget_queue_draw (GTK_WIDGET (map));
 
   g_signal_emit (map, signals[LOCATION_CHANGED], 0, map->location);
@@ -493,14 +454,6 @@ cc_timezone_map_init (CcTimezoneMap *map)
 
   map->orig_background_dim = texture_from_resource (DATETIME_RESOURCE_PATH "/bg_dim.png", &err);
   if (!map->orig_background_dim)
-    {
-      g_warning ("Could not load background image: %s",
-                 (err) ? err->message : "Unknown error");
-      g_clear_error (&err);
-    }
-
-  map->color_map = texture_from_resource (DATETIME_RESOURCE_PATH "/cc.png", &err);
-  if (!map->color_map)
     {
       g_warning ("Could not load background image: %s",
                  (err) ? err->message : "Unknown error");

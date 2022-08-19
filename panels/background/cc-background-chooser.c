@@ -157,6 +157,11 @@ create_widget_func (gpointer model_item,
   gtk_overlay_add_overlay (GTK_OVERLAY (overlay), check);
   if (button)
     gtk_overlay_add_overlay (GTK_OVERLAY (overlay), button);
+  gtk_accessible_update_property (GTK_ACCESSIBLE (overlay),
+                                  GTK_ACCESSIBLE_PROPERTY_LABEL,
+                                  cc_background_item_get_name (item),
+                                  -1);
+
 
   child = gtk_flow_box_child_new ();
   gtk_widget_set_halign (child, GTK_ALIGN_CENTER);
@@ -315,6 +320,7 @@ cc_background_chooser_select_file (CcBackgroundChooser *self)
   filter = gtk_file_filter_new ();
   gtk_file_filter_add_pixbuf_formats (filter);
   gtk_file_chooser_set_filter (GTK_FILE_CHOOSER (filechooser), filter);
+  gtk_file_chooser_set_select_multiple (GTK_FILE_CHOOSER (filechooser), TRUE);
 
   pictures_folder = g_file_new_for_path (g_get_user_special_dir (G_USER_DIRECTORY_PICTURES));
   gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (filechooser),

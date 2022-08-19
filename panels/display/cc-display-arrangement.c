@@ -523,9 +523,6 @@ cc_display_arrangement_draw (GtkDrawingArea *drawing_area,
 
   cc_display_arrangement_update_matrices (self);
 
-  gtk_style_context_save (context);
-  gtk_style_context_add_class (context, "display-arrangement");
-
   /* Draw in reverse order so that hit detection matches visual. Also pull
    * the selected output to the back. */
   outputs = g_list_copy (cc_display_config_get_monitors (self->config));
@@ -590,7 +587,6 @@ cc_display_arrangement_draw (GtkDrawingArea *drawing_area,
       if (num > 0)
         {
           PangoLayout *layout;
-          //PangoFontDescription *font = NULL;
           g_autofree gchar *number_str = NULL;
           PangoRectangle extents;
           GdkRGBA color;
@@ -601,14 +597,11 @@ cc_display_arrangement_draw (GtkDrawingArea *drawing_area,
 
           gtk_style_context_get_border (context, &border);
           gtk_style_context_get_padding (context, &padding);
-          gtk_style_context_get_margin (context, &margin);
 
-          cairo_translate (cr, margin.left, margin.top);
+          cairo_translate (cr, w / 2, h / 2);
 
           number_str = g_strdup_printf ("%d", num);
-          //gtk_style_context_get (context, state, "font", &font, NULL);
           layout = gtk_widget_create_pango_layout (GTK_WIDGET (self), number_str);
-          //pango_layout_set_font_description (layout, font);
           pango_layout_get_extents (layout, NULL, &extents);
 
           h = (extents.height - extents.y) / PANGO_SCALE;
@@ -618,6 +611,14 @@ cc_display_arrangement_draw (GtkDrawingArea *drawing_area,
 
           w += border.left + border.right + padding.left + padding.right;
           h += border.top + border.bottom + padding.top + padding.bottom;
+
+          /* Enforce evenness */
+          if ((w % 2) != 0)
+                  w++;
+          if ((h % 2) != 0)
+                  h++;
+
+          cairo_translate (cr, - w / 2, - h / 2);
 
           gtk_render_background (context, cr, 0, 0, w, h);
           gtk_render_frame (context, cr, 0, 0, w, h);
@@ -635,8 +636,6 @@ cc_display_arrangement_draw (GtkDrawingArea *drawing_area,
       gtk_style_context_restore (context);
       cairo_restore (cr);
     }
-
-  gtk_style_context_restore (context);
 }
 
 static gboolean
@@ -849,6 +848,8 @@ cc_display_arrangement_class_init (CcDisplayArrangementClass *klass)
                 G_SIGNAL_RUN_LAST,
                 0, NULL, NULL, NULL,
                 G_TYPE_NONE, 0);
+
+  gtk_widget_class_set_css_name (GTK_WIDGET_CLASS (klass), "display-arrangement");
 }
 
 static void

@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="CcFirmwareSecurityDialog" parent="AdwWindow">
+    <property name="default-width">500</property>
+    <property name="default-height">550</property>
+    <property name="modal">True</property>
+    <child>
+      <object class="AdwLeaflet" id="leaflet">
+        <property name="can-unfold">False</property>
+        <child>
+          <object class="AdwLeafletPage">
+            <property name="child">
+              <object class="GtkBox">
+                <property name="orientation">vertical</property>
+
+                <child>
+                  <object class="GtkHeaderBar">
+                    <property name="valign">start</property>
+                    <property name="show-title-buttons">True</property>
+                    <property name="title-widget">
+                      <object class="AdwWindowTitle">
+                        <property name="title" translatable="yes">Security Level</property>
+                      </object>
+                    </property>
+                  </object>
+                </child>
+
+                <child>
+                  <object class="AdwPreferencesPage">
+                    <property name="vexpand-set">True</property>
+
+                    <child>
+                      <object class="AdwPreferencesGroup">
+                        <child>
+                          <object class="GtkBox" id="dialog_hsi_circle_box">
+                            <property name="orientation">vertical</property>
+                            <property name="halign">center</property>
+                            <property name="valign">center</property>
+                            <child>
+                              <object class="GtkLabel" id="dialog_hsi_circle_number">
+                                <property name="halign">center</property>
+                                <property name="valign">center</property>
+                                <property name="vexpand">True</property>
+                                <property name="justify">center</property>
+                                <property name="label">9</property>
+                                <style>
+                                  <class name="hsi-level-font" />
+                                </style>
+                              </object>
+                            </child>
+                            <style>
+                              <class name="hsi-level-box" />
+                            </style>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+
+                    <child>
+                      <object class="AdwPreferencesGroup">
+                        <child>
+                          <object class="GtkLabel" id="firmware_security_dialog_title_label">
+                            <style>
+                              <class name="title-2" />
+                            </style>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+
+                    <child>
+                      <object class="AdwPreferencesGroup">
+                        <child>
+                          <object class="GtkLabel" id="firmware_security_dialog_body_label">
+                            <property name="wrap">True</property>
+                            <property name="justify">center</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+
+                    <child>
+                      <object class="AdwPreferencesGroup">
+                        <child>
+                          <object class="AdwActionRow" id="firmware_security_dialog_min_row">
+                            <property name="use-underline">True</property>
+                            <property name="activatable">True</property>
+                            <property name="title" translatable="yes">Level 1</property>
+                            <signal name="activated" handler="on_hsi_clicked_cb" swapped="no" />
+                            <child>
+                              <object class="GtkImage" id="hsi1_icon">
+                                <property name="icon-name">process-stop</property>
+                                <style>
+                                  <class name="hsi_icon" />
+                                  <class name="error-hsi-icon" />
+                                </style>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="hsi1_title">
+                                <property name="halign">start</property>
+                                <property name="valign">center</property>
+                                <property name="vexpand">True</property>
+                                <property name="justify">left</property>
+                                <property name="label">Failed</property>
+                                <property name="margin-end">6</property>
+                                <style>
+                                  <class name="hsi_label" />
+                                  <class name="error-title" />
+                                </style>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkImage">
+                                <property name="icon-name">go-next-symbolic</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="AdwActionRow" id="firmware_security_dialog_basic_row">
+                            <property name="use-underline">True</property>
+                            <property name="activatable">True</property>
+                            <property name="title" translatable="yes">Level 2</property>
+                            <signal name="activated" handler="on_hsi_clicked_cb" swapped="no" />
+                            <child>
+                              <object class="GtkImage" id="hsi2_icon">
+                                <property name="icon-name">process-stop</property>
+                                <style>
+                                  <class name="hsi_icon" />
+                                  <class name="error-hsi-icon" />
+                                </style>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="hsi2_title">
+                                <property name="halign">start</property>
+                                <property name="valign">center</property>
+                                <property name="vexpand">True</property>
+                                <property name="justify">left</property>
+                                <property name="label">Failed</property>
+                                <property name="margin-end">6</property>
+                                <style>
+                                  <class name="hsi_label" />
+                                  <class name="error-title" />
+                                </style>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkImage">
+                                <property name="icon-name">go-next-symbolic</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="AdwActionRow" id="firmware_security_dialog_extend_row">
+                            <property name="use-underline">True</property>
+                            <property name="activatable">True</property>
+                            <property name="title" translatable="yes">Level 3</property>
+                            <signal name="activated" handler="on_hsi_clicked_cb" swapped="no" />
+                            <child>
+                              <object class="GtkImage" id="hsi3_icon">
+                                <property name="icon-name">process-stop</property>
+                                <style>
+                                  <class name="hsi_icon" />
+                                  <class name="error-hsi-icon" />
+                                </style>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="hsi3_title">
+                                <property name="halign">start</property>
+                                <property name="valign">center</property>
+                                <property name="vexpand">True</property>
+                                <property name="justify">left</property>
+                                <property name="label">Failed</property>
+                                <property name="margin-end">6</property>
+                                <style>
+                                  <class name="hsi_label" />
+                                  <class name="error-title" />
+                                </style>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkImage">
+                                <property name="icon-name">go-next-symbolic</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+
+                    <child>
+                      <object class="AdwPreferencesGroup">
+                        <child>
+                          <object class="GtkLabel" id="firmware_security_dialog_hsi_label">
+                            <property name="label">Device conform text</property>
+                            <style>
+                              <class name="dim-label" />
+                            </style>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+
+                  </object>
+                </child>
+
+              </object>
+            </property>
+          </object>
+        </child>
+
+        <child>
+          <object class="AdwLeafletPage">
+            <property name="child">
+              <object class="GtkBox">
+                <property name="orientation">vertical</property>
+
+                <child>
+                  <object class="GtkHeaderBar">
+                    <property name="valign">start</property>
+                    <property name="show-title-buttons">True</property>
+                    <property name="title-widget">
+                      <object class="AdwWindowTitle" id="second_page_title" />
+                    </property>
+                    <child>
+                      <object class="GtkButton">
+                        <property name="halign">center</property>
+                        <property name="valign">center</property>
+                        <property name="icon-name">go-previous-symbolic</property>
+                        <signal name="clicked" handler="on_fw_back_button_clicked_cb" swapped="no" />
+                        <style>
+                          <class name="image-button" />
+                        </style>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+
+                <child>
+                  <object class="AdwPreferencesPage">
+                    <child>
+                      <object class="AdwPreferencesGroup" id="firmware_security_dialog_hsi1_pg">
+                        <property name="visible">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="AdwPreferencesGroup" id="firmware_security_dialog_hsi2_pg">
+                        <property name="visible">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="AdwPreferencesGroup" id="firmware_security_dialog_hsi3_pg">
+                        <property name="visible">False</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+
+              </object>
+            </property>
+          </object>
+        </child>
+
+      </object>
+    </child>
+  </template>
+</interface>

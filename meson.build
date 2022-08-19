@@ -1,6 +1,6 @@
 project(
   'gnome-control-center', 'c',
-        version : '42.3',
+        version : '43.beta',
         license : 'GPL2+',
   meson_version : '>= 0.53.0'
 )
@@ -49,6 +49,17 @@ set_defines = [
 foreach define: set_defines
   config_h.set_quoted(define[0], define[1])
 endforeach
+
+distributor_logo = get_option('distributor_logo')
+if (distributor_logo != '')
+  config_h.set_quoted('DISTRIBUTOR_LOGO', distributor_logo,
+                      description: 'Define to absolute path of distributor logo')
+  dark_mode_distributor_logo = get_option('dark_mode_distributor_logo')
+  if (dark_mode_distributor_logo != '')
+    config_h.set_quoted('DARK_MODE_DISTRIBUTOR_LOGO', dark_mode_distributor_logo,
+                        description: 'Define to absolute path of distributor logo for use in dark mode')
+  endif
+endif
 
 # meson does not support octal values, so it must be handled as a
 # string. See: https://github.com/mesonbuild/meson/issues/2047
@@ -104,7 +115,7 @@ pulse_req_version = '>= 2.0'
 
 libadwaita_dep = dependency(
   'libadwaita-1',
-  version: '>= 1.1',
+  version: '>= 1.2.alpha',
   fallback: ['libadwaita', 'libadwaita_dep'],
   default_options: ['examples=false', 'introspection=disabled', 'tests=false', 'vapi=false'],
 )
@@ -113,7 +124,7 @@ accounts_dep = dependency('accountsservice', version: '>= 0.6.39')
 colord_dep = dependency('colord', version: '>= 0.1.34')
 gdk_pixbuf_dep = dependency('gdk-pixbuf-2.0', version: '>= 2.23.0')
 gio_dep = dependency('gio-2.0')
-glib_dep = dependency('glib-2.0', version: '>= 2.68.0')
+glib_dep = dependency('glib-2.0', version: '>= 2.70.0')
 gnome_desktop_dep = dependency('gnome-desktop-4')
 gnome_bg_dep = dependency('gnome-bg-4')
 gnome_rr_dep = dependency('gnome-rr-4')

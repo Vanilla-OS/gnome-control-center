@@ -23,6 +23,7 @@
 #include <config.h>
 
 #include "cc-hostname-entry.h"
+#include "shell/cc-object-storage.h"
 
 #include "cc-info-overview-resources.h"
 #include "info-cleanup.h"
@@ -68,130 +69,15 @@ struct _CcInfoOverviewPanel
   CcListRow       *memory_row;
   GtkPicture      *os_logo;
   CcListRow       *os_name_row;
+  CcListRow       *os_build_row;
   CcListRow       *os_type_row;
   CcListRow       *processor_row;
-  CcListRow       *software_updates_row;
+  AdwActionRow    *software_updates_row;
   CcListRow       *virtualization_row;
   CcListRow       *windowing_system_row;
 };
 
-typedef struct
-{
-  char *major;
-  char *minor;
-  char *distributor;
-  char *date;
-  char **current;
-} VersionData;
-
-static void
-version_data_free (VersionData *data)
-{
-  g_free (data->major);
-  g_free (data->minor);
-  g_free (data->distributor);
-  g_free (data->date);
-  g_free (data);
-}
-
-G_DEFINE_AUTOPTR_CLEANUP_FUNC (VersionData, version_data_free);
-
 G_DEFINE_TYPE (CcInfoOverviewPanel, cc_info_overview_panel, CC_TYPE_PANEL)
-
-static void
-version_start_element_handler (GMarkupParseContext      *ctx,
-                               const char               *element_name,
-                               const char              **attr_names,
-                               const char              **attr_values,
-                               gpointer                  user_data,
-                               GError                  **error)
-{
-  VersionData *data = user_data;
-  if (g_str_equal (element_name, "platform"))
-    data->current = &data->major;
-  else if (g_str_equal (element_name, "minor"))
-    data->current = &data->minor;
-  else if (g_str_equal (element_name, "distributor"))
-    data->current = &data->distributor;
-  else if (g_str_equal (element_name, "date"))
-    data->current = &data->date;
-  else
-    data->current = NULL;
-}
-
-static void
-version_end_element_handler (GMarkupParseContext      *ctx,
-                             const char               *element_name,
-                             gpointer                  user_data,
-                             GError                  **error)
-{
-  VersionData *data = user_data;
-  data->current = NULL;
-}
-
-static void
-version_text_handler (GMarkupParseContext *ctx,
-                      const char          *text,
-                      gsize                text_len,
-                      gpointer             user_data,
-                      GError             **error)
-{
-  VersionData *data = user_data;
-  if (data->current != NULL)
-    {
-      g_autofree char *stripped = NULL;
-
-      stripped = g_strstrip (g_strdup (text));
-      g_free (*data->current);
-      *data->current = g_strdup (stripped);
-    }
-}
-
-static gboolean
-load_gnome_version (char **version,
-                    char **distributor,
-                    char **date)
-{
-  GMarkupParser version_parser = {
-    version_start_element_handler,
-    version_end_element_handler,
-    version_text_handler,
-    NULL,
-    NULL,
-  };
-  g_autoptr(GError) error = NULL;
-  g_autoptr(GMarkupParseContext) ctx = NULL;
-  g_autofree char *contents = NULL;
-  gsize length;
-  g_autoptr(VersionData) data = NULL;
-
-  if (!g_file_get_contents (DATADIR "/gnome/gnome-version.xml",
-                            &contents,
-                            &length,
-                            &error))
-    return FALSE;
-
-  data = g_new0 (VersionData, 1);
-  ctx = g_markup_parse_context_new (&version_parser, 0, data, NULL);
-
-  if (!g_markup_parse_context_parse (ctx, contents, length, &error))
-    {
-      g_warning ("Invalid version file: '%s'", error->message);
-    }
-  else
-    {
-      if (version != NULL)
-        *version = g_strdup_printf ("%s.%s", data->major, data->minor);
-      if (distributor != NULL)
-        *distributor = g_strdup (data->distributor);
-      if (date != NULL)
-        *date = g_strdup (data->date);
-
-      return TRUE;
-    }
-
-  return FALSE;
-};
 
 static char *
 get_renderer_from_session (void)
@@ -263,7 +149,7 @@ get_renderer_from_helper (const char **env)
       return NULL;
     }
 
-  if (!g_spawn_check_exit_status (status, NULL))
+  if (!g_spawn_check_wait_status (status, NULL))
     return NULL;
 
   if (renderer == NULL || *renderer == '\0')
@@ -418,36 +304,27 @@ get_os_name (void)
   g_autofree gchar *name = NULL;
   g_autofree gchar *version_id = NULL;
   g_autofree gchar *pretty_name = NULL;
-  g_autofree gchar *build_id = NULL;
-  g_autofree gchar *name_version = NULL;
-  gchar *result = NULL;
 
   name = g_get_os_info (G_OS_INFO_KEY_NAME);
   version_id = g_get_os_info (G_OS_INFO_KEY_VERSION_ID);
   pretty_name = g_get_os_info (G_OS_INFO_KEY_PRETTY_NAME);
-  build_id = g_get_os_info ("BUILD_ID");
 
   if (pretty_name)
-    name_version = g_strdup (pretty_name);
+    return g_steal_pointer (&pretty_name);
   else if (name && version_id)
-    name_version = g_strdup_printf ("%s %s", name, version_id);
+    return g_strdup_printf ("%s %s", name, version_id);
   else
-    name_version = g_strdup (_("Unknown"));
+    return g_strdup (_("Unknown"));
+}
 
-  if (build_id)
-    {
-      /* translators: This is the name of the OS, followed by the build ID, for
-       * example:
-       * "Fedora 25 (Workstation Edition); Build ID: xyz" or
-       * "Ubuntu 16.04 LTS; Build ID: jki" */
-      result = g_strdup_printf (_("%s; Build ID: %s"), name_version, build_id);
-    }
-  else
-    {
-      result = g_strdup (name_version);
-    }
+static char *
+get_os_build_id (void)
+{
+  char *build_id = NULL;
 
-  return result;
+  build_id = g_get_os_info ("BUILD_ID");
+
+  return build_id;
 }
 
 static char *
@@ -759,6 +636,56 @@ get_ram_size_dmi (void)
   return ram_total;
 }
 
+static char *
+get_gnome_version (GDBusProxy *proxy)
+{
+  g_autoptr(GVariant) variant = NULL;
+  const char *gnome_version = NULL;
+  if (!proxy)
+    return NULL;
+
+  variant = g_dbus_proxy_get_cached_property (proxy, "ShellVersion");
+  if (!variant)
+    return NULL;
+
+  gnome_version = g_variant_get_string (variant, NULL);
+  if (!gnome_version || *gnome_version == '\0')
+    return NULL;
+  return g_strdup (gnome_version);
+}
+
+static void
+shell_proxy_ready (GObject             *source,
+                   GAsyncResult        *res,
+                   CcInfoOverviewPanel *self)
+{
+  g_autoptr(GDBusProxy) proxy = NULL;
+  g_autoptr(GError) error = NULL;
+  g_autoptr(GVariant) variant = NULL;
+  g_autofree char *gnome_version = NULL;
+
+  proxy = cc_object_storage_create_dbus_proxy_finish (res, &error);
+  if (!proxy)
+    {
+      if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        return;
+      g_warning ("Failed to contact gnome-shell: %s", error->message);
+    }
+
+  gnome_version = get_gnome_version (proxy);
+
+  if (!gnome_version)
+    {
+      /* translators: this is the placeholder string when the GNOME Shell
+       * version couldn't be loaded, eg. “GNOME Version: Not Available” */
+      cc_list_row_set_secondary_label (self->gnome_version_row, _("Not Available"));
+    }
+  else
+    {
+      cc_list_row_set_secondary_label (self->gnome_version_row, gnome_version);
+    }
+}
+
 static void
 info_overview_panel_setup_overview (CcInfoOverviewPanel *self)
 {
@@ -769,12 +696,18 @@ info_overview_panel_setup_overview (CcInfoOverviewPanel *self)
   g_autofree char *cpu_text = NULL;
   g_autofree char *os_type_text = NULL;
   g_autofree char *os_name_text = NULL;
+  g_autofree char *os_build_text = NULL;
   g_autofree gchar *graphics_hardware_string = NULL;
 
-  if (load_gnome_version (&gnome_version, NULL, NULL))
-    cc_list_row_set_secondary_label (self->gnome_version_row, gnome_version);
-
-  cc_list_row_set_secondary_label (self->windowing_system_row, get_windowing_system ());
+  cc_object_storage_create_dbus_proxy (G_BUS_TYPE_SESSION,
+                                       G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS |
+                                       G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START,
+                                       "org.gnome.Shell",
+                                       "/org/gnome/Shell",
+                                       "org.gnome.Shell",
+                                       cc_panel_get_cancellable (CC_PANEL (self)),
+                                       (GAsyncReadyCallback) shell_proxy_ready,
+                                       self);
 
   get_hardware_model (self);
 
@@ -789,16 +722,22 @@ info_overview_panel_setup_overview (CcInfoOverviewPanel *self)
   cpu_text = get_cpu_info (info);
   cc_list_row_set_secondary_markup (self->processor_row, cpu_text);
 
-  os_type_text = get_os_type ();
-  cc_list_row_set_secondary_label (self->os_type_row, os_type_text);
+  graphics_hardware_string = get_graphics_hardware_string ();
+  cc_list_row_set_secondary_markup (self->graphics_row, graphics_hardware_string);
+
+  get_primary_disc_info (self);
 
   os_name_text = get_os_name ();
   cc_list_row_set_secondary_label (self->os_name_row, os_name_text);
 
-  get_primary_disc_info (self);
+  os_build_text = get_os_build_id ();
+  cc_list_row_set_secondary_label (self->os_build_row, os_build_text);
+  gtk_widget_set_visible (GTK_WIDGET (self->os_build_row), os_build_text != NULL);
 
-  graphics_hardware_string = get_graphics_hardware_string ();
-  cc_list_row_set_secondary_markup (self->graphics_row, graphics_hardware_string);
+  os_type_text = get_os_type ();
+  cc_list_row_set_secondary_label (self->os_type_row, os_type_text);
+
+  cc_list_row_set_secondary_label (self->windowing_system_row, get_windowing_system ());
 }
 
 static gboolean
@@ -926,17 +865,18 @@ open_hostname_edit_dialog (CcInfoOverviewPanel *self)
 
 static void
 cc_info_panel_row_activated_cb (CcInfoOverviewPanel *self,
-                                CcListRow           *row)
+                                AdwActionRow        *row)
 {
   g_assert (CC_IS_INFO_OVERVIEW_PANEL (self));
-  g_assert (CC_IS_LIST_ROW (row));
+  g_assert (ADW_IS_ACTION_ROW (row));
 
-  if (row == self->hostname_row)
+  if (row == ADW_ACTION_ROW (self->hostname_row))
     open_hostname_edit_dialog (self);
   else if (row == self->software_updates_row)
     open_software_update (self);
 }
 
+#if !defined(DISTRIBUTOR_LOGO) || defined(DARK_MODE_DISTRIBUTOR_LOGO)
 static gboolean
 use_dark_theme (CcInfoOverviewPanel *panel)
 {
@@ -944,10 +884,22 @@ use_dark_theme (CcInfoOverviewPanel *panel)
 
   return adw_style_manager_get_dark (style_manager);
 }
+#endif
 
 static void
 setup_os_logo (CcInfoOverviewPanel *panel)
 {
+#ifdef DISTRIBUTOR_LOGO
+#ifdef DARK_MODE_DISTRIBUTOR_LOGO
+  if (use_dark_theme (panel))
+    {
+      gtk_picture_set_filename (panel->os_logo, DARK_MODE_DISTRIBUTOR_LOGO);
+      return;
+    }
+#endif
+  gtk_picture_set_filename (panel->os_logo, DISTRIBUTOR_LOGO);
+  return;
+#else
   GtkIconTheme *icon_theme;
   g_autofree char *logo_name = g_get_os_info ("LOGO");
   g_autoptr(GtkIconPaintable) icon_paintable = NULL;
@@ -975,6 +927,7 @@ setup_os_logo (CcInfoOverviewPanel *panel)
                                                    gtk_widget_get_direction (GTK_WIDGET (panel)),
                                                    0);
   gtk_picture_set_paintable (panel->os_logo, GDK_PAINTABLE (icon_paintable));
+#endif
 }
 
 static void
@@ -995,6 +948,7 @@ cc_info_overview_panel_class_init (CcInfoOverviewPanelClass *klass)
   gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, memory_row);
   gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, os_logo);
   gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, os_name_row);
+  gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, os_build_row);
   gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, os_type_row);
   gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, processor_row);
   gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, rename_button);

@@ -99,6 +99,15 @@
               </object>
             </child>
 
+            <!-- OS Build -->
+            <child>
+              <object class="CcListRow" id="os_build_row">
+                <property name="activatable">False</property>
+                <property name="title" translatable="yes"
+                          comments="translators: this field contains the distro build ID">OS Build ID</property>
+              </object>
+            </child>
+
             <!-- OS Type -->
             <child>
               <object class="CcListRow" id="os_type_row">
@@ -112,7 +121,8 @@
               <object class="CcListRow" id="gnome_version_row">
                 <property name="activatable">False</property>
                 <property name="title" translatable="yes">GNOME Version</property>
-                <property name="secondary-label">3.0</property>
+                <property name="secondary-label" translatable="yes"
+                          comments="translators: this is a placeholder while the GNOME version is being fetched">Loading…</property>
               </object>
             </child>
 
@@ -135,10 +145,16 @@
 
             <!-- Software Updates -->
             <child>
-              <object class="CcListRow" id="software_updates_row">
+              <object class="AdwActionRow" id="software_updates_row">
+                <property name="activatable">True</property>
                 <property name="title" translatable="yes">Software Updates</property>
-                <property name="show-arrow">True</property>
                 <signal name="activated" handler="cc_info_panel_row_activated_cb" swapped="yes"/>
+                <child type="suffix">
+                  <object class="GtkImage">
+                    <property name="valign">center</property>
+                    <property name="icon-name">external-link-symbolic</property>
+                  </object>
+                </child>
               </object>
             </child>
 
@@ -166,7 +182,7 @@
         <property name="margin-bottom">18</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkLabel">
+          <object class="GtkLabel" id="device_name_description">
             <property name="margin-bottom">18</property>
             <property name="wrap">True</property>
             <property name="max-width-chars">35</property>
@@ -176,6 +192,10 @@
         </child>
         <child>
           <object class="GtkEntry" id="device_name_entry">
+            <accessibility>
+              <property name="label" translatable="yes">Device name</property>
+              <relation name="described-by">device_name_description</relation>
+            </accessibility>
             <signal name="changed" handler="on_device_name_entry_changed" swapped="yes"/>
             <signal name="activate" handler="on_device_name_entry_activated_cb" swapped="yes" />
           </object>

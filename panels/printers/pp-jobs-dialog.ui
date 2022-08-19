@@ -29,6 +29,7 @@
                 <property name="halign">start</property>
                 <property name="label" translatable="yes" comments="Translators: This is a windows domain used with SMB protocol.">Domain</property>
                 <property name="xalign">1</property>
+                <property name="mnemonic_widget">domain_entry</property>
                 <layout>
                   <property name="column">0</property>
                   <property name="row">0</property>
@@ -40,6 +41,7 @@
                 <property name="halign">start</property>
                 <property name="label" translatable="yes" comments="Translators: This is a username on a print server.">Username</property>
                 <property name="xalign">1</property>
+                <property name="mnemonic_widget">username_entry</property>
                 <layout>
                   <property name="column">0</property>
                   <property name="row">1</property>
@@ -51,6 +53,7 @@
                 <property name="halign">start</property>
                 <property name="label" translatable="yes" comments="Translators: This is a password needed for printing.">Password</property>
                 <property name="xalign">1</property>
+                <property name="mnemonic_widget">password_entry</property>
                 <layout>
                   <property name="column">0</property>
                   <property name="row">2</property>
@@ -153,6 +156,7 @@
                   <object class="GtkLabel" id="authenticate_jobs_label">
                     <property name="halign">start</property>
                     <property name="hexpand">False</property>
+                    <property name="wrap">True</property>
                     <property name="label" translatable="no">2 Jobs Require Authentication</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
@@ -172,6 +176,7 @@
                   <object class="GtkMenuButton" id="authenticate_jobs_button">
                     <property name="label" translatable="yes" comments="Translators: This button pop up authentication dialog for print jobs which need credentials.">_Authenticate</property><property name="receives_default">False</property>
                     <property name="halign">end</property>
+                    <property name="valign">GTK_ALIGN_CENTER</property>
                     <property name="popover">authentication_popover</property>
                   </object>
                 </child>
