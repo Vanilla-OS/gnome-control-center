@@ -1,8 +1,12 @@
-gnome-control-center (1:43~beta-1) UNRELEASED; urgency=medium
+gnome-control-center (1:43~beta-1) experimental; urgency=medium
 
   * New upstream release
+    - New Privacy > Device Security screen
+    - New alert sounds
+  * Drop gnome-desktop and distributor-logo patches: applied in new release
+  * debian/control.in: Bump minimum libadwaita to 1.2~alpha
 
- -- Jeremy Bicha <jbicha@ubuntu.com>  Fri, 19 Aug 2022 13:22:17 -0400
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Fri, 19 Aug 2022 13:33:46 -0400
 
 gnome-control-center (1:42.3-2) unstable; urgency=medium
 
