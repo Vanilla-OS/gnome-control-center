@@ -1,6 +1,3 @@
-display-config-Parse-privacy-screen-property-and-expose-i.patch
-Panels-Rename-lock-panel-into-screen-panel.patch
-screen-Add-Screen-Privacy-section-to-show-Privacy-screen-.patch
 keyboard-Allow-disabling-alternate-characters-key.patch
 keyboard-For-xkb-options-have-Layout-default-toggle-and-N.patch
 keyboard-Avoid-modifying-xkb-options-when-user-changes-n.patch
