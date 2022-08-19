@@ -807,6 +807,30 @@ cc_wwan_data_activated_cb (GObject      *object,
 }
 
 static void
+cc_wwan_data_disconnect_cb (GObject      *object,
+                            GAsyncResult *result,
+                            gpointer      user_data)
+{
+  CcWwanData *self;
+  g_autoptr(GTask) task = user_data;
+  g_autoptr(GError) error = NULL;
+
+  self = g_task_get_source_object (G_TASK (task));
+  if (nm_device_disconnect_finish (self->nm_device, result, &error))
+    {
+      g_clear_object (&self->active_connection);
+      g_task_return_boolean (task, TRUE);
+    }
+  else
+    {
+      g_task_return_error (task, g_steal_pointer (&error));
+    }
+
+  if (error)
+    g_warning ("Error: %s", error->message);
+}
+
+static void
 cc_wwan_data_settings_saved_cb (GObject      *object,
                                 GAsyncResult *result,
                                 gpointer      user_data)
@@ -838,15 +862,10 @@ cc_wwan_data_settings_saved_cb (GObject      *object,
     }
   else
     {
-      if (nm_device_disconnect (self->nm_device, cancellable, &error))
-        {
-          g_clear_object (&self->active_connection);
-          g_task_return_boolean (task, TRUE);
-        }
-      else
-        {
-          g_task_return_error (task, g_steal_pointer (&error));
-        }
+      nm_device_disconnect_async (self->nm_device,
+                                  cancellable,
+                                  cc_wwan_data_disconnect_cb,
+                                  g_steal_pointer (&task));
     }
 }
 
@@ -1005,7 +1024,6 @@ cc_wwan_data_set_default_apn (CcWwanData    *self,
 
   g_return_val_if_fail (CC_IS_WWAN_DATA (self), FALSE);
   g_return_val_if_fail (CC_IS_WWAN_DATA_APN (apn), FALSE);
-  g_return_val_if_fail (self->sim_id != NULL, FALSE);
 
   if (self->default_apn == apn)
     return FALSE;
@@ -1021,8 +1039,10 @@ cc_wwan_data_set_default_apn (CcWwanData    *self,
   self->default_apn = apn;
   connection = wwan_data_get_nm_connection (apn);
   setting = NM_SETTING (nm_connection_get_setting_gsm (connection));
-  g_object_set (G_OBJECT (setting),
-                NM_SETTING_GSM_SIM_ID, self->sim_id, NULL);
+
+  if (self->sim_id)
+    g_object_set (G_OBJECT (setting),
+                  NM_SETTING_GSM_SIM_ID, self->sim_id, NULL);
 
   return TRUE;
 }

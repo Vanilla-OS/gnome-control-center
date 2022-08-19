@@ -36,6 +36,10 @@
                     <child>
                       <object class="GtkButton">
                         <property name="can_focus">True</property>
+                        <property name="icon-name">window-close-symbolic</property>
+                        <accessibility>
+                          <property name="label" translatable="yes">Close notification</property>
+                        </accessibility>
                         <style>
                           <class name="flat" />
                         </style>
@@ -43,11 +47,6 @@
                                 handler="on_notification_button_clicked_cb"
                                 object="CcBoltPanel"
                                 swapped="no" />
-                        <child>
-                          <object class="GtkImage">
-                            <property name="icon-name">window-close-symbolic</property>
-                          </object>
-                        </child>
                       </object>
                     </child>
                   </object>

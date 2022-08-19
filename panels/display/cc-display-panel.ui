@@ -74,6 +74,9 @@
                             <property name="icon-name">go-previous-symbolic</property>
                             <property name="action-name">window.navigate</property>
                             <property name="action-target">0</property> <!-- 0: ADW_NAVIGATION_DIRECTION_BACK -->
+                            <accessibility>
+                              <property name="label" translatable="yes">Back</property>
+                            </accessibility>
                           </object>
                         </child>
                         <property name="title-widget">
@@ -101,23 +104,7 @@
                         </child>
 
                         <child>
-                          <object class="AdwPreferencesGroup" id="arrangement_group">
-                            <child>
-                              <object class="AdwBin" id="arrangement_bin">
-                                <style>
-                                  <class name="card"/>
-                                </style>
-                              </object>
-                            </child>
-                            <accessibility>
-                              <property name="label" translatable="yes">Display Arrangement</property>
-                            </accessibility>
-                          </object>
-                        </child>
-
-                        <child>
-                          <object class="AdwPreferencesGroup" id="display_settings_group">
-
+                          <object class="AdwPreferencesGroup" id="display_multiple_displays">
                             <!-- Config Type -->
                             <child>
                               <object class="AdwActionRow" id="config_type_switcher_row">
@@ -142,6 +129,21 @@
                                         <signal name="toggled" handler="on_config_type_toggled_cb" swapped="yes"/>
                                       </object>
                                     </child>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+
+                        <child>
+                          <object class="AdwPreferencesGroup" id="display_settings_group">
+                            <!-- Display Arrangement -->
+                            <child>
+                              <object class="AdwPreferencesRow" id="arrangement_row">
+                                <property name="activatable">False</property>
+                                <child>
+                                  <object class="AdwBin" id="arrangement_bin">
                                   </object>
                                 </child>
                               </object>
@@ -215,6 +217,9 @@
                         <child type="start">
                           <object class="GtkButton">
                             <property name="icon-name">go-previous-symbolic</property>
+                            <accessibility>
+                              <property name="label" translatable="yes">Back</property>
+                            </accessibility>
                             <signal name="clicked" handler="on_back_button_clicked_cb" object="CcDisplayPanel" swapped="no" />
                           </object>
                         </child>
@@ -251,6 +256,9 @@
                         <child type="start">
                           <object class="GtkButton">
                             <property name="icon-name">go-previous-symbolic</property>
+                            <accessibility>
+                              <property name="label" translatable="yes">Back</property>
+                            </accessibility>
                             <signal name="clicked" handler="on_back_button_clicked_cb" object="CcDisplayPanel" swapped="no" />
                           </object>
                         </child>

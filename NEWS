@@ -1,46 +1,47 @@
 ================
-Version 42.3
+Version 43.beta
 ================
 
 - Updated translations
+
+Cellular
+- Add WWAN 5G connection support
+
+Device Security
+- Polish failure messages
+- Various style updates
 
 Display
-- Use virtual clone modes when mirroring
+- Support privacy screens
+
+Info
+- Show build id in a separate row
 
 Network
-- Prevent crash by disconnecting device.
-- Fix Wi-Fi network with "&" in name not appearing.
-- Fix warning when panel closed.
-
-================
-Version 42.2
-================
-
-- Updated translations
-
-Applications
-- Fix Snap permissions support failing to compile
-- Fix CcInfoRow having the wrong parent
-- Fix crash crash when switching between two apps
-
-Background
-- Make sure the size of the light/dark previews are the same
-
-Keyboard
-- Fix crash resetting all keyboard shortcuts
-
-Network:
-- Stop freeze when closing wired connection properties with Escape
-
-Sharing
-- Fix close button on Verify Encryption dialog
-- Turn off RDP gsettings key when turning off RDP
-
-Shell
-- Initialise locale early
+- Fix VPN empty state
 
 Sound
-- Update theme correctly so other apps respond to change
+- Update default sounds
+
+User Accounts
+- Fix back button not appearing sometimes
+
+================
+Version 43.alpha
+================
+
+- Improved accessibility in various panels
+- New Device Security panel
+- Updated translations
+
+Date & Time
+- Update visual style of the timezone map
+
+Display
+- Various visual improvements
+
+Sound
+- Remove dog barking sounds
 
 ================
 Version 42.1
