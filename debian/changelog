@@ -1,9 +1,11 @@
-gnome-control-center (1:43~beta-1ubuntu1) UNRELEASED; urgency=medium
+gnome-control-center (1:43~beta-1ubuntu1) kinetic; urgency=medium
 
   * Merge with Debian
+  * Drop patches applied in new release
   * Refresh patches
+  * Drop the VNC patch (LP: #1987159)
 
- -- Jeremy Bicha <jbicha@ubuntu.com>  Fri, 19 Aug 2022 13:33:47 -0400
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Sat, 20 Aug 2022 07:47:32 -0400
 
 gnome-control-center (1:43~beta-1) experimental; urgency=medium
 
