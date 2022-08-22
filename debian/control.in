@@ -78,6 +78,7 @@ Depends: ${misc:Depends},
          gnome-desktop3-data,
          gnome-settings-daemon (>= 41),
          gsettings-desktop-schemas (>= 42~),
+         webp-pixbuf-loader
 Recommends: cups-pk-helper,
             gnome-online-accounts (>= 3.25.3),
             gnome-remote-desktop (>= 42),
