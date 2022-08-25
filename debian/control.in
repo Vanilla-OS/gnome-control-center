@@ -81,6 +81,7 @@ Depends: ${misc:Depends},
          gsettings-desktop-schemas (>= 42~),
          webp-pixbuf-loader
 Recommends: cups-pk-helper,
+            gnome-bluetooth-sendto,
             gnome-online-accounts (>= 3.25.3),
             gnome-remote-desktop (>= 42),
             gnome-user-docs,
