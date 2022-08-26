@@ -1,3 +1,11 @@
+gnome-control-center (1:43~beta-1ubuntu3) kinetic; urgency=medium
+
+  * Recommend gnome-bluetooth-sendto
+  * Build against libsoup3 libraries
+  * Add patch to build against snapd-glib-2
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Fri, 26 Aug 2022 08:59:24 -0400
+
 gnome-control-center (1:43~beta-1ubuntu2) kinetic; urgency=medium
 
   * Add patch to disable the new Device Security panel (LP: #1987162)
