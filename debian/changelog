@@ -1,3 +1,16 @@
+gnome-control-center (1:43~beta-3) unstable; urgency=medium
+
+  * Add patch to disable new Device Security panel.
+    It's too technical and unhelpful currently (LP: #1987162)
+    You can get the same info by running
+      fwupdmgr security
+  * debian/control.in: Depend on webp-pixbuf-loader
+    - This is required to display several of the new GNOME 43
+      wallpapers. Please log out and log back in for this feature
+      to work fully.
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Fri, 26 Aug 2022 20:07:03 -0400
+
 gnome-control-center (1:43~beta-2) unstable; urgency=medium
 
   * Release to unstable
