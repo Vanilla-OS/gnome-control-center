@@ -4,6 +4,11 @@ Subject: firmware-security: Disable
 
 Not yet useful enough to justify its inclusion by default here
 
+You can get the same info by running
+fwupdmgr security
+
+If you drop this patch, add a Depends: fwupd [linux-any]
+
 https://launchpad.net/bugs/1987162
 
 https://gitlab.gnome.org/GNOME/gnome-control-center/-/issues/1938
