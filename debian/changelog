@@ -1,3 +1,10 @@
+gnome-control-center (1:43~beta-4) unstable; urgency=medium
+
+  * Cherry-pick patch to fix sound alert selection (LP: #1987161)
+  * Recommend gnome-bluetooth-sendto
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Sun, 28 Aug 2022 13:21:15 -0400
+
 gnome-control-center (1:43~beta-3) unstable; urgency=medium
 
   * Add patch to disable new Device Security panel.
