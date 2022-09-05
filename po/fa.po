@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: procman\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-control-center/issues\n"
-"POT-Creation-Date: 2022-08-10 19:53+0000\n"
-"PO-Revision-Date: 2022-08-11 01:24+0430\n"
+"POT-Creation-Date: 2022-08-24 14:00+0000\n"
+"PO-Revision-Date: 2022-08-25 14:42+0430\n"
 "Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian\n"
 "Language: fa\n"
@@ -345,7 +345,7 @@ msgstr "گزینش یک عکس"
 #: panels/color/cc-color-calibrate.ui:22 panels/color/cc-color-panel.c:284
 #: panels/color/cc-color-panel.c:844 panels/common/cc-language-chooser.ui:21
 #: panels/display/cc-display-panel.ui:31
-#: panels/info-overview/cc-info-overview-panel.ui:209
+#: panels/info-overview/cc-info-overview-panel.ui:218
 #: panels/keyboard/cc-input-chooser.ui:11
 #: panels/keyboard/cc-keyboard-shortcut-editor.ui:23
 #: panels/network/cc-wifi-hotspot-dialog.ui:125 panels/network/cc-wifi-panel.c:886
@@ -360,7 +360,7 @@ msgstr "گزینش یک عکس"
 #: panels/user-accounts/cc-avatar-chooser.c:96
 #: panels/user-accounts/cc-avatar-chooser.c:167
 #: panels/user-accounts/cc-fingerprint-dialog.ui:32
-#: panels/user-accounts/cc-password-dialog.ui:18
+#: panels/user-accounts/cc-password-dialog.ui:20
 #: panels/user-accounts/cc-user-panel.c:594 panels/user-accounts/cc-user-panel.c:612
 #: panels/user-accounts/data/join-dialog.ui:17 panels/wwan/cc-wwan-mode-dialog.ui:32
 #: panels/wwan/cc-wwan-network-dialog.ui:108
@@ -1517,7 +1517,7 @@ msgstr "گزارش مشکلاتتان"
 msgid "diagnostics;crash;"
 msgstr "diagnostics;crash;تشخیص;عیب‌یابی;فروپاشی;"
 
-#: panels/display/cc-display-panel.c:516
+#: panels/display/cc-display-panel.c:492
 #: panels/notifications/cc-notifications-panel.c:217
 #: panels/power/cc-power-panel.c:737 panels/power/cc-power-panel.c:744
 #: panels/universal-access/cc-ua-panel.c:336
@@ -1528,7 +1528,7 @@ msgstr "diagnostics;crash;تشخیص;عیب‌یابی;فروپاشی;"
 msgid "On"
 msgstr "روشن"
 
-#: panels/display/cc-display-panel.c:518 panels/network/net-proxy.c:69
+#: panels/display/cc-display-panel.c:494 panels/network/net-proxy.c:69
 #: panels/notifications/cc-notifications-panel.c:217
 #: panels/power/cc-power-panel.c:731 panels/power/cc-power-panel.c:742
 #: panels/universal-access/cc-ua-panel.c:336
@@ -1539,15 +1539,15 @@ msgstr "روشن"
 msgid "Off"
 msgstr "خاموش"
 
-#: panels/display/cc-display-panel.c:955
+#: panels/display/cc-display-panel.c:930
 msgid "Apply Changes?"
 msgstr "اعمال تغییرات؟"
 
-#: panels/display/cc-display-panel.c:960
+#: panels/display/cc-display-panel.c:935
 msgid "Changes Cannot be Applied"
 msgstr "نمی‌توان تغییرات را اعمال کرد"
 
-#: panels/display/cc-display-panel.c:962
+#: panels/display/cc-display-panel.c:937
 msgid "This could be due to hardware limitations."
 msgstr "می‌تواند به دلیلی محدودیت‌های سخت‌افزار باشد."
 
@@ -1823,31 +1823,31 @@ msgstr ""
 "\n"
 "برای اطّلاعات بیش تر با سازندهٔ سخت‌افزار یا پشیبانی IT تماس بگیرید."
 
+#: panels/firmware-security/cc-firmware-security-dialog.c:96
+#: panels/firmware-security/cc-firmware-security-dialog.c:98
+#: panels/firmware-security/cc-firmware-security-dialog.c:100
+msgid "Passed"
+msgstr "قبول شده"
+
+#: panels/firmware-security/cc-firmware-security-dialog.c:96
+#: panels/firmware-security/cc-firmware-security-dialog.c:98
+#: panels/firmware-security/cc-firmware-security-dialog.c:100
+msgid "Failed"
+msgstr "شکست خورده"
+
 #. TRANSLATORS: HSI stands for Host Security ID and device refers to the computer as a whole
-#: panels/firmware-security/cc-firmware-security-dialog.c:79
+#: panels/firmware-security/cc-firmware-security-dialog.c:137
 #, c-format
 msgid "Device conforms to HSI level %d"
 msgstr "افزاره مطابق سطح %Id از HSI"
 
-#: panels/firmware-security/cc-firmware-security-dialog.c:85
-#: panels/firmware-security/cc-firmware-security-dialog.c:87
-#: panels/firmware-security/cc-firmware-security-dialog.c:89
-msgid "Passed"
-msgstr "قبول شده"
-
-#: panels/firmware-security/cc-firmware-security-dialog.c:85
-#: panels/firmware-security/cc-firmware-security-dialog.c:87
-#: panels/firmware-security/cc-firmware-security-dialog.c:89
-msgid "Failed"
-msgstr "شکست خورده"
-
 #. TRANSLATORS: in reference to firmware protection: 0/4 stars
-#: panels/firmware-security/cc-firmware-security-dialog.c:136
-#: panels/firmware-security/cc-firmware-security-panel.c:473
+#: panels/firmware-security/cc-firmware-security-dialog.c:149
+#: panels/firmware-security/cc-firmware-security-panel.c:482
 msgid "Security Level 0"
 msgstr "سطح امنیتی ۰"
 
-#: panels/firmware-security/cc-firmware-security-dialog.c:137
+#: panels/firmware-security/cc-firmware-security-dialog.c:150
 msgid ""
 "This device has no protection against hardware security issues. This could be "
 "because of a hardware or firmware configuration issue. It is recommended to "
@@ -1858,13 +1858,13 @@ msgstr ""
 "پشتیبانی IT تماس بگیرید."
 
 #. TRANSLATORS: in reference to firmware protection: 1/4 stars
-#: panels/firmware-security/cc-firmware-security-dialog.c:145
-#: panels/firmware-security/cc-firmware-security-dialog.c:344
-#: panels/firmware-security/cc-firmware-security-panel.c:480
+#: panels/firmware-security/cc-firmware-security-dialog.c:158
+#: panels/firmware-security/cc-firmware-security-dialog.c:357
+#: panels/firmware-security/cc-firmware-security-panel.c:489
 msgid "Security Level 1"
 msgstr "سطح امنیتی ۱"
 
-#: panels/firmware-security/cc-firmware-security-dialog.c:146
+#: panels/firmware-security/cc-firmware-security-dialog.c:159
 msgid ""
 "This device has minimal protection against hardware security issues. This is the "
 "lowest device security level and only provides protection against simple security "
@@ -1874,13 +1874,13 @@ msgstr ""
 "پایین‌ترین سطح امنیت افزاره بوده و در برابر تهدیدهای امنیتی ساده مقاوم است."
 
 #. TRANSLATORS: in reference to firmware protection: 2/4 stars
-#: panels/firmware-security/cc-firmware-security-dialog.c:154
-#: panels/firmware-security/cc-firmware-security-dialog.c:349
-#: panels/firmware-security/cc-firmware-security-panel.c:487
+#: panels/firmware-security/cc-firmware-security-dialog.c:167
+#: panels/firmware-security/cc-firmware-security-dialog.c:362
+#: panels/firmware-security/cc-firmware-security-panel.c:496
 msgid "Security Level 2"
 msgstr "سطح امنیتی ۲"
 
-#: panels/firmware-security/cc-firmware-security-dialog.c:155
+#: panels/firmware-security/cc-firmware-security-dialog.c:168
 msgid ""
 "This device has basic protection against hardware security issues. This provides "
 "protection against some common security threats."
@@ -1889,13 +1889,13 @@ msgstr ""
 "برابر برخی تهدیدهای امنیتی معمول مقاوم است."
 
 #. TRANSLATORS: in reference to firmware protection: 3/4 stars
-#: panels/firmware-security/cc-firmware-security-dialog.c:163
-#: panels/firmware-security/cc-firmware-security-dialog.c:354
-#: panels/firmware-security/cc-firmware-security-panel.c:494
+#: panels/firmware-security/cc-firmware-security-dialog.c:176
+#: panels/firmware-security/cc-firmware-security-dialog.c:367
+#: panels/firmware-security/cc-firmware-security-panel.c:503
 msgid "Security Level 3"
 msgstr "سطح امنیتی ۳"
 
-#: panels/firmware-security/cc-firmware-security-dialog.c:164
+#: panels/firmware-security/cc-firmware-security-dialog.c:177
 msgid ""
 "This device has extended protection against hardware security issues. This is the "
 "highest device security level and provides protection against advanced security "
@@ -1904,44 +1904,44 @@ msgstr ""
 "این افزاره در برابر مشکلات امنیتی سخت‌افزاری، محافظت گسترده دارد. این محافظت، "
 "بالاترین سطح امنیتی افزاره بوده و در برابر تهدیدهای امنیتی پیشرفته مقاوم است."
 
-#: panels/firmware-security/cc-firmware-security-dialog.c:172
-msgid "Error: unable to determine HSI level."
-msgstr "خطا: ناتوان در تشخیص سطح HSI."
+#. TRANSLATORS: in reference to firmware protection: ??? stars
+#: panels/firmware-security/cc-firmware-security-dialog.c:185
+#: panels/firmware-security/cc-firmware-security-dialog.ui:22
+#: panels/firmware-security/cc-firmware-security-panel.c:518
+msgid "Security Level"
+msgstr "سطح امنیت"
 
-#: panels/firmware-security/cc-firmware-security-dialog.c:173
-msgid "Error: unable to determine Incorrect HSI level."
-msgstr "خطا: ناتوان در تشخیص سطح HSI نادرست."
+#: panels/firmware-security/cc-firmware-security-dialog.c:186
+#: panels/firmware-security/cc-firmware-security-panel.c:519
+msgid "Security levels are not available for this device."
+msgstr "سطوح امنیتی برای این افزاره موجود نیست."
 
 #. TRANSLATORS: hardware manufacturer as in OEM
-#: panels/firmware-security/cc-firmware-security-dialog.c:188
-#: panels/firmware-security/cc-firmware-security-dialog.c:198
-#: panels/firmware-security/cc-firmware-security-dialog.c:205
+#: panels/firmware-security/cc-firmware-security-dialog.c:201
+#: panels/firmware-security/cc-firmware-security-dialog.c:211
+#: panels/firmware-security/cc-firmware-security-dialog.c:218
 msgid "Contact your hardware manufacturer for help with security updates."
 msgstr ""
 "برای راهنمایی در بارهٔ به‌روز رسانی‌های امنیتی با سازندهٔ سخت‌افزارتان تماس بگیرید."
 
 #. TRANSLATORS: support technician as in someone with root
-#: panels/firmware-security/cc-firmware-security-dialog.c:190
+#: panels/firmware-security/cc-firmware-security-dialog.c:203
 msgid ""
 "It might be possible to resolve this issue in the device’s UEFI firmware settings, "
 "or by a support technician."
 msgstr ""
 "ممکن است رفع این مشکل در تنظیمات ثابت‌افزار UEFI یا به دست یک پشتیبان فنی ممکن باشد."
 
-#: panels/firmware-security/cc-firmware-security-dialog.c:199
-#: panels/firmware-security/cc-firmware-security-dialog.c:210
+#: panels/firmware-security/cc-firmware-security-dialog.c:212
+#: panels/firmware-security/cc-firmware-security-dialog.c:223
 msgid ""
 "It might be possible to resolve this issue in the device’s UEFI firmware settings."
 msgstr "ممکن است رفع این مشکل در تنظیمات ثابت‌افزار UEFI ممکن باشد."
 
 #. TRANSLATORS: support technician as in someone with root
-#: panels/firmware-security/cc-firmware-security-dialog.c:216
+#: panels/firmware-security/cc-firmware-security-dialog.c:229
 msgid "It might be possible for a support technician to resolve this issue."
 msgstr "ممکن است یک پشتیبان فنی بتواند این مشکل را رفع کند."
-
-#: panels/firmware-security/cc-firmware-security-dialog.ui:22
-msgid "Security Level"
-msgstr "سطح امنیت"
 
 #: panels/firmware-security/cc-firmware-security-dialog.ui:88
 msgid "Level 1"
@@ -2003,25 +2003,25 @@ msgstr ""
 "ممکن است مشکل ناشی از تغییری در پیکربندی سیستم‌عامل یا نرم‌افزاری مخرّب روی این "
 "سامانه باشد."
 
-#: panels/firmware-security/cc-firmware-security-panel.c:474
+#: panels/firmware-security/cc-firmware-security-panel.c:483
 msgid "Exposed to serious security threats."
 msgstr "در معرض تهدیدهای جدّی امنیتی."
 
-#: panels/firmware-security/cc-firmware-security-panel.c:481
+#: panels/firmware-security/cc-firmware-security-panel.c:490
 msgid "Limited protection against simple security threats."
 msgstr "محافظت محدود در برابر تهدیدهای امنیتی ساده."
 
-#: panels/firmware-security/cc-firmware-security-panel.c:488
+#: panels/firmware-security/cc-firmware-security-panel.c:497
 msgid "Protected against common security threats."
 msgstr "محافظت شده در برابر تهدیدهای امنیتی معمول."
 
-#: panels/firmware-security/cc-firmware-security-panel.c:495
-#: panels/firmware-security/cc-firmware-security-panel.c:503
+#: panels/firmware-security/cc-firmware-security-panel.c:504
+#: panels/firmware-security/cc-firmware-security-panel.c:512
 msgid "Protected against a wide range of security threats."
 msgstr "محافظت شده در برابر بازهٔ وسیعی از تهدیدهای امنیتی."
 
 #. TRANSLATORS: in reference to firmware protection: 4/4 stars
-#: panels/firmware-security/cc-firmware-security-panel.c:502
+#: panels/firmware-security/cc-firmware-security-panel.c:511
 msgid "Comprehensive Protection"
 msgstr "محافظت همه‌جانبه"
 
@@ -2305,51 +2305,42 @@ msgstr ""
 "identity;privacy;صفحه;قفل;کرش;خصوصی;اخیر;موقت;نمایه;نام;شبکه;هویت;محرمانگی\"حریم "
 "شخصی;حریم خصوصی;"
 
-#: panels/info-overview/cc-info-overview-panel.c:296
-#: panels/info-overview/cc-info-overview-panel.c:320
-#: panels/info-overview/cc-info-overview-panel.c:366
-#: panels/info-overview/cc-info-overview-panel.c:396
+#: panels/info-overview/cc-info-overview-panel.c:297
+#: panels/info-overview/cc-info-overview-panel.c:317
+#: panels/info-overview/cc-info-overview-panel.c:358
+#: panels/info-overview/cc-info-overview-panel.c:388
 #: panels/wwan/cc-wwan-details-dialog.c:100
 msgid "Unknown"
 msgstr "ناشناخته"
 
-#. translators: This is the name of the OS, followed by the build ID, for
-#. * example:
-#. * "Fedora 25 (Workstation Edition); Build ID: xyz" or
-#. * "Ubuntu 16.04 LTS; Build ID: jki"
-#: panels/info-overview/cc-info-overview-panel.c:328
-#, c-format
-msgid "%s; Build ID: %s"
-msgstr "%s; شناسهٔ ساخت: %s"
-
 #. translators: This is the type of architecture for the OS
-#: panels/info-overview/cc-info-overview-panel.c:343
+#: panels/info-overview/cc-info-overview-panel.c:335
 #, c-format
 msgid "64-bit"
 msgstr "۶۴ بیتی"
 
 #. translators: This is the type of architecture for the OS
-#: panels/info-overview/cc-info-overview-panel.c:346
+#: panels/info-overview/cc-info-overview-panel.c:338
 #, c-format
 msgid "32-bit"
 msgstr "۳۲ بیتی"
 
-#: panels/info-overview/cc-info-overview-panel.c:605
+#: panels/info-overview/cc-info-overview-panel.c:597
 msgid "X11"
 msgstr "زورگ"
 
-#: panels/info-overview/cc-info-overview-panel.c:609
+#: panels/info-overview/cc-info-overview-panel.c:601
 msgid "Wayland"
 msgstr "وی‌لند"
 
-#: panels/info-overview/cc-info-overview-panel.c:611
+#: panels/info-overview/cc-info-overview-panel.c:603
 msgctxt "Windowing system (Wayland, X11, or Unknown)"
 msgid "Unknown"
 msgstr "ناشناخته"
 
 #. translators: this is the placeholder string when the GNOME Shell
 #. * version couldn't be loaded, eg. “GNOME Version: Not Available”
-#: panels/info-overview/cc-info-overview-panel.c:689
+#: panels/info-overview/cc-info-overview-panel.c:681
 msgid "Not Available"
 msgstr "ناموجود"
 
@@ -2391,36 +2382,41 @@ msgstr "محاسبه کردن…"
 msgid "OS Name"
 msgstr "نام سیستم‌عامل"
 
-#: panels/info-overview/cc-info-overview-panel.ui:106
+#. translators: this field contains the distro build ID
+#: panels/info-overview/cc-info-overview-panel.ui:107
+msgid "OS Build ID"
+msgstr "شناسهٔ ساخت سیستم‌عامل"
+
+#: panels/info-overview/cc-info-overview-panel.ui:115
 msgid "OS Type"
 msgstr "گونهٔ سیستم‌عامل"
 
-#: panels/info-overview/cc-info-overview-panel.ui:114
+#: panels/info-overview/cc-info-overview-panel.ui:123
 msgid "GNOME Version"
 msgstr "نگارش گنوم"
 
 #. translators: this is a placeholder while the GNOME version is being fetched
-#: panels/info-overview/cc-info-overview-panel.ui:116
+#: panels/info-overview/cc-info-overview-panel.ui:125
 msgid "Loading…"
 msgstr "بار کردن…"
 
-#: panels/info-overview/cc-info-overview-panel.ui:124
+#: panels/info-overview/cc-info-overview-panel.ui:133
 msgid "Windowing System"
 msgstr "سامانهٔ پنجره"
 
-#: panels/info-overview/cc-info-overview-panel.ui:132
+#: panels/info-overview/cc-info-overview-panel.ui:141
 msgid "Virtualization"
 msgstr "مجازی‌سازی"
 
-#: panels/info-overview/cc-info-overview-panel.ui:141
+#: panels/info-overview/cc-info-overview-panel.ui:150
 msgid "Software Updates"
 msgstr "به‌روز رسانی‌های نرم‌افزاری"
 
-#: panels/info-overview/cc-info-overview-panel.ui:165
+#: panels/info-overview/cc-info-overview-panel.ui:174
 msgid "Rename Device"
 msgstr "تغییر نام افزاره"
 
-#: panels/info-overview/cc-info-overview-panel.ui:181
+#: panels/info-overview/cc-info-overview-panel.ui:190
 msgid ""
 "The device name is used to identify this device when it is viewed over the "
 "network, or when pairing Bluetooth devices."
@@ -2428,11 +2424,11 @@ msgstr ""
 "نام افزاره برای تشخیص این افزاره هنگام دیده شدن روی شبکه یا جفت شدن افزاره‌های "
 "بلوتوثی استفاده می‌شود."
 
-#: panels/info-overview/cc-info-overview-panel.ui:187
+#: panels/info-overview/cc-info-overview-panel.ui:196
 msgid "Device name"
 msgstr "نام افزاره"
 
-#: panels/info-overview/cc-info-overview-panel.ui:201
+#: panels/info-overview/cc-info-overview-panel.ui:210
 msgid "_Rename"
 msgstr "_تغییر نام"
 
@@ -2650,7 +2646,7 @@ msgstr "برداشتن"
 msgid "Custom Shortcuts"
 msgstr "میان‌برهای سفارشی"
 
-#: panels/keyboard/cc-keyboard-panel.c:64 panels/keyboard/cc-keyboard-panel.ui:62
+#: panels/keyboard/cc-keyboard-panel.c:64 panels/keyboard/cc-keyboard-panel.ui:63
 msgid "Alternate Characters Key"
 msgstr "کلید نویسه‌های جایگزین"
 
@@ -2692,7 +2688,7 @@ msgctxt "keyboard key"
 msgid "Right Ctrl"
 msgstr "مهار راست"
 
-#: panels/keyboard/cc-keyboard-panel.c:80 panels/keyboard/cc-keyboard-panel.ui:79
+#: panels/keyboard/cc-keyboard-panel.c:80 panels/keyboard/cc-keyboard-panel.ui:80
 msgid "Compose Key"
 msgstr "کلید ایجاد"
 
@@ -2752,21 +2748,21 @@ msgstr "از _یک منبع در همه پنجره‌ها استفاده کن"
 msgid "Switch input sources _individually for each window"
 msgstr "تغییر منابع ورودی به صورت _جداگانه برای هر پنجره"
 
-#: panels/keyboard/cc-keyboard-panel.ui:58
+#: panels/keyboard/cc-keyboard-panel.ui:59
 msgid "Special Character Entry"
 msgstr "ورود نویسهٔ خاص"
 
-#: panels/keyboard/cc-keyboard-panel.ui:59
+#: panels/keyboard/cc-keyboard-panel.ui:60
 msgid "Methods for entering symbols and letter variants using the keyboard."
 msgstr "روش‌های ورود نشانه‌ها و دگرگونه‌های حروف با استفاده از صفحه‌کلید."
 
-#: panels/keyboard/cc-keyboard-panel.ui:97
+#: panels/keyboard/cc-keyboard-panel.ui:98
 #: panels/keyboard/cc-keyboard-shortcut-dialog.c:319
 #: panels/keyboard/cc-keyboard-shortcut-dialog.c:334 shell/cc-window.ui:160
 msgid "Keyboard Shortcuts"
 msgstr "میان‌برهای صفحه‌کلید"
 
-#: panels/keyboard/cc-keyboard-panel.ui:100
+#: panels/keyboard/cc-keyboard-panel.ui:101
 msgid "View and Customize Shortcuts"
 msgstr "نمایش و سفارشی سازی میان‌برها"
 
@@ -2858,7 +2854,7 @@ msgstr "تنظیم میان‌بر"
 msgid "Enter new shortcut to change %s."
 msgstr "برای تغییر %s میان‌بر جدید را وارد کنید."
 
-#: panels/keyboard/cc-keyboard-shortcut-editor.c:992
+#: panels/keyboard/cc-keyboard-shortcut-editor.c:977
 msgid "Add Custom Shortcut"
 msgstr "افزودن میان‌بر سفارشی"
 
@@ -3205,7 +3201,7 @@ msgstr "باید NetworkManager در حال اجرا باشد."
 msgid "Other Devices"
 msgstr "دیگر افزاره‌ها"
 
-#: panels/network/cc-network-panel.ui:37 panels/network/cc-network-panel.ui:56
+#: panels/network/cc-network-panel.ui:37 panels/network/cc-network-panel.ui:71
 #: panels/network/connection-editor/net-connection-editor.c:586
 msgid "VPN"
 msgstr "وی‌پی‌ان"
@@ -3214,7 +3210,7 @@ msgstr "وی‌پی‌ان"
 msgid "Add connection"
 msgstr "افزودن اتّصال"
 
-#: panels/network/cc-network-panel.ui:73
+#: panels/network/cc-network-panel.ui:62
 msgid "Not set up"
 msgstr "برپا نشده"
 
@@ -4379,13 +4375,13 @@ msgstr "هیچ پرونده‌ای انتخاب نشد"
 msgid "unspecified error validating eap-method file"
 msgstr "خطای نامشخّص در تأیید اعتبار پروندهٔ eap-method"
 
-#: panels/network/wireless-security/eap-method.c:389
-msgid "DER, PEM, or PKCS#12 private keys (*.der, *.pem, *.p12, *.key)"
-msgstr "کلیدهای خصوصی DER، PEM یا PKCS#12 شامل (*.der, *.pem, *.p12, *.key)"
+#: panels/network/wireless-security/eap-method.c:394
+msgid "DER, PEM, PKCS#12, or PGP private keys"
+msgstr "کلیدهای خصوصی PGP، DER، PEM یا PKCS#12"
 
-#: panels/network/wireless-security/eap-method.c:392
-msgid "DER or PEM certificates (*.der, *.pem, *.crt, *.cer)"
-msgstr "گواهینامه‌های DER یا PEM شامل ‪(*.der, *.pem, *.crt, *.cer)"
+#: panels/network/wireless-security/eap-method.c:397
+msgid "DER or PEM certificates"
+msgstr "گواهینامه‌های DER یا PEM"
 
 #: panels/network/wireless-security/eap-method-fast.c:88
 msgid "missing EAP-FAST PAC file"
@@ -4816,7 +4812,7 @@ msgstr "موارد دیگر"
 msgid "%s removed"
 msgstr "%s حذف شد"
 
-#: panels/online-accounts/cc-online-accounts-panel.c:691
+#: panels/online-accounts/cc-online-accounts-panel.c:695
 msgid "Error removing account"
 msgstr "خطای برداشتن حساب"
 
@@ -5273,23 +5269,23 @@ msgstr ""
 "Energy;نیرو;انرژی;خواب;تعلیق;باتری;روشنایی;تاریکی;نمایشگر;مانیتور;مونیتور;صفحه;"
 
 #. Translators: %s is the printer name
-#: panels/printers/cc-printers-panel.c:676
+#: panels/printers/cc-printers-panel.c:685
 #, c-format
 msgid "Printer “%s” has been deleted"
 msgstr "چاپگر «%s» حذف شد"
 
 #. Translators: Addition of the new printer failed.
-#: panels/printers/cc-printers-panel.c:928
+#: panels/printers/cc-printers-panel.c:942
 msgid "Failed to add new printer."
 msgstr "شکست در افزودن چاپگر جدید."
 
 #. Translators: The XML file containing user interface can not be loaded
-#: panels/printers/cc-printers-panel.c:1229
+#: panels/printers/cc-printers-panel.c:1247
 #, c-format
 msgid "Could not load ui: %s"
 msgstr "ناتوان در گشودن واسط کاربری: %s"
 
-#: panels/printers/cc-printers-panel.c:1297
+#: panels/printers/cc-printers-panel.c:1315
 msgid "Unlock to Add Printers and Change Settings"
 msgstr "قفل‌گشایی برای افزودن چاپگرها و تغییر تنظیمات"
 
@@ -5919,18 +5915,13 @@ msgid "Restart"
 msgstr "آغاز دوباره"
 
 #. Translators: This button adds new printer.
-#: panels/printers/printers.ui:10
+#: panels/printers/printers.ui:10 panels/printers/printers.ui:171
 msgid "Add Printer…"
 msgstr "افزودن چاپگر…"
 
 #: panels/printers/printers.ui:160
 msgid "No printers"
 msgstr "هیچ چاپگری نیست"
-
-#. Translators: This button adds new printer.
-#: panels/printers/printers.ui:171
-msgid "Add a Printer…"
-msgstr "افزودن یک چاپگر…"
 
 #. Translators: The CUPS server is not running (we can not connect to it).
 #: panels/printers/printers.ui:196
@@ -5970,12 +5961,12 @@ msgstr "جست‌وجوها می‌توانند برای کشورها یا زب�
 msgid "Preview"
 msgstr "پیش‌نمایش"
 
-#: panels/region/cc-format-preview.c:135
+#: panels/region/cc-format-preview.c:137
 msgctxt "measurement format"
 msgid "Imperial"
 msgstr "امپریال"
 
-#: panels/region/cc-format-preview.c:137
+#: panels/region/cc-format-preview.c:139
 msgctxt "measurement format"
 msgid "Metric"
 msgstr "متریک"
@@ -6649,21 +6640,25 @@ msgstr "به یا از کار انداختن ورود دوردست"
 msgid "Authentication is required to enable or disable remote login"
 msgstr "برای به یا از کار انداختن ورود دوردست، تأیید هویت لازم است"
 
-#: panels/sound/cc-alert-chooser.c:152
+#: panels/sound/cc-alert-chooser.c:153
 msgid "Custom"
 msgstr "سفارشی"
 
 #: panels/sound/cc-alert-chooser.ui:12
-msgid "Drip"
-msgstr "چکّه"
+msgid "Click"
+msgstr "کلیک"
 
 #: panels/sound/cc-alert-chooser.ui:20
-msgid "Glass"
-msgstr "شیشه"
+msgid "String"
+msgstr "فنر"
 
 #: panels/sound/cc-alert-chooser.ui:28
-msgid "Sonar"
-msgstr "سونار"
+msgid "Swing"
+msgstr "تاب"
+
+#: panels/sound/cc-alert-chooser.ui:36
+msgid "Hum"
+msgstr "هوم"
 
 #: panels/sound/cc-balance-slider.ui:13 panels/sound/cc-sound-panel.ui:144
 msgid "Balance"
@@ -7670,7 +7665,7 @@ msgid "Failed to add account"
 msgstr "افزودن حساب شکست خورد"
 
 #: panels/user-accounts/cc-add-user-dialog.c:679
-#: panels/user-accounts/cc-password-dialog.ui:112
+#: panels/user-accounts/cc-password-dialog.ui:114
 msgid "The passwords do not match."
 msgstr "گذرواژه‌ها برابر نیستند."
 
@@ -8070,27 +8065,27 @@ msgstr "گذرواژه قابل تغییر نبود"
 msgid "Change Password"
 msgstr "تغییر گذرواژه"
 
-#: panels/user-accounts/cc-password-dialog.ui:32
+#: panels/user-accounts/cc-password-dialog.ui:34
 msgid "Ch_ange"
 msgstr "تع_ویض"
 
-#: panels/user-accounts/cc-password-dialog.ui:51
+#: panels/user-accounts/cc-password-dialog.ui:53
 msgid "Current Password"
 msgstr "گذرواژهٔ کنونی"
 
-#: panels/user-accounts/cc-password-dialog.ui:66
+#: panels/user-accounts/cc-password-dialog.ui:68
 msgid "New Password"
 msgstr "گذرواژهٔ جدید"
 
-#: panels/user-accounts/cc-password-dialog.ui:97
+#: panels/user-accounts/cc-password-dialog.ui:99
 msgid "Confirm Password"
 msgstr "تأیید گذرواژه"
 
-#: panels/user-accounts/cc-password-dialog.ui:151
+#: panels/user-accounts/cc-password-dialog.ui:153
 msgid "Allow user to change their password on next login"
 msgstr "اجازه می‌دهد تا کاربران در زمان ورود بعدی گذرواژه خود را تغییر دهند"
 
-#: panels/user-accounts/cc-password-dialog.ui:163
+#: panels/user-accounts/cc-password-dialog.ui:165
 msgid "Set a password now"
 msgstr "هم‌اکنون یک گذرواژه تنظیم کنید"
 
@@ -8516,7 +8511,8 @@ msgstr "متأسفیم، نام‌کاربری انتخاب شده در دستر
 msgid "The username is too long."
 msgstr "نام کاربری خیلی بلند است."
 
-#: panels/wacom/button-mapping.ui:7 panels/wacom/cc-wacom-page.ui:40
+#: panels/wacom/button-mapping.ui:7 panels/wacom/cc-wacom-ekr-page.ui:19
+#: panels/wacom/cc-wacom-page.ui:40
 msgid "Map Buttons"
 msgstr "نگاشت کلیدها"
 
@@ -8581,6 +8577,11 @@ msgstr "رایانک سوار شده روی نمایشگر خارجی"
 #: panels/wacom/cc-wacom-device.c:435
 msgid "External tablet device"
 msgstr "افزارهٔ رایانک خارجی"
+
+#. translators: this is a drawing tablet pad, i.e. a collection of buttons and knobs
+#: panels/wacom/cc-wacom-ekr-page.ui:9
+msgid "External pad device"
+msgstr "افزارهٔ صفحهٔ خارجی"
 
 #. All displays item
 #: panels/wacom/cc-wacom-page.c:608
@@ -9405,6 +9406,27 @@ msgstr[1] "%Iu ورودی"
 #: subprojects/gvc/gvc-mixer-control.c:2876
 msgid "System Sounds"
 msgstr "صداهای سامانه"
+
+#~ msgid "Error: unable to determine HSI level."
+#~ msgstr "خطا: ناتوان در تشخیص سطح HSI."
+
+#~ msgid "Error: unable to determine Incorrect HSI level."
+#~ msgstr "خطا: ناتوان در تشخیص سطح HSI نادرست."
+
+#~ msgid "Add a Printer…"
+#~ msgstr "افزودن یک چاپگر…"
+
+#~ msgid "DER or PEM certificates (*.der, *.pem, *.crt, *.cer)"
+#~ msgstr "گواهینامه‌های DER یا PEM شامل ‪(*.der, *.pem, *.crt, *.cer)"
+
+#~ msgid "Drip"
+#~ msgstr "چکّه"
+
+#~ msgid "Glass"
+#~ msgstr "شیشه"
+
+#~ msgid "Sonar"
+#~ msgstr "سونار"
 
 #~ msgid "Take screenshots of application windows and the desktop."
 #~ msgstr "ضبط نماگرفت از میزکار و پنجره‌های برنامه."

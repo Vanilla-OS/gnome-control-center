@@ -323,6 +323,8 @@ fu_security_attr_new_from_variant (GVariantIter *iter)
         attr->hsi_level = g_variant_get_uint32 (value);
       else if (g_strcmp0 (key, "HsiResult") == 0)
         attr->result = g_variant_get_uint32 (value);
+      else if (g_strcmp0 (key, "HsiResultFallback") == 0)
+        attr->result_fallback = g_variant_get_uint32 (value);
       else if (g_strcmp0 (key, "Created") == 0)
         attr->timestamp = g_variant_get_uint64 (value);
       else if (g_strcmp0 (key, "Description") == 0)
@@ -331,6 +333,10 @@ fu_security_attr_new_from_variant (GVariantIter *iter)
         attr->title = g_strdup (dgettext ("fwupd", g_variant_get_string (value, NULL)));
       g_variant_unref (value);
     }
+
+  /* in fwupd <= 1.8.3 org.fwupd.hsi.Uefi.SecureBoot was incorrectly marked as HSI-0 */
+  if (g_strcmp0 (attr->appstream_id, FWUPD_SECURITY_ATTR_ID_UEFI_SECUREBOOT) == 0)
+    attr->hsi_level = 1;
 
   /* fallback for older fwupd versions */
   if (attr->appstream_id != NULL && attr->title == NULL)
