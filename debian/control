@@ -6,7 +6,7 @@ Source: gnome-control-center
 Section: gnome
 Priority: optional
 Maintainer: Debian GNOME Maintainers <pkg-gnome-maintainers@lists.alioth.debian.org>
-Uploaders: Jeremy Bicha <jbicha@ubuntu.com>, Laurent Bigonville <bigon@debian.org>, Sebastien Bacher <seb128@debian.org>
+Uploaders: Jeremy Bicha <jbicha@ubuntu.com>
 Build-Depends: debhelper-compat (= 13),
                dh-sequence-gnome (>= 0.22.2),
                libaccountsservice-dev (>= 0.6.39),
@@ -57,7 +57,7 @@ Build-Depends: debhelper-compat (= 13),
                libxml2-dev,
                libxml2-utils,
                locales,
-               meson (>= 0.51.0),
+               meson (>= 0.57.0),
                policykit-1,
                shared-mime-info,
                tzdata <!nocheck>,
