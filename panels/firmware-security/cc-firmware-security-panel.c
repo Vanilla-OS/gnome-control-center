@@ -74,6 +74,9 @@ struct _CcfirmwareSecurityPanel
 CC_PANEL_REGISTER (CcfirmwareSecurityPanel, cc_firmware_security_panel)
 
 static void
+set_hsi_button_view (CcfirmwareSecurityPanel *self);
+
+static void
 set_secure_boot_button_view (CcfirmwareSecurityPanel *self)
 {
   FwupdSecurityAttr *attr;
@@ -174,6 +177,11 @@ parse_event_variant_iter (CcfirmwareSecurityPanel *self,
   if (attr->appstream_id == NULL || attr->title == NULL)
     return;
 
+  /* skip events that have either been added or removed with no prior value */
+  if (attr->result == FWUPD_SECURITY_ATTR_RESULT_UNKNOWN ||
+      attr->result_fallback == FWUPD_SECURITY_ATTR_RESULT_UNKNOWN)
+    return;
+
   /* build new row */
   date = g_date_time_new_from_unix_local (attr->timestamp);
   date_string = g_date_time_format (date, "\%F \%H:\%m:\%S");
@@ -201,6 +209,7 @@ parse_event_variant_iter (CcfirmwareSecurityPanel *self,
   else
     {
       adw_expander_row_set_enable_expansion (ADW_EXPANDER_ROW (row), FALSE);
+      gtk_widget_add_css_class (row, "hide-arrow");
     }
 
   adw_preferences_row_set_title (ADW_PREFERENCES_ROW (row), attr->title);
@@ -221,19 +230,19 @@ parse_variant_iter (CcfirmwareSecurityPanel *self,
   if (appstream_id == NULL)
     return;
 
+  /* in fwupd <= 1.8.3 org.fwupd.hsi.Uefi.SecureBoot was incorrectly marked as HSI-0,
+   * so lower the HSI number forcefully if this attribute failed -- the correct thing
+   * to do of course is to update fwupd to a newer build */
+  if (g_strcmp0 (attr->appstream_id, FWUPD_SECURITY_ATTR_ID_UEFI_SECUREBOOT) == 0 &&
+      (attr->flags & FWUPD_SECURITY_ATTR_FLAG_SUCCESS) == 0)
+    {
+      self->hsi_number = 0;
+      set_hsi_button_view (self);
+    }
+
   /* insert into correct hash table */
   switch (attr->hsi_level)
     {
-      case 0:
-        /* in fwupd <= 1.8.3 org.fwupd.hsi.Uefi.SecureBoot was incorrectly marked as HSI-0,
-         * so accept either level here to avoid raising the runtime version requirement */
-        if (g_strcmp0 (attr->appstream_id, FWUPD_SECURITY_ATTR_ID_UEFI_SECUREBOOT) == 0)
-          {
-            g_hash_table_insert (self->hsi1_dict,
-                                 g_strdup (appstream_id),
-                                 g_steal_pointer (&attr));
-          }
-        break;
       case 1:
         g_hash_table_insert (self->hsi1_dict,
                              g_strdup (appstream_id),
@@ -427,8 +436,7 @@ on_secure_boot_button_clicked_cb (GtkWidget *widget,
 
 static void
 set_hsi_button_view_contain (CcfirmwareSecurityPanel *self,
-                             const int                hsi_number,
-
+                             guint                    hsi_number,
                              gchar                   *title,
                              const gchar             *description)
 {
@@ -454,6 +462,11 @@ set_hsi_button_view_contain (CcfirmwareSecurityPanel *self,
         gtk_label_set_label (GTK_LABEL (self->hsi_circle_number), "3");
         gtk_widget_add_css_class (self->hsi_circle_box, "level3");
         gtk_widget_add_css_class (self->hsi_circle_number, "hsi3");
+        break;
+      default:
+        gtk_label_set_label (GTK_LABEL (self->hsi_circle_number), "?");
+        gtk_widget_add_css_class (self->hsi_circle_box, "level1");
+        gtk_widget_add_css_class (self->hsi_circle_number, "hsi1");
         break;
     }
 
@@ -502,6 +515,13 @@ set_hsi_button_view (CcfirmwareSecurityPanel *self)
                                      _("Comprehensive Protection"),
                                      _("Protected against a wide range of security threats."));
         break;
+      case G_MAXUINT:
+        set_hsi_button_view_contain (self,
+                                     self->hsi_number,
+                                     /* TRANSLATORS: in reference to firmware protection: ??? stars */
+                                     _("Security Level"),
+                                     _("Security levels are not available for this device."));
+        break;
       default:
         g_warning ("incorrect HSI number %u", self->hsi_number);
     }
@@ -526,8 +546,14 @@ on_properties_bus_done_cb (GObject      *source,
 
   /* parse value */
   hsi_str = g_variant_get_data (val);
-  if (hsi_str != NULL && g_str_has_prefix (hsi_str, "HSI:"))
-    self->hsi_number = g_ascii_strtoll (hsi_str + 4, NULL, 10);
+  if (hsi_str != NULL && g_str_has_prefix (hsi_str, "HSI:INVALID"))
+    {
+      self->hsi_number = G_MAXUINT;
+    }
+  else if (hsi_str != NULL && g_str_has_prefix (hsi_str, "HSI:"))
+    {
+      self->hsi_number = g_ascii_strtoll (hsi_str + 4, NULL, 10);
+    }
   set_hsi_button_view (self);
 }
 
@@ -567,7 +593,7 @@ update_panel_visibility (const gchar *chassis_type)
   gboolean visible = TRUE;
 
   /* there's no point showing this */
-  if (g_strcmp0 (chassis_type, "vm") == 0)
+  if (g_strcmp0 (chassis_type, "vm") == 0 || g_strcmp0 (chassis_type, "") == 0)
     visible = FALSE;
   application = CC_APPLICATION (g_application_get_default ());
   cc_shell_model_set_panel_visibility (cc_application_get_model (application),
