@@ -1,3 +1,9 @@
+gnome-control-center (1:43~rc-1) UNRELEASED; urgency=medium
+
+  * New upstream release
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Mon, 05 Sep 2022 16:51:11 -0400
+
 gnome-control-center (1:43~beta-4) unstable; urgency=medium
 
   * Cherry-pick patch to fix sound alert selection (LP: #1987161)
