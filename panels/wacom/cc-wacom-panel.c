@@ -29,6 +29,7 @@
 #include "shell/cc-debug.h"
 #include "cc-wacom-panel.h"
 #include "cc-wacom-page.h"
+#include "cc-wacom-ekr-page.h"
 #include "cc-wacom-stylus-page.h"
 #include "cc-wacom-resources.h"
 #include "cc-drawing-area.h"
@@ -38,6 +39,9 @@
 #ifdef GDK_WINDOWING_WAYLAND
 #include <gdk/wayland/gdkwayland.h>
 #endif
+
+#define EKR_VENDOR "056a"
+#define EKR_PRODUCT "0331"
 
 struct _CcWacomPanel
 {
@@ -66,6 +70,7 @@ struct _CcWacomPanel
 
 	/* DBus */
 	GDBusProxy    *proxy;
+	GDBusProxy    *input_mapping_proxy;
 };
 
 CC_PANEL_REGISTER (CcWacomPanel, cc_wacom_panel)
@@ -284,6 +289,7 @@ cc_wacom_panel_dispose (GObject *object)
 
 	g_clear_pointer (&self->devices, g_hash_table_unref);
 	g_clear_object (&self->proxy);
+	g_clear_object (&self->input_mapping_proxy);
 	g_clear_pointer (&self->pages, g_hash_table_unref);
 	g_clear_pointer (&self->stylus_pages, g_hash_table_unref);
 	g_clear_handle_id (&self->mock_stylus_id, g_source_remove);
@@ -546,6 +552,7 @@ add_known_device (CcWacomPanel *self,
 	GsdDeviceType device_type;
 	g_autoptr(GList) tools = NULL;
 	GtkWidget *page;
+	gboolean is_ekr = FALSE;
 	GList *l;
 
 	device_type = gsd_device_get_device_type (gsd_device);
@@ -554,10 +561,25 @@ add_known_device (CcWacomPanel *self,
 		return;
 
 	if ((device_type &
-	     (GSD_DEVICE_TYPE_PAD |
-	      GSD_DEVICE_TYPE_TOUCHSCREEN |
+	     (GSD_DEVICE_TYPE_TOUCHSCREEN |
 	      GSD_DEVICE_TYPE_TOUCHPAD)) != 0) {
 		return;
+	}
+
+	if ((device_type & GSD_DEVICE_TYPE_PAD) != 0) {
+		const char *vendor, *product;
+
+		gsd_device_get_device_ids (gsd_device, &vendor, &product);
+		is_ekr = (g_strcmp0 (vendor, EKR_VENDOR) == 0 &&
+			  g_strcmp0 (product, EKR_PRODUCT) == 0);
+
+		/* Express key remote is an special case, as it is an
+		 * external pad device, we want to distinctly show it
+		 * in the list. Other pads are mounted on a tablet, which
+		 * get their own entries.
+		 */
+		if (!is_ekr)
+			return;
 	}
 
 	device = cc_wacom_device_new (gsd_device);
@@ -572,7 +594,11 @@ add_known_device (CcWacomPanel *self,
 		add_stylus (self, l->data);
 	}
 
-	page = cc_wacom_page_new (self, device);
+	if (is_ekr)
+		page = cc_wacom_ekr_page_new (self, device);
+	else
+		page = cc_wacom_page_new (self, device);
+
 	gtk_box_append (GTK_BOX (self->tablets), page);
 	g_hash_table_insert (self->pages, device, page);
 }
@@ -641,6 +667,23 @@ got_osd_proxy_cb (GObject      *source_object,
 }
 
 static void
+got_input_mapping_proxy_cb (GObject      *source_object,
+			    GAsyncResult *res,
+			    gpointer      data)
+{
+	g_autoptr(GError) error = NULL;
+	CcWacomPanel *self;
+
+	self = CC_WACOM_PANEL (data);
+	self->input_mapping_proxy = g_dbus_proxy_new_for_bus_finish (res, &error);
+
+	if (self->input_mapping_proxy == NULL) {
+		g_printerr ("Error creating input mapping proxy: %s\n", error->message);
+		return;
+	}
+}
+
+static void
 cc_wacom_panel_init (CcWacomPanel *self)
 {
 	GsdDeviceManager *device_manager;
@@ -662,6 +705,16 @@ cc_wacom_panel_init (CcWacomPanel *self)
 				  "org.gnome.Shell.Wacom.PadOsd",
 				  cc_panel_get_cancellable (CC_PANEL (self)),
 				  got_osd_proxy_cb,
+				  self);
+
+	g_dbus_proxy_new_for_bus (G_BUS_TYPE_SESSION,
+				  G_DBUS_PROXY_FLAGS_NONE,
+				  NULL,
+				  "org.gnome.Shell",
+				  "/org/gnome/Mutter/InputMapping",
+				  "org.gnome.Mutter.InputMapping",
+				  cc_panel_get_cancellable (CC_PANEL (self)),
+				  got_input_mapping_proxy_cb,
 				  self);
 
 	self->devices = g_hash_table_new_full (g_direct_hash, g_direct_equal, NULL, g_object_unref);
@@ -689,4 +742,12 @@ cc_wacom_panel_get_gsd_wacom_bus_proxy (CcWacomPanel *self)
 	g_return_val_if_fail (CC_IS_WACOM_PANEL (self), NULL);
 
 	return self->proxy;
+}
+
+GDBusProxy *
+cc_wacom_panel_get_input_mapping_bus_proxy (CcWacomPanel *self)
+{
+	g_return_val_if_fail (CC_IS_WACOM_PANEL (self), NULL);
+
+	return self->input_mapping_proxy;
 }

@@ -1,3 +1,45 @@
+gnome-control-center (1:43~rc-1ubuntu1) UNRELEASED; urgency=medium
+
+  * Merge with Debian
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Tue, 06 Sep 2022 08:53:44 -0400
+
+gnome-control-center (1:43~rc-2) unstable; urgency=medium
+
+  * New upstream release
+    - Fixes Screen Blank control (Closes: #1018672, LP: #1988087)
+  * debian/control.in: Bump minimum meson to 0.57.0
+  * Build against libsoup3 libraries
+  * Drop sound patch: applied in new release
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Mon, 05 Sep 2022 16:57:51 -0400
+
+gnome-control-center (1:43~beta-4) unstable; urgency=medium
+
+  * Cherry-pick patch to fix sound alert selection (LP: #1987161)
+  * Recommend gnome-bluetooth-sendto
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Sun, 28 Aug 2022 13:21:15 -0400
+
+gnome-control-center (1:43~beta-3) unstable; urgency=medium
+
+  * Add patch to disable new Device Security panel.
+    It's too technical and unhelpful currently (LP: #1987162)
+    You can get the same info by running
+      fwupdmgr security
+  * debian/control.in: Depend on webp-pixbuf-loader
+    - This is required to display several of the new GNOME 43
+      wallpapers. Please log out and log back in for this feature
+      to work fully.
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Fri, 26 Aug 2022 20:07:03 -0400
+
+gnome-control-center (1:43~beta-2) unstable; urgency=medium
+
+  * Release to unstable
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Sun, 21 Aug 2022 18:48:25 -0400
+
 gnome-control-center (1:43~beta-1ubuntu3) kinetic; urgency=medium
 
   * Recommend gnome-bluetooth-sendto
