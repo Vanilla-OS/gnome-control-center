@@ -1,8 +1,9 @@
-gnome-control-center (1:43~rc-1ubuntu1) UNRELEASED; urgency=medium
+gnome-control-center (1:43~rc-1ubuntu1) kinetic; urgency=medium
 
   * Merge with Debian
+  * Refresh patches
 
- -- Jeremy Bicha <jbicha@ubuntu.com>  Tue, 06 Sep 2022 08:53:44 -0400
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Tue, 06 Sep 2022 09:25:05 -0400
 
 gnome-control-center (1:43~rc-2) unstable; urgency=medium
 
