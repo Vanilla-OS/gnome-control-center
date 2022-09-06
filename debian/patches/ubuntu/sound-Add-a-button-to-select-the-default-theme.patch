@@ -14,7 +14,7 @@ https://launchpad.net/bugs/1871320
  2 files changed, 53 insertions(+), 4 deletions(-)
 
 diff --git a/panels/sound/cc-alert-chooser.c b/panels/sound/cc-alert-chooser.c
-index 2ccadce..7b67d32 100644
+index 686d8c6..b9615ac 100644
 --- a/panels/sound/cc-alert-chooser.c
 +++ b/panels/sound/cc-alert-chooser.c
 @@ -29,6 +29,7 @@ struct _CcAlertChooser
@@ -105,16 +105,16 @@ index 2ccadce..7b67d32 100644
  
 -  /* If user has selected an old sound alert, migrate them to click. */
 +  /* If user has selected an old sound alert, migrate them to default. */
-   if (g_strcmp0 (alert_name, "click") != 0 ||
-       g_strcmp0 (alert_name, "hum") != 0 ||
-       g_strcmp0 (alert_name, "string") != 0 ||
+   if (g_strcmp0 (alert_name, "click") != 0 &&
+       g_strcmp0 (alert_name, "hum") != 0 &&
+       g_strcmp0 (alert_name, "string") != 0 &&
        g_strcmp0 (alert_name, "swing") != 0)
      {
 -      set_custom_theme (self, "click");
 +      set_default_theme (self);
        g_free (alert_name);
 -      alert_name = g_strdup ("click");
-+      alert_name = get_alert_name () ;
++      alert_name = get_alert_name();
      }
  
 -  if (g_strcmp0 (alert_name, "click") == 0)
@@ -123,7 +123,7 @@ index 2ccadce..7b67d32 100644
 +  else if (g_strcmp0 (alert_name, "click") == 0)
      set_button (self, self->click_button, TRUE);
    else if (g_strcmp0 (alert_name, "hum") == 0)
-     set_button (self, self->string_button, TRUE);
+     set_button (self, self->hum_button, TRUE);
 diff --git a/panels/sound/cc-alert-chooser.ui b/panels/sound/cc-alert-chooser.ui
 index 603aff9..1512a2f 100644
 --- a/panels/sound/cc-alert-chooser.ui

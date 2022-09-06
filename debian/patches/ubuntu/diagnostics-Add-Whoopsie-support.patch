@@ -12,7 +12,7 @@ Subject: diagnostics: Add Whoopsie support
  6 files changed, 250 insertions(+), 3 deletions(-)
 
 diff --git a/meson.build b/meson.build
-index 6a6cdf7..bd2ade9 100644
+index 3510f83..7c42185 100644
 --- a/meson.build
 +++ b/meson.build
 @@ -220,6 +220,14 @@ endif
@@ -30,7 +30,7 @@ index 6a6cdf7..bd2ade9 100644
  if host_is_linux
    # network manager
    network_manager_deps = [
-@@ -318,4 +326,5 @@ summary({
+@@ -322,4 +330,5 @@ summary({
    'IBus': enable_ibus,
    'Snap': enable_snap,
    'Malcontent': enable_malcontent,
@@ -334,7 +334,7 @@ index 9aeca6e..4b4d4cf 100644
    if (!os_name)
      os_name = g_strdup ("GNOME");
 diff --git a/panels/diagnostics/cc-diagnostics-panel.ui b/panels/diagnostics/cc-diagnostics-panel.ui
-index a08a4ca..37ab3d7 100644
+index a08a4ca..7a0a3f9 100644
 --- a/panels/diagnostics/cc-diagnostics-panel.ui
 +++ b/panels/diagnostics/cc-diagnostics-panel.ui
 @@ -7,7 +7,7 @@
@@ -355,7 +355,7 @@ index a08a4ca..37ab3d7 100644
 +                <property name="visible">False</property>
 +                <property name="title" translatable="yes">Send error reports to Canonical</property>
 +                <property name="use_underline">True</property>
-+                <signal name="notify::selected-index" handler="whoopsie_combo_row_changed_cb" object="CcDiagnosticsPanel" swapped="yes"/>
++                <signal name="notify::selected-item" handler="whoopsie_combo_row_changed_cb" object="CcDiagnosticsPanel" swapped="yes"/>
 +              </object>
 +            </child>
            </object>

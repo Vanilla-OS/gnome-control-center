@@ -1657,7 +1657,7 @@ index 0000000..b13f611
 +#endif /* _CC_EDIT_DIALOG_H_ */
 diff --git a/panels/ubuntu/cc-ubuntu-panel.ui b/panels/ubuntu/cc-ubuntu-panel.ui
 new file mode 100644
-index 0000000..1b712ab
+index 0000000..0840525
 --- /dev/null
 +++ b/panels/ubuntu/cc-ubuntu-panel.ui
 @@ -0,0 +1,163 @@
@@ -1785,7 +1785,7 @@ index 0000000..1b712ab
 +                <property name="can_focus">True</property>
 +                <property name="width_request">100</property>
 +                <property name="title" translatable="yes">Show on</property>
-+                <signal name="notify::selected-index" handler="on_dock_monitor_row_changed" swapped="yes"/>
++                <signal name="notify::selected-item" handler="on_dock_monitor_row_changed" swapped="yes"/>
 +              </object>
 +            </child>
 +            <child>
@@ -1968,7 +1968,7 @@ index 0000000..a636e9c
 +  </gresource>
 +</gresources>
 diff --git a/po/POTFILES.in b/po/POTFILES.in
-index a3c380b..92f5b7d 100644
+index 0728cc3..1905d01 100644
 --- a/po/POTFILES.in
 +++ b/po/POTFILES.in
 @@ -234,6 +234,11 @@ panels/thunderbolt/cc-bolt-device-entry.c
@@ -1984,10 +1984,10 @@ index a3c380b..92f5b7d 100644
  panels/universal-access/cc-cursor-size-dialog.ui
  panels/universal-access/cc-pointing-dialog.ui
 diff --git a/shell/cc-panel-list.c b/shell/cc-panel-list.c
-index 64bf7ae..1118fa9 100644
+index 185b16d..2906b11 100644
 --- a/shell/cc-panel-list.c
 +++ b/shell/cc-panel-list.c
-@@ -382,6 +382,7 @@ static const gchar * const panel_order[] = {
+@@ -392,6 +392,7 @@ static const gchar * const panel_order[] = {
    "mobile-broadband",
    "bluetooth",
    "background",
@@ -1996,7 +1996,7 @@ index 64bf7ae..1118fa9 100644
    "search",
    "multitasking",
 diff --git a/shell/cc-panel-loader.c b/shell/cc-panel-loader.c
-index 17f9601..feb8a23 100644
+index 1b819a5..b254350 100644
 --- a/shell/cc-panel-loader.c
 +++ b/shell/cc-panel-loader.c
 @@ -61,6 +61,7 @@ extern GType cc_sound_panel_get_type (void);
