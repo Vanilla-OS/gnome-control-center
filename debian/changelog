@@ -1,3 +1,11 @@
+gnome-control-center (1:43~rc-1ubuntu2) kinetic; urgency=medium
+
+  * debian/rules:
+    - restore the dh_translations override which was forgotten during one
+      of the recent merge, it's still needed (lp: #1989403)
+
+ -- Sebastien Bacher <seb128@ubuntu.com>  Tue, 13 Sep 2022 12:10:16 +0200
+
 gnome-control-center (1:43~rc-1ubuntu1) kinetic; urgency=medium
 
   * Merge with Debian
