@@ -1,3 +1,19 @@
+gnome-control-center (1:43.0-1ubuntu1) UNRELEASED; urgency=medium
+
+  * Merge with Debian
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Thu, 15 Sep 2022 14:43:20 -0400
+
+gnome-control-center (1:43.0-1) unstable; urgency=medium
+
+  [ Jeremy Bicha ]
+  * New upstream release
+
+  [ Sebastien Bacher ]
+  * Include dh_translations override needed for Ubuntu
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Thu, 15 Sep 2022 14:17:01 -0400
+
 gnome-control-center (1:43~rc-1ubuntu2) kinetic; urgency=medium
 
   * debian/rules:
