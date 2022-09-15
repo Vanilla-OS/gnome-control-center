@@ -1,3 +1,10 @@
+gnome-control-center (1:43~rc-3) UNRELEASED; urgency=medium
+
+  [ Sebastien Bacher ]
+  * Include dh_translations override needed for Ubuntu
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Thu, 15 Sep 2022 14:10:43 -0400
+
 gnome-control-center (1:43~rc-2) unstable; urgency=medium
 
   * New upstream release
