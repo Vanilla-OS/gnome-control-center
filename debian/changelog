@@ -1,3 +1,9 @@
+gnome-control-center (1:43.0-1ubuntu2) kinetic; urgency=medium
+
+  * Don't recommend libnss-myhostname since we use systemd-resolved
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Tue, 20 Sep 2022 09:44:03 -0400
+
 gnome-control-center (1:43.0-1ubuntu1) kinetic; urgency=medium
 
   * Merge with Debian. Remaining changes:
