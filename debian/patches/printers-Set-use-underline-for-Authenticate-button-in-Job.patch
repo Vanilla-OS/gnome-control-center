@@ -1,0 +1,27 @@
+From: Felipe Borges <felipeborges@gnome.org>
+Date: Mon, 19 Sep 2022 14:59:31 +0200
+Subject: printers: Set "use-underline" for Authenticate button in Jobs dialog
+
+The label of the button indicates a mnemonic (_Authenticate).
+
+Bug: https://gitlab.gnome.org/GNOME/gnome-control-center/-/issues/2062
+Origin: upstream, 43.1, commit:12bbd3ea0c9f6acc7801740499a8c56c29e491f6
+---
+ panels/printers/pp-jobs-dialog.ui | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/panels/printers/pp-jobs-dialog.ui b/panels/printers/pp-jobs-dialog.ui
+index 530b9f7..0a4f0d2 100644
+--- a/panels/printers/pp-jobs-dialog.ui
++++ b/panels/printers/pp-jobs-dialog.ui
+@@ -174,7 +174,9 @@
+                 <property name="spacing">6</property>
+                 <child>
+                   <object class="GtkMenuButton" id="authenticate_jobs_button">
+-                    <property name="label" translatable="yes" comments="Translators: This button pop up authentication dialog for print jobs which need credentials.">_Authenticate</property><property name="receives_default">False</property>
++                    <property name="label" translatable="yes" comments="Translators: This button pop up authentication dialog for print jobs which need credentials.">_Authenticate</property>
++                    <property name="receives-default">False</property>
++                    <property name="use-underline">True</property>
+                     <property name="halign">end</property>
+                     <property name="valign">GTK_ALIGN_CENTER</property>
+                     <property name="popover">authentication_popover</property>

@@ -1,0 +1,42 @@
+From: Alessandro Bono <alessandro.bono369@gmail.com>
+Date: Wed, 12 Oct 2022 13:56:19 +0200
+Subject: net-device-ethernet: Don't check device iface name
+
+If the interface name is wrong we shouldn't add the device in the first
+place. The device comes from NM. If the interface name is wrong is a bug
+at NM level.
+
+Origin: upstream, 43.1, commit:3182b7019fa7f59a68b51835117cd60e78e6815a
+---
+ panels/network/net-device-ethernet.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
+
+diff --git a/panels/network/net-device-ethernet.c b/panels/network/net-device-ethernet.c
+index 539392f..a230498 100644
+--- a/panels/network/net-device-ethernet.c
++++ b/panels/network/net-device-ethernet.c
+@@ -395,7 +395,6 @@ add_profile_button_clicked_cb (NetDeviceEthernet *self)
+         NMSettingConnection *sc;
+         g_autofree gchar *uuid = NULL;
+         g_autofree gchar *id = NULL;
+-        g_autoptr(GError) error = NULL;
+         NetConnectionEditor *editor;
+         const GPtrArray *connections;
+         const char *iface;
+@@ -417,13 +416,9 @@ add_profile_button_clicked_cb (NetDeviceEthernet *self)
+                       NULL);
+ 
+         iface = nm_device_get_iface (self->device);
+-        if (nm_utils_is_valid_iface_name (iface, &error)) {
+-            g_object_set (sc,
+-                          NM_SETTING_CONNECTION_INTERFACE_NAME, iface,
+-                          NULL);
+-        } else {
+-            g_warning ("Invalid interface Name '%s': %s", iface, error->message);
+-        }
++        g_object_set (sc,
++                      NM_SETTING_CONNECTION_INTERFACE_NAME, iface,
++                      NULL);
+ 
+         nm_connection_add_setting (connection, nm_setting_wired_new ());
+ 
