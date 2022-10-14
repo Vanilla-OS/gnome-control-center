@@ -1,0 +1,22 @@
+From: Christian Kirbach <christian.kirbach@googlemail.com>
+Date: Tue, 4 Oct 2022 06:37:51 +0000
+Subject: Update German translation (Fixes #56)
+
+Origin: upstream, 43.1, commit:c6bc8979ed5573a3d5950c78c3e955cbe16eaab1
+---
+ po/de.po | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/po/de.po b/po/de.po
+index d284a6c..f6fea8c 100644
+--- a/po/de.po
++++ b/po/de.po
+@@ -6881,7 +6881,7 @@ msgstr "Klick"
+ 
+ #: panels/sound/cc-alert-chooser.ui:20
+ msgid "String"
+-msgstr "Zeichenkette"
++msgstr "Saite"
+ 
+ #: panels/sound/cc-alert-chooser.ui:28
+ msgid "Swing"
