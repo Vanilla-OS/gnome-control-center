@@ -10,8 +10,8 @@ DISTRIBUTOR_LOGO := /usr/share/pixmaps/ubuntu-logo-text.png
 DISTRIBUTOR_LOGO_DARK := /usr/share/pixmaps/ubuntu-logo-text-dark.png
 MALCONTENT := -Dmalcontent=true
 else
-DISTRIBUTOR_LOGO := /usr/share/icons/vendor/scalable/emblems/emblem-vendor.svg
-DISTRIBUTOR_LOGO_DARK := /usr/share/icons/vendor/scalable/emblems/emblem-vendor.svg
+DISTRIBUTOR_LOGO := /usr/share/pixmaps/vanilla-logo.png
+DISTRIBUTOR_LOGO_DARK := /usr/share/pixmaps/vanilla-logo-dark.png
 ifneq (,$(filter $(DEB_HOST_ARCH), amd64 arm64 armel armhf i386 mips mipsel mips64el ppc64el s390x hppa powerpc powerpcspe ppc64))
 MALCONTENT := -Dmalcontent=true
 else
