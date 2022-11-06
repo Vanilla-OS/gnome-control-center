@@ -12,4 +12,5 @@ ubuntu/online-accounts-Hide-window-after-adding-an-online-accoun.patch
 ubuntu/display-Support-UI-scaled-logical-monitor-mode.patch
 ubuntu/applications-Launch-snap-store-if-it-is-installed.patch
 ubuntu/display-Allow-fractional-scaling-to-be-enabled.patch
+vanilla/info-overview-Show-updates-in-vanilla-updater-instead.patch
 build-Look-for-snapd-glib-2.patch
