@@ -1,0 +1,33 @@
+display-arrangement {
+  font-weight: bold;
+  font-size: larger;
+}
+
+display-arrangement.monitor {
+  border: solid 1px @borders;
+  margin: 0px 0px 1px 1px;
+  background: @theme_bg_color;
+  padding: 0.4em;
+  border-radius: 5px;
+}
+
+display-arrangement.monitor.primary {
+  border-top: 0.4em solid #000000;
+}
+
+display-arrangement.monitor-label {
+  border-radius: 50%;
+  min-width: 1.5em;
+  min-height: 1.5em;
+  color: #000;
+  background: #ddd;
+}
+
+label.monitor-label {
+  border-radius: 50%;
+  font-weight: bold;
+  min-width: 1.5em;
+  min-height: 1.5em;
+  color: #000;
+  background: #ddd;
+}
