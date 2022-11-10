@@ -5,5 +5,5 @@ usr/share/locale
 usr/share/gettext/its
 usr/share/icons
 usr/share/polkit-1
-debian/vanilla-logo-text.svg /usr/share/icons/hicolor/scalable/apps
+debian/vanilla-logo-text-symbolic.svg /usr/share/icons/hicolor/scalable/apps
 
