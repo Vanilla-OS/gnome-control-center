@@ -13,4 +13,5 @@ ubuntu/display-Support-UI-scaled-logical-monitor-mode.patch
 ubuntu/applications-Launch-snap-store-if-it-is-installed.patch
 ubuntu/display-Allow-fractional-scaling-to-be-enabled.patch
 vanilla/info-overview-Show-updates-in-vanilla-updater-instead.patch
+vanilla/info-overview-replace-gtkpicture-with-gtkimage-symbolic.patch
 build-Look-for-snapd-glib-2.patch
