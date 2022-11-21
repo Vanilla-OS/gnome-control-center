@@ -18,4 +18,5 @@ vanilla/info-overview-Show-updates-in-vanilla-updater-instead.patch
 vanilla/info-overview-replace-gtkpicture-with-gtkimage-symbolic.patch
 vanilla/datetime-Expose-top-bar-settings.patch
 vanilla/mouse-Expose-disable-while-typing.patch
+vanilla/mouse-Expose-mouse-acceleration.patch
 build-Look-for-snapd-glib-2.patch

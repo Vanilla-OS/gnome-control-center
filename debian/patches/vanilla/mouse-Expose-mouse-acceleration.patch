@@ -1,0 +1,384 @@
+From: Muqtadir <muqtxdir@gmail.com>
+Date: Mon, 21 Nov 2022 12:54:33 +0530
+Subject: mouse panel: Expose Mouse acceleration
+
+---
+--- a/panels/mouse/cc-mouse-panel.c
++++ b/panels/mouse/cc-mouse-panel.c
+@@ -31,6 +31,11 @@
+ #include "gsd-device-manager.h"
+ #include "gsd-input-helper.h"
+ 
++#define TOUCHPAD_PATH_ID "org.gnome.desktop.peripherals.touchpad"
++#define TOUCHPAD_CLICK_METHOD_KEY "click-method"
++#define MOUSE_PATH_ID "org.gnome.desktop.peripherals.mouse"
++#define MOUSE_ACCEL_PROFILE_KEY "accel-profile"
++
+ struct _CcMousePanel
+ {
+   CcPanel            parent_instance;
+@@ -61,6 +66,7 @@
+ 
+   GSettings         *mouse_settings;
+   GSettings         *touchpad_settings;
++  GSettings         *interface_settings;
+ 
+   gboolean           have_mouse;
+   gboolean           have_touchpad;
+@@ -69,11 +75,134 @@
+   gboolean           left_handed;
+   GtkGesture        *left_gesture;
+   GtkGesture        *right_gesture;
++
++  // Mouse acceleration and  Touchpad Click Method patch
++  GtkSwitch         *pointer_location_switch;
++
++  GtkCheckButton    *default_radio;
++  GtkCheckButton    *flat_radio;
++  GtkCheckButton    *adaptive_radio;
++
++  GtkCheckButton    *area_click_emulation_radio;
++  GtkCheckButton    *fingers_click_emulation_radio;
++  GtkCheckButton    *disabled_click_emulation_radio;
++  GtkCheckButton    *default_click_emulation_radio;
+ };
+ 
+ CC_PANEL_REGISTER (CcMousePanel, cc_mouse_panel)
+ 
+ static void
++reload_accel_profile_buttons (CcMousePanel *self)
++{
++  GDesktopPointerAccelProfile accely;
++
++  accely = g_settings_get_enum (self->mouse_settings, MOUSE_ACCEL_PROFILE_KEY);
++
++  if (accely == G_DESKTOP_POINTER_ACCEL_PROFILE_DEFAULT)
++    {
++      gtk_check_button_set_active (self->default_radio, TRUE);
++    }
++  else if (accely == G_DESKTOP_POINTER_ACCEL_PROFILE_FLAT)
++    {
++      gtk_check_button_set_active (self->flat_radio, TRUE);
++    }
++  else if (accely == G_DESKTOP_POINTER_ACCEL_PROFILE_ADAPTIVE)
++    {
++      gtk_check_button_set_active (self->adaptive_radio, TRUE);
++    }
++}
++
++static void
++set_accel_profile (CcMousePanel   *self,
++                   GDesktopPointerAccelProfile  accel_profile)
++{
++  GDesktopPointerAccelProfile accely;
++
++  accely = g_settings_get_enum (self->mouse_settings,
++                                MOUSE_ACCEL_PROFILE_KEY);
++
++  if (accel_profile == accely)
++    return;
++
++  g_settings_set_enum (self->mouse_settings,
++                       MOUSE_ACCEL_PROFILE_KEY,
++                       accel_profile);
++}
++
++/* Click Method */ 
++
++static void
++on_accel_profile_checked_cb (CcMousePanel *self)
++{
++  if (gtk_check_button_get_active (self->default_radio))
++    set_accel_profile (self, G_DESKTOP_POINTER_ACCEL_PROFILE_DEFAULT);
++  else if (gtk_check_button_get_active (self->flat_radio))
++    set_accel_profile (self, G_DESKTOP_POINTER_ACCEL_PROFILE_FLAT);
++  else if (gtk_check_button_get_active (self->adaptive_radio))
++    set_accel_profile (self, G_DESKTOP_POINTER_ACCEL_PROFILE_ADAPTIVE);
++}
++
++static void
++reload_click_method_buttons (CcMousePanel *self)
++{
++  GDesktopTouchpadClickMethod clicky;
++
++  clicky = g_settings_get_enum (self->touchpad_settings, TOUCHPAD_CLICK_METHOD_KEY);
++
++  if (clicky == G_DESKTOP_TOUCHPAD_CLICK_METHOD_DEFAULT)
++    {
++      gtk_check_button_set_active (self->default_click_emulation_radio, TRUE);
++    }
++  else if (clicky == G_DESKTOP_TOUCHPAD_CLICK_METHOD_FINGERS)
++    {
++      gtk_check_button_set_active (self->fingers_click_emulation_radio, TRUE);
++    }
++  else if (clicky == G_DESKTOP_TOUCHPAD_CLICK_METHOD_AREAS)
++    {
++      gtk_check_button_set_active (self->area_click_emulation_radio, TRUE);
++    }
++  else
++    {
++      gtk_check_button_set_active (self->disabled_click_emulation_radio, TRUE);
++      gtk_check_button_set_active (self->default_click_emulation_radio, FALSE);
++      gtk_check_button_set_active (self->fingers_click_emulation_radio, FALSE);
++      gtk_check_button_set_active (self->area_click_emulation_radio, FALSE);
++    }
++}
++
++static void
++set_click_method (CcMousePanel   *self,
++                  GDesktopTouchpadClickMethod  click_method)
++{
++  GDesktopTouchpadClickMethod clicky;
++
++  clicky = g_settings_get_enum (self->touchpad_settings,
++                                TOUCHPAD_CLICK_METHOD_KEY);
++
++  if (click_method == clicky)
++    return;
++
++  g_settings_set_enum (self->touchpad_settings,
++                       TOUCHPAD_CLICK_METHOD_KEY,
++                       click_method);
++}
++
++/* Click Method */ 
++
++static void
++on_click_method_checked_cb (CcMousePanel *self)
++{
++  if (gtk_check_button_get_active (self->default_click_emulation_radio))
++    set_click_method (self, G_DESKTOP_TOUCHPAD_CLICK_METHOD_DEFAULT);
++  else if (gtk_check_button_get_active (self->fingers_click_emulation_radio))
++    set_click_method (self, G_DESKTOP_TOUCHPAD_CLICK_METHOD_FINGERS);
++  else if (gtk_check_button_get_active (self->area_click_emulation_radio))
++    set_click_method (self, G_DESKTOP_TOUCHPAD_CLICK_METHOD_AREAS);
++  else if (gtk_check_button_get_active (self->disabled_click_emulation_radio))
++    set_click_method (self, G_DESKTOP_TOUCHPAD_CLICK_METHOD_NONE);
++}
++
++static void
+ setup_touchpad_options (CcMousePanel *self)
+ {
+   gboolean edge_scroll_enabled;
+@@ -237,13 +366,33 @@
+   /* Mouse section */
+   gtk_widget_set_visible (GTK_WIDGET (self->mouse_group), self->have_mouse);
+ 
++  reload_accel_profile_buttons (self);
++
++  g_signal_connect_object (self->mouse_settings,
++                           "changed::" MOUSE_ACCEL_PROFILE_KEY,
++                           G_CALLBACK (reload_accel_profile_buttons),
++                           self,
++                           G_CONNECT_SWAPPED);
++
+   g_settings_bind (self->mouse_settings, "speed",
+                    gtk_range_get_adjustment (GTK_RANGE (self->mouse_speed_scale)), "value",
+                    G_SETTINGS_BIND_DEFAULT);
+ 
++  g_settings_bind (self->interface_settings, "locate-pointer",
++                       self->pointer_location_switch, "active",
++                       G_SETTINGS_BIND_DEFAULT);
++
+   /* Touchpad section */
+   gtk_widget_set_visible (GTK_WIDGET (self->touchpad_toggle_switch), show_touchpad_enabling_switch (self));
+ 
++  reload_click_method_buttons (self);
++
++  g_signal_connect_object (self->touchpad_settings,
++                           "changed::" TOUCHPAD_CLICK_METHOD_KEY,
++                           G_CALLBACK (reload_click_method_buttons),
++                           self,
++                           G_CONNECT_SWAPPED);
++
+   g_settings_bind_with_mapping (self->touchpad_settings, "send-events",
+                                 self->touchpad_toggle_switch, "active",
+                                 G_SETTINGS_BIND_DEFAULT,
+@@ -331,6 +480,7 @@
+ 
+   g_clear_object (&self->mouse_settings);
+   g_clear_object (&self->touchpad_settings);
++  g_clear_object (&self->interface_settings);
+ 
+   G_OBJECT_CLASS (cc_mouse_panel_parent_class)->dispose (object);
+ }
+@@ -363,6 +513,8 @@
+   self->mouse_settings = g_settings_new ("org.gnome.desktop.peripherals.mouse");
+   self->touchpad_settings = g_settings_new ("org.gnome.desktop.peripherals.touchpad");
+ 
++  self->interface_settings = g_settings_new ("org.gnome.desktop.interface");
++
+   device_manager = gsd_device_manager_get ();
+   g_signal_connect_object (device_manager, "device-added",
+                            G_CALLBACK (device_changed), self, G_CONNECT_SWAPPED);
+@@ -399,6 +551,7 @@
+   gtk_widget_class_bind_template_child (widget_class, CcMousePanel, mouse_natural_scrolling_switch);
+   gtk_widget_class_bind_template_child (widget_class, CcMousePanel, mouse_speed_scale);
+   gtk_widget_class_bind_template_child (widget_class, CcMousePanel, mouse_test);
++  gtk_widget_class_bind_template_child (widget_class, CcMousePanel, pointer_location_switch);
+   gtk_widget_class_bind_template_child (widget_class, CcMousePanel, primary_button_box);
+   gtk_widget_class_bind_template_child (widget_class, CcMousePanel, primary_button_left);
+   gtk_widget_class_bind_template_child (widget_class, CcMousePanel, primary_button_right);
+@@ -415,8 +568,14 @@
+   gtk_widget_class_bind_template_child (widget_class, CcMousePanel, touchpad_toggle_switch);
+   gtk_widget_class_bind_template_child (widget_class, CcMousePanel, two_finger_scrolling_row);
+   gtk_widget_class_bind_template_child (widget_class, CcMousePanel, two_finger_scrolling_switch);
++  gtk_widget_class_bind_template_child (widget_class, CcMousePanel, default_click_emulation_radio);
++  gtk_widget_class_bind_template_child (widget_class, CcMousePanel, disabled_click_emulation_radio);
++  gtk_widget_class_bind_template_child (widget_class, CcMousePanel, fingers_click_emulation_radio);
++  gtk_widget_class_bind_template_child (widget_class, CcMousePanel, area_click_emulation_radio);
+ 
+   gtk_widget_class_bind_template_callback (widget_class, edge_scrolling_changed_event);
+   gtk_widget_class_bind_template_callback (widget_class, test_button_toggled_cb);
+   gtk_widget_class_bind_template_callback (widget_class, two_finger_scrolling_changed_event);
++  gtk_widget_class_bind_template_callback (widget_class, on_accel_profile_checked_cb);
++  gtk_widget_class_bind_template_callback (widget_class, on_click_method_checked_cb);
+ }
+--- a/panels/mouse/cc-mouse-panel.ui
++++ b/panels/mouse/cc-mouse-panel.ui
+@@ -91,6 +91,70 @@
+                     </child>
+                   </object>
+                 </child>
++                <child>
++                  <object class="AdwExpanderRow" id="mouse_acceleration_row">
++                    <property name="title" translatable="yes">Mouse Acceleration</property>
++                    <child>
++                      <object class="AdwActionRow">
++                        <property name="title" translatable="yes">Default</property>
++                        <child>
++                          <object class="GtkCheckButton" id="default_radio">
++                            <property name="valign">center</property>
++                            <signal name="notify::active" handler="on_accel_profile_checked_cb" swapped="true"/>
++                            <accessibility>
++                              <property name="label" translatable="yes">Default</property>
++                            </accessibility>
++                          </object>
++                        </child>
++                      </object>
++                    </child>
++                    <child>
++                      <object class="AdwActionRow">
++                        <property name="title" translatable="yes">Flat</property>
++                        <child>
++                          <object class="GtkCheckButton" id="flat_radio">
++                            <property name="valign">center</property>
++                            <property name="group">default_radio</property>
++                            <signal name="notify::active" handler="on_accel_profile_checked_cb" swapped="true"/>
++                            <accessibility>
++                              <property name="label" translatable="yes">Flat</property>
++                            </accessibility>
++                          </object>
++                        </child>
++                      </object>
++                    </child>
++                    <child>
++                      <object class="AdwActionRow">
++                        <property name="title" translatable="yes">Adaptive</property>
++                        <child>
++                          <object class="GtkCheckButton" id="adaptive_radio">
++                            <property name="valign">center</property>
++                            <property name="group">flat_radio</property>
++                            <signal name="notify::active" handler="on_accel_profile_checked_cb" swapped="true"/>
++                            <accessibility>
++                              <property name="label" translatable="yes">Adaptive</property>
++                            </accessibility>
++                          </object>
++                        </child>
++                      </object>
++                    </child>
++                  </object>
++                </child>
++                <child>
++                  <object class="AdwActionRow" id="pointer_location_row">
++                    <property name="title" translatable="yes">Pointer Location</property>
++                    <property name="subtitle" translatable="yes">Press the Ctrl key to highlight the pointer</property>
++                    <child>
++                      <object class="GtkSwitch" id="pointer_location_switch">
++                        <property name="valign">center</property>
++                        <property name="halign">center</property>
++                        <accessibility>
++                          <property name="label" translatable="yes">Pointer Location</property>
++                        </accessibility>
++                      </object>
++                    </child>
++                  </object>
++                </child>
+               </object>
+             </child>
+ 
+@@ -193,6 +257,74 @@
+                       </object>
+                     </child>
+                   </object>
++                </child>
++                <child>
++                  <object class="AdwExpanderRow" id="mouse_click_emulation_row">
++                    <property name="title" translatable="yes">Click Emulation</property>
++                    <child>
++                      <object class="AdwActionRow">
++                        <property name="title" translatable="yes">Default</property>
++                        <property name="subtitle" translatable="yes">Click the touchpad with default provided by hardware</property>
++                        <child>
++                          <object class="GtkCheckButton" id="default_click_emulation_radio">
++                            <property name="valign">center</property>
++                            <signal name="notify::active" handler="on_click_method_checked_cb" swapped="true"/>
++                            <accessibility>
++                              <property name="label" translatable="yes">Default</property>
++                            </accessibility>
++                          </object>
++                        </child>
++                      </object>
++                    </child>
++                    <child>
++                      <object class="AdwActionRow">
++                        <property name="title" translatable="yes">Fingers</property>
++                        <property name="subtitle" translatable="yes">Click the touchpad with two fingers for right-click and three-fingers for middle-click</property>
++                        <child>
++                          <object class="GtkCheckButton" id="fingers_click_emulation_radio">
++                            <property name="valign">center</property>
++                            <property name="group">default_click_emulation_radio</property>
++                            <signal name="notify::active" handler="on_click_method_checked_cb" swapped="true"/>
++                            <accessibility>
++                              <property name="label" translatable="yes">Fingers</property>
++                            </accessibility>
++                          </object>
++                        </child>
++                      </object>
++                    </child>
++                    <child>
++                      <object class="AdwActionRow">
++                        <property name="title" translatable="yes">Area</property>
++                        <property name="subtitle" translatable="yes">Click the bottom right of the touchpad for right-click and bottom middle for middle-click</property>
++                        <child>
++                          <object class="GtkCheckButton" id="area_click_emulation_radio">
++                            <property name="valign">center</property>
++                            <property name="group">fingers_click_emulation_radio</property>
++                            <signal name="notify::active" handler="on_click_method_checked_cb" swapped="true"/>
++                            <accessibility>
++                              <property name="label" translatable="yes">Area</property>
++                            </accessibility>
++                          </object>
++                        </child>
++                      </object>
++                    </child>
++                    <child>
++                      <object class="AdwActionRow">
++                        <property name="title" translatable="yes">Disabled</property>
++                        <property name="subtitle" translatable="yes">Don't use mouse click emulation</property>
++                        <child>
++                          <object class="GtkCheckButton" id="disabled_click_emulation_radio">
++                            <property name="valign">center</property>
++                            <property name="group">area_click_emulation_radio</property>
++                            <signal name="notify::active" handler="on_click_method_checked_cb" swapped="true"/>
++                            <accessibility>
++                              <property name="label" translatable="yes">Disabled</property>
++                            </accessibility>
++                          </object>
++                        </child>
++                      </object>
++                    </child>
++                  </object>
+                 </child>
+               </object>
+             </child>
