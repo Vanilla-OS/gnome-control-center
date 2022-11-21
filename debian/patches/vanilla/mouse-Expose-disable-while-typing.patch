@@ -34,12 +34,22 @@ Subject: mouse panel: Expose Disable while typing and make Touchpad Switch heade
    gtk_widget_class_bind_template_child (widget_class, CcMousePanel, mouse_group);
 --- a/panels/mouse/cc-mouse-panel.ui
 +++ b/panels/mouse/cc-mouse-panel.ui
-@@ -95,50 +95,58 @@
+@@ -83,6 +83,7 @@
+                     <child>
+                       <object class="GtkSwitch" id="mouse_natural_scrolling_switch">
+                         <property name="valign">center</property>
++                        <property name="halign">center</property>
+                         <accessibility>
+                           <property name="label" translatable="yes">Natural Scrolling</property>
+                         </accessibility>
+@@ -95,50 +96,60 @@
  
              <child>
                <object class="AdwPreferencesGroup" id="touchpad_group">
 +                <property name="header-suffix">
 +                  <object class="GtkSwitch" id="touchpad_toggle_switch">
++                    <property name="valign">center</property>
++                    <property name="halign">center</property>
 +                    <accessibility>
 +                      <property name="label" translatable="yes">Touchpad</property>
 +                    </accessibility>
@@ -107,7 +117,7 @@ Subject: mouse panel: Expose Disable while typing and make Touchpad Switch heade
                      </child>
                    </object>
                  </child>
++
                  <child>
                    <object class="AdwActionRow" id="tap_to_click_row">
                      <property name="visible">False</property>
-\ No newline at end of file
