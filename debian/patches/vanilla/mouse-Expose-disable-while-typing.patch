@@ -1,0 +1,113 @@
+From: Muqtadir <muqtxdir@gmail.com>
+Date: Mon, 21 Nov 2022 10:43:21 +0530
+Subject: mouse panel: Expose Disable while typing and make Touchpad Switch header-suffix
+
+---
+--- a/panels/mouse/cc-mouse-panel.c
++++ b/panels/mouse/cc-mouse-panel.c
+@@ -35,6 +35,7 @@
+ {
+   CcPanel            parent_instance;
+ 
++  GtkSwitch         *disable_while_typing_switch;
+   GtkListBoxRow     *edge_scrolling_row;
+   GtkSwitch         *edge_scrolling_switch;
+   AdwPreferencesGroup *mouse_group;
+@@ -300,6 +301,10 @@
+                    self->edge_scrolling_switch, "state",
+                    G_SETTINGS_BIND_GET);
+ 
++  g_settings_bind (self->touchpad_settings, "disable-while-typing",
++                   self->disable_while_typing_switch, "active",
++                   G_SETTINGS_BIND_DEFAULT);
++
+   setup_touchpad_options (self);
+ }
+ 
+@@ -387,6 +392,7 @@
+ 
+   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/mouse/cc-mouse-panel.ui");
+ 
++  gtk_widget_class_bind_template_child (widget_class, CcMousePanel, disable_while_typing_switch);
+   gtk_widget_class_bind_template_child (widget_class, CcMousePanel, edge_scrolling_row);
+   gtk_widget_class_bind_template_child (widget_class, CcMousePanel, edge_scrolling_switch);
+   gtk_widget_class_bind_template_child (widget_class, CcMousePanel, mouse_group);
+--- a/panels/mouse/cc-mouse-panel.ui
++++ b/panels/mouse/cc-mouse-panel.ui
+@@ -95,50 +95,58 @@
+ 
+             <child>
+               <object class="AdwPreferencesGroup" id="touchpad_group">
++                <property name="header-suffix">
++                  <object class="GtkSwitch" id="touchpad_toggle_switch">
++                    <accessibility>
++                      <property name="label" translatable="yes">Touchpad</property>
++                    </accessibility>
++                  </object>
++                </property>
+                 <property name="title" translatable="yes">Touchpad</property>
+                 <child>
+-                  <object class="AdwActionRow" id="touchpad_toggle_row">
+-                    <property name="title" translatable="yes">Touchpad</property>
++                  <object class="AdwActionRow" id="touchpad_speed_row">
++                    <property name="title" translatable="yes">Touchpad Speed</property>
+                     <child>
+-                      <object class="GtkSwitch" id="touchpad_toggle_switch">
+-                        <property name="valign">center</property>
++                      <object class="GtkScale" id="touchpad_speed_scale">
++                        <property name="adjustment">touchpad_speed_adjustment</property>
++                        <property name="draw_value">False</property>
++                        <property name="hexpand">True</property>
++                        <property name="vexpand">True</property>
+                         <accessibility>
+-                          <property name="label" translatable="yes">Touchpad</property>
++                          <property name="label">Double-click timeout</property>
+                         </accessibility>
+                       </object>
+                     </child>
+                   </object>
+                 </child>
+                 <child>
+-                  <object class="AdwActionRow" id="touchpad_natural_scrolling_row">
+-                    <property name="title" translatable="yes" comments="Translators: This switch reverses the scrolling direction for touchpads. The term used comes from OS X so use the same translation if possible. ">Natural Scrolling</property>
+-                    <property name="subtitle" translatable="yes">Scrolling moves the content, not the view.</property>
++                  <object class="AdwActionRow" id="touchpad_disable_while_typing_row">
++                    <property name="title" translatable="yes">Disable While Typing</property>
+                     <child>
+-                      <object class="GtkSwitch" id="touchpad_natural_scrolling_switch">
++                      <object class="GtkSwitch" id="disable_while_typing_switch">
+                         <property name="valign">center</property>
+                         <accessibility>
+-                          <property name="label" translatable="yes">Natural Scrolling</property>
++                          <property name="label" translatable="yes">Disable While Typing</property>
+                         </accessibility>
+                       </object>
+                     </child>
+                   </object>
+                 </child>
+                 <child>
+-                  <object class="AdwActionRow" id="touchpad_speed_row">
+-                    <property name="title" translatable="yes">Touchpad Speed</property>
++                  <object class="AdwActionRow" id="touchpad_natural_scrolling_row">
++                    <property name="title" translatable="yes" comments="Translators: This switch reverses the scrolling direction for touchpads. The term used comes from OS X so use the same translation if possible. ">Natural Scrolling</property>
++                    <property name="subtitle" translatable="yes">Scrolling moves the content, not the view.</property>
+                     <child>
+-                      <object class="GtkScale" id="touchpad_speed_scale">
+-                        <property name="adjustment">touchpad_speed_adjustment</property>
+-                        <property name="draw_value">False</property>
+-                        <property name="hexpand">True</property>
+-                        <property name="vexpand">True</property>
++                      <object class="GtkSwitch" id="touchpad_natural_scrolling_switch">
++                        <property name="valign">center</property>
+                         <accessibility>
+-                          <property name="label">Double-click timeout</property>
++                          <property name="label" translatable="yes">Natural Scrolling</property>
+                         </accessibility>
+                       </object>
+                     </child>
+                   </object>
+                 </child>
+                 <child>
+                   <object class="AdwActionRow" id="tap_to_click_row">
+                     <property name="visible">False</property>
+\ No newline at end of file

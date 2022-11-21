@@ -17,4 +17,5 @@ ubuntu/Adapts-the-region-capplet-and-the-language-chooser-in-the.patch
 vanilla/info-overview-Show-updates-in-vanilla-updater-instead.patch
 vanilla/info-overview-replace-gtkpicture-with-gtkimage-symbolic.patch
 vanilla/datetime-Expose-top-bar-settings.patch
+vanilla/mouse-Expose-disable-while-typing.patch
 build-Look-for-snapd-glib-2.patch
