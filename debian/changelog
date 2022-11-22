@@ -1,4 +1,4 @@
-gnome-control-center (1:43.1-1ubuntu1) UNRELEASED; urgency=medium
+gnome-control-center (1:43.1-1ubuntu1) lunar; urgency=medium
 
   * Merge with Debian. Remaining changes:
     + Add gnome-control-center-faces package to share with unity-control-center
@@ -50,7 +50,7 @@ gnome-control-center (1:43.1-1ubuntu1) UNRELEASED; urgency=medium
       - u/display-Allow-fractional-scaling-to-be-enabled.patch
       - build-Look-for-snapd-glib-2.patch
 
- -- Jeremy Bicha <jbicha@ubuntu.com>  Thu, 15 Sep 2022 15:42:16 -0400
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Tue, 22 Nov 2022 14:39:59 -0500
 
 gnome-control-center (1:43.1-1) unstable; urgency=medium
 
