@@ -1,9 +1,12 @@
-gnome-control-center (1:43.0-3) UNRELEASED; urgency=medium
+gnome-control-center (1:43.1-1) UNRELEASED; urgency=medium
 
   [ Simon McVittie ]
   * Update syntax of Lintian overrides
 
- -- Jeremy Bicha <jbicha@ubuntu.com>  Tue, 22 Nov 2022 14:18:46 -0500
+  [ Jeremy Bicha ]
+  * New upstream release
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Tue, 22 Nov 2022 14:20:12 -0500
 
 gnome-control-center (1:43.0-2) unstable; urgency=medium
 
