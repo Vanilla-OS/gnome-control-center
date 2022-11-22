@@ -55,12 +55,12 @@ Build-Depends: debhelper-compat (= 13),
                libxml2-utils,
                locales,
                meson (>= 0.57.0),
-               policykit-1,
+               polkitd,
                shared-mime-info,
                tzdata <!nocheck>,
                xvfb,
                python3-dbusmock,
-Standards-Version: 4.6.0
+Standards-Version: 4.6.1
 Rules-Requires-Root: no
 XS-Debian-Vcs-Git: https://salsa.debian.org/gnome-team/gnome-control-center.git
 XS-Debian-Vcs-Browser: https://salsa.debian.org/gnome-team/gnome-control-center
@@ -94,7 +94,7 @@ Recommends: cups-pk-helper,
             ibus,
             iso-codes,
             libcanberra-pulse,
-            policykit-1,
+            polkitd,
             power-profiles-daemon,
             rygel | rygel-tracker,
             network-manager-gnome (>= 0.9.8),
@@ -102,6 +102,8 @@ Recommends: cups-pk-helper,
             gnome-control-center-faces,
 Suggests: gnome-software | gnome-packagekit,
           gnome-user-share,
+          gstreamer1.0-pulseaudio,
+          pkexec,
           realmd,
           x11-xserver-utils
 Breaks: gnome-remote-desktop (<< 42),
