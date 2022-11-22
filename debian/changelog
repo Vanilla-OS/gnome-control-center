@@ -1,12 +1,14 @@
-gnome-control-center (1:43.1-1) UNRELEASED; urgency=medium
+gnome-control-center (1:43.1-1) unstable; urgency=medium
+
+  [ Jeremy Bicha ]
+  * New upstream release
+  * Drop patches applied in new release
+  * Cherry-pick 2 crash fixes from the gnome-43 branch
 
   [ Simon McVittie ]
   * Update syntax of Lintian overrides
 
-  [ Jeremy Bicha ]
-  * New upstream release
-
- -- Jeremy Bicha <jbicha@ubuntu.com>  Tue, 22 Nov 2022 14:20:12 -0500
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Tue, 22 Nov 2022 14:28:00 -0500
 
 gnome-control-center (1:43.0-2) unstable; urgency=medium
 
