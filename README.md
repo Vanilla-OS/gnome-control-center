@@ -1,28 +1,63 @@
-### gnome-control-center
+[![Build Status](https://gitlab.gnome.org/GNOME/gnome-control-center/badges/main/pipeline.svg)](https://gitlab.gnome.org/GNOME/gnome-control-center/pipelines)
+[![Coverage report](https://gitlab.gnome.org/GNOME/gnome-control-center/badges/main/coverage.svg)](https://gnome.pages.gitlab.gnome.org/gnome-control-center/)
+[![License](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://gitlab.gnome.org/GNOME/gnome-control-center/blob/main/COPYING)
 
-Repackaging of `gnome-control-center` to skip few patches not necessary in Vanilla:
+GNOME Settings
+====================
 
-[removed:ubuntu]
+GNOME Settings is GNOME's main interface for configuration of various aspects of your desktop.
 
-- `sound-Allow-volume-to-be-set-above-100.patch`
-- `sound-Add-a-button-to-select-the-default-theme.patch`
-- `shell-Change-the-default-height-so-all-category-are-on-sc.patch`
-- `region-Add-Language-Selector-button.patch`
-- `Adapts-the-region-capplet-and-the-language-chooser-in-the.patch`
-- `keyboard-Add-launch-terminal-shortcut.patch`
-- `info-overview-Show-updates-in-software-propeties-instead-.patch`
-- `diagnostics-Add-Whoopsie-support.patch`
-- `background-Allow-configuring-the-ubuntu-accent-color.patch`
-- `Allow-tweaking-some-settings-for-Ubuntu-Dock.patch`
-- `background-Allow-configuring-the-ubuntu-accent-color.patch`
-- `multitasking-panel-Sync-workspace-and-monitor-isolation-d.patch`
-- `Modify-Mulitasking-assets-for-accent-colors.patch`
-- `info-overview-Show-updates-in-software-propeties-instead-.patch`
+## Contributing
 
-[removed:debian]
+See `docs/CONTRIBUTING.md` for details on the contribution process, and `docs/HACKING.md`
+for the coding style guidelines.
 
-- `firmware-security-disable.patch`
+## Reporting Bugs
 
-[added: vanilla]
+Before reporting any bugs or opening feature requests, [read the communication guidelines][communication-guidelines].
 
-- `info-overview-Show-updates-in-vanilla-updater-instead.patch`
+Bugs should be reported to the GNOME bug tracking system under the product
+gnome-control-center. It is available at [GitLab Issues](https://gitlab.gnome.org/GNOME/gnome-control-center/issues).
+
+In the report please include the following information:
+
+ * Operating system and version
+ * For Linux, version of the C library
+ * Exact error message
+ * Steps to reproduce the bug
+ * If the bug is a visual defect, attach a screenshot
+ * If the bug is a crash, attach a backtrace if possible [see below]
+
+### How to get a backtrace
+
+If the crash is reproducible, follow the steps to obtain a 
+backtrace:
+
+Install debug symbols for gnome-control-center.
+
+Run the program in gdb [the GNU debugger] or any other debugger.
+
+    gdb gnome-control-center
+
+Start the program.
+    
+    (gdb) run
+
+Reproduce the crash and when the program exits to (gdb) prompt, get the backtrace.
+
+    (gdb) bt full
+
+Once you have the backtrace, copy and paste it into the 'Comments' field or attach it as
+a file to the bug report.
+
+## Testing Unstable Settings
+
+It is quite easy to test and give feedback about the development version of GNOME
+Settings. Just access https://gitlab.gnome.org/GNOME/gnome-control-center/environments,
+get the latest version, download it, double-click the file, install and run.
+
+Note that GNOME Settings Flatpak will only work if you are running
+the latest GNOME version in your host system.
+
+
+[communication-guidelines]: https://gitlab.gnome.org/GNOME/gnome-control-center/blob/main/docs/CONTRIBUTING.md#communication-guidelines
