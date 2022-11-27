@@ -18,4 +18,5 @@ vanilla/info-overview-Show-updates-in-vanilla-updater-instead.patch
 vanilla/info-overview-replace-gtkpicture-with-gtkimage-symbolic.patch
 vanilla/datetime-Expose-top-bar-settings.patch
 vanilla/revamp-mouse-panel.patch
+vanilla/add-windows-panel.patch
 build-Look-for-snapd-glib-2.patch
