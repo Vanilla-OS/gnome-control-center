@@ -1,3 +1,15 @@
+gnome-control-center (1:43.0-1vanilla4) kinetic; urgency=medium
+
+  * remove ubuntu/applications_snap_store.patch and disable malcontent.
+
+ -- Muqtadir <muqtadir5555@gmail.com>  Mon, 28 Nov 2022 22:24:00 +0530
+
+gnome-control-center (1:43.0-1vanilla3) kinetic; urgency=high
+
+  * added more vanilla patches
+
+ -- Muqtadir <muqtadir5555@gmail.com>  Sun, 27 Nov 2022 20:32:04 +0530
+
 gnome-control-center (1:43.0-1vanilla) kinetic; urgency=medium
 
   * remove certain ubuntu-patches and add vanilla-updater patch
