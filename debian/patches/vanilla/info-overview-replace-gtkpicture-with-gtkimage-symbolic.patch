@@ -13,10 +13,21 @@ Subject: info-overview: Replace os_logo with vanilla-logo-text-symbolic.
    CcListRow       *os_name_row;
    CcListRow       *os_build_row;
    CcListRow       *os_type_row;
-@@ -893,50 +892,6 @@
- #endif
+@@ -882,60 +881,6 @@
+     open_software_update (self);
+ }
  
- static void
+-#if !defined(DISTRIBUTOR_LOGO) || defined(DARK_MODE_DISTRIBUTOR_LOGO)
+-static gboolean
+-use_dark_theme (CcInfoOverviewPanel *panel)
+-{
+-  AdwStyleManager *style_manager = adw_style_manager_get_default ();
+-
+-  return adw_style_manager_get_dark (style_manager);
+-}
+-#endif
+-
+-static void
 -setup_os_logo (CcInfoOverviewPanel *panel)
 -{
 -#ifdef DISTRIBUTOR_LOGO
@@ -60,11 +71,10 @@ Subject: info-overview: Replace os_logo with vanilla-logo-text-symbolic.
 -#endif
 -}
 -
--static void
+ static void
  cc_info_overview_panel_class_init (CcInfoOverviewPanelClass *klass)
  {
-   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
-@@ -952,7 +907,6 @@
+@@ -952,7 +897,6 @@
    gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, hostname_entry);
    gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, hostname_row);
    gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, memory_row);
@@ -72,7 +82,7 @@ Subject: info-overview: Replace os_logo with vanilla-logo-text-symbolic.
    gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, os_name_row);
    gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, os_build_row);
    gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, os_type_row);
-@@ -983,8 +937,6 @@
+@@ -983,8 +927,6 @@
  
    info_overview_panel_setup_overview (self);
    info_overview_panel_setup_virt (self);

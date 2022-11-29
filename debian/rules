@@ -4,11 +4,23 @@ export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 export DEB_CPPFLAGS_MAINT_APPEND = -DSSHD_SERVICE=\"ssh.service\"
 export DEB_LDFLAGS_MAINT_APPEND = -Wl,-O1 -Wl,-z,defs
 
+# Not in Ubuntu main yet https://launchpad.net/bugs/1892456
+ifeq ($(shell dpkg-vendor --is Ubuntu && echo yes),yes)
+MALCONTENT := -Dmalcontent=false
+else
+ifneq (,$(filter $(DEB_HOST_ARCH), amd64 arm64 armel armhf i386 mips mipsel mips64el ppc64el s390x hppa powerpc powerpcspe ppc64))
+MALCONTENT := -Dmalcontent=true
+else
+MALCONTENT := -Dmalcontent=false
+endif
+endif
+
 ifeq ($(DEB_HOST_ARCH_OS),linux)
 SNAP := -Dsnap=true
 else
 SNAP := -Dsnap=false
 endif
+
 
 %:
 	dh $@
@@ -17,7 +29,7 @@ override_dh_auto_configure:
 	dh_auto_configure -- \
 		-Dprivileged_group=sudo \
 		-Ddocumentation=true \
-		-Dmalcontent=false \
+		$(MALCONTENT) \
 		$(SNAP)
 
 # Ubuntu-specific

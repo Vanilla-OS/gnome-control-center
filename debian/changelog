@@ -1,3 +1,9 @@
+gnome-control-center (1:43.0-1vanilla5) kinetic; urgency=medium
+
+  * refresh windows and info-overview patch
+
+ -- Muqtadir <muqtadir5555@gmail.com>  Tue, 29 Nov 2022 15:12:07 +0530
+
 gnome-control-center (1:43.0-1vanilla4) kinetic; urgency=medium
 
   * remove ubuntu/applications_snap_store.patch and disable malcontent.

@@ -26,7 +26,7 @@ Subject: windows: Add new panel in Settings to present settings for windows and 
 \ No newline at end of file
 --- /dev/null
 +++ b/panels/windows/cc-windows-panel.c
-@@ -0,0 +1,224 @@
+@@ -0,0 +1,163 @@
 +/* cc-windows-panel.c
 + *
 + * Copyright 2022 Muqtadir <muqtxdir@gmail.com>
@@ -51,10 +51,8 @@ Subject: windows: Add new panel in Settings to present settings for windows and 
 +#include "cc-windows-panel.h"
 +#include "cc-list-row.h"
 +#include "cc-windows-resources.h"
-+#include <gdesktop-enums.h>
 +
 +#define WM_BUTTON_LAYOUT "button-layout"
-+#define FOCUS_MODE "focus-mode"
 +#define DEFAULT_BUTTON_LAYOUT "close"
 +#define EXTENDED_BUTTON_LAYOUT "minimize,maximize,close"
 +
@@ -71,9 +69,7 @@ Subject: windows: Add new panel in Settings to present settings for windows and 
 +  CcListRow        *center_new_windows_switch;
 +  CcListRow        *resize_with_right_button_switch;
 +
-+  GtkCheckButton   *click_radio;
-+  GtkCheckButton   *sloppy_radio;
-+  GtkCheckButton   *mouse_radio;
++  GtkComboBoxText  *wm_focus_combo;
 +
 +  gchar           **titlebar_button_layout;
 +};
@@ -90,55 +86,6 @@ Subject: windows: Add new panel in Settings to present settings for windows and 
 +  g_strfreev (self->titlebar_button_layout);
 +
 +  G_OBJECT_CLASS (cc_windows_panel_parent_class)->finalize (object);
-+}
-+
-+static void
-+reload_windows_focus_buttons (CcWindowsPanel *self)
-+{
-+  GDesktopFocusMode focusy;
-+
-+  focusy = g_settings_get_enum (self->wm_settings, FOCUS_MODE);
-+
-+  if (focusy == G_DESKTOP_FOCUS_MODE_CLICK)
-+    {
-+      gtk_check_button_set_active (self->click_radio, TRUE);
-+    }
-+  else if (focusy == G_DESKTOP_FOCUS_MODE_SLOPPY)
-+    {
-+      gtk_check_button_set_active (self->sloppy_radio, TRUE);
-+    }
-+  else if (focusy == G_DESKTOP_FOCUS_MODE_MOUSE)
-+    {
-+      gtk_check_button_set_active (self->mouse_radio, TRUE);
-+    }
-+}
-+
-+static void
-+set_focus_windows (CcWindowsPanel   *self,
-+                   GDesktopFocusMode  focus_mode)
-+{
-+  GDesktopFocusMode focusy;
-+
-+  focusy = g_settings_get_enum (self->wm_settings,
-+                                FOCUS_MODE);
-+
-+  if (focus_mode == focusy)
-+    return;
-+
-+  g_settings_set_enum (self->wm_settings,
-+                       FOCUS_MODE,
-+                       focus_mode);
-+}
-+
-+static void
-+on_windows_focus_checked_cb (CcWindowsPanel *self)
-+{
-+  if (gtk_check_button_get_active (self->click_radio))
-+    set_focus_windows (self, G_DESKTOP_FOCUS_MODE_CLICK);
-+  else if (gtk_check_button_get_active (self->sloppy_radio))
-+    set_focus_windows (self, G_DESKTOP_FOCUS_MODE_SLOPPY);
-+  else if (gtk_check_button_get_active (self->mouse_radio))
-+    set_focus_windows (self, G_DESKTOP_FOCUS_MODE_MOUSE);
 +}
 +
 +static void
@@ -197,14 +144,10 @@ Subject: windows: Add new panel in Settings to present settings for windows and 
 +
 +  gtk_widget_class_bind_template_child (widget_class, CcWindowsPanel, default_radio);
 +  gtk_widget_class_bind_template_child (widget_class, CcWindowsPanel, extended_radio);
-+  gtk_widget_class_bind_template_child (widget_class, CcWindowsPanel, click_radio);
-+  gtk_widget_class_bind_template_child (widget_class, CcWindowsPanel, sloppy_radio);
-+  gtk_widget_class_bind_template_child (widget_class, CcWindowsPanel, mouse_radio);
++  gtk_widget_class_bind_template_child (widget_class, CcWindowsPanel, wm_focus_combo);
 +  gtk_widget_class_bind_template_child (widget_class, CcWindowsPanel, attach_modal_dialogs_switch);
 +  gtk_widget_class_bind_template_child (widget_class, CcWindowsPanel, center_new_windows_switch);
 +  gtk_widget_class_bind_template_child (widget_class, CcWindowsPanel, resize_with_right_button_switch);
-+
-+  gtk_widget_class_bind_template_callback (widget_class, on_windows_focus_checked_cb);
 +
 +}
 +
@@ -239,17 +182,13 @@ Subject: windows: Add new panel in Settings to present settings for windows and 
 +                                self,
 +                                NULL);
 +
-+  reload_windows_focus_buttons (self);
-+
-+  g_signal_connect_object (self->wm_settings,
-+                           "changed::" FOCUS_MODE,
-+                           G_CALLBACK (reload_windows_focus_buttons),
-+                           self,
-+                           G_CONNECT_SWAPPED);
-+
 +  g_settings_bind (self->wm_settings, "resize-with-right-button",
 +                   self->resize_with_right_button_switch, "active",
 +                   G_SETTINGS_BIND_DEFAULT);
++
++  g_settings_bind (self->wm_settings, "focus-mode",
++                        self->wm_focus_combo, "active-id",
++                        G_SETTINGS_BIND_DEFAULT);
 +}
 \ No newline at end of file
 --- /dev/null
@@ -287,7 +226,7 @@ Subject: windows: Add new panel in Settings to present settings for windows and 
 +G_END_DECLS
 --- /dev/null
 +++ b/panels/windows/cc-windows-panel.ui
-@@ -0,0 +1,138 @@
+@@ -0,0 +1,107 @@
 +<?xml version="1.0" encoding="UTF-8"?>
 +<interface>
 +  <template class="CcWindowsPanel" parent="CcPanel">
@@ -374,48 +313,17 @@ Subject: windows: Add new panel in Settings to present settings for windows and 
 +                <property name="show-switch">True</property>
 +              </object>
 +            </child>
-+          </object>
-+        </child>
-+        <child>
-+          <object class="AdwPreferencesGroup">
-+            <property name="title" translatable="yes">Focus</property>
 +            <child>
 +              <object class="AdwActionRow">
-+                <property name="activatable-widget">click_radio</property>
-+                <property name="title" translatable="yes">Click to Focus</property>
-+                <property name="subtitle" translatable="yes">Windows are focused when they are clicked.</property>
-+                <property name="use_underline">True</property>
-+                <child type="prefix">
-+                  <object class="GtkCheckButton" id="click_radio">
++                <property name="title" translatable="yes">Windows Focus</property>
++                <child>
++                  <object class="GtkComboBoxText" id="wm_focus_combo">
 +                    <property name="valign">center</property>
-+                  </object>
-+                </child>
-+              </object>
-+            </child>
-+            <child>
-+              <object class="AdwActionRow">
-+                <property name="activatable-widget">sloppy_radio</property>
-+                <property name="title" translatable="yes">Focus on Hover</property>
-+                <property name="subtitle" translatable="yes">Window is focused when hovered with the pointer.Windows remain focused when the desktop is hovered.</property>
-+                <property name="use_underline">True</property>
-+                <child type="prefix">
-+                  <object class="GtkCheckButton" id="sloppy_radio">
-+                    <property name="valign">center</property>
-+                    <property name="group">click_radio</property>
-+                  </object>
-+                </child>
-+              </object>
-+            </child>
-+            <child>
-+              <object class="AdwActionRow">
-+                <property name="activatable-widget">mouse_radio</property>
-+                <property name="title" translatable="yes">Secondary click</property>
-+                <property name="subtitle" translatable="yes">Window is focused when hovered with the pointer.Hovering the desktop removes focus from the previous window.</property>
-+                <property name="use_underline">True</property>
-+                <child type="prefix">
-+                  <object class="GtkCheckButton" id="mouse_radio">
-+                    <property name="valign">center</property>
-+                    <property name="group">sloppy_radio</property>
++                    <items>
++                      <item id="click" translatable="yes">Click to Focus</item>
++                      <item id="sloppy" translatable="yes">Focus on Hover</item>
++                      <item id="mouse" translatable="yes">Secondary-Click</item>
++                    </items>
 +                  </object>
 +                </child>
 +              </object>
