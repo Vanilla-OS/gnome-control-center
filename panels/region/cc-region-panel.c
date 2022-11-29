@@ -236,27 +236,26 @@ set_localed_locale (CcRegionPanel *self)
 {
         g_autoptr(GVariantBuilder) b = NULL;
         g_autofree gchar *lang_value = NULL;
+        g_autofree gchar *lang = NULL;
+
+        cc_common_language_get_locale (self->system_language, &lang);
 
         b = g_variant_builder_new (G_VARIANT_TYPE ("as"));
-        lang_value = g_strconcat ("LANG=", self->system_language, NULL);
+        lang_value = g_strconcat ("LANG=", lang, NULL);
         g_variant_builder_add (b, "s", lang_value);
 
-        if (self->system_region != NULL) {
-                g_autofree gchar *time_value = NULL;
-                g_autofree gchar *numeric_value = NULL;
-                g_autofree gchar *monetary_value = NULL;
-                g_autofree gchar *measurement_value = NULL;
-                g_autofree gchar *paper_value = NULL;
-                time_value = g_strconcat ("LC_TIME=", self->system_region, NULL);
-                g_variant_builder_add (b, "s", time_value);
-                numeric_value = g_strconcat ("LC_NUMERIC=", self->system_region, NULL);
-                g_variant_builder_add (b, "s", numeric_value);
-                monetary_value = g_strconcat ("LC_MONETARY=", self->system_region, NULL);
-                g_variant_builder_add (b, "s", monetary_value);
-                measurement_value = g_strconcat ("LC_MEASUREMENT=", self->system_region, NULL);
-                g_variant_builder_add (b, "s", measurement_value);
-                paper_value = g_strconcat ("LC_PAPER=", self->system_region, NULL);
-                g_variant_builder_add (b, "s", paper_value);
+        g_free (lang_value);
+
+        lang_value = g_strconcat ("LANGUAGE=", self->system_language, NULL);
+        g_variant_builder_add (b, "s", lang_value);
+
+        const gchar *format_categories[] = { "LC_NUMERIC", "LC_TIME",
+           "LC_MONETARY", "LC_PAPER", "LC_IDENTIFICATION", "LC_NAME",
+           "LC_ADDRESS", "LC_TELEPHONE", "LC_MEASUREMENT", NULL };
+        for (int i = 0; format_categories[i] != NULL; i++) {
+                g_autofree gchar *s = NULL;
+                s = g_strconcat (format_categories[i], "=", self->system_region, NULL);
+                g_variant_builder_add (b, "s", s);
         }
         g_dbus_proxy_call (self->localed,
                            "SetLocale",
@@ -283,6 +282,8 @@ update_language (CcRegionPanel  *self,
                  CcLocaleTarget  target,
                  const gchar    *language)
 {
+        g_debug ("Setting language to %s", language);
+
         switch (target) {
         case USER:
                 if (g_strcmp0 (language, self->language) == 0)
@@ -313,6 +314,40 @@ set_system_region (CcRegionPanel *self,
 }
 
 static void
+set_formats_locale (const gchar *formats_locale)
+{
+        g_autoptr(GDBusProxy) proxy = NULL;
+        g_autofree gchar *user_path = NULL;
+        g_autoptr(GVariant) ret = NULL;
+        g_autoptr(GError) error = NULL;
+
+        user_path = g_strdup_printf ("/org/freedesktop/Accounts/User%i", getuid ());
+        proxy = g_dbus_proxy_new_for_bus_sync (G_BUS_TYPE_SYSTEM,
+                                               G_DBUS_PROXY_FLAGS_NONE,
+                                               NULL,
+                                               "org.freedesktop.Accounts",
+                                               user_path,
+                                               "org.freedesktop.Accounts.User",
+                                               NULL,
+                                               &error);
+        if (!proxy) {
+                g_warning ("Couldn't get accountsservice proxy for %s: %s", user_path, error->message);
+                return;
+        }
+
+        ret = g_dbus_proxy_call_sync (proxy,
+                                      "SetFormatsLocale",
+                                      g_variant_new ("(s)", formats_locale),
+                                      G_DBUS_CALL_FLAGS_NONE,
+                                      -1,
+                                      NULL,
+                                      &error);
+        if (!ret)
+                g_warning ("Couldn't set FormatsLocale: %s", error->message);
+}
+
+
+static void
 update_region (CcRegionPanel  *self,
                CcLocaleTarget  target,
                const gchar    *region)
@@ -321,6 +356,7 @@ update_region (CcRegionPanel  *self,
         case USER:
                 if (g_strcmp0 (region, self->region) == 0)
                         return;
+                set_formats_locale (region);
                 if (region == NULL || region[0] == '\0')
                         g_settings_reset (self->locale_settings, KEY_REGION);
                 else
@@ -522,15 +558,19 @@ static void
 update_language_from_user (CcRegionPanel *self)
 {
         const gchar *language = NULL;
+        g_autofree gchar *locale = NULL;
 
-        if (act_user_is_loaded (self->user))
+        if (act_user_is_loaded (self->user)) {
                 language = act_user_get_language (self->user);
+                cc_common_language_get_locale (language, &locale);
+        }
 
-        if (language == NULL || *language == '\0')
-                language = setlocale (LC_MESSAGES, NULL);
+        if (language == NULL || *language == '\0') {
+                locale = g_strdup (setlocale (LC_MESSAGES, NULL));
+        }
 
         g_free (self->language);
-        self->language = g_strdup (language);
+        self->language = g_steal_pointer (&locale);
         update_user_language_row (self);
 }
 
@@ -538,7 +578,7 @@ static void
 update_region_from_setting (CcRegionPanel *self)
 {
         g_free (self->region);
-        self->region = g_settings_get_string (self->locale_settings, KEY_REGION);
+        self->region = cc_common_language_get_property ("FormatsLocale");
         update_user_region_row (self);
 }
 
@@ -557,6 +597,26 @@ setup_language_section (CcRegionPanel *self)
 
         update_language_from_user (self);
         update_region_from_setting (self);
+}
+
+
+static void
+show_language_support (CcRegionPanel *self)
+{
+        g_autoptr(GAppInfo) app_info = NULL;
+        g_autoptr(GdkAppLaunchContext) ctx = NULL;
+        g_autoptr(GError) error = NULL;
+
+        app_info = G_APP_INFO (g_desktop_app_info_new ("gnome-language-selector.desktop"));
+
+        if (app_info == NULL) {
+                g_warning ("Failed to launch language-selector: couldn't create GDesktopAppInfo");
+                return;
+        }
+
+        ctx = gdk_display_get_app_launch_context (gdk_display_get_default ());
+        if (!g_app_info_launch (app_info, NULL, G_APP_LAUNCH_CONTEXT (ctx), &error))
+                g_warning ("Failed to launch language-selector: %s", error->message);
 }
 
 static void
@@ -608,6 +668,16 @@ set_login_button_visibility (CcRegionPanel *self)
 
 /* Callbacks */
 
+static gchar *
+strip_quotes (const gchar *str)
+{
+        if ((g_str_has_prefix (str, "\"") && g_str_has_suffix (str, "\""))
+          || (g_str_has_prefix (str, "'") && g_str_has_suffix (str, "'")))
+                return g_strndup (str + 1, strlen (str) - 2);
+        else
+                return g_strdup (str);
+}
+
 static void
 on_localed_properties_changed (GDBusProxy     *localed_proxy,
                                GVariant       *changed_properties,
@@ -616,33 +686,43 @@ on_localed_properties_changed (GDBusProxy     *localed_proxy,
 {
         g_autoptr(GVariant) v = NULL;
 
-        v = g_dbus_proxy_get_cached_property (localed_proxy, "Locale");
+        v = g_dbus_proxy_get_cached_property (G_DBUS_PROXY (self->localed), "Locale");
         if (v) {
                 g_autofree const gchar **strv = NULL;
                 gsize len;
                 gint i;
-                const gchar *lang, *messages, *time;
+                g_autofree gchar *lang;
+                g_autofree gchar *language;
+                g_autofree gchar *messages;
+                g_autofree gchar *time;
 
                 strv = g_variant_get_strv (v, &len);
 
-                lang = messages = time = NULL;
+                lang = language = messages = time = NULL;
                 for (i = 0; strv[i]; i++) {
                         if (g_str_has_prefix (strv[i], "LANG=")) {
-                                lang = strv[i] + strlen ("LANG=");
+                                lang = strip_quotes (strv[i] + strlen ("LANG="));
+                        } else if (g_str_has_prefix (strv[i], "LANGUAGE=")) {
+                                g_autofree gchar *tmp = strip_quotes (strv[i] + strlen ("LANGUAGE="));
+                                g_auto(GStrv) tokens = g_strsplit (tmp, ":", 2);
+                                language = g_strdup (tokens[0]);
                         } else if (g_str_has_prefix (strv[i], "LC_MESSAGES=")) {
-                                messages = strv[i] + strlen ("LC_MESSAGES=");
+                                messages = strip_quotes (strv[i] + strlen ("LC_MESSAGES="));
                         } else if (g_str_has_prefix (strv[i], "LC_TIME=")) {
-                                time = strv[i] + strlen ("LC_TIME=");
+                                time = strip_quotes (strv[i] + strlen ("LC_TIME="));
                         }
                 }
                 if (!lang) {
-                        lang = setlocale (LC_MESSAGES, NULL);
+                        lang = g_strdup ("en_US.UTF-8");
                 }
-                if (!messages) {
-                        messages = lang;
+                if (!language) {
+                        if (messages)
+                                language = g_strdup (messages);
+                        else
+                                language = g_strdup (lang);
                 }
                 g_free (self->system_language);
-                self->system_language = g_strdup (messages);
+                self->system_language = g_steal_pointer (&language);
                 g_free (self->system_region);
                 self->system_region = g_strdup (time);
 
@@ -847,6 +927,7 @@ cc_region_panel_class_init (CcRegionPanelClass * klass)
         gtk_widget_class_bind_template_callback (widget_class, on_user_formats_row_activated_cb);
         gtk_widget_class_bind_template_callback (widget_class, on_user_language_row_activated_cb);
         gtk_widget_class_bind_template_callback (widget_class, restart_now);
+        gtk_widget_class_bind_template_callback (widget_class, show_language_support);
 }
 
 static void

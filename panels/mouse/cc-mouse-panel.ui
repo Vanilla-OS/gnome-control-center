@@ -54,6 +54,31 @@
                     </child>
                   </object>
                 </child>
+                <child>
+                  <object class="CcMultitaskingRow" id="pointer_location_row">
+                    <property name="activatable-widget">pointer_location_switch</property>
+                    <property name="title" translatable="yes">Pointer Location</property>
+                    <property name="subtitle" translatable="yes">Press the Ctrl key to highlight the pointer.</property>
+                    <child>
+                      <object class="GtkSwitch" id="pointer_location_switch">
+                        <property name="valign">center</property>
+                        <accessibility>
+                          <property name="label" translatable="yes">Pointer Location</property>
+                        </accessibility>
+                      </object>
+                    </child>
+                    <child type="artwork">
+                      <object class="GtkPicture">
+                        <property name="hexpand">True</property>
+                        <property name="halign">center</property>
+                        <property name="margin_start">18</property>
+                        <property name="margin_end">18</property>
+                        <property name="can-shrink">False</property>
+                        <property name="file">resource:///org/gnome/control-center/mouse/assets/pointer-location.svg</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
               </object>
             </child>
 
@@ -77,14 +102,148 @@
                   </object>
                 </child>
                 <child>
-                  <object class="AdwActionRow" id="mouse_natural_scrolling_row">
-                    <property name="title" translatable="yes" comments="Translators: This switch reverses the scrolling direction for mices. The term used comes from OS X so use the same translation if possible.">Natural Scrolling</property>
-                    <property name="subtitle" translatable="yes">Scrolling moves the content, not the view.</property>
+                  <object class="AdwPreferencesRow">
+                    <property name="activatable">False</property>
+                    <property name="focusable">False</property>
                     <child>
-                      <object class="GtkSwitch" id="mouse_natural_scrolling_switch">
+                      <object class="GtkBox">
+                        <property name="orientation">vertical</property>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="label" translatable="yes">Scroll Direction</property>
+                            <property name="xalign">0</property>
+                            <property name="margin_bottom">18</property>
+                            <property name="margin_start">12</property>
+                            <property name="margin_top">18</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkGrid">
+                            <property name="column_homogeneous">1</property>
+                            <child>
+                              <object class="GtkPicture">
+                                <property name="margin_bottom">12</property>
+                                <property name="margin_start">12</property>
+                                <property name="margin_end">6</property>
+                                <property name="can-shrink">False</property>
+                                <property name="file">resource:///org/gnome/control-center/mouse/assets/mouse-traditional.svg</property>
+                                <style>
+                                  <class name="background"/>
+                                  <class name="frame"/>
+                                </style>
+                                <layout>
+                                  <property name="column">0</property>
+                                  <property name="row">0</property>
+                                </layout>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkCheckButton" id="mouse_traditional_scrolling_radio">
+                                <property name="margin_start">12</property>
+                                <property name="margin_bottom">12</property>
+                                <child>
+                                  <object class="GtkBox">
+                                    <property name="orientation">vertical</property>
+                                    <child>
+                                      <object class="GtkLabel">
+                                        <property name="label" translatable="yes">Traditional</property>
+                                        <property name="xalign">0</property>
+                                        <property name="margin_start">8</property>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel">
+                                        <property name="label" translatable="yes">Scrolling moves the view.</property>
+                                        <property name="xalign">0</property>
+                                        <property name="margin_start">8</property>
+                                        <style>
+                                          <class name="subtitle"/>
+                                        </style>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                                <accessibility>
+                                  <property name="label" translatable="yes">Default</property>
+                                </accessibility>
+                                <layout>
+                                  <property name="column">0</property>
+                                  <property name="row">1</property>
+                                </layout>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkPicture">
+                                <property name="margin_bottom">12</property>
+                                <property name="margin_start">6</property>
+                                <property name="margin_end">12</property>
+                                <property name="can-shrink">False</property>
+                                <property name="file">resource:///org/gnome/control-center/mouse/assets/mouse-natural.svg</property>
+                                <style>
+                                  <class name="background"/>
+                                  <class name="frame"/>
+                                </style>
+                                <layout>
+                                  <property name="column">1</property>
+                                  <property name="row">0</property>
+                                </layout>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkCheckButton" id="mouse_natural_scrolling_radio">
+                                <property name="group">mouse_traditional_scrolling_radio</property>
+                                <property name="margin_start">6</property>
+                                <property name="margin_bottom">12</property>
+                                <child>
+                                  <object class="GtkBox">
+                                    <property name="orientation">vertical</property>
+                                    <child>
+                                      <object class="GtkLabel">
+                                        <property name="label" translatable="yes">Natural</property>
+                                        <property name="xalign">0</property>
+                                        <property name="margin_start">8</property>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel">
+                                        <property name="label" translatable="yes">Scrolling moves the content.</property>
+                                        <property name="xalign">0</property>
+                                        <property name="margin_start">8</property>
+                                        <style>
+                                          <class name="subtitle"/>
+                                        </style>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                                <accessibility>
+                                  <property name="label" translatable="yes">Area</property>
+                                </accessibility>
+                                <layout>
+                                  <property name="column">1</property>
+                                  <property name="row">1</property>
+                                </layout>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="AdwActionRow">
+                    <property name="title" translatable="yes">Mouse Acceleration</property>
+                    <child>
+                      <object class="GtkComboBoxText" id="mouse_accel_combo">
                         <property name="valign">center</property>
+                        <items>
+                          <item id="default" translatable="yes">Default</item>
+                          <item id="flat" translatable="yes">Flat</item>
+                          <item id="adaptive" translatable="yes">Adaptive</item>
+                        </items>
                         <accessibility>
-                          <property name="label" translatable="yes">Natural Scrolling</property>
+                          <property name="label" translatable="yes">Mouse Acceleration</property>
                         </accessibility>
                       </object>
                     </child>
@@ -95,37 +254,20 @@
 
             <child>
               <object class="AdwPreferencesGroup" id="touchpad_group">
+                <property name="header-suffix">
+                  <object class="GtkSwitch" id="touchpad_toggle_switch">
+                    <property name="valign">center</property>
+                    <property name="halign">center</property>
+                    <accessibility>
+                      <property name="label" translatable="yes">Touchpad</property>
+                    </accessibility>
+                  </object>
+                </property>
                 <property name="title" translatable="yes">Touchpad</property>
-                <child>
-                  <object class="AdwActionRow" id="touchpad_toggle_row">
-                    <property name="title" translatable="yes">Touchpad</property>
-                    <child>
-                      <object class="GtkSwitch" id="touchpad_toggle_switch">
-                        <property name="valign">center</property>
-                        <accessibility>
-                          <property name="label" translatable="yes">Touchpad</property>
-                        </accessibility>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-                <child>
-                  <object class="AdwActionRow" id="touchpad_natural_scrolling_row">
-                    <property name="title" translatable="yes" comments="Translators: This switch reverses the scrolling direction for touchpads. The term used comes from OS X so use the same translation if possible. ">Natural Scrolling</property>
-                    <property name="subtitle" translatable="yes">Scrolling moves the content, not the view.</property>
-                    <child>
-                      <object class="GtkSwitch" id="touchpad_natural_scrolling_switch">
-                        <property name="valign">center</property>
-                        <accessibility>
-                          <property name="label" translatable="yes">Natural Scrolling</property>
-                        </accessibility>
-                      </object>
-                    </child>
-                  </object>
-                </child>
                 <child>
                   <object class="AdwActionRow" id="touchpad_speed_row">
                     <property name="title" translatable="yes">Touchpad Speed</property>
+                    <property name="sensitive" bind-source="touchpad_toggle_switch" bind-property="active" bind-flags="default|sync-create" />
                     <child>
                       <object class="GtkScale" id="touchpad_speed_scale">
                         <property name="adjustment">touchpad_speed_adjustment</property>
@@ -140,9 +282,144 @@
                   </object>
                 </child>
                 <child>
-                  <object class="AdwActionRow" id="tap_to_click_row">
-                    <property name="visible">False</property>
+                  <object class="AdwPreferencesRow">
+                    <property name="activatable">False</property>
+                    <property name="focusable">False</property>
+                    <property name="sensitive" bind-source="touchpad_toggle_switch" bind-property="active" bind-flags="default|sync-create" />
+                    <child>
+                      <object class="GtkBox">
+                        <property name="orientation">vertical</property>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="label" translatable="yes">Click Method</property>
+                            <property name="xalign">0</property>
+                            <property name="margin_bottom">18</property>
+                            <property name="margin_start">12</property>
+                            <property name="margin_top">18</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkGrid">
+                            <property name="column_homogeneous">1</property>
+                            <child>
+                              <object class="GtkPicture">
+                                <property name="margin_bottom">12</property>
+                                <property name="margin_start">12</property>
+                                <property name="margin_end">6</property>
+                                <property name="can-shrink">False</property>
+                                <property name="file">resource:///org/gnome/control-center/mouse/assets/click-anywhere.svg</property>
+                                <style>
+                                  <class name="background"/>
+                                  <class name="frame"/>
+                                </style>
+                                <layout>
+                                  <property name="column">0</property>
+                                  <property name="row">0</property>
+                                </layout>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkCheckButton" id="default_click_emulation_radio">
+                                <signal name="notify::active" handler="on_click_method_checked_cb" swapped="true"/>
+                                <property name="margin_start">12</property>
+                                <property name="margin_bottom">12</property>
+                                <child>
+                                  <object class="GtkBox">
+                                    <property name="orientation">vertical</property>
+                                    <child>
+                                      <object class="GtkLabel">
+                                        <property name="label" translatable="yes">Default</property>
+                                        <property name="xalign">0</property>
+                                        <property name="margin_start">8</property>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel">
+                                        <property name="label" translatable="yes">Click in hardware default.</property>
+                                        <property name="xalign">0</property>
+                                        <property name="margin_start">8</property>
+                                        <style>
+                                          <class name="subtitle"/>
+                                        </style>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                                <accessibility>
+                                  <property name="label" translatable="yes">Default</property>
+                                </accessibility>
+                                <layout>
+                                  <property name="column">0</property>
+                                  <property name="row">1</property>
+                                </layout>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkPicture">
+                                <property name="margin_bottom">12</property>
+                                <property name="margin_start">6</property>
+                                <property name="margin_end">12</property>
+                                <property name="can-shrink">False</property>
+                                <property name="file">resource:///org/gnome/control-center/mouse/assets/click-areas.svg</property>
+                                <style>
+                                  <class name="background"/>
+                                  <class name="frame"/>
+                                </style>
+                                <layout>
+                                  <property name="column">1</property>
+                                  <property name="row">0</property>
+                                </layout>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkCheckButton" id="area_click_emulation_radio">
+                                <property name="group">default_click_emulation_radio</property>
+                                <property name="margin_start">6</property>
+                                <property name="margin_bottom">12</property>
+                                <signal name="notify::active" handler="on_click_method_checked_cb" swapped="true"/>
+                                <child>
+                                  <object class="GtkBox">
+                                    <property name="orientation">vertical</property>
+                                    <child>
+                                      <object class="GtkLabel">
+                                        <property name="label" translatable="yes">Areas</property>
+                                        <property name="xalign">0</property>
+                                        <property name="margin_start">8</property>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel">
+                                        <property name="label" translatable="yes">Click in marked areas.</property>
+                                        <property name="xalign">0</property>
+                                        <property name="margin_start">8</property>
+                                        <style>
+                                          <class name="subtitle"/>
+                                        </style>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                                <accessibility>
+                                  <property name="label" translatable="yes">Area</property>
+                                </accessibility>
+                                <layout>
+                                  <property name="column">1</property>
+                                  <property name="row">1</property>
+                                </layout>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="CcMultitaskingRow" id="tap_to_click_row">
+                    <property name="activatable-widget">tap_to_click_switch</property>
                     <property name="title" translatable="yes">Tap to Click</property>
+                    <property name="subtitle" translatable="yes">Quickly touch the touchpad to click.</property>
+                    <property name="sensitive" bind-source="touchpad_toggle_switch" bind-property="active" bind-flags="default|sync-create" />
                     <child>
                       <object class="GtkSwitch" id="tap_to_click_switch">
                         <property name="valign">center</property>
@@ -151,41 +428,317 @@
                         </accessibility>
                       </object>
                     </child>
-                  </object>
-                </child>
-                <child>
-                  <object class="AdwActionRow" id="two_finger_scrolling_row">
-                    <property name="visible">False</property>
-                    <property name="title" translatable="yes">Two-finger Scrolling</property>
-                    <child>
-                      <object class="GtkSwitch" id="two_finger_scrolling_switch">
-                        <property name="valign">center</property>
-                        <accessibility>
-                          <property name="label" translatable="yes">Two-finger Scrolling</property>
-                        </accessibility>
-                        <signal name="state-set" handler="two_finger_scrolling_changed_event" object="CcMousePanel" swapped="yes"/>
+                    <child type="artwork">
+                      <object class="GtkPicture">
+                        <property name="hexpand">True</property>
+                        <property name="halign">center</property>
+                        <property name="margin_start">18</property>
+                        <property name="margin_end">18</property>
+                        <property name="can-shrink">False</property>
+                        <property name="file">resource:///org/gnome/control-center/mouse/assets/tap-to-click.svg</property>
                       </object>
                     </child>
                   </object>
                 </child>
                 <child>
-                  <object class="AdwActionRow" id="edge_scrolling_row">
-                    <property name="visible">False</property>
-                    <property name="title" translatable="yes">Edge Scrolling</property>
+                  <object class="AdwActionRow">
+                    <property name="title" translatable="yes">Disable While Typing</property>
+                    <property name="sensitive" bind-source="touchpad_toggle_switch" bind-property="active" bind-flags="default|sync-create" />
                     <child>
-                      <object class="GtkSwitch" id="edge_scrolling_switch">
+                      <object class="GtkSwitch" id="disable_while_typing_switch">
                         <property name="valign">center</property>
                         <accessibility>
-                          <property name="label" translatable="yes">Edge Scrolling</property>
+                          <property name="label" translatable="yes">Disable While Typing</property>
                         </accessibility>
-                        <signal name="state-set" handler="edge_scrolling_changed_event" object="CcMousePanel" swapped="yes"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="AdwActionRow">
+                    <property name="title" translatable="yes">Touchpad Acceleration</property>
+                    <property name="sensitive" bind-source="touchpad_toggle_switch" bind-property="active" bind-flags="default|sync-create" />
+                    <child>
+                      <object class="GtkComboBoxText" id="touchpad_accel_combo">
+                        <property name="valign">center</property>
+                        <items>
+                          <item id="default" translatable="yes">Default</item>
+                          <item id="flat" translatable="yes">Flat</item>
+                          <item id="adaptive" translatable="yes">Adaptive</item>
+                        </items>
+                        <accessibility>
+                          <property name="label" translatable="yes">Touchpad Acceleration</property>
+                        </accessibility>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="AdwPreferencesGroup">
+                    <property name="title" translatable="yes">Scrolling</property>
+                    <property name="margin_top">27</property>
+                    <property name="margin_bottom">18</property>
+                    <property name="sensitive" bind-source="touchpad_toggle_switch" bind-property="active" bind-flags="default|sync-create" />
+                    <child>
+                      <object class="AdwPreferencesRow">
+                        <property name="activatable">False</property>
+                        <property name="focusable">False</property>
+                        <child>
+                          <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="label" translatable="yes">Scroll Method</property>
+                                <property name="xalign">0</property>
+                                <property name="margin_bottom">18</property>
+                                <property name="margin_start">12</property>
+                                <property name="margin_top">18</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkGrid">
+                                <property name="column_homogeneous">1</property>
+                                <child>
+                                  <object class="GtkBox" id="two_finger_scrolling_box">
+                                    <property name="orientation">vertical</property>
+                                    <child>
+                                      <object class="GtkPicture">
+                                        <property name="margin_bottom">12</property>
+                                        <property name="margin_start">12</property>
+                                        <property name="margin_end">6</property>
+                                        <property name="can-shrink">False</property>
+                                        <property name="file">resource:///org/gnome/control-center/mouse/assets/two-finger.svg</property>
+                                        <style>
+                                          <class name="background"/>
+                                          <class name="frame"/>
+                                        </style>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkCheckButton" id="two_finger_scrolling_radio">
+                                        <signal name="notify::active" handler="on_scrolling_direction_checked_cb" swapped="true"/>
+                                        <property name="margin_start">12</property>
+                                        <property name="margin_bottom">12</property>
+                                        <child>
+                                          <object class="GtkBox">
+                                            <property name="orientation">vertical</property>
+                                            <child>
+                                              <object class="GtkLabel">
+                                                <property name="label" translatable="yes">Two-Finger</property>
+                                                <property name="xalign">0</property>
+                                                <property name="margin_start">8</property>
+                                              </object>
+                                            </child>
+                                            <child>
+                                              <object class="GtkLabel">
+                                                <property name="label" translatable="yes">Drag two fingers on the touchpad.</property>
+                                                <property name="xalign">0</property>
+                                                <property name="margin_start">8</property>
+                                                <style>
+                                                  <class name="subtitle"/>
+                                                </style>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </child>
+                                        <accessibility>
+                                          <property name="label" translatable="yes">Two-Finger</property>
+                                        </accessibility>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkBox" id="edge_scrolling_box">
+                                    <property name="orientation">vertical</property>
+                                    <child>
+                                      <object class="GtkPicture">
+                                        <property name="margin_bottom">12</property>
+                                        <property name="margin_start">6</property>
+                                        <property name="margin_end">12</property>
+                                        <property name="can-shrink">False</property>
+                                        <property name="file">resource:///org/gnome/control-center/mouse/assets/edge.svg</property>
+                                        <style>
+                                          <class name="background"/>
+                                          <class name="frame"/>
+                                        </style>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkCheckButton" id="edge_scrolling_radio">
+                                        <signal name="notify::active" handler="on_scrolling_direction_checked_cb" swapped="true"/>
+                                        <property name="group">two_finger_scrolling_radio</property>
+                                        <property name="margin_start">6</property>
+                                        <property name="margin_bottom">12</property>
+                                        <child>
+                                          <object class="GtkBox">
+                                            <property name="orientation">vertical</property>
+                                            <child>
+                                              <object class="GtkLabel">
+                                                <property name="label" translatable="yes">Edge</property>
+                                                <property name="xalign">0</property>
+                                                <property name="margin_start">8</property>
+                                              </object>
+                                            </child>
+                                            <child>
+                                              <object class="GtkLabel">
+                                                <property name="label" translatable="yes">Drag one finger on the edge of the touchpad.</property>
+                                                <property name="xalign">0</property>
+                                                <property name="margin_start">8</property>
+                                                <style>
+                                                  <class name="subtitle"/>
+                                                </style>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </child>
+                                        <accessibility>
+                                          <property name="label" translatable="yes">Edge</property>
+                                        </accessibility>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="AdwPreferencesRow">
+                        <property name="activatable">False</property>
+                        <property name="focusable">False</property>
+                        <child>
+                          <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="label" translatable="yes">Scroll Direction</property>
+                                <property name="xalign">0</property>
+                                <property name="margin_bottom">18</property>
+                                <property name="margin_start">12</property>
+                                <property name="margin_top">18</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkGrid">
+                                <property name="column_homogeneous">1</property>
+                                <child>
+                                  <object class="GtkPicture">
+                                    <property name="margin_bottom">12</property>
+                                    <property name="margin_start">12</property>
+                                    <property name="margin_end">6</property>
+                                    <property name="can-shrink">False</property>
+                                    <property name="file">resource:///org/gnome/control-center/mouse/assets/touchpad-traditional.svg</property>
+                                    <style>
+                                      <class name="background"/>
+                                      <class name="frame"/>
+                                    </style>
+                                    <layout>
+                                      <property name="column">0</property>
+                                      <property name="row">0</property>
+                                    </layout>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkCheckButton" id="touchpad_traditional_scrolling_radio">
+                                    <property name="margin_start">12</property>
+                                    <property name="margin_bottom">12</property>
+                                    <child>
+                                      <object class="GtkBox">
+                                        <property name="orientation">vertical</property>
+                                        <child>
+                                          <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Traditional</property>
+                                            <property name="xalign">0</property>
+                                            <property name="margin_start">8</property>
+                                          </object>
+                                        </child>
+                                        <child>
+                                          <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Scrolling moves the view.</property>
+                                            <property name="xalign">0</property>
+                                            <property name="margin_start">8</property>
+                                            <style>
+                                              <class name="subtitle"/>
+                                            </style>
+                                          </object>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <accessibility>
+                                      <property name="label" translatable="yes">Default</property>
+                                    </accessibility>
+                                    <layout>
+                                      <property name="column">0</property>
+                                      <property name="row">1</property>
+                                    </layout>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkPicture">
+                                    <property name="margin_bottom">12</property>
+                                    <property name="margin_start">6</property>
+                                    <property name="margin_end">12</property>
+                                    <property name="can-shrink">False</property>
+                                    <property name="file">resource:///org/gnome/control-center/mouse/assets/touchpad-natural.svg</property>
+                                    <style>
+                                      <class name="background"/>
+                                      <class name="frame"/>
+                                    </style>
+                                    <layout>
+                                      <property name="column">1</property>
+                                      <property name="row">0</property>
+                                    </layout>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkCheckButton" id="touchpad_natural_scrolling_radio">
+                                    <property name="group">touchpad_traditional_scrolling_radio</property>
+                                    <property name="margin_start">6</property>
+                                    <property name="margin_bottom">12</property>
+                                    <child>
+                                      <object class="GtkBox">
+                                        <property name="orientation">vertical</property>
+                                        <child>
+                                          <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Natural</property>
+                                            <property name="xalign">0</property>
+                                            <property name="margin_start">8</property>
+                                          </object>
+                                        </child>
+                                        <child>
+                                          <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Scrolling moves the content.</property>
+                                            <property name="xalign">0</property>
+                                            <property name="margin_start">8</property>
+                                            <style>
+                                              <class name="subtitle"/>
+                                            </style>
+                                          </object>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <accessibility>
+                                      <property name="label" translatable="yes">Area</property>
+                                    </accessibility>
+                                    <layout>
+                                      <property name="column">1</property>
+                                      <property name="row">1</property>
+                                    </layout>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
                       </object>
                     </child>
                   </object>
                 </child>
               </object>
             </child>
-
           </object>
         </child>
         <child>

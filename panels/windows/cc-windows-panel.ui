@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="CcWindowsPanel" parent="CcPanel">
+    <child type="content">
+      <object class="AdwPreferencesPage">
+        <child>
+          <object class="AdwPreferencesGroup">
+            <property name="title" translatable="yes">Layout</property>
+            <child>
+              <object class="CcMultitaskingRow">
+                <property name="activatable-widget">default_radio</property>
+                <property name="title" translatable="yes">Default</property>
+                <property name="subtitle" translatable="yes">Shows only close button.</property>
+                <property name="use_underline">True</property>
+                <child type="prefix">
+                  <object class="GtkCheckButton" id="default_radio">
+                    <property name="valign">center</property>
+                  </object>
+                </child>
+                <child type="artwork">
+                  <object class="GtkPicture">
+                    <property name="hexpand">True</property>
+                    <property name="halign">center</property>
+                    <property name="margin-top">18</property>
+                    <property name="margin-bottom">18</property>
+                    <property name="margin-start">18</property>
+                    <property name="margin-end">18</property>
+                    <property name="can-shrink">False</property>
+                    <property name="file">resource:///org/gnome/control-center/windows/assets/default.svg</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="CcMultitaskingRow">
+                <property name="activatable-widget">extended_radio</property>
+                <property name="title" translatable="yes">Extended</property>
+                <property name="subtitle" translatable="yes">Shows minimize, maximize and close buttons.</property>
+                <property name="use_underline">True</property>
+                <child type="prefix">
+                  <object class="GtkCheckButton" id="extended_radio">
+                    <property name="valign">center</property>
+                    <property name="group">default_radio</property>
+                  </object>
+                </child>
+                <child type="artwork">
+                  <object class="GtkPicture">
+                    <property name="hexpand">True</property>
+                    <property name="halign">center</property>
+                    <property name="margin-top">18</property>
+                    <property name="margin-bottom">18</property>
+                    <property name="margin-start">18</property>
+                    <property name="margin-end">18</property>
+                    <property name="can-shrink">False</property>
+                    <property name="file">resource:///org/gnome/control-center/windows/assets/extended.svg</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="AdwPreferencesGroup">
+            <property name="title" translatable="yes">Behaviour</property>
+            <child>
+              <object class="CcListRow" id="attach_modal_dialogs_switch">
+                <property name="title" translatable="yes">Attach Modal dialogs</property>
+                <property name="subtitle" translatable="yes">Modal dialogs will be attached to their parent windows, and cannot be moved</property>
+                <property name="use-underline">True</property>
+                <property name="show-switch">True</property>
+              </object>
+            </child>
+            <child>
+              <object class="CcListRow" id="center_new_windows_switch">
+                <property name="title" translatable="yes">Center New Windows</property>
+                <property name="use-underline">True</property>
+                <property name="show-switch">True</property>
+              </object>
+            </child>
+            <child>
+              <object class="CcListRow" id="resize_with_right_button_switch">
+                <property name="title" translatable="yes">Resize with Secondary Click</property>
+                <property name="use-underline">True</property>
+                <property name="show-switch">True</property>
+              </object>
+            </child>
+            <child>
+              <object class="AdwActionRow">
+                <property name="title" translatable="yes">Windows Focus</property>
+                <child>
+                  <object class="GtkComboBoxText" id="wm_focus_combo">
+                    <property name="valign">center</property>
+                    <items>
+                      <item id="click" translatable="yes">Click to Focus</item>
+                      <item id="sloppy" translatable="yes">Focus on Hover</item>
+                      <item id="mouse" translatable="yes">Secondary-Click</item>
+                    </items>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

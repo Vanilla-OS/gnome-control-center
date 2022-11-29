@@ -161,6 +161,55 @@ cc_common_language_get_current_language (void)
         return language;
 }
 
+gchar *
+cc_common_language_get_property (const gchar *prop_name)
+{
+        g_autoptr(GDBusConnection) bus = NULL;
+        g_autofree gchar *user_path = NULL;
+        g_autoptr(GVariant) properties = NULL;
+        g_autoptr(GVariantIter) iter = NULL;
+        const gchar *key;
+        GVariant *value;
+        g_autoptr(GError) error = NULL;
+
+        if (g_strcmp0 (prop_name, "Language") != 0 && g_strcmp0 (prop_name, "FormatsLocale") != 0) {
+                g_warning ("Invalid argument: '%s'", prop_name);
+                return NULL;
+        }
+
+        bus = g_bus_get_sync (G_BUS_TYPE_SYSTEM, NULL, NULL);
+        user_path = g_strdup_printf ("/org/freedesktop/Accounts/User%i", getuid ());
+
+        properties = g_dbus_connection_call_sync (bus,
+                                                  "org.freedesktop.Accounts",
+                                                  user_path,
+                                                  "org.freedesktop.DBus.Properties",
+                                                  "GetAll",
+                                                  g_variant_new ("(s)", "org.freedesktop.Accounts.User"),
+                                                  G_VARIANT_TYPE ("(a{sv})"),
+                                                  G_DBUS_CALL_FLAGS_NONE,
+                                                  -1,
+                                                  NULL,
+                                                  &error);
+        if (!properties) {
+                g_warning ("Error calling GetAll() when retrieving properties for %s: %s", user_path, error->message);
+
+                /* g_hash_table_lookup() is not NULL-safe, so don't return NULL */
+                if (g_strcmp0 (prop_name, "Language") == 0)
+                        return g_strdup ("en");
+                else
+                        return g_strdup ("en_US.UTF-8");
+        }
+
+        g_variant_get (properties, "(a{sv})", &iter);
+        while (g_variant_iter_loop (iter, "{&sv}", &key, &value)) {
+                if (g_strcmp0 (key, prop_name) == 0)
+                        return g_variant_dup_string (value, NULL);
+        }
+
+        return NULL;
+}
+
 static char *
 get_lang_for_user_object_path (const char *path)
 {
@@ -201,30 +250,62 @@ insert_language (GHashTable *ht,
         g_autofree gchar *label_own_lang = NULL;
         g_autofree gchar *label_current_lang = NULL;
         g_autofree gchar *label_untranslated = NULL;
+        g_autofree gchar *key = NULL;
 
-        label_own_lang = gnome_get_language_from_locale (lang, lang);
-        label_current_lang = gnome_get_language_from_locale (lang, NULL);
-        label_untranslated = gnome_get_language_from_locale (lang, "C");
+        cc_common_language_get_locale (lang, &key);
+
+        label_own_lang = gnome_get_language_from_locale (key, key);
+        label_current_lang = gnome_get_language_from_locale (key, NULL);
+        label_untranslated = gnome_get_language_from_locale (key, "C");
 
         /* We don't have a translation for the label in
          * its own language? */
         if (g_strcmp0 (label_own_lang, label_untranslated) == 0) {
                 if (g_strcmp0 (label_current_lang, label_untranslated) == 0)
-                        g_hash_table_insert (ht, g_strdup (lang), g_strdup (label_untranslated));
+                        g_hash_table_insert (ht, g_strdup (key), g_strdup (label_untranslated));
                 else
-                        g_hash_table_insert (ht, g_strdup (lang), g_strdup (label_current_lang));
+                        g_hash_table_insert (ht, g_strdup (key), g_strdup (label_current_lang));
         } else {
-                g_hash_table_insert (ht, g_strdup (lang), g_strdup (label_own_lang));
+                g_hash_table_insert (ht, g_strdup (key), g_strdup (label_own_lang));
         }
+}
+
+gchar **
+cc_common_language_get_installed_languages (void)
+{
+        g_autofree gchar *output = NULL;
+        g_auto(GStrv) langs = NULL;
+        g_autoptr(GError) error = NULL;
+
+        if (!g_spawn_command_line_sync ("/usr/share/language-tools/language-options",
+                                        &output, NULL, NULL, &error)) {
+                g_warning ("Couldn't get installed languages: %s", error->message);
+                return NULL;
+        }
+        langs = g_strsplit (output, "\n", 0);
+
+        return g_steal_pointer (&langs);
 }
 
 GHashTable *
 cc_common_language_get_initial_languages (void)
 {
         GHashTable *ht;
+        gchar **langs;
+        gint i;
 
         ht = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
 
+        langs = cc_common_language_get_installed_languages ();
+
+        if (langs) {
+                for (i = 0; langs[i]; i++) {
+                        insert_language (ht, langs[i]);
+                }
+
+                g_strfreev (langs);
+        }
+/*
         insert_language (ht, "en_US.UTF-8");
         insert_language (ht, "en_GB.UTF-8");
         insert_language (ht, "de_DE.UTF-8");
@@ -234,10 +315,30 @@ cc_common_language_get_initial_languages (void)
         insert_language (ht, "ja_JP.UTF-8");
         insert_language (ht, "ru_RU.UTF-8");
         insert_language (ht, "ar_EG.UTF-8");
-
+*/
         return ht;
 }
 
+void
+cc_common_language_get_locale (const gchar *language, gchar **locale)
+{
+        g_autofree gchar *command = NULL;
+        g_autoptr(GError) error = NULL;
+
+        /* Get locale that corresponds to the language */
+        command = g_strconcat ("/usr/share/language-tools/language2locale ", language, NULL);
+        if (!g_spawn_command_line_sync (command, locale, NULL, NULL, &error)) {
+                g_warning ("Couldn't get locale: %s", error->message);
+                return;
+        }
+
+        g_strchomp (*locale);
+        if (strlen (*locale) == 0) {
+                g_warning ("Couldn't get locale for language: %s", language);
+                return;
+        }
+
+}
 static void
 foreach_user_lang_cb (gpointer key,
                       gpointer value,
@@ -263,28 +364,18 @@ cc_common_language_add_user_languages (GtkTreeModel *model)
         GtkListStore *store = GTK_LIST_STORE (model);
         GHashTable *user_langs;
         const char *display;
+        const char *lang;
 
         gtk_list_store_clear (store);
 
         user_langs = cc_common_language_get_initial_languages ();
 
         /* Add the current locale first */
-        name = cc_common_language_get_current_language ();
+        lang = cc_common_language_get_property ("Language");
+        cc_common_language_get_locale (lang, &name);
         display = g_hash_table_lookup (user_langs, name);
         if (!display) {
-                g_autofree gchar *language = NULL;
-                g_autofree gchar *country = NULL;
-                g_autofree gchar *codeset = NULL;
-
-                gnome_parse_locale (name, &language, &country, &codeset, NULL);
-
-                if (!codeset || !g_str_equal (codeset, "UTF-8"))
-                        g_warning ("Current user locale codeset isn't UTF-8");
-
-                g_free (name);
-                name = g_strdup_printf ("%s_%s.UTF-8", language, country);
-
-                insert_language (user_langs, name);
+                insert_language (user_langs, lang);
                 display = g_hash_table_lookup (user_langs, name);
         }
 
@@ -296,8 +387,8 @@ cc_common_language_add_user_languages (GtkTreeModel *model)
         g_hash_table_foreach (user_langs, (GHFunc) foreach_user_lang_cb, store);
 
         /* And now the "Other…" selection */
-        gtk_list_store_append (store, &iter);
-        gtk_list_store_set (store, &iter, LOCALE_COL, NULL, DISPLAY_LOCALE_COL, _("Other…"), -1);
+        //gtk_list_store_append (store, &iter);
+        //gtk_list_store_set (store, &iter, LOCALE_COL, NULL, DISPLAY_LOCALE_COL, _("Other…"), -1);
 
         g_hash_table_destroy (user_langs);
 }

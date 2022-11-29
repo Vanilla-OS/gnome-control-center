@@ -5,6 +5,7 @@ panels = [
   'background',
   'camera',
   'color',
+  'connectivity',
   'datetime',
   'default-apps',
   'diagnostics',
@@ -29,7 +30,8 @@ panels = [
   'universal-access',
   'usage',
   'user-accounts',
- 'wwan',
+  'windows',
+  'wwan',
 ]
 
 if host_is_linux

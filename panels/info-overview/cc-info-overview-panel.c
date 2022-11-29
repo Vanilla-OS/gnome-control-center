@@ -67,7 +67,6 @@ struct _CcInfoOverviewPanel
   CcHostnameEntry *hostname_entry;
   CcListRow       *hostname_row;
   CcListRow       *memory_row;
-  GtkPicture      *os_logo;
   CcListRow       *os_name_row;
   CcListRow       *os_build_row;
   CcListRow       *os_type_row;
@@ -763,6 +762,13 @@ does_gnome_software_allow_updates (void)
 }
 
 static gboolean
+does_vanilla_updater_exist (void)
+{
+  g_autofree gchar *path = g_find_program_in_path ("vanilla-updater");
+  return path != NULL;
+}
+
+static gboolean
 does_gnome_software_exist (void)
 {
   g_autofree gchar *path = g_find_program_in_path ("gnome-software");
@@ -783,11 +789,10 @@ open_software_update (CcInfoOverviewPanel *self)
   gboolean ret;
   char *argv[3];
 
-  if (does_gnome_software_exist ())
+  if (does_vanilla_updater_exist ())
     {
-      argv[0] = "gnome-software";
-      argv[1] = "--mode=updates";
-      argv[2] = NULL;
+      argv[0] = "vanilla-updater";
+      argv[1] = NULL;
     }
   else
     {
@@ -876,60 +881,6 @@ cc_info_panel_row_activated_cb (CcInfoOverviewPanel *self,
     open_software_update (self);
 }
 
-#if !defined(DISTRIBUTOR_LOGO) || defined(DARK_MODE_DISTRIBUTOR_LOGO)
-static gboolean
-use_dark_theme (CcInfoOverviewPanel *panel)
-{
-  AdwStyleManager *style_manager = adw_style_manager_get_default ();
-
-  return adw_style_manager_get_dark (style_manager);
-}
-#endif
-
-static void
-setup_os_logo (CcInfoOverviewPanel *panel)
-{
-#ifdef DISTRIBUTOR_LOGO
-#ifdef DARK_MODE_DISTRIBUTOR_LOGO
-  if (use_dark_theme (panel))
-    {
-      gtk_picture_set_filename (panel->os_logo, DARK_MODE_DISTRIBUTOR_LOGO);
-      return;
-    }
-#endif
-  gtk_picture_set_filename (panel->os_logo, DISTRIBUTOR_LOGO);
-  return;
-#else
-  GtkIconTheme *icon_theme;
-  g_autofree char *logo_name = g_get_os_info ("LOGO");
-  g_autoptr(GtkIconPaintable) icon_paintable = NULL;
-  g_autoptr(GPtrArray) array = NULL;
-  g_autoptr(GIcon) icon = NULL;
-  gboolean dark;
-
-  dark = use_dark_theme (panel);
-  if (logo_name == NULL)
-    logo_name = g_strdup ("gnome-logo");
-
-  array = g_ptr_array_new_with_free_func (g_free);
-  if (dark)
-    g_ptr_array_add (array, (gpointer) g_strdup_printf ("%s-text-dark", logo_name));
-  g_ptr_array_add (array, (gpointer) g_strdup_printf ("%s-text", logo_name));
-  if (dark)
-    g_ptr_array_add (array, (gpointer) g_strdup_printf ("%s-dark", logo_name));
-  g_ptr_array_add (array, (gpointer) g_strdup_printf ("%s", logo_name));
-
-  icon = g_themed_icon_new_from_names ((char **) array->pdata, array->len);
-  icon_theme = gtk_icon_theme_get_for_display (gdk_display_get_default ());
-  icon_paintable = gtk_icon_theme_lookup_by_gicon (icon_theme, icon,
-                                                   192,
-                                                   gtk_widget_get_scale_factor (GTK_WIDGET (panel)),
-                                                   gtk_widget_get_direction (GTK_WIDGET (panel)),
-                                                   0);
-  gtk_picture_set_paintable (panel->os_logo, GDK_PAINTABLE (icon_paintable));
-#endif
-}
-
 static void
 cc_info_overview_panel_class_init (CcInfoOverviewPanelClass *klass)
 {
@@ -946,7 +897,6 @@ cc_info_overview_panel_class_init (CcInfoOverviewPanelClass *klass)
   gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, hostname_entry);
   gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, hostname_row);
   gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, memory_row);
-  gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, os_logo);
   gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, os_name_row);
   gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, os_build_row);
   gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, os_type_row);
@@ -972,13 +922,11 @@ cc_info_overview_panel_init (CcInfoOverviewPanel *self)
 
   g_resources_register (cc_info_overview_get_resource ());
 
-  if ((!does_gnome_software_exist () || !does_gnome_software_allow_updates ()) && !does_gpk_update_viewer_exist ())
+  if (!does_vanilla_updater_exist () && (!does_gnome_software_exist () || !does_gnome_software_allow_updates ()) && !does_gpk_update_viewer_exist ())
     gtk_widget_hide (GTK_WIDGET (self->software_updates_row));
 
   info_overview_panel_setup_overview (self);
   info_overview_panel_setup_virt (self);
-
-  setup_os_logo (self);
 }
 
 GtkWidget *

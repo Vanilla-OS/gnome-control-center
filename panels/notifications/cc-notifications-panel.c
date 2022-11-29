@@ -360,6 +360,14 @@ process_app_info (CcNotificationsPanel *panel,
   guint i;
 
   app_id = app_info_get_id (app_info);
+
+  /* Ignore compatibility desktops (lp: #1716267) */
+  if (g_strcmp0 (app_id, "file-roller") == 0)
+    return;
+
+  if (g_strcmp0 (app_id, "nautilus") == 0)
+    return;
+
   g_strcanon (app_id,
               "0123456789"
               "abcdefghijklmnopqrstuvwxyz"

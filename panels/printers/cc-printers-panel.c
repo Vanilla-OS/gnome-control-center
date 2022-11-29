@@ -25,6 +25,7 @@
 #include "pp-printer.h"
 
 #include <string.h>
+#include <gio/gdesktopappinfo.h>
 #include <glib/gi18n-lib.h>
 #include <glib/gstdio.h>
 #include <polkit/polkit.h>
@@ -994,6 +995,25 @@ printer_add_cb (CcPrintersPanel *self)
 }
 
 static void
+show_system_config_printer (void)
+{
+  g_autoptr(GAppInfo) app_info = NULL;
+  g_autoptr(GdkAppLaunchContext) ctx = NULL;
+  g_autoptr(GError) error = NULL;
+
+  app_info = G_APP_INFO (g_desktop_app_info_new ("system-config-printer.desktop"));
+
+  if (app_info == NULL) {
+    g_warning ("Failed to launch system-config-printer: couldn't create GDesktopAppInfo");
+    return;
+  }
+
+  ctx = gdk_display_get_app_launch_context (gdk_display_get_default ());
+  if (!g_app_info_launch (app_info, NULL, G_APP_LAUNCH_CONTEXT (ctx), &error))
+    g_warning ("Failed to launch system-config-printer: %s", error->message);
+}
+
+static void
 update_sensitivity (gpointer user_data)
 {
   CcPrintersPanel         *self = (CcPrintersPanel*) user_data;
@@ -1250,6 +1270,10 @@ cc_printers_panel_init (CcPrintersPanel *self)
 
   self->notification = (GtkRevealer*)
     gtk_builder_get_object (self->builder, "notification");
+
+  widget = (GtkWidget*) gtk_builder_get_object (self->builder, "system-config-printer-button1");
+  g_signal_connect_swapped (widget, "clicked",
+                            G_CALLBACK (show_system_config_printer), NULL);
 
   widget = (GtkWidget*)
     gtk_builder_get_object (self->builder, "notification-undo-button");

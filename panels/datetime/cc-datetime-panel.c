@@ -58,6 +58,12 @@ enum {
 
 #define CLOCK_SCHEMA "org.gnome.desktop.interface"
 #define CLOCK_FORMAT_KEY "clock-format"
+#define CLOCK_SHOW_WEEKDAY_KEY "clock-show-weekday"
+#define CLOCK_SHOW_DATE_KEY "clock-show-date"
+#define CLOCK_SHOW_SECONDS_KEY "clock-show-seconds"
+
+#define CALENDAR_SCHEMA "org.gnome.desktop.calendar"
+#define CALENDAR_SHOW_WEEK_NUMBERS_KEY "show-weekdate"
 
 #define FILECHOOSER_SCHEMA "org.gtk.Settings.FileChooser"
 
@@ -79,6 +85,7 @@ struct _CcDateTimePanel
   GDateTime *date;
 
   GSettings *clock_settings;
+  GSettings *calendar_settings;
   GSettings *datetime_settings;
   GSettings *filechooser_settings;
   GDesktopClockFormat clock_format;
@@ -94,6 +101,10 @@ struct _CcDateTimePanel
   GtkWidget *datetime_label;
   GtkWidget *day_spinbutton;
   GtkWidget *timeformat_row;
+  GtkWidget *weekday_switch;
+  GtkWidget *date_switch;
+  GtkWidget *seconds_switch;
+  GtkWidget *week_numbers_switch;
   GtkWidget *h_spinbutton;
   GtkLockButton *lock_button;
   GtkListBox *date_box;
@@ -147,6 +158,7 @@ cc_date_time_panel_dispose (GObject *object)
   g_clear_object (&panel->tz_permission);
   g_clear_object (&panel->location_settings);
   g_clear_object (&panel->clock_settings);
+  g_clear_object (&panel->calendar_settings);
   g_clear_object (&panel->datetime_settings);
   g_clear_object (&panel->filechooser_settings);
 
@@ -955,6 +967,10 @@ cc_date_time_panel_class_init (CcDateTimePanelClass *klass)
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePanel, day_row);
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePanel, day_spinbutton);
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePanel, timeformat_row);
+  gtk_widget_class_bind_template_child (widget_class, CcDateTimePanel, weekday_switch);
+  gtk_widget_class_bind_template_child (widget_class, CcDateTimePanel, date_switch);
+  gtk_widget_class_bind_template_child (widget_class, CcDateTimePanel, seconds_switch);
+  gtk_widget_class_bind_template_child (widget_class, CcDateTimePanel, week_numbers_switch);
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePanel, lock_button);
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePanel, month_row);
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePanel, network_time_switch);
@@ -1068,6 +1084,26 @@ cc_date_time_panel_init (CcDateTimePanel *self)
   g_signal_connect_object (self->clock_settings, "changed::" CLOCK_FORMAT_KEY,
                            G_CALLBACK (clock_settings_changed_cb), self, G_CONNECT_SWAPPED);
 
+  /* setup top bar clock setting switches */
+  g_settings_bind (self->clock_settings, CLOCK_SHOW_WEEKDAY_KEY,
+                   self->weekday_switch, "active",
+                   G_SETTINGS_BIND_DEFAULT);
+
+  g_settings_bind (self->clock_settings, CLOCK_SHOW_DATE_KEY,
+                   self->date_switch, "active",
+                   G_SETTINGS_BIND_DEFAULT);
+
+  g_settings_bind (self->clock_settings, CLOCK_SHOW_SECONDS_KEY,
+                   self->seconds_switch, "active",
+                   G_SETTINGS_BIND_DEFAULT);
+
+  /* Calendar settings */
+  self->calendar_settings = g_settings_new (CALENDAR_SCHEMA);
+
+  g_settings_bind (self->calendar_settings, CALENDAR_SHOW_WEEK_NUMBERS_KEY,
+                   self->week_numbers_switch, "active",
+                   G_SETTINGS_BIND_DEFAULT);
+                   
   update_time (self);
 
   load_regions_model (GTK_LIST_STORE (self->city_liststore));

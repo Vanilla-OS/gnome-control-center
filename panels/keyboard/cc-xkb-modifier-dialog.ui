@@ -36,13 +36,14 @@
                   <object class="AdwActionRow" id="switch_row">
                     <property name="activatable">False</property>
                     <property name="selectable">False</property>
+                    <property name="title" translatable="yes">Use layout default</property>
                     <child>
-                      <object class="GtkSwitch" id="enabled_switch">
+                      <object class="GtkSwitch" id="default_switch">
                         <property name="valign">center</property>
                         <accessibility>
                           <property name="label" translatable="yes">Enabled</property>
                         </accessibility>
-                        <signal name="state-set" handler="enable_switch_changed_cb" object="CcXkbModifierDialog" swapped="no"/>
+                        <signal name="state-set" handler="default_switch_changed_cb" object="CcXkbModifierDialog" swapped="no"/>
                       </object>
                     </child>
                   </object>

@@ -41,4 +41,5 @@ class PanelTestCase(X11SessionTestCase, GTest):
 
 if __name__ == '__main__':
     # avoid writing to stderr
-    unittest.main(testRunner=unittest.TextTestRunner(stream=sys.stdout, verbosity=2))
+    # TODO: result is ignored: https://gitlab.gnome.org/GNOME/gnome-control-center/-/issues/1768
+    unittest.main(testRunner=unittest.TextTestRunner(stream=sys.stdout, verbosity=2), exit=False)

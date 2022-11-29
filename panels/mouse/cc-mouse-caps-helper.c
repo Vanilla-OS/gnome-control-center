@@ -38,6 +38,13 @@ touchpad_check_capabilities_x11 (gboolean *have_two_finger_scrolling,
 	unsigned long nitems, bytes_after;
 	unsigned char *data;
 
+	if (cc_synaptics_check ()) {
+		*have_two_finger_scrolling = TRUE;
+		*have_edge_scrolling = TRUE;
+		*have_tap_to_click = TRUE;
+		return TRUE;
+	}
+
         gdisplay = gdk_display_get_default ();
         display = GDK_DISPLAY_XDISPLAY (gdk_display_get_default ());
 	prop_scroll_methods = XInternAtom (display, "libinput Scroll Methods Available", False);

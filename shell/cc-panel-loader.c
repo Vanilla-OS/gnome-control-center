@@ -37,6 +37,7 @@ extern GType cc_background_panel_get_type (void);
 extern GType cc_bluetooth_panel_get_type (void);
 #endif /* BUILD_BLUETOOTH */
 extern GType cc_color_panel_get_type (void);
+extern GType cc_connectivity_panel_get_type (void);
 extern GType cc_date_time_panel_get_type (void);
 extern GType cc_default_apps_panel_get_type (void);
 extern GType cc_display_panel_get_type (void);
@@ -44,6 +45,7 @@ extern GType cc_info_overview_panel_get_type (void);
 extern GType cc_keyboard_panel_get_type (void);
 extern GType cc_mouse_panel_get_type (void);
 extern GType cc_multitasking_panel_get_type (void);
+extern GType cc_windows_panel_get_type (void);
 #ifdef BUILD_NETWORK
 extern GType cc_network_panel_get_type (void);
 extern GType cc_wifi_panel_get_type (void);
@@ -106,6 +108,7 @@ static CcPanelLoaderVtable default_panels[] =
 #endif
   PANEL_TYPE("camera",           cc_camera_panel_get_type,               NULL),
   PANEL_TYPE("color",            cc_color_panel_get_type,                NULL),
+  PANEL_TYPE("connectivity",     cc_connectivity_panel_get_type,         NULL),
   PANEL_TYPE("datetime",         cc_date_time_panel_get_type,            NULL),
   PANEL_TYPE("default-apps",     cc_default_apps_panel_get_type,         NULL),
   PANEL_TYPE("diagnostics",      cc_diagnostics_panel_get_type,          cc_diagnostics_panel_static_init_func),
@@ -140,6 +143,7 @@ static CcPanelLoaderVtable default_panels[] =
 #ifdef BUILD_WACOM
   PANEL_TYPE("wacom",            cc_wacom_panel_get_type,                cc_wacom_panel_static_init_func),
 #endif
+  PANEL_TYPE("windows",          cc_windows_panel_get_type,              NULL),
 #ifdef BUILD_WWAN
   PANEL_TYPE("wwan",             cc_wwan_panel_get_type,                 cc_wwan_panel_static_init_func),
 #endif

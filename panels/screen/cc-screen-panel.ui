@@ -80,6 +80,20 @@
               </object>
             </child>
 
+            <!-- Automatic Screen Lock Delay row -->
+            <child>
+              <object class="AdwActionRow" id="lock_on_suspend_row">
+                <property name="title" translatable="yes">Lock Screen on Suspend</property>
+                <property name="activatable-widget">lock_on_suspend_switch</property>
+                <property name="use-underline">true</property>
+                <child>
+                  <object class="GtkSwitch" id="lock_on_suspend_switch">
+                    <property name="valign">center</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+
             <!-- USB protection row -->
             <child>
               <object class="AdwActionRow" id="usb_protection_row">

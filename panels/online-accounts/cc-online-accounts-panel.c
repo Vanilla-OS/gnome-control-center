@@ -803,7 +803,10 @@ cc_online_accounts_panel_set_property (GObject      *object,
             }
 
           if (g_strcmp0 (first_arg, "add") == 0)
-            command_add (CC_ONLINE_ACCOUNTS_PANEL (object), parameters);
+            {
+              command_add (CC_ONLINE_ACCOUNTS_PANEL (object), parameters);
+              g_application_quit (g_application_get_default ());
+            }
           else if (first_arg != NULL)
             select_account_by_id (CC_ONLINE_ACCOUNTS_PANEL (object), first_arg);
 

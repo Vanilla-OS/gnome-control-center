@@ -5,5 +5,15 @@
     <file preprocess="xml-stripblanks">cc-mouse-test.ui</file>
     <file>scroll-test.svg</file>
     <file>scroll-test-gegl.svg</file>
+    <file>assets/click-anywhere.svg</file>
+    <file>assets/click-areas.svg</file>
+    <file>assets/tap-to-click.svg</file>
+    <file>assets/mouse-traditional.svg</file>
+    <file>assets/mouse-natural.svg</file>
+    <file>assets/touchpad-traditional.svg</file>
+    <file>assets/touchpad-natural.svg</file>
+    <file>assets/two-finger.svg</file>
+    <file>assets/edge.svg</file>
+    <file>assets/pointer-location.svg</file>
   </gresource>
 </gresources>

@@ -117,6 +117,7 @@
                 <property name="vexpand">True</property>
                 <child>
                   <object class="GtkBox">
+                    <property name="orientation">vertical</property>
                     <child>
                       <object class="GtkListBox" id="content">
                         <property name="selection-mode">GTK_SELECTION_NONE</property>
@@ -125,6 +126,18 @@
                         <style>
                           <class name="background"/>
                         </style>
+                      </object>
+                    </child>
+
+                    <child>
+                      <object class="GtkButton" id="system-config-printer-button1">
+                        <property name="label" translatable="yes">Additional Printer Settings…</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="hexpand">False</property>
+                        <property name="halign">end</property>
+                        <property name="margin-end">60</property>
+                        <property name="margin-bottom">24</property>
                       </object>
                     </child>
                   </object>
