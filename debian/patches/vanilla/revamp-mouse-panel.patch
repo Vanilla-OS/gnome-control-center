@@ -759,7 +759,7 @@ Subject: mouse: Show more settings and revamp mouse panel based on mockups.
 +                                    </child>
 +                                    <child>
 +                                      <object class="GtkLabel">
-+                                        <property name="label" translatable="yes">Click in hardware default.</property>
++                                        <property name="label" translatable="yes">Uses the hardware-default configuration.</property>
 +                                        <property name="xalign">0</property>
 +                                        <property name="margin_start">8</property>
 +                                        <style>
@@ -813,7 +813,7 @@ Subject: mouse: Show more settings and revamp mouse panel based on mockups.
 +                                    </child>
 +                                    <child>
 +                                      <object class="GtkLabel">
-+                                        <property name="label" translatable="yes">Click in marked areas.</property>
++                                        <property name="label" translatable="yes">Click in the marked areas for right- and middle-click.</property>
 +                                        <property name="xalign">0</property>
 +                                        <property name="margin_start">8</property>
 +                                        <style>
@@ -842,7 +842,7 @@ Subject: mouse: Show more settings and revamp mouse panel based on mockups.
 +                  <object class="CcMultitaskingRow" id="tap_to_click_row">
 +                    <property name="activatable-widget">tap_to_click_switch</property>
                      <property name="title" translatable="yes">Tap to Click</property>
-+                    <property name="subtitle" translatable="yes">Quickly touch the touchpad to click.</property>
++                    <property name="subtitle" translatable="yes">Tap the touchpad to click.</property>
 +                    <property name="sensitive" bind-source="touchpad_toggle_switch" bind-property="active" bind-flags="default|sync-create" />
                      <child>
                        <object class="GtkSwitch" id="tap_to_click_switch">
@@ -966,7 +966,7 @@ Subject: mouse: Show more settings and revamp mouse panel based on mockups.
 +                                            </child>
 +                                            <child>
 +                                              <object class="GtkLabel">
-+                                                <property name="label" translatable="yes">Drag two fingers on the touchpad.</property>
++                                                <property name="label" translatable="yes">Scroll by swiping with two fingers.</property>
 +                                                <property name="xalign">0</property>
 +                                                <property name="margin_start">8</property>
 +                                                <style>
@@ -1017,7 +1017,7 @@ Subject: mouse: Show more settings and revamp mouse panel based on mockups.
 +                                            </child>
 +                                            <child>
 +                                              <object class="GtkLabel">
-+                                                <property name="label" translatable="yes">Drag one finger on the edge of the touchpad.</property>
++                                                <property name="label" translatable="yes">Scroll by sliding one finger on the edge of the touchpad.</property>
 +                                                <property name="xalign">0</property>
 +                                                <property name="margin_start">8</property>
 +                                                <style>

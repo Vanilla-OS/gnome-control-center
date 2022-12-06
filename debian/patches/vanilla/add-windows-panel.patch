@@ -239,7 +239,7 @@ Subject: windows: Add new panel in Settings to present settings for windows and 
 +              <object class="CcMultitaskingRow">
 +                <property name="activatable-widget">default_radio</property>
 +                <property name="title" translatable="yes">Default</property>
-+                <property name="subtitle" translatable="yes">Shows only close button.</property>
++                <property name="subtitle" translatable="yes">Shows only the close button.</property>
 +                <property name="use_underline">True</property>
 +                <child type="prefix">
 +                  <object class="GtkCheckButton" id="default_radio">
@@ -264,7 +264,7 @@ Subject: windows: Add new panel in Settings to present settings for windows and 
 +              <object class="CcMultitaskingRow">
 +                <property name="activatable-widget">extended_radio</property>
 +                <property name="title" translatable="yes">Extended</property>
-+                <property name="subtitle" translatable="yes">Shows minimize, maximize and close buttons.</property>
++                <property name="subtitle" translatable="yes">Shows the minimize, maximize and close buttons.</property>
 +                <property name="use_underline">True</property>
 +                <child type="prefix">
 +                  <object class="GtkCheckButton" id="extended_radio">
@@ -290,11 +290,11 @@ Subject: windows: Add new panel in Settings to present settings for windows and 
 +        </child>
 +        <child>
 +          <object class="AdwPreferencesGroup">
-+            <property name="title" translatable="yes">Behaviour</property>
++            <property name="title" translatable="yes">Behavior</property>
 +            <child>
 +              <object class="CcListRow" id="attach_modal_dialogs_switch">
-+                <property name="title" translatable="yes">Attach Modal dialogs</property>
-+                <property name="subtitle" translatable="yes">Modal dialogs will be attached to their parent windows, and cannot be moved</property>
++                <property name="title" translatable="yes">Attach Modal Dialogs</property>
++                <property name="subtitle" translatable="yes">Modal dialog windows will be attached to their parent windows, and cannot be moved.</property>
 +                <property name="use-underline">True</property>
 +                <property name="show-switch">True</property>
 +              </object>
@@ -308,7 +308,7 @@ Subject: windows: Add new panel in Settings to present settings for windows and 
 +            </child>
 +            <child>
 +              <object class="CcListRow" id="resize_with_right_button_switch">
-+                <property name="title" translatable="yes">Resize with Secondary Click</property>
++                <property name="title" translatable="yes">Resize with Secondary-Click</property>
 +                <property name="use-underline">True</property>
 +                <property name="show-switch">True</property>
 +              </object>
