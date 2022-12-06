@@ -99,7 +99,7 @@ Subject: datetime panel: Expose Top-Bar settings that were only accessible via G
              </child>
 +            <child>
 +              <object class="AdwActionRow">
-+                <property name="title" translatable="yes">Week Day</property>
++                <property name="title" translatable="yes">Day of the Week</property>
 +                <property name="use_underline">True</property>
 +                <property name="activatable_widget">weekday_switch</property>
 +                <child>
