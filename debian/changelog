@@ -1,3 +1,15 @@
+gnome-control-center (1:43.1-2) unstable; urgency=medium
+
+  [ Debian Janitor ]
+  * Remove 2 obsolete maintscript entries in 1 files.
+  * Update upstream metadata fields: Bug-Database, Bug-Submit
+
+  [ Jeremy Bicha ]
+  * Add patch to build with the new snapd-glib
+  * debian/control.in: Bump minimum snapd-glib to 1.63
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Thu, 08 Dec 2022 21:06:20 -0500
+
 gnome-control-center (1:43.1-1) unstable; urgency=medium
 
   [ Jeremy Bicha ]
