@@ -15,6 +15,7 @@ representation of how they function.
 
 Changes compared to the original patch made 2022-12-25:
 * Add nodefault_option after the main option, not before (LP: #2000423)
+* Get back the "Use layout default" switch_row title
 
 Origin: https://gitlab.gnome.org/GNOME/gnome-control-center/-/merge_requests/910
 Bug-Ubuntu: https://launchpad.net/bugs/1867548
@@ -22,10 +23,10 @@ Bug-GNOME: https://gitlab.gnome.org/GNOME/gnome-control-center/issues/918
 Last-Update: 2022-12-25
 ---
  panels/keyboard/cc-keyboard-panel.c       |  5 +-
- panels/keyboard/cc-xkb-modifier-dialog.c  | 77 ++++++++++++++++++-------------
+ panels/keyboard/cc-xkb-modifier-dialog.c  | 78 ++++++++++++++++++-------------
  panels/keyboard/cc-xkb-modifier-dialog.h  |  1 +
  panels/keyboard/cc-xkb-modifier-dialog.ui |  5 +-
- 4 files changed, 52 insertions(+), 36 deletions(-)
+ 4 files changed, 52 insertions(+), 37 deletions(-)
 
 diff --git a/panels/keyboard/cc-keyboard-panel.c b/panels/keyboard/cc-keyboard-panel.c
 index 9679b0d..b1d7219 100644
@@ -217,9 +218,11 @@ index da8116e..d5b865d 100644
      {
        row = g_object_new (GTK_TYPE_LIST_BOX_ROW,
                            "visible", TRUE,
-@@ -312,10 +324,9 @@ cc_xkb_modifier_dialog_new (GSettings *input_settings,
+@@ -310,12 +322,10 @@ cc_xkb_modifier_dialog_new (GSettings *input_settings,
+ 
+   self->modifier = modifier;
    gtk_window_set_title (GTK_WINDOW (self), gettext (modifier->title));
-   adw_preferences_row_set_title (ADW_PREFERENCES_ROW (self->switch_row), gettext (modifier->title));
+-  adw_preferences_row_set_title (ADW_PREFERENCES_ROW (self->switch_row), gettext (modifier->title));
    gtk_label_set_markup (self->description_label, gettext (modifier->description));
 -  gtk_widget_set_visible (GTK_WIDGET (self->switch_listbox), modifier->default_option == NULL);
    add_radio_buttons (self);
@@ -229,7 +232,7 @@ index da8116e..d5b865d 100644
  
    return self;
  }
-@@ -329,6 +340,7 @@ xcb_modifier_transform_binding_to_label (GValue   *value,
+@@ -329,6 +339,7 @@ xcb_modifier_transform_binding_to_label (GValue   *value,
    const CcXkbOption *entry = NULL;
    const char **items;
    guint i;
@@ -237,7 +240,7 @@ index da8116e..d5b865d 100644
  
    items = g_variant_get_strv (variant, NULL);
  
-@@ -337,19 +349,18 @@ xcb_modifier_transform_binding_to_label (GValue   *value,
+@@ -337,19 +348,18 @@ xcb_modifier_transform_binding_to_label (GValue   *value,
        entry = get_xkb_option_from_name (modifier, items[i]);
        if (entry != NULL)
          break;
