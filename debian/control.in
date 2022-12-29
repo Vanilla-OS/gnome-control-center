@@ -42,7 +42,7 @@ Build-Depends: debhelper-compat (= 13),
                libpwquality-dev (>= 1.2.2),
                libsecret-1-dev,
                libsmbclient-dev (>= 2:3.6.12-1~),
-               libsnapd-glib-dev (>= 1.60) [linux-any],
+               libsnapd-glib-dev (>= 1.63) [linux-any],
                libudisks2-dev,
                libupower-glib-dev (>= 0.99.8),
                libwacom-dev (>= 0.7) [linux-any],
@@ -60,7 +60,7 @@ Build-Depends: debhelper-compat (= 13),
                tzdata <!nocheck>,
                xvfb,
                python3-dbusmock,
-Standards-Version: 4.6.1
+Standards-Version: 4.6.2
 Rules-Requires-Root: no
 XS-Debian-Vcs-Git: https://salsa.debian.org/gnome-team/gnome-control-center.git
 XS-Debian-Vcs-Browser: https://salsa.debian.org/gnome-team/gnome-control-center

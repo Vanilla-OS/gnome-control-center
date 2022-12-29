@@ -1,8 +1,7 @@
 keyboard-Allow-disabling-alternate-characters-key.patch
 keyboard-For-xkb-options-have-Layout-default-toggle-and-N.patch
 keyboard-Avoid-modifying-xkb-options-when-user-changes-n.patch
-object-cache-Avoid-use-after-free-of-task-error.patch
-network-fix-crashes-in-eap-method-simple.patch
+build-Look-for-snapd-glib-2.patch
 debian/Expose-touchpad-settings-if-synaptics-is-in-use.patch
 debian/Debian-s-adduser-doesn-t-allow-uppercase-letters-by-defau.patch
 debian/Ignore-result-of-test-network-panel.patch
@@ -28,4 +27,3 @@ ubuntu/info-overview-Show-updates-in-software-propeties-instead-.patch
 ubuntu/sound-Add-a-button-to-select-the-default-theme.patch
 ubuntu/applications-Launch-snap-store-if-it-is-installed.patch
 ubuntu/display-Allow-fractional-scaling-to-be-enabled.patch
-build-Look-for-snapd-glib-2.patch
