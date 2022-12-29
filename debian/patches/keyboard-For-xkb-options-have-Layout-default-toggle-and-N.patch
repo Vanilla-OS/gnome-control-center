@@ -15,7 +15,6 @@ representation of how they function.
 
 Changes compared to the original patch made 2022-12-25:
 * Add nodefault_option after the main option, not before (LP: #2000423)
-* Get back the "Use layout default" switch_row title
 
 Origin: https://gitlab.gnome.org/GNOME/gnome-control-center/-/merge_requests/910
 Bug-Ubuntu: https://launchpad.net/bugs/1867548
