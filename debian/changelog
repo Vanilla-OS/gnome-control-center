@@ -4,6 +4,8 @@ gnome-control-center (1:43.2-1) UNRELEASED; urgency=medium
   * Dropped patches (applied upstream):
     - d/p/object-cache-Avoid-use-after-free-of-task-error.patch
     - d/p/network-fix-crashes-in-eap-method-simple.patch
+  * d/p/keyboard-Allow-disabling-alternate-characters-key.patch
+    (closes: #1027003)
 
  -- Gunnar Hjalmarsson <gunnarhj@debian.org>  Thu, 29 Dec 2022 14:41:18 +0100
 
