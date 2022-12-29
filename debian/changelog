@@ -1,4 +1,4 @@
-gnome-control-center (1:43.2-1ubuntu1) UNRELEASED; urgency=medium
+gnome-control-center (1:43.2-1ubuntu1) lunar; urgency=medium
 
   * Merge with Debian. Remaining changes:
     + Add gnome-control-center-faces package to share with unity-control-center
@@ -47,9 +47,12 @@ gnome-control-center (1:43.2-1ubuntu1) UNRELEASED; urgency=medium
       - u/sound-Add-a-button-to-select-the-default-theme.patch
       - u/applications-Launch-snap-store-if-it-is-installed.patch
       - u/display-Allow-fractional-scaling-to-be-enabled.patch
-      - build-Look-for-snapd-glib-2.patch
+  * d/p/keyboard-For-xkb-options-have-Layout-default-toggle-and-N.patch:
+    + Add nodefault_option after the main option, not before
+      (LP: #2000423)
+    + Get back the "Use layout default" switch_row title
 
- -- Gunnar Hjalmarsson <gunnarhj@ubuntu.com>  Thu, 29 Dec 2022 17:41:09 +0100
+ -- Gunnar Hjalmarsson <gunnarhj@ubuntu.com>  Thu, 29 Dec 2022 18:39:39 +0100
 
 gnome-control-center (1:43.2-1) unstable; urgency=medium
 
