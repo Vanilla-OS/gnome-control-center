@@ -1,5 +1,6 @@
-gnome-control-center (1:43.2-1) UNRELEASED; urgency=medium
+gnome-control-center (1:43.2-1) unstable; urgency=medium
 
+  * Team upload
   * New upstream release
   * Dropped patches (applied upstream):
     - d/p/object-cache-Avoid-use-after-free-of-task-error.patch
@@ -8,7 +9,7 @@ gnome-control-center (1:43.2-1) UNRELEASED; urgency=medium
     (closes: #1027003)
   * Bump Standards-Version to 4.6.2
 
- -- Gunnar Hjalmarsson <gunnarhj@debian.org>  Thu, 29 Dec 2022 14:41:18 +0100
+ -- Gunnar Hjalmarsson <gunnarhj@debian.org>  Thu, 29 Dec 2022 17:13:57 +0100
 
 gnome-control-center (1:43.1-2) unstable; urgency=medium
 
