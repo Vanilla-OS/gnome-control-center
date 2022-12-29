@@ -6,6 +6,7 @@ gnome-control-center (1:43.2-1) UNRELEASED; urgency=medium
     - d/p/network-fix-crashes-in-eap-method-simple.patch
   * d/p/keyboard-Allow-disabling-alternate-characters-key.patch
     (closes: #1027003)
+  * Bump Standards-Version to 4.6.2
 
  -- Gunnar Hjalmarsson <gunnarhj@debian.org>  Thu, 29 Dec 2022 14:41:18 +0100
 
