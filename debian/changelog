@@ -1,8 +1,11 @@
 gnome-control-center (1:43.2-1) UNRELEASED; urgency=medium
 
   * New upstream release
+  * Dropped patches (applied upstream):
+    - d/p/object-cache-Avoid-use-after-free-of-task-error.patch
+    - d/p/network-fix-crashes-in-eap-method-simple.patch
 
- -- Gunnar Hjalmarsson <gunnarhj@ubuntu.com>  Thu, 29 Dec 2022 14:41:18 +0100
+ -- Gunnar Hjalmarsson <gunnarhj@debian.org>  Thu, 29 Dec 2022 14:41:18 +0100
 
 gnome-control-center (1:43.1-2) unstable; urgency=medium
 
