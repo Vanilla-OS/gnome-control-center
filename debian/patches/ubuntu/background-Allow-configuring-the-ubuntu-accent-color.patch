@@ -718,7 +718,7 @@ index 0000000..ddcfbd7
 +<?xml version="1.0" encoding="UTF-8"?>
 +<interface>
 +  <template class="CcUbuntuColorsRow" parent="AdwActionRow">
-+    <property name="title">Color</property>
++    <property name="title" translatable="yes">Color</property>
 +    <property name="title-lines">1</property>
 +    <property name="activatable">False</property>
 +    <property name="selectable">False</property>
