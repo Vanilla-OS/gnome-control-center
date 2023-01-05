@@ -1166,7 +1166,7 @@ index 0000000..1c57011
 +    {
 +      g_autoptr (GObject) value_object = NULL;
 +
-+      gtk_string_list_append (string_list, _(positions[i].name));
++      gtk_string_list_append (string_list, g_dpgettext2 (NULL, "Position on screen for the Ubuntu dock", positions[i].name));
 +      value_object = g_list_model_get_item (G_LIST_MODEL (string_list), i);
 +      g_object_set_data (value_object, "position",
 +                         GUINT_TO_POINTER (positions[i].position));
@@ -1309,7 +1309,7 @@ index 0000000..1c57011
 +    {
 +      g_autoptr (GObject) value_object = NULL;
 +
-+      gtk_string_list_append (string_list, _(sizes[i].name));
++      gtk_string_list_append (string_list, g_dpgettext2 (NULL, "Size of the desktop icons", sizes[i].name));
 +      value_object = g_list_model_get_item (G_LIST_MODEL (string_list), i);
 +      g_object_set_data (value_object, "size",
 +                         GUINT_TO_POINTER (sizes[i].size));
@@ -1454,7 +1454,7 @@ index 0000000..1c57011
 +    {
 +      g_autoptr(GObject) value_object = NULL;
 +
-+      gtk_string_list_append (string_list, _(corners[i].name));
++      gtk_string_list_append (string_list, g_dpgettext2 (NULL, "Alignment of new desktop icons", corners[i].name));
 +      value_object = g_list_model_get_item (G_LIST_MODEL (string_list), i);
 +      g_object_set_data (value_object, "corner",
 +                         GUINT_TO_POINTER (corners[i].corner));
