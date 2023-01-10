@@ -1,8 +1,23 @@
 # List of source files containing translatable strings.
 # Please keep this file sorted alphabetically.
 panels/applications/cc-applications-panel.c
+panels/applications/cc-applications-panel.h
 panels/applications/cc-applications-panel.ui
+panels/applications/cc-applications-row.c
+panels/applications/cc-applications-row.h
+panels/applications/cc-applications-row.ui
+panels/applications/cc-info-row.c
+panels/applications/cc-info-row.h
+panels/applications/cc-info-row.ui
+panels/applications/cc-snap-row.c
+panels/applications/cc-snap-row.h
+panels/applications/cc-snap-row.ui
+panels/applications/cc-toggle-row.c
+panels/applications/cc-toggle-row.h
+panels/applications/cc-toggle-row.ui
 panels/applications/gnome-applications-panel.desktop.in.in
+panels/applications/search.c
+panels/applications/search.h
 panels/background/bg-colors-source.c
 panels/background/cc-background-chooser.c
 panels/background/cc-background-chooser.ui
@@ -32,12 +47,16 @@ panels/common/cc-time-editor.ui
 panels/common/cc-time-entry.c
 panels/common/cc-util.c
 panels/common/hostname-helper.c
-panels/connectivity/cc-connectivity-panel.ui
-panels/connectivity/gnome-connectivity-panel.desktop.in.in
 panels/datetime/cc-datetime-panel.c
+panels/datetime/cc-datetime-panel.h
 panels/datetime/cc-datetime-panel.ui
+panels/datetime/cc-timezone-map.c
+panels/datetime/cc-timezone-map.h
+panels/datetime/date-endian.h
 panels/datetime/gnome-datetime-panel.desktop.in.in
 panels/datetime/org.gnome.controlcenter.datetime.policy.in
+panels/datetime/tz.c
+panels/datetime/tz.h
 panels/default-apps/cc-default-apps-panel.ui
 panels/default-apps/gnome-default-apps-panel.desktop.in.in
 panels/diagnostics/cc-diagnostics-panel.c
@@ -86,8 +105,13 @@ panels/location/cc-location-panel.ui
 panels/location/gnome-location-panel.desktop.in.in
 panels/microphone/cc-microphone-panel.ui
 panels/microphone/gnome-microphone-panel.desktop.in.in
+panels/mouse/cc-mouse-caps-helper.c
+panels/mouse/cc-mouse-caps-helper.h
+panels/mouse/cc-mouse-panel.c
+panels/mouse/cc-mouse-panel.h
 panels/mouse/cc-mouse-panel.ui
 panels/mouse/cc-mouse-test.c
+panels/mouse/cc-mouse-test.h
 panels/mouse/cc-mouse-test.ui
 panels/mouse/gnome-mouse-panel.desktop.in.in
 panels/multitasking/cc-multitasking-panel.ui
@@ -284,6 +308,10 @@ panels/wacom/cc-wacom-stylus-page.ui
 panels/wacom/cc-wacom-tool.c
 panels/wacom/gnome-wacom-panel.desktop.in.in
 panels/wacom/gsd-wacom-key-shortcut-button.c
+panels/windows/cc-windows-panel.c
+panels/windows/cc-windows-panel.h
+panels/windows/cc-windows-panel.ui
+panels/windows/gnome-windows-panel.desktop.in.in
 panels/wwan/cc-wwan-apn-dialog.c
 panels/wwan/cc-wwan-apn-dialog.ui
 panels/wwan/cc-wwan-data.c
