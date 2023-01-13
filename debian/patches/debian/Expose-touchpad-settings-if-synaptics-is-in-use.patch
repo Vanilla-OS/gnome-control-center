@@ -38,7 +38,7 @@ index 6658f41..12aafdb 100644
          display = GDK_DISPLAY_XDISPLAY (gdk_display_get_default ());
  	prop_scroll_methods = XInternAtom (display, "libinput Scroll Methods Available", False);
 diff --git a/panels/mouse/cc-mouse-panel.c b/panels/mouse/cc-mouse-panel.c
-index cdd28ab..6d1269a 100644
+index 8427a49..f903731 100644
 --- a/panels/mouse/cc-mouse-panel.c
 +++ b/panels/mouse/cc-mouse-panel.c
 @@ -64,7 +64,6 @@ struct _CcMousePanel

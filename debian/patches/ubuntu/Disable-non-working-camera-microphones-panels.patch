@@ -15,10 +15,10 @@ here and the Zoom snap still works and it isn't listed as an app
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/shell/cc-panel-loader.c b/shell/cc-panel-loader.c
-index 430bce9..65ba129 100644
+index 5814def..fe0baf7 100644
 --- a/shell/cc-panel-loader.c
 +++ b/shell/cc-panel-loader.c
-@@ -107,7 +107,7 @@ static CcPanelLoaderVtable default_panels[] =
+@@ -110,7 +110,7 @@ static CcPanelLoaderVtable default_panels[] =
  #ifdef BUILD_BLUETOOTH
    PANEL_TYPE("bluetooth",        cc_bluetooth_panel_get_type,            NULL),
  #endif
@@ -27,7 +27,7 @@ index 430bce9..65ba129 100644
    PANEL_TYPE("color",            cc_color_panel_get_type,                NULL),
    PANEL_TYPE("connectivity",     cc_connectivity_panel_get_type,         NULL),
    PANEL_TYPE("datetime",         cc_date_time_panel_get_type,            NULL),
-@@ -118,7 +118,7 @@ static CcPanelLoaderVtable default_panels[] =
+@@ -121,7 +121,7 @@ static CcPanelLoaderVtable default_panels[] =
    PANEL_TYPE("keyboard",         cc_keyboard_panel_get_type,             NULL),
    PANEL_TYPE("location",         cc_location_panel_get_type,             NULL),
    // PANEL_TYPE("firmware-security",cc_firmware_security_panel_get_type,    cc_firmware_security_panel_static_init_func),

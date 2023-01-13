@@ -18,10 +18,10 @@ Bug-GNOME: https://gitlab.gnome.org/GNOME/gnome-control-center/issues/918
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/panels/keyboard/cc-keyboard-panel.c b/panels/keyboard/cc-keyboard-panel.c
-index 663bcc2..9679b0d 100644
+index 1e45222..25b70a2 100644
 --- a/panels/keyboard/cc-keyboard-panel.c
 +++ b/panels/keyboard/cc-keyboard-panel.c
-@@ -72,7 +72,7 @@ static const CcXkbModifier LV3_MODIFIER = {
+@@ -71,7 +71,7 @@ static const CcXkbModifier LV3_MODIFIER = {
      { NC_("keyboard key", "Right Ctrl"),  "lv3:switch" },
      { NULL,                               NULL }
    },

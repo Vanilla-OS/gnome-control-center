@@ -15,7 +15,7 @@ Bug: https://bugzilla.gnome.org/show_bug.cgi?id=692532
  2 files changed, 37 insertions(+)
 
 diff --git a/panels/printers/cc-printers-panel.c b/panels/printers/cc-printers-panel.c
-index 4337633..0b87b4f 100644
+index 8727b17..00729c0 100644
 --- a/panels/printers/cc-printers-panel.c
 +++ b/panels/printers/cc-printers-panel.c
 @@ -25,6 +25,7 @@
@@ -26,7 +26,7 @@ index 4337633..0b87b4f 100644
  #include <glib/gi18n-lib.h>
  #include <glib/gstdio.h>
  #include <polkit/polkit.h>
-@@ -979,6 +980,25 @@ printer_add_cb (CcPrintersPanel *self)
+@@ -993,6 +994,25 @@ printer_add_cb (CcPrintersPanel *self)
    gtk_widget_show (GTK_WIDGET (self->pp_new_printer_dialog));
  }
  
@@ -52,7 +52,7 @@ index 4337633..0b87b4f 100644
  static void
  update_sensitivity (gpointer user_data)
  {
-@@ -1233,6 +1253,10 @@ cc_printers_panel_init (CcPrintersPanel *self)
+@@ -1253,6 +1273,10 @@ cc_printers_panel_init (CcPrintersPanel *self)
    self->notification = (GtkRevealer*)
      gtk_builder_get_object (self->builder, "notification");
  
@@ -64,10 +64,10 @@ index 4337633..0b87b4f 100644
      gtk_builder_get_object (self->builder, "notification-undo-button");
    g_signal_connect_object (widget, "clicked", G_CALLBACK (on_printer_deletion_undone), self, G_CONNECT_SWAPPED);
 diff --git a/panels/printers/printers.ui b/panels/printers/printers.ui
-index accbad7..e2cfd37 100644
+index 123795f..4c79a70 100644
 --- a/panels/printers/printers.ui
 +++ b/panels/printers/printers.ui
-@@ -125,6 +125,7 @@
+@@ -117,6 +117,7 @@
                  <property name="vexpand">True</property>
                  <child>
                    <object class="GtkBox">
@@ -75,7 +75,7 @@ index accbad7..e2cfd37 100644
                      <child>
                        <object class="GtkListBox" id="content">
                          <property name="selection-mode">GTK_SELECTION_NONE</property>
-@@ -135,6 +136,18 @@
+@@ -127,6 +128,18 @@
                          </style>
                        </object>
                      </child>

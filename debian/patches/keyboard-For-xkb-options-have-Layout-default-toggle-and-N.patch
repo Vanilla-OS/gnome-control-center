@@ -22,16 +22,16 @@ Bug-GNOME: https://gitlab.gnome.org/GNOME/gnome-control-center/issues/918
 Last-Update: 2022-12-25
 ---
  panels/keyboard/cc-keyboard-panel.c       |  5 +-
- panels/keyboard/cc-xkb-modifier-dialog.c  | 78 ++++++++++++++++++-------------
+ panels/keyboard/cc-xkb-modifier-dialog.c  | 78 +++++++++++++++++--------------
  panels/keyboard/cc-xkb-modifier-dialog.h  |  1 +
  panels/keyboard/cc-xkb-modifier-dialog.ui |  5 +-
  4 files changed, 52 insertions(+), 37 deletions(-)
 
 diff --git a/panels/keyboard/cc-keyboard-panel.c b/panels/keyboard/cc-keyboard-panel.c
-index 9679b0d..b1d7219 100644
+index 25b70a2..058c27b 100644
 --- a/panels/keyboard/cc-keyboard-panel.c
 +++ b/panels/keyboard/cc-keyboard-panel.c
-@@ -64,6 +64,7 @@ static const CcXkbModifier LV3_MODIFIER = {
+@@ -63,6 +63,7 @@ static const CcXkbModifier LV3_MODIFIER = {
    N_("Alternate Characters Key"),
    N_("The alternate characters key can be used to enter additional characters. These are sometimes printed as a third-option on your keyboard."),
    (CcXkbOption[]){
@@ -39,7 +39,7 @@ index 9679b0d..b1d7219 100644
      { NC_("keyboard key", "Left Alt"),    "lv3:lalt_switch" },
      { NC_("keyboard key", "Right Alt"),   "lv3:ralt_switch" },
      { NC_("keyboard key", "Left Super"),  "lv3:lwin_switch" },
-@@ -72,7 +73,8 @@ static const CcXkbModifier LV3_MODIFIER = {
+@@ -71,7 +72,8 @@ static const CcXkbModifier LV3_MODIFIER = {
      { NC_("keyboard key", "Right Ctrl"),  "lv3:switch" },
      { NULL,                               NULL }
    },
@@ -49,7 +49,7 @@ index 9679b0d..b1d7219 100644
  };
  
  static const CcXkbModifier COMPOSE_MODIFIER = {
-@@ -94,6 +96,7 @@ static const CcXkbModifier COMPOSE_MODIFIER = {
+@@ -93,6 +95,7 @@ static const CcXkbModifier COMPOSE_MODIFIER = {
      { NULL,                                NULL }
    },
    NULL,
@@ -58,7 +58,7 @@ index 9679b0d..b1d7219 100644
  
  static void
 diff --git a/panels/keyboard/cc-xkb-modifier-dialog.c b/panels/keyboard/cc-xkb-modifier-dialog.c
-index da8116e..d5b865d 100644
+index da8116e..e52eeb4 100644
 --- a/panels/keyboard/cc-xkb-modifier-dialog.c
 +++ b/panels/keyboard/cc-xkb-modifier-dialog.c
 @@ -28,7 +28,7 @@ struct _CcXkbModifierDialog

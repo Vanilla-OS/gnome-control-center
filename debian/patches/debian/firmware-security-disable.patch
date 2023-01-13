@@ -17,10 +17,10 @@ https://gitlab.gnome.org/GNOME/gnome-control-center/-/issues/1938
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/shell/cc-panel-loader.c b/shell/cc-panel-loader.c
-index 17f9601..1b819a5 100644
+index 7a8673e..5a70523 100644
 --- a/shell/cc-panel-loader.c
 +++ b/shell/cc-panel-loader.c
-@@ -113,7 +113,7 @@ static CcPanelLoaderVtable default_panels[] =
+@@ -116,7 +116,7 @@ static CcPanelLoaderVtable default_panels[] =
    PANEL_TYPE("info-overview",    cc_info_overview_panel_get_type,        NULL),
    PANEL_TYPE("keyboard",         cc_keyboard_panel_get_type,             NULL),
    PANEL_TYPE("location",         cc_location_panel_get_type,             NULL),

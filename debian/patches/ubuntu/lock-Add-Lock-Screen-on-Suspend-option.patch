@@ -9,10 +9,10 @@ https://bugs.launchpad.net/ubuntu/+source/gnome-settings-daemon/+bug/938076
  2 files changed, 36 insertions(+)
 
 diff --git a/panels/screen/cc-screen-panel.c b/panels/screen/cc-screen-panel.c
-index 244d583..347a171 100644
+index 3c6f35b..d3ad034 100644
 --- a/panels/screen/cc-screen-panel.c
 +++ b/panels/screen/cc-screen-panel.c
-@@ -53,6 +53,9 @@ struct _CcScreenPanel
+@@ -54,6 +54,9 @@ struct _CcScreenPanel
    GtkSwitch           *privacy_screen_switch;
    GtkSwitch           *show_notifications_switch;
    GtkSwitch           *usb_protection_switch;
@@ -22,7 +22,7 @@ index 244d583..347a171 100644
  };
  
  CC_PANEL_REGISTER (CcScreenPanel, cc_screen_panel)
-@@ -278,6 +281,8 @@ cc_screen_panel_class_init (CcScreenPanelClass *klass)
+@@ -279,6 +282,8 @@ cc_screen_panel_class_init (CcScreenPanelClass *klass)
    gtk_widget_class_bind_template_child (widget_class, CcScreenPanel, show_notifications_switch);
    gtk_widget_class_bind_template_child (widget_class, CcScreenPanel, usb_protection_row);
    gtk_widget_class_bind_template_child (widget_class, CcScreenPanel, usb_protection_switch);
@@ -31,7 +31,7 @@ index 244d583..347a171 100644
  
    gtk_widget_class_bind_template_callback (widget_class, lock_after_name_cb);
    gtk_widget_class_bind_template_callback (widget_class, on_blank_screen_delay_changed_cb);
-@@ -320,6 +325,7 @@ update_display_config (CcScreenPanel *self)
+@@ -321,6 +326,7 @@ update_display_config (CcScreenPanel *self)
  static void
  cc_screen_panel_init (CcScreenPanel *self)
  {
@@ -39,7 +39,7 @@ index 244d583..347a171 100644
    guint value;
  
    g_resources_register (cc_screen_get_resource ());
-@@ -333,6 +339,8 @@ cc_screen_panel_init (CcScreenPanel *self)
+@@ -334,6 +340,8 @@ cc_screen_panel_init (CcScreenPanel *self)
    self->notification_settings = g_settings_new ("org.gnome.desktop.notifications");
    self->session_settings = g_settings_new ("org.gnome.desktop.session");
  
@@ -48,7 +48,7 @@ index 244d583..347a171 100644
    g_settings_bind (self->lock_settings,
                     "lock-enabled",
                     self->automatic_screen_lock_switch,
-@@ -353,6 +361,20 @@ cc_screen_panel_init (CcScreenPanel *self)
+@@ -354,6 +362,20 @@ cc_screen_panel_init (CcScreenPanel *self)
                     "active",
                     G_SETTINGS_BIND_DEFAULT);
  
@@ -70,10 +70,10 @@ index 244d583..347a171 100644
    set_blank_screen_delay_value (self, value);
  
 diff --git a/panels/screen/cc-screen-panel.ui b/panels/screen/cc-screen-panel.ui
-index 64c9006..780f243 100644
+index 6b68189..44c3f3b 100644
 --- a/panels/screen/cc-screen-panel.ui
 +++ b/panels/screen/cc-screen-panel.ui
-@@ -74,6 +74,20 @@
+@@ -80,6 +80,20 @@
                </object>
              </child>
  

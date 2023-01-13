@@ -7,15 +7,15 @@ Subject: diagnostics: Add Whoopsie support
  meson_options.txt                                  |   1 +
  panels/diagnostics/cc-diagnostics-panel.c          | 224 +++++++++++++++++++++
  panels/diagnostics/cc-diagnostics-panel.ui         |  10 +-
- .../gnome-diagnostics-panel.desktop.in             |   2 +-
+ .../diagnostics/gnome-diagnostics-panel.desktop.in |   2 +-
  panels/diagnostics/meson.build                     |   7 +-
  6 files changed, 250 insertions(+), 3 deletions(-)
 
 diff --git a/meson.build b/meson.build
-index 3510f83..7c42185 100644
+index 66aa643..f213066 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -220,6 +220,14 @@ endif
+@@ -224,6 +224,14 @@ endif
  config_h.set('HAVE_MALCONTENT', enable_malcontent,
               description: 'Define to 1 if malcontent support is enabled')
  
@@ -30,17 +30,17 @@ index 3510f83..7c42185 100644
  if host_is_linux
    # network manager
    mm_dep =  dependency('mm-glib', version: '>= 0.7')
-@@ -322,4 +330,5 @@ summary({
+@@ -323,4 +331,5 @@ summary({
    'IBus': enable_ibus,
    'Snap': enable_snap,
    'Malcontent': enable_malcontent,
 +  'Whoopsie': enable_whoopsie,
  }, section: 'Optional Dependencies')
 diff --git a/meson_options.txt b/meson_options.txt
-index 461ae34..03976f2 100644
+index 8ee7b6e..beebcf2 100644
 --- a/meson_options.txt
 +++ b/meson_options.txt
-@@ -9,3 +9,4 @@ option('profile', type: 'combo', choices: ['default','development'], value: 'def
+@@ -8,3 +8,4 @@ option('profile', type: 'combo', choices: ['default','development'], value: 'def
  option('malcontent', type: 'boolean', value: false, description: 'build with malcontent support')
  option('distributor_logo', type: 'string', description: 'absolute path to distributor logo for the About panel')
  option('dark_mode_distributor_logo', type: 'string', description: 'absolute path to distributor logo dark mode variant')
@@ -362,20 +362,20 @@ index a08a4ca..7a0a3f9 100644
          </child>
        </object>
 diff --git a/panels/diagnostics/gnome-diagnostics-panel.desktop.in b/panels/diagnostics/gnome-diagnostics-panel.desktop.in
-index 68d4cb0..57f148d 100644
+index dbdbfd5..2fa1121 100644
 --- a/panels/diagnostics/gnome-diagnostics-panel.desktop.in
 +++ b/panels/diagnostics/gnome-diagnostics-panel.desktop.in
-@@ -16,4 +16,4 @@ X-GNOME-Bugzilla-Product=gnome-control-center
+@@ -12,4 +12,4 @@ StartupNotify=true
  Categories=GNOME;GTK;Settings;DesktopSettings;X-GNOME-Settings-Panel;X-GNOME-PrivacySettings;
  OnlyShowIn=GNOME;Unity;
  # Translators: Search terms to find the Diagnostics panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
 -Keywords=diagnostics;crash;
 +Keywords=diagnostics;crash;error;bug;whoopsie;launchpad;issue;
 diff --git a/panels/diagnostics/meson.build b/panels/diagnostics/meson.build
-index 0061d38..c44ff31 100644
+index a17f0b8..64418e1 100644
 --- a/panels/diagnostics/meson.build
 +++ b/panels/diagnostics/meson.build
-@@ -28,13 +28,18 @@ sources += gnome.compile_resources(
+@@ -22,13 +22,18 @@ sources += gnome.compile_resources(
    export: true
  )
  

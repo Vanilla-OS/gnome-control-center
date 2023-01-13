@@ -17,23 +17,23 @@ Please provide merge requests there.
 Origin: ubuntu
 Forwarded: not-needed
 ---
- panels/meson.build                             |    1 +
- panels/ubuntu/assets/colors/color.svg.in       |    5 +
- panels/ubuntu/assets/theme-dark.svg            |    1 +
- panels/ubuntu/assets/theme-light.svg           |    1 +
- panels/ubuntu/cc-ubuntu-dock-dialog.c          |  103 ++
- panels/ubuntu/cc-ubuntu-dock-dialog.h          |   31 +
- panels/ubuntu/cc-ubuntu-dock-dialog.ui         |   81 ++
- panels/ubuntu/cc-ubuntu-panel.c                | 1289 ++++++++++++++++++++++++
- panels/ubuntu/cc-ubuntu-panel.h                |   35 +
- panels/ubuntu/cc-ubuntu-panel.ui               |  163 +++
- panels/ubuntu/gnome-ubuntu-panel.desktop.in    |   16 +
- panels/ubuntu/meson.build                      |  103 ++
- panels/ubuntu/ubuntu.gresource.xml             |    6 +
- po/POTFILES.in                                 |    5 +
- shell/cc-panel-list.c                          |    1 +
- shell/cc-panel-loader.c                        |    3 +
- 16 files changed, 1844 insertions(+)
+ panels/meson.build                          |    1 +
+ panels/ubuntu/assets/colors/color.svg.in    |    5 +
+ panels/ubuntu/assets/theme-dark.svg         |    1 +
+ panels/ubuntu/assets/theme-light.svg        |    1 +
+ panels/ubuntu/cc-ubuntu-dock-dialog.c       |  103 +++
+ panels/ubuntu/cc-ubuntu-dock-dialog.h       |   31 +
+ panels/ubuntu/cc-ubuntu-dock-dialog.ui      |   81 ++
+ panels/ubuntu/cc-ubuntu-panel.c             | 1289 +++++++++++++++++++++++++++
+ panels/ubuntu/cc-ubuntu-panel.h             |   35 +
+ panels/ubuntu/cc-ubuntu-panel.ui            |  163 ++++
+ panels/ubuntu/gnome-ubuntu-panel.desktop.in |   13 +
+ panels/ubuntu/meson.build                   |   97 ++
+ panels/ubuntu/ubuntu.gresource.xml          |    6 +
+ po/POTFILES.in                              |    5 +
+ shell/cc-panel-list.c                       |    1 +
+ shell/cc-panel-loader.c                     |    3 +
+ 16 files changed, 1835 insertions(+)
  create mode 100644 panels/ubuntu/assets/colors/color.svg.in
  create mode 100644 panels/ubuntu/assets/theme-dark.svg
  create mode 100644 panels/ubuntu/assets/theme-light.svg
@@ -321,7 +321,7 @@ index 0000000..2b51182
 +</interface>
 diff --git a/panels/ubuntu/cc-ubuntu-panel.c b/panels/ubuntu/cc-ubuntu-panel.c
 new file mode 100644
-index 0000000..1c57011
+index 0000000..5e02160
 --- /dev/null
 +++ b/panels/ubuntu/cc-ubuntu-panel.c
 @@ -0,0 +1,1289 @@
@@ -1826,7 +1826,7 @@ index 0000000..0840525
 +</interface>
 diff --git a/panels/ubuntu/gnome-ubuntu-panel.desktop.in b/panels/ubuntu/gnome-ubuntu-panel.desktop.in
 new file mode 100644
-index 0000000..19b396c
+index 0000000..ee93bc0
 --- /dev/null
 +++ b/panels/ubuntu/gnome-ubuntu-panel.desktop.in
 @@ -0,0 +1,13 @@
@@ -1845,7 +1845,7 @@ index 0000000..19b396c
 +Keywords=Dock;Launcher;Theme;Ubuntu;Dark;icons;Yaru;Accent;
 diff --git a/panels/ubuntu/meson.build b/panels/ubuntu/meson.build
 new file mode 100644
-index 0000000..1fc83df
+index 0000000..529be08
 --- /dev/null
 +++ b/panels/ubuntu/meson.build
 @@ -0,0 +1,97 @@
@@ -1959,10 +1959,10 @@ index 0000000..a636e9c
 +  </gresource>
 +</gresources>
 diff --git a/po/POTFILES.in b/po/POTFILES.in
-index 0728cc3..1905d01 100644
+index 2fb23da..c511375 100644
 --- a/po/POTFILES.in
 +++ b/po/POTFILES.in
-@@ -234,6 +234,11 @@ panels/thunderbolt/cc-bolt-device-entry.c
+@@ -212,6 +212,11 @@ panels/thunderbolt/cc-bolt-device-entry.c
  panels/thunderbolt/cc-bolt-panel.c
  panels/thunderbolt/cc-bolt-panel.ui
  panels/thunderbolt/gnome-thunderbolt-panel.desktop.in
@@ -1975,7 +1975,7 @@ index 0728cc3..1905d01 100644
  panels/universal-access/cc-ua-hearing-page.ui
  panels/universal-access/cc-ua-mouse-page.ui
 diff --git a/shell/cc-panel-list.c b/shell/cc-panel-list.c
-index 185b16d..2906b11 100644
+index e122d94..8e8d052 100644
 --- a/shell/cc-panel-list.c
 +++ b/shell/cc-panel-list.c
 @@ -392,6 +392,7 @@ static const gchar * const panel_order[] = {
@@ -1987,7 +1987,7 @@ index 185b16d..2906b11 100644
    "search",
    "multitasking",
 diff --git a/shell/cc-panel-loader.c b/shell/cc-panel-loader.c
-index 1b819a5..b254350 100644
+index 5a70523..eb90fe6 100644
 --- a/shell/cc-panel-loader.c
 +++ b/shell/cc-panel-loader.c
 @@ -61,6 +61,7 @@ extern GType cc_sound_panel_get_type (void);
@@ -2006,7 +2006,7 @@ index 1b819a5..b254350 100644
  extern GType cc_location_panel_get_type (void);
  extern GType cc_firmware_security_panel_get_type (void);
  extern GType cc_camera_panel_get_type (void);
-@@ -131,6 +133,7 @@ static CcPanelLoaderVtable default_panels[] =
+@@ -134,6 +136,7 @@ static CcPanelLoaderVtable default_panels[] =
    PANEL_TYPE("search",           cc_search_panel_get_type,               NULL),
    PANEL_TYPE("sharing",          cc_sharing_panel_get_type,              NULL),
    PANEL_TYPE("sound",            cc_sound_panel_get_type,                NULL),

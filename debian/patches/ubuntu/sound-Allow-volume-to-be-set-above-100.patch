@@ -23,7 +23,7 @@ Bug: https://bugzilla.gnome.org/show_bug.cgi?id=710424
  2 files changed, 20 insertions(+)
 
 diff --git a/panels/sound/cc-sound-panel.c b/panels/sound/cc-sound-panel.c
-index 0de1ca9..b1e6888 100644
+index 1641624..36387a2 100644
 --- a/panels/sound/cc-sound-panel.c
 +++ b/panels/sound/cc-sound-panel.c
 @@ -35,6 +35,7 @@
@@ -65,10 +65,10 @@ index 0de1ca9..b1e6888 100644
    gvc_mixer_control_open (self->mixer_control);
  
 diff --git a/panels/sound/cc-sound-panel.ui b/panels/sound/cc-sound-panel.ui
-index dadf96a..c424b1e 100644
+index 39c89b7..e7c33bd 100644
 --- a/panels/sound/cc-sound-panel.ui
 +++ b/panels/sound/cc-sound-panel.ui
-@@ -18,6 +18,16 @@
+@@ -21,6 +21,16 @@
                  </child>
                </object>
              </child>

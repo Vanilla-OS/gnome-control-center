@@ -711,7 +711,7 @@ index 0000000..07cedee
 +G_END_DECLS
 diff --git a/panels/ubuntu/cc-ubuntu-colors-row.ui b/panels/ubuntu/cc-ubuntu-colors-row.ui
 new file mode 100644
-index 0000000..ddcfbd7
+index 0000000..5f760f2
 --- /dev/null
 +++ b/panels/ubuntu/cc-ubuntu-colors-row.ui
 @@ -0,0 +1,289 @@
@@ -1005,10 +1005,10 @@ index 0000000..ddcfbd7
 +  </template>
 +</interface>
 diff --git a/panels/ubuntu/meson.build b/panels/ubuntu/meson.build
-index 1fc83df..34d509f 100644
+index 529be08..d7f73e6 100644
 --- a/panels/ubuntu/meson.build
 +++ b/panels/ubuntu/meson.build
-@@ -19,6 +19,7 @@ i18n.merge_file(
+@@ -13,6 +13,7 @@ i18n.merge_file(
  )
  
  sources = files(
@@ -1016,7 +1016,7 @@ index 1fc83df..34d509f 100644
    'cc-ubuntu-panel.c',
    'cc-ubuntu-dock-dialog.c',
  )
-@@ -41,6 +42,8 @@ resource_generated_data = []
+@@ -35,6 +36,8 @@ resource_generated_data = []
  resource_data = files(
    'assets/theme-dark.svg',
    'assets/theme-light.svg',
@@ -1026,10 +1026,10 @@ index 1fc83df..34d509f 100644
    'cc-ubuntu-dock-dialog.ui',
  )
 diff --git a/po/POTFILES.in b/po/POTFILES.in
-index 92f5b7d..6968b2a 100644
+index c511375..6b4c652 100644
 --- a/po/POTFILES.in
 +++ b/po/POTFILES.in
-@@ -238,6 +238,8 @@ panels/ubuntu/cc-ubuntu-panel.c
+@@ -216,6 +216,8 @@ panels/ubuntu/cc-ubuntu-panel.c
  panels/ubuntu/cc-ubuntu-panel.ui
  panels/ubuntu/cc-ubuntu-dock-dialog.c
  panels/ubuntu/cc-ubuntu-dock-dialog.ui

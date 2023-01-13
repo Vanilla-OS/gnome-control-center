@@ -14,7 +14,7 @@ https://launchpad.net/bugs/1871320
  2 files changed, 53 insertions(+), 4 deletions(-)
 
 diff --git a/panels/sound/cc-alert-chooser.c b/panels/sound/cc-alert-chooser.c
-index 686d8c6..b9615ac 100644
+index c4ce870..a264811 100644
 --- a/panels/sound/cc-alert-chooser.c
 +++ b/panels/sound/cc-alert-chooser.c
 @@ -29,6 +29,7 @@ struct _CcAlertChooser
@@ -53,7 +53,7 @@ index 686d8c6..b9615ac 100644
  static void
  update_dir_mtime (const char *dir_path)
  {
-@@ -183,6 +205,16 @@ set_custom_theme (CcAlertChooser *self,
+@@ -197,6 +219,16 @@ set_custom_theme (CcAlertChooser *self,
    g_settings_set_string (self->sound_settings, "theme-name", CUSTOM_THEME_NAME);
  }
  
@@ -70,7 +70,7 @@ index 686d8c6..b9615ac 100644
  static void
  select_sound (CcAlertChooser *self,
                const gchar    *name)
-@@ -217,6 +249,11 @@ clicked_cb (CcAlertChooser *self,
+@@ -231,6 +263,11 @@ clicked_cb (CcAlertChooser *self,
  {
    if (button == self->click_button)
      select_sound (self, "click");
@@ -82,7 +82,7 @@ index 686d8c6..b9615ac 100644
    else if (button == self->hum_button)
      select_sound (self, "hum");
    else if (button == self->string_button)
-@@ -227,6 +264,8 @@ clicked_cb (CcAlertChooser *self,
+@@ -241,6 +278,8 @@ clicked_cb (CcAlertChooser *self,
    set_button (self, button, TRUE);
    if (button != self->click_button)
      set_button (self, self->click_button, FALSE);
@@ -91,7 +91,7 @@ index 686d8c6..b9615ac 100644
    if (button != self->hum_button)
      set_button (self, self->hum_button, FALSE);
    if (button != self->string_button)
-@@ -257,6 +296,7 @@ cc_alert_chooser_class_init (CcAlertChooserClass *klass)
+@@ -271,6 +310,7 @@ cc_alert_chooser_class_init (CcAlertChooserClass *klass)
    gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/sound/cc-alert-chooser.ui");
  
    gtk_widget_class_bind_template_child (widget_class, CcAlertChooser, click_button);
@@ -99,7 +99,7 @@ index 686d8c6..b9615ac 100644
    gtk_widget_class_bind_template_child (widget_class, CcAlertChooser, hum_button);
    gtk_widget_class_bind_template_child (widget_class, CcAlertChooser, string_button);
    gtk_widget_class_bind_template_child (widget_class, CcAlertChooser, swing_button);
-@@ -282,18 +322,20 @@ cc_alert_chooser_init (CcAlertChooser *self)
+@@ -296,18 +336,20 @@ cc_alert_chooser_init (CcAlertChooser *self)
  
    alert_name = get_alert_name ();
  

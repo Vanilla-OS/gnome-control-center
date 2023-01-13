@@ -5,14 +5,14 @@ Subject: region: Add Language Selector button
 Workaround for https://launchpad.net/bugs/1631750
 ---
  panels/region/cc-region-panel.c  | 21 +++++++++++++++++++++
- panels/region/cc-region-panel.ui | 24 +++++++++++++++++++++++-
- 2 files changed, 44 insertions(+), 1 deletion(-)
+ panels/region/cc-region-panel.ui | 23 +++++++++++++++++++++++
+ 2 files changed, 44 insertions(+)
 
 diff --git a/panels/region/cc-region-panel.c b/panels/region/cc-region-panel.c
-index 337d7d4..7c1e061 100644
+index 0849045..00190f5 100644
 --- a/panels/region/cc-region-panel.c
 +++ b/panels/region/cc-region-panel.c
-@@ -554,6 +554,26 @@ setup_language_section (CcRegionPanel *self)
+@@ -560,6 +560,26 @@ setup_language_section (CcRegionPanel *self)
          update_region_from_setting (self);
  }
  
@@ -39,7 +39,7 @@ index 337d7d4..7c1e061 100644
  static void
  update_login_region (CcRegionPanel *self)
  {
-@@ -842,6 +862,7 @@ cc_region_panel_class_init (CcRegionPanelClass * klass)
+@@ -848,6 +868,7 @@ cc_region_panel_class_init (CcRegionPanelClass * klass)
          gtk_widget_class_bind_template_callback (widget_class, on_user_formats_row_activated_cb);
          gtk_widget_class_bind_template_callback (widget_class, on_user_language_row_activated_cb);
          gtk_widget_class_bind_template_callback (widget_class, restart_now);
@@ -48,7 +48,7 @@ index 337d7d4..7c1e061 100644
  
  static void
 diff --git a/panels/region/cc-region-panel.ui b/panels/region/cc-region-panel.ui
-index 52331ac..504f810 100644
+index 79d31d1..49accb1 100644
 --- a/panels/region/cc-region-panel.ui
 +++ b/panels/region/cc-region-panel.ui
 @@ -46,6 +46,29 @@
