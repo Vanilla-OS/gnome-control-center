@@ -1,13 +1,18 @@
-gnome-control-center (1:44~alpha-1) UNRELEASED; urgency=medium
+gnome-control-center (1:44~alpha-0ubuntu1) lunar; urgency=medium
+
+  [ Jeremy Bicha ]
+  * New upstream release
+  * debian/control.in: Bump minimum GTK4 to 4.8 and libnma-gtk4 to 1.10.2
+  * Stop disabling the Device Security panel
+  * Revert commit that hides Device Security panel when chassis_type is empty
+  * Refresh patches
+  * Update patches to drop deprecated gtk_widget_show/hide
 
   [ Gunnar Hjalmarsson ]
   * Make "Color" in "Appearance" view translatable (LP: #2000937)
   * Use a context aware gettext function in the Ubuntu panel (LP: #2000937)
 
-  [ Jeremy Bicha ]
-  * New upstream release
-
- -- Jeremy Bicha <jbicha@ubuntu.com>  Fri, 13 Jan 2023 09:51:12 -0500
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Fri, 13 Jan 2023 11:48:57 -0500
 
 gnome-control-center (1:43.2-1ubuntu1) lunar; urgency=medium
 
