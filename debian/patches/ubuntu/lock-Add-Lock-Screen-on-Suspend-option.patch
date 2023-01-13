@@ -63,7 +63,7 @@ index 3c6f35b..d3ad034 100644
 +  else
 +    {
 +      g_warning ("No ubuntu-lock-on-suspend settings key found");
-+      gtk_widget_hide (GTK_WIDGET (self->lock_on_suspend_row));
++      gtk_widget_set_visible (GTK_WIDGET (self->lock_on_suspend_row), FALSE);
 +    }
 +
    value = g_settings_get_uint (self->session_settings, "idle-delay");

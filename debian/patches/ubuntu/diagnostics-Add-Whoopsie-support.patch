@@ -243,13 +243,13 @@ index 9aeca6e..4b4d4cf 100644
 +      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
 +        g_warning ("Failed to get whoopsie proxy: %s", error->message);
 +
-+      gtk_widget_hide (GTK_WIDGET (self->whoopsie_combo_row));
-+      gtk_widget_show (GTK_WIDGET (self->abrt_row));
++      gtk_widget_set_visible (GTK_WIDGET (self->whoopsie_combo_row), FALSE);
++      gtk_widget_set_visible (GTK_WIDGET (self->abrt_row), TRUE);
 +      return;
 +    }
 +
 +  g_debug ("Whoopsie available");
-+  gtk_widget_show (GTK_WIDGET (self->whoopsie_combo_row));
++  gtk_widget_set_visible (GTK_WIDGET (self->whoopsie_combo_row), TRUE);
 +  gtk_widget_set_sensitive (GTK_WIDGET (self->whoopsie_combo_row), TRUE);
 +
 +
@@ -325,8 +325,8 @@ index 9aeca6e..4b4d4cf 100644
 +                                          on_new_whoopsie_proxy_cb,
 +                                          self);
 +
-+  gtk_widget_show (GTK_WIDGET (self->whoopsie_combo_row));
-+  gtk_widget_hide (GTK_WIDGET (self->abrt_row));
++  gtk_widget_set_visible (GTK_WIDGET (self->whoopsie_combo_row), TRUE);
++  gtk_widget_set_visible (GTK_WIDGET (self->abrt_row), FALSE);
 +  gtk_widget_set_sensitive (GTK_WIDGET (self->whoopsie_combo_row), FALSE);
 +#endif
 +

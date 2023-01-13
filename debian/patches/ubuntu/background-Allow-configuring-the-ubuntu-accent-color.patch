@@ -496,11 +496,11 @@ index 0000000..2d64912
 +      if (check_theme_exists (theme_name, NULL) && check_theme_exists (theme_name, "dark"))
 +        available_accents++;
 +      else
-+        gtk_widget_hide (GTK_WIDGET (item));
++        gtk_widget_set_visible (GTK_WIDGET (item), FALSE);
 +    }
 +
 +  if (!available_accents)
-+    gtk_widget_hide (GTK_WIDGET (self));
++    gtk_widget_set_visible (GTK_WIDGET (self), FALSE);
 +}
 +
 +static void
@@ -532,7 +532,7 @@ index 0000000..2d64912
 +  if (desktops == NULL ||
 +      !g_strv_contains ((const gchar * const *) desktops, "ubuntu"))
 +    {
-+      gtk_widget_hide (GTK_WIDGET (self));
++      gtk_widget_set_visible (GTK_WIDGET (self), FALSE);
 +      return;
 +    }
 +

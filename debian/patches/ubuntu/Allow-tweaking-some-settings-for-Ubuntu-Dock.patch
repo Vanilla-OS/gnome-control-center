@@ -858,7 +858,7 @@ index 0000000..5e02160
 +  dialog = cc_ubuntu_dock_dialog_new (self->dock_settings);
 +  gtk_window_set_transient_for (GTK_WINDOW (dialog),
 +                                GTK_WINDOW (cc_shell_get_toplevel (shell)));
-+  gtk_widget_show (GTK_WIDGET (dialog));
++  gtk_widget_set_visible (GTK_WIDGET (dialog), TRUE);
 +}
 +
 +static CcDisplayMonitor *
@@ -1502,7 +1502,7 @@ index 0000000..5e02160
 +  else
 +    {
 +      g_warning ("No Ding is installed here. Please fix your installation.");
-+      gtk_widget_hide (GTK_WIDGET (self->ding_preferences_group));
++      gtk_widget_set_visible (GTK_WIDGET (self->ding_preferences_group), FALSE);
 +    }
 +
 +  /* Only load if we have ubuntu dock or dash to dock installed */
@@ -1572,13 +1572,13 @@ index 0000000..5e02160
 +  else
 +    {
 +      g_warning ("No Ubuntu Dock is installed here. Panel disabled. Please fix your installation.");
-+      gtk_widget_hide (GTK_WIDGET (self->dock_preferences_group));
++      gtk_widget_set_visible (GTK_WIDGET (self->dock_preferences_group), FALSE);
 +    }
 +
 +  if (!gtk_widget_is_visible (GTK_WIDGET (self->dock_preferences_group)) &&
 +      !gtk_widget_is_visible (GTK_WIDGET (self->ding_preferences_group)))
 +    {
-+      gtk_widget_show (GTK_WIDGET (self->no_settings_view));
++      gtk_widget_set_visible (GTK_WIDGET (self->no_settings_view), TRUE);
 +      return;
 +    }
 +
