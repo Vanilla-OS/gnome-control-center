@@ -46,6 +46,6 @@ index 5ff649d..9559b60 100644
  
 -  if ((!does_gnome_software_exist () || !does_gnome_software_allow_updates ()) && !does_gpk_update_viewer_exist ())
 +  if (!does_software_properties_exist () && (!does_gnome_software_exist () || !does_gnome_software_allow_updates ()) && !does_gpk_update_viewer_exist ())
-     gtk_widget_hide (GTK_WIDGET (self->software_updates_row));
+     gtk_widget_set_visible (GTK_WIDGET (self->software_updates_row), FALSE);
  
    info_overview_panel_setup_overview (self);

@@ -31,7 +31,7 @@ index 0de1ca9..b1e6888 100644
  #include "cc-fade-slider.h"
  #include "cc-level-bar.h"
 +#include "cc-list-row.h"
- #include "cc-output-test-dialog.h"
+ #include "cc-output-test-window.h"
  #include "cc-profile-combo-box.h"
  #include "cc-sound-panel.h"
 @@ -64,6 +65,7 @@ struct _CcSoundPanel

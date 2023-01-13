@@ -81,11 +81,3 @@ index 52331ac..504f810 100644
              <child>
                <object class="AdwPreferencesGroup">
                  <property name="title" translatable="yes">Your Account</property>
-@@ -120,7 +143,6 @@
-                     </child>
-                   </object>
-                 </child>
--
-               </object>
-             </child>
- 

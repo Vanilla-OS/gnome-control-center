@@ -15,7 +15,7 @@ https://bugzilla.gnome.org/show_bug.cgi?id=737362
  panels/connectivity/cc-connectivity-panel.h        |  28 +++++
  panels/connectivity/cc-connectivity-panel.ui       |  21 ++++
  panels/connectivity/connectivity.gresource.xml     |   6 +
- .../gnome-connectivity-panel.desktop.in.in         |  19 +++
+ .../gnome-connectivity-panel.desktop.in            |  19 +++
  panels/connectivity/meson.build                    |  44 +++++++
  panels/meson.build                                 |   1 +
  po/POTFILES.in                                     |   2 +
@@ -25,7 +25,7 @@ https://bugzilla.gnome.org/show_bug.cgi?id=737362
  create mode 100644 panels/connectivity/cc-connectivity-panel.h
  create mode 100644 panels/connectivity/cc-connectivity-panel.ui
  create mode 100644 panels/connectivity/connectivity.gresource.xml
- create mode 100644 panels/connectivity/gnome-connectivity-panel.desktop.in.in
+ create mode 100644 panels/connectivity/gnome-connectivity-panel.desktop.in
  create mode 100644 panels/connectivity/meson.build
 
 diff --git a/panels/connectivity/cc-connectivity-panel.c b/panels/connectivity/cc-connectivity-panel.c
@@ -238,12 +238,12 @@ index 0000000..e102045
 +    <file preprocess="xml-stripblanks">cc-connectivity-panel.ui</file>
 +  </gresource>
 +</gresources>
-diff --git a/panels/connectivity/gnome-connectivity-panel.desktop.in.in b/panels/connectivity/gnome-connectivity-panel.desktop.in.in
+diff --git a/panels/connectivity/gnome-connectivity-panel.desktop.in b/panels/connectivity/gnome-connectivity-panel.desktop.in
 new file mode 100644
 index 0000000..4e97c28
 --- /dev/null
-+++ b/panels/connectivity/gnome-connectivity-panel.desktop.in.in
-@@ -0,0 +1,19 @@
++++ b/panels/connectivity/gnome-connectivity-panel.desktop.in
+@@ -0,0 +1,15 @@
 +[Desktop Entry]
 +Name=Connectivity
 +Comment=Protect connectivity feature
@@ -257,10 +257,6 @@ index 0000000..4e97c28
 +StartupNotify=true
 +Categories=GNOME;GTK;Settings;DesktopSettings;X-GNOME-Settings-Panel;X-GNOME-PrivacySettings;
 +OnlyShowIn=GNOME;Unity;
-+X-GNOME-Bugzilla-Bugzilla=GNOME
-+X-GNOME-Bugzilla-Product=gnome-control-center
-+X-GNOME-Bugzilla-Component=privacy
-+X-GNOME-Bugzilla-Version=@VERSION@
 +# Translators: Search terms to find the Privacy panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
 +Keywords=network;privacy;
 diff --git a/panels/connectivity/meson.build b/panels/connectivity/meson.build
@@ -268,19 +264,13 @@ new file mode 100644
 index 0000000..4d0194b
 --- /dev/null
 +++ b/panels/connectivity/meson.build
-@@ -0,0 +1,44 @@
+@@ -0,0 +1,38 @@
 +panels_list += cappletname
 +desktop = 'gnome-@0@-panel.desktop'.format(cappletname)
 +
-+desktop_in = configure_file(
-+  input: desktop + '.in.in',
-+  output: desktop + '.in',
-+  configuration: desktop_conf
-+)
-+
 +i18n.merge_file(
 +  type: 'desktop',
-+  input: desktop_in,
++  input: desktop + '.in',
 +  output: desktop,
 +  po_dir: po_dir,
 +  install: true,
@@ -334,10 +324,10 @@ index e2306e6..cce713c 100644
  panels/common/cc-util.c
  panels/common/hostname-helper.c
 +panels/connectivity/cc-connectivity-panel.ui
-+panels/connectivity/gnome-connectivity-panel.desktop.in.in
++panels/connectivity/gnome-connectivity-panel.desktop.in
  panels/datetime/cc-datetime-panel.c
  panels/datetime/cc-datetime-panel.ui
- panels/datetime/gnome-datetime-panel.desktop.in.in
+ panels/datetime/cc-tz-dialog.ui
 diff --git a/shell/cc-panel-loader.c b/shell/cc-panel-loader.c
 index 3a74ac1..29bfa2d 100644
 --- a/shell/cc-panel-loader.c

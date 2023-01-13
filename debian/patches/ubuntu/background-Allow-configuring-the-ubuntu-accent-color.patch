@@ -1035,6 +1035,6 @@ index 92f5b7d..6968b2a 100644
  panels/ubuntu/cc-ubuntu-dock-dialog.ui
 +panels/ubuntu/cc-ubuntu-colors-row.c
 +panels/ubuntu/cc-ubuntu-colors-row.ui
- panels/ubuntu/gnome-ubuntu-panel.desktop.in.in
- panels/universal-access/cc-cursor-blinking-dialog.ui
+ panels/ubuntu/gnome-ubuntu-panel.desktop.in
  panels/universal-access/cc-cursor-size-dialog.ui
+ panels/universal-access/cc-ua-hearing-page.ui

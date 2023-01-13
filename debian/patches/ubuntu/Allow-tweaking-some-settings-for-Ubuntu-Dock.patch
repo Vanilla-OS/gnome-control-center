@@ -27,7 +27,7 @@ Forwarded: not-needed
  panels/ubuntu/cc-ubuntu-panel.c                | 1289 ++++++++++++++++++++++++
  panels/ubuntu/cc-ubuntu-panel.h                |   35 +
  panels/ubuntu/cc-ubuntu-panel.ui               |  163 +++
- panels/ubuntu/gnome-ubuntu-panel.desktop.in.in |   16 +
+ panels/ubuntu/gnome-ubuntu-panel.desktop.in    |   16 +
  panels/ubuntu/meson.build                      |  103 ++
  panels/ubuntu/ubuntu.gresource.xml             |    6 +
  po/POTFILES.in                                 |    5 +
@@ -43,7 +43,7 @@ Forwarded: not-needed
  create mode 100644 panels/ubuntu/cc-ubuntu-panel.c
  create mode 100644 panels/ubuntu/cc-ubuntu-panel.h
  create mode 100644 panels/ubuntu/cc-ubuntu-panel.ui
- create mode 100644 panels/ubuntu/gnome-ubuntu-panel.desktop.in.in
+ create mode 100644 panels/ubuntu/gnome-ubuntu-panel.desktop.in
  create mode 100644 panels/ubuntu/meson.build
  create mode 100644 panels/ubuntu/ubuntu.gresource.xml
 
@@ -1824,12 +1824,12 @@ index 0000000..0840525
 +    <signal name="value-changed" handler="on_icon_size_adjustment_value_changed" object="CcUbuntuPanel" swapped="yes"/>
 +  </object>
 +</interface>
-diff --git a/panels/ubuntu/gnome-ubuntu-panel.desktop.in.in b/panels/ubuntu/gnome-ubuntu-panel.desktop.in.in
+diff --git a/panels/ubuntu/gnome-ubuntu-panel.desktop.in b/panels/ubuntu/gnome-ubuntu-panel.desktop.in
 new file mode 100644
 index 0000000..19b396c
 --- /dev/null
-+++ b/panels/ubuntu/gnome-ubuntu-panel.desktop.in.in
-@@ -0,0 +1,16 @@
++++ b/panels/ubuntu/gnome-ubuntu-panel.desktop.in
+@@ -0,0 +1,13 @@
 +[Desktop Entry]
 +Name=Ubuntu Desktop
 +Comment=Ubuntu Desktop Appearance Settings
@@ -1841,9 +1841,6 @@ index 0000000..19b396c
 +StartupNotify=true
 +Categories=GNOME;GTK;Settings;DesktopSettings;X-GNOME-Settings-Panel;X-GNOME-PersonalSettings;X-GNOME-PersonalizationSettings;
 +OnlyShowIn=ubuntu;
-+X-GNOME-Bugzilla-Bugzilla=GNOME
-+X-GNOME-Bugzilla-Product=gnome-control-center
-+X-GNOME-Bugzilla-Version=@VERSION@
 +# Translators: those are keywords for the ubuntu control-center panel
 +Keywords=Dock;Launcher;Theme;Ubuntu;Dark;icons;Yaru;Accent;
 diff --git a/panels/ubuntu/meson.build b/panels/ubuntu/meson.build
@@ -1851,21 +1848,15 @@ new file mode 100644
 index 0000000..1fc83df
 --- /dev/null
 +++ b/panels/ubuntu/meson.build
-@@ -0,0 +1,103 @@
+@@ -0,0 +1,97 @@
 +fs = import('fs')
 +
 +panels_list += cappletname
 +desktop = 'gnome-@0@-panel.desktop'.format(cappletname)
 +
-+desktop_in = configure_file(
-+  input: desktop + '.in.in',
-+  output: desktop + '.in',
-+  configuration: desktop_conf
-+)
-+
 +i18n.merge_file(
 +  type: 'desktop',
-+  input: desktop_in,
++  input: desktop + '.in',
 +  output: desktop,
 +  po_dir: po_dir,
 +  install: true,
@@ -1974,15 +1965,15 @@ index 0728cc3..1905d01 100644
 @@ -234,6 +234,11 @@ panels/thunderbolt/cc-bolt-device-entry.c
  panels/thunderbolt/cc-bolt-panel.c
  panels/thunderbolt/cc-bolt-panel.ui
- panels/thunderbolt/gnome-thunderbolt-panel.desktop.in.in
+ panels/thunderbolt/gnome-thunderbolt-panel.desktop.in
 +panels/ubuntu/cc-ubuntu-panel.c
 +panels/ubuntu/cc-ubuntu-panel.ui
 +panels/ubuntu/cc-ubuntu-dock-dialog.c
 +panels/ubuntu/cc-ubuntu-dock-dialog.ui
-+panels/ubuntu/gnome-ubuntu-panel.desktop.in.in
- panels/universal-access/cc-cursor-blinking-dialog.ui
++panels/ubuntu/gnome-ubuntu-panel.desktop.in
  panels/universal-access/cc-cursor-size-dialog.ui
- panels/universal-access/cc-pointing-dialog.ui
+ panels/universal-access/cc-ua-hearing-page.ui
+ panels/universal-access/cc-ua-mouse-page.ui
 diff --git a/shell/cc-panel-list.c b/shell/cc-panel-list.c
 index 185b16d..2906b11 100644
 --- a/shell/cc-panel-list.c
@@ -2021,5 +2012,5 @@ index 1b819a5..b254350 100644
    PANEL_TYPE("sound",            cc_sound_panel_get_type,                NULL),
 +  PANEL_TYPE("ubuntu",           cc_ubuntu_panel_get_type,               cc_ubuntu_panel_static_init_func),
  #ifdef BUILD_THUNDERBOLT
-   PANEL_TYPE("thunderbolt",      cc_bolt_panel_get_type,                 NULL),
+   PANEL_TYPE("thunderbolt",      cc_bolt_panel_get_type,                 cc_thunderbolt_panel_static_init_func),
  #endif

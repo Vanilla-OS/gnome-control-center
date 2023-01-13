@@ -51,8 +51,8 @@ index 686d8c6..b9615ac 100644
 +}
 +
  static void
- set_custom_theme (CcAlertChooser *self,
-                   const gchar    *name)
+ update_dir_mtime (const char *dir_path)
+ {
 @@ -183,6 +205,16 @@ set_custom_theme (CcAlertChooser *self,
    g_settings_set_string (self->sound_settings, "theme-name", CUSTOM_THEME_NAME);
  }

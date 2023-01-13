@@ -55,7 +55,7 @@ index cdd28ab..6d1269a 100644
  
 -  if (self->have_synaptics || !self->have_touchpad) {
 +  if (!self->have_touchpad) {
-     gtk_widget_hide (GTK_WIDGET (self->touchpad_group));
+     gtk_widget_set_visible (GTK_WIDGET (self->touchpad_group), FALSE);
      return;
    }
 @@ -308,7 +307,10 @@ setup_dialog (CcMousePanel *self)

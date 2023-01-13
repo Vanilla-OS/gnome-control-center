@@ -7,7 +7,7 @@ Subject: diagnostics: Add Whoopsie support
  meson_options.txt                                  |   1 +
  panels/diagnostics/cc-diagnostics-panel.c          | 224 +++++++++++++++++++++
  panels/diagnostics/cc-diagnostics-panel.ui         |  10 +-
- .../gnome-diagnostics-panel.desktop.in.in          |   2 +-
+ .../gnome-diagnostics-panel.desktop.in             |   2 +-
  panels/diagnostics/meson.build                     |   7 +-
  6 files changed, 250 insertions(+), 3 deletions(-)
 
@@ -29,7 +29,7 @@ index 3510f83..7c42185 100644
 +
  if host_is_linux
    # network manager
-   network_manager_deps = [
+   mm_dep =  dependency('mm-glib', version: '>= 0.7')
 @@ -322,4 +330,5 @@ summary({
    'IBus': enable_ibus,
    'Snap': enable_snap,
@@ -361,13 +361,13 @@ index a08a4ca..7a0a3f9 100644
            </object>
          </child>
        </object>
-diff --git a/panels/diagnostics/gnome-diagnostics-panel.desktop.in.in b/panels/diagnostics/gnome-diagnostics-panel.desktop.in.in
+diff --git a/panels/diagnostics/gnome-diagnostics-panel.desktop.in b/panels/diagnostics/gnome-diagnostics-panel.desktop.in
 index 68d4cb0..57f148d 100644
---- a/panels/diagnostics/gnome-diagnostics-panel.desktop.in.in
-+++ b/panels/diagnostics/gnome-diagnostics-panel.desktop.in.in
+--- a/panels/diagnostics/gnome-diagnostics-panel.desktop.in
++++ b/panels/diagnostics/gnome-diagnostics-panel.desktop.in
 @@ -16,4 +16,4 @@ X-GNOME-Bugzilla-Product=gnome-control-center
- X-GNOME-Bugzilla-Component=privacy
- X-GNOME-Bugzilla-Version=@VERSION@
+ Categories=GNOME;GTK;Settings;DesktopSettings;X-GNOME-Settings-Panel;X-GNOME-PrivacySettings;
+ OnlyShowIn=GNOME;Unity;
  # Translators: Search terms to find the Diagnostics panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
 -Keywords=diagnostics;crash;
 +Keywords=diagnostics;crash;error;bug;whoopsie;launchpad;issue;
