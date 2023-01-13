@@ -142,7 +142,7 @@ run_warning (CcUsagePanel *self,
   gtk_dialog_set_default_response (GTK_DIALOG (dialog), FALSE);
 
   button = gtk_dialog_get_widget_for_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
-  gtk_style_context_add_class (gtk_widget_get_style_context (button), "destructive-action");
+  gtk_widget_add_css_class (button, "destructive-action");
 
   gtk_window_present (GTK_WINDOW (dialog));
 
@@ -328,12 +328,31 @@ cc_usage_panel_init (CcUsagePanel *self)
 }
 
 static void
+on_clear_recent_warning_response_cb (GtkDialog    *dialog,
+                                   gint          response,
+                                   CcUsagePanel *self)
+{
+  if (response == GTK_RESPONSE_OK)
+    gtk_recent_manager_purge_items (gtk_recent_manager_get_default (), NULL);
+
+  gtk_window_destroy (GTK_WINDOW (dialog));
+}
+
+static void
 clear_recent (CcUsagePanel *self)
 {
-  GtkRecentManager *m;
+  GtkDialog *dialog;
 
-  m = gtk_recent_manager_get_default ();
-  gtk_recent_manager_purge_items (m, NULL);
+  dialog = run_warning (self,
+                        _("Delete all the recent files?"),
+                        _("All the recent files will be permanently deleted."),
+                        _("_Clear History"));
+
+  g_signal_connect_object (dialog,
+                           "response",
+                           G_CALLBACK (on_clear_recent_warning_response_cb),
+                           self,
+                           0);
 }
 
 static void

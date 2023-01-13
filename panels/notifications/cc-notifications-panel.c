@@ -260,7 +260,7 @@ add_application (CcNotificationsPanel *panel,
   gtk_list_box_append (panel->app_listbox, row);
 
   w = gtk_image_new_from_gicon (icon);
-  gtk_style_context_add_class (gtk_widget_get_style_context (w), "lowres-icon");
+  gtk_widget_add_css_class (w, "lowres-icon");
   gtk_image_set_icon_size (GTK_IMAGE (w), GTK_ICON_SIZE_LARGE);
   adw_action_row_add_prefix (ADW_ACTION_ROW (row), w);
 
@@ -458,7 +458,7 @@ select_app (CcNotificationsPanel *panel,
 
   dialog = cc_app_notifications_dialog_new (app_id, g_app_info_get_name (app->app_info), app->settings, panel->master_settings, panel->perm_store);
   gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (toplevel));
-  gtk_widget_show (GTK_WIDGET (dialog));
+  gtk_window_present (GTK_WINDOW (dialog));
 }
 
 static int

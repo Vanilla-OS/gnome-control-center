@@ -26,7 +26,10 @@
         "cxxflags" : "-O2 -g",
         "env" : {
             "V" : "1"
-        }
+        },
+        "build-args": [
+            "--share=network"
+        ]
     },
     "x-run-args" : [
         "--verbose"
@@ -72,7 +75,6 @@
             "config-opts" : [
                 "--disable-polkitd",
                 "--disable-man-pages",
-                "--disable-introspection",
                 "--disable-examples",
                 "--disable-gtk-doc",
                 "--disable-libelogind",
@@ -111,17 +113,15 @@
             "name" : "accountservice",
             "buildsystem" : "meson",
             "config-opts" : [
-                "-Ddocbook=false",
-                "-Delogind=false",
-                "-Dgtk_doc=false",
+                "-Dsystemdsystemunitdir=no",
                 "-Dintrospection=false",
-                "-Dsystemd=false",
-                "-Dsystemdsystemunitdir=no"
+                "-Dvapi=false"
             ],
             "sources" : [
                 {
                     "type" : "git",
-                    "url" : "git://anongit.freedesktop.org/accountsservice"
+                    "url" : "https://gitlab.freedesktop.org/accountsservice/accountsservice",
+                    "branch" : "main"
                 }
             ]
         },
@@ -183,20 +183,6 @@
                 {
                     "type" : "git",
                     "url" : "https://github.com/gentoo/eudev.git"
-                }
-            ]
-        },
-        {
-            "name" : "gudev",
-            "buildsystem" : "meson",
-            "config-opts" : [
-                "-Dtests=disabled",
-                "-Dintrospection=disabled"
-            ],
-            "sources" : [
-                {
-                    "type" : "git",
-                    "url" : "https://gitlab.gnome.org/GNOME/libgudev.git"
                 }
             ]
         },
@@ -279,9 +265,10 @@
             "name" : "geocode-glib",
             "buildsystem" : "meson",
             "config-opts" : [
-            	"-Denable-gtk-doc=false",
+            	"-Denable-installed-tests=false",
             	"-Denable-introspection=false",
-            	"-Denable-installed-tests=false"
+            	"-Denable-gtk-doc=false",
+            	"-Dsoup2=false"
             ],
             "sources" : [
                 {
@@ -294,9 +281,10 @@
             "name" : "libgweather",
             "buildsystem" : "meson",
             "config-opts" : [
-            	"-Dglade_catalog=false",
             	"-Denable_vala=false",
-            	"-Dgtk_doc=false"
+            	"-Dgtk_doc=false",
+            	"-Dintrospection=false",
+            	"-Dtests=false"
             ],
             "sources" : [
                 {
@@ -357,14 +345,10 @@
             "config-opts" : [
                 "-Dlibaudit=no",
                 "-Ddbus_conf_dir=/app/etc/dbus-1/system.d",
-                "-Ddbus_ifaces_dir=/app/share/dbus-1/interfaces",
-                "-Ddbus_sys_dir=/app/share/dbus-1/system.d",
                 "-Ddnsmasq=/usr/bin/true",
                 "-Ddocs=false",
                 "-Dintrospection=false",
                 "-Diptables=/usr/bin/true",
-                "-Djson_validation=false",
-                "-Dlibnm_glib=false",
                 "-Dlibpsl=false",
                 "-Dmodem_manager=false",
                 "-Dnmtui=false",
@@ -419,12 +403,9 @@
             "buildsystem" : "meson",
             "config-opts" : [
                 "-Dappindicator=no",
-                "-Dgtk_doc=false",
-                "-Dintrospection=false",
-                "-Dlibnm_gtk=false",
+                "-Dwwan=false",
                 "-Dselinux=false",
-                "-Dteam=false",
-                "-Dwwan=false"
+                "-Dteam=false"
             ],
             "sources" : [
                 {
@@ -635,6 +616,142 @@
             ]
         },
         {
+            "name" : "mutter",
+            "buildsystem" : "meson",
+            "config-opts" : [
+                "-Dgles2=false",
+                "-Dglx=false",
+                "-Dxwayland=false",
+                "-Dwayland=false",
+                "-Dsystemd=false",
+                "-Dnative_backend=false",
+                "-Dremote_desktop=false",
+                "-Degl_device=false",
+                "-Dudev=false",
+                "-Dstartup_notification=false",
+                "-Dsm=false",
+                "-Dintrospection=true",
+                "-Ddocs=false",
+                "-Dtests=false",
+                "-Dprofiler=false"
+            ],
+            "sources" : [
+                {
+                    "type" : "git",
+                    "branch" : "main",
+                    "url" : "https://gitlab.gnome.org/gnome/mutter.git"
+                }
+            ]
+        },
+        {
+            "name" : "libical",
+            "buildsystem" : "cmake",
+            "config-opts" : [
+                "-DICAL_BUILD_DOCS=false",
+                "-DICAL_GLIB=true",
+                "-DLIBICAL_BUILD_TESTING=false"
+            ],
+            "sources" : [
+                {
+                    "type" : "git",
+                    "url" : "https://github.com/libical/libical.git"
+                }
+            ]
+        },
+        {
+            "name" : "evolution-data-server",
+            "buildsystem" : "cmake",
+            "config-opts" : [
+                "-DWITH_LIBDB=OFF"
+            ],
+            "sources" : [
+                {
+                    "type" : "git",
+                    "url" : "https://gitlab.gnome.org/GNOME/evolution-data-server.git"
+                }
+            ]
+        },
+        {
+            "name" : "libstartup-notification",
+            "buildsystem" : "autotools",
+            "sources" : [
+                {
+                    "type" : "git",
+                    "url" : "https://gitlab.freedesktop.org/xdg/startup-notification.git"
+                }
+            ]
+        },
+        {
+            "name" : "sassc",
+            "buildsystem" : "simple",
+            "sources" : [
+                {
+                    "type" : "git",
+                    "url" : "https://github.com/sass/libsass"
+                },
+                {
+                    "type" : "git",
+                    "url" : "https://github.com/sass/sassc.git",
+                    "dest" : "sassc"
+                }
+            ],
+            "build-commands" : [
+                "make -C sassc",
+                "PREFIX=/app make -C sassc install"
+            ]
+        },
+        {
+            "name" : "cogl",
+            "buildsystem" : "autotools",
+            "sources" : [
+                {
+                    "type" : "git",
+                    "tag" : "cogl-1.22",
+                    "url" : "https://gitlab.gnome.org/Archive/cogl.git"
+                }
+            ]
+        },
+        {
+            "name" : "clutter",
+            "buildsystem" : "meson",
+            "config-opts" : [
+                "-Dbackends='system'",
+                "-Ddrivers='all'",
+                "-Dbuild_tests=false",
+                "-Dbuild_examples=false",
+                "-Ddocumentation=false",
+                "-Dintrospection=true",
+                "-Dpixbuf_tests=false"
+            ],
+            "sources" : [
+                {
+                    "type" : "git",
+                    "url" : "https://gitlab.gnome.org/GNOME/clutter.git"
+                }
+            ]
+        },
+        {
+            "name" : "gnome-shell",
+            "buildsystem" : "meson",
+            "config-opts" : [
+                "-Dextensions_tool=false",
+                "-Dextensions_app=false",
+                "-Dgtk_doc=false",
+                "-Dman=false",
+                "-Dtests=false",
+                "-Dnetworkmanager=false",
+                "-Dsystemd=false"
+            ],
+            "sources" : [
+                {
+                    "type" : "git",
+                    "branch" : "main",
+                    "url" : "https://gitlab.gnome.org/GNOME/gnome-shell.git"
+                }
+            ]
+        },
+
+        {
             "name" : "gnome-backgrounds",
             "buildsystem" : "meson",
             "sources" : [
@@ -650,12 +767,11 @@
             "buildsystem" : "meson",
             "sources" : [
                 {
-                    "type" : "git",
-                    "url" : "https://gitlab.gnome.org/GNOME/gnome-control-center.git"
+                    "type" : "dir",
+                    "path" : "../../"
                 }
             ],
             "config-opts" : [
-                "-Dtracing=true",
                 "-Dprofile=development"
             ]
         }

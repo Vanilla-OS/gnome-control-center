@@ -1,212 +1,97 @@
 # Contributing
 
-When contributing to the development of GNOME Settings, please first discuss the change you wish to
-make via issue, email, or any other method with the maintainers before making a change.
+Thank you for considering contributing to Settings!
+
+All code contributions are made using merge requests.
 
 Please note we have a Code of Conduct, please follow it in all your interactions with the project.
 
-## Pull Request Process
+## Creating Merge Requests
 
-1. Create a fork in GitLab and push your work to there
-2. Open a Merge Request
-  1. Always allow maintainer edits
-  2. Mark the Merge Request as WIP if your work is not ready to be reviewed
-3. Assign the correct maintainer to the Merge Request (see [`MAINTAINERS.md`][maintainers] to select
-   the correct maintainer)
-4. Format commit messages as follows:
-   ```
-   component: <summary>
-   ‌
-   A paragraph explaining the problem and its context.
-   ‌
-   Another one explaining how you solved that.
-   ‌
-   <link to the issue>
-   ```
-4. You may merge the pull request in once you have the sign-off of the maintainers, or if you
-   do not have permission to do that, you may request the second reviewer to merge it for you.
+To open a merge request fork the Settings project, and then create a branch for your change.
+When the change is ready, submit a merge request.
 
-## Code of Conduct
+The following guidelines will help your change be successfully merged:
 
-GNOME Settings is a project developed based on GNOME Code of Conduct and GitHub's community
-guidelines. You can read it below:
+ * Keep the change as small as possible. If you can split it into multiple merge requests please do
+   so.
+ * Use multiple commits. This makes is easier to review and helps to diagnose bugs in the future.
+ * Use clear commit messages (see below).
+ * Attach screenshots of the change.
+ * Link to relevant issues this change is related to.
+ * Always set the merge request to allow maintainer edits - this makes it easier
+   for a maintainer to make small improvements to land the change faster.
 
-### Summary
+Please format commit messages as follows:
 
-GNOME creates software for a better world. We achieve this by behaving well towards
-each other.
+```
+component: <summary>
 
-Therefore this document suggests what we consider ideal behaviour, so you know what
-to expect when getting involved in GNOME. This is who we are and what we want to be.
-There is no official enforcement of these principles, and this should not be interpreted
-like a legal document.
+A paragraph explaining the problem and its context.
 
-### Advice
+Another one explaining how you solved that.
 
- * **Be respectful and considerate**: Disagreement is no excuse for poor behaviour or personal
-     attacks. Remember that a community where people feel uncomfortable is not a productive one.
+<link to issue(s) this change fixes>
+```
 
- * **Be patient and generous**: If someone asks for help it is because they need it. Do politely
-     suggest specific documentation or more appropriate venues where appropriate, but avoid
-     aggressive or vague responses such as "RTFM".
+## Bug Fixes
 
- * **Assume people mean well**: Remember that decisions are often a difficult choice between
-     competing priorities. If you disagree, please do so politely. If something seems outrageous,
-     check that you did not misinterpret it. Ask for clarification, but do not assume the worst.
+Changes that fix bugs include:
 
- * **Try to be concise**: Avoid repeating what has been said already. Making a conversation larger
-     makes it difficult to follow, and people often feel personally attacked if they receive multiple
-     messages telling them the same thing.
+ * Correcting code that crashes.
+ * Spelling mistakes in labels.
+ * Small layout issues (e.g. spacing).
+ * Use of deprecated APIs.
+ * Restructuring of code for improved safety.
 
+Please include clear information in the commit message(s) and merge request that indicate what is
+being fixed by the change.
 
-In the interest of fostering an open and welcoming environment, we as
-contributors and maintainers pledge to making participation in our project and
-our community a harassment-free experience for everyone, regardless of age, body
-size, disability, ethnicity, gender identity and expression, level of experience,
-nationality, personal appearance, race, religion, or sexual identity and
-orientation.
+These changes will be reviewed for correctness, and then merged once this is complete.
 
-### Communication Guidelines
+## User Experience Changes
 
-It is of ultimate importance to maintain a community in which everyone feels free to express
-themselves, review, and comment on each others ideas, both technical and otherwise. Correspondingly,
-an environment in which individuals are silenced, berated, or are otherwise afraid to speak up is
-unlikely to foster fruitful dialog.
+Changes that impact the user experience of Settings require approval from the
+[Design Team][design-team]. This includes:
 
-Everyone interacting with members of the community should always keep in mind the asymmetry of
-communication: while your interaction with community members (and in particular, maintainers and
-long-term contributors) may be singular and fleeting, these members generally interact with a high
-volume of individuals each day. Before writing a comment, opening a new issue, or engaging as part
-of any forum or IRC discussion, please take a moment to appreciate that fact.
+ * Addition or removal of features in existing panels.
+ * Changes to the layout of panels.
+ * New panels.
 
-While communicating, it is expected that all involved participants be respectful and civil at all
-times and refrain from personal attacks.
+Please include before/after screenshots in the merge request to show what is being changed.
 
-#### Communication Rules
+For one of these changes to be merged one of the following is required:
 
-The following behavior will not be tolerated on any occasion:
+ * The change is shown in an existing mockup done by the design team (linked to in the merge request
+   or issue).
+ * A comment from a design team member in the merge request or issue approving the change.
 
- * **Threats of violence**: You may not threaten violence towards others or use the site to organize,
-   promote, or incite acts of real-world violence or terrorism. Think carefully about the words you
-   use, the images you post, and even the software you write, and how they may be interpreted by
-   others. Even if you mean something as a joke, it might not be received that way. If you think
-   that someone else might interpret the content you post as a threat or as promoting violence or
-   terrorism, stop. Don't post it. In extraordinary cases, we may report threats of violence to law
-   enforcement if we think there may be a genuine risk of physical harm or a threat to public safety.
+If a merge request is opened without the above the "Needs Design" label attached to it and will not
+be merged until design approval is received.
 
- * **Hate speech and discrimination**: While it is not forbidden to broach topics such as age, body
-   size, disability, ethnicity, gender identity and expression, level of experience, nationality,
-   personal appearance, race, religion, or sexual identity and orientation, we do not tolerate speech
-   that attacks a person or group of people on the basis of who they are. When approached in an
-   aggressive or insulting manner these (and other) sensitive topics can make others feel unwelcome,
-   or perhaps even unsafe. While there's always the potential for misunderstandings, we expect our
-   community members to remain respectful and civil when discussing sensitive topics.
+Once design approval is obtained, the change will be reviewed for correctness, and then merged once
+this is complete.
+If design approval is not obtained, the merge request will be closed.
 
- * **Bullying and harassment**: We do not tolerate bullying, harassment, or any other means of
-   habitual badgering or intimidation targeted at a specific person or group of people. In general,
-   if your actions are unwanted and you cease to terminate this form of engagement, there is a good
-   chance that your behavior will be classified as bullying or harassment.
+[design-team]: https://gitlab.gnome.org/Teams/Design
 
- * **Impersonation**: You may not seek to mislead others as to your identity by copying another
-   person's avatar, posting content under their email address, using a similar username, or otherwise
-   posing as someone else. Impersonation and identity theft is a form of harassment.
+## Reviews
 
- * **Doxxing and invasion of privacy**: Don't post other people's personal information, such as phone
-   numbers, private email addresses, physical addresses, credit card numbers, Social Security/National
-   Identity numbers, or passwords. Depending on the context, we may consider such behavior to be an
-   invasion of privacy, with particularly egregious examples potentially escalating to the point of
-   legal action, such as when the released material presents a safety risk to the subject.
+All changes require approval from one or more Settings maintainers.
+Reviews are likely to ask for changes to be made, please respond to these as soon as you are able
+and ask for clarification if the requests are not clear.
 
- * **Obscene content**: In essence, do not post pornography, gore, or any other depiction of violence.
+When the change is ready to land a maintainer will mark it as approved.
+Then the change can be merged by either a maintainer or the submitter if they have suitable
+permissions.
 
-#### General Advice
+## Draft Merge Requests
 
-The following advice will help to increase the efficiency of communication with community members:
+Merge requests marked as draft will not be reviewed by Settings maintainers or merged.
+When the change is ready for review please mark the merge request as ready.
 
- * Do not post "me too" comments. Use the GitLab reactions instead, e.g. “thumbs up” or “thumbs down”.
- * Avoid adding priority, time, or relevance hints if you are not involved with the development of
-   the application. For example, `“This is an urgent issue”`, or `“This should be fixed now”`, or
-   even `“The majority of users need this feature”`.
- * Do not use passive-aggressive communication tactics.
- * When reporting technical problems with the application, such as misbehavior or crashes, focus on
-   sharing as many details as possible and avoid adding non-technical information to it.
+## Inactive Merge Requests
 
-   An example of a **good** issue report:
-
-   ```
-   GNOME Settings crashes when opening the Wi-Fi panel with 3+ Wi-Fi adapters
-
-   Steps to reproduce (assuming 3+ Wi-Fi adapters are present):
-
-     1. Open GNOME Settings
-     2. Select the Wi-Fi panel
-     3. Observe the crash
-
-   This does not happen with 2 or less adapters. Here is a backtrace of the
-   crash: backtrace.txt
-   ```
-
-   In contrast, here is an example of a **bad** issue report:
-
-   ```
-   GNOME Settings crashed while I was trying to connect to the internet. How can such
-   a thing happen and nobody notice? Did you not test it before releasing it?
-
-   This should be fixed as quick as possible!
-   ```
-
- * When asking for new features, try and add as much information as possible to justify its relevance,
-   why should it not be implemented as an auxiliary program, what problems it would solve, and offer
-   suggestions about how you think it should be implemented.
-
-   Example of a **good** feature request:
-
-   ```
-   GNOME Settings needs to expose IPv6 options
-
-   As of now, the connection editor dialog does not allow editing various IPv6
-   options. This is relevant because without some of these options, it is not
-   possible to have a valid IPv6 configuration and, consequently, not have access
-   to various websites and services.
-
-   The list of missing configurations that are essential is:
-
-    * <Feature A>
-    * <Feature B>
-
-   Optionally, the following configurations can also be added:
-
-    * <Feature C>
-    * <Feature D>
-
-   Here is a quick sketch I have made showing how I think these options
-   should be exposed as a user interface: sketch.png.
-   ```
-
-   Example of a **bad** feature request:
-
-   ```
-   Merge GNOME Tweaks in GNOME Settings
-
-   The options in GNOME Tweaks are absolutely essential to the majority of us
-   users. Why was it not merged already? This is an urgent issue and should
-   have been addressed years ago. You should allocate all your resources on
-   merging those two applications.
-   ```
-
-#### What happens if someone breaks these rules or guidelines?
-
-Actions that may be taken in response to an abusive comment include but are not limited to:
-
- * Content removal (when breaking any of the guidelines or rules)
- * Content blocking (when breaking any of the guidelines or rules)
- * Formal report to the Code of Conduct Committee (when breaking any of the rules)
-
-### Attribution
-
-This Code of Conduct is adapted from the [Contributor Covenant][homepage], version 1.4,
-available at [http://contributor-covenant.org/version/1/4][version]
-
-[homepage]: http://contributor-covenant.org
-[version]: http://contributor-covenant.org/version/1/4/
-[maintainers]: https://gitlab.gnome.org/GNOME/gnome-control-center/blob/main/docs/MAINTAINERS.md
+If a merge request has comments from maintainers that have not been responded to within 4 weeks this
+merge request is considered to be inactive and will be closed. The reporter may re-open it at a
+later date if they respond to the comments.

@@ -1045,7 +1045,7 @@ show_history (NetDeviceWifi *self)
         adw_preferences_window_set_can_navigate_back (ADW_PREFERENCES_WINDOW (dialog), FALSE);
         native = gtk_widget_get_native (GTK_WIDGET (self));
         gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (native));
-        gtk_window_set_title (GTK_WINDOW (dialog), _("Known Wi-Fi Networks"));
+        gtk_window_set_title (GTK_WINDOW (dialog), _("Saved Wi-Fi Networks"));
         gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
         gtk_window_set_default_size (GTK_WINDOW (dialog), 500, 400);
 
@@ -1066,7 +1066,7 @@ show_history (NetDeviceWifi *self)
         /* translators: This is the label for the "Forget wireless network" functionality */
         forget = gtk_button_new_with_mnemonic (C_("Wi-Fi Network", "_Forget"));
         gtk_widget_set_sensitive (forget, FALSE);
-        gtk_style_context_add_class (gtk_widget_get_style_context (forget), "destructive-action");
+        gtk_widget_add_css_class (forget, "destructive-action");
 
         g_signal_connect (forget, "clicked",
                           G_CALLBACK (forget_selected), list);

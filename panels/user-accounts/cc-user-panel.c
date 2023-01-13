@@ -43,6 +43,7 @@
 #include <libmalcontent/malcontent.h>
 #endif
 
+#include "cc-list-row.h"
 #include "cc-add-user-dialog.h"
 #include "cc-avatar-chooser.h"
 #include "cc-language-chooser.h"
@@ -73,27 +74,23 @@ struct _CcUserPanel {
         GtkListBoxRow   *autologin_row;
         GtkSwitch       *autologin_switch;
         GtkButton       *back_button;
-        GtkLabel        *fingerprint_state_label;
-        GtkListBoxRow   *fingerprint_row;
+        CcListRow       *fingerprint_row;
         GtkStack        *full_name_stack;
         GtkLabel        *full_name_label;
         GtkToggleButton *full_name_edit_button;
         GtkEntry        *full_name_entry;
-        GtkLabel        *language_button_label;
-        GtkListBoxRow   *language_row;
-        GtkLabel        *last_login_button_label;
-        GtkListBoxRow   *last_login_row;
+        CcListRow       *language_row;
+        CcListRow       *last_login_row;
         GtkWidget       *no_users_box;
         GtkRevealer     *notification_revealer;
         AdwPreferencesGroup *other_users;
         GtkListBox      *other_users_listbox;
-        AdwPreferencesRow *other_users_row;
         GtkLabel        *password_button_label;
 #ifdef HAVE_MALCONTENT
         GtkLabel        *parental_controls_button_label;
         GtkListBoxRow   *parental_controls_row;
 #endif
-        GtkListBoxRow   *password_row;
+        CcListRow           *password_row;
         CcPermissionInfobar *permission_infobar;
         GtkButton       *remove_user_button;
         GtkStack        *stack;
@@ -105,6 +102,7 @@ struct _CcUserPanel {
         GPermission *permission;
         CcLanguageChooser *language_chooser;
         GListStore *other_users_model;
+        GtkFlattenListModel *other_users_flat_model;
 
         CcAvatarChooser *avatar_chooser;
 
@@ -168,7 +166,11 @@ set_selected_user (CcUserPanel  *self,
                    AdwActionRow *row)
 {
         uid_t uid;
- 
+
+        /* The user clicked "Add User…" row */
+        if (!g_object_get_data (G_OBJECT (row), "uid"))
+                return;
+
         uid = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (row), "uid"));
         g_set_object (&self->selected_user,
                       act_user_manager_get_user_by_id (self->um, uid));
@@ -235,19 +237,37 @@ setup_avatar_for_user (AdwAvatar *avatar, ActUser *user)
         }
 }
 
+static void add_user (CcUserPanel *self);
+
 static GtkWidget *
 create_user_row (gpointer item,
                  gpointer user_data)
 {
-        ActUser *user = ACT_USER (item);
+        CcUserPanel *self = user_data;
+        ActUser *user;
         GtkWidget *row, *user_image;
 
         row = adw_action_row_new ();
+        gtk_list_box_row_set_activatable (GTK_LIST_BOX_ROW (row), TRUE);
+
+        if (GTK_IS_STRING_OBJECT (item)) {
+                g_assert (!self->add_user_button);
+                self->add_user_button = row;
+
+                adw_preferences_row_set_title (ADW_PREFERENCES_ROW (row),
+                                               _("Add User…"));
+                adw_action_row_set_icon_name (ADW_ACTION_ROW (row), "list-add-symbolic");
+                g_signal_connect_object (row, "activated",
+                                         G_CALLBACK (add_user),
+                                         self, G_CONNECT_SWAPPED);
+                return row;
+        }
+
+        user = item;
         g_object_set_data (G_OBJECT (row), "uid", GINT_TO_POINTER (act_user_get_uid (user)));
-        gtk_list_box_row_set_activatable (GTK_LIST_BOX_ROW (row), TRUE); 
         adw_preferences_row_set_title (ADW_PREFERENCES_ROW (row),
                                        get_real_or_user_name (user));
-        user_image = adw_avatar_new (48, NULL, TRUE);
+        user_image = adw_avatar_new (32, NULL, TRUE);
         setup_avatar_for_user (ADW_AVATAR (user_image), user);
         adw_action_row_add_prefix (ADW_ACTION_ROW (row), user_image);
 
@@ -284,7 +304,6 @@ static void
 user_changed (CcUserPanel *self, ActUser *user)
 {
         GSList *user_list, *l;
-        gboolean show;
 
         g_list_store_remove_all (self->other_users_model);
         user_list = act_user_manager_list_users (self->um);
@@ -307,9 +326,6 @@ user_changed (CcUserPanel *self, ActUser *user)
 
         if (self->selected_user == user)
                 show_user (user, self);
-
-        show = g_list_model_get_n_items (G_LIST_MODEL (self->other_users_model)) > 0;
-        gtk_widget_set_visible (GTK_WIDGET (self->other_users_row), show);
 }
 
 static void
@@ -799,9 +815,9 @@ update_fingerprint_row_state (CcUserPanel *self, GParamSpec *spec, CcFingerprint
                                   state != CC_FINGERPRINT_STATE_UPDATING);
 
         if (state == CC_FINGERPRINT_STATE_ENABLED)
-                gtk_label_set_text (self->fingerprint_state_label, _("Enabled"));
+                cc_list_row_set_secondary_label (self->fingerprint_row, _("Enabled"));
         else if (state == CC_FINGERPRINT_STATE_DISABLED)
-                gtk_label_set_text (self->fingerprint_state_label, _("Disabled"));
+                cc_list_row_set_secondary_label (self->fingerprint_row, _("Disabled"));
 }
 
 static void
@@ -860,7 +876,7 @@ show_user (ActUser *user, CcUserPanel *self)
         } else {
                 name = g_strdup ("—");
         }
-        gtk_label_set_label (self->language_button_label, name);
+        cc_list_row_set_secondary_label (self->language_row, name);
 
         /* Fingerprint: show when self, local, enabled, and possible */
         show = (act_user_get_uid (user) == getuid() &&
@@ -897,8 +913,6 @@ show_user (ActUser *user, CcUserPanel *self)
             malcontent_control_path == NULL) {
                 gtk_widget_hide (GTK_WIDGET (self->parental_controls_row));
         } else {
-                GtkStyleContext *context = gtk_widget_get_style_context (GTK_WIDGET (self->parental_controls_button_label));
-
                 if (is_parental_controls_enabled_for_user (user))
                         /* TRANSLATORS: Status of Parental Controls setup */
                         gtk_label_set_text (self->parental_controls_button_label, _("Enabled"));
@@ -906,7 +920,7 @@ show_user (ActUser *user, CcUserPanel *self)
                         /* TRANSLATORS: Status of Parental Controls setup */
                         gtk_label_set_text (self->parental_controls_button_label, _("Disabled"));
 
-                gtk_style_context_remove_class (context, "dim-label");
+                gtk_widget_remove_css_class (GTK_WIDGET (self->parental_controls_button_label), "dim-label");
                 gtk_widget_show (GTK_WIDGET (self->parental_controls_row));
         }
 #endif
@@ -927,7 +941,7 @@ show_user (ActUser *user, CcUserPanel *self)
                 g_autofree gchar *text = NULL;
 
                 text = get_login_time_text (user);
-                gtk_label_set_label (self->last_login_button_label, text);
+                cc_list_row_set_secondary_label (self->last_login_row, text);
         }
         gtk_widget_set_visible (GTK_WIDGET (self->last_login_row), show);
 
@@ -1077,7 +1091,7 @@ language_response (CcUserPanel *self,
                 }
 
                 name = gnome_get_language_from_locale (lang, NULL);
-                gtk_label_set_label (self->language_button_label, name);
+                cc_list_row_set_secondary_label (self->language_row, name);
         }
 
         gtk_widget_hide (GTK_WIDGET (dialog));
@@ -1377,6 +1391,32 @@ on_permission_changed (CcUserPanel *self)
         }
 }
 
+/*
+ * This is a workaround to add an additional item to the end
+ * of the users list, which will be used to show "Add User…"
+ * row.  We do this way instead of appending a row to avoid
+ * some imperfections in the GUI.  See
+ * https://gitlab.gnome.org/GNOME/gnome-control-center/-/issues/1926
+ */
+static void
+setup_other_users_list (CcUserPanel *self)
+{
+        g_autoptr(GListStore) add_user = NULL;
+        g_autoptr(GtkStringObject) str = NULL;
+        GListStore *users_store;
+
+        users_store = g_list_store_new (G_TYPE_LIST_MODEL);
+        add_user = g_list_store_new (GTK_TYPE_STRING_OBJECT);
+
+        str = gtk_string_object_new ("add-user");
+        g_list_store_append (add_user, str);
+
+        g_list_store_append (users_store, self->other_users_model);
+        g_list_store_append (users_store, add_user);
+
+        self->other_users_flat_model = gtk_flatten_list_model_new (G_LIST_MODEL (users_store));
+}
+
 static void
 setup_main_window (CcUserPanel *self)
 {
@@ -1384,8 +1424,11 @@ setup_main_window (CcUserPanel *self)
         gboolean loaded;
 
         self->other_users_model = g_list_store_new (ACT_TYPE_USER);
+
+        setup_other_users_list (self);
+
         gtk_list_box_bind_model (self->other_users_listbox,
-                                 G_LIST_MODEL (self->other_users_model),
+                                 G_LIST_MODEL (self->other_users_flat_model),
                                  (GtkListBoxCreateWidgetFunc)create_user_row,
                                  self,
                                  NULL);
@@ -1522,24 +1565,19 @@ cc_user_panel_class_init (CcUserPanelClass *klass)
         gtk_widget_class_bind_template_child (widget_class, CcUserPanel, account_settings_box);
         gtk_widget_class_bind_template_child (widget_class, CcUserPanel, account_type_row);
         gtk_widget_class_bind_template_child (widget_class, CcUserPanel, account_type_switch);
-        gtk_widget_class_bind_template_child (widget_class, CcUserPanel, add_user_button);
         gtk_widget_class_bind_template_child (widget_class, CcUserPanel, autologin_row);
         gtk_widget_class_bind_template_child (widget_class, CcUserPanel, autologin_switch);
         gtk_widget_class_bind_template_child (widget_class, CcUserPanel, back_button);
-        gtk_widget_class_bind_template_child (widget_class, CcUserPanel, fingerprint_state_label);
         gtk_widget_class_bind_template_child (widget_class, CcUserPanel, fingerprint_row);
         gtk_widget_class_bind_template_child (widget_class, CcUserPanel, full_name_stack);
         gtk_widget_class_bind_template_child (widget_class, CcUserPanel, full_name_label);
         gtk_widget_class_bind_template_child (widget_class, CcUserPanel, full_name_edit_button);
         gtk_widget_class_bind_template_child (widget_class, CcUserPanel, full_name_entry);
-        gtk_widget_class_bind_template_child (widget_class, CcUserPanel, language_button_label);
         gtk_widget_class_bind_template_child (widget_class, CcUserPanel, language_row);
-        gtk_widget_class_bind_template_child (widget_class, CcUserPanel, last_login_button_label);
         gtk_widget_class_bind_template_child (widget_class, CcUserPanel, last_login_row);
         gtk_widget_class_bind_template_child (widget_class, CcUserPanel, no_users_box);
         gtk_widget_class_bind_template_child (widget_class, CcUserPanel, notification_revealer);
         gtk_widget_class_bind_template_child (widget_class, CcUserPanel, other_users);
-        gtk_widget_class_bind_template_child (widget_class, CcUserPanel, other_users_row);
         gtk_widget_class_bind_template_child (widget_class, CcUserPanel, other_users_listbox);
 #ifdef HAVE_MALCONTENT
         gtk_widget_class_bind_template_child (widget_class, CcUserPanel, parental_controls_button_label);

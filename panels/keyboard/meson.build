@@ -1,15 +1,9 @@
 panels_list += cappletname
 desktop = 'gnome-@0@-panel.desktop'.format(cappletname)
 
-desktop_in = configure_file(
-  input: desktop + '.in.in',
-  output: desktop + '.in',
-  configuration: desktop_conf
-)
-
 i18n.merge_file(
   type: 'desktop',
-  input: desktop_in,
+  input: desktop + '.in',
   output: desktop,
   po_dir: po_dir,
   install: true,
@@ -55,6 +49,7 @@ endforeach
 sources = files(
   'cc-xkb-modifier-dialog.c',
   'cc-keyboard-shortcut-row.c',
+  'cc-keyboard-shortcut-group.c',
   'cc-keyboard-shortcut-dialog.c',
   'cc-keyboard-panel.c',
   'cc-keyboard-item.c',

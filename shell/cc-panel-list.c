@@ -22,7 +22,7 @@
 
 #include <string.h>
 
-#include "cc-debug.h"
+#include "cc-log.h"
 #include "cc-panel-list.h"
 #include "cc-util.h"
 
@@ -326,7 +326,7 @@ row_data_new (CcPanelCategory     category,
       gtk_grid_attach (GTK_GRID (grid), image, 2, 0, 1, 1);
     }
 
-  gtk_style_context_add_class (gtk_widget_get_style_context (label), "dim-label");
+  gtk_widget_add_css_class (label, "dim-label");
   gtk_grid_attach (GTK_GRID (grid), label, 1, 1, 1, 1);
 
   data->description_label = label;
