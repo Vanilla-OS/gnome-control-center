@@ -90,6 +90,7 @@ struct _CcWwanData
   gint     priority;
   gboolean data_enabled; /* autoconnect enabled */
   gboolean home_only;    /* Data roaming */
+  gboolean apn_list_updated;    /* APN list updated from mobile-provider-info */
 };
 
 G_DEFINE_TYPE (CcWwanData, cc_wwan_data, G_TYPE_OBJECT)
@@ -277,7 +278,7 @@ wwan_data_update_apn_list_db (CcWwanData *self)
   g_autoptr(GError) error = NULL;
   guint i = 0;
 
-  if (!self->sim || !self->operator_code)
+  if (!self->sim || !self->operator_code || self->apn_list_updated)
     return;
 
   if (!self->apn_list)
@@ -299,6 +300,8 @@ wwan_data_update_apn_list_db (CcWwanData *self)
   if (self->apn_provider)
     apn_methods = nma_mobile_provider_get_methods (self->apn_provider);
 
+  self->apn_list_updated = TRUE;
+
   for (l = apn_methods; l; l = l->next, i++)
     {
       g_autoptr(CcWwanDataApn) apn = NULL;
@@ -313,6 +316,7 @@ wwan_data_update_apn_list_db (CcWwanData *self)
       if (!apn)
         {
           apn = cc_wwan_data_apn_new ();
+          apn->access_method = l->data;
           g_list_store_insert (self->apn_list, i, apn);
         }
 
@@ -326,7 +330,8 @@ wwan_data_update_apn_list (CcWwanData *self)
   const GPtrArray *nm_connections;
   guint i;
 
-  if (self->apn_list || !self->sim)
+  if (self->apn_list || !self->sim || !self->nm_device ||
+      nm_device_get_state (self->nm_device) <= NM_DEVICE_STATE_UNAVAILABLE)
     return;
 
   if (!self->apn_list)
@@ -378,6 +383,25 @@ static void
 wwan_device_state_changed_cb (CcWwanData *self)
 {
   g_object_notify_by_pspec (G_OBJECT (self), properties[PROP_ENABLED]);
+}
+
+static void
+wwan_device_3gpp_operator_code_changd_cb (CcWwanData *self)
+{
+  MMModem3gpp *modem_3gpp;
+
+  modem_3gpp = mm_object_peek_modem_3gpp (self->mm_object);
+
+  if (!self->operator_code)
+    {
+      self->operator_code = mm_modem_3gpp_dup_operator_code (modem_3gpp);
+
+      if (self->operator_code)
+        {
+          wwan_data_update_apn_list (self);
+          wwan_data_update_apn_list_db (self);
+        }
+    }
 }
 
 static void
@@ -506,7 +530,12 @@ cc_wwan_data_new (MMObject *mm_object,
 
       modem_3gpp = mm_object_peek_modem_3gpp (mm_object);
       if (modem_3gpp)
-        self->operator_code = mm_modem_3gpp_dup_operator_code (modem_3gpp);
+        {
+          g_signal_connect_object (modem_3gpp, "notify::operator-code",
+                                   G_CALLBACK (wwan_device_3gpp_operator_code_changd_cb),
+                                   self, G_CONNECT_SWAPPED);
+          wwan_device_3gpp_operator_code_changd_cb (self);
+        }
     }
 
   if (self->active_connection)

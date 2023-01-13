@@ -1,6 +1,6 @@
 project(
   'gnome-control-center', 'c',
-        version : '43.2',
+        version : '44.alpha',
         license : 'GPL2+',
   meson_version : '>= 0.57.0'
 )
@@ -25,15 +25,19 @@ host_is_linux_not_s390 = host_is_linux and not host_machine.cpu().contains('s390
 
 cc = meson.get_compiler('c')
 
-# Tracing
-enable_tracing = get_option('tracing')
-
 config_h = configuration_data()
 
 py = import('python')
 python = py.find_installation('python3')
 
 config_h.set_quoted('TEST_NM_PYTHON', python.path())
+
+if get_option('profile') == 'development'
+    profile = 'Devel'
+else
+    profile = ''
+endif
+application_id = 'org.gnome.Settings@0@'.format(profile)
 
 # defines
 set_defines = [
@@ -151,7 +155,7 @@ common_deps = [
   libadwaita_dep,
   dependency('gio-unix-2.0'),
   dependency('gthread-2.0'),
-  dependency('gtk4', version: '>= 4.4'),
+  dependency('gtk4', version: '>= 4.8'),
 ]
 
 polkit_gobject_dep = dependency('polkit-gobject-1', version: '>= 0.103')
@@ -222,10 +226,11 @@ config_h.set('HAVE_MALCONTENT', enable_malcontent,
 
 if host_is_linux
   # network manager
+  mm_dep =  dependency('mm-glib', version: '>= 0.7')
   network_manager_deps = [
     dependency('libnm', version: '>= 1.24.0'),
-    dependency('libnma-gtk4', version: '>= 1.8.0'),
-    dependency('mm-glib', version: '>= 0.7')
+    dependency('libnma-gtk4', version: '>= 1.10.2'),
+    mm_dep,
   ]
 endif
 config_h.set('BUILD_NETWORK', host_is_linux,
@@ -267,9 +272,6 @@ gnome = import('gnome')
 i18n = import('i18n')
 pkg = import('pkgconfig')
 
-desktop_conf = configuration_data()
-desktop_conf.set('VERSION', meson.project_version())
-
 po_dir = join_paths(meson.source_root(), 'po')
 its_dir = join_paths(meson.source_root(), 'gettext')
 
@@ -308,7 +310,6 @@ configure_file(
 summary({
   'Documentation': get_option('documentation'),
   'Tests': get_option('tests'),
-  'Tracing': enable_tracing,
   'Optimized': control_center_optimized,
 })
 

@@ -24,7 +24,7 @@
 
 #include <config.h>
 
-#include "cc-debug.h"
+#include "cc-log.h"
 #include "cc-window.h"
 
 #include <glib/gi18n.h>
@@ -834,8 +834,6 @@ cc_window_class_init (CcWindowClass *klass)
   gtk_widget_class_bind_template_callback (widget_class, update_list_title);
 
   gtk_widget_class_add_binding (widget_class, GDK_KEY_Left, GDK_ALT_MASK, go_back_shortcut_cb, NULL);
-  gtk_widget_class_add_binding (widget_class, GDK_KEY_s, GDK_CONTROL_MASK, search_shortcut_cb, NULL);
-  gtk_widget_class_add_binding (widget_class, GDK_KEY_S, GDK_CONTROL_MASK, search_shortcut_cb, NULL);
   gtk_widget_class_add_binding (widget_class, GDK_KEY_f, GDK_CONTROL_MASK, search_shortcut_cb, NULL);
   gtk_widget_class_add_binding (widget_class, GDK_KEY_F, GDK_CONTROL_MASK, search_shortcut_cb, NULL);
   gtk_widget_class_add_binding_action (widget_class, GDK_KEY_q, GDK_CONTROL_MASK, "window.close", NULL);
@@ -865,7 +863,7 @@ cc_window_init (CcWindow *self)
 
   /* Add a custom CSS class on development builds */
   if (in_flatpak_sandbox ())
-    gtk_style_context_add_class (gtk_widget_get_style_context (GTK_WIDGET (self)), "devel");
+    gtk_widget_add_css_class (GTK_WIDGET (self), "devel");
 }
 
 CcWindow *

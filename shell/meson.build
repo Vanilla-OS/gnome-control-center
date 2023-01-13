@@ -3,29 +3,31 @@ subdir('completions')
 
 service_conf = configuration_data()
 service_conf.set('bindir', control_center_bindir)
+service_conf.set('appid', application_id)
 
 service = 'org.gnome.Settings.service'
 
 configure_file(
           input : service + '.in',
-         output : service,
+         output : '@0@.service'.format(application_id),
         install : true,
     install_dir : join_paths(control_center_datadir, 'dbus-1', 'services'),
   configuration : service_conf
 )
 
-desktop = 'org.gnome.Settings.desktop'
+desktop_conf = configuration_data()
+desktop_conf.set('icon', application_id)
 
-desktop_in = configure_file(
-          input : desktop + '.in.in',
-         output : desktop + '.in',
-  configuration : desktop_conf
-)
+desktop = 'org.gnome.Settings.desktop'
 
 i18n.merge_file(
          type : 'desktop',
-        input : desktop_in,
-       output : desktop,
+        input : configure_file(
+            input: desktop + '.in',
+            output: 'org.gnome.Settings.desktop.in',
+            configuration: desktop_conf
+        ),
+       output : '@0@.desktop'.format(application_id),
        po_dir : po_dir,
       install : true,
   install_dir : control_center_desktopdir
@@ -53,17 +55,6 @@ common_sources = files(
 ###################
 
 generated_sources = files()
-
-# Debug
-debug_conf = configuration_data()
-debug_conf.set('BUGREPORT_URL', 'https://gitlab.gnome.org/GNOME/' + meson.project_name() + '/issues/new')
-debug_conf.set10('ENABLE_TRACING', enable_tracing)
-
-generated_sources += configure_file(
-          input : 'cc-debug.h.in',
-         output : 'cc-debug.h',
-  configuration : debug_conf
-)
 
 #Resources
 resource_data = files(

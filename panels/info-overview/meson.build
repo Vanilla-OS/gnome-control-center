@@ -1,15 +1,9 @@
 panels_list += cappletname
 desktop = 'gnome-@0@-panel.desktop'.format(cappletname)
 
-desktop_in = configure_file(
-  input: desktop + '.in.in',
-  output: desktop + '.in',
-  configuration: desktop_conf
-)
-
 i18n.merge_file(
   type: 'desktop',
-  input: desktop_in,
+  input: desktop + '.in',
   output: desktop,
   po_dir: po_dir,
   install: true,
@@ -57,6 +51,14 @@ print_renderer_deps = [
   dependency('gtk4'),
   epoxy_dep
 ]
+
+executable(
+  'test-info-cleanup',
+  [ 'info-cleanup.c', 'test-info-cleanup.c' ],
+  include_directories: [ top_inc ],
+  dependencies: [ print_renderer_deps ],
+  c_args: cflags,
+)
 
 executable(
   'gnome-control-center-print-renderer',

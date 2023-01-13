@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-control-center/"
 "issues\n"
-"POT-Creation-Date: 2022-11-20 14:10+0000\n"
+"POT-Creation-Date: 2022-09-23 17:15+0000\n"
 "Last-Translator: Нанба Наала <naala-nanba@rambler.ru>\n"
 "Language-Team: Abkhazian <daniel.abzakh@gmail.com>\n"
 "Language: ab\n"
@@ -10,22 +10,21 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-DamnedLies-Scope: partial\n"
 
 #: panels/applications/cc-applications-panel.c:822
 msgid "System Bus"
-msgstr "Асистематә ҭелцаха"
+msgstr ""
 
 #: panels/applications/cc-applications-panel.c:822
 #: panels/applications/cc-applications-panel.c:824
 #: panels/applications/cc-applications-panel.c:837
 #: panels/applications/cc-applications-panel.c:842
 msgid "Full access"
-msgstr "Инаӡоу анеира"
+msgstr ""
 
 #: panels/applications/cc-applications-panel.c:824
 msgid "Session Bus"
-msgstr "Асеанс аҭелцаха"
+msgstr ""
 
 #: panels/applications/cc-applications-panel.c:828
 #: panels/power/cc-power-panel.ui:75 panels/thunderbolt/cc-bolt-panel.ui:265
@@ -35,7 +34,7 @@ msgstr ""
 
 #: panels/applications/cc-applications-panel.c:828
 msgid "Full access to /dev"
-msgstr "Инаӡоу анеира к /dev ахь"
+msgstr ""
 
 #: panels/applications/cc-applications-panel.c:832
 #: panels/network/gnome-network-panel.desktop.in.in:3
@@ -46,7 +45,7 @@ msgstr ""
 
 #: panels/applications/cc-applications-panel.c:832
 msgid "Has network access"
-msgstr "Аҳа ахь анеира азин амоуп"
+msgstr ""
 
 #: panels/applications/cc-applications-panel.c:837
 #: panels/applications/cc-applications-panel.c:839
@@ -57,12 +56,12 @@ msgstr "Home"
 #: panels/applications/cc-applications-panel.c:839
 #: panels/applications/cc-applications-panel.c:844
 msgid "Read-only"
-msgstr "Аԥхьара заҵәык азы"
+msgstr ""
 
 #: panels/applications/cc-applications-panel.c:842
 #: panels/applications/cc-applications-panel.c:844
 msgid "File System"
-msgstr "Афаилтә система"
+msgstr ""
 
 #: panels/applications/cc-applications-panel.c:848
 #: panels/keyboard/01-launchers.xml.in:6
@@ -70,11 +69,11 @@ msgstr "Афаилтә система"
 #: shell/cc-window.c:880 shell/cc-window.ui:22
 #: shell/org.gnome.Settings.desktop.in.in:3
 msgid "Settings"
-msgstr "Архиарақәа"
+msgstr ""
 
 #: panels/applications/cc-applications-panel.c:848
 msgid "Can change settings"
-msgstr "Аиҿкаарақәа аԥсахлар ҟалоит"
+msgstr ""
 
 #: panels/applications/cc-applications-panel.c:850
 #, c-format
@@ -112,7 +111,7 @@ msgstr "Аԥшькәа"
 
 #: panels/applications/cc-applications-panel.ui:31
 msgid "No applications"
-msgstr "Аԥшьқәа ыҟаӡам"
+msgstr ""
 
 #: panels/applications/cc-applications-panel.ui:34
 msgid "Install some…"
@@ -125,7 +124,7 @@ msgstr "Аартра"
 
 #: panels/applications/cc-applications-panel.ui:94
 msgid "View Details"
-msgstr "Аԥкаарақәа"
+msgstr ""
 
 #: panels/applications/cc-applications-panel.ui:112
 #: panels/applications/cc-applications-panel.ui:119
@@ -141,7 +140,7 @@ msgstr "Аҧшаара"
 #: panels/applications/cc-applications-panel.ui:113
 #: panels/applications/cc-applications-panel.ui:120
 msgid "Receive system searches and send results."
-msgstr "Асистемаҟны аԥшаара алҵшәақәа риура, насгьы урҭ рышьҭра"
+msgstr ""
 
 #. This label is displayed in a treeview cell displaying
 #. * a disabled accelerator key combination.
@@ -171,7 +170,7 @@ msgstr ""
 
 #: panels/applications/cc-applications-panel.ui:127
 msgid "Show system notifications."
-msgstr "Асистематә цҳамҭақәа рырбара. "
+msgstr ""
 
 #: panels/applications/cc-applications-panel.ui:133
 msgid "Run in Background"
@@ -179,7 +178,7 @@ msgstr "Аусуратә ишәа адыԥшылахә ада"
 
 #: panels/applications/cc-applications-panel.ui:134
 msgid "Allow activity when the app is closed."
-msgstr "Активра азин аҭара, аԥшьы анарку."
+msgstr ""
 
 #: panels/applications/cc-applications-panel.ui:140
 msgid "Screenshots"
@@ -187,75 +186,75 @@ msgstr ""
 
 #: panels/applications/cc-applications-panel.ui:141
 msgid "Take pictures of the screen at any time."
-msgstr "Иаразнактәи аекран аҭыхра ианакәзаалак аҟаҵара"
+msgstr ""
 
 #: panels/applications/cc-applications-panel.ui:147
 msgid "Change Wallpaper"
-msgstr "Адыԥшылахә аԥсахра"
+msgstr ""
 
 #: panels/applications/cc-applications-panel.ui:148
 msgid "Change the desktop wallpaper."
-msgstr "Аусуратә ишәа адыԥшылахә аԥсахра"
+msgstr ""
 
 #: panels/applications/cc-applications-panel.ui:154
 #: panels/applications/cc-applications-panel.ui:161
 msgid "Sounds"
-msgstr "Абжьқәа"
+msgstr ""
 
 #: panels/applications/cc-applications-panel.ui:155
 #: panels/applications/cc-applications-panel.ui:162
 msgid "Reproduce sounds."
-msgstr "Абжьқәа рҿакра"
+msgstr ""
 
 #: panels/applications/cc-applications-panel.ui:168
 msgid "Inhibit Shortcuts"
-msgstr "Арыдқәа реилаҵа рақәиҭымтәра"
+msgstr ""
 
 #: panels/applications/cc-applications-panel.ui:169
 msgid "Block standard keyboard shortcuts."
-msgstr "Арыдқәа истандарту реицааира аанкылара"
+msgstr ""
 
 #: panels/applications/cc-applications-panel.ui:175
 #: panels/applications/cc-applications-panel.ui:182
 #: panels/camera/gnome-camera-panel.desktop.in.in:3
 msgid "Camera"
-msgstr "Акамера"
+msgstr ""
 
 #: panels/applications/cc-applications-panel.ui:176
 #: panels/applications/cc-applications-panel.ui:183
 msgid "Take pictures with the camera."
-msgstr "Акамера ацхыраарала аҭыхымҭақәа рыҟаҵара"
+msgstr ""
 
 #: panels/applications/cc-applications-panel.ui:189
 #: panels/applications/cc-applications-panel.ui:196
 #: panels/microphone/gnome-microphone-panel.desktop.in.in:3
 msgid "Microphone"
-msgstr "Амикрофон"
+msgstr ""
 
 #: panels/applications/cc-applications-panel.ui:190
 #: panels/applications/cc-applications-panel.ui:197
 msgid "Record audio with the microphone."
-msgstr "Амикрофон ацхыраарала абжьы анҵара"
+msgstr ""
 
 #: panels/applications/cc-applications-panel.ui:203
 #: panels/applications/cc-applications-panel.ui:210
 #: panels/location/gnome-location-panel.desktop.in.in:3
 msgid "Location Services"
-msgstr "Шәахьыҟоу аҭыԥ асервисқаә"
+msgstr ""
 
 #: panels/applications/cc-applications-panel.ui:204
 #: panels/applications/cc-applications-panel.ui:211
 msgid "Access device location data."
-msgstr "Аиҿартәыра ҭыԥс аҟазаара аазырԥшуа адыррақәа рахь анеира"
+msgstr ""
 
 #: panels/applications/cc-applications-panel.ui:222
 #: panels/applications/cc-applications-panel.ui:326
 msgid "Built-in Permissions"
-msgstr "Иҭазоу азинқәа"
+msgstr ""
 
 #: panels/applications/cc-applications-panel.ui:223
 msgid "System access that is required by the app"
-msgstr "Аԥшьы иаҭаху асистема ахь анеира"
+msgstr ""
 
 #: panels/applications/cc-applications-panel.ui:231
 msgid "File &amp; Link Associations"
@@ -264,11 +263,11 @@ msgstr "Афаилқәеи &amp; азхьарԥшқәеи реидгыла"
 #: panels/applications/cc-applications-panel.ui:239
 #: panels/applications/cc-applications-panel.ui:406
 msgid "Storage"
-msgstr "Аҵәахырҭа"
+msgstr ""
 
 #: panels/applications/cc-applications-panel.ui:301 shell/cc-panel-list.ui:108
 msgid "No results found"
-msgstr "Алҵшәақәа ԥшааӡам"
+msgstr ""
 
 #: panels/applications/cc-applications-panel.ui:311
 #: panels/keyboard/cc-keyboard-shortcut-dialog.ui:210
@@ -302,7 +301,7 @@ msgstr ""
 
 #: panels/applications/cc-applications-panel.ui:420
 msgid "Application"
-msgstr "Аҧшьы"
+msgstr ""
 
 #: panels/applications/cc-applications-panel.ui:426
 msgid "Data"
@@ -688,7 +687,7 @@ msgstr ""
 #. TRANSLATORS: an ICC profile is a file containing colorspace data
 #: panels/color/cc-color-panel.c:282
 msgid "Select ICC Profile File"
-msgstr "Аԥштәытә ҷыдахә алшәха"
+msgstr ""
 
 #: panels/color/cc-color-panel.c:285
 msgid "_Import"
@@ -981,7 +980,7 @@ msgstr ""
 
 #: panels/color/cc-color-panel.ui:636
 msgid "30 minutes"
-msgstr "30 минуҭ"
+msgstr ""
 
 #: panels/color/cc-color-panel.ui:640
 msgctxt "Calibration quality"
@@ -990,7 +989,7 @@ msgstr ""
 
 #: panels/color/cc-color-panel.ui:641
 msgid "15 minutes"
-msgstr "15 минуҭ"
+msgstr ""
 
 #: panels/color/cc-color-panel.ui:663
 msgid "Native to display"
@@ -1158,7 +1157,7 @@ msgstr ""
 #: panels/common/cc-util.c:127
 #: panels/network/connection-editor/ce-page-details.c:168
 msgid "Today"
-msgstr "Иахьа"
+msgstr ""
 
 #: panels/common/cc-util.c:131
 #: panels/network/connection-editor/ce-page-details.c:170
@@ -1307,23 +1306,23 @@ msgstr "Аамҭарбеи  аамҭеи"
 
 #: panels/datetime/cc-datetime-panel.ui:50
 msgid "Year"
-msgstr "Ашықәс"
+msgstr ""
 
 #: panels/datetime/cc-datetime-panel.ui:66
 msgid "Month"
-msgstr "Амз"
+msgstr ""
 
 #: panels/datetime/cc-datetime-panel.ui:71
 msgid "January"
-msgstr "Ажьырныҳәа"
+msgstr ""
 
 #: panels/datetime/cc-datetime-panel.ui:72
 msgid "February"
-msgstr "Жәабран"
+msgstr ""
 
 #: panels/datetime/cc-datetime-panel.ui:73
 msgid "March"
-msgstr "Хәажәкыра"
+msgstr ""
 
 #: panels/datetime/cc-datetime-panel.ui:74
 msgid "April"
@@ -1331,15 +1330,15 @@ msgstr "Мшаԥымза"
 
 #: panels/datetime/cc-datetime-panel.ui:75
 msgid "May"
-msgstr "Лаҵара"
+msgstr ""
 
 #: panels/datetime/cc-datetime-panel.ui:76
 msgid "June"
-msgstr "Рашәара"
+msgstr ""
 
 #: panels/datetime/cc-datetime-panel.ui:77
 msgid "July"
-msgstr "Ԥхынгәы"
+msgstr ""
 
 #: panels/datetime/cc-datetime-panel.ui:78
 msgid "August"
@@ -1351,19 +1350,19 @@ msgstr "Цәыббра"
 
 #: panels/datetime/cc-datetime-panel.ui:80
 msgid "October"
-msgstr "Жьҭаара"
+msgstr ""
 
 #: panels/datetime/cc-datetime-panel.ui:81
 msgid "November"
-msgstr "Абҵара"
+msgstr ""
 
 #: panels/datetime/cc-datetime-panel.ui:82
 msgid "December"
-msgstr "Ԥхынҷкәын"
+msgstr ""
 
 #: panels/datetime/cc-datetime-panel.ui:92
 msgid "Day"
-msgstr "Амш"
+msgstr ""
 
 #: panels/datetime/cc-datetime-panel.ui:113
 msgid "Time Zone"
@@ -1455,15 +1454,15 @@ msgstr "_Авидео"
 #: panels/default-apps/cc-default-apps-panel.ui:134
 #: panels/removable-media/cc-removable-media-panel.ui:127
 msgid "_Photos"
-msgstr "_Аҧшранҵа"
+msgstr ""
 
 #: panels/default-apps/gnome-default-apps-panel.desktop.in.in:3
 msgid "Default Applications"
-msgstr "Аҧшьқәа ишыҟоу еиҧш"
+msgstr ""
 
 #: panels/default-apps/gnome-default-apps-panel.desktop.in.in:4
 msgid "Configure Default Applications"
-msgstr "Аҧшьқәа ишыҟоу еиҧш рырхиара"
+msgstr ""
 
 #. Translators: Search terms to find the Default Applications panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
 #: panels/default-apps/gnome-default-apps-panel.desktop.in.in:19
@@ -1488,7 +1487,7 @@ msgstr "_Автоматикатә цҳамҭа агхақәа ирызкны"
 
 #: panels/diagnostics/gnome-diagnostics-panel.desktop.in.in:3
 msgid "Diagnostics"
-msgstr "Адиагностика"
+msgstr ""
 
 #: panels/diagnostics/gnome-diagnostics-panel.desktop.in.in:4
 msgid "Report your problems"
@@ -1519,15 +1518,15 @@ msgstr "Иаҿакуп"
 #: panels/universal-access/cc-ua-panel.c:490
 #: panels/universal-access/cc-ua-panel.c:526
 msgid "Off"
-msgstr "Иаҿыхуп"
+msgstr ""
 
 #: panels/display/cc-display-panel.c:930
 msgid "Apply Changes?"
-msgstr "Аҧсахрақәа ахархәара рыҭатәума?"
+msgstr ""
 
 #: panels/display/cc-display-panel.c:935
 msgid "Changes Cannot be Applied"
-msgstr "Аҧсахрақәа ахархәара рызрыҭахаӡом"
+msgstr ""
 
 #: panels/display/cc-display-panel.c:937
 msgid "This could be due to hardware limitations."
@@ -1536,7 +1535,7 @@ msgstr ""
 #: panels/display/cc-display-panel.ui:43
 #: panels/network/connection-editor/connection-editor.ui:21
 msgid "_Apply"
-msgstr "_Ахархәара"
+msgstr ""
 
 #: panels/display/cc-display-panel.ui:78 panels/display/cc-display-panel.ui:221
 #: panels/display/cc-display-panel.ui:260 panels/network/cc-wifi-panel.ui:16
@@ -1547,7 +1546,7 @@ msgstr "_Ахархәара"
 #: panels/wacom/cc-wacom-stylus-page.ui:136
 #: panels/wwan/cc-wwan-apn-dialog.ui:21
 msgid "Back"
-msgstr "Шьҭахьҟа"
+msgstr ""
 
 #: panels/display/cc-display-panel.ui:100
 msgid "Display Settings Disabled"
@@ -1560,7 +1559,7 @@ msgstr ""
 #. 'Join' as in 'Join displays'
 #: panels/display/cc-display-panel.ui:120
 msgid "Join"
-msgstr "Аҽадҵара"
+msgstr ""
 
 #: panels/display/cc-display-panel.ui:127
 msgid "Mirror"
@@ -1572,14 +1571,14 @@ msgstr ""
 
 #: panels/display/cc-display-panel.ui:156
 msgid "Primary Display"
-msgstr "Ихадоу адисплеи"
+msgstr ""
 
 #. This is the redshift functionality where we suppress blue light when the sun has gone down
 #: panels/display/cc-display-panel.ui:177
 #: panels/display/cc-display-panel.ui:228
 #: panels/display/cc-night-light-page.ui:115
 msgid "Night Light"
-msgstr "Уахынлатәи алашара"
+msgstr ""
 
 #: panels/display/cc-display-settings.c:110
 msgctxt "Display rotation"
@@ -1658,7 +1657,7 @@ msgstr ""
 
 #: panels/display/cc-night-light-page.ui:132
 msgid "Schedule"
-msgstr "Аихшанҵа"
+msgstr ""
 
 #: panels/display/cc-night-light-page.ui:140
 msgid "Sunset to Sunrise"
@@ -1710,7 +1709,7 @@ msgstr ""
 
 #: panels/display/cc-night-light-page.ui:360
 msgid "Color Temperature"
-msgstr "Аԥштәытә шоура"
+msgstr ""
 
 #: panels/display/gnome-display-panel.desktop.in.in:3
 msgid "Displays"
@@ -2185,12 +2184,12 @@ msgstr ""
 #. TRANSLATORS: if the stauts is valid. For example security check is valid and key is valid.
 #: panels/firmware-security/cc-firmware-security-utils.c:237
 msgid "Valid"
-msgstr "Иҵабыргуп"
+msgstr ""
 
 #. TRANSLATORS: if the status or key is not valid.
 #: panels/firmware-security/cc-firmware-security-utils.c:242
 msgid "Not Valid"
-msgstr "Иҵабыргӡам"
+msgstr ""
 
 #. TRANSLATORS: if the function is not enabled through BIOS or OS settings.
 #: panels/firmware-security/cc-firmware-security-utils.c:252
@@ -2200,37 +2199,37 @@ msgstr "Иаҿакуп"
 #. TRANSLATORS: the memory space or system mode is locked to prevent from malicious modification.
 #: panels/firmware-security/cc-firmware-security-utils.c:257
 msgid "Locked"
-msgstr "Иаанкылоуп"
+msgstr ""
 
 #. TRANSLATORS: the memory space or system mode is not locked.
 #: panels/firmware-security/cc-firmware-security-utils.c:262
 msgid "Not Locked"
-msgstr "Иаанкылаӡам"
+msgstr ""
 
 #. TRANSLATORS: The data is encrypted to prevent from malicious reading.
 #: panels/firmware-security/cc-firmware-security-utils.c:267
 msgid "Encrypted"
-msgstr "Ишифрркуп"
+msgstr ""
 
 #. TRANSLATORS: the data in memory is plane text.
 #: panels/firmware-security/cc-firmware-security-utils.c:272
 msgid "Not Encrypted"
-msgstr "Ишифрркӡам"
+msgstr ""
 
 #. TRANSLATORS: Linux kernel is tainted by third party kernel module.
 #: panels/firmware-security/cc-firmware-security-utils.c:277
 msgid "Tainted"
-msgstr "Иҧхасҭоуп"
+msgstr ""
 
 #. TRANSLATORS: All the loaded kernel module are licensed.
 #: panels/firmware-security/cc-firmware-security-utils.c:282
 msgid "Not Tainted"
-msgstr "Иҧхасҭатәӡам"
+msgstr ""
 
 #. TRANSLATORS: the feature can be detected.
 #: panels/firmware-security/cc-firmware-security-utils.c:287
 msgid "Found"
-msgstr "Иҧшаау"
+msgstr ""
 
 #. TRANSLATORS: the feature can't be detected.
 #: panels/firmware-security/cc-firmware-security-utils.c:292
@@ -2274,13 +2273,13 @@ msgstr "Еилкаам"
 #: panels/info-overview/cc-info-overview-panel.c:335
 #, c-format
 msgid "64-bit"
-msgstr "64-битк"
+msgstr ""
 
 #. translators: This is the type of architecture for the OS
 #: panels/info-overview/cc-info-overview-panel.c:338
 #, c-format
 msgid "32-bit"
-msgstr "32-битк"
+msgstr ""
 
 #: panels/info-overview/cc-info-overview-panel.c:597
 msgid "X11"
@@ -2381,7 +2380,7 @@ msgstr ""
 
 #: panels/info-overview/cc-info-overview-panel.ui:196
 msgid "Device name"
-msgstr "Аиҿартәыра ахьӡ"
+msgstr ""
 
 #: panels/info-overview/cc-info-overview-panel.ui:210
 msgid "_Rename"
@@ -2511,7 +2510,7 @@ msgstr ""
 #: panels/keyboard/50-accessibility.xml.in:2
 #: panels/universal-access/gnome-universal-access-panel.desktop.in.in:3
 msgid "Accessibility"
-msgstr "Ахархәара аманшәалара"
+msgstr ""
 
 #: panels/keyboard/50-accessibility.xml.in:4
 msgid "Turn zoom on or off"
@@ -2519,11 +2518,11 @@ msgstr "Аизҳара  аҿакра, мамзар аҿыхра"
 
 #: panels/keyboard/50-accessibility.xml.in:6
 msgid "Zoom in"
-msgstr "Ардура"
+msgstr ""
 
 #: panels/keyboard/50-accessibility.xml.in:8
 msgid "Zoom out"
-msgstr "Архәҷра"
+msgstr ""
 
 #: panels/keyboard/50-accessibility.xml.in:10
 msgid "Turn screen reader on or off"
@@ -2814,7 +2813,7 @@ msgstr "_Аныхра"
 
 #: panels/keyboard/cc-keyboard-shortcut-editor.ui:49
 msgid "Re_place"
-msgstr "Аԥса_хра"
+msgstr ""
 
 #: panels/keyboard/cc-keyboard-shortcut-editor.ui:56
 #: panels/wwan/cc-wwan-mode-dialog.ui:39
@@ -2849,7 +2848,7 @@ msgstr ""
 
 #: panels/keyboard/cc-keyboard-shortcut-editor.ui:261
 msgid "None"
-msgstr "Мап"
+msgstr ""
 
 #: panels/keyboard/cc-keyboard-shortcut-row.ui:23
 msgid "Reset the shortcut to its default value"
@@ -2952,7 +2951,7 @@ msgstr ""
 
 #: panels/mouse/cc-mouse-panel.ui:41 panels/sound/cc-balance-slider.ui:16
 msgid "Left"
-msgstr "Армарахь"
+msgstr ""
 
 #: panels/mouse/cc-mouse-panel.ui:48 panels/sound/cc-balance-slider.ui:18
 msgid "Right"
@@ -3386,7 +3385,7 @@ msgstr ""
 
 #: panels/network/connection-editor/ce-page-details.c:157
 msgid "Never"
-msgstr "Ахаан"
+msgstr ""
 
 #: panels/network/connection-editor/ce-page-details.c:172
 #: panels/network/net-device-ethernet.c:105
@@ -3410,15 +3409,15 @@ msgstr ""
 
 #: panels/network/connection-editor/ce-page-details.c:314
 msgid "2.4 GHz / 5 GHz"
-msgstr "2.4 ГГц / 5 ГГц"
+msgstr ""
 
 #: panels/network/connection-editor/ce-page-details.c:316
 msgid "2.4 GHz"
-msgstr "2.4 ГГц"
+msgstr ""
 
 #: panels/network/connection-editor/ce-page-details.c:318
 msgid "5 GHz"
-msgstr "5 ГГц"
+msgstr ""
 
 #: panels/network/connection-editor/ce-page-details.c:338
 msgctxt "Signal strength"
@@ -3496,19 +3495,19 @@ msgstr "DNS"
 
 #: panels/network/connection-editor/ce-page-details.c:477
 msgid "Forget Connection"
-msgstr "Аиҧшьра ахашҭра"
+msgstr ""
 
 #: panels/network/connection-editor/ce-page-details.c:479
 msgid "Remove Connection Profile"
-msgstr "Аиҧшьра апрофиль аныхра"
+msgstr ""
 
 #: panels/network/connection-editor/ce-page-details.c:481
 msgid "Remove VPN"
-msgstr "VPN аныхра"
+msgstr ""
 
 #: panels/network/connection-editor/ce-page-details.c:499
 msgid "Details"
-msgstr "Аԥкаарақәа"
+msgstr ""
 
 #: panels/network/connection-editor/ce-page-ethernet.c:71
 msgid "automatic"
@@ -3523,12 +3522,12 @@ msgstr ""
 #: panels/network/connection-editor/ce-page-ip4.c:261
 #: panels/network/connection-editor/ce-page-ip6.c:242
 msgid "Delete Address"
-msgstr "Аҭыӡҭыҧ аныхра"
+msgstr ""
 
 #: panels/network/connection-editor/ce-page-ip4.c:420
 #: panels/network/connection-editor/ce-page-ip6.c:389
 msgid "Delete Route"
-msgstr "Ахырхарҭа аныхра"
+msgstr ""
 
 #: panels/network/connection-editor/ce-page-ip4.c:770
 msgid "IPv4"
@@ -4342,7 +4341,7 @@ msgstr "Зхаҭареилкаау"
 
 #: panels/network/wireless-security/eap-method-fast.ui:35
 msgid "Both"
-msgstr "Ииаланы насгьы гәҵәыла"
+msgstr ""
 
 #: panels/network/wireless-security/eap-method-fast.ui:46
 #: panels/network/wireless-security/eap-method-peap.ui:49
@@ -4582,7 +4581,7 @@ msgstr "А_хаҭареилкаара"
 
 #: panels/network/wireless-security/ws-file-chooser-button.c:49
 msgid "Select a file"
-msgstr "Афаил алхра"
+msgstr ""
 
 #: panels/network/wireless-security/ws-leap.c:66
 msgid "missing leap-username"
@@ -4953,7 +4952,7 @@ msgstr ""
 
 #: panels/power/cc-power-panel.c:677
 msgid "Nothing"
-msgstr "Иҭацәу аобиект"
+msgstr ""
 
 #: panels/power/cc-power-panel.c:733
 msgid "When on battery power"
@@ -5232,7 +5231,7 @@ msgstr ""
 #: panels/printers/new-printer-dialog.ui:118
 #: panels/wwan/cc-wwan-device-page.ui:38
 msgid "_Unlock"
-msgstr "_Аужьра:"
+msgstr ""
 
 #. Translators: No printers were detected
 #: panels/printers/new-printer-dialog.ui:197
@@ -5306,7 +5305,7 @@ msgstr ""
 
 #: panels/printers/pp-details-dialog.ui:205
 msgid "Select from Database…"
-msgstr "Адыррақәа рбаза аҟынтә алхра..."
+msgstr ""
 
 #: panels/printers/pp-details-dialog.ui:213
 msgid "Install PPD File…"
@@ -5361,7 +5360,7 @@ msgstr ""
 #. Translators: this is an option of "Orientation"
 #: panels/printers/pp-ipp-option-widget.c:72
 msgid "Landscape"
-msgstr "Аҭыҧсахьатә"
+msgstr ""
 
 #. Translators: this is an option of "Orientation"
 #: panels/printers/pp-ipp-option-widget.c:74
@@ -5375,7 +5374,7 @@ msgstr ""
 
 #: panels/printers/pp-job-row.c:55
 msgid "Resume"
-msgstr "аиҭашьақәыргылара"
+msgstr ""
 
 #: panels/printers/pp-job-row.c:55
 msgid "Pause"
@@ -5881,7 +5880,7 @@ msgstr ""
 
 #: panels/region/cc-format-chooser.ui:239
 msgid "Preview"
-msgstr "Акьыԥхьра ахәаԥшра"
+msgstr ""
 
 #: panels/region/cc-format-preview.c:137
 msgctxt "measurement format"
@@ -6211,7 +6210,7 @@ msgstr ""
 
 #: panels/screen/cc-screen-panel.ui:8
 msgid "Screen Lock"
-msgstr "Аекаран аусура аанкылара"
+msgstr ""
 
 #: panels/screen/cc-screen-panel.ui:9
 msgid ""
@@ -6305,7 +6304,7 @@ msgstr "Егьырҭгьы"
 
 #: panels/search/cc-search-locations-dialog.ui:59
 msgid "Add Location"
-msgstr "Ҭыԥс шәахьыҟоу ацҵара"
+msgstr ""
 
 #: panels/search/cc-search-panel.c:165
 msgid "No applications found"
@@ -6494,7 +6493,7 @@ msgstr ""
 #: panels/sharing/cc-sharing-panel.ui:372
 #: panels/sharing/cc-sharing-panel.ui:390
 msgid "Copy"
-msgstr "Ахкьыҧхьаара"
+msgstr ""
 
 #: panels/sharing/cc-sharing-panel.ui:331
 msgid "Remote Desktop Address"
@@ -6536,7 +6535,7 @@ msgstr ""
 
 #: panels/sharing/cc-sharing-panel.ui:502
 msgid "Folders"
-msgstr "Аҭаӡқәа "
+msgstr ""
 
 #: panels/sharing/gnome-sharing-panel.desktop.in.in:4
 msgid "Control what you want to share with others"
@@ -6567,7 +6566,7 @@ msgstr ""
 
 #: panels/sound/cc-alert-chooser.ui:20
 msgid "String"
-msgstr "Ацәаҳәа"
+msgstr ""
 
 #: panels/sound/cc-alert-chooser.ui:28
 msgid "Swing"
@@ -6644,7 +6643,7 @@ msgstr ""
 
 #: panels/sound/cc-sound-panel.ui:309 panels/sound/cc-volume-slider.ui:13
 msgid "Volume"
-msgstr "Амҽхак"
+msgstr ""
 
 #: panels/sound/cc-sound-panel.ui:327
 msgid "Alert Sound"
@@ -6661,7 +6660,7 @@ msgstr ""
 
 #: panels/sound/gnome-sound-panel.desktop.in.in:3
 msgid "Sound"
-msgstr "_Абжьы"
+msgstr ""
 
 #: panels/sound/gnome-sound-panel.desktop.in.in:4
 msgid "Change sound levels, inputs, outputs, and alert sounds"
@@ -6761,7 +6760,7 @@ msgstr ""
 
 #: panels/thunderbolt/cc-bolt-device-dialog.ui:115
 msgid "Status:"
-msgstr "Аҭагылазаашьа:"
+msgstr ""
 
 #: panels/thunderbolt/cc-bolt-device-dialog.ui:144
 msgid "UUID:"
@@ -6863,7 +6862,7 @@ msgstr ""
 #: panels/universal-access/cc-cursor-blinking-dialog.ui:65
 #: panels/universal-access/cc-repeat-keys-dialog.ui:120
 msgid "Speed"
-msgstr "Аццакра"
+msgstr ""
 
 #: panels/universal-access/cc-cursor-blinking-dialog.ui:87
 msgid "Cursor blinking speed"
@@ -7290,7 +7289,7 @@ msgstr ""
 
 #: panels/universal-access/cc-zoom-options-dialog.ui:306
 msgid "_Thickness:"
-msgstr "_Ашәпара:"
+msgstr ""
 
 #: panels/universal-access/cc-zoom-options-dialog.ui:330
 msgctxt "universal access, thickness"
@@ -7309,7 +7308,7 @@ msgstr "_Аура"
 #. The color of the accessibility crosshair
 #: panels/universal-access/cc-zoom-options-dialog.ui:395
 msgid "Co_lor:"
-msgstr "_Аҧштәы:"
+msgstr ""
 
 #: panels/universal-access/cc-zoom-options-dialog.ui:427
 msgid "Crosshairs"
@@ -7657,11 +7656,11 @@ msgstr ""
 
 #: panels/user-accounts/cc-avatar-chooser.c:164
 msgid "Browse for more pictures"
-msgstr "Иацҵаны асахьақәа рыҧшаара"
+msgstr ""
 
 #: panels/user-accounts/cc-avatar-chooser.ui:32
 msgid "Select a File…"
-msgstr "Афаила алшәха..."
+msgstr ""
 
 #: panels/user-accounts/cc-fingerprint-dialog.ui:8
 msgid "Fingerprint Manager"
@@ -8131,12 +8130,12 @@ msgstr ""
 
 #: panels/user-accounts/cc-user-panel.ui:152
 msgid "Full name"
-msgstr "Ихарҭәаау ахьӡ"
+msgstr ""
 
 #: panels/user-accounts/cc-user-panel.ui:171
 #: panels/wwan/cc-wwan-apn-dialog.c:295
 msgid "Edit"
-msgstr "Аредакциа азура"
+msgstr ""
 
 #. FIXME
 #: panels/user-accounts/cc-user-panel.ui:202
@@ -8383,7 +8382,7 @@ msgstr ""
 #: panels/wwan/cc-wwan-errors-private.h:72
 #, c-format
 msgid "Unknown error"
-msgstr "Еилкаам агха"
+msgstr ""
 
 #: panels/user-accounts/user-utils.c:144
 msgid ""
@@ -9191,7 +9190,7 @@ msgstr ""
 
 #: shell/cc-window.ui:54
 msgid "Primary Menu"
-msgstr "Ихадоу амениу"
+msgstr ""
 
 #: shell/cc-window.ui:152
 msgid "Warning: Development Version"
@@ -9293,3 +9292,3769 @@ msgstr[1] "%u аҭаларақәа"
 #: subprojects/gvc/gvc-mixer-control.c:2876
 msgid "System Sounds"
 msgstr ""
+
+msgid "Basic Protection"
+msgstr "Абазатә ҽацәыхьчара"
+
+msgid "Basic Security Protections"
+msgstr "Абазатә ашәарҭадаратә уснагӡатәқәа"
+
+msgid "MEI version"
+msgstr "Аверсиа MEI"
+
+msgid "Secure Boot disabled"
+msgstr "Ишәарҭадароу аҭагалара аҿыхуп"
+
+msgid "Secure Boot enabled"
+msgstr "Ишәарҭадароу аҭагалара аҿакуп"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#, fuzzy
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#, fuzzy
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#, fuzzy
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#, fuzzy
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#, fuzzy
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#, fuzzy
+
+
+
+#, fuzzy
+
+#, fuzzy
+
+
+
+
+
+
+#, fuzzy
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#, fuzzy
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#, fuzzy
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#, fuzzy
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#, fuzzy
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#, fuzzy
