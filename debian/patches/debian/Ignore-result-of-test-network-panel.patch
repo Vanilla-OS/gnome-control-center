@@ -15,10 +15,10 @@ Forwarded: not-needed, Debian-specific workaround
  2 files changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/tests/network/meson.build b/tests/network/meson.build
-index 34f7c74..203af9d 100644
+index e09ec5c..f9b3c2e 100644
 --- a/tests/network/meson.build
 +++ b/tests/network/meson.build
-@@ -29,6 +29,7 @@ test(
+@@ -30,6 +30,7 @@ test(
    'test-network-panel',
    find_program('test-network-panel.py'),
        env : envs,

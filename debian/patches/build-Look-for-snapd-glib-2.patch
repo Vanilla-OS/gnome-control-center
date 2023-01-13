@@ -7,10 +7,10 @@ Subject: build: Look for snapd-glib-2
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/meson.build b/meson.build
-index bd2ade9..24059a6 100644
+index efb4517..ff87bad 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -204,7 +204,7 @@ config_h.set10('HAVE_FN_EXPLICIT_BZERO',
+@@ -221,7 +221,7 @@ config_h.set10('HAVE_FN_EXPLICIT_BZERO',
  enable_snap = get_option('snap')
  if enable_snap
    snapd_glib_deps = [
