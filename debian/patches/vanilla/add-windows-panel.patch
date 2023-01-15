@@ -26,7 +26,7 @@ Subject: windows: Add new panel in Settings to present settings for windows and 
 \ No newline at end of file
 --- /dev/null
 +++ b/panels/windows/cc-windows-panel.c
-@@ -0,0 +1,163 @@
+@@ -0,0 +1,155 @@
 +/* cc-windows-panel.c
 + *
 + * Copyright 2022 Muqtadir <muqtxdir@gmail.com>
@@ -53,8 +53,8 @@ Subject: windows: Add new panel in Settings to present settings for windows and 
 +#include "cc-windows-resources.h"
 +
 +#define WM_BUTTON_LAYOUT "button-layout"
-+#define DEFAULT_BUTTON_LAYOUT "close"
-+#define EXTENDED_BUTTON_LAYOUT "minimize,maximize,close"
++#define DEFAULT_BUTTON_LAYOUT ":close"
++#define EXTENDED_BUTTON_LAYOUT ":minimize,maximize,close"
 +
 +struct _CcWindowsPanel
 +{
@@ -70,8 +70,6 @@ Subject: windows: Add new panel in Settings to present settings for windows and 
 +  CcListRow        *resize_with_right_button_switch;
 +
 +  GtkComboBoxText  *wm_focus_combo;
-+
-+  gchar           **titlebar_button_layout;
 +};
 +
 +CC_PANEL_REGISTER (CcWindowsPanel, cc_windows_panel)
@@ -83,7 +81,6 @@ Subject: windows: Add new panel in Settings to present settings for windows and 
 +
 +  g_clear_object (&self->mutter_settings);
 +  g_clear_object (&self->wm_settings);
-+  g_strfreev (self->titlebar_button_layout);
 +
 +  G_OBJECT_CLASS (cc_windows_panel_parent_class)->finalize (object);
 +}
@@ -93,8 +90,7 @@ Subject: windows: Add new panel in Settings to present settings for windows and 
 +{
 +  gchar *titlebar_buttons=NULL;
 +
-+  self->titlebar_button_layout = g_strsplit (g_settings_get_string (self->wm_settings, WM_BUTTON_LAYOUT), ":", 2);
-+  titlebar_buttons = self->titlebar_button_layout[1];
++  titlebar_buttons = g_settings_get_string (self->wm_settings, WM_BUTTON_LAYOUT);
 +
 +  if ((g_ascii_strcasecmp (titlebar_buttons, DEFAULT_BUTTON_LAYOUT) == 0))
 +      gtk_check_button_set_active (self->default_radio, TRUE);
@@ -115,20 +111,16 @@ Subject: windows: Add new panel in Settings to present settings for windows and 
 +{
 +  gboolean buttons;
 +  CcWindowsPanel *self = user_data;
-+  gchar *original_buttons_slice;
 +  gchar *wm_layout;
 +
 +  buttons = g_value_get_boolean (value);
-+  original_buttons_slice = self->titlebar_button_layout[0];
 +
-+  if (buttons) {
-+    wm_layout = g_strjoin (":", original_buttons_slice, DEFAULT_BUTTON_LAYOUT, NULL);
-+    g_settings_set_string (self->wm_settings, WM_BUTTON_LAYOUT, wm_layout);
-+  } else {
-+    wm_layout = g_strjoin (":", original_buttons_slice, EXTENDED_BUTTON_LAYOUT, NULL);
-+    g_settings_set_string (self->wm_settings, WM_BUTTON_LAYOUT, wm_layout);
-+  }
++  if (buttons)
++    wm_layout = g_strjoin (":", DEFAULT_BUTTON_LAYOUT, NULL);
++  else
++    wm_layout = g_strjoin (":", EXTENDED_BUTTON_LAYOUT, NULL);
 +
++  g_settings_set_string (self->wm_settings, WM_BUTTON_LAYOUT, wm_layout);
 +  return g_variant_new_string (wm_layout);
 +}
 +
