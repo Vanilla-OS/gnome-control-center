@@ -6,7 +6,7 @@ Source: gnome-control-center
 Section: gnome
 Priority: optional
 Maintainer: Debian GNOME Maintainers <pkg-gnome-maintainers@lists.alioth.debian.org>
-Uploaders: Gunnar Hjalmarsson <gunnarhj@debian.org>, Jeremy Bicha <jbicha@ubuntu.com>
+Uploaders: Gunnar Hjalmarsson <gunnarhj@debian.org>, Jeremy Bicha <jbicha@ubuntu.com>, Laurent Bigonville <bigon@debian.org>
 Build-Depends: debhelper-compat (= 13),
                dh-sequence-gnome (>= 0.22.2),
                libaccountsservice-dev (>= 0.6.39),

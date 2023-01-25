@@ -1,3 +1,10 @@
+gnome-control-center (1:43.2-2) unstable; urgency=medium
+
+  * d/control.in: Add libspa-0.2-bluetooth as an alternative for
+    pulseaudio-module-bluetooth
+
+ -- Laurent Bigonville <bigon@debian.org>  Wed, 25 Jan 2023 13:01:34 +0100
+
 gnome-control-center (1:43.2-1) unstable; urgency=medium
 
   * Team upload
