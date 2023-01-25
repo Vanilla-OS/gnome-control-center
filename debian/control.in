@@ -96,7 +96,7 @@ Recommends: cups-pk-helper,
             network-manager-gnome (>= 0.9.8),
             libnss-myhostname,
             cracklib-runtime,
-            pulseaudio-module-bluetooth,
+            libspa-0.2-bluetooth | pulseaudio-module-bluetooth,
             realmd
 Suggests: gnome-software | gnome-packagekit,
           gstreamer1.0-pulseaudio,
