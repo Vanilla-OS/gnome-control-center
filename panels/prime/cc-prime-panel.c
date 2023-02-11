@@ -53,5 +53,7 @@ cc_prime_panel_class_init (CcPrimePanelClass *klass)
 static void
 cc_prime_panel_init (CcPrimePanel *self)
 {
-  //dummy code
+  g_resources_register (cc_prime_get_resource ());
+
+  gtk_widget_init_template (GTK_WIDGET (self));
 }

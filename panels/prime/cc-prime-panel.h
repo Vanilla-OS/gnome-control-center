@@ -26,6 +26,6 @@
 G_BEGIN_DECLS
 
 #define CC_TYPE_UPDATES_PANEL (cc_prime_panel_get_type())
-G_DECLARE_FINAL_TYPE (CcPrimePanel, cc_prime_panel, CC, CC_TYPE_UPDATES_PANEL, CcPanel)
+G_DECLARE_FINAL_TYPE (CcPrimePanel, cc_prime_panel, CC, PRIME_PANEL, CcPanel)
 
 G_END_DECLS
