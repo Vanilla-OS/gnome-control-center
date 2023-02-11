@@ -429,6 +429,7 @@ static const gchar * const panel_order[] = {
   "default-apps",
   "reset-settings",
   "datetime",
+  "prime",
   "info-overview",
 };
 

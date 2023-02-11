@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/org/gnome/control-center/prime">
+    <file preprocess="xml-stripblanks">cc-prime-panel.ui</file>
+
+    <!-- Assets -->
+    <file>assets/default.svg</file>
+    <file>assets/extended.svg</file>
+  </gresource>
+</gresources>

@@ -45,6 +45,7 @@ extern GType cc_info_overview_panel_get_type (void);
 extern GType cc_keyboard_panel_get_type (void);
 extern GType cc_mouse_panel_get_type (void);
 extern GType cc_multitasking_panel_get_type (void);
+extern GType cc_prime_panel_get_type (void);
 extern GType cc_windows_panel_get_type (void);
 #ifdef BUILD_NETWORK
 extern GType cc_network_panel_get_type (void);
@@ -143,6 +144,7 @@ static CcPanelLoaderVtable default_panels[] =
 #ifdef BUILD_WACOM
   PANEL_TYPE("wacom",            cc_wacom_panel_get_type,                cc_wacom_panel_static_init_func),
 #endif
+  PANEL_TYPE("prime",          cc_prime_panel_get_type,              NULL),
   PANEL_TYPE("windows",          cc_windows_panel_get_type,              NULL),
 #ifdef BUILD_WWAN
   PANEL_TYPE("wwan",             cc_wwan_panel_get_type,                 cc_wwan_panel_static_init_func),

@@ -28,6 +28,7 @@ panels = [
   'sharing',
   'sound',
   'universal-access',
+  'prime',
   'usage',
   'user-accounts',
   'windows',

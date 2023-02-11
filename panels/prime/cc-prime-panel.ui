@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="CcPrimePanel" parent="CcPanel">
+    <child type="content">
+      <object class="AdwPreferencesPage">
+        <child>
+          <object class="AdwPreferencesGroup">
+            <property name="title" translatable="true">Preferences</property>
+            <child>
+              <object class="AdwActionRow" id="row_update_status">
+                <property name="title" translatable="true">Latest Update Check</property>
+                <property name="subtitle" translatable="true">Never</property>
+                <child type="suffix">
+                  <object class="GtkBox">
+                    <child>
+                      <object class="GtkButton" id="btn_update_now">
+                        <property name="visible">True</property>
+                        <property name="valign">center</property>
+                        <property name="label" translatable="true">Check Now</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="btn_update_reboot">
+                        <property name="visible">False</property>
+                        <property name="valign">center</property>
+                        <property name="label" translatable="true">Reboot to Apply</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="AdwComboRow" id="combo_update_schedule">
+                <property name="title" translatable="true">Prime Scheduling</property>
+                <property name="subtitle" translatable="true">Choose how often the system should check for prime.</property>
+                <property name="model">
+                  <object class="GtkStringList" id="str_update_schedule">
+                    <items>
+                      <item translatable="yes">Weekly</item>
+                      <item translatable="yes">Monthly</item>
+                    </items>
+                  </object>
+                </property>
+              </object>
+            </child>
+            <child>
+              <object class="AdwActionRow" id="row_update_smart">
+                <property name="title" translatable="true">Smart Prime</property>
+                <property name="subtitle" translatable="true">The system will not update if it is in heavy use or low battery.</property>
+                <property name="activatable-widget">switch_update_smart</property>"
+                <child type="suffix">
+                  <object class="GtkSwitch" id="switch_update_smart">
+                    <property name="valign">center</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="AdwActionRow" id="row_update_auto">
+                <property name="title" translatable="true">Automatic Prime</property>
+                <property name="subtitle" translatable="true">The system will automatically update itself in the background.</property>
+                <property name="activatable-widget">switch_update_auto</property>
+                <child type="suffix">
+                  <object class="GtkSwitch" id="switch_update_auto">
+                    <property name="valign">center</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="AdwPreferencesGroup">
+            <property name="title" translatable="yes">Behaviour</property>
+            <child>
+              <object class="CcListRow" id="attach_modal_dialogs_switch">
+                <property name="title" translatable="yes">Attach Modal dialogs</property>
+                <property name="subtitle" translatable="yes">Modal dialogs will be attached to their parent prime, and cannot be moved</property>
+                <property name="use-underline">True</property>
+                <property name="show-switch">True</property>
+              </object>
+            </child>
+            <child>
+              <object class="CcListRow" id="center_new_prime_switch">
+                <property name="title" translatable="yes">Center New Prime</property>
+                <property name="use-underline">True</property>
+                <property name="show-switch">True</property>
+              </object>
+            </child>
+            <child>
+              <object class="CcListRow" id="resize_with_right_button_switch">
+                <property name="title" translatable="yes">Resize with Secondary Click</property>
+                <property name="use-underline">True</property>
+                <property name="show-switch">True</property>
+              </object>
+            </child>
+            <child>
+              <object class="AdwActionRow">
+                <property name="title" translatable="yes">Prime Focus</property>
+                <child>
+                  <object class="GtkComboBoxText" id="wm_focus_combo">
+                    <property name="valign">center</property>
+                    <items>
+                      <item id="click" translatable="yes">Click to Focus</item>
+                      <item id="sloppy" translatable="yes">Focus on Hover</item>
+                      <item id="mouse" translatable="yes">Secondary-Click</item>
+                    </items>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>
