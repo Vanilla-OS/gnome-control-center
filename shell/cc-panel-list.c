@@ -430,6 +430,7 @@ static const gchar * const panel_order[] = {
   "reset-settings",
   "datetime",
   "info-overview",
+  "updates",
 };
 
 static guint

@@ -32,6 +32,7 @@ panels = [
   'user-accounts',
   'windows',
   'wwan',
+  'updates',
 ]
 
 if host_is_linux

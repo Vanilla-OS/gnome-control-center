@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk+" version="3.20"/>
+  <template class="CcUpdatesPanel" parent="CcPanel">
+    <child type="content">
+      <object class="AdwPreferencesPage">
+
+        <!-- Device header -->
+        <child>
+          <object class="AdwPreferencesGroup">
+            <property name="can_focus">False</property>
+
+            <child>
+              <object class="AdwActionRow" id="network_row">
+                <property name="can_focus">False</property>
+
+                <child type="prefix">
+                  <object class="GtkImage" id="network_status_icon">
+                    <property name="pixel_size">24</property>
+                    <property name="icon_name">network-wireless-symbolic</property>
+                  </object>
+                </child>
+
+                <child>
+                  <object class="GtkLabel" id="network_settings_label">
+                    <property name="can_focus">False</property>
+                    <property name="xalign">0.0</property>
+                    <signal name="activate-link" handler="on_change_network_link_activated_cb" object="CcUpdatesPanel" swapped="no" />
+                  </object>
+                </child>
+
+              </object>
+            </child>
+
+          </object>
+        </child>
+
+        <child>
+          <object class="AdwPreferencesGroup">
+            <!-- Automatic Updates -->
+            <child>
+              <object class="AdwActionRow" id="automatic_updates_row">
+                <property name="can_focus">False</property>
+                <property name="activatable-widget">automatic_updates_switch</property>
+                <property name="title" translatable="yes">Automatic Updates</property>
+
+                <child>
+                  <object class="GtkSwitch" id="automatic_updates_switch">
+                    <property name="can_focus">False</property>
+                    <property name="valign">center</property>
+                    <signal name="notify::active" handler="on_automatic_updates_switch_changed_cb" object="CcUpdatesPanel" swapped="no" />
+                  </object>
+                </child>
+
+              </object>
+            </child>
+
+            <!-- Schedule Updates -->
+            <child>
+              <object class="AdwActionRow" id="schedule_updates_row">
+                <property name="can_focus">False</property>
+                <property name="sensitive" bind-source="automatic_updates_switch" bind-property="active" bind-flags="default|sync-create" />
+                <property name="activatable-widget">scheduled_updates_switch</property>
+                <property name="title" translatable="yes">Scheduled Updates</property>
+
+                <child>
+                  <object class="GtkSwitch" id="scheduled_updates_switch">
+                    <property name="can_focus">False</property>
+                    <property name="valign">center</property>
+                    <signal name="notify::active" handler="on_scheduled_updates_switch_changed_cb" object="CcUpdatesPanel" swapped="no" />
+                  </object>
+                </child>
+
+              </object>
+            </child>
+
+            <child>
+              <object class="AdwPreferencesRow">
+                <property name="visible" bind-source="scheduled_updates_switch" bind-property="active" bind-flags="default|sync-create" />
+                <property name="activatable">False</property>
+                <property name="focusable">False</property>
+                <child>
+                  <object class="GtkRevealer">
+                    <property name="can-focus">False</property>
+                    <property name="transition-type">slide-down</property>
+                    <property name="reveal-child" bind-source="scheduled_updates_switch" bind-property="active" bind-flags="default" />
+
+                    <child>
+                      <object class="CcTariffEditor" id="tariff_editor">
+                        <property name="halign">center</property>
+                        <property name="margin-top">18</property>
+                        <property name="margin-bottom">18</property>
+                        <property name="margin-start">18</property>
+                        <property name="margin-end">18</property>
+                        <signal name="tariff-changed" handler="on_tariff_changed_cb" object="CcUpdatesPanel" swapped="no" />
+                      </object>
+                    </child>
+
+                  </object>
+                </child>
+
+              </object>
+            </child>
+
+          </object>
+        </child>
+
+      </object>
+    </child>
+  </template>
+</interface>
