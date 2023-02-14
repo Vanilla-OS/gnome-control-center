@@ -64,8 +64,8 @@ Build-Depends: debhelper-compat (= 13),
                python3-dbusmock,
 Standards-Version: 4.6.2
 Rules-Requires-Root: no
-Vcs-Git: https://salsa.debian.org/gnome-team/gnome-control-center.git
-Vcs-Browser: https://salsa.debian.org/gnome-team/gnome-control-center
+Vcs-Git: https://salsa.debian.org/gnome-team/gnome-control-center.git -b debian/bookworm
+Vcs-Browser: https://salsa.debian.org/gnome-team/gnome-control-center/tree/debian/bookworm
 
 Package: gnome-control-center
 Architecture: any
