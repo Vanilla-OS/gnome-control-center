@@ -1,3 +1,9 @@
+gnome-control-center (1:43.4.1-1) UNRELEASED; urgency=medium
+
+  * New upstream release
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Tue, 14 Feb 2023 10:59:20 -0500
+
 gnome-control-center (1:43.2-2) unstable; urgency=medium
 
   * d/control.in: Add libspa-0.2-bluetooth as an alternative for
