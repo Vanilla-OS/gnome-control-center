@@ -34,4 +34,6 @@ NetVpn       *net_vpn_new                (NMClient     *client,
 
 NMConnection *net_vpn_get_connection     (NetVpn       *vpn);
 
+gboolean nm_is_wireguard_connection (NMActiveConnection *c);
+
 G_END_DECLS

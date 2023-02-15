@@ -18,6 +18,7 @@
  * Author: Matthias Clasen <mclasen@redhat.com>
  */
 
+#include "cc-list-row.h"
 #include "cc-location-panel.h"
 #include "cc-location-resources.h"
 #include "cc-util.h"
@@ -34,9 +35,8 @@ struct _CcLocationPanel
 {
   CcPanel       parent_instance;
 
-  GtkStack     *stack;
   GtkListBox   *location_apps_list_box;
-  GtkSwitch    *main_switch;
+  CcListRow    *location_row;
 
   GSettings    *location_settings;
 
@@ -103,12 +103,15 @@ on_location_app_state_set (GtkSwitch *widget,
   const gchar *key;
   gchar **value;
   GVariantBuilder builder;
+  gboolean active_location;
 
   if (data->changing_state)
     return TRUE;
 
+  active_location = g_settings_get_boolean (self->location_settings,
+                                            LOCATION_ENABLED);
   data->changing_state = TRUE;
-  data->pending_state = state;
+  data->pending_state = active_location && state;
 
   g_variant_iter_init (&iter, self->location_apps_perms);
   g_variant_builder_init (&builder, G_VARIANT_TYPE_ARRAY);
@@ -139,6 +142,25 @@ on_location_app_state_set (GtkSwitch *widget,
                      cc_panel_get_cancellable (CC_PANEL (self)),
                      on_perm_store_set_done,
                      data);
+
+  return TRUE;
+}
+
+static gboolean
+update_app_switch_state (GValue   *value,
+                         GVariant *variant,
+                         gpointer  data)
+{
+  GtkSwitch *w = GTK_SWITCH (data);
+  gboolean active_location;
+  gboolean active_app;
+  gboolean state;
+
+  active_location = g_variant_get_boolean (variant);
+  active_app = gtk_switch_get_active (w);
+  state = active_location && active_app;
+
+  g_value_set_boolean (value, state);
 
   return TRUE;
 }
@@ -196,9 +218,17 @@ add_location_app (CcLocationPanel *self,
   gtk_switch_set_active (GTK_SWITCH (w), enabled);
   gtk_widget_set_valign (w, GTK_ALIGN_CENTER);
   adw_action_row_add_suffix (ADW_ACTION_ROW (row), w);
-  g_settings_bind (self->location_settings, LOCATION_ENABLED,
-                   w, "sensitive",
-                   G_SETTINGS_BIND_DEFAULT);
+
+  g_settings_bind_with_mapping (self->location_settings,
+                                LOCATION_ENABLED,
+                                w,
+                                "state",
+                                G_SETTINGS_BIND_GET,
+                                update_app_switch_state,
+                                NULL,
+                                g_object_ref (w),
+                                g_object_unref);
+
   g_hash_table_insert (self->location_app_switches,
                        g_strdup (app_id),
                        g_object_ref (w));
@@ -214,19 +244,6 @@ add_location_app (CcLocationPanel *self,
                          data,
                          (GClosureNotify) location_app_state_data_free,
                          0);
-}
-
-static gboolean
-to_child_name (GBinding     *binding,
-               const GValue *from,
-               GValue       *to,
-               gpointer      user_data)
-{
-  if (g_value_get_boolean (from))
-    g_value_set_string (to, "content");
-  else
-    g_value_set_string (to, "empty");
-  return TRUE;
 }
 
 /* Steals permissions and permissions_data references */
@@ -380,9 +397,8 @@ cc_location_panel_class_init (CcLocationPanelClass *klass)
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/location/cc-location-panel.ui");
 
-  gtk_widget_class_bind_template_child (widget_class, CcLocationPanel, stack);
   gtk_widget_class_bind_template_child (widget_class, CcLocationPanel, location_apps_list_box);
-  gtk_widget_class_bind_template_child (widget_class, CcLocationPanel, main_switch);
+  gtk_widget_class_bind_template_child (widget_class, CcLocationPanel, location_row);
 }
 
 static void
@@ -397,18 +413,9 @@ cc_location_panel_init (CcLocationPanel *self)
 
   g_settings_bind (self->location_settings,
                    LOCATION_ENABLED,
-                   self->main_switch,
+                   self->location_row,
                    "active",
                    G_SETTINGS_BIND_DEFAULT);
-
-  g_object_bind_property_full  (self->main_switch,
-                                "active",
-                                self->stack,
-                                "visible-child-name",
-                                G_BINDING_SYNC_CREATE,
-                                to_child_name,
-                                NULL,
-                                NULL, NULL);
 
   self->location_app_switches = g_hash_table_new_full (g_str_hash,
                                                        g_str_equal,
