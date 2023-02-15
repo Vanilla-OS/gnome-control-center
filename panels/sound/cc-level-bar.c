@@ -1,5 +1,4 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 8 -*-
- *
+/*
  * Copyright (C) 2018 Canonical Ltd.
  *
  * This program is free software; you can redistribute it and/or
@@ -22,39 +21,29 @@
 
 struct _CcLevelBar
 {
-  GtkWidget             parent_instance;
+  GtkWidget    parent_instance;
 
-  CcStreamType          type;
-  pa_stream            *level_stream;
-  gdouble               last_input_peak;
-
-  gdouble               value;
+  GtkLevelBar *level_bar;
+  pa_stream   *level_stream;
 };
 
 G_DEFINE_TYPE (CcLevelBar, cc_level_bar, GTK_TYPE_WIDGET)
 
-#define LED_WIDTH   12
-#define LED_HEIGHT  3
-#define LED_SPACING 4
-
-#define DECAY_STEP .15
+#define SMOOTHING 0.3
 
 static void
-set_peak (CcLevelBar *self,
-          gdouble     value)
+update_level (CcLevelBar *self,
+              gdouble     value)
 {
-  if (value < 0)
-     value = 0;
-  if (value > 1)
-     value = 1;
+  /* Use Exponential Moving Average (EMA) to smooth out value changes and
+   * reduce fluctuation and jitter.
+   */
+  double prev_ema = gtk_level_bar_get_value (self->level_bar);
+  double ema = (value * SMOOTHING) + (prev_ema * (1.0 - SMOOTHING));
 
-  if (self->last_input_peak >= DECAY_STEP &&
-      value < self->last_input_peak - DECAY_STEP)
-    value = self->last_input_peak - DECAY_STEP;
-  self->last_input_peak = value;
+  ema = CLAMP (ema, 0.0, 1.0);
 
-  self->value = value;
-  gtk_widget_queue_draw (GTK_WIDGET (self));
+  gtk_level_bar_set_value (self->level_bar, ema);
 }
 
 static void
@@ -85,7 +74,7 @@ read_cb (pa_stream *stream,
 
   pa_stream_drop (stream);
 
-  set_peak (self, value);
+  update_level (self, value);
 }
 
 static void
@@ -97,87 +86,8 @@ suspended_cb (pa_stream *stream,
   if (pa_stream_is_suspended (stream))
     {
       g_debug ("Stream suspended");
-      self->value = 0.0;
-      gtk_widget_queue_draw (GTK_WIDGET (self));
+      gtk_level_bar_set_value (self->level_bar, 0.0);
     }
-}
-
-static void
-cc_level_bar_measure (GtkWidget      *widget,
-                      GtkOrientation  orientation,
-                      int             for_size,
-                      int            *minimum,
-                      int            *natural,
-                      int            *minimum_baseline,
-                      int            *natural_baseline)
-{
-  if (orientation == GTK_ORIENTATION_VERTICAL)
-    {
-      *minimum = *natural = LED_HEIGHT;
-    }
-  else
-    {
-      GTK_WIDGET_CLASS (cc_level_bar_parent_class)->measure (widget,
-                                                             orientation,
-                                                             for_size,
-                                                             minimum,
-                                                             natural,
-                                                             minimum_baseline,
-                                                             natural_baseline);
-    }
-}
-
-static void
-cc_level_bar_snapshot (GtkWidget   *widget,
-                       GtkSnapshot *snapshot)
-{
-  CcLevelBar *self = CC_LEVEL_BAR (widget);
-  GdkRGBA inactive_color, active_color;
-  int i, n_leds;
-  double level;
-  double spacing, x_offset = 0.0;
-
-  n_leds = gtk_widget_get_width (widget) / (LED_WIDTH + LED_SPACING);
-  spacing = (double) (gtk_widget_get_width (widget) - (n_leds * LED_WIDTH)) / (n_leds - 1);
-  level = self->value * n_leds;
-
-  gdk_rgba_parse (&inactive_color, "#C0C0C0");
-  switch (self->type)
-  {
-  default:
-  case CC_STREAM_TYPE_OUTPUT:
-    gdk_rgba_parse (&active_color, "#4a90d9");
-    break;
-  case CC_STREAM_TYPE_INPUT:
-    gdk_rgba_parse (&active_color, "#ff0000");
-    break;
-  }
-
-  for (i = 0; i < n_leds; i++)
-  {
-    GdkRGBA blended_color;
-    double led_level;
-
-    led_level = level - i;
-    if (led_level < 0.0)
-      led_level = 0.0;
-    else if (led_level > 1.0)
-      led_level = 1.0;
-
-    blended_color = (GdkRGBA) {
-      .red = (1.0 - led_level) * inactive_color.red + led_level * active_color.red,
-      .green = (1.0 - led_level) * inactive_color.green + led_level * active_color.green,
-      .blue = (1.0 - led_level) * inactive_color.blue + led_level * active_color.blue,
-      .alpha = 1.0,
-    };
-
-    gtk_snapshot_append_color (snapshot,
-                               &blended_color,
-                               &GRAPHENE_RECT_INIT (x_offset, 0,
-                                                    LED_WIDTH,
-                                                    gtk_widget_get_height (widget)));
-    x_offset += LED_WIDTH + spacing;
-  }
 }
 
 static void
@@ -202,6 +112,8 @@ cc_level_bar_dispose (GObject *object)
   close_stream (self->level_stream);
   g_clear_pointer (&self->level_stream, pa_stream_unref);
 
+  gtk_widget_unparent (GTK_WIDGET (self->level_bar));
+
   G_OBJECT_CLASS (cc_level_bar_parent_class)->dispose (object);
 }
 
@@ -213,19 +125,25 @@ cc_level_bar_class_init (CcLevelBarClass *klass)
 
   object_class->dispose = cc_level_bar_dispose;
 
-  widget_class->measure = cc_level_bar_measure;
-  widget_class->snapshot = cc_level_bar_snapshot;
+  gtk_widget_class_set_layout_manager_type (widget_class, GTK_TYPE_BIN_LAYOUT);
 }
 
 void
 cc_level_bar_init (CcLevelBar *self)
 {
+  self->level_bar = GTK_LEVEL_BAR (gtk_level_bar_new ());
+
+  // Make the level bar all the same color by removing all pre-existing offsets
+  gtk_level_bar_remove_offset_value (self->level_bar, GTK_LEVEL_BAR_OFFSET_LOW);
+  gtk_level_bar_remove_offset_value (self->level_bar, GTK_LEVEL_BAR_OFFSET_HIGH);
+  gtk_level_bar_remove_offset_value (self->level_bar, GTK_LEVEL_BAR_OFFSET_FULL);
+
+  gtk_widget_set_parent (GTK_WIDGET (self->level_bar), GTK_WIDGET (self));
 }
 
 void
 cc_level_bar_set_stream (CcLevelBar     *self,
-                         GvcMixerStream *stream,
-                         CcStreamType    type)
+                         GvcMixerStream *stream)
 {
   pa_context *context;
   pa_sample_spec sample_spec;
@@ -238,12 +156,9 @@ cc_level_bar_set_stream (CcLevelBar     *self,
   close_stream (self->level_stream);
   g_clear_pointer (&self->level_stream, pa_stream_unref);
 
-  self->type = type;
-
   if (stream == NULL)
    {
-     self->value = 0.0;
-     gtk_widget_queue_draw (GTK_WIDGET (self));
+     gtk_level_bar_set_value (self->level_bar, 0.0);
      return;
    }
 
@@ -285,6 +200,4 @@ cc_level_bar_set_stream (CcLevelBar     *self,
     {
       g_warning ("Failed to connect monitoring stream");
     }
-
-  gtk_widget_queue_draw (GTK_WIDGET (self));
 }

@@ -178,7 +178,7 @@
                           </object>
                         </child>
                         <child>
-                          <object class="AdwActionRow" id="password_row">
+                          <object class="CcListRow" id="password_row">
                             <property name="title" translatable="yes">_Password</property>
                             <property name="use_underline">True</property>
                             <property name="activatable">True</property>
@@ -197,27 +197,13 @@
                           </object>
                         </child>
                         <child>
-                          <object class="AdwActionRow" id="fingerprint_row">
+                          <object class="CcListRow" id="fingerprint_row">
                             <property name="visible">True</property> <!-- FIXME -->
                             <property name="title" translatable="yes">_Fingerprint Login</property>
                             <property name="use_underline">True</property>
                             <property name="activatable">True</property>
+                            <property name="show-arrow">True</property>
                             <signal name="activated" handler="change_fingerprint" object="CcUserPanel" swapped="yes"/>
-                            <child>
-                              <object class="GtkLabel" id="fingerprint_state_label">
-                                <style>
-                                  <class name="dim-label"/>
-                                </style>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkImage">
-                                <property name="icon-name">go-next-symbolic</property>
-                                <style>
-                                  <class name="dim-label"/>
-                                </style>
-                              </object>
-                            </child>
                           </object>
                         </child>
                         <child>
@@ -234,26 +220,12 @@
                           </object>
                         </child>
                         <child>
-                          <object class="AdwActionRow" id="last_login_row">
+                          <object class="CcListRow" id="last_login_row">
                             <property name="title" translatable="yes">Account Activity</property>
                             <property name="activatable">True</property>
                             <property name="use_underline">True</property>
+                            <property name="show-arrow">True</property>
                             <signal name="activated" handler="show_history" object="CcUserPanel" swapped="yes"/>
-                            <child>
-                              <object class="GtkLabel" id="last_login_button_label">
-                                <style>
-                                  <class name="dim-label"/>
-                                </style>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkImage">
-                                <property name="icon-name">go-next-symbolic</property>
-                                <style>
-                                  <class name="dim-label"/>
-                                </style>
-                              </object>
-                            </child>
                           </object>
                         </child>
                       </object>
@@ -281,7 +253,7 @@
                           <object class="AdwActionRow" id="parental_controls_row">
                             <property name="visible">False</property>
                             <property name="title" translatable="yes">_Parental Controls</property>
-                            <property name="subtitle" translatable="yes">Open the Parental Controls application.</property>
+                            <property name="subtitle" translatable="yes">Open the Parental Controls app.</property>
                             <property name="subtitle-lines">0</property>
                             <property name="use_underline">True</property>
                             <property name="activatable">True</property>
@@ -302,26 +274,12 @@
                         </child>
 
                         <child>
-                          <object class="AdwActionRow" id="language_row">
+                          <object class="CcListRow" id="language_row">
                             <property name="title" translatable="yes">_Language</property>
                             <property name="use_underline">True</property>
                             <property name="activatable">True</property>
+                            <property name="show-arrow">True</property>
                             <signal name="activated" handler="change_language" object="CcUserPanel" swapped="yes"/>
-                            <child>
-                              <object class="GtkLabel" id="language_button_label">
-                                 <style>
-                                    <class name="dim-label"/>
-                                  </style>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkImage">
-                                <property name="icon-name">go-next-symbolic</property>
-                                <style>
-                                  <class name="dim-label"/>
-                                </style>
-                              </object>
-                            </child>
                           </object>
                         </child>
                       </object>
@@ -346,21 +304,12 @@
                         <property name="visible">False</property>
                         <property name="title" translatable="yes">Other Users</property>
                         <child>
-                          <object class="AdwPreferencesRow" id="other_users_row">
-                            <child>
-                              <object class="GtkListBox" id="other_users_listbox">
-                                <property name="selection-mode">none</property>
-                                <signal name="row-activated" handler="set_selected_user" object="CcUserPanel" swapped="yes"/>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="AdwActionRow" id="add_user_button">
-                            <property name="title" translatable="yes">Add User…</property>
-                            <property name="icon-name">list-add-symbolic</property>
-                            <property name="activatable">True</property>
-                            <signal name="activated" handler="add_user" object="CcUserPanel" swapped="yes"/>
+                          <object class="GtkListBox" id="other_users_listbox">
+                            <property name="selection-mode">none</property>
+                            <signal name="row-activated" handler="set_selected_user" object="CcUserPanel" swapped="yes"/>
+                            <style>
+                              <class name="boxed-list"/>
+                            </style>
                           </object>
                         </child>
                       </object>

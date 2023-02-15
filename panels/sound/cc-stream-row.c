@@ -1,5 +1,4 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 8 -*-
- *
+/*
  * Copyright (C) 2018 Canonical Ltd.
  *
  * This program is free software; you can redistribute it and/or
@@ -16,6 +15,7 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "cc-level-bar.h"
 #include "cc-sound-resources.h"
 #include "cc-stream-row.h"
 #include "cc-volume-slider.h"
@@ -31,6 +31,7 @@ struct _CcStreamRow
   GtkLabel       *name_label;
   GtkImage       *icon_image;
   CcVolumeSlider *volume_slider;
+  CcLevelBar     *level_bar;
 
   GvcMixerStream *stream;
   guint           id;
@@ -62,6 +63,7 @@ cc_stream_row_class_init (CcStreamRowClass *klass)
   gtk_widget_class_bind_template_child (widget_class, CcStreamRow, icon_image);
   gtk_widget_class_bind_template_child (widget_class, CcStreamRow, name_label);
   gtk_widget_class_bind_template_child (widget_class, CcStreamRow, volume_slider);
+  gtk_widget_class_bind_template_child (widget_class, CcStreamRow, level_bar);
 }
 
 void
@@ -80,11 +82,9 @@ cc_stream_row_new (GtkSizeGroup    *size_group,
                    GvcMixerControl *mixer_control)
 {
   CcStreamRow *self;
-  g_autoptr(GtkIconPaintable) icon_paintable = NULL;
   g_autoptr(GIcon) gicon = NULL;
   const gchar *stream_name;
   const gchar *icon_name;
-  g_autofree gchar *symbolic_icon_name = NULL;
 
   self = g_object_new (CC_TYPE_STREAM_ROW, NULL);
   self->stream = g_object_ref (stream);
@@ -93,34 +93,19 @@ cc_stream_row_new (GtkSizeGroup    *size_group,
   icon_name = gvc_mixer_stream_get_icon_name (stream);
   stream_name = gvc_mixer_stream_get_name (stream);
 
-  if (g_str_has_suffix (icon_name, "-symbolic"))
-          symbolic_icon_name = strdup (icon_name);
+  if (g_str_has_prefix (stream_name, SPEECH_DISPATCHER_PREFIX))
+    gicon = g_themed_icon_new_with_default_fallbacks ("org.gnome.Settings-accessibility");
+  else if (gtk_icon_theme_has_icon (gtk_icon_theme_get_for_display (gdk_display_get_default ()), icon_name))
+    gicon = g_themed_icon_new_with_default_fallbacks (icon_name);
   else
-          symbolic_icon_name = g_strconcat (icon_name, "-symbolic", NULL);
-
-  /* Explicitly lookup for the icon, since some streams may give us an
-   * icon name (e.g. "audio") that doesn't really exist in the theme.
-   */
-  icon_paintable = gtk_icon_theme_lookup_icon (gtk_icon_theme_get_for_display (gdk_display_get_default ()),
-                                               icon_name,
-                                               NULL,
-                                               24,
-                                               gtk_widget_get_scale_factor (GTK_WIDGET (self)),
-                                               GTK_TEXT_DIR_RTL,
-                                               0);
-
-  if (icon_paintable)
-    gicon = g_themed_icon_new_with_default_fallbacks (symbolic_icon_name);
-  else if (g_str_has_prefix (stream_name, SPEECH_DISPATCHER_PREFIX))
-    gicon = g_themed_icon_new_with_default_fallbacks ("org.gnome.Settings-accessibility-symbolic");
-  else
-    gicon = g_themed_icon_new_with_default_fallbacks ("application-x-executable-symbolic");
+    gicon = g_themed_icon_new_with_default_fallbacks ("application-x-executable");
 
   gtk_image_set_from_gicon (self->icon_image, gicon);
 
   gtk_label_set_label (self->name_label, gvc_mixer_stream_get_name (stream));
   cc_volume_slider_set_stream (self->volume_slider, stream, stream_type);
   cc_volume_slider_set_mixer_control (self->volume_slider, mixer_control);
+  cc_level_bar_set_stream (self->level_bar, stream);
 
   gtk_size_group_add_widget (size_group, GTK_WIDGET (self->label_box));
 

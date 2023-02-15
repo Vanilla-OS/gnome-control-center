@@ -90,6 +90,8 @@ typedef struct
   GHashTable *engine_rows_by_id;
 } LocaleInfo;
 
+static void on_input_sources_listbox_row_activated_cb (CcInputChooser *self, GtkListBoxRow  *row);
+
 static void
 locale_info_free (gpointer data)
 {
@@ -149,7 +151,7 @@ padded_label_new (const gchar        *text,
   set_row_widget_margins (label);
   gtk_box_append (GTK_BOX (widget), label);
   if (dim_label)
-    gtk_style_context_add_class (gtk_widget_get_style_context (label), "dim-label");
+    gtk_widget_add_css_class (label, "dim-label");
 
   if (direction == ROW_TRAVEL_DIRECTION_FORWARD)
     {
@@ -304,6 +306,22 @@ add_input_source_rows_for_locale (CcInputChooser *self,
 }
 
 static void
+on_back_row_click_released_cb (GtkGestureClick *click,
+                               int              n_press,
+                               double           x,
+                               double           y,
+                               CcInputChooser  *self)
+{
+  GtkWidget *widget;
+  GtkListBoxRow *row;
+
+  widget = gtk_event_controller_get_widget (GTK_EVENT_CONTROLLER (click));
+  row = GTK_LIST_BOX_ROW (widget);
+  if (row)
+    on_input_sources_listbox_row_activated_cb (self, row);
+}
+
+static void
 show_input_sources_for_locale (CcInputChooser *self,
                                LocaleInfo     *info)
 {
@@ -311,10 +329,17 @@ show_input_sources_for_locale (CcInputChooser *self,
 
   if (!info->back_row)
     {
+      GtkEventController *controller;
+
       info->back_row = g_object_ref_sink (back_row_new (info->name));
       gtk_widget_show (GTK_WIDGET (info->back_row));
       g_object_set_data (G_OBJECT (info->back_row), "back", GINT_TO_POINTER (TRUE));
       g_object_set_data (G_OBJECT (info->back_row), "locale-info", info);
+
+      controller = GTK_EVENT_CONTROLLER (gtk_gesture_click_new ());
+      gtk_gesture_single_set_button (GTK_GESTURE_SINGLE (controller), 0);
+      g_signal_connect (controller, "released", G_CALLBACK (on_back_row_click_released_cb), self);
+      gtk_widget_add_controller (GTK_WIDGET (info->back_row), controller);
     }
   gtk_list_box_append (self->input_sources_listbox, GTK_WIDGET (info->back_row));
 
@@ -851,6 +876,38 @@ add_ids_to_set (GHashTable *set,
     }
 }
 
+static GList *
+layout_lists_intersection (GList *first_list,
+                           GList *second_list)
+{
+  g_autoptr(GHashTable) first_set = NULL;
+  g_autoptr(GList) intersection_list = NULL;
+
+  first_set = g_hash_table_new (g_str_hash, g_str_equal);
+
+  while (first_list != NULL)
+    {
+      const char *layout;
+
+      layout = first_list->data;
+      g_hash_table_insert (first_set, layout, layout);
+      first_list = first_list->next;
+    }
+
+  while (second_list != NULL)
+    {
+      const char *layout;
+
+      layout = second_list->data;
+      if (g_hash_table_remove (first_set, layout))
+        intersection_list = g_list_prepend (intersection_list, layout);
+
+      second_list = second_list->next;
+    }
+
+  return g_steal_pointer (&intersection_list);
+}
+
 static void
 get_locale_infos (CcInputChooser *self)
 {
@@ -878,6 +935,7 @@ get_locale_infos (CcInputChooser *self)
       const gchar *type = NULL;
       const gchar *id = NULL;
       g_autoptr(GList) language_layouts = NULL;
+      g_autoptr(GList) locale_layouts = NULL;
 
       if (!gnome_parse_locale (*locale, &lang_code, &country_code, NULL, NULL))
         continue;
@@ -914,15 +972,19 @@ get_locale_infos (CcInputChooser *self)
                                                        NULL, g_object_unref);
 
       language_layouts = gnome_xkb_info_get_layouts_for_language (self->xkb_info, lang_code);
-      add_rows_to_table (self, info, language_layouts, INPUT_SOURCE_TYPE_XKB, id);
-      add_ids_to_set (layouts_with_locale, language_layouts);
 
       if (country_code != NULL)
         {
           g_autoptr(GList) country_layouts = gnome_xkb_info_get_layouts_for_country (self->xkb_info, country_code);
-          add_rows_to_table (self, info, country_layouts, INPUT_SOURCE_TYPE_XKB, id);
-          add_ids_to_set (layouts_with_locale, country_layouts);
+          locale_layouts = layout_lists_intersection (language_layouts, country_layouts);
         }
+      else
+        {
+          locale_layouts = g_steal_pointer (&language_layouts);
+        }
+
+      add_rows_to_table (self, info, locale_layouts, INPUT_SOURCE_TYPE_XKB, id);
+      add_ids_to_set (layouts_with_locale, locale_layouts);
     }
 
   /* Add a "Other" locale to hold the remaining input sources */

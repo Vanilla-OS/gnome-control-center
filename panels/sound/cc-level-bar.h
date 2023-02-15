@@ -1,5 +1,4 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 8 -*-
- *
+/*
  * Copyright (C) 2018 Canonical Ltd.
  *
  * This program is free software; you can redistribute it and/or
@@ -30,7 +29,6 @@ G_BEGIN_DECLS
 G_DECLARE_FINAL_TYPE (CcLevelBar, cc_level_bar, CC, LEVEL_BAR, GtkWidget)
 
 void cc_level_bar_set_stream (CcLevelBar     *bar,
-                              GvcMixerStream *stream,
-                              CcStreamType    type);
+                              GvcMixerStream *stream);
 
 G_END_DECLS

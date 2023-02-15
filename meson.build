@@ -1,6 +1,6 @@
 project(
   'gnome-control-center', 'c',
-        version : '43.2',
+        version : '44.beta',
         license : 'GPL2+',
   meson_version : '>= 0.57.0'
 )
@@ -25,15 +25,19 @@ host_is_linux_not_s390 = host_is_linux and not host_machine.cpu().contains('s390
 
 cc = meson.get_compiler('c')
 
-# Tracing
-enable_tracing = get_option('tracing')
-
 config_h = configuration_data()
 
 py = import('python')
 python = py.find_installation('python3')
 
-config_h.set_quoted('TEST_NM_PYTHON', python.path())
+config_h.set_quoted('TEST_NM_PYTHON', python.full_path())
+
+if get_option('profile') == 'development'
+    profile = 'Devel'
+else
+    profile = ''
+endif
+application_id = 'org.gnome.Settings@0@'.format(profile)
 
 # defines
 set_defines = [
@@ -113,6 +117,19 @@ libgvc_dep = libgvc.get_variable('libgvc_dep')
 goa_req_version = '>= 3.25.3'
 pulse_req_version = '>= 2.0'
 
+gtk_dep = dependency(
+  'gtk4',
+  version: '>= 4.9.3',
+  fallback: ['gtk', 'gtk_dep'],
+  default_options: [
+    'introspection=disabled',
+    'demos=false',
+    'build-testsuite=false',
+    'build-tests=false',
+    'build-examples=false',
+  ]
+)
+
 libadwaita_dep = dependency(
   'libadwaita-1',
   version: '>= 1.2.alpha',
@@ -124,7 +141,7 @@ accounts_dep = dependency('accountsservice', version: '>= 0.6.39')
 colord_dep = dependency('colord', version: '>= 0.1.34')
 gdk_pixbuf_dep = dependency('gdk-pixbuf-2.0', version: '>= 2.23.0')
 gio_dep = dependency('gio-2.0')
-glib_dep = dependency('glib-2.0', version: '>= 2.70.0')
+glib_dep = dependency('glib-2.0', version: '>= 2.75.0')
 gnome_desktop_dep = dependency('gnome-desktop-4')
 gnome_bg_dep = dependency('gnome-bg-4')
 gnome_rr_dep = dependency('gnome-rr-4')
@@ -136,7 +153,7 @@ pulse_dep = dependency('libpulse', version: pulse_req_version)
 pulse_mainloop_dep = dependency('libpulse-mainloop-glib', version: pulse_req_version)
 upower_glib_dep = dependency('upower-glib', version: '>= 0.99.8')
 gudev_dep = dependency('gudev-1.0', version: '>= 232')
-x11_dep = dependency('x11')
+x11_dep = dependency('x11', version: '>= 1.8')
 xi_dep = dependency('xi', version: '>= 1.2')
 epoxy_dep = dependency('epoxy')
 gcr_dep = dependency('gcr-base-3')
@@ -151,7 +168,7 @@ common_deps = [
   libadwaita_dep,
   dependency('gio-unix-2.0'),
   dependency('gthread-2.0'),
-  dependency('gtk4', version: '>= 4.4'),
+  gtk_dep,
 ]
 
 polkit_gobject_dep = dependency('polkit-gobject-1', version: '>= 0.103')
@@ -222,10 +239,11 @@ config_h.set('HAVE_MALCONTENT', enable_malcontent,
 
 if host_is_linux
   # network manager
+  mm_dep =  dependency('mm-glib', version: '>= 0.7')
   network_manager_deps = [
     dependency('libnm', version: '>= 1.24.0'),
-    dependency('libnma-gtk4', version: '>= 1.8.0'),
-    dependency('mm-glib', version: '>= 0.7')
+    dependency('libnma-gtk4', version: '>= 1.10.2'),
+    mm_dep,
   ]
 endif
 config_h.set('BUILD_NETWORK', host_is_linux,
@@ -267,9 +285,6 @@ gnome = import('gnome')
 i18n = import('i18n')
 pkg = import('pkgconfig')
 
-desktop_conf = configuration_data()
-desktop_conf.set('VERSION', meson.project_version())
-
 po_dir = join_paths(meson.source_root(), 'po')
 its_dir = join_paths(meson.source_root(), 'gettext')
 
@@ -308,7 +323,6 @@ configure_file(
 summary({
   'Documentation': get_option('documentation'),
   'Tests': get_option('tests'),
-  'Tracing': enable_tracing,
   'Optimized': control_center_optimized,
 })
 

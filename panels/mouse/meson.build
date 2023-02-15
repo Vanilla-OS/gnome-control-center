@@ -1,15 +1,9 @@
 panels_list += cappletname
 desktop = 'gnome-@0@-panel.desktop'.format(cappletname)
 
-desktop_in = configure_file(
-  input: desktop + '.in.in',
-  output: desktop + '.in',
-  configuration: desktop_conf
-)
-
 i18n.merge_file(
   type: 'desktop',
-  input: desktop_in,
+  input: desktop + '.in',
   output: desktop,
   po_dir: po_dir,
   install: true,
@@ -19,8 +13,21 @@ i18n.merge_file(
 resource_data = files(
   'cc-mouse-panel.ui',
   'cc-mouse-test.ui',
-  'scroll-test-gegl.svg',
-  'scroll-test.svg'
+  'scroll-test.svg',
+  'assets/edge-scroll-d.webm',
+  'assets/edge-scroll-l.webm',
+  'assets/scroll-2finger-d.webm',
+  'assets/scroll-2finger-l.webm',
+  'assets/scroll-traditional-d.webm',
+  'assets/scroll-traditional-l.webm',
+  'assets/scroll-natural-d.webm',
+  'assets/scroll-natural-l.webm',
+  'assets/touch-scroll-natural-d.webm',
+  'assets/touch-scroll-natural-l.webm',
+  'assets/touch-scroll-traditional-d.webm',
+  'assets/touch-scroll-traditional-l.webm',
+  'assets/tap-to-click-l.webm',
+  'assets/tap-to-click-d.webm',
 )
 
 common_sources = gnome.compile_resources(

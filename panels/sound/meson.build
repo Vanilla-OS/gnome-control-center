@@ -1,15 +1,9 @@
 panels_list += cappletname
 desktop = 'gnome-@0@-panel.desktop'.format(cappletname)
 
-desktop_in = configure_file(
-  input: desktop + '.in.in',
-  output: desktop + '.in',
-  configuration: desktop_conf
-)
-
 i18n.merge_file(
   type: 'desktop',
-  input: desktop_in,
+  input: desktop + '.in',
   output: desktop,
   po_dir: po_dir,
   install: true,
@@ -30,52 +24,43 @@ cflags += [
 ]
 
 sources = files(
-  'cc-alert-chooser.c',
+  'cc-alert-chooser-window.c',
   'cc-balance-slider.c',
   'cc-device-combo-box.c',
   'cc-fade-slider.c',
   'cc-level-bar.c',
-  'cc-output-test-dialog.c',
+  'cc-output-test-wheel.c',
+  'cc-output-test-window.c',
   'cc-profile-combo-box.c',
   'cc-sound-panel.c',
   'cc-speaker-test-button.c',
-  'cc-stream-list-box.c',
   'cc-stream-row.c',
   'cc-subwoofer-slider.c',
+  'cc-volume-levels-window.c',
   'cc-volume-slider.c',
 )
 
 resource_data = files(
   'icons/audio-speaker-center-back.svg',
-  'icons/audio-speaker-center-back-testing.svg',
   'icons/audio-speaker-center.svg',
-  'icons/audio-speaker-center-testing.svg',
   'icons/audio-speaker-left-back.svg',
-  'icons/audio-speaker-left-back-testing.svg',
   'icons/audio-speaker-left-side.svg',
-  'icons/audio-speaker-left-side-testing.svg',
   'icons/audio-speaker-left.svg',
-  'icons/audio-speaker-left-testing.svg',
-  'icons/audio-speaker-mono.svg',
-  'icons/audio-speaker-mono-testing.svg',
   'icons/audio-speaker-right-back.svg',
-  'icons/audio-speaker-right-back-testing.svg',
   'icons/audio-speaker-right-side.svg',
-  'icons/audio-speaker-right-side-testing.svg',
   'icons/audio-speaker-right.svg',
-  'icons/audio-speaker-right-testing.svg',
-  'icons/audio-speaker-testing.svg',
-  'cc-alert-chooser.ui',
+  'cc-alert-chooser-window.ui',
   'cc-balance-slider.ui',
   'cc-device-combo-box.ui',
   'cc-fade-slider.ui',
-  'cc-output-test-dialog.ui',
+  'cc-output-test-window.ui',
   'cc-profile-combo-box.ui',
   'cc-sound-panel.ui',
-  'cc-speaker-test-button.ui',
   'cc-stream-row.ui',
   'cc-subwoofer-slider.ui',
+  'cc-volume-levels-window.ui',
   'cc-volume-slider.ui',
+  'output-test-wheel.css',
 )
 
 sources += gnome.compile_resources(

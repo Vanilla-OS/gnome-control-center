@@ -1,5 +1,4 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 8 -*-
- *
+/*
  * Copyright (C) 2018 Canonical Ltd.
  *
  * This program is free software; you can redistribute it and/or
@@ -26,7 +25,7 @@
 G_BEGIN_DECLS
 
 #define CC_TYPE_SUBWOOFER_SLIDER (cc_subwoofer_slider_get_type ())
-G_DECLARE_FINAL_TYPE (CcSubwooferSlider, cc_subwoofer_slider, CC, SUBWOOFER_SLIDER, GtkBox)
+G_DECLARE_FINAL_TYPE (CcSubwooferSlider, cc_subwoofer_slider, CC, SUBWOOFER_SLIDER, GtkWidget)
 
 void cc_subwoofer_slider_set_mixer_control (CcSubwooferSlider *slider,
                                             GvcMixerControl   *mixer_control);

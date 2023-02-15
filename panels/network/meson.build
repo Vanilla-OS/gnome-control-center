@@ -5,7 +5,6 @@ deps = common_deps + network_manager_deps + [
 
 network_inc = include_directories('.')
 
-subdir('wireless-security')
 subdir('connection-editor')
 subdir('icons')
 
@@ -19,15 +18,9 @@ panels_list += panel_names
 foreach name: panel_names
   desktop = 'gnome-' + name + '-panel.desktop'
 
-  desktop_in = configure_file(
-    input: desktop + '.in.in',
-    output: desktop + '.in',
-    configuration: desktop_conf
-  )
-
   i18n.merge_file(
     type: 'desktop',
-    input: desktop_in,
+    input: desktop + '.in',
     output: desktop,
     po_dir: po_dir,
     install: true,
@@ -37,7 +30,9 @@ endforeach
 
 sources = files(
   'cc-qr-code.c',
+  'cc-qr-code-dialog.c',
   'cc-network-panel.c',
+  'cc-net-proxy-page.c',
   'cc-wifi-connection-row.c',
   'cc-wifi-connection-list.c',
   'cc-wifi-panel.c',
@@ -46,7 +41,6 @@ sources = files(
   'net-device-ethernet.c',
   'net-device-mobile.c',
   'net-device-wifi.c',
-  'net-proxy.c',
   'net-vpn.c',
   'network-dialogs.c',
   'panel-common.c',
@@ -55,13 +49,14 @@ sources = files(
 
 resource_data = files(
   'cc-network-panel.ui',
+  'cc-net-proxy-page.c',
+  'cc-qr-code-dialog.ui',
   'cc-wifi-connection-row.ui',
   'cc-wifi-panel.ui',
   'cc-wifi-hotspot-dialog.ui',
   'network-bluetooth.ui',
   'network-ethernet.ui',
   'network-mobile.ui',
-  'network-proxy.ui',
   'network-vpn.ui',
   'network-wifi.ui',
 )

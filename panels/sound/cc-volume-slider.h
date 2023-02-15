@@ -1,5 +1,4 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 8 -*-
- *
+/*
  * Copyright (C) 2018 Canonical Ltd.
  *
  * This program is free software; you can redistribute it and/or
@@ -28,7 +27,7 @@
 G_BEGIN_DECLS
 
 #define CC_TYPE_VOLUME_SLIDER (cc_volume_slider_get_type ())
-G_DECLARE_FINAL_TYPE (CcVolumeSlider, cc_volume_slider, CC, VOLUME_SLIDER, GtkBox)
+G_DECLARE_FINAL_TYPE (CcVolumeSlider, cc_volume_slider, CC, VOLUME_SLIDER, GtkWidget)
 
 void cc_volume_slider_set_mixer_control (CcVolumeSlider  *slider,
                                          GvcMixerControl *mixer_control);
