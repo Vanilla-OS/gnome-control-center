@@ -162,7 +162,7 @@ search_panel_set_no_providers (CcSearchPanel *self)
   gtk_widget_set_valign (self->list_box, GTK_ALIGN_CENTER);
 
   gtk_list_box_append (GTK_LIST_BOX (self->list_box),
-                       gtk_label_new (_("No applications found")));
+                       gtk_label_new (_("No apps found")));
 }
 
 static void
@@ -408,12 +408,6 @@ search_panel_add_one_app_info (CcSearchPanel *self,
                                gboolean default_enabled)
 {
   CcSearchPanelRow *row;
-
-  /* gnome-control-center is special cased in the shell,
-     and is not configurable */
-  if (g_strcmp0 (g_app_info_get_id (app_info),
-                 "gnome-control-center.desktop") == 0)
-    return;
 
   /* reset valignment of the list box */
   gtk_widget_set_valign (self->list_box, GTK_ALIGN_FILL);

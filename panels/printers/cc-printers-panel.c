@@ -287,10 +287,7 @@ cc_printers_panel_dispose (GObject *object)
   if (self->deleted_printer_name != NULL)
     {
       g_autoptr(PpPrinter) printer = pp_printer_new (self->deleted_printer_name);
-      pp_printer_delete_async (printer,
-                               NULL,
-                               printer_removed_cb,
-                               NULL);
+      pp_printer_delete_sync (printer, NULL, NULL);
     }
 
   g_clear_object (&self->cups);
@@ -1025,9 +1022,11 @@ update_sensitivity (gpointer user_data)
 
   widget = (GtkWidget*) gtk_builder_get_object (self->builder, "search-button");
   gtk_widget_set_visible (widget, !no_cups);
+  gtk_widget_set_sensitive (widget, !empty_state);
 
   widget = (GtkWidget*) gtk_builder_get_object (self->builder, "search-bar");
   gtk_widget_set_visible (widget, !no_cups);
+  gtk_widget_set_sensitive (widget, !empty_state);
 
   widget = (GtkWidget*) gtk_builder_get_object (self->builder, "printer-add-button");
   gtk_widget_set_visible (widget, !empty_state);

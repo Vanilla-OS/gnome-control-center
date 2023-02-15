@@ -16,7 +16,7 @@
         </child>
         <property name="title-widget">
           <object class="AdwWindowTitle" id="header_title">
-            <property name="title" translatable="yes">Applications</property>
+            <property name="title" translatable="yes">Apps</property>
           </object>
         </property>
       </object>
@@ -28,7 +28,7 @@
         <child>
           <object class="AdwStatusPage" id="empty_box">
             <property name="icon-name">org.gnome.Software-symbolic</property>
-            <property name="title" translatable="yes">No applications</property>
+            <property name="title" translatable="yes">No apps</property>
             <child>
               <object class="GtkButton" id="install_button">
                 <property name="label" translatable="yes">Install some…</property>
@@ -91,7 +91,7 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="view_details_button">
-                            <property name="label" translatable="yes">View Details</property>
+                            <property name="label" translatable="yes">App Details</property>
                             <style>
                               <class name="pill" />
                             </style>
@@ -110,35 +110,35 @@
                 <child>
                   <object class="CcToggleRow" id="search">
                     <property name="title" translatable="yes">Search</property>
-                    <property name="subtitle" translatable="yes">Receive system searches and send results.</property>
+                    <property name="subtitle" translatable="yes">Receive system searches and send results</property>
                     <signal name="notify::allowed" handler="search_cb" object="CcApplicationsPanel" swapped="yes"/>
                   </object>
                 </child>
                 <child>
                   <object class="CcInfoRow" id="no_search">
                     <property name="title" translatable="yes">Search</property>
-                    <property name="subtitle" translatable="yes">Receive system searches and send results.</property>
+                    <property name="subtitle" translatable="yes">Receive system searches and send results</property>
                     <property name="info" translatable="yes">Disabled</property>
                   </object>
                 </child>
                 <child>
                   <object class="CcToggleRow" id="notification">
                     <property name="title" translatable="yes">Notifications</property>
-                    <property name="subtitle" translatable="yes">Show system notifications.</property>
+                    <property name="subtitle" translatable="yes">Show system notifications</property>
                     <signal name="notify::allowed" handler="notification_cb" object="CcApplicationsPanel" swapped="yes"/>
                   </object>
                 </child>
                 <child>
                   <object class="CcToggleRow" id="background">
                     <property name="title" translatable="yes">Run in Background</property>
-                    <property name="subtitle" translatable="yes">Allow activity when the app is closed.</property>
+                    <property name="subtitle" translatable="yes">Allow activity when the app is closed</property>
                     <signal name="notify::allowed" handler="background_cb" swapped="yes"/>
                   </object>
                 </child>
                 <child>
                   <object class="CcToggleRow" id="screenshot">
                     <property name="title" translatable="yes">Screenshots</property>
-                    <property name="subtitle" translatable="yes">Take pictures of the screen at any time.</property>
+                    <property name="subtitle" translatable="yes">Take pictures of the screen at any time</property>
                     <signal name="notify::allowed" handler="screenshot_cb" object="CcApplicationsPanel" swapped="yes"/>
                   </object>
                 </child>
@@ -159,56 +159,56 @@
                 <child>
                   <object class="CcInfoRow" id="no_sound">
                     <property name="title" translatable="yes">Sounds</property>
-                    <property name="subtitle" translatable="yes">Reproduce sounds.</property>
+                    <property name="subtitle" translatable="yes">Reproduce sounds</property>
                     <property name="info" translatable="yes">Disabled</property>
                   </object>
                 </child>
                 <child>
                   <object class="CcToggleRow" id="shortcuts">
                     <property name="title" translatable="yes">Inhibit Shortcuts</property>
-                    <property name="subtitle" translatable="yes">Block standard keyboard shortcuts.</property>
+                    <property name="subtitle" translatable="yes">Block standard keyboard shortcuts</property>
                     <signal name="notify::allowed" handler="shortcuts_cb" swapped="yes"/>
                   </object>
                 </child>
                 <child>
                   <object class="CcToggleRow" id="camera">
                     <property name="title" translatable="yes">Camera</property>
-                    <property name="subtitle" translatable="yes">Take pictures with the camera.</property>
+                    <property name="subtitle" translatable="yes">Take pictures with the camera</property>
                     <signal name="notify::allowed" handler="camera_cb" object="CcApplicationsPanel" swapped="yes"/>
                   </object>
                 </child>
                 <child>
                   <object class="CcInfoRow" id="no_camera">
                     <property name="title" translatable="yes">Camera</property>
-                    <property name="subtitle" translatable="yes">Take pictures with the camera.</property>
+                    <property name="subtitle" translatable="yes">Take pictures with the camera</property>
                     <property name="info" translatable="yes">Disabled</property>
                   </object>
                 </child>
                 <child>
                   <object class="CcToggleRow" id="microphone">
                     <property name="title" translatable="yes">Microphone</property>
-                    <property name="subtitle" translatable="yes">Record audio with the microphone.</property>
+                    <property name="subtitle" translatable="yes">Record audio with the microphone</property>
                     <signal name="notify::allowed" handler="microphone_cb" object="CcApplicationsPanel" swapped="yes"/>
                   </object>
                 </child>
                 <child>
                   <object class="CcInfoRow" id="no_microphone">
                     <property name="title" translatable="yes">Microphone</property>
-                    <property name="subtitle" translatable="yes">Record audio with the microphone.</property>
+                    <property name="subtitle" translatable="yes">Record audio with the microphone</property>
                     <property name="info" translatable="yes">Disabled</property>
                   </object>
                 </child>
                 <child>
                   <object class="CcToggleRow" id="location">
                     <property name="title" translatable="yes">Location Services</property>
-                    <property name="subtitle" translatable="yes">Access device location data.</property>
+                    <property name="subtitle" translatable="yes">Access device location data</property>
                     <signal name="notify::allowed" handler="location_cb" object="CcApplicationsPanel" swapped="yes"/>
                   </object>
                 </child>
                 <child>
                   <object class="CcInfoRow" id="no_location">
                     <property name="title" translatable="yes">Location Services</property>
-                    <property name="subtitle" translatable="yes">Access device location data.</property>
+                    <property name="subtitle" translatable="yes">Access device location data</property>
                     <property name="info" translatable="yes">Disabled</property>
                   </object>
                 </child>
@@ -219,7 +219,7 @@
               <object class="AdwPreferencesGroup" id="usage_section">
                 <child>
                   <object class="CcInfoRow" id="builtin">
-                    <property name="title" translatable="yes">Built-in Permissions</property>
+                    <property name="title" translatable="yes">Required Access</property>
                     <property name="subtitle" translatable="yes">System access that is required by the app</property>
                     <property name="has-expander">True</property>
                     <property name="is-link">True</property>
@@ -323,11 +323,15 @@
 
   <!-- Built-in Permissions dialog -->
   <object class="GtkDialog" id="builtin_dialog">
-    <property name="title" translatable="yes">Built-in Permissions</property>
+    <property name="title" translatable="yes">Required Access</property>
     <property name="modal">1</property>
     <property name="use-header-bar">1</property>
     <property name="resizable">True</property>
     <property name="hide-on-close">True</property>
+    <property name="default-width">500</property>
+    <property name="default-height">400</property>
+    <property name="width-request">360</property>
+    <property name="height-request">294</property>
     <child>
       <object class="AdwPreferencesPage">
         <child>
@@ -355,6 +359,8 @@
     <property name="hide-on-close">True</property>
     <property name="default-width">500</property>
     <property name="default-height">400</property>
+    <property name="width-request">360</property>
+    <property name="height-request">294</property>
     <child>
       <object class="AdwPreferencesPage">
 
@@ -414,10 +420,10 @@
       <object class="AdwPreferencesPage">
         <child>
           <object class="AdwPreferencesGroup">
-            <property name="description" translatable="yes">How much disk space this application is occupying with app data and caches.</property>
+            <property name="description" translatable="yes">How much disk space this app is occupying with app data and caches.</property>
             <child>
               <object class="CcInfoRow" id="app">
-                <property name="title" translatable="yes">Application</property>
+                <property name="title" translatable="yes">App</property>
                 <property name="info">Unknown</property>
               </object>
             </child>

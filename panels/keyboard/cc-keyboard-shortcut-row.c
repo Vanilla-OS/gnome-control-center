@@ -1,6 +1,7 @@
 /* cc-keyboard-shortcut-row.c
  *
  * Copyright (C) 2020 System76, Inc.
+ * Copyright (C) 2022 Purism SPC.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -64,10 +65,13 @@ cc_keyboard_shortcut_row_init (CcKeyboardShortcutRow *self)
 }
 
 static void
-shortcut_modified_changed_cb (CcKeyboardShortcutRow *self)
+cc_kbd_shortcut_is_default_changed_cb (CcKeyboardShortcutRow *self)
 {
-  gtk_revealer_set_reveal_child (self->reset_revealer,
-		                !cc_keyboard_item_is_value_default (self->item));
+  /* Embolden the label when the shortcut is modified */
+  if (cc_keyboard_item_is_value_default (self->item))
+    gtk_widget_remove_css_class (GTK_WIDGET (self->accelerator_label), "heading");
+  else
+    gtk_widget_add_css_class (GTK_WIDGET (self->accelerator_label), "heading");
 }
 
 static gboolean
@@ -82,20 +86,7 @@ transform_binding_to_accel (GBinding     *binding,
 
   item = CC_KEYBOARD_ITEM (g_binding_dup_source (binding));
   combo = cc_keyboard_item_get_primary_combo (item);
-
-  /* Embolden the label when the shortcut is modified */
-  if (!cc_keyboard_item_is_value_default (item))
-    {
-      g_autofree gchar *tmp = NULL;
-
-      tmp = convert_keysym_state_to_string (&combo);
-
-      accelerator = g_strdup_printf ("<b>%s</b>", tmp);
-    }
-  else
-    {
-      accelerator = convert_keysym_state_to_string (&combo);
-    }
+  accelerator = convert_keysym_state_to_string (&combo);
 
   g_value_take_string (to_value, accelerator);
 
@@ -115,8 +106,12 @@ cc_keyboard_shortcut_row_new (CcKeyboardItem           *item,
   self->manager = manager;
   self->shortcut_editor = shortcut_editor;
 
-  adw_preferences_row_set_title (ADW_PREFERENCES_ROW (self), cc_keyboard_item_get_description (item));
-
+  g_object_bind_property (item, "description",
+                          self, "title",
+                          G_BINDING_SYNC_CREATE);
+  g_object_bind_property (item, "is-value-default",
+                          self->reset_revealer, "reveal-child",
+                          G_BINDING_SYNC_CREATE | G_BINDING_INVERT_BOOLEAN);
   g_object_bind_property_full (item,
                                "key-combos",
                                self->accelerator_label,
@@ -125,15 +120,21 @@ cc_keyboard_shortcut_row_new (CcKeyboardItem           *item,
                                transform_binding_to_accel,
                                NULL, NULL, NULL);
 
-  gtk_revealer_set_reveal_child (self->reset_revealer,
-                                 !cc_keyboard_item_is_value_default (item));
-  g_signal_connect_object (item,
-                           "notify::key-combos",
-                           G_CALLBACK (shortcut_modified_changed_cb),
+  g_signal_connect_object (item, "notify::is-value-default",
+                           G_CALLBACK (cc_kbd_shortcut_is_default_changed_cb),
                            self, G_CONNECT_SWAPPED);
+  cc_kbd_shortcut_is_default_changed_cb (self);
 
   gtk_size_group_add_widget(size_group,
                             GTK_WIDGET (self->accelerator_label));
 
   return self;
+}
+
+CcKeyboardItem *
+cc_keyboard_shortcut_row_get_item (CcKeyboardShortcutRow *self)
+{
+  g_return_val_if_fail (CC_IS_KEYBOARD_SHORTCUT_ROW (self), NULL);
+
+  return self->item;
 }

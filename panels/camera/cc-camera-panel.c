@@ -20,6 +20,7 @@
 
 #include "cc-camera-panel.h"
 #include "cc-camera-resources.h"
+#include "cc-list-row.h"
 #include "cc-util.h"
 
 #include <adwaita.h>
@@ -33,9 +34,8 @@ struct _CcCameraPanel
 {
   CcPanel       parent_instance;
 
-  GtkStack     *stack;
   GtkListBox   *camera_apps_list_box;
-  GtkSwitch    *main_switch;
+  CcListRow    *camera_row;
 
   GSettings    *privacy_settings;
 
@@ -101,14 +101,17 @@ on_camera_app_state_set (GtkSwitch *widget,
   GVariant *params;
   const gchar *key;
   gchar **value;
+  gboolean active_camera;
 
   self = data->self;
 
   if (data->changing_state)
     return TRUE;
 
+  active_camera = !g_settings_get_boolean (self->privacy_settings,
+                                           "disable-camera");
   data->changing_state = TRUE;
-  data->pending_state = state;
+  data->pending_state = active_camera && state;
 
   g_variant_iter_init (&iter, self->camera_apps_perms);
   g_variant_builder_init (&builder, G_VARIANT_TYPE_ARRAY);
@@ -147,6 +150,25 @@ on_camera_app_state_set (GtkSwitch *widget,
                      cc_panel_get_cancellable (CC_PANEL (self)),
                      on_perm_store_set_done,
                      data);
+
+  return TRUE;
+}
+
+static gboolean
+update_app_switch_state (GValue   *value,
+                         GVariant *variant,
+                         gpointer  data)
+{
+  GtkSwitch *w = GTK_SWITCH (data);
+  gboolean active_camera;
+  gboolean active_app;
+  gboolean state;
+
+  active_camera = !g_variant_get_boolean (variant);
+  active_app = gtk_switch_get_active (w);
+  state = active_camera && active_app;
+
+  g_value_set_boolean (value, state);
 
   return TRUE;
 }
@@ -190,11 +212,17 @@ add_camera_app (CcCameraPanel *self,
   gtk_switch_set_active (GTK_SWITCH (w), enabled);
   gtk_widget_set_valign (w, GTK_ALIGN_CENTER);
   adw_action_row_add_suffix (ADW_ACTION_ROW (row), w);
-  g_settings_bind (self->privacy_settings,
-                   "disable-camera",
-                   w,
-                   "sensitive",
-                   G_SETTINGS_BIND_INVERT_BOOLEAN);
+
+  g_settings_bind_with_mapping (self->privacy_settings,
+                                "disable-camera",
+                                w,
+                                "state",
+                                G_SETTINGS_BIND_GET,
+                                update_app_switch_state,
+                                NULL,
+                                g_object_ref (w),
+                                g_object_unref);
+
   g_hash_table_insert (self->camera_app_switches,
                        g_strdup (app_id),
                        g_object_ref (w));
@@ -213,20 +241,6 @@ add_camera_app (CcCameraPanel *self,
 }
 
 /* Steals permissions and permissions_data references */
-
-static gboolean
-to_child_name (GBinding     *binding,
-               const GValue *from,
-               GValue       *to,
-               gpointer      user_data)
-{
-  if (g_value_get_boolean (from))
-    g_value_set_string (to, "content");
-  else
-    g_value_set_string (to, "empty");
-  return TRUE;
-}
-
 static void
 update_perm_store (CcCameraPanel *self,
                    GVariant      *permissions,
@@ -372,9 +386,8 @@ cc_camera_panel_class_init (CcCameraPanelClass *klass)
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/camera/cc-camera-panel.ui");
 
-  gtk_widget_class_bind_template_child (widget_class, CcCameraPanel, stack);
   gtk_widget_class_bind_template_child (widget_class, CcCameraPanel, camera_apps_list_box);
-  gtk_widget_class_bind_template_child (widget_class, CcCameraPanel, main_switch);
+  gtk_widget_class_bind_template_child (widget_class, CcCameraPanel, camera_row);
 }
 
 static void
@@ -389,15 +402,8 @@ cc_camera_panel_init (CcCameraPanel *self)
   self->privacy_settings = g_settings_new ("org.gnome.desktop.privacy");
 
   g_settings_bind (self->privacy_settings, "disable-camera",
-                   self->main_switch, "active",
+                   self->camera_row, "active",
                    G_SETTINGS_BIND_INVERT_BOOLEAN);
-
-  g_object_bind_property_full  (self->main_switch, "active",
-                                self->stack, "visible-child-name",
-                                G_BINDING_SYNC_CREATE,
-                                to_child_name,
-                                NULL,
-                                NULL, NULL);
 
   self->camera_app_switches = g_hash_table_new_full (g_str_hash,
                                                      g_str_equal,

@@ -5,14 +5,13 @@
       <object class="AdwPreferencesPage">
         <child>
           <object class="AdwPreferencesGroup">
-            <property name="title" translatable="yes">Screen Lock</property>
             <property name="description" translatable="yes">Automatically locking the screen prevents others from accessing the computer while you're away.</property>
 
             <!-- Blank Screen Delay row -->
             <child>
               <object class="AdwComboRow" id="blank_screen_row">
                 <property name="title" translatable="yes">Blank Screen Delay</property>
-                <property name="subtitle" translatable="yes">Period of inactivity after which the screen will go blank.</property>
+                <property name="subtitle" translatable="yes">Period of inactivity until screen blanks</property>
                 <property name="subtitle-lines">2</property>
                 <property name="use-underline">true</property>
                 <signal name="notify::selected-item" handler="on_blank_screen_delay_changed_cb"/>
@@ -31,6 +30,7 @@
             <child>
               <object class="AdwActionRow">
                 <property name="title" translatable="yes">Automatic Screen _Lock</property>
+                <property name="subtitle" translatable="yes">Locks the screen after it blanks</property>
                 <property name="activatable-widget">automatic_screen_lock_switch</property>
                 <property name="use-underline">true</property>
                 <child>
@@ -48,7 +48,7 @@
             <child>
               <object class="AdwComboRow" id="lock_after_row">
                 <property name="title" translatable="yes">Automatic _Screen Lock Delay</property>
-                <property name="subtitle" translatable="yes">Period after the screen blanks when the screen is automatically locked.</property>
+                <property name="subtitle" translatable="yes">Time from screen blank to screen lock</property>
                 <property name="subtitle-lines">2</property>
                 <property name="use-underline">true</property>
                 <signal name="notify::selected-item" handler="on_lock_combo_changed_cb"/>

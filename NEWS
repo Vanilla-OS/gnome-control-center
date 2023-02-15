@@ -1,48 +1,58 @@
 ================
-Version 43.4
+Version 44.beta
 ================
 
+- Redesigned Sound panel
+- Redesigned Mouse & Touchpad panel
+- Share Wi-Fi networks using QR code
+- Many consistency improvements
+- WireGuard support
 - Updated translations
 
-Network:
-- Fix possible race in tests
+Mouse & Touchpad
+- Redesign the panel with videos of the preferences
+- Move mouse test into a separate dialog
+
+Network
+- Add support for sharing Wi-Fi networks through QR code
+- Add WireGuard support
+
+Sound
+- Move application volumes to a dialog
+- Move sound themes to a dialog
 
 ================
-Version 43.2
+Version 44.alpha
 ================
 
+- Redesigned Accessibility panel
+- Many consistency improvements
 - Updated translations
 
 About
-- Update distro logo when dark-mode changes
+- Add "Firmware Version" row
 
-Applications
-- Don't recurse into symlinks when clearing cache
+Accessibility
+- Redesign the panel with new a navigation pattern
 
 Cellular
-- Avoid duplicated entries in SIM providers list
+- Various fixes
 
-Color
-- Fix crash when first device row is non-existent
+Date & Time
+- Improve month selector
 
-Common
-- Make list row switches work when annimations are OFF
+Device Security
+- Improve date and time formatting
+- Simplify technical descriptions
 
 Display
-- Allow the Night Light error label to wrap for small screens
+- Improve error state of Night Light
 
-Mouse
-- Fix activation of rows while navigating with keyboard
+Sound
+- Start implementing the new designs
 
-Network
-- Fix crashes when EAP password is missing
-- Fix wrong signal of SEA password visibility toggle
-
-Notifications
-- Sync lock screen notification setting string
-
-Users
-- Show a missing-avatar image when avatars cannot be loaded
+Thunderbolt
+- Hide panel if no Thunderbolt device is found
 
 ================
 Version 43.1

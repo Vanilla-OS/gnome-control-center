@@ -1,15 +1,9 @@
 panels_list += cappletname
 desktop = 'gnome-@0@-panel.desktop'.format(cappletname)
 
-desktop_in = configure_file(
-  input: desktop + '.in.in',
-  output: desktop + '.in',
-  configuration: desktop_conf
-)
-
 i18n.merge_file(
   type: 'desktop',
-  input: desktop_in,
+  input: desktop + '.in',
   output: desktop,
   po_dir: po_dir,
   install: true,
@@ -27,11 +21,10 @@ i18n.merge_file(
 )
 
 resource_data = files(
-  'data/bg_dim.png',
-  'data/bg.png',
-  'data/pin.png',
   'backward',
   'cc-datetime-panel.ui',
+  'cc-tz-dialog.ui',
+  'cc-tz-row.ui',
 )
 
 resources = gnome.compile_resources(
@@ -44,7 +37,8 @@ resources = gnome.compile_resources(
 
 sources = files(
   'cc-datetime-panel.c',
-  'cc-timezone-map.c',
+  'cc-tz-item.c',
+  'cc-tz-dialog.c',
   'date-endian.c',
   'tz.c'
 )
