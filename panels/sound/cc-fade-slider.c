@@ -1,5 +1,4 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 8 -*-
- *
+/*
  * Copyright (C) 2018 Canonical Ltd.
  *
  * This program is free software; you can redistribute it and/or
@@ -22,16 +21,16 @@
 
 struct _CcFadeSlider
 {
-  GtkBox           parent_instance;
+  GtkWidget      parent_instance;
 
-  GtkWidget       *scale;
-  GtkAdjustment   *adjustment;
+  GtkWidget     *scale;
+  GtkAdjustment *adjustment;
 
-  GvcChannelMap   *channel_map;
-  guint            volume_changed_handler_id;
+  GvcChannelMap *channel_map;
+  guint          volume_changed_handler_id;
 };
 
-G_DEFINE_TYPE (CcFadeSlider, cc_fade_slider, GTK_TYPE_BOX)
+G_DEFINE_TYPE (CcFadeSlider, cc_fade_slider, GTK_TYPE_WIDGET)
 
 static void
 changed_cb (CcFadeSlider *self)
@@ -66,6 +65,8 @@ cc_fade_slider_dispose (GObject *object)
 {
   CcFadeSlider *self = CC_FADE_SLIDER (object);
 
+  g_clear_pointer (&self->scale, gtk_widget_unparent);
+
   g_clear_object (&self->channel_map);
 
   G_OBJECT_CLASS (cc_fade_slider_parent_class)->dispose (object);
@@ -85,6 +86,8 @@ cc_fade_slider_class_init (CcFadeSliderClass *klass)
   gtk_widget_class_bind_template_child (widget_class, CcFadeSlider, adjustment);
 
   gtk_widget_class_bind_template_callback (widget_class, changed_cb);
+
+  gtk_widget_class_set_layout_manager_type (widget_class, GTK_TYPE_BIN_LAYOUT);
 }
 
 void

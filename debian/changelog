@@ -1,3 +1,27 @@
+gnome-control-center (1:44~beta-1) experimental; urgency=medium
+
+  * New upstream release
+  * debian/control.in: Bump minimum glib, gtk4, libnma-gtk4 & libx11
+  * Stop disabling the Firmware Security panel
+  * Refresh patches
+  * Revert branching for bookworm
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Wed, 15 Feb 2023 13:35:15 -0500
+
+gnome-control-center (1:43.4.1-1) unstable; urgency=medium
+
+  * New upstream release
+  * Branch for bookworm
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Tue, 14 Feb 2023 11:08:53 -0500
+
+gnome-control-center (1:43.2-2) unstable; urgency=medium
+
+  * d/control.in: Add libspa-0.2-bluetooth as an alternative for
+    pulseaudio-module-bluetooth
+
+ -- Laurent Bigonville <bigon@debian.org>  Wed, 25 Jan 2023 13:01:34 +0100
+
 gnome-control-center (1:44~alpha-0ubuntu1) lunar; urgency=medium
 
   [ Jeremy Bicha ]

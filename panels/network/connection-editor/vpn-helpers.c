@@ -167,6 +167,11 @@ import_vpn_from_file_cb (GtkWidget *dialog, gint response, gpointer user_data)
 	}
 
 	filename = g_file_get_path (file);
+
+#if NM_CHECK_VERSION (1,40,0)
+	connection = nm_conn_wireguard_import (filename, &error);
+#endif
+
 	for (iter = vpn_get_plugins (); !connection && iter; iter = iter->next) {
 		NMVpnEditorPlugin *plugin;
 
@@ -197,17 +202,6 @@ out:
 	g_free (info);
 }
 
-static gboolean
-destroy_import_chooser (GtkWidget *dialog, gpointer user_data)
-{
-	ActionInfo *info = (ActionInfo *) user_data;
-
-	info->callback (NULL, info->user_data);
-	g_free (info);
-
-	return FALSE;
-}
-
 void
 vpn_import (GtkWindow *parent, VpnImportCallback callback, gpointer user_data)
 {
@@ -229,7 +223,6 @@ vpn_import (GtkWindow *parent, VpnImportCallback callback, gpointer user_data)
 	info->callback = callback;
 	info->user_data = user_data;
 
-	g_signal_connect (G_OBJECT (dialog), "close-request", G_CALLBACK (destroy_import_chooser), info);
 	g_signal_connect (G_OBJECT (dialog), "response", G_CALLBACK (import_vpn_from_file_cb), info);
 	gtk_window_present (GTK_WINDOW (dialog));
 }

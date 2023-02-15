@@ -1,5 +1,4 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 8 -*-
- *
+/*
  * Copyright (C) 2018 Canonical Ltd.
  *
  * This program is free software; you can redistribute it and/or
@@ -41,6 +40,8 @@ update_level (CcLevelBar *self,
    */
   double prev_ema = gtk_level_bar_get_value (self->level_bar);
   double ema = (value * SMOOTHING) + (prev_ema * (1.0 - SMOOTHING));
+
+  ema = CLAMP (ema, 0.0, 1.0);
 
   gtk_level_bar_set_value (self->level_bar, ema);
 }
