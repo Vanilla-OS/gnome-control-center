@@ -1,8 +1,12 @@
-gnome-control-center (1:44~beta-1) UNRELEASED; urgency=medium
+gnome-control-center (1:44~beta-1) experimental; urgency=medium
 
   * New upstream release
+  * debian/control.in: Bump minimum glib, gtk4, libnma-gtk4 & libx11
+  * Stop disabling the Firmware Security panel
+  * Refresh patches
+  * Revert branching for bookworm
 
- -- Jeremy Bicha <jbicha@ubuntu.com>  Wed, 15 Feb 2023 11:22:05 -0500
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Wed, 15 Feb 2023 13:35:15 -0500
 
 gnome-control-center (1:43.4.1-1) unstable; urgency=medium
 
