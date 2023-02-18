@@ -1,0 +1,103 @@
+From: Muqtadir <muqtxdir@gmail.com>
+Date: Thu, 18 Feb 2023 21:38:32 +0530
+Subject: display: Add PRIME row to trigger vanilla-prime-utility.
+
+--- a/panels/display/cc-display-panel.c
++++ b/panels/display/cc-display-panel.c
+@@ -107,6 +107,7 @@
+   GtkShortcut *escape_shortcut;
+ 
+   GSettings           *display_settings;
++  AdwActionRow        *prime_row;
+ };
+ 
+ CC_PANEL_REGISTER (CcDisplayPanel, cc_display_panel)
+@@ -542,6 +543,39 @@
+   return GDK_EVENT_PROPAGATE;
+ }
+ 
++static gboolean
++does_prime_select_exist (void)
++{
++  g_autofree gchar *path = g_find_program_in_path ("prime-select");
++  return path != NULL;
++}
++
++static void
++open_prime_utiltiy (CcDisplayPanel *self)
++{
++  g_autoptr(GError) error = NULL;
++  gboolean ret;
++  char *argv[3];
++
++  if (does_prime_select_exist ())
++    {
++      argv[0] = "vanilla-prime-utility";
++      argv[1] = "--embedded";
++      argv[2] = NULL;
++    }
++
++  ret = g_spawn_async (NULL, argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, &error);
++  if (!ret)
++      g_warning ("Failed to spawn %s: %s", argv[0], error->message);
++}
++
++static void
++prime_utility_row_activated_cb (CcDisplayPanel *self)
++{
++  g_assert (CC_IS_DISPLAY_PANEL (self));
++  open_prime_utiltiy (self);
++}
++
+ static void
+ cc_display_panel_constructed (GObject *object)
+ {
+@@ -599,6 +633,7 @@
+   gtk_widget_class_bind_template_child (widget_class, CcDisplayPanel, primary_display_row);
+   gtk_widget_class_bind_template_child (widget_class, CcDisplayPanel, single_display_settings_group);
+   gtk_widget_class_bind_template_child (widget_class, CcDisplayPanel, toplevel_shortcuts);
++  gtk_widget_class_bind_template_child (widget_class, CcDisplayPanel, prime_row);
+ 
+   gtk_widget_class_bind_template_callback (widget_class, apply_current_configuration);
+   gtk_widget_class_bind_template_callback (widget_class, on_back_button_clicked_cb);
+@@ -607,6 +642,7 @@
+   gtk_widget_class_bind_template_callback (widget_class, on_primary_display_selected_item_changed_cb);
+   gtk_widget_class_bind_template_callback (widget_class, on_screen_changed);
+   gtk_widget_class_bind_template_callback (widget_class, on_toplevel_escape_pressed_cb);
++  gtk_widget_class_bind_template_callback (widget_class, prime_utility_row_activated_cb);
+ }
+ 
+ static void
+@@ -1064,6 +1100,9 @@
+ 
+   gtk_widget_init_template (GTK_WIDGET (self));
+ 
++  if (!does_prime_select_exist ())
++    gtk_widget_hide (GTK_WIDGET (self->prime_row));
++
+   self->arrangement = cc_display_arrangement_new (NULL);
+   gtk_widget_set_size_request (GTK_WIDGET (self->arrangement), 375, 175);
+   adw_bin_set_child (self->arrangement_bin, GTK_WIDGET (self->arrangement));
+--- a/panels/display/cc-display-panel.ui
++++ b/panels/display/cc-display-panel.ui
+@@ -172,6 +172,15 @@
+                         <child>
+                           <object class="AdwPreferencesGroup">
+                             <child>
++                              <object class="CcListRow" id="prime_row">
++                                <property name="title" translatable="yes">PRIME Profile</property>
++                                <property name="subtitle" translatable="yes">Switch between GPU profiles on Nvidia Optimus systems.</property>
++                                <property name="use-underline">True</property>
++                                <property name="show-arrow">True</property>
++                                <signal name="activated" handler="prime_utility_row_activated_cb" swapped="yes"/>
++                              </object>
++                            </child>
++                            <child>
+                               <object class="AdwActionRow">
+                                 <property name="activatable">True</property>
+                                 <property name="title" translatable="yes" comments="This is the redshift functionality where we suppress blue light when the sun has gone down">Night Light</property>
+@@ -313,4 +322,3 @@
+   </object>
+ 
+ </interface>
+-
