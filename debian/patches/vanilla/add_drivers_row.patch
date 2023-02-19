@@ -1,6 +1,16 @@
+From: Muqtadir <muqtxdir@gmail.com>
+Date: Thu, 10 Nov 2022 15:24:13 +0530
+Subject: info-overview: Replace os_logo with vanilla-logo-text-symbolic and add drivers row.
+
+---
 --- a/panels/info-overview/cc-info-overview-panel.c
 +++ b/panels/info-overview/cc-info-overview-panel.c
-@@ -72,7 +72,7 @@
+@@ -67,12 +67,11 @@
+   CcHostnameEntry *hostname_entry;
+   CcListRow       *hostname_row;
+   CcListRow       *memory_row;
+-  GtkPicture      *os_logo;
+   CcListRow       *os_name_row;
    CcListRow       *os_build_row;
    CcListRow       *os_type_row;
    CcListRow       *processor_row;
@@ -9,7 +19,7 @@
    CcListRow       *virtualization_row;
    CcListRow       *windowing_system_row;
  };
-@@ -763,37 +763,26 @@
+@@ -763,37 +762,26 @@
  }
  
  static gboolean
@@ -54,18 +64,78 @@
    ret = g_spawn_async (NULL, argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, &error);
    if (!ret)
        g_warning ("Failed to spawn %s: %s", argv[0], error->message);
-@@ -872,8 +861,8 @@
+@@ -872,62 +860,8 @@
  
    if (row == ADW_ACTION_ROW (self->hostname_row))
      open_hostname_edit_dialog (self);
 -  else if (row == self->software_updates_row)
 -    open_software_update (self);
+-}
+-
+-#if !defined(DISTRIBUTOR_LOGO) || defined(DARK_MODE_DISTRIBUTOR_LOGO)
+-static gboolean
+-use_dark_theme (CcInfoOverviewPanel *panel)
+-{
+-  AdwStyleManager *style_manager = adw_style_manager_get_default ();
+-
+-  return adw_style_manager_get_dark (style_manager);
+-}
+-#endif
+-
+-static void
+-setup_os_logo (CcInfoOverviewPanel *panel)
+-{
+-#ifdef DISTRIBUTOR_LOGO
+-#ifdef DARK_MODE_DISTRIBUTOR_LOGO
+-  if (use_dark_theme (panel))
+-    {
+-      gtk_picture_set_filename (panel->os_logo, DARK_MODE_DISTRIBUTOR_LOGO);
+-      return;
+-    }
+-#endif
+-  gtk_picture_set_filename (panel->os_logo, DISTRIBUTOR_LOGO);
+-  return;
+-#else
+-  GtkIconTheme *icon_theme;
+-  g_autofree char *logo_name = g_get_os_info ("LOGO");
+-  g_autoptr(GtkIconPaintable) icon_paintable = NULL;
+-  g_autoptr(GPtrArray) array = NULL;
+-  g_autoptr(GIcon) icon = NULL;
+-  gboolean dark;
+-
+-  dark = use_dark_theme (panel);
+-  if (logo_name == NULL)
+-    logo_name = g_strdup ("gnome-logo");
+-
+-  array = g_ptr_array_new_with_free_func (g_free);
+-  if (dark)
+-    g_ptr_array_add (array, (gpointer) g_strdup_printf ("%s-text-dark", logo_name));
+-  g_ptr_array_add (array, (gpointer) g_strdup_printf ("%s-text", logo_name));
+-  if (dark)
+-    g_ptr_array_add (array, (gpointer) g_strdup_printf ("%s-dark", logo_name));
+-  g_ptr_array_add (array, (gpointer) g_strdup_printf ("%s", logo_name));
+-
+-  icon = g_themed_icon_new_from_names ((char **) array->pdata, array->len);
+-  icon_theme = gtk_icon_theme_get_for_display (gdk_display_get_default ());
+-  icon_paintable = gtk_icon_theme_lookup_by_gicon (icon_theme, icon,
+-                                                   192,
+-                                                   gtk_widget_get_scale_factor (GTK_WIDGET (panel)),
+-                                                   gtk_widget_get_direction (GTK_WIDGET (panel)),
+-                                                   0);
+-  gtk_picture_set_paintable (panel->os_logo, GDK_PAINTABLE (icon_paintable));
+-#endif
 +  else if (row == self->drivers_row)
 +    open_vanilla_drivers_utility (self);
  }
  
- #if !defined(DISTRIBUTOR_LOGO) || defined(DARK_MODE_DISTRIBUTOR_LOGO)
-@@ -952,7 +941,7 @@
+ static void
+@@ -946,13 +880,12 @@
+   gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, hostname_entry);
+   gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, hostname_row);
+   gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, memory_row);
+-  gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, os_logo);
+   gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, os_name_row);
+   gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, os_build_row);
    gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, os_type_row);
    gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, processor_row);
    gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, rename_button);
@@ -74,7 +144,7 @@
    gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, virtualization_row);
    gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, windowing_system_row);
  
-@@ -972,8 +961,8 @@
+@@ -972,13 +905,11 @@
  
    g_resources_register (cc_info_overview_get_resource ());
  
@@ -85,8 +155,26 @@
  
    info_overview_panel_setup_overview (self);
    info_overview_panel_setup_virt (self);
+-
+-  setup_os_logo (self);
+ }
+ 
+ GtkWidget *
 --- a/panels/info-overview/cc-info-overview-panel.ui
 +++ b/panels/info-overview/cc-info-overview-panel.ui
+@@ -12,9 +12,9 @@
+                 <property name="maximum-size">192</property>
+                 <property name="tightening-threshold">192</property>
+                 <property name="child">
+-                  <object class="GtkPicture" id="os_logo">
+-                    <property name="can-shrink">False</property>
+-                    <property name="alternative-text" translatable="yes">System Logo</property>
++                  <object class="GtkImage" id="os_logo">
++                    <property name="icon-name">vanilla-logo-text-symbolic</property>
++                    <property name="pixel-size">192</property>
+                   </object>
+                 </property>
+               </object>
 @@ -42,112 +42,120 @@
          <child>
            <object class="AdwPreferencesGroup">
@@ -123,9 +211,7 @@
 -                <property name="title" translatable="yes">Graphics</property>
 -              </object>
 -            </child>
-+              <object class="AdwExpanderRow">
-+                <property name="title" translatable="yes">Hardware Information</property>
- 
+-
 -            <!-- Disk Capacity -->
 -            <child>
 -              <object class="CcListRow" id="disk_row">
@@ -149,7 +235,9 @@
 -                          comments="translators: this field contains the distro name and version">OS Name</property>
 -              </object>
 -            </child>
--
++              <object class="AdwExpanderRow">
++                <property name="title" translatable="yes">Hardware Information</property>
+ 
 -            <!-- OS Build -->
 -            <child>
 -              <object class="CcListRow" id="os_build_row">
@@ -301,12 +389,3 @@
                  <signal name="activated" handler="cc_info_panel_row_activated_cb" swapped="yes"/>
                  <child type="suffix">
                    <object class="GtkImage">
-@@ -160,7 +168,7 @@
- 
-           </object>
-         </child>
--
-+        
-       </object>
-     </child>
-   </template>

@@ -13,7 +13,6 @@ ubuntu/display-Support-UI-scaled-logical-monitor-mode.patch
 ubuntu/display-Allow-fractional-scaling-to-be-enabled.patch
 ubuntu/region-Add-Language-Selector-button.patch
 ubuntu/Adapts-the-region-capplet-and-the-language-chooser-in-the.patch
-vanilla/info-overview-replace-gtkpicture-with-gtkimage-symbolic.patch
 vanilla/datetime-Expose-top-bar-settings.patch
 vanilla/revamp-mouse-panel.patch
 vanilla/add-windows-panel.patch
