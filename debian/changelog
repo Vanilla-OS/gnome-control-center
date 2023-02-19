@@ -1,3 +1,9 @@
+gnome-control-center (1:43.0-1vanilla9) kinetic; urgency=medium
+
+  * add vanilla dependencies
+
+ -- Muqtadir <muqtadir5555@gmail.com>  Sun, 20 Feb 2022 01:06:22 +0530
+
 gnome-control-center (1:43.0-1vanilla8) kinetic; urgency=medium
 
   * add additional drivers row in info-overview and prime row in display panel

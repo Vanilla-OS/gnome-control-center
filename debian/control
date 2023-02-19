@@ -63,6 +63,8 @@ Build-Depends: debhelper-compat (= 13),
                tzdata <!nocheck>,
                xvfb,
                python3-dbusmock,
+               vanilla-prime-utility,
+               vanilla-drivers-utility,
 Standards-Version: 4.6.0
 Rules-Requires-Root: no
 XS-Debian-Vcs-Git: https://salsa.debian.org/gnome-team/gnome-control-center.git
