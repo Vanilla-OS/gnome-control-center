@@ -102,7 +102,7 @@ Subject: info-overview: Replace os_logo with vanilla-logo-text-symbolic.
 -                    <property name="alternative-text" translatable="yes">System Logo</property>
 +                  <object class="GtkImage">
 +                      <property name="icon-name">vanilla-logo-text-symbolic</property>
-+                      <property name="pixel-size">192</property>
++                      <property name="pixel-size">256</property>
                    </object>
                  </property>
                </object>

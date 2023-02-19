@@ -1,0 +1,312 @@
+--- a/panels/info-overview/cc-info-overview-panel.c
++++ b/panels/info-overview/cc-info-overview-panel.c
+@@ -72,7 +72,7 @@
+   CcListRow       *os_build_row;
+   CcListRow       *os_type_row;
+   CcListRow       *processor_row;
+-  AdwActionRow    *software_updates_row;
++  AdwActionRow    *drivers_row;
+   CcListRow       *virtualization_row;
+   CcListRow       *windowing_system_row;
+ };
+@@ -763,37 +763,26 @@
+ }
+ 
+ static gboolean
+-does_gnome_software_exist (void)
++does_vanilla_drivers_utility_exist (void)
+ {
+-  g_autofree gchar *path = g_find_program_in_path ("gnome-software");
+-  return path != NULL;
+-}
+-
+-static gboolean
+-does_gpk_update_viewer_exist (void)
+-{
+-  g_autofree gchar *path = g_find_program_in_path ("gpk-update-viewer");
++  g_autofree gchar *path = g_find_program_in_path ("vanilla-drivers-utility");
+   return path != NULL;
+ }
+ 
+ static void
+-open_software_update (CcInfoOverviewPanel *self)
++open_vanilla_drivers_utility (CcInfoOverviewPanel *self)
+ {
+   g_autoptr(GError) error = NULL;
+   gboolean ret;
+   char *argv[3];
+ 
+-  if (does_gnome_software_exist ())
++  if (does_vanilla_drivers_utility_exist ())
+     {
+-      argv[0] = "gnome-software";
+-      argv[1] = "--mode=updates";
++      argv[0] = "vanilla-drivers-utility";
++      argv[1] = "--embedded";
+       argv[2] = NULL;
+     }
+-  else
+-    {
+-      argv[0] = "gpk-update-viewer";
+-      argv[1] = NULL;
+-    }
++
+   ret = g_spawn_async (NULL, argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, &error);
+   if (!ret)
+       g_warning ("Failed to spawn %s: %s", argv[0], error->message);
+@@ -872,8 +861,8 @@
+ 
+   if (row == ADW_ACTION_ROW (self->hostname_row))
+     open_hostname_edit_dialog (self);
+-  else if (row == self->software_updates_row)
+-    open_software_update (self);
++  else if (row == self->drivers_row)
++    open_vanilla_drivers_utility (self);
+ }
+ 
+ #if !defined(DISTRIBUTOR_LOGO) || defined(DARK_MODE_DISTRIBUTOR_LOGO)
+@@ -952,7 +941,7 @@
+   gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, os_type_row);
+   gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, processor_row);
+   gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, rename_button);
+-  gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, software_updates_row);
++  gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, drivers_row);
+   gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, virtualization_row);
+   gtk_widget_class_bind_template_child (widget_class, CcInfoOverviewPanel, windowing_system_row);
+ 
+@@ -972,8 +961,8 @@
+ 
+   g_resources_register (cc_info_overview_get_resource ());
+ 
+-  if ((!does_gnome_software_exist () || !does_gnome_software_allow_updates ()) && !does_gpk_update_viewer_exist ())
+-    gtk_widget_hide (GTK_WIDGET (self->software_updates_row));
++  if ((!does_vanilla_drivers_utility_exist ()))
++    gtk_widget_hide (GTK_WIDGET (self->drivers_row));
+ 
+   info_overview_panel_setup_overview (self);
+   info_overview_panel_setup_virt (self);
+--- a/panels/info-overview/cc-info-overview-panel.ui
++++ b/panels/info-overview/cc-info-overview-panel.ui
+@@ -42,112 +42,120 @@
+         <child>
+           <object class="AdwPreferencesGroup">
+ 
+-            <!-- Hardware Model -->
+             <child>
+-              <object class="CcListRow" id="hardware_model_row">
+-                <property name="visible">False</property>
+-                <property name="activatable">False</property>
+-                <property name="title" translatable="yes">Hardware Model</property>
+-              </object>
+-            </child>
+-
+-            <!-- Memory -->
+-            <child>
+-              <object class="CcListRow" id="memory_row">
+-                <property name="activatable">False</property>
+-                <property name="title" translatable="yes">Memory</property>
+-              </object>
+-            </child>
+-
+-            <!-- Processor -->
+-            <child>
+-              <object class="CcListRow" id="processor_row">
+-                <property name="activatable">False</property>
+-                <property name="title" translatable="yes">Processor</property>
+-              </object>
+-            </child>
+-
+-            <!-- Graphics -->
+-            <child>
+-              <object class="CcListRow" id="graphics_row">
+-                <property name="activatable">False</property>
+-                <property name="title" translatable="yes">Graphics</property>
+-              </object>
+-            </child>
++              <object class="AdwExpanderRow">
++                <property name="title" translatable="yes">Hardware Information</property>
+ 
+-            <!-- Disk Capacity -->
+-            <child>
+-              <object class="CcListRow" id="disk_row">
+-                <property name="activatable">False</property>
+-                <property name="title" translatable="yes">Disk Capacity</property>
+-                <property name="secondary-label" translatable="yes">Calculating…</property>
+-              </object>
+-            </child>
+-
+-          </object>
+-        </child>
+-
+-        <child>
+-          <object class="AdwPreferencesGroup">
+-
+-            <!-- OS Name -->
+-            <child>
+-              <object class="CcListRow" id="os_name_row">
+-                <property name="activatable">False</property>
+-                <property name="title" translatable="yes"
+-                          comments="translators: this field contains the distro name and version">OS Name</property>
+-              </object>
+-            </child>
+-
+-            <!-- OS Build -->
+-            <child>
+-              <object class="CcListRow" id="os_build_row">
+-                <property name="activatable">False</property>
+-                <property name="title" translatable="yes"
+-                          comments="translators: this field contains the distro build ID">OS Build ID</property>
+-              </object>
+-            </child>
++                    <!-- Hardware Model -->
++                <child>
++                  <object class="CcListRow" id="hardware_model_row">
++                    <property name="visible">False</property>
++                    <property name="activatable">False</property>
++                    <property name="title" translatable="yes">Hardware Model</property>
++                  </object>
++                </child>
++    
++                <!-- Memory -->
++                <child>
++                  <object class="CcListRow" id="memory_row">
++                    <property name="activatable">False</property>
++                    <property name="title" translatable="yes">Memory</property>
++                  </object>
++                </child>
++    
++                <!-- Processor -->
++                <child>
++                  <object class="CcListRow" id="processor_row">
++                    <property name="activatable">False</property>
++                    <property name="title" translatable="yes">Processor</property>
++                  </object>
++                </child>
++    
++                <!-- Graphics -->
++                <child>
++                  <object class="CcListRow" id="graphics_row">
++                    <property name="activatable">False</property>
++                    <property name="title" translatable="yes">Graphics</property>
++                  </object>
++                </child>
++    
++                <!-- Disk Capacity -->
++                <child>
++                  <object class="CcListRow" id="disk_row">
++                    <property name="activatable">False</property>
++                    <property name="title" translatable="yes">Disk Capacity</property>
++                    <property name="secondary-label" translatable="yes">Calculating…</property>
++                  </object>
++                </child>
+ 
+-            <!-- OS Type -->
+-            <child>
+-              <object class="CcListRow" id="os_type_row">
+-                <property name="activatable">False</property>
+-                <property name="title" translatable="yes">OS Type</property>
+               </object>
+             </child>
+ 
+-            <!-- GNOME Version -->
+             <child>
+-              <object class="CcListRow" id="gnome_version_row">
+-                <property name="activatable">False</property>
+-                <property name="title" translatable="yes">GNOME Version</property>
+-                <property name="secondary-label" translatable="yes"
+-                          comments="translators: this is a placeholder while the GNOME version is being fetched">Loading…</property>
+-              </object>
+-            </child>
++              <object class="AdwExpanderRow">
++                <property name="title" translatable="yes">Software Information</property>
+ 
+-            <!-- Windowing System -->
+-            <child>
+-              <object class="CcListRow" id="windowing_system_row">
+-                <property name="activatable">False</property>
+-                <property name="title" translatable="yes">Windowing System</property>
+-              </object>
+-            </child>
++                    <!-- OS Name -->
++                <child>
++                  <object class="CcListRow" id="os_name_row">
++                    <property name="activatable">False</property>
++                    <property name="title" translatable="yes"
++                              comments="translators: this field contains the distro name and version">OS Name</property>
++                  </object>
++                </child>
++    
++                <!-- OS Build -->
++                <child>
++                  <object class="CcListRow" id="os_build_row">
++                    <property name="activatable">False</property>
++                    <property name="title" translatable="yes"
++                              comments="translators: this field contains the distro build ID">OS Build ID</property>
++                  </object>
++                </child>
++    
++                <!-- OS Type -->
++                <child>
++                  <object class="CcListRow" id="os_type_row">
++                    <property name="activatable">False</property>
++                    <property name="title" translatable="yes">OS Type</property>
++                  </object>
++                </child>
++    
++                <!-- GNOME Version -->
++                <child>
++                  <object class="CcListRow" id="gnome_version_row">
++                    <property name="activatable">False</property>
++                    <property name="title" translatable="yes">GNOME Version</property>
++                    <property name="secondary-label" translatable="yes"
++                              comments="translators: this is a placeholder while the GNOME version is being fetched">Loading…</property>
++                  </object>
++                </child>
++    
++                <!-- Windowing System -->
++                <child>
++                  <object class="CcListRow" id="windowing_system_row">
++                    <property name="activatable">False</property>
++                    <property name="title" translatable="yes">Windowing System</property>
++                  </object>
++                </child>
++    
++                <!-- Virtualization -->
++                <child>
++                  <object class="CcListRow" id="virtualization_row">
++                    <property name="visible">False</property>
++                    <property name="title" translatable="yes">Virtualization</property>
++                    <property name="activatable">False</property>
++                  </object>
++                </child>
+ 
+-            <!-- Virtualization -->
+-            <child>
+-              <object class="CcListRow" id="virtualization_row">
+-                <property name="visible">False</property>
+-                <property name="title" translatable="yes">Virtualization</property>
+-                <property name="activatable">False</property>
+               </object>
+             </child>
+-
+-            <!-- Software Updates -->
++            
++            <!-- Additional Drivers -->
+             <child>
+-              <object class="AdwActionRow" id="software_updates_row">
++              <object class="AdwActionRow" id="drivers_row">
+                 <property name="activatable">True</property>
+-                <property name="title" translatable="yes">Software Updates</property>
++                <property name="title" translatable="yes">Additional Drivers</property>
+                 <signal name="activated" handler="cc_info_panel_row_activated_cb" swapped="yes"/>
+                 <child type="suffix">
+                   <object class="GtkImage">
+@@ -160,7 +168,7 @@
+ 
+           </object>
+         </child>
+-
++        
+       </object>
+     </child>
+   </template>

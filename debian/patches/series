@@ -18,4 +18,5 @@ vanilla/datetime-Expose-top-bar-settings.patch
 vanilla/revamp-mouse-panel.patch
 vanilla/add-windows-panel.patch
 vanilla/add_prime_row_in_display.patch
+vanilla/add_drivers_row.patch
 build-Look-for-snapd-glib-2.patch
