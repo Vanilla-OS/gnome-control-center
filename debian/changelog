@@ -1,3 +1,9 @@
+gnome-control-center (1:43.0-1vanilla8) kinetic; urgency=medium
+
+  * add additional drivers row in info-overview and prime row in display panel
+
+ -- Muqtadir <muqtadir5555@gmail.com>  Sun, 19 Feb 2022 14:43:16 +0530
+
 gnome-control-center (1:43.0-1vanilla5) kinetic; urgency=medium
 
   * refresh windows and info-overview patch
