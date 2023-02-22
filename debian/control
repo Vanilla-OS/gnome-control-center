@@ -63,8 +63,6 @@ Build-Depends: debhelper-compat (= 13),
                tzdata <!nocheck>,
                xvfb,
                python3-dbusmock,
-               vanilla-prime-utility,
-               vanilla-drivers-utility,
 Standards-Version: 4.6.0
 Rules-Requires-Root: no
 XS-Debian-Vcs-Git: https://salsa.debian.org/gnome-team/gnome-control-center.git
@@ -88,7 +86,9 @@ Depends: ${misc:Depends},
          gsettings-desktop-schemas (>= 42~),
          language-selector-gnome (>= 0.179~),
          system-config-printer (>= 1.4),
-         webp-pixbuf-loader
+         webp-pixbuf-loader,
+         vanilla-prime-utility,
+         vanilla-drivers-utility,
 Recommends: cups-pk-helper,
             gnome-bluetooth-sendto,
             gnome-online-accounts (>= 3.25.3),
