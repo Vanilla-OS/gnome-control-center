@@ -24,6 +24,6 @@ ubuntu/online-accounts-Hide-window-after-adding-an-online-accoun.patch
 ubuntu/display-Support-UI-scaled-logical-monitor-mode.patch
 ubuntu/Disable-non-working-camera-microphones-panels.patch
 ubuntu/info-overview-Show-updates-in-software-propeties-instead-.patch
-ubuntu/sound-Add-a-button-to-select-the-default-theme.patch
+#ubuntu/sound-Add-a-button-to-select-the-default-theme.patch
 ubuntu/applications-Launch-snap-store-if-it-is-installed.patch
 ubuntu/display-Allow-fractional-scaling-to-be-enabled.patch
