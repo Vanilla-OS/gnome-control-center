@@ -1,3 +1,9 @@
+gnome-control-center (1:43.0-1vanilla11) kinetic; urgency=medium
+
+  * fix vanilla dependencies
+
+ -- Mirko Brombin <send@mirko.pm>  Wed, 22 Feb 2023 07:57:00 +0530
+
 gnome-control-center (1:43.0-1vanilla10) kinetic; urgency=medium
 
   * fix vanilla dependencies
