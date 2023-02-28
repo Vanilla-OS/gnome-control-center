@@ -18,9 +18,9 @@ Origin: ubuntu
 Bug-Ubuntu: https://launchpad.net/bugs/1706524
 Bug: https://bugzilla.gnome.org/show_bug.cgi?id=710424
 ---
- panels/sound/cc-sound-panel.c  | 10 ++++++++++
+ panels/sound/cc-sound-panel.c  | 14 ++++++++++++++
  panels/sound/cc-sound-panel.ui | 10 ++++++++++
- 2 files changed, 20 insertions(+)
+ 2 files changed, 24 insertions(+)
 
 diff --git a/panels/sound/cc-sound-panel.c b/panels/sound/cc-sound-panel.c
 index 219e6c2..df30150 100644
@@ -50,11 +50,15 @@ index 219e6c2..df30150 100644
    gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, balance_slider);
    gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, fade_row);
    gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, fade_slider);
-@@ -344,6 +347,13 @@ cc_sound_panel_init (CcSoundPanel *self)
+@@ -344,6 +347,17 @@ cc_sound_panel_init (CcSoundPanel *self)
                             G_CONNECT_SWAPPED);
    allow_amplified_changed_cb (self);
  
-+  if (strstr (g_getenv("XDG_CURRENT_DESKTOP"), "ubuntu") != NULL) {
++  const gchar *desktop_list = g_getenv ("XDG_CURRENT_DESKTOP");
++  g_auto(GStrv) desktops = NULL;
++  if (desktop_list)
++    desktops = g_strsplit (desktop_list, ":", 0);
++  if (desktops && g_strv_contains ((const gchar * const *) desktops, "ubuntu")) {
 +    g_settings_bind (self->sound_settings, "allow-volume-above-100-percent",
 +                     self->allow_amplify_row, "active", G_SETTINGS_BIND_DEFAULT);
 +  } else {
