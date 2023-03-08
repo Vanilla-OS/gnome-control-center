@@ -1063,9 +1063,9 @@ enable_gnome_remote_desktop (CcSharingPanel *self)
 }
 
 static void
-on_remote_desktop_state_changed (GtkWidget      *widget,
-                                 GParamSpec     *pspec,
-                                 CcSharingPanel *self)
+on_remote_desktop_active_changed (GtkWidget      *widget,
+                                  GParamSpec     *pspec,
+                                  CcSharingPanel *self)
 {
   if (gtk_switch_get_active (GTK_SWITCH (widget)))
     enable_gnome_remote_desktop (self);
@@ -1256,7 +1256,7 @@ cc_sharing_panel_setup_remote_desktop_dialog (CcSharingPanel *self)
                    self->remote_control_switch,
                    "active",
                    G_SETTINGS_BIND_DEFAULT | G_SETTINGS_BIND_INVERT_BOOLEAN);
-  g_object_bind_property (self->remote_desktop_switch, "state",
+  g_object_bind_property (self->remote_desktop_switch, "active",
                           self->remote_control_switch, "sensitive",
                           G_BINDING_SYNC_CREATE);
 
@@ -1313,8 +1313,8 @@ cc_sharing_panel_setup_remote_desktop_dialog (CcSharingPanel *self)
                     "clicked", G_CALLBACK (on_password_copy_clicked),
                     self);
 
-  g_signal_connect (self->remote_desktop_switch, "notify::state",
-                    G_CALLBACK (on_remote_desktop_state_changed), self);
+  g_signal_connect (self->remote_desktop_switch, "notify::active",
+                    G_CALLBACK (on_remote_desktop_active_changed), self);
 
   if (is_remote_desktop_enabled (self))
     {
@@ -1404,6 +1404,7 @@ sharing_proxy_ready (GObject      *source,
 
   cc_sharing_panel_setup_label_with_hostname (self, self->personal_file_sharing_label);
   cc_sharing_panel_setup_label_with_hostname (self, self->remote_login_label);
+  cc_sharing_panel_setup_label_with_hostname (self, self->remote_desktop_address_label);
 }
 
 static void

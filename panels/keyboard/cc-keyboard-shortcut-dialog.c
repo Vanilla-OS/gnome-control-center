@@ -44,22 +44,21 @@ struct _CcKeyboardShortcutDialog
 {
   AdwWindow             parent_instance;
 
-  AdwHeaderBar         *header_bar;
-  GtkButton            *back_button;
+  AdwLeaflet           *leaflet;
+  GtkBox               *main_box;
   GtkButton            *reset_all_button;
   GtkSearchEntry       *search_entry;
-
-  AdwLeaflet           *main_leaflet;
-  GtkBox               *main_box;
   GtkStack             *section_stack;
   AdwPreferencesPage   *section_list_page;
   GtkListBox           *section_list_box;
   AdwPreferencesPage   *search_result_page;
   AdwStatusPage        *empty_results_page;
 
+  GtkBox               *subview_box;
+  AdwWindowTitle       *subview_title;
+  GtkButton            *back_button;
+  GtkStack             *subview_stack;
   GtkStack             *shortcut_list_stack;
-  AdwPreferencesPage   *empty_subpage_results_page;
-
   AdwStatusPage        *empty_custom_shortcut_page;
   GtkSizeGroup         *accelerator_size_group;
 
@@ -176,8 +175,7 @@ shortuct_custom_items_changed (CcKeyboardShortcutDialog *self)
       else
         page = GTK_WIDGET (self->empty_custom_shortcut_page);
 
-      adw_leaflet_set_visible_child (self->main_leaflet, page);
-      gtk_widget_set_visible (GTK_WIDGET (self->search_entry), n_items > 0);
+      gtk_stack_set_visible_child (self->subview_stack, page);
     }
 }
 
@@ -332,11 +330,7 @@ add_custom_shortcut_clicked_cb (CcKeyboardShortcutDialog *self)
 static void
 back_button_clicked_cb (CcKeyboardShortcutDialog *self)
 {
-  gtk_editable_set_text (GTK_EDITABLE (self->search_entry), "");
-  gtk_widget_show (GTK_WIDGET (self->search_entry));
-
-  self->visible_section = NULL;
-  adw_leaflet_navigate (self->main_leaflet, ADW_NAVIGATION_DIRECTION_BACK);
+  adw_leaflet_navigate (self->leaflet, ADW_NAVIGATION_DIRECTION_BACK);
 }
 
 static void
@@ -410,20 +404,25 @@ static void
 shortcut_dialog_visible_child_changed_cb (CcKeyboardShortcutDialog *self)
 {
   gpointer visible_child;
-  const char *title;
-  gboolean show_back;
+  gboolean is_main_view;
 
-  visible_child = adw_leaflet_get_visible_child (self->main_leaflet);
-  show_back = visible_child != self->main_box;
+  visible_child = adw_leaflet_get_visible_child (self->leaflet);
+  is_main_view = visible_child == self->main_box;
 
-  gtk_widget_set_visible (GTK_WIDGET (self->back_button), show_back);
+  if (is_main_view)
+    {
+      gtk_editable_set_text (GTK_EDITABLE (self->search_entry), "");
+      gtk_widget_grab_focus (GTK_WIDGET (self->search_entry));
 
-  if (self->visible_section)
-    title = g_object_get_data (G_OBJECT (self->visible_section), "title");
-  else
-    title = "Keyboard Shortcuts";
+      self->visible_section = NULL;
+    }
+  else if (self->visible_section)
+    {
+      const char *title;
 
-  gtk_window_set_title (GTK_WINDOW (self), _(title));
+      title = g_object_get_data (G_OBJECT (self->visible_section), "title");
+      adw_window_title_set_title (self->subview_title, _(title) ?: "");
+    }
 }
 
 static void
@@ -435,6 +434,10 @@ shortcut_search_entry_changed_cb (CcKeyboardShortcutDialog *self)
 
   g_assert (CC_IS_KEYBOARD_SHORTCUT_DIALOG (self));
 
+  /* Don't update search if we are in a subview */
+  if (self->visible_section)
+    return;
+
   n_items = g_list_model_get_n_items (G_LIST_MODEL (self->sections));
   search_text = gtk_editable_get_text (GTK_EDITABLE (self->search_entry));
   search = cc_util_normalize_casefold_and_unaccent (search_text);
@@ -445,25 +448,6 @@ shortcut_search_entry_changed_cb (CcKeyboardShortcutDialog *self)
 
   /* "Reset all..." button should be sensitive only if the search is not active */
   gtk_widget_set_sensitive (GTK_WIDGET (self->reset_all_button), !self->search_terms);
-
-  /* If we already showing a section, filter that group only */
-  if (self->visible_section)
-    {
-      CcKeyboardShortcutGroup *group;
-      GtkWidget *child;
-      gboolean is_empty;
-
-      group = g_object_get_data (G_OBJECT (self->visible_section), "group");
-      child = g_object_get_data (G_OBJECT (self->visible_section), "page");
-      cc_keyboard_shortcut_group_set_filter (group, self->search_terms);
-      g_object_get (group, "empty", &is_empty, NULL);
-
-      if (is_empty)
-        child = GTK_WIDGET (self->empty_subpage_results_page);
-
-      gtk_stack_set_visible_child (self->shortcut_list_stack, child);
-      return;
-    }
 
   for (guint i = 0; i < n_items; i++)
     {
@@ -494,7 +478,7 @@ shortcut_section_row_activated_cb (CcKeyboardShortcutDialog *self,
 
   page = g_object_get_data (G_OBJECT (section), "page");
   gtk_stack_set_visible_child (self->shortcut_list_stack, page);
-  adw_leaflet_set_visible_child (self->main_leaflet, GTK_WIDGET (self->shortcut_list_stack));
+  adw_leaflet_set_visible_child (self->leaflet, GTK_WIDGET (self->subview_box));
   shortuct_custom_items_changed (self);
 }
 
@@ -537,22 +521,21 @@ cc_keyboard_shortcut_dialog_class_init (CcKeyboardShortcutDialogClass *klass)
                                                "/org/gnome/control-center/"
                                                "keyboard/cc-keyboard-shortcut-dialog.ui");
 
-  gtk_widget_class_bind_template_child (widget_class, CcKeyboardShortcutDialog, header_bar);
-  gtk_widget_class_bind_template_child (widget_class, CcKeyboardShortcutDialog, back_button);
+  gtk_widget_class_bind_template_child (widget_class, CcKeyboardShortcutDialog, leaflet);
+  gtk_widget_class_bind_template_child (widget_class, CcKeyboardShortcutDialog, main_box);
   gtk_widget_class_bind_template_child (widget_class, CcKeyboardShortcutDialog, reset_all_button);
   gtk_widget_class_bind_template_child (widget_class, CcKeyboardShortcutDialog, search_entry);
-
-  gtk_widget_class_bind_template_child (widget_class, CcKeyboardShortcutDialog, main_leaflet);
-  gtk_widget_class_bind_template_child (widget_class, CcKeyboardShortcutDialog, main_box);
   gtk_widget_class_bind_template_child (widget_class, CcKeyboardShortcutDialog, section_stack);
   gtk_widget_class_bind_template_child (widget_class, CcKeyboardShortcutDialog, section_list_page);
   gtk_widget_class_bind_template_child (widget_class, CcKeyboardShortcutDialog, section_list_box);
   gtk_widget_class_bind_template_child (widget_class, CcKeyboardShortcutDialog, search_result_page);
   gtk_widget_class_bind_template_child (widget_class, CcKeyboardShortcutDialog, empty_results_page);
 
+  gtk_widget_class_bind_template_child (widget_class, CcKeyboardShortcutDialog, subview_box);
+  gtk_widget_class_bind_template_child (widget_class, CcKeyboardShortcutDialog, subview_title);
+  gtk_widget_class_bind_template_child (widget_class, CcKeyboardShortcutDialog, back_button);
+  gtk_widget_class_bind_template_child (widget_class, CcKeyboardShortcutDialog, subview_stack);
   gtk_widget_class_bind_template_child (widget_class, CcKeyboardShortcutDialog, shortcut_list_stack);
-  gtk_widget_class_bind_template_child (widget_class, CcKeyboardShortcutDialog, empty_subpage_results_page);
-
   gtk_widget_class_bind_template_child (widget_class, CcKeyboardShortcutDialog, empty_custom_shortcut_page);
   gtk_widget_class_bind_template_child (widget_class, CcKeyboardShortcutDialog, accelerator_size_group);
 
@@ -567,21 +550,7 @@ cc_keyboard_shortcut_dialog_class_init (CcKeyboardShortcutDialogClass *klass)
 static void
 cc_keyboard_shortcut_dialog_init (CcKeyboardShortcutDialog *self)
 {
-  g_autoptr(GtkCssProvider) provider = NULL;
-  GdkDisplay *display;
-
   gtk_widget_init_template (GTK_WIDGET (self));
-
-  provider = gtk_css_provider_new ();
-  gtk_css_provider_load_from_data (GTK_CSS_PROVIDER (provider),
-                                   ".shortcut-list undershoot.top {"
-                                   "  box-shadow: inset 0 1px @borders;"
-                                   "}", -1);
-  display = gdk_display_get_default ();
-  gtk_style_context_add_provider_for_display (display,
-                                              GTK_STYLE_PROVIDER (provider),
-                                              GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-
   gtk_search_entry_set_key_capture_widget (self->search_entry, GTK_WIDGET (self));
   shortcut_dialog_visible_child_changed_cb (self);
 

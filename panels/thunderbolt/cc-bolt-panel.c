@@ -481,7 +481,7 @@ cc_bolt_panel_authmode_sync (CcBoltPanel *panel)
 
   g_signal_handlers_block_by_func (panel->authmode_switch, on_authmode_state_set_cb, panel);
 
-  gtk_switch_set_state (panel->authmode_switch, enabled);
+  gtk_switch_set_active (panel->authmode_switch, enabled);
 
   g_signal_handlers_unblock_by_func (panel->authmode_switch, on_authmode_state_set_cb, panel);
 
@@ -666,16 +666,31 @@ on_authmode_ready (GObject      *source_object,
                    gpointer      user_data)
 {
   g_autoptr(GError) error = NULL;
-  CcBoltPanel *panel = CC_BOLT_PANEL (user_data);
+  BoltClient *client = BOLT_CLIENT (source_object);
+  CcBoltPanel *panel;
   gboolean ok;
 
-  ok = bolt_client_set_authmode_finish (BOLT_CLIENT (source_object), res, &error);
-  if (!ok)
+  ok = bolt_client_set_authmode_finish (client, res, &error);
+  if (ok)
+    {
+      BoltAuthMode mode;
+      gboolean enabled;
+
+      panel = CC_BOLT_PANEL (user_data);
+      mode = bolt_client_get_authmode (client);
+      enabled = (mode & BOLT_AUTH_ENABLED) != 0;
+      gtk_switch_set_state (panel->authmode_switch, enabled);
+    }
+  else
     {
       g_autofree char *text = NULL;
 
       g_warning ("Could not set authmode: %s", error->message);
 
+      if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        return;
+
+      panel = CC_BOLT_PANEL (user_data);
       text = g_strdup_printf (_("Error switching direct mode: %s"), error->message);
       gtk_label_set_markup (panel->notification_label, text);
       gtk_revealer_set_reveal_child (panel->notification_revealer, TRUE);

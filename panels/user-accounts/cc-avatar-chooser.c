@@ -89,7 +89,7 @@ cc_avatar_chooser_crop (CcAvatarChooser *self,
         GtkWidget *dialog;
         GtkWindow *toplevel;
 
-        toplevel = (GtkWindow *)gtk_widget_get_native (GTK_WIDGET (self));
+        toplevel = (GtkWindow *)gtk_widget_get_native (GTK_WIDGET (self->transient_for));
         dialog = gtk_dialog_new_with_buttons ("",
                                               toplevel,
                                               GTK_DIALOG_USE_HEADER_BAR,
@@ -183,6 +183,7 @@ cc_avatar_chooser_select_file (CcAvatarChooser *self)
         g_signal_connect_object (chooser, "response",
                                  G_CALLBACK (file_chooser_response), self, G_CONNECT_SWAPPED);
 
+        gtk_popover_popdown (GTK_POPOVER (self));
         gtk_window_present (GTK_WINDOW (chooser));
 }
 
