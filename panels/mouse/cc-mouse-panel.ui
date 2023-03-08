@@ -8,9 +8,21 @@
         <property name="show-start-title-buttons">False</property>
         <property name="title-widget">
           <object class="AdwViewSwitcherTitle">
+            <property name="title" bind-source="CcMousePanel" bind-property="title" bind-flags="default|sync-create" />
             <property name="stack">stack</property>
           </object>
         </property>
+        <child type="start">
+          <object class="GtkButton">
+            <property name="visible" bind-source="CcMousePanel" bind-property="folded" bind-flags="default|sync-create" />
+            <property name="icon-name">go-previous-symbolic</property>
+            <property name="action-name">window.navigate</property>
+            <property name="action-target">0</property> <!-- 0: ADW_NAVIGATION_DIRECTION_BACK -->
+            <accessibility>
+              <property name="label" translatable="yes">Back</property>
+            </accessibility>
+          </object>
+        </child>
         <child type="end">
           <object class="GtkButton" id="test_button">
             <property name="use_underline">True</property>
@@ -104,7 +116,7 @@
                     </child>
                     <child>
                       <object class="AdwActionRow" id="mouse_accel_profile">
-                        <property name="title" translatable="yes">Pointer Assistance</property>
+                        <property name="title" translatable="yes">Mouse Acceleration</property>
                         <property name="subtitle" translatable="yes">Recommended for most users and applications</property>
                         <property name="activatable-widget">mouse_accel_switch</property>
                         <child type="suffix">
@@ -125,9 +137,7 @@
                                     <property name="halign">center</property>
                                     <property name="valign">center</property>
                                     <property name="wrap">True</property>
-                                    <property name="label" translatable="yes" comments="Translators: Preserve the line-break separating the two paragraphs.">Turning pointer assistance off can allow faster and more precise movements, but can also make the mouse more difficult to use.
-
-Pointer assistance is also known as pointer acceleration.</property>
+                                    <property name="label" translatable="yes">Turning mouse acceleration off can allow faster and more precise movements, but can also make the mouse more difficult to use.</property>
                                     <property name="max-width-chars">36</property>
                                   </object>
                                 </child>
@@ -163,6 +173,7 @@ Pointer assistance is also known as pointer acceleration.</property>
         </child>
         <child>
           <object class="AdwViewStackPage" id="touchpad_stack_page">
+            <property name="visible">False</property>
             <property name="name">touchpad</property>
             <property name="icon-name">input-touchpad-symbolic</property>
             <property name="title" translatable="yes">Touchpad</property>
