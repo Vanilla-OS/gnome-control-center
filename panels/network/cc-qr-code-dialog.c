@@ -102,19 +102,24 @@ cc_qr_code_dialog_constructed (GObject *object)
                                               NM_SETTING_WIRELESS_SECURITY_SETTING_NAME,
                                               NULL,
                                               &error);
-  if (!variant)
+  if (variant)
     {
-      g_warning ("Couldn't get secrets: %s", error->message);
-      return;
+      if (!nm_connection_update_secrets (self->connection,
+                                         NM_SETTING_WIRELESS_SECURITY_SETTING_NAME,
+                                         variant,
+                                         &error))
+        {
+          g_warning ("Couldn't update secrets: %s", error->message);
+          return;
+        }
     }
-
-  if (!nm_connection_update_secrets (self->connection,
-                                     NM_SETTING_WIRELESS_SECURITY_SETTING_NAME,
-                                     variant,
-                                     &error))
+  else
     {
-      g_warning ("Couldn't update secrets: %s", error->message);
-      return;
+      if (!g_error_matches (error, NM_CONNECTION_ERROR, NM_CONNECTION_ERROR_SETTING_NOT_FOUND))
+        {
+          g_warning ("Couldn't get secrets: %s", error->message);
+          return;
+        }
     }
 
   setting = nm_connection_get_setting_wireless (self->connection);
@@ -174,6 +179,8 @@ cc_qr_code_dialog_class_init (CcQrCodeDialogClass *klass)
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/network/cc-qr-code-dialog.ui");
   gtk_widget_class_bind_template_child (widget_class, CcQrCodeDialog, qr_image);
   gtk_widget_class_bind_template_child (widget_class, CcQrCodeDialog, qr_subtitle);
+
+  gtk_widget_class_add_binding_action (widget_class, GDK_KEY_Escape, 0, "window.close", NULL);
 }
 
 void

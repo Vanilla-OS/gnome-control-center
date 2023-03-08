@@ -80,25 +80,29 @@ airplane_mode_changed_cb (GObject *source_object,
 {
 	g_autoptr(GVariant) ret = NULL;
 	g_autoptr(GError) error = NULL;
-	gboolean state = GPOINTER_TO_UINT (user_data);
 
 	if (!g_dbus_proxy_call_finish (G_DBUS_PROXY (source_object),
 				       res, &error)) {
-		if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+		if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED)) {
+			CcBluetoothPanel *self = CC_BLUETOOTH_PANEL (user_data);
+			gboolean state = gtk_switch_get_active (self->enable_switch);
 			g_warning ("Failed to change Bluetooth killswitch state to %s: %s",
 				   state ? "on" : "off", error->message);
+		}
 	} else {
-		CcBluetoothPanel *self = user_data;
+		CcBluetoothPanel *self = CC_BLUETOOTH_PANEL (user_data);
+		gboolean state = gtk_switch_get_active (self->enable_switch);
 
 		g_debug ("Changed Bluetooth killswitch state to %s",
 			 state ? "on" : "off");
 
+		gtk_switch_set_state (self->enable_switch, state);
 		if (!bluetooth_settings_widget_get_default_adapter_powered (self->settings_widget))
 			bluetooth_settings_widget_set_default_adapter_powered(self->settings_widget, TRUE);
 	}
 }
 
-static void
+static gboolean
 enable_switch_state_set_cb (CcBluetoothPanel *self, gboolean state)
 {
 	g_debug ("Power switched to %s", state ? "on" : "off");
@@ -110,6 +114,8 @@ enable_switch_state_set_cb (CcBluetoothPanel *self, gboolean state)
 			   -1,
 			   cc_panel_get_cancellable (CC_PANEL (self)),
 			   airplane_mode_changed_cb, self);
+
+	return TRUE;
 }
 
 static void
@@ -156,7 +162,7 @@ adapter_status_changed_cb (CcBluetoothPanel *self)
 	gtk_widget_set_valign (GTK_WIDGET (self->stack), valign);
 	gtk_widget_set_sensitive (GTK_WIDGET (self->header_box), sensitive);
 	g_signal_handlers_block_by_func (self->enable_switch, enable_switch_state_set_cb, self);
-	gtk_switch_set_state (self->enable_switch, powered);
+	gtk_switch_set_active (self->enable_switch, powered);
 	g_signal_handlers_unblock_by_func (self->enable_switch, enable_switch_state_set_cb, self);
 
 	gtk_stack_set_visible_child (self->stack, page);
