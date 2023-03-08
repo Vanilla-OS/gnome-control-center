@@ -1,3 +1,9 @@
+gnome-control-center (1:44~rc-1) UNRELEASED; urgency=medium
+
+  * New upstream release
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Wed, 08 Mar 2023 15:04:34 -0500
+
 gnome-control-center (1:44~beta-1) experimental; urgency=medium
 
   * New upstream release
