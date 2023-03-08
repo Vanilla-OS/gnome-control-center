@@ -12,12 +12,12 @@ include dock-specifc settings to control multi-monitor behavior.
 
 Forwarded: not-need
 ---
- panels/multitasking/cc-multitasking-panel.c  | 61 ++++++++++++++++++++++++++++
- panels/multitasking/cc-multitasking-panel.ui | 36 ++++++++++++++++
- 2 files changed, 97 insertions(+)
+ panels/multitasking/cc-multitasking-panel.c  | 57 ++++++++++++++++++++++++++++
+ panels/multitasking/cc-multitasking-panel.ui | 35 +++++++++++++++++
+ 2 files changed, 92 insertions(+)
 
 diff --git a/panels/multitasking/cc-multitasking-panel.c b/panels/multitasking/cc-multitasking-panel.c
-index 6adfc87..9d9bfd5 100644
+index 6adfc87..b3a820f 100644
 --- a/panels/multitasking/cc-multitasking-panel.c
 +++ b/panels/multitasking/cc-multitasking-panel.c
 @@ -31,6 +31,7 @@ struct _CcMultitaskingPanel
@@ -28,14 +28,18 @@ index 6adfc87..9d9bfd5 100644
    GSettings       *wm_settings;
  
    CcIllustratedRow *active_screen_edges_row;
-@@ -44,10 +45,32 @@ struct _CcMultitaskingPanel
+@@ -39,15 +40,36 @@ struct _CcMultitaskingPanel
+   GtkCheckButton  *current_workspace_radio;
+   GtkCheckButton  *dynamic_workspaces_radio;
+   GtkCheckButton  *fixed_workspaces_radio;
++  GtkCheckButton  *dock_monitors_isolation_radio;
++  GtkCheckButton  *dock_each_monitor_radio;
+   CcIllustratedRow *hot_corner_row;
+   GtkSwitch       *hot_corner_switch;
    GtkSpinButton   *number_of_workspaces_spin;
    GtkCheckButton  *workspaces_primary_display_radio;
    GtkCheckButton  *workspaces_span_displays_radio;
 +
-+  AdwPreferencesGroup *monitor_isolation_group;
-+  GtkCheckButton      *dock_monitors_isolation_radio;
-+  GtkCheckButton      *dock_each_monitor_radio;
  };
  
  CC_PANEL_REGISTER (CcMultitaskingPanel, cc_multitasking_panel)
@@ -61,7 +65,7 @@ index 6adfc87..9d9bfd5 100644
  /* GObject overrides */
  
  static void
-@@ -58,6 +81,7 @@ cc_multitasking_panel_finalize (GObject *object)
+@@ -58,6 +80,7 @@ cc_multitasking_panel_finalize (GObject *object)
    g_clear_object (&self->interface_settings);
    g_clear_object (&self->mutter_settings);
    g_clear_object (&self->shell_settings);
@@ -69,12 +73,11 @@ index 6adfc87..9d9bfd5 100644
    g_clear_object (&self->wm_settings);
  
    G_OBJECT_CLASS (cc_multitasking_panel_parent_class)->finalize (object);
-@@ -86,11 +110,18 @@ cc_multitasking_panel_class_init (CcMultitaskingPanelClass *klass)
+@@ -86,11 +109,17 @@ cc_multitasking_panel_class_init (CcMultitaskingPanelClass *klass)
    gtk_widget_class_bind_template_child (widget_class, CcMultitaskingPanel, number_of_workspaces_spin);
    gtk_widget_class_bind_template_child (widget_class, CcMultitaskingPanel, workspaces_primary_display_radio);
    gtk_widget_class_bind_template_child (widget_class, CcMultitaskingPanel, workspaces_span_displays_radio);
 +
-+  gtk_widget_class_bind_template_child (widget_class, CcMultitaskingPanel, monitor_isolation_group);
 +  gtk_widget_class_bind_template_child (widget_class, CcMultitaskingPanel, dock_monitors_isolation_radio);
 +  gtk_widget_class_bind_template_child (widget_class, CcMultitaskingPanel, dock_each_monitor_radio);
  }
@@ -88,7 +91,7 @@ index 6adfc87..9d9bfd5 100644
    g_resources_register (cc_multitasking_get_resource ());
  
    gtk_widget_init_template (GTK_WIDGET (self));
-@@ -158,4 +189,34 @@ cc_multitasking_panel_init (CcMultitaskingPanel *self)
+@@ -158,4 +187,32 @@ cc_multitasking_panel_init (CcMultitaskingPanel *self)
        cc_illustrated_row_set_resource (self->active_screen_edges_row,
                                         "/org/gnome/control-center/multitasking/assets/active-screen-edges-rtl.svg");
      }
@@ -109,8 +112,6 @@ index 6adfc87..9d9bfd5 100644
 +
 +      keep_dock_settings_in_sync (self);
 +
-+      gtk_widget_show (GTK_WIDGET (self->monitor_isolation_group));
-+
 +      if (g_settings_get_boolean (self->dock_settings, "isolate-monitors"))
 +        gtk_check_button_set_active (self->dock_each_monitor_radio, TRUE);
 +      else
@@ -124,22 +125,21 @@ index 6adfc87..9d9bfd5 100644
 +    }
  }
 diff --git a/panels/multitasking/cc-multitasking-panel.ui b/panels/multitasking/cc-multitasking-panel.ui
-index c668161..d94bd08 100644
+index c668161..fecdd71 100644
 --- a/panels/multitasking/cc-multitasking-panel.ui
 +++ b/panels/multitasking/cc-multitasking-panel.ui
-@@ -171,6 +171,42 @@
+@@ -171,6 +171,41 @@
            </object>
          </child>
  
 +        <child>
 +          <object class="AdwPreferencesGroup" id="monitor_isolation_group">
-+          <property name="visible">False</property>
 +
 +            <!-- All Monitors -->
 +            <child>
-+              <object class="CcMultitaskingRow">
++              <object class="AdwActionRow">
 +                <property name="activatable-widget">dock_monitors_isolation_radio</property>
-+                <property name="title" translatable="yes">Include applications from all _monitors</property>
++                <property name="title" translatable="yes">Include apps from all _monitors</property>
 +                <property name="use_underline">True</property>
 +                <child type="prefix">
 +                  <object class="GtkCheckButton" id="dock_monitors_isolation_radio">
@@ -151,9 +151,9 @@ index c668161..d94bd08 100644
 +
 +            <!-- Monitor Isolation -->
 +            <child>
-+              <object class="CcMultitaskingRow">
++              <object class="AdwActionRow">
 +                <property name="activatable-widget">dock_each_monitor_radio</property>
-+                <property name="title" translatable="yes">Include applications from _each monitor only</property>
++                <property name="title" translatable="yes">Include apps from _each monitor only</property>
 +                <property name="use_underline">True</property>
 +                <child type="prefix">
 +                  <object class="GtkCheckButton" id="dock_each_monitor_radio">
