@@ -55,7 +55,8 @@ gnome-control-center (1:44~rc-1ubuntu1) UNRELEASED; urgency=medium
   * Temporarily disable the Sound theme patch until it can be updated
 
   [ Gunnar Hjalmarsson ]
-  * Don't segfault if XDG_CURRENT_DESKTOP is unset (LP: #2008770)
+  * Don't segfault if XDG_CURRENT_DESKTOP is unset (LP: #2008770,
+    LP: #1892486).
 
  -- Jeremy Bicha <jbicha@ubuntu.com>  Wed, 08 Mar 2023 15:24:00 -0500
 
