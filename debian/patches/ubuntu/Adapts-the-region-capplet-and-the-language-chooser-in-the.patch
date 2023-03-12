@@ -482,16 +482,15 @@ diff --git a/panels/user-accounts/cc-user-panel.c b/panels/user-accounts/cc-user
 index 86b040c..6c3ded5 100644
 --- a/panels/user-accounts/cc-user-panel.c
 +++ b/panels/user-accounts/cc-user-panel.c
-@@ -871,6 +871,8 @@ show_user (ActUser *user, CcUserPanel *self)
-         gtk_widget_set_sensitive (GTK_WIDGET (self->autologin_switch), get_autologin_possible (user));
+@@ -872,6 +872,7 @@ show_user (ActUser *user, CcUserPanel *self)
  
          lang = g_strdup (act_user_get_language (user));
-+        cc_common_language_get_locale (lang, &lang);
-+
          if (lang && *lang != '\0') {
++                cc_common_language_get_locale (lang, &lang);
                  name = gnome_get_language_from_locale (lang, NULL);
          } else {
-@@ -1073,7 +1075,8 @@ language_response (CcUserPanel *self,
+                 name = g_strdup ("—");
+@@ -1073,7 +1074,8 @@ language_response (CcUserPanel *self,
                     GtkDialog   *dialog)
  {
          ActUser *user;
@@ -501,7 +500,7 @@ index 86b040c..6c3ded5 100644
  
          if (response_id != GTK_RESPONSE_OK) {
                  gtk_widget_hide (GTK_WIDGET (dialog));
-@@ -1081,12 +1084,13 @@ language_response (CcUserPanel *self,
+@@ -1081,12 +1083,13 @@ language_response (CcUserPanel *self,
          }
  
          user = get_selected_user (self);
@@ -517,7 +516,7 @@ index 86b040c..6c3ded5 100644
                          act_user_set_language (user, lang);
                  }
  
-@@ -1101,10 +1105,13 @@ static void
+@@ -1101,10 +1104,13 @@ static void
  change_language (CcUserPanel *self)
  {
          const gchar *current_language;
