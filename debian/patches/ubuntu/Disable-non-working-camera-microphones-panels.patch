@@ -15,7 +15,7 @@ here and the Zoom snap still works and it isn't listed as an app
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/shell/cc-panel-loader.c b/shell/cc-panel-loader.c
-index 5814def..fe0baf7 100644
+index e309258..9339f73 100644
 --- a/shell/cc-panel-loader.c
 +++ b/shell/cc-panel-loader.c
 @@ -110,7 +110,7 @@ static CcPanelLoaderVtable default_panels[] =

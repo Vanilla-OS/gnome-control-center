@@ -15,7 +15,7 @@ Bug: https://bugzilla.gnome.org/show_bug.cgi?id=692532
  2 files changed, 37 insertions(+)
 
 diff --git a/panels/printers/cc-printers-panel.c b/panels/printers/cc-printers-panel.c
-index 8727b17..00729c0 100644
+index 412d981..8208294 100644
 --- a/panels/printers/cc-printers-panel.c
 +++ b/panels/printers/cc-printers-panel.c
 @@ -25,6 +25,7 @@
@@ -26,7 +26,7 @@ index 8727b17..00729c0 100644
  #include <glib/gi18n-lib.h>
  #include <glib/gstdio.h>
  #include <polkit/polkit.h>
-@@ -993,6 +994,25 @@ printer_add_cb (CcPrintersPanel *self)
+@@ -990,6 +991,25 @@ printer_add_cb (CcPrintersPanel *self)
    gtk_widget_show (GTK_WIDGET (self->pp_new_printer_dialog));
  }
  
@@ -52,7 +52,7 @@ index 8727b17..00729c0 100644
  static void
  update_sensitivity (gpointer user_data)
  {
-@@ -1253,6 +1273,10 @@ cc_printers_panel_init (CcPrintersPanel *self)
+@@ -1250,6 +1270,10 @@ cc_printers_panel_init (CcPrintersPanel *self)
    self->notification = (GtkRevealer*)
      gtk_builder_get_object (self->builder, "notification");
  

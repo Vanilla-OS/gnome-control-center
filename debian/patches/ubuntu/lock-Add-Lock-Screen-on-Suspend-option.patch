@@ -9,7 +9,7 @@ https://bugs.launchpad.net/ubuntu/+source/gnome-settings-daemon/+bug/938076
  2 files changed, 36 insertions(+)
 
 diff --git a/panels/screen/cc-screen-panel.c b/panels/screen/cc-screen-panel.c
-index 3c6f35b..d3ad034 100644
+index 3c6f35b..a5ce7cf 100644
 --- a/panels/screen/cc-screen-panel.c
 +++ b/panels/screen/cc-screen-panel.c
 @@ -54,6 +54,9 @@ struct _CcScreenPanel

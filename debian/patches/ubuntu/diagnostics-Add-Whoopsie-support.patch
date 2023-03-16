@@ -12,10 +12,10 @@ Subject: diagnostics: Add Whoopsie support
  6 files changed, 250 insertions(+), 3 deletions(-)
 
 diff --git a/meson.build b/meson.build
-index 66aa643..f213066 100644
+index 2816f4c..7e84cdb 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -224,6 +224,14 @@ endif
+@@ -237,6 +237,14 @@ endif
  config_h.set('HAVE_MALCONTENT', enable_malcontent,
               description: 'Define to 1 if malcontent support is enabled')
  
@@ -30,7 +30,7 @@ index 66aa643..f213066 100644
  if host_is_linux
    # network manager
    mm_dep =  dependency('mm-glib', version: '>= 0.7')
-@@ -323,4 +331,5 @@ summary({
+@@ -336,4 +344,5 @@ summary({
    'IBus': enable_ibus,
    'Snap': enable_snap,
    'Malcontent': enable_malcontent,
@@ -46,7 +46,7 @@ index 8ee7b6e..beebcf2 100644
  option('dark_mode_distributor_logo', type: 'string', description: 'absolute path to distributor logo dark mode variant')
 +option('whoopsie', type: 'boolean', value: false, description: 'build with Whoopsie support')
 diff --git a/panels/diagnostics/cc-diagnostics-panel.c b/panels/diagnostics/cc-diagnostics-panel.c
-index 9aeca6e..4b4d4cf 100644
+index 9aeca6e..7d2e832 100644
 --- a/panels/diagnostics/cc-diagnostics-panel.c
 +++ b/panels/diagnostics/cc-diagnostics-panel.c
 @@ -18,6 +18,8 @@
@@ -362,7 +362,7 @@ index a08a4ca..7a0a3f9 100644
          </child>
        </object>
 diff --git a/panels/diagnostics/gnome-diagnostics-panel.desktop.in b/panels/diagnostics/gnome-diagnostics-panel.desktop.in
-index dbdbfd5..2fa1121 100644
+index 06d187f..07d0c77 100644
 --- a/panels/diagnostics/gnome-diagnostics-panel.desktop.in
 +++ b/panels/diagnostics/gnome-diagnostics-panel.desktop.in
 @@ -12,4 +12,4 @@ StartupNotify=true

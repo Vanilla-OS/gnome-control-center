@@ -9,7 +9,7 @@ Upstream: https://bugzilla.gnome.org/show_bug.cgi?id=789372
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/shell/cc-window.ui b/shell/cc-window.ui
-index 07e1848..21a2fc3 100644
+index 259222e..a246643 100644
 --- a/shell/cc-window.ui
 +++ b/shell/cc-window.ui
 @@ -2,7 +2,7 @@

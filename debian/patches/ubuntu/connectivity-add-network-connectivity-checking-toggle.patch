@@ -304,7 +304,7 @@ index 0000000..94c0d23
 +  c_args: cflags
 +)
 diff --git a/panels/meson.build b/panels/meson.build
-index c825ee2..100bce5 100644
+index eefdd9b..575c310 100644
 --- a/panels/meson.build
 +++ b/panels/meson.build
 @@ -5,6 +5,7 @@ panels = [
@@ -316,7 +316,7 @@ index c825ee2..100bce5 100644
    'default-apps',
    'diagnostics',
 diff --git a/po/POTFILES.in b/po/POTFILES.in
-index 6b4c652..9c4737e 100644
+index 593167e..29de807 100644
 --- a/po/POTFILES.in
 +++ b/po/POTFILES.in
 @@ -32,6 +32,8 @@ panels/common/cc-time-editor.ui
@@ -329,7 +329,7 @@ index 6b4c652..9c4737e 100644
  panels/datetime/cc-datetime-panel.ui
  panels/datetime/cc-tz-dialog.ui
 diff --git a/shell/cc-panel-loader.c b/shell/cc-panel-loader.c
-index eb90fe6..5814def 100644
+index 5396ad6..e309258 100644
 --- a/shell/cc-panel-loader.c
 +++ b/shell/cc-panel-loader.c
 @@ -37,6 +37,7 @@ extern GType cc_background_panel_get_type (void);

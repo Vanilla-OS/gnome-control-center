@@ -513,7 +513,7 @@ index c136f57..e206a02 100644
  const char*       cc_display_monitor_get_display_name       (CcDisplayMonitor   *monitor);
  gboolean          cc_display_monitor_is_active              (CcDisplayMonitor   *monitor);
 diff --git a/panels/display/cc-display-settings.c b/panels/display/cc-display-settings.c
-index 7c33f49..885942f 100644
+index 8fec65b..860fb71 100644
 --- a/panels/display/cc-display-settings.c
 +++ b/panels/display/cc-display-settings.c
 @@ -23,6 +23,7 @@
@@ -540,7 +540,7 @@ index 7c33f49..885942f 100644
  static gboolean
  should_show_rotation (CcDisplaySettings *self)
  {
-@@ -254,6 +255,7 @@ cc_display_settings_rebuild_ui (CcDisplaySettings *self)
+@@ -257,6 +258,7 @@ cc_display_settings_rebuild_ui (CcDisplaySettings *self)
        gtk_widget_set_visible (self->resolution_row, FALSE);
        gtk_widget_set_visible (self->scale_combo_row, FALSE);
        gtk_widget_set_visible (self->scale_buttons_row, FALSE);
@@ -548,7 +548,7 @@ index 7c33f49..885942f 100644
        gtk_widget_set_visible (self->underscanning_row, FALSE);
  
        return G_SOURCE_REMOVE;
-@@ -462,6 +464,11 @@ cc_display_settings_rebuild_ui (CcDisplaySettings *self)
+@@ -465,6 +467,11 @@ cc_display_settings_rebuild_ui (CcDisplaySettings *self)
      }
    cc_display_settings_refresh_layout (self, self->folded);
  
@@ -560,7 +560,7 @@ index 7c33f49..885942f 100644
    gtk_widget_set_visible (self->underscanning_row,
                            cc_display_monitor_supports_underscanning (self->selected_output) &&
                            !cc_display_config_is_cloning (self->config));
-@@ -757,6 +764,7 @@ cc_display_settings_class_init (CcDisplaySettingsClass *klass)
+@@ -760,6 +767,7 @@ cc_display_settings_class_init (CcDisplaySettingsClass *klass)
    gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, scale_bbox);
    gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, scale_buttons_row);
    gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, scale_combo_row);
@@ -568,7 +568,7 @@ index 7c33f49..885942f 100644
    gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, underscanning_row);
    gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, underscanning_switch);
  
-@@ -768,6 +776,19 @@ cc_display_settings_class_init (CcDisplaySettingsClass *klass)
+@@ -771,6 +779,19 @@ cc_display_settings_class_init (CcDisplaySettingsClass *klass)
    gtk_widget_class_bind_template_callback (widget_class, on_underscanning_switch_active_changed_cb);
  }
  
@@ -588,7 +588,7 @@ index 7c33f49..885942f 100644
  static void
  cc_display_settings_init (CcDisplaySettings *self)
  {
-@@ -803,6 +824,11 @@ cc_display_settings_init (CcDisplaySettings *self)
+@@ -806,6 +827,11 @@ cc_display_settings_init (CcDisplaySettings *self)
    adw_combo_row_set_model (ADW_COMBO_ROW (self->resolution_row),
                             G_LIST_MODEL (self->resolution_list));
  

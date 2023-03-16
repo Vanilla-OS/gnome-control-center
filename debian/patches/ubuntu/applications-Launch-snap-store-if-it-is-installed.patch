@@ -7,7 +7,7 @@ Subject: applications: Launch snap-store if it is installed
  1 file changed, 14 insertions(+), 2 deletions(-)
 
 diff --git a/panels/applications/cc-applications-panel.c b/panels/applications/cc-applications-panel.c
-index 9d0ab57..799634f 100644
+index a277f3c..85a3a11 100644
 --- a/panels/applications/cc-applications-panel.c
 +++ b/panels/applications/cc-applications-panel.c
 @@ -157,6 +157,13 @@ gnome_software_is_installed (void)

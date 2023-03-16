@@ -12,7 +12,7 @@ https://gitlab.gnome.org/GNOME/gnome-control-center/-/issues/2301
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/panels/firmware-security/cc-firmware-security-panel.c b/panels/firmware-security/cc-firmware-security-panel.c
-index c43b9db..b90462e 100644
+index af75682..f7b2e79 100644
 --- a/panels/firmware-security/cc-firmware-security-panel.c
 +++ b/panels/firmware-security/cc-firmware-security-panel.c
 @@ -638,7 +638,7 @@ update_panel_visibility (const gchar *chassis_type)

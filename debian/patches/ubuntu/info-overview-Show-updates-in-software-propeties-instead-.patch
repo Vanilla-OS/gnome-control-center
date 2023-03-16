@@ -8,10 +8,10 @@ Subject: info-overview: Show updates in software propeties instead of GNOME
  1 file changed, 11 insertions(+), 5 deletions(-)
 
 diff --git a/panels/info-overview/cc-info-overview-panel.c b/panels/info-overview/cc-info-overview-panel.c
-index 148025f..21a684e 100644
+index 609042b..183c4bc 100644
 --- a/panels/info-overview/cc-info-overview-panel.c
 +++ b/panels/info-overview/cc-info-overview-panel.c
-@@ -800,6 +800,13 @@ does_gnome_software_allow_updates (void)
+@@ -801,6 +801,13 @@ does_gnome_software_allow_updates (void)
    return g_settings_get_boolean (settings, "allow-updates");
  }
  
@@ -25,7 +25,7 @@ index 148025f..21a684e 100644
  static gboolean
  does_gnome_software_exist (void)
  {
-@@ -821,11 +828,10 @@ cc_info_panel_open_software_update (CcInfoOverviewPanel *self)
+@@ -822,11 +829,10 @@ cc_info_panel_open_software_update (CcInfoOverviewPanel *self)
    gboolean ret;
    char *argv[3];
  
@@ -40,7 +40,7 @@ index 148025f..21a684e 100644
      }
    else
      {
-@@ -928,7 +934,7 @@ cc_info_overview_panel_init (CcInfoOverviewPanel *self)
+@@ -929,7 +935,7 @@ cc_info_overview_panel_init (CcInfoOverviewPanel *self)
  
    g_resources_register (cc_info_overview_get_resource ());
  
