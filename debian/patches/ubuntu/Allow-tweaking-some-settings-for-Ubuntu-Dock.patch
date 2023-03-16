@@ -21,19 +21,19 @@ Forwarded: not-needed
  panels/ubuntu/assets/colors/color.svg.in    |    5 +
  panels/ubuntu/assets/theme-dark.svg         |    1 +
  panels/ubuntu/assets/theme-light.svg        |    1 +
- panels/ubuntu/cc-ubuntu-dock-dialog.c       |  103 +++
+ panels/ubuntu/cc-ubuntu-dock-dialog.c       |  103 ++
  panels/ubuntu/cc-ubuntu-dock-dialog.h       |   31 +
  panels/ubuntu/cc-ubuntu-dock-dialog.ui      |   81 ++
- panels/ubuntu/cc-ubuntu-panel.c             | 1289 +++++++++++++++++++++++++++
+ panels/ubuntu/cc-ubuntu-panel.c             | 1488 +++++++++++++++++++++++++++
  panels/ubuntu/cc-ubuntu-panel.h             |   35 +
- panels/ubuntu/cc-ubuntu-panel.ui            |  163 ++++
+ panels/ubuntu/cc-ubuntu-panel.ui            |  195 ++++
  panels/ubuntu/gnome-ubuntu-panel.desktop.in |   13 +
  panels/ubuntu/meson.build                   |   97 ++
  panels/ubuntu/ubuntu.gresource.xml          |    6 +
  po/POTFILES.in                              |    5 +
  shell/cc-panel-list.c                       |    1 +
  shell/cc-panel-loader.c                     |    3 +
- 16 files changed, 1835 insertions(+)
+ 16 files changed, 2066 insertions(+)
  create mode 100644 panels/ubuntu/assets/colors/color.svg.in
  create mode 100644 panels/ubuntu/assets/theme-dark.svg
  create mode 100644 panels/ubuntu/assets/theme-light.svg
@@ -48,7 +48,7 @@ Forwarded: not-needed
  create mode 100644 panels/ubuntu/ubuntu.gresource.xml
 
 diff --git a/panels/meson.build b/panels/meson.build
-index cb732f2..c825ee2 100644
+index b5abede..eefdd9b 100644
 --- a/panels/meson.build
 +++ b/panels/meson.build
 @@ -26,6 +26,7 @@ panels = [
@@ -321,10 +321,10 @@ index 0000000..2b51182
 +</interface>
 diff --git a/panels/ubuntu/cc-ubuntu-panel.c b/panels/ubuntu/cc-ubuntu-panel.c
 new file mode 100644
-index 0000000..5e02160
+index 0000000..f9746b4
 --- /dev/null
 +++ b/panels/ubuntu/cc-ubuntu-panel.c
-@@ -0,0 +1,1289 @@
+@@ -0,0 +1,1488 @@
 +/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 +/*
 + * Copyright (C) 2017-2022 Canonical Ltd
@@ -371,6 +371,13 @@ index 0000000..5e02160
 +#define UBUNTU_DOCK_PREFERRED_MONITOR_KEY "preferred-monitor"
 +#define UBUNTU_DOCK_PREFERRED_CONNECTOR_KEY "preferred-monitor-by-connector"
 +
++#define TILING_ASSISTANT_SCHEMA "org.gnome.shell.extensions.tiling-assistant"
++#define TILING_ASSISTANT_UUID "tiling-assistant@ubuntu.com"
++
++#define GNOME_SHELL_SCHEMA "org.gnome.shell"
++#define GNOME_SHELL_ENABLED_EXTENSIONS "enabled-extensions"
++#define GNOME_SHELL_DISABLED_EXTENSIONS "disabled-extensions"
++
 +/*
 + * This allows to migrate settings from 'preferred-monitor' to
 + * 'preferred-monitor-by-connector', and can be removed after 22.04
@@ -394,11 +401,17 @@ index 0000000..5e02160
 +  AdwComboRow            *dock_position_row;
 +  GtkAdjustment          *icon_size_adjustment;
 +  GtkScale               *icon_size_scale;
++  AdwPreferencesGroup    *tiling_assistant_preferences_group;
++  GtkSwitch              *tiling_assistant_switch;
++  CcListRow              *tiling_assistant_popup_switch;
++  CcListRow              *tiling_assistant_tiling_group;
 +
 +  GSettings              *ding_settings;
 +  GSettings              *dock_settings;
 +  GSettings              *interface_settings;
 +  GSettings              *gedit_settings;
++  GSettings              *gnome_shell_settings;
++  GSettings              *tiling_assistant_settings;
 +  CcDisplayConfigManager *display_config_manager;
 +  CcDisplayConfig        *display_current_config;
 +  GDBusProxy             *shell_proxy;
@@ -418,6 +431,8 @@ index 0000000..5e02160
 +
 +  monitor_labeler_hide (self);
 +
++  g_clear_object (&self->gnome_shell_settings);
++  g_clear_object (&self->tiling_assistant_settings);
 +  g_clear_object (&self->ding_settings);
 +  g_clear_object (&self->dock_settings);
 +  g_clear_object (&self->dock_monitors_list);
@@ -428,6 +443,20 @@ index 0000000..5e02160
 +  g_clear_object (&self->shell_proxy);
 +
 +  G_OBJECT_CLASS (cc_ubuntu_panel_parent_class)->dispose (object);
++}
++
++static gboolean
++update_panel_visibilty (CcUbuntuPanel *self)
++{
++  gboolean enabled = FALSE;
++
++  enabled |= gtk_widget_is_visible (GTK_WIDGET (self->dock_preferences_group));
++  enabled |= gtk_widget_is_visible (GTK_WIDGET (self->ding_preferences_group));
++  enabled |= gtk_widget_is_visible (GTK_WIDGET (self->tiling_assistant_preferences_group));
++
++  gtk_widget_set_visible (GTK_WIDGET (self->no_settings_view), !enabled);
++
++  return enabled;
 +}
 +
 +static void
@@ -786,6 +815,122 @@ index 0000000..5e02160
 +    g_settings_set_int (self->dock_settings, ICONSIZE_KEY, value);
 +}
 +
++static gboolean
++is_extension_enabled (CcUbuntuPanel *self,
++                       const char   *uuid)
++{
++  g_auto(GStrv) enabled_extensions = NULL;
++
++  enabled_extensions = g_settings_get_strv (self->gnome_shell_settings,
++                                            GNOME_SHELL_ENABLED_EXTENSIONS);
++
++  return g_strv_contains ((const gchar **) enabled_extensions, uuid);
++}
++
++static gboolean
++is_extension_disabled (CcUbuntuPanel *self,
++                       const char    *uuid)
++{
++  g_auto(GStrv) disabled_extensions = NULL;
++
++  disabled_extensions = g_settings_get_strv (self->gnome_shell_settings,
++                                             GNOME_SHELL_DISABLED_EXTENSIONS);
++
++  return g_strv_contains ((const gchar **) disabled_extensions, uuid);
++}
++
++static void
++set_extension_enabled (CcUbuntuPanel *self,
++                       const char    *uuid,
++                       gboolean       enabled)
++{
++  g_auto(GStrv) disabled_extensions = NULL;
++  g_auto(GStrv) enabled_extensions = NULL;
++  g_autoptr(GPtrArray) enabled_extensions_list = NULL;
++  g_autoptr(GPtrArray) disabled_extensions_list = NULL;
++  guint idx;
++
++  g_settings_delay (self->gnome_shell_settings);
++
++  enabled_extensions = g_settings_get_strv (self->gnome_shell_settings,
++                                            GNOME_SHELL_ENABLED_EXTENSIONS);
++
++  disabled_extensions = g_settings_get_strv (self->gnome_shell_settings,
++                                            GNOME_SHELL_DISABLED_EXTENSIONS);
++
++  enabled_extensions_list = g_ptr_array_new_take_null_terminated (
++        (gpointer *) g_steal_pointer (&enabled_extensions), g_free);
++  disabled_extensions_list = g_ptr_array_new_take_null_terminated (
++        (gpointer *) g_steal_pointer (&disabled_extensions), g_free);
++
++  if (enabled)
++    {
++      if (!g_ptr_array_find_with_equal_func (enabled_extensions_list, uuid,
++                                             g_str_equal, &idx))
++        {
++          g_ptr_array_add (enabled_extensions_list, g_strdup (uuid));
++
++          g_settings_set_strv (self->gnome_shell_settings,
++                               GNOME_SHELL_ENABLED_EXTENSIONS,
++                               (const char **) enabled_extensions_list->pdata);
++        }
++
++      if (g_ptr_array_find_with_equal_func (disabled_extensions_list, uuid,
++                                            g_str_equal, &idx))
++        {
++          g_ptr_array_remove_index (disabled_extensions_list, idx);
++
++          g_settings_set_strv (self->gnome_shell_settings,
++                               GNOME_SHELL_DISABLED_EXTENSIONS,
++                               (const char **) disabled_extensions_list->pdata);
++        }
++    }
++  else
++    {
++      if (g_ptr_array_find_with_equal_func (enabled_extensions_list, uuid,
++                                            g_str_equal, &idx))
++        {
++          g_ptr_array_remove_index (enabled_extensions_list, idx);
++
++          g_settings_set_strv (self->gnome_shell_settings,
++                               GNOME_SHELL_ENABLED_EXTENSIONS,
++                               (const char **) enabled_extensions_list->pdata);
++        }
++
++      if (!g_ptr_array_find_with_equal_func (disabled_extensions_list, uuid,
++                                             g_str_equal, &idx))
++        {
++          g_ptr_array_add (disabled_extensions_list, g_strdup (uuid));
++
++          g_settings_set_strv (self->gnome_shell_settings,
++                               GNOME_SHELL_DISABLED_EXTENSIONS,
++                               (const char **) disabled_extensions_list->pdata);
++        }
++    }
++
++  g_settings_apply (self->gnome_shell_settings);
++}
++
++static void
++update_tiling_assistant_status (CcUbuntuPanel *self)
++{
++  gboolean tiling_assitant_enabled;
++
++  tiling_assitant_enabled = is_extension_enabled (self, TILING_ASSISTANT_UUID);
++
++  if (is_extension_disabled (self, TILING_ASSISTANT_UUID))
++    tiling_assitant_enabled = FALSE;
++
++  gtk_switch_set_active (self->tiling_assistant_switch, tiling_assitant_enabled);
++}
++
++static void
++on_tiling_assistant_switch_changed (CcUbuntuPanel *self)
++{
++  set_extension_enabled (self, TILING_ASSISTANT_UUID,
++                         gtk_switch_get_active (self->tiling_assistant_switch));
++}
++
 +static void
 +on_dock_monitor_row_changed (CcUbuntuPanel *self)
 +{
@@ -973,10 +1118,15 @@ index 0000000..5e02160
 +  gtk_widget_class_bind_template_child (widget_class, CcUbuntuPanel, dock_position_row);
 +  gtk_widget_class_bind_template_child (widget_class, CcUbuntuPanel, icon_size_adjustment);
 +  gtk_widget_class_bind_template_child (widget_class, CcUbuntuPanel, icon_size_scale);
++  gtk_widget_class_bind_template_child (widget_class, CcUbuntuPanel, tiling_assistant_preferences_group);
++  gtk_widget_class_bind_template_child (widget_class, CcUbuntuPanel, tiling_assistant_switch);
++  gtk_widget_class_bind_template_child (widget_class, CcUbuntuPanel, tiling_assistant_popup_switch);
++  gtk_widget_class_bind_template_child (widget_class, CcUbuntuPanel, tiling_assistant_tiling_group);
 +
 +  gtk_widget_class_bind_template_callback (widget_class, on_dock_monitor_row_changed);
 +  gtk_widget_class_bind_template_callback (widget_class, on_dock_behavior_row_activated);
 +  gtk_widget_class_bind_template_callback (widget_class, on_icon_size_adjustment_value_changed);
++  gtk_widget_class_bind_template_callback (widget_class, on_tiling_assistant_switch_changed);
 +}
 +
 +static void
@@ -984,6 +1134,9 @@ index 0000000..5e02160
 +{
 +  CcShell *shell;
 +  GtkWidget *toplevel;
++
++  if (!self->dock_settings)
++    return;
 +
 +  shell = cc_panel_get_shell (CC_PANEL (self));
 +  toplevel = cc_shell_get_toplevel (shell);
@@ -1473,6 +1626,16 @@ index 0000000..5e02160
 +
 +  gtk_widget_init_template (GTK_WIDGET (self));
 +
++  schema = g_settings_schema_source_lookup (schema_source, GNOME_SHELL_SCHEMA, TRUE);
++  if (schema)
++    {
++      self->gnome_shell_settings = g_settings_new_full (schema, NULL, NULL);
++    }
++  else
++    {
++      g_warning ("No GNOME Shell is installed here. Please fix your installation.");
++    }
++
 +  /* Only load if we ding installed */
 +  schema = g_settings_schema_source_lookup (schema_source, DING_SCHEMA, TRUE);
 +  if (schema)
@@ -1498,6 +1661,8 @@ index 0000000..5e02160
 +      g_settings_bind (self->ding_settings, "show-home",
 +                       self->ding_showhome_switch, "active",
 +                       G_SETTINGS_BIND_DEFAULT);
++
++      g_clear_pointer (&schema, g_settings_schema_unref);
 +    }
 +  else
 +    {
@@ -1567,7 +1732,22 @@ index 0000000..5e02160
 +
 +      icon_size_widget_refresh (self);
 +
-+      g_bus_get (G_BUS_TYPE_SESSION, NULL, session_bus_ready, self);
++      g_bus_get (G_BUS_TYPE_SESSION,
++                 cc_panel_get_cancellable (CC_PANEL (self)),
++                 session_bus_ready, self);
++
++      cc_object_storage_create_dbus_proxy (G_BUS_TYPE_SESSION,
++                                           G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES |
++                                           G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS |
++                                           G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START,
++                                           "org.gnome.Shell",
++                                           "/org/gnome/Shell",
++                                           "org.gnome.Shell",
++                                           cc_panel_get_cancellable (CC_PANEL (self)),
++                                           (GAsyncReadyCallback) shell_proxy_ready,
++                                           self);
++
++      g_clear_pointer (&schema, g_settings_schema_unref);
 +    }
 +  else
 +    {
@@ -1575,23 +1755,42 @@ index 0000000..5e02160
 +      gtk_widget_set_visible (GTK_WIDGET (self->dock_preferences_group), FALSE);
 +    }
 +
-+  if (!gtk_widget_is_visible (GTK_WIDGET (self->dock_preferences_group)) &&
-+      !gtk_widget_is_visible (GTK_WIDGET (self->ding_preferences_group)))
++  schema = g_settings_schema_source_lookup (schema_source, TILING_ASSISTANT_SCHEMA, TRUE);
++  if (schema && self->gnome_shell_settings)
 +    {
-+      gtk_widget_set_visible (GTK_WIDGET (self->no_settings_view), TRUE);
-+      return;
++      self->tiling_assistant_settings = g_settings_new_full (schema, NULL, NULL);
++
++      g_signal_connect_object (self->gnome_shell_settings,
++                               "changed::" GNOME_SHELL_ENABLED_EXTENSIONS,
++                               G_CALLBACK (update_tiling_assistant_status),
++                               self,
++                               G_CONNECT_SWAPPED);
++      g_signal_connect_object (self->gnome_shell_settings,
++                               "changed::" GNOME_SHELL_DISABLED_EXTENSIONS,
++                               G_CALLBACK (update_tiling_assistant_status),
++                               self,
++                               G_CONNECT_SWAPPED);
++
++      g_settings_bind (self->tiling_assistant_settings, "enable-tiling-popup",
++                       self->tiling_assistant_popup_switch, "active",
++                       G_SETTINGS_BIND_DEFAULT);
++      g_settings_bind (self->tiling_assistant_settings, "disable-tile-groups",
++                       self->tiling_assistant_tiling_group, "active",
++                       G_SETTINGS_BIND_INVERT_BOOLEAN);
++
++      update_tiling_assistant_status (self);
++
++      g_clear_pointer (&schema, g_settings_schema_unref);
++    }
++  else
++    {
++      g_debug ("No Tiling Assistant is installed here. Panel disabled.");
++      gtk_widget_set_visible (GTK_WIDGET (self->tiling_assistant_preferences_group), FALSE);
 +    }
 +
-+  cc_object_storage_create_dbus_proxy (G_BUS_TYPE_SESSION,
-+                                       G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES |
-+                                       G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS |
-+                                       G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START,
-+                                       "org.gnome.Shell",
-+                                       "/org/gnome/Shell",
-+                                       "org.gnome.Shell",
-+                                       cc_panel_get_cancellable (CC_PANEL (self)),
-+                                       (GAsyncReadyCallback) shell_proxy_ready,
-+                                       self);
++  
++  if (!update_panel_visibilty (self))
++    return;
 +
 +  g_signal_connect (self, "map", G_CALLBACK (mapped_cb), NULL);
 +}
@@ -1657,10 +1856,10 @@ index 0000000..b13f611
 +#endif /* _CC_EDIT_DIALOG_H_ */
 diff --git a/panels/ubuntu/cc-ubuntu-panel.ui b/panels/ubuntu/cc-ubuntu-panel.ui
 new file mode 100644
-index 0000000..0840525
+index 0000000..7585a38
 --- /dev/null
 +++ b/panels/ubuntu/cc-ubuntu-panel.ui
-@@ -0,0 +1,163 @@
+@@ -0,0 +1,195 @@
 +<?xml version="1.0" encoding="UTF-8"?>
 +<interface>
 +  <template class="CcUbuntuPanel" parent="CcPanel">
@@ -1710,7 +1909,6 @@ index 0000000..0840525
 +        <!-- Desktop icons settings -->
 +        <child>
 +          <object class="AdwPreferencesGroup" id="ding_preferences_group">
-+            <property name="margin_top">16</property>
 +            <property name="title" translatable="yes" comments="Desktop icons settings.">Desktop Icons</property>
 +            <child>
 +              <object class="AdwComboRow" id="ding_icon_size_row">
@@ -1744,7 +1942,6 @@ index 0000000..0840525
 +        <child>
 +          <object class="AdwPreferencesGroup" id="dock_preferences_group">
 +            <property name="margin_top">16</property>
-+            <property name="margin_bottom">16</property>
 +            <property name="title" translatable="yes" comments="Dock settings.">Dock</property>
 +            <child>
 +              <object class="CcListRow" id="dock_autohide_switch">
@@ -1815,6 +2012,40 @@ index 0000000..0840525
 +            </child>
 +          </object>
 +        </child>
++
++        <!-- Tiling Assistant settings -->
++        <child>
++          <object class="AdwPreferencesGroup" id="tiling_assistant_preferences_group">
++            <property name="margin_top">16</property>
++            <property name="margin_bottom">16</property>
++            <property name="title" translatable="yes" comments="Tiling Assistant extension settings.">Enhanced Tiling</property>
++            <property name="header-suffix">
++              <object class="GtkSwitch" id="tiling_assistant_switch">
++                <property name="valign">center</property>
++                <signal name="notify::active" handler="on_tiling_assistant_switch_changed" swapped="yes"/>
++              </object>
++            </property>
++            <child>
++              <object class="CcListRow" id="tiling_assistant_popup_switch">
++                <property name="title" translatable="yes">Tiling Popup</property>
++                <property name="subtitle" translatable="yes" comments="Tiling Assistant Tiling Popup feature explaination.">It provides a list of open apps and windows to tile to the free screen space. It appears after you tile a window and there is unambiguous screen space available. Unambiguous means that the free space consists of a single rectangle.</property>
++                <property name="use-underline">True</property>
++                <property name="show-switch">True</property>
++                <property name="sensitive" bind-source="tiling_assistant_switch" bind-property="active" bind-flags="sync-create" />
++              </object>
++            </child>
++            <child>
++              <object class="CcListRow" id="tiling_assistant_tiling_group">
++                <property name="title" translatable="yes">Tile Groups</property>
++                <property name="subtitle" translatable="yes" comments="Tiling Assistant Tile Groups feature explaination">A window is added to a tile group if it doesn't overlap any other windows in the tile group during the moment it was tiled. If a tiled window is raised, the other windows of its tile group are raised well</property>
++                <property name="use-underline">True</property>
++                <property name="show-switch">True</property>
++                <property name="sensitive" bind-source="tiling_assistant_switch" bind-property="active" bind-flags="sync-create" />
++              </object>
++            </child>
++          </object>
++        </child>
++
 +      </object>
 +    </child>
 +  </template>
@@ -1959,10 +2190,10 @@ index 0000000..a636e9c
 +  </gresource>
 +</gresources>
 diff --git a/po/POTFILES.in b/po/POTFILES.in
-index 2fb23da..c511375 100644
+index b2bc79b..eed19c9 100644
 --- a/po/POTFILES.in
 +++ b/po/POTFILES.in
-@@ -212,6 +212,11 @@ panels/thunderbolt/cc-bolt-device-entry.c
+@@ -218,6 +218,11 @@ panels/thunderbolt/cc-bolt-device-entry.c
  panels/thunderbolt/cc-bolt-panel.c
  panels/thunderbolt/cc-bolt-panel.ui
  panels/thunderbolt/gnome-thunderbolt-panel.desktop.in
@@ -1975,7 +2206,7 @@ index 2fb23da..c511375 100644
  panels/universal-access/cc-ua-hearing-page.ui
  panels/universal-access/cc-ua-mouse-page.ui
 diff --git a/shell/cc-panel-list.c b/shell/cc-panel-list.c
-index e122d94..8e8d052 100644
+index 76a978a..6d24407 100644
 --- a/shell/cc-panel-list.c
 +++ b/shell/cc-panel-list.c
 @@ -392,6 +392,7 @@ static const gchar * const panel_order[] = {
@@ -1987,7 +2218,7 @@ index e122d94..8e8d052 100644
    "search",
    "multitasking",
 diff --git a/shell/cc-panel-loader.c b/shell/cc-panel-loader.c
-index 5a70523..eb90fe6 100644
+index 7a8673e..5396ad6 100644
 --- a/shell/cc-panel-loader.c
 +++ b/shell/cc-panel-loader.c
 @@ -61,6 +61,7 @@ extern GType cc_sound_panel_get_type (void);
