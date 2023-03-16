@@ -1,0 +1,82 @@
+From: =?utf-8?b?Ik1hcmNvIFRyZXZpc2FuIChUcmV2acOxbyki?= <mail@3v1n0.net>
+Date: Thu, 16 Mar 2023 02:31:11 +0100
+Subject: multitasking-panel: Sync workspace isolation setting on tiling
+ assistant
+
+---
+ panels/multitasking/cc-multitasking-panel.c | 42 +++++++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
+
+diff --git a/panels/multitasking/cc-multitasking-panel.c b/panels/multitasking/cc-multitasking-panel.c
+index b3a820f..5f70de4 100644
+--- a/panels/multitasking/cc-multitasking-panel.c
++++ b/panels/multitasking/cc-multitasking-panel.c
+@@ -32,6 +32,7 @@ struct _CcMultitaskingPanel
+   GSettings       *mutter_settings;
+   GSettings       *shell_settings;
+   GSettings       *dock_settings;
++  GSettings       *tiling_assistant_settings;
+   GSettings       *wm_settings;
+ 
+   CcIllustratedRow *active_screen_edges_row;
+@@ -70,6 +71,25 @@ keep_dock_settings_in_sync (CcMultitaskingPanel *self)
+     }
+ }
+ 
++static void
++keep_tiling_assistant_settings_in_sync (CcMultitaskingPanel *self)
++{
++  gboolean switcher_isolate_workspaces;
++  gboolean tiling_assistant_popup_isolate_workspaces;
++
++  switcher_isolate_workspaces = g_settings_get_boolean (self->shell_settings,
++    "current-workspace-only");
++  tiling_assistant_popup_isolate_workspaces = !g_settings_get_boolean (
++    self->tiling_assistant_settings, "tiling-popup-all-workspace");
++
++  if (switcher_isolate_workspaces != tiling_assistant_popup_isolate_workspaces)
++    {
++      g_settings_set_boolean (self->tiling_assistant_settings,
++                              "tiling-popup-all-workspace",
++                              !switcher_isolate_workspaces);
++    }
++}
++
+ /* GObject overrides */
+ 
+ static void
+@@ -81,6 +101,7 @@ cc_multitasking_panel_finalize (GObject *object)
+   g_clear_object (&self->mutter_settings);
+   g_clear_object (&self->shell_settings);
+   g_clear_object (&self->dock_settings);
++  g_clear_object (&self->tiling_assistant_settings);
+   g_clear_object (&self->wm_settings);
+ 
+   G_OBJECT_CLASS (cc_multitasking_panel_parent_class)->finalize (object);
+@@ -214,5 +235,26 @@ cc_multitasking_panel_init (CcMultitaskingPanel *self)
+                        self->dock_each_monitor_radio,
+                        "active",
+                        G_SETTINGS_BIND_DEFAULT);
++
++      g_clear_pointer (&schema, g_settings_schema_unref);
++    }
++
++  schema = g_settings_schema_source_lookup (schema_source,
++                                            "org.gnome.shell.extensions.tiling-assistant",
++                                            TRUE);
++  if (schema)
++    {
++      self->tiling_assistant_settings = g_settings_new_full (schema, NULL, NULL);
++
++      g_signal_connect_object (self->shell_settings, "changed::current-workspace-only",
++                               G_CALLBACK (keep_tiling_assistant_settings_in_sync), self,
++                               G_CONNECT_SWAPPED);
++      g_signal_connect_object (self->tiling_assistant_settings, "changed::tiling-popup-all-workspace",
++                               G_CALLBACK (keep_tiling_assistant_settings_in_sync), self,
++                               G_CONNECT_SWAPPED);
++
++      keep_tiling_assistant_settings_in_sync (self);
++
++      g_clear_pointer (&schema, g_settings_schema_unref);
+     }
+ }
