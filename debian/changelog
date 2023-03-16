@@ -1,4 +1,4 @@
-gnome-control-center (1:44~rc-1ubuntu1) UNRELEASED; urgency=medium
+gnome-control-center (1:44~rc-1ubuntu1) lunar; urgency=medium
 
   [ Jeremy Bicha ]
   * Merge with Debian. Remaining changes:
@@ -68,7 +68,7 @@ gnome-control-center (1:44~rc-1ubuntu1) UNRELEASED; urgency=medium
   * debian/patches: Update the multi-tasking assets patch
   * debian/patches: Refresh git indexes
 
- -- Marco Trevisan (Treviño) <marco@ubuntu.com>  Thu, 16 Mar 2023 06:33:57 +0100
+ -- Marco Trevisan (Treviño) <marco@ubuntu.com>  Thu, 16 Mar 2023 06:34:45 +0100
 
 gnome-control-center (1:44~rc-1) experimental; urgency=medium
 
