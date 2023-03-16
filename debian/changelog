@@ -53,12 +53,22 @@ gnome-control-center (1:44~rc-1ubuntu1) UNRELEASED; urgency=medium
       (LP: #2000423)
     + Get back the "Use layout default" switch_row title
   * Temporarily disable the Sound theme patch until it can be updated
+  * Update sound theme patch.
 
   [ Gunnar Hjalmarsson ]
   * Don't segfault if XDG_CURRENT_DESKTOP is unset (LP: #2008770,
     LP: #1892486).
 
- -- Jeremy Bicha <jbicha@ubuntu.com>  Wed, 08 Mar 2023 15:24:00 -0500
+  [ Marco Trevisan (Treviño) ]
+  * ubuntu-panel: Support toggling and tune Tiling Assistant
+  * ubuntu-panel: Ensure extension enabled states.
+    Check that extensions are actually enabled in the shell before showing their
+    options, in case they're disabled provide a switch to enable them
+  * debian/patches: Sync workspace isolation settings on tiling assistant
+  * debian/patches: Update the multi-tasking assets patch
+  * debian/patches: Refresh git indexes
+
+ -- Marco Trevisan (Treviño) <marco@ubuntu.com>  Thu, 16 Mar 2023 06:33:57 +0100
 
 gnome-control-center (1:44~rc-1) experimental; urgency=medium
 
