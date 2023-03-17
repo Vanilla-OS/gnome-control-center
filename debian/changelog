@@ -4,7 +4,7 @@ gnome-control-center (1:44~rc-1ubuntu2) lunar; urgency=medium
     (LP: #1988909)
   * debian/patches: Add patch to prevent an infinite loop on mouse panel
   * debian/patches: Add mouse and touch pad graphics for accent colors
-    (LP: #2011849)
+    (LP: #2011823)
 
  -- Marco Trevisan (Treviño) <marco@ubuntu.com>  Fri, 17 Mar 2023 05:01:12 +0100
 
