@@ -1,4 +1,4 @@
-gnome-control-center (1:44~rc-1ubuntu2) UNRELEASED; urgency=medium
+gnome-control-center (1:44~rc-1ubuntu2) lunar; urgency=medium
 
   * debian/patches: background, ensure dark theme option is honored
     (LP: #1988909)
@@ -6,7 +6,7 @@ gnome-control-center (1:44~rc-1ubuntu2) UNRELEASED; urgency=medium
   * debian/patches: Add mouse and touch pad graphics for accent colors
     (LP: #2011849)
 
- -- Marco Trevisan (Treviño) <marco@ubuntu.com>  Fri, 17 Mar 2023 04:59:23 +0100
+ -- Marco Trevisan (Treviño) <marco@ubuntu.com>  Fri, 17 Mar 2023 05:01:12 +0100
 
 gnome-control-center (1:44~rc-1ubuntu1) lunar; urgency=medium
 
