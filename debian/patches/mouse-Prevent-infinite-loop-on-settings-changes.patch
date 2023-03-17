@@ -1,0 +1,29 @@
+From: =?utf-8?b?Ik1hcmNvIFRyZXZpc2FuIChUcmV2acOxbyki?= <mail@3v1n0.net>
+Date: Fri, 17 Mar 2023 04:07:47 +0100
+Subject: mouse: Prevent infinite loop on settings changes
+
+We may get an infinite loop on mouse panel startup, in fact the scroll
+method changed event emits a gsettings change that also leads to a
+notify::use-default emission that again tries to writes to settings,
+leading to another change: infinitely.
+
+Origin: https://gitlab.gnome.org/GNOME/gnome-control-center/-/merge_requests/1723
+---
+ panels/mouse/cc-mouse-panel.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/panels/mouse/cc-mouse-panel.c b/panels/mouse/cc-mouse-panel.c
+index c08f70f..3d3a317 100644
+--- a/panels/mouse/cc-mouse-panel.c
++++ b/panels/mouse/cc-mouse-panel.c
+@@ -147,6 +147,10 @@ on_touchpad_scroll_method_changed_cb (CcMousePanel *self)
+ 
+   two_finger = cc_split_row_get_use_default (self->touchpad_scroll_method_row);
+ 
++  if (g_settings_get_boolean (self->touchpad_settings,
++                              "two-finger-scrolling-enabled") == two_finger)
++    return;
++
+   g_settings_set_boolean (self->touchpad_settings, "two-finger-scrolling-enabled", two_finger);
+ }
+ 
