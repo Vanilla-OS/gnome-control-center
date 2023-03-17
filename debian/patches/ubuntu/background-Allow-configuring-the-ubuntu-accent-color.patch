@@ -11,13 +11,13 @@ given that these are per-process anyways.
 ---
  panels/background/cc-background-panel.c  |  12 +
  panels/background/cc-background-panel.ui |   4 +
- panels/ubuntu/cc-ubuntu-colors-row.c     | 538 +++++++++++++++++++++++++++++++
+ panels/ubuntu/cc-ubuntu-colors-row.c     | 527 +++++++++++++++++++++++++++++++
  panels/ubuntu/cc-ubuntu-colors-row.css   |  24 ++
  panels/ubuntu/cc-ubuntu-colors-row.h     |  34 ++
  panels/ubuntu/cc-ubuntu-colors-row.ui    | 289 +++++++++++++++++
  panels/ubuntu/meson.build                |   3 +
  po/POTFILES.in                           |   2 +
- 8 files changed, 906 insertions(+)
+ 8 files changed, 895 insertions(+)
  create mode 100644 panels/ubuntu/cc-ubuntu-colors-row.c
  create mode 100644 panels/ubuntu/cc-ubuntu-colors-row.css
  create mode 100644 panels/ubuntu/cc-ubuntu-colors-row.h
@@ -97,10 +97,10 @@ index 33a8638..89a5ef5 100644
  
 diff --git a/panels/ubuntu/cc-ubuntu-colors-row.c b/panels/ubuntu/cc-ubuntu-colors-row.c
 new file mode 100644
-index 0000000..e47e359
+index 0000000..fa9380f
 --- /dev/null
 +++ b/panels/ubuntu/cc-ubuntu-colors-row.c
-@@ -0,0 +1,538 @@
+@@ -0,0 +1,527 @@
 +/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 +/*
 + * Copyright (C) 2022 Canonical Ltd
@@ -131,27 +131,11 @@ index 0000000..e47e359
 +
 +#include "gdesktop-enums.h"
 +
-+#define MIN_ICONSIZE 16.0
-+#define MAX_ICONSIZE 64.0
-+#define DEFAULT_ICONSIZE 48.0
-+#define ICONSIZE_KEY "dash-max-icon-size"
-+
-+#define UBUNTU_DOCK_SCHEMA "org.gnome.shell.extensions.dash-to-dock"
-+#define UBUNTU_DOCK_ALL_MONITORS_KEY "multi-monitor"
-+#define UBUNTU_DOCK_PREFERRED_MONITOR_KEY "preferred-monitor"
-+#define UBUNTU_DOCK_PREFERRED_CONNECTOR_KEY "preferred-monitor-by-connector"
-+
-+/*
-+ * This allows to migrate settings from 'preferred-monitor' to
-+ * 'preferred-monitor-by-connector', and can be removed after 22.04
-+ * simplifying all the logic, by relying on connector names only.
-+ */
-+#define UBUNTU_DOCK_MONITOR_INDEX_USE_CONNECTOR -2
-+
 +#define INTERFACE_SCHEMA "org.gnome.desktop.interface"
 +#define GTK_THEME_KEY "gtk-theme"
 +#define CURSOR_THEME_KEY "cursor-theme"
 +#define ICON_THEME_KEY "icon-theme"
++#define COLOR_SCHEME_KEY "color-scheme"
 +
 +#define GEDIT_PREFRENCES_SCHEMA "org.gnome.gedit.preferences.editor"
 +#define GEDIT_THEME_KEY "scheme"
@@ -240,6 +224,8 @@ index 0000000..e47e359
 +      g_string_append (gedit_theme, "-dark");
 +    }
 +
++  g_settings_delay (self->interface_settings);
++
 +  current_gtk_theme = g_settings_get_string (self->interface_settings, GTK_THEME_KEY);
 +
 +  if (g_strcmp0 (current_gtk_theme, gtk_theme->str))
@@ -259,6 +245,7 @@ index 0000000..e47e359
 +      g_autoptr(GVariant) gedit_user_value = NULL;
 +      const char *gedit_theme_name = NULL;
 +
++      g_settings_delay (self->gedit_settings);
 +      gedit_user_value = g_settings_get_user_value (self->gedit_settings,
 +                                                    GEDIT_THEME_KEY);
 +
@@ -272,7 +259,11 @@ index 0000000..e47e359
 +          g_settings_set_string (self->gedit_settings, GEDIT_THEME_KEY,
 +                                 gedit_theme->str);
 +        }
++
++        g_settings_apply (self->gedit_settings);
 +    }
++
++  g_settings_apply (self->interface_settings);
 +}
 +
 +static void
@@ -312,11 +303,6 @@ index 0000000..e47e359
 +          accent_color = parts[1];
 +        break;
 +    }
-+
-+  if (!is_dark && self->color_scheme == G_DESKTOP_COLOR_SCHEME_PREFER_DARK)
-+    is_dark = TRUE;
-+  else if (is_dark && self->color_scheme != G_DESKTOP_COLOR_SCHEME_PREFER_DARK)
-+    is_dark = FALSE;
 +
 +  for (color_item = gtk_widget_get_first_child (GTK_WIDGET (self->color_box));
 +       color_item != NULL;
@@ -564,6 +550,9 @@ index 0000000..e47e359
 +  g_signal_connect_object (self->interface_settings, "changed::" ICON_THEME_KEY,
 +                           G_CALLBACK (on_interface_settings_changed), self,
 +                           G_CONNECT_SWAPPED);
++  g_signal_connect_object (self->interface_settings, "changed::" COLOR_SCHEME_KEY,
++                           G_CALLBACK (on_interface_settings_changed), self,
++                           G_CONNECT_SWAPPED);
 +
 +  schema = g_settings_schema_source_lookup (schema_source, GEDIT_PREFRENCES_SCHEMA, TRUE);
 +  if (schema)
@@ -637,7 +626,7 @@ index 0000000..e47e359
 +  self->color_scheme = color_scheme;
 +
 +  if (self->interface_settings)
-+    on_interface_settings_changed (self);
++    on_selected_color_changed (self);
 +}
 diff --git a/panels/ubuntu/cc-ubuntu-colors-row.css b/panels/ubuntu/cc-ubuntu-colors-row.css
 new file mode 100644
