@@ -321,7 +321,7 @@ index 0000000..2b51182
 +</interface>
 diff --git a/panels/ubuntu/cc-ubuntu-panel.c b/panels/ubuntu/cc-ubuntu-panel.c
 new file mode 100644
-index 0000000..68f31ad
+index 0000000..f3789bc
 --- /dev/null
 +++ b/panels/ubuntu/cc-ubuntu-panel.c
 @@ -0,0 +1,1714 @@
@@ -824,14 +824,14 @@ index 0000000..68f31ad
 +    {
 +      case STATE_ENABLED:
 +      case STATE_ENABLING:
-+      case STATE_INITIALIZED:
 +      case STATE_DOWNLOADING:
 +        g_debug ("Extension %s is enabled (state %d)", uuid, extension_state);
 +        gtk_widget_set_visible (extension_switch, always_show_switch);
 +        break;
++      case STATE_INITIALIZED:
 +      case STATE_DISABLED:
 +      case STATE_DISABLING:
-+        g_warning ("Extension %s is not enabled", uuid);
++        g_warning ("Extension %s is not enabled (state %d)", uuid, extension_state);
 +        gtk_widget_set_visible (extension_switch, TRUE);
 +        break;
 +      case STATE_OUT_OF_DATE:
