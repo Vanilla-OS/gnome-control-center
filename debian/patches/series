@@ -4,6 +4,7 @@ keyboard-Avoid-modifying-xkb-options-when-user-changes-n.patch
 build-Look-for-snapd-glib-2.patch
 Revert-firmware-security-Hide-the-panel-when-chassis-type.patch
 mouse-Prevent-infinite-loop-on-settings-changes.patch
+dispaly-Allow-configuring-all-monitors-and-apply-settings.patch
 debian/Expose-touchpad-settings-if-synaptics-is-in-use.patch
 debian/Debian-s-adduser-doesn-t-allow-uppercase-letters-by-defau.patch
 debian/Ignore-result-of-test-network-panel.patch
