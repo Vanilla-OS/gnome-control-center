@@ -33,8 +33,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-control-center\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-control-center/issues\n"
-"POT-Creation-Date: 2023-03-02 15:52+0000\n"
-"PO-Revision-Date: 2023-03-03 09:28+0100\n"
+"POT-Creation-Date: 2023-03-17 16:56+0000\n"
+"PO-Revision-Date: 2023-03-19 09:28+0100\n"
 "Last-Translator: Jordi Mas i Hernàndez <jmas@softcatala.org>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
 "Language: ca\n"
@@ -137,9 +137,11 @@ msgstr ""
 msgid "%s of disk space used."
 msgstr "%s d'espai de disc utilitzat."
 
+#. List of apps.
 #: panels/applications/cc-applications-panel.c:1415
 #: panels/applications/cc-applications-panel.ui:19
 #: panels/applications/gnome-applications-panel.desktop.in:3
+#: panels/notifications/cc-notifications-panel.ui:26
 msgid "Apps"
 msgstr "Aplicacions"
 
@@ -1261,7 +1263,7 @@ msgstr[0] "%d hora"
 msgstr[1] "%d hores"
 
 #. Translators: Option for "Blank Screen" in "Power" panel
-#: panels/common/cc-util.c:183 panels/power/cc-power-panel.c:849
+#: panels/common/cc-util.c:183 panels/power/cc-power-panel.c:855
 #, c-format
 msgid "%d minute"
 msgid_plural "%d minutes"
@@ -1341,7 +1343,7 @@ msgid "%e %B %Y, %R"
 msgstr "%e %B de %Y a les %R"
 
 #. Translators: "city, country"
-#: panels/datetime/cc-datetime-panel.c:394
+#: panels/datetime/cc-datetime-panel.c:398
 #, c-format
 msgctxt "timezone loc"
 msgid "%s, %s"
@@ -1349,7 +1351,7 @@ msgstr "%s, %s"
 
 #. Update the timezone on the listbow row
 #. Translators: "timezone (details)"
-#: panels/datetime/cc-datetime-panel.c:411
+#: panels/datetime/cc-datetime-panel.c:415
 #, c-format
 msgctxt "timezone desc"
 msgid "%s (%s)"
@@ -1570,14 +1572,14 @@ msgstr "diagnòstics;fallada;"
 
 #: panels/display/cc-display-panel.c:493
 #: panels/notifications/cc-notifications-panel.c:217
-#: panels/power/cc-power-panel.c:737 panels/power/cc-power-panel.c:744
+#: panels/power/cc-power-panel.c:743 panels/power/cc-power-panel.c:750
 msgid "On"
 msgstr "Activat"
 
 #: panels/display/cc-display-panel.c:495
 #: panels/network/cc-net-proxy-page.c:166
 #: panels/notifications/cc-notifications-panel.c:217
-#: panels/power/cc-power-panel.c:731 panels/power/cc-power-panel.c:742
+#: panels/power/cc-power-panel.c:737 panels/power/cc-power-panel.c:748
 msgid "Off"
 msgstr "Desactivat"
 
@@ -2972,7 +2974,7 @@ msgid ""
 "permission."
 msgstr ""
 "S'ha donat permís a les següents aplicacions en espais aïllats per a "
-"utilitzar micròfons. Les aplicacions que no estan en un espais aïllat poden "
+"utilitzar micròfons. Les aplicacions que no estan en un espai aïllat poden "
 "utilitzar micròfons sense demanar permís."
 
 #: panels/microphone/cc-microphone-panel.ui:38
@@ -3379,7 +3381,7 @@ msgstr "Ignora els amfitrions"
 #: panels/network/cc-qr-code-dialog.c:133
 #, c-format
 msgid "Scan the QR code to connect to the network <b>%s</b>."
-msgstr "Escanegeu el codi QR per connectar-vos a la xarxa <b>%s</b>."
+msgstr "Escanegeu el codi QR per a connectar-vos a la xarxa <b>%s</b>."
 
 #: panels/network/cc-qr-code-dialog.ui:9
 msgid "Share Network"
@@ -4639,11 +4641,6 @@ msgstr "_No molesteu"
 msgid "_Lock Screen Notifications"
 msgstr "_Notificacions a la pantalla de bloqueig"
 
-#. List of apps.
-#: panels/notifications/cc-notifications-panel.ui:26
-msgid "Applications"
-msgstr "Aplicacions"
-
 #: panels/notifications/gnome-notifications-panel.desktop.in:4
 msgid "Control which notifications are displayed and what they show"
 msgstr "Controleu quines notificacions es mostren i què mostren"
@@ -4852,7 +4849,7 @@ msgid "Gaming input device"
 msgstr "Dispositiu d'entrada de joc"
 
 #. TRANSLATORS: secondary battery, misc
-#: panels/power/cc-battery-row.c:218 panels/power/cc-power-panel.c:257
+#: panels/power/cc-battery-row.c:218 panels/power/cc-power-panel.c:263
 #: panels/power/cc-power-panel.ui:58
 msgid "Battery"
 msgstr "Bateria"
@@ -4871,51 +4868,57 @@ msgstr "Addicional"
 msgid "Batteries"
 msgstr "Bateries"
 
-#: panels/power/cc-power-panel.c:514
+#. Translators: UPS is an Uninterruptible Power Supply:
+#. * https://en.wikipedia.org/wiki/Uninterruptible_power_supply
+#: panels/power/cc-power-panel.c:260
+msgid "UPS"
+msgstr "UPS"
+
+#: panels/power/cc-power-panel.c:520
 msgid "When _idle"
 msgstr "Quan estigui _inactiu"
 
-#: panels/power/cc-power-panel.c:674
+#: panels/power/cc-power-panel.c:680
 msgid "Suspend"
 msgstr "Suspèn"
 
-#: panels/power/cc-power-panel.c:675
+#: panels/power/cc-power-panel.c:681
 msgid "Power Off"
 msgstr "Apaga"
 
-#: panels/power/cc-power-panel.c:676
+#: panels/power/cc-power-panel.c:682
 msgid "Hibernate"
 msgstr "Hiberna"
 
-#: panels/power/cc-power-panel.c:677
+#: panels/power/cc-power-panel.c:683
 msgid "Nothing"
 msgstr "Res"
 
-#: panels/power/cc-power-panel.c:733
+#: panels/power/cc-power-panel.c:739
 msgid "When on battery power"
 msgstr "Quan s'utilitzi la bateria"
 
-#: panels/power/cc-power-panel.c:735
+#: panels/power/cc-power-panel.c:741
 msgid "When plugged in"
 msgstr "Quan estigui endollat"
 
-#: panels/power/cc-power-panel.c:856
+#: panels/power/cc-power-panel.c:862
 msgctxt "Idle time"
 msgid "Never"
 msgstr "Mai"
 
-#: panels/power/cc-power-panel.c:940
+#: panels/power/cc-power-panel.c:946
 msgid "Automatic suspend"
 msgstr "Suspèn automàticament"
 
-#: panels/power/cc-power-panel.c:1036
+#: panels/power/cc-power-panel.c:1042
 msgid ""
 "Performance mode temporarily disabled due to high operating temperature."
 msgstr ""
 "El mode de rendiment està temporalment inhabilitat a causa de l'alta "
 "temperatura d'operació."
 
-#: panels/power/cc-power-panel.c:1038
+#: panels/power/cc-power-panel.c:1044
 msgid ""
 "Lap detected: performance mode temporarily unavailable. Move the device to a"
 " stable surface to restore."
@@ -4924,11 +4927,11 @@ msgstr ""
 "temporalment. Moveu el dispositiu a una superfície estable per a restaurar-"
 "lo."
 
-#: panels/power/cc-power-panel.c:1040
+#: panels/power/cc-power-panel.c:1046
 msgid "Performance mode temporarily disabled."
 msgstr "Mode de rendiment inhabilitat temporalment."
 
-#: panels/power/cc-power-panel.c:1082
+#: panels/power/cc-power-panel.c:1088
 msgid ""
 "Low battery: power saver enabled. Previous mode will be restored when "
 "battery is sufficiently charged."
@@ -4937,13 +4940,13 @@ msgstr ""
 "restaurarà quan la bateria estigui prou carregada."
 
 #. translators: "%s" is an application name
-#: panels/power/cc-power-panel.c:1090
+#: panels/power/cc-power-panel.c:1096
 #, c-format
 msgid "Power Saver mode activated by “%s”."
 msgstr "Mode d'estalvi d'energia activat per «%s»."
 
 #. translators: "%s" is an application name
-#: panels/power/cc-power-panel.c:1094
+#: panels/power/cc-power-panel.c:1100
 #, c-format
 msgid "Performance mode activated by “%s”."
 msgstr "Mode de rendiment activat per «%s»."
@@ -6842,7 +6845,7 @@ msgstr "El suport per a aquesta funció està inhabilitat al BIOS."
 msgid "Thunderbolt security level could not be determined."
 msgstr "No s'ha pogut determinar el nivell de seguretat de Thunderbolt."
 
-#: panels/thunderbolt/cc-bolt-panel.c:679
+#: panels/thunderbolt/cc-bolt-panel.c:694
 #, c-format
 msgid "Error switching direct mode: %s"
 msgstr "S'ha produït un error en canviar al mode directe: «%s»"
@@ -7524,12 +7527,14 @@ msgid "Forever"
 msgstr "Per sempre"
 
 #: panels/usage/cc-usage-panel.c:347
-msgid "Delete all the recent files?"
-msgstr "Voleu suprimir tots fitxers recents?"
+msgid "Clear File History?"
+msgstr "Voleu netejar l'historial de fitxers?"
 
 #: panels/usage/cc-usage-panel.c:348
-msgid "All the recent files will be permanently deleted."
-msgstr "Se suprimiran permanent tots els fitxers recents."
+msgid "After clearing, lists of recently used files will appear empty."
+msgstr ""
+"Després de netejar-lo, les llistes dels fitxers utilitzats recentment "
+"apareixeran buides."
 
 #: panels/usage/cc-usage-panel.c:349
 msgid "_Clear History"
@@ -9429,825 +9434,11 @@ msgstr[1] "%u entrades"
 msgid "System Sounds"
 msgstr "Sons del sistema"
 
-#~ msgid "Camera is Turned Off"
-#~ msgstr "La càmera està apagada"
+#~ msgid "Applications"
+#~ msgstr "Aplicacions"
 
-#~ msgid "No sandboxed apps can capture photos or video."
-#~ msgstr "Cap aplicació en un espai aïllat pot capturar fotografies o vídeo."
+#~ msgid "Delete all the recent files?"
+#~ msgstr "Voleu suprimir tots fitxers recents?"
 
-#~ msgid "Protect your pictures"
-#~ msgstr "Protegiu les vostres imatges"
-
-#~ msgid "Report your problems"
-#~ msgstr "Informeu de problemes"
-
-#~ msgid ""
-#~ "Hardware meets security requirements. This device has protection against "
-#~ "common hardware security threats."
-#~ msgstr ""
-#~ "El maquinari compleix els requisits de seguretat. Aquest dispositiu té "
-#~ "protecció contra amenaces comunes de seguretat del maquinari."
-
-#~ msgid "Host firmware security status"
-#~ msgstr "Estat de seguretat del microprogramari de l'amfitrió"
-
-#~ msgid "Location Services Turned Off"
-#~ msgstr "Serveis d'ubicació desactivats"
-
-#~ msgid "No sandboxed apps can obtain location information."
-#~ msgstr ""
-#~ "Cap aplicació en un espai aïllat pot obtenir informació sobre la ubicació."
-
-#~ msgid "Protect your location information"
-#~ msgstr "Protegiu la vostra informació d'ubicació"
-
-#~ msgid "Microphone Turned Off"
-#~ msgstr "El micròfon està apagat"
-
-#~ msgid "No sandboxed apps can record sound."
-#~ msgstr "Cap aplicació en un espai aïllat pot enregistrar el so."
-
-#~ msgid "Protect your conversations"
-#~ msgstr "Protegiu les vostres converses"
-
-#~ msgid "Mouse speed"
-#~ msgstr "Velocitat del ratolí"
-
-#~ msgid "Natural Scrolling"
-#~ msgstr "Desplaçament natural"
-
-#~ msgid "Touchpad Speed"
-#~ msgstr "Velocitat del ratolí tàctil"
-
-#~ msgid "Touchpad speed"
-#~ msgstr "Velocitat del ratolí tàctil"
-
-#~ msgid "Two-finger Scrolling"
-#~ msgstr "Desplaçament amb dos dits"
-
-#~ msgid "Try clicking, double clicking, scrolling"
-#~ msgstr "Proveu de fer clic, fer doble clic i desplaçar"
-
-#~ msgid "Five clicks, GEGL time!"
-#~ msgstr "Cinc clics, és l'hora del GEGL"
-
-#~ msgid "Double click, primary button"
-#~ msgstr "Doble clic, botó primari"
-
-#~ msgid "Single click, primary button"
-#~ msgstr "Un sol clic, botó primari"
-
-#~ msgid "Double click, middle button"
-#~ msgstr "Doble clic, botó del mig"
-
-#~ msgid "Single click, middle button"
-#~ msgstr "Un sol clic, botó del mig"
-
-#~ msgid "Double click, secondary button"
-#~ msgstr "Doble clic, botó secundari"
-
-#~ msgid "Single click, secondary button"
-#~ msgstr "Un sol clic, botó secundari"
-
-#~ msgid "Stop hotspot and disconnect any users?"
-#~ msgstr "Voleu aturar el punt d'accés Wi-Fi i desconnectar els usuaris?"
-
-#~ msgid "_Stop Hotspot"
-#~ msgstr "_Atura el punt d'accés Wi-Fi"
-
-#~ msgid "NetworkManager needs to be running"
-#~ msgstr "Cal que el NetworkManager estigui executant-se"
-
-#~ msgid "Oops, something has gone wrong. Please contact your software vendor."
-#~ msgstr ""
-#~ "S'ha produït un error inesperat. Contacteu el vostre proveïdor de "
-#~ "programari."
-
-#~ msgid "Screen Settings"
-#~ msgstr "Paràmetres de la pantalla"
-
-#~ msgid "Don't leave traces"
-#~ msgstr "No deixis rastres"
-
-#~ msgid "Primary Menu"
-#~ msgstr "Menú primari"
-
-#, c-format
-#~ msgid ""
-#~ "%s has the following permissions built-in. These cannot be altered. If you "
-#~ "are concerned about these permissions, consider removing this application."
-#~ msgstr ""
-#~ "%s té els següents permisos integrats. Aquests no poden ser alterats. Si "
-#~ "esteu preocupats per aquests permisos, considereu suprimir aquesta "
-#~ "aplicació."
-
-#~ msgid "View Details"
-#~ msgstr "Veure detalls"
-
-#~ msgid "Built-in Permissions"
-#~ msgstr "Permisos integrats"
-
-#~ msgid "Application"
-#~ msgstr "Aplicació"
-
-#~ msgid ""
-#~ "Use of the camera allows applications to capture photos and video. Disabling the camera may cause some applications to not function properly.\n"
-#~ "\n"
-#~ "Allow the applications below to use your camera."
-#~ msgstr ""
-#~ "L'ús de la càmera permet que les aplicacions capturin fotos i vídeos. La desactivació de la càmera pot provocar que algunes aplicacions no funcionin correctament.\n"
-#~ "\n"
-#~ "Permet que les aplicacions següents utilitzin la càmera."
-
-#~ msgid "UTC%:::z"
-#~ msgstr "UTC%:::z"
-
-#~ msgid "%l:%M %p"
-#~ msgstr "%l∶%M %p"
-
-#~ msgid "%R"
-#~ msgstr "%-H:%M"
-
-#, c-format
-#~ msgctxt "timezone map"
-#~ msgid "%s (%s)"
-#~ msgstr "%s (%s)"
-
-#~ msgid "Search for a city"
-#~ msgstr "Cerqueu una ciutat"
-
-#~ msgid "Default Applications"
-#~ msgstr "Aplicacions per defecte"
-
-#, c-format
-#~ msgid "Device conforms to HSI level %d"
-#~ msgstr "El dispositiu s'ajusta al nivell %d HSI"
-
-#~ msgid "Security Level 0"
-#~ msgstr "Nivell de seguretat 0"
-
-#~ msgid ""
-#~ "This device has no protection against hardware security issues. This could "
-#~ "be because of a hardware or firmware configuration issue. It is recommended "
-#~ "to contact your IT support provider."
-#~ msgstr ""
-#~ "Aquest dispositiu no té protecció contra problemes de seguretat del "
-#~ "maquinari. Això pot ser degut a un problema de configuració de maquinari o "
-#~ "microprogramari. Es recomana contactar amb el vostre suport tècnic."
-
-#~ msgid "Security Level 1"
-#~ msgstr "Nivell de seguretat 1"
-
-#~ msgid ""
-#~ "This device has minimal protection against hardware security issues. This is"
-#~ " the lowest device security level and only provides protection against "
-#~ "simple security threats."
-#~ msgstr ""
-#~ "Aquest dispositiu té una protecció mínima contra problemes de seguretat del "
-#~ "maquinari. Aquest és el nivell de seguretat més baix del dispositiu i només "
-#~ "proporciona protecció contra amenaces de seguretat simples."
-
-#~ msgid "Security Level 2"
-#~ msgstr "Nivell de seguretat 2"
-
-#~ msgid "Security Level 3"
-#~ msgstr "Nivell de seguretat 3"
-
-#~ msgid ""
-#~ "This device has extended protection against hardware security issues. This "
-#~ "is the highest device security level and provides protection against "
-#~ "advanced security threats."
-#~ msgstr ""
-#~ "Aquest dispositiu té protecció ampliada contra problemes de seguretat del "
-#~ "maquinari. Aquest és el nivell de seguretat de dispositiu més alt i "
-#~ "proporciona protecció contra amenaces de seguretat avançades."
-
-#~ msgid "Contact your hardware manufacturer for help with security updates."
-#~ msgstr ""
-#~ "Contacteu amb el fabricant del maquinari per a obtenir ajuda amb les "
-#~ "actualitzacions de seguretat."
-
-#~ msgid ""
-#~ "It might be possible to resolve this issue in the device’s UEFI firmware "
-#~ "settings, or by a support technician."
-#~ msgstr ""
-#~ "És possible aquest problema a la configuració del microprogramari UEFI del "
-#~ "dispositiu, o per un tècnic de suport."
-
-#~ msgid ""
-#~ "It might be possible to resolve this issue in the device’s UEFI firmware "
-#~ "settings."
-#~ msgstr ""
-#~ "És possible resoldre aquest problema a la configuració del microprogramari "
-#~ "UEFI del dispositiu."
-
-#~ msgid "It might be possible for a support technician to resolve this issue."
-#~ msgstr "Seria possible que un tècnic de suport resolgués aquest problema."
-
-#~ msgid "Level 1"
-#~ msgstr "Nivell 1"
-
-#~ msgid "Level 2"
-#~ msgstr "Nivell 2"
-
-#~ msgid "Level 3"
-#~ msgstr "Nivell 3"
-
-#~ msgid "Exposed to serious security threats."
-#~ msgstr "Exposat a amenaces de seguretat perilloses."
-
-#~ msgid "Limited protection against simple security threats."
-#~ msgstr "Protecció limitada contra amenaces de seguretat simples."
-
-#~ msgid "Protected against common security threats."
-#~ msgstr "Protegit contra amenaces de seguretat comunes."
-
-#~ msgid "Comprehensive Protection"
-#~ msgstr "Protecció completa"
-
-#~ msgid "Firmware Write Protection"
-#~ msgstr "Protecció d'escriptura del microprogramari"
-
-#~ msgid "Firmware Write Protection Lock"
-#~ msgstr "Protecció de bloqueig d'escriptura del microprogramari"
-
-#~ msgid "Firmware BIOS Region"
-#~ msgstr "Regió de BIOS de microprogramari"
-
-#~ msgid "Firmware BIOS Descriptor"
-#~ msgstr "Descriptor de BIOS de microprogramari"
-
-#~ msgid "Pre-boot DMA Protection"
-#~ msgstr "Protecció DMA de prearrencada"
-
-#~ msgid "Intel BootGuard"
-#~ msgstr "BootGuard d'Intel"
-
-#~ msgid "Intel BootGuard Verified Boot"
-#~ msgstr "Arrencada verificada d'Intel BootGuard"
-
-#~ msgid "Intel BootGuard ACM Protected"
-#~ msgstr "Protegit amb Intel BootGuard ACM"
-
-#~ msgid "Intel BootGuard Error Policy"
-#~ msgstr "Política d'error d'Intel BootGuard"
-
-#~ msgid "Intel BootGuard Fuse"
-#~ msgstr "Intel BootGuard Fuse"
-
-#~ msgid "Intel CET Enabled"
-#~ msgstr "Intel CET habilitat"
-
-#~ msgid "Intel CET Active"
-#~ msgstr "Intel CET actiu"
-
-#~ msgid "Intel SMAP"
-#~ msgstr "Intel SMAP"
-
-#~ msgid "Encrypted RAM"
-#~ msgstr "RAM xifrada"
-
-#~ msgid "IOMMU Protection"
-#~ msgstr "Protecció IOMMU"
-
-#~ msgid "Linux Kernel Lockdown"
-#~ msgstr "Bloqueig del nucli de Linux"
-
-#~ msgid "Linux Swap"
-#~ msgstr "Intercanvi del Linux"
-
-#~ msgid "Suspend To RAM"
-#~ msgstr "Suspèn a RAM"
-
-#~ msgid "Suspend To Idle"
-#~ msgstr "Suspèn en espera"
-
-#~ msgid "UEFI Platform Key"
-#~ msgstr "Clau de la plataforma UEFI"
-
-#~ msgid "UEFI Secure Boot"
-#~ msgstr "Arrencada segura UEFI"
-
-#~ msgid "TPM Platform Configuration"
-#~ msgstr "Configuració de la plataforma TPM"
-
-#~ msgid "TPM Reconstruction"
-#~ msgstr "Reconstrucció de TPM"
-
-#~ msgid "TPM v2.0"
-#~ msgstr "TPM v2.0"
-
-#~ msgid "Intel Management Engine Manufacturing Mode"
-#~ msgstr "Mode de fabricació del motor de gestió d'Intel"
-
-#~ msgid "Intel Management Engine Override"
-#~ msgstr "Sobreescriptura del motor de gestió d'Intel"
-
-#~ msgid "Intel Management Engine Version"
-#~ msgstr "Versió del motor de gestió d'Intel"
-
-#~ msgid "Firmware Updates"
-#~ msgstr "Actualitzacions del microprogramari"
-
-#~ msgid "Firmware Attestation"
-#~ msgstr "Atestació del microprogramari"
-
-#~ msgid "Firmware Updater Verification"
-#~ msgstr "Verificació de l'actualitzador de microprogramari"
-
-#~ msgid "Platform Debugging"
-#~ msgstr "Depuració de la plataforma"
-
-#~ msgid "Processor Security Checks"
-#~ msgstr "Comprovacions de seguretat del processador"
-
-#~ msgid "AMD Rollback Protection"
-#~ msgstr "Protecció contra la retroacció AMD"
-
-#~ msgid "AMD Firmware Replay Protection"
-#~ msgstr "Protecció de reproducció de microprogramari AMD"
-
-#~ msgid "AMD Firmware Write Protection"
-#~ msgstr "Protecció d'escriptura de microprogramari AMD"
-
-#~ msgid "Fused Platform"
-#~ msgstr "Fused Platform"
-
-#~ msgid "Rename Device"
-#~ msgstr "Canvia el nom del dispositiu"
-
-#~ msgid ""
-#~ "The device name is used to identify this device when it is viewed over the "
-#~ "network, or when pairing Bluetooth devices."
-#~ msgstr ""
-#~ "El nom del dispositiu s'utilitza per a identificar aquest dispositiu quan es"
-#~ " visualitza en xarxa, o quan s'emparella amb dispositius Bluetooth."
-
-#~ msgid "Device name"
-#~ msgstr "Nom del dispositiu"
-
-#~ msgid "_Rename"
-#~ msgstr "_Canvia el nom"
-
-#~ msgid "Shortcuts"
-#~ msgstr "Dreceres"
-
-#~ msgid ""
-#~ "Location services allow applications to know your location. Using Wi-Fi and mobile broadband increases accuracy.\n"
-#~ "\n"
-#~ "Uses Mozilla Location Service: <a href='https://location.services.mozilla.com/privacy'>Privacy Policy</a>\n"
-#~ "\n"
-#~ "Allow the applications below to determine your location."
-#~ msgstr ""
-#~ "Els serveis de localització permeten a les aplicacions conèixer la vostra ubicació. L'ús de Wi-Fi i banda ampla mòbil augmenta la precisió.\n"
-#~ "\n"
-#~ "Utilitza el servei d'ubicació de Mozilla: <a href='https://location.services.mozilla.com/privacy'>política de privadesa</a>\n"
-#~ "\n"
-#~ "Permeteu que les aplicacions següents determinin la vostra ubicació."
-
-#~ msgid ""
-#~ "Use of the microphone allows applications to record and listen to audio. Disabling the microphone may cause some applications to not function properly.\n"
-#~ "\n"
-#~ "Allow the applications below to use your microphone."
-#~ msgstr ""
-#~ "L'ús del micròfon permet a les aplicacions enregistrar i escoltar àudio. Inhabilitar el micròfon pot causar que algunes aplicacions no funcionin correctament.\n"
-#~ "\n"
-#~ "Permet que les aplicacions de sota utilitzin el micròfon."
-
-#~ msgid "NetworkManager needs to be running."
-#~ msgstr "Cal que el NetworkManager estigui executant-se."
-
-#~ msgid "This is not recommended for untrusted public networks."
-#~ msgstr "No és recomanable en xarxes públiques sense confiança."
-
-#~ msgid "Network Proxy"
-#~ msgstr "Servidor intermediari de xarxa"
-
-#~ msgid "_Socks Host"
-#~ msgstr "_Servidor de sòcols"
-
-#~ msgid "Socks proxy port"
-#~ msgstr "Port del servidor intermediari de sòcols"
-
-#~ msgid "_Known Wi-Fi Networks"
-#~ msgstr "_Xarxes sense fil conegudes"
-
-#~ msgid "undefined error in 802.1X security (wpa-eap)"
-#~ msgstr "s'ha produït un error no definit en la seguretat de 802.1X (wpa-eap)"
-
-#~ msgid "no file selected"
-#~ msgstr "no s'ha seleccionat cap fitxer"
-
-#~ msgid "unspecified error validating eap-method file"
-#~ msgstr "s'ha produït un error no especificat en validar el fitxer eap-method"
-
-#~ msgid "DER, PEM, PKCS#12, or PGP private keys"
-#~ msgstr "Claus privades DER, PEM, PKCS#12 o PGP"
-
-#~ msgid "DER or PEM certificates"
-#~ msgstr "Certificats DER o PEM"
-
-#~ msgid "missing EAP-FAST PAC file"
-#~ msgstr "falta el fitxer EAP-FAST PAC"
-
-#~ msgid "PAC files (*.pac)"
-#~ msgstr "Fitxers PAC (*.pac)"
-
-#~ msgid "GTC"
-#~ msgstr "GTC"
-
-#~ msgid "MSCHAPv2"
-#~ msgstr "MSCHAPv2"
-
-#~ msgid "Anonymous"
-#~ msgstr "Anònim"
-
-#~ msgid "Authenticated"
-#~ msgstr "S'ha autenticat"
-
-#~ msgid "Both"
-#~ msgstr "Ambdós"
-
-#~ msgid "Anony_mous identity"
-#~ msgstr "Identitat _anònima"
-
-#~ msgid "PAC _file"
-#~ msgstr "_Fitxer PAC"
-
-#~ msgid "Choose a PAC file"
-#~ msgstr "Trieu un fitxer PAC"
-
-#~ msgid "_Inner authentication"
-#~ msgstr "Autenticació _interna"
-
-#~ msgid "Allow automatic PAC pro_visioning"
-#~ msgstr "_Permet la provisió automàtica PAC"
-
-#~ msgid "missing EAP-LEAP username"
-#~ msgstr "falta el nom d'usuari EAP-LEAP"
-
-#~ msgid "missing EAP-LEAP password"
-#~ msgstr "falta la contrasenya EAP-LEAP"
-
-#~ msgid "_Username"
-#~ msgstr "Nom d'_usuari"
-
-#~ msgid "Sho_w password"
-#~ msgstr "_Mostra la contrasenya"
-
-#, c-format
-#~ msgid "invalid EAP-PEAP CA certificate: %s"
-#~ msgstr "certificat CA EAP-PEAP no vàlid: %s"
-
-#~ msgid "invalid EAP-PEAP CA certificate: no certificate specified"
-#~ msgstr "certificat CA EAP-PEAP no vàlid: no s'ha especificat un certificat"
-
-#~ msgid "MD5"
-#~ msgstr "MD5"
-
-#~ msgid "Version 0"
-#~ msgstr "Versió 0"
-
-#~ msgid "Version 1"
-#~ msgstr "Versió 1"
-
-#~ msgid "C_A certificate"
-#~ msgstr "Certificat C_A"
-
-#~ msgid "Choose a Certificate Authority certificate"
-#~ msgstr "Trieu un certificat d'una autoritat de certificació"
-
-#~ msgid "No CA certificate is _required"
-#~ msgstr "_No es requereix un certificat CA"
-
-#~ msgid "PEAP _version"
-#~ msgstr "_Versió PEAP"
-
-#~ msgid "missing EAP username"
-#~ msgstr "falta el nom d'usuari EAP"
-
-#~ msgid "missing EAP password"
-#~ msgstr "falta la contrasenya EAP"
-
-#~ msgid "missing EAP-TLS identity"
-#~ msgstr "falta la identitat EAP-TLS"
-
-#, c-format
-#~ msgid "invalid EAP-TLS CA certificate: %s"
-#~ msgstr "certificat CA EAP-TLS invàlid: %s"
-
-#~ msgid "invalid EAP-TLS CA certificate: no certificate specified"
-#~ msgstr "certificat CA EAP-TLS invàlid: no s'ha especificat un certificat"
-
-#, c-format
-#~ msgid "invalid EAP-TLS private-key: %s"
-#~ msgstr "clau privada EAP-TLS no vàlida: %s"
-
-#, c-format
-#~ msgid "invalid EAP-TLS user-certificate: %s"
-#~ msgstr "certificat d'usuari EAP-TLS no vàlid: %s"
-
-#~ msgid "Unencrypted private keys are insecure"
-#~ msgstr "Les claus privades sense xifrar no són segures"
-
-#~ msgid ""
-#~ "The selected private key does not appear to be protected by a password. This could allow your security credentials to be compromised. Please select a password-protected private key.\n"
-#~ "\n"
-#~ "(You can password-protect your private key with openssl)"
-#~ msgstr ""
-#~ "La clau privada que heu seleccionat no sembla protegida amb una contrasenya. Això podria permetre que les credencials de seguretat fossin compromeses. Seleccioneu una clau privada protegida per contrasenya.\n"
-#~ "\n"
-#~ "(Podeu protegir la vostra clau privada amb una contrasenya amb l'openssl)"
-
-#~ msgid "Choose your personal certificate"
-#~ msgstr "Trieu el vostre certificat personal"
-
-#~ msgid "I_dentity"
-#~ msgstr "I_dentitat"
-
-#~ msgid "_User certificate"
-#~ msgstr "Certificat d'_usuari"
-
-#~ msgid "_Private key password"
-#~ msgstr "Contrasenya de clau _privada"
-
-#, c-format
-#~ msgid "invalid EAP-TTLS CA certificate: %s"
-#~ msgstr "certificat CA EAP-TTLS no vàlid: %s"
-
-#~ msgid "invalid EAP-TTLS CA certificate: no certificate specified"
-#~ msgstr "certificat CA EAP-TTLS no vàlid: no s'ha especificat un certificat"
-
-#~ msgid "PAP"
-#~ msgstr "PAP"
-
-#~ msgid "MSCHAP"
-#~ msgstr "MSCHAP"
-
-#~ msgid "MSCHAPv2 (no EAP)"
-#~ msgstr "MSCHAPv2 (sense EAP)"
-
-#~ msgid "CHAP"
-#~ msgstr "CHAP"
-
-#~ msgid "Unknown error validating 802.1X security"
-#~ msgstr "S'ha produït un error desconegut en validar la seguretat de 802.1X"
-
-#~ msgid "TLS"
-#~ msgstr "TLS"
-
-#~ msgid "PWD"
-#~ msgstr "PWD"
-
-#~ msgid "FAST"
-#~ msgstr "FAST"
-
-#~ msgid "Tunneled TLS"
-#~ msgstr "TLS a través de túnel"
-
-#~ msgid "Protected EAP (PEAP)"
-#~ msgstr "EAP protegit (PEAP)"
-
-#~ msgid "Au_thentication"
-#~ msgstr "Au_tenticació"
-
-#~ msgid "missing leap-username"
-#~ msgstr "manca el mom d'usuari LEAP"
-
-#~ msgid "missing leap-password"
-#~ msgstr "manca la contrasenya LEAP"
-
-#~ msgid "Wi-Fi password is missing."
-#~ msgstr "Falta la contrasenya Wi-Fi."
-
-#~ msgid "_Type"
-#~ msgstr "_Tipus"
-
-#~ msgid "missing wep-key"
-#~ msgstr "manca la clau wep"
-
-#, c-format
-#~ msgid "invalid wep-key: key with a length of %zu must contain only hex-digits"
-#~ msgstr ""
-#~ "clau wep invàlida: una clau amb longitud %zu ha de contenir només dígits "
-#~ "hexadecimals"
-
-#, c-format
-#~ msgid ""
-#~ "invalid wep-key: key with a length of %zu must contain only ascii characters"
-#~ msgstr ""
-#~ "clau wep invàlida: una clau amb longitud %zu ha de contenir només caràcters "
-#~ "ascii"
-
-#, c-format
-#~ msgid ""
-#~ "invalid wep-key: wrong key length %zu. A key must be either of length 5/13 "
-#~ "(ascii) or 10/26 (hex)"
-#~ msgstr ""
-#~ "clau wep invàlida: la longitud de clau %zu és errònia. Una clau ha de tenir "
-#~ "una longitud de 5/13 (ascii) o bé 10/26 (hex)"
-
-#~ msgid "invalid wep-key: passphrase must be non-empty"
-#~ msgstr "clau wep invàlida: la contrasenya no pot ser buida"
-
-#~ msgid "invalid wep-key: passphrase must be shorter than 64 characters"
-#~ msgstr "clau wep invàlida: la contrasenya ha de tenir menys de 64 caràcters"
-
-#~ msgid "1 (Default)"
-#~ msgstr "1 (per defecte)"
-
-#~ msgid "Open System"
-#~ msgstr "Sistema obert"
-
-#~ msgid "Shared Key"
-#~ msgstr "Clau compartida"
-
-#~ msgid "_Key"
-#~ msgstr "_Clau"
-
-#~ msgid "Sho_w key"
-#~ msgstr "_Mostra la clau"
-
-#~ msgid "WEP inde_x"
-#~ msgstr "Índe_x WEP"
-
-#, c-format
-#~ msgid ""
-#~ "invalid wpa-psk: invalid key-length %zu. Must be [8,63] bytes or 64 hex "
-#~ "digits"
-#~ msgstr ""
-#~ "wpa-psk no vàlid: longitud de clau %zu no vàlida. Ha de tenir [8,63] bytes o"
-#~ " 64 dígits hexadecimals"
-
-#~ msgid "invalid wpa-psk: cannot interpret key with 64 bytes as hex"
-#~ msgstr ""
-#~ "wpa-psk no vàlid: no es pot interpretar la clau de 64 bytes com a "
-#~ "hexadecimal"
-
-#~ msgid ""
-#~ "Period after the screen blanks when the screen is automatically locked."
-#~ msgstr ""
-#~ "Període després del qual la pantalla es posa en blanc quan la pantalla es "
-#~ "bloqueja automàticament."
-
-#~ msgid "Show _Notifications on Lock Screen"
-#~ msgstr "_Mostra les notificacions a la pantalla de bloqueig"
-
-#~ msgid "Application Search"
-#~ msgstr "Cerca d'aplicacions"
-
-#~ msgid "Rear"
-#~ msgstr "Posterior"
-
-#~ msgid "Front"
-#~ msgstr "Frontal"
-
-#, c-format
-#~ msgid "Testing %s"
-#~ msgstr "Provant %s"
-
-#~ msgid "Click a speaker to test"
-#~ msgstr "Feu clic a un altaveu per a provar-lo"
-
-#~ msgid "System Volume"
-#~ msgstr "Volum del sistema"
-
-#~ msgid "Cursor blinking speed"
-#~ msgstr "Velocitat del parpelleig del cursor"
-
-#~ msgid "Secondary click delay"
-#~ msgstr "Retard del clic secundari"
-
-#~ msgid "D_elay:"
-#~ msgstr "R_etard:"
-
-#~ msgctxt "dwell click delay"
-#~ msgid "Short"
-#~ msgstr "Curt"
-
-#~ msgctxt "dwell click delay"
-#~ msgid "Long"
-#~ msgstr "Llarg"
-
-#~ msgid "Repeat keys delay"
-#~ msgstr "Retard en la repetició de tecles"
-
-#~ msgid "Repeat keys speed"
-#~ msgstr "Velocitat de la repetició de tecles"
-
-#~ msgctxt "slow keys delay"
-#~ msgid "Short"
-#~ msgstr "Curt"
-
-#~ msgid "Slow keys typing delay"
-#~ msgstr "Retard d'escriptura de les tecles lentes"
-
-#~ msgctxt "slow keys delay"
-#~ msgid "Long"
-#~ msgstr "Llarg"
-
-#~ msgctxt "bounce keys delay"
-#~ msgid "Short"
-#~ msgstr "Curt"
-
-#~ msgid "Bounce keys typing delay"
-#~ msgstr "Retard d'escriptura en la repetició de tecles"
-
-#~ msgctxt "bounce keys delay"
-#~ msgid "Long"
-#~ msgstr "Llarg"
-
-#~ msgid "_Always Show Accessibility Menu"
-#~ msgstr "Mostra _sempre el menú d'accés universal"
-
-#~ msgid "Enable A_nimations"
-#~ msgstr "A_ctiva les animacions"
-
-#~ msgid "C_ursor Size"
-#~ msgstr "Mida del _cursor"
-
-#~ msgid "R_epeat Keys"
-#~ msgstr "_Repetició de tecles"
-
-#~ msgid "Cursor _Blinking"
-#~ msgstr "_Parpelleig del cursor"
-
-#~ msgid "_Typing Assist (AccessX)"
-#~ msgstr "_Assistent d'escriptura (AccessX)"
-
-#~ msgid "_Click Assist"
-#~ msgstr "A_ssistència en fer clic"
-
-#~ msgid "Flash the entire _window"
-#~ msgstr "Fes parpellejar la _finestra"
-
-#~ msgctxt "Distance"
-#~ msgid "Short"
-#~ msgstr "Curta"
-
-#~ msgctxt "Distance"
-#~ msgid "¼ Screen"
-#~ msgstr "¼ de pantalla"
-
-#~ msgctxt "Distance"
-#~ msgid "½ Screen"
-#~ msgstr "½ de pantalla"
-
-#~ msgctxt "Distance"
-#~ msgid "¾ Screen"
-#~ msgstr "¾ de pantalla"
-
-#~ msgctxt "Distance"
-#~ msgid "Long"
-#~ msgstr "Llarga"
-
-#~ msgid "Zoom Options"
-#~ msgstr "Opcions d'ampliació"
-
-#~ msgid "Magnifier Position:"
-#~ msgstr "Posició de l'ampliador:"
-
-#~ msgid "_Screen part:"
-#~ msgstr "_Part de la pantalla:"
-
-#~ msgid "Magnifier _extends outside of screen"
-#~ msgstr "L'_ampliador s'estén fora de la pantalla"
-
-#~ msgid "_Keep magnifier cursor centered"
-#~ msgstr "_Mantén el cursor de l'ampliador centrat"
-
-#~ msgid "_Crosshairs:"
-#~ msgstr "_Creus:"
-
-#~ msgid "Co_lor:"
-#~ msgstr "_Color:"
-
-#~ msgid "Color Effects:"
-#~ msgstr "Efectes de color:"
-
-#~ msgid "_White on black:"
-#~ msgstr "_Blanc sobre negre:"
-
-#~ msgctxt "universal access, contrast"
-#~ msgid "Co_lor"
-#~ msgstr "Colo_r"
-
-#~ msgctxt "universal access, color"
-#~ msgid "None"
-#~ msgstr "Cap"
-
-#~ msgctxt "universal access, brightness"
-#~ msgid "Low"
-#~ msgstr "Baixa"
-
-#~ msgctxt "universal access, brightness"
-#~ msgid "High"
-#~ msgstr "Alta"
-
-#~ msgctxt "universal access, contrast"
-#~ msgid "Low"
-#~ msgstr "Baix"
-
-#~ msgctxt "universal access, contrast"
-#~ msgid "High"
-#~ msgstr "Alt"
+#~ msgid "All the recent files will be permanently deleted."
+#~ msgstr "Se suprimiran permanent tots els fitxers recents."

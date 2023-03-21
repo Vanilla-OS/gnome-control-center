@@ -1,4 +1,4 @@
-gnome-control-center (1:44~rc-1ubuntu3) UNRELEASED; urgency=medium
+gnome-control-center (1:44.0-1ubuntu1) UNRELEASED; urgency=medium
 
   * debian/changelog: Fix bug reference in previous upload
   * debian/patches: Allow configuring all monitors at once (LP: #2012043)
@@ -11,6 +11,13 @@ gnome-control-center (1:44~rc-1ubuntu3) UNRELEASED; urgency=medium
   * debian/patches: Remove unused variable in colors selector
 
  -- Marco Trevisan (Treviño) <marco@ubuntu.com>  Tue, 21 Mar 2023 01:52:38 +0100
+
+gnome-control-center (1:44.0-1) experimental; urgency=medium
+
+  * New upstream release
+  * debian/patches: Refresh indexes
+
+ -- Marco Trevisan (Treviño) <marco@ubuntu.com>  Tue, 21 Mar 2023 01:50:16 +0100
 
 gnome-control-center (1:44~rc-1ubuntu2) lunar; urgency=medium
 

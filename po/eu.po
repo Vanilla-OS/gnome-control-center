@@ -10,8 +10,8 @@
 msgid ""
 msgstr "Project-Id-Version: gnome-control-center master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-control-center/issues\n"
-"POT-Creation-Date: 2023-02-25 13:00+0000\n"
-"PO-Revision-Date: 2023-02-26 14:00+0100\n"
+"POT-Creation-Date: 2023-03-17 16:56+0000\n"
+"PO-Revision-Date: 2023-03-18 14:00+0100\n"
 "Last-Translator: Asier Sarasua Garmendia <asiersarasua@ni.eus>\n"
 "Language-Team: Basque <librezale@librezale.eus>\n"
 "Language: eu\n"
@@ -110,9 +110,11 @@ msgstr "<b>%s</b> hurrengo fitxategi motak eta estekak irekitzeko erabiltzen da.
 msgid "%s of disk space used."
 msgstr "Erabilitako disko-espazioa: %s."
 
+#. List of apps.
 #: panels/applications/cc-applications-panel.c:1415
 #: panels/applications/cc-applications-panel.ui:19
 #: panels/applications/gnome-applications-panel.desktop.in:3
+#: panels/notifications/cc-notifications-panel.ui:26
 msgid "Apps"
 msgstr "Aplikazioak"
 
@@ -1196,7 +1198,7 @@ msgstr[0] "ordu %d"
 msgstr[1] "%d ordu"
 
 #. Translators: Option for "Blank Screen" in "Power" panel
-#: panels/common/cc-util.c:183 panels/power/cc-power-panel.c:849
+#: panels/common/cc-util.c:183 panels/power/cc-power-panel.c:855
 #, c-format
 msgid "%d minute"
 msgid_plural "%d minutes"
@@ -1275,7 +1277,7 @@ msgid "%e %B %Y, %R"
 msgstr "%Y/%B/%e, %R"
 
 #. Translators: "city, country"
-#: panels/datetime/cc-datetime-panel.c:394
+#: panels/datetime/cc-datetime-panel.c:398
 #, c-format
 msgctxt "timezone loc"
 msgid "%s, %s"
@@ -1283,7 +1285,7 @@ msgstr "%s, %s"
 
 #. Update the timezone on the listbow row
 #. Translators: "timezone (details)"
-#: panels/datetime/cc-datetime-panel.c:411
+#: panels/datetime/cc-datetime-panel.c:415
 #, c-format
 msgctxt "timezone desc"
 msgid "%s (%s)"
@@ -1497,13 +1499,13 @@ msgstr "diagnostikoak;kraskadura;"
 
 #: panels/display/cc-display-panel.c:493
 #: panels/notifications/cc-notifications-panel.c:217
-#: panels/power/cc-power-panel.c:737 panels/power/cc-power-panel.c:744
+#: panels/power/cc-power-panel.c:743 panels/power/cc-power-panel.c:750
 msgid "On"
 msgstr "Aktibatuta"
 
 #: panels/display/cc-display-panel.c:495 panels/network/cc-net-proxy-page.c:166
 #: panels/notifications/cc-notifications-panel.c:217
-#: panels/power/cc-power-panel.c:731 panels/power/cc-power-panel.c:742
+#: panels/power/cc-power-panel.c:737 panels/power/cc-power-panel.c:748
 msgid "Off"
 msgstr "Desaktibatuta"
 
@@ -1525,8 +1527,8 @@ msgid "_Apply"
 msgstr "_Aplikatu"
 
 #: panels/display/cc-display-panel.ui:78 panels/display/cc-display-panel.ui:209
-#: panels/display/cc-display-panel.ui:248 panels/network/cc-wifi-panel.ui:16
-#: panels/printers/new-printer-dialog.ui:64
+#: panels/display/cc-display-panel.ui:248 panels/mouse/cc-mouse-panel.ui:22
+#: panels/network/cc-wifi-panel.ui:16 panels/printers/new-printer-dialog.ui:64
 #: panels/region/cc-format-chooser.ui:37
 #: panels/universal-access/cc-ua-panel.ui:19
 #: panels/user-accounts/cc-fingerprint-dialog.ui:44
@@ -2581,7 +2583,8 @@ msgstr "Karaktere bereziaren sarrera"
 msgid "Methods for entering symbols and letter variants using the keyboard."
 msgstr "Teklatuaren bidez ikurrak eta letren aldaerak sartzeko metodoak."
 
-#: panels/keyboard/cc-keyboard-panel.ui:82 shell/cc-window.ui:161
+#: panels/keyboard/cc-keyboard-panel.ui:82
+#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:7 shell/cc-window.ui:161
 msgid "Keyboard Shortcuts"
 msgstr "Lasterbideak"
 
@@ -2589,58 +2592,56 @@ msgstr "Lasterbideak"
 msgid "View and Customize Shortcuts"
 msgstr "Ikusi eta pertsonalizatu lasterbideak"
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.c:387
+#: panels/keyboard/cc-keyboard-shortcut-dialog.c:381
 msgid "Reset All Shortcuts?"
 msgstr "Berrezarri lasterbide guztiak?"
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.c:390
+#: panels/keyboard/cc-keyboard-shortcut-dialog.c:384
 msgid ""
 "Resetting the shortcuts may affect your custom shortcuts. This cannot be "
 "undone."
 msgstr "Lasterbideak berrezartzeak zure lasterbide pertsonalizatuei eragin diezaieke. Hori ezin da desegin."
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.c:394
+#: panels/keyboard/cc-keyboard-shortcut-dialog.c:388
 #: panels/network/cc-network-panel.ui:26
 #: panels/printers/ppd-selection-dialog.ui:83
 #: panels/wwan/cc-wwan-device-page.c:188
 msgid "Cancel"
 msgstr "Utzi"
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.c:395
+#: panels/keyboard/cc-keyboard-shortcut-dialog.c:389
 msgid "Reset All"
 msgstr "Berrezarri dena"
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:33
+#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:27
 msgid "Reset All…"
 msgstr "Berrezarri dena…"
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:34
+#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:28
 msgid "Reset all shortcuts to their default keybindings"
 msgstr "Berrezarri lasterbide guztiak beraien laster-tekla lehenetsira"
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:65
+#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:49
 msgid "Search Shortcuts"
 msgstr "Bilatu lasterbideak"
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:102
-#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:124
+#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:88
 msgid "No keyboard shortcut found"
 msgstr "Ez da teklatuaren lasterbiderik aurkitu"
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:103
-#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:125
+#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:89
 msgid "Try a different search."
 msgstr "Saiatu bestelako bilaketa batekin."
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:140
+#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:138
 msgid "Add Custom Shortcuts"
 msgstr "Gehitu lasterbide pertsonalizatuak"
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:141
+#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:139
 msgid "Set up custom shortcuts for launching apps, running scripts, and more."
 msgstr "Konfiguratu lasterbide pertsonalizatuak aplikazioak abiarazteko, scriptak exekutatzeko eta gehiagorako."
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:145
+#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:143
 msgid "Add Shortcut"
 msgstr "Gehitu lasterbidea"
 
@@ -2824,147 +2825,148 @@ msgstr "Mugatu mikrofonoa atzitzea"
 msgid "microphone;recording;application;privacy;"
 msgstr "mikrofonoa;grabazioa;aplikazioa;pribatutasuna;"
 
-#: panels/mouse/cc-mouse-panel.ui:18
+#: panels/mouse/cc-mouse-panel.ui:30
 msgid "Test _Settings"
 msgstr "Probatu _ezarpenak"
 
-#: panels/mouse/cc-mouse-panel.ui:32 panels/mouse/cc-mouse-panel.ui:78
+#: panels/mouse/cc-mouse-panel.ui:44 panels/mouse/cc-mouse-panel.ui:90
 msgid "Mouse"
 msgstr "Sagua"
 
-#: panels/mouse/cc-mouse-panel.ui:39
+#: panels/mouse/cc-mouse-panel.ui:51
 #: panels/multitasking/cc-multitasking-panel.ui:9
 msgid "General"
 msgstr "Orokorra"
 
-#: panels/mouse/cc-mouse-panel.ui:42
+#: panels/mouse/cc-mouse-panel.ui:54
 msgid "Primary Button"
 msgstr "Botoi nagusia"
 
-#: panels/mouse/cc-mouse-panel.ui:43
+#: panels/mouse/cc-mouse-panel.ui:55
 msgid "Order of physical buttons on mice and touchpads."
 msgstr "Saguaren eta ukipen-panelaren botoi fisikoen ordena."
 
-#: panels/mouse/cc-mouse-panel.ui:57
+#: panels/mouse/cc-mouse-panel.ui:69
 msgid "Left"
 msgstr "Ezkerrean"
 
-#: panels/mouse/cc-mouse-panel.ui:64
+#: panels/mouse/cc-mouse-panel.ui:76
 msgid "Right"
 msgstr "Eskuinean"
 
-#: panels/mouse/cc-mouse-panel.ui:81 panels/mouse/cc-mouse-panel.ui:86
-#: panels/mouse/cc-mouse-panel.ui:189
+#: panels/mouse/cc-mouse-panel.ui:93 panels/mouse/cc-mouse-panel.ui:98
+#: panels/mouse/cc-mouse-panel.ui:200
 msgid "Pointer Speed"
 msgstr "Erakuslearen abiadura"
 
-#: panels/mouse/cc-mouse-panel.ui:89 panels/mouse/cc-mouse-panel.ui:197
+#: panels/mouse/cc-mouse-panel.ui:101 panels/mouse/cc-mouse-panel.ui:208
 #: panels/universal-access/cc-ua-typing-page.ui:53
 #: panels/universal-access/cc-ua-typing-page.ui:111
 msgid "Slow"
 msgstr "Motela"
 
-#: panels/mouse/cc-mouse-panel.ui:91 panels/mouse/cc-mouse-panel.ui:199
+#: panels/mouse/cc-mouse-panel.ui:103 panels/mouse/cc-mouse-panel.ui:210
 #: panels/universal-access/cc-ua-typing-page.ui:50
 #: panels/universal-access/cc-ua-typing-page.ui:108
 msgid "Fast"
 msgstr "Bizkorra"
 
-#: panels/mouse/cc-mouse-panel.ui:107 panels/mouse/cc-mouse-panel.ui:142
-msgid "Pointer Assistance"
-msgstr "Erakuslearen laguntza"
+#: panels/mouse/cc-mouse-panel.ui:119
+msgid "Mouse Acceleration"
+msgstr "Saguaren azelerazioa"
 
-#: panels/mouse/cc-mouse-panel.ui:108
+#: panels/mouse/cc-mouse-panel.ui:120
 msgid "Recommended for most users and applications"
 msgstr "Erabiltzaile eta aplikazio gehienetarako gomendatua"
 
-#. Translators: Preserve the line-break separating the two paragraphs.
-#: panels/mouse/cc-mouse-panel.ui:128
+#: panels/mouse/cc-mouse-panel.ui:140
 msgid ""
-"Turning pointer assistance off can allow faster and more precise movements, "
-"but can also make the mouse more difficult to use.\n"
-"\n"
-"Pointer assistance is also known as pointer acceleration."
-msgstr "Erakuslearen laguntza desaktibatzen bada, mugimenduak azkarragoak eta zehatzagoak izango dira, baina sagua erabiltzea zailagoa izan daiteke."
+"Turning mouse acceleration off can allow faster and more precise movements, "
+"but can also make the mouse more difficult to use."
+msgstr "Saguaren azelerazioa desaktibatzen bada, mugimenduak azkarragoak eta zehatzagoak izango dira, baina sagua erabiltzea zailagoa izan daiteke."
 
-#: panels/mouse/cc-mouse-panel.ui:150 panels/mouse/cc-mouse-panel.ui:253
+#: panels/mouse/cc-mouse-panel.ui:152
+msgid "Pointer Assistance"
+msgstr "Erakuslearen laguntza"
+
+#: panels/mouse/cc-mouse-panel.ui:160 panels/mouse/cc-mouse-panel.ui:264
 msgid "Scroll Direction"
 msgstr "Korritzearen norabidea"
 
-#: panels/mouse/cc-mouse-panel.ui:151 panels/mouse/cc-mouse-panel.ui:254
+#: panels/mouse/cc-mouse-panel.ui:161 panels/mouse/cc-mouse-panel.ui:265
 msgid "Traditional"
 msgstr "Tradizionala"
 
-#: panels/mouse/cc-mouse-panel.ui:152 panels/mouse/cc-mouse-panel.ui:255
+#: panels/mouse/cc-mouse-panel.ui:162 panels/mouse/cc-mouse-panel.ui:266
 msgid "Scrolling moves the view"
 msgstr "Korritzeak ikuspegia aldatzen du lekuz"
 
-#: panels/mouse/cc-mouse-panel.ui:153 panels/mouse/cc-mouse-panel.ui:256
+#: panels/mouse/cc-mouse-panel.ui:163 panels/mouse/cc-mouse-panel.ui:267
 msgid "Natural"
 msgstr "Naturala"
 
-#: panels/mouse/cc-mouse-panel.ui:154 panels/mouse/cc-mouse-panel.ui:257
+#: panels/mouse/cc-mouse-panel.ui:164 panels/mouse/cc-mouse-panel.ui:268
 msgid "Scrolling moves the content"
 msgstr "Korritzeak edukia aldatzen du lekuz"
 
-#: panels/mouse/cc-mouse-panel.ui:168 panels/mouse/cc-mouse-panel.ui:175
-#: panels/mouse/cc-mouse-panel.ui:181
+#: panels/mouse/cc-mouse-panel.ui:179 panels/mouse/cc-mouse-panel.ui:186
+#: panels/mouse/cc-mouse-panel.ui:192
 msgid "Touchpad"
 msgstr "Ukipen-panela"
 
-#: panels/mouse/cc-mouse-panel.ui:194
+#: panels/mouse/cc-mouse-panel.ui:205
 msgid "Pointer speed"
 msgstr "Erakuslearen abiadura"
 
-#: panels/mouse/cc-mouse-panel.ui:217
+#: panels/mouse/cc-mouse-panel.ui:228
 msgid "Clicking"
 msgstr "Klik egitea"
 
-#: panels/mouse/cc-mouse-panel.ui:222
+#: panels/mouse/cc-mouse-panel.ui:233
 msgid "Tap to Click"
 msgstr "Ukitu klik egiteko"
 
-#: panels/mouse/cc-mouse-panel.ui:223
+#: panels/mouse/cc-mouse-panel.ui:234
 msgid "Quickly touch the touchpad to click"
 msgstr "Klik egiteko, ukitu panela azkar"
 
-#: panels/mouse/cc-mouse-panel.ui:229
+#: panels/mouse/cc-mouse-panel.ui:240
 msgid "Tap to click"
 msgstr "Ukitu klik egiteko"
 
-#: panels/mouse/cc-mouse-panel.ui:240
+#: panels/mouse/cc-mouse-panel.ui:251
 msgid "Scrolling"
 msgstr "Korritzea"
 
-#: panels/mouse/cc-mouse-panel.ui:243
+#: panels/mouse/cc-mouse-panel.ui:254
 msgid "Scroll Method"
 msgstr "Korritze-metodoa"
 
-#: panels/mouse/cc-mouse-panel.ui:244
+#: panels/mouse/cc-mouse-panel.ui:255
 msgid "Two Finger"
 msgstr "Bi hatz"
 
-#: panels/mouse/cc-mouse-panel.ui:245
+#: panels/mouse/cc-mouse-panel.ui:256
 msgid "Drag two fingers on the touchpad"
 msgstr "Arrastatu bi hatz ukipen-panelean"
 
-#: panels/mouse/cc-mouse-panel.ui:246
+#: panels/mouse/cc-mouse-panel.ui:257
 msgid "Edge"
 msgstr "Ertza"
 
-#: panels/mouse/cc-mouse-panel.ui:247
+#: panels/mouse/cc-mouse-panel.ui:258
 msgid "Drag one finger on the edge"
 msgstr "Arrastatu hatz bat ertzera"
 
-#: panels/mouse/cc-mouse-test.c:68 panels/mouse/cc-mouse-test.ui:98
+#: panels/mouse/cc-mouse-test.c:68 panels/mouse/cc-mouse-test.ui:96
 msgid "Single Click"
 msgstr "Klik bakuna"
 
-#: panels/mouse/cc-mouse-test.c:70 panels/mouse/cc-mouse-test.ui:112
+#: panels/mouse/cc-mouse-test.c:70 panels/mouse/cc-mouse-test.ui:110
 msgid "Double Click"
 msgstr "Klik bikoitza"
 
-#: panels/mouse/cc-mouse-test.ui:26
+#: panels/mouse/cc-mouse-test.ui:24
 msgid "Test Mouse & Touchpad"
 msgstr "Probatu sagua eta ukipen-panela"
 
@@ -3185,7 +3187,7 @@ msgstr "Ezikusitako ostalariak"
 #. * translators: This is the format string for the text shown underneath the Wi-Fi QR code.
 #. * The string placeholder will be replaced by the Wi-Fi networks SSID.
 #.
-#: panels/network/cc-qr-code-dialog.c:128
+#: panels/network/cc-qr-code-dialog.c:133
 #, c-format
 msgid "Scan the QR code to connect to the network <b>%s</b>."
 msgstr "Eskaneatu QR kodea <b>%s</b> sarearekin konektatzeko."
@@ -4413,11 +4415,6 @@ msgstr "Ez _gogaitu"
 msgid "_Lock Screen Notifications"
 msgstr "Pantaila b_lokeatzearen jakinarazpenak"
 
-#. List of apps.
-#: panels/notifications/cc-notifications-panel.ui:26
-msgid "Applications"
-msgstr "Aplikazioak"
-
 #: panels/notifications/gnome-notifications-panel.desktop.in:4
 msgid "Control which notifications are displayed and what they show"
 msgstr "Kontrolatu jakinarazpenak nola bistaratzen diren eta zer erakusten duten"
@@ -4621,7 +4618,7 @@ msgid "Gaming input device"
 msgstr "Jokoetarako sarrerako gailua"
 
 #. TRANSLATORS: secondary battery, misc
-#: panels/power/cc-battery-row.c:218 panels/power/cc-power-panel.c:257
+#: panels/power/cc-battery-row.c:218 panels/power/cc-power-panel.c:263
 #: panels/power/cc-power-panel.ui:58
 msgid "Battery"
 msgstr "Bateria"
@@ -4640,72 +4637,78 @@ msgstr "Gehigarria"
 msgid "Batteries"
 msgstr "Bateriak"
 
-#: panels/power/cc-power-panel.c:514
+#. Translators: UPS is an Uninterruptible Power Supply:
+#. * https://en.wikipedia.org/wiki/Uninterruptible_power_supply
+#: panels/power/cc-power-panel.c:260
+msgid "UPS"
+msgstr "UPS"
+
+#: panels/power/cc-power-panel.c:520
 msgid "When _idle"
 msgstr "_Inaktibo dagoenean"
 
-#: panels/power/cc-power-panel.c:674
+#: panels/power/cc-power-panel.c:680
 msgid "Suspend"
 msgstr "Eseki"
 
-#: panels/power/cc-power-panel.c:675
+#: panels/power/cc-power-panel.c:681
 msgid "Power Off"
 msgstr "Itzali"
 
-#: panels/power/cc-power-panel.c:676
+#: panels/power/cc-power-panel.c:682
 msgid "Hibernate"
 msgstr "Hibernatu"
 
-#: panels/power/cc-power-panel.c:677
+#: panels/power/cc-power-panel.c:683
 msgid "Nothing"
 msgstr "Ezer ez"
 
-#: panels/power/cc-power-panel.c:733
+#: panels/power/cc-power-panel.c:739
 msgid "When on battery power"
 msgstr "Bateriaren energiarekin"
 
-#: panels/power/cc-power-panel.c:735
+#: panels/power/cc-power-panel.c:741
 msgid "When plugged in"
 msgstr "Entxufea konektatutakoan"
 
-#: panels/power/cc-power-panel.c:856
+#: panels/power/cc-power-panel.c:862
 msgctxt "Idle time"
 msgid "Never"
 msgstr "Inoiz ere ez"
 
-#: panels/power/cc-power-panel.c:940
+#: panels/power/cc-power-panel.c:946
 msgid "Automatic suspend"
 msgstr "Eseki automatikoki"
 
-#: panels/power/cc-power-panel.c:1036
+#: panels/power/cc-power-panel.c:1042
 msgid ""
 "Performance mode temporarily disabled due to high operating temperature."
 msgstr "Errendimendu modua desgaitu egin da aldi batez laneko tenperatura asko igo delako."
 
-#: panels/power/cc-power-panel.c:1038
+#: panels/power/cc-power-panel.c:1044
 msgid ""
 "Lap detected: performance mode temporarily unavailable. Move the device to a "
 "stable surface to restore."
 msgstr "Eramangarria detektatu da: errendimendu modua ez dago erabilgarri momentu honetan. Eraman gailua gainazal egonkor batera hura leheneratzeko."
 
-#: panels/power/cc-power-panel.c:1040
+#: panels/power/cc-power-panel.c:1046
 msgid "Performance mode temporarily disabled."
 msgstr "Errendimendu modua desgaitu egin da aldi batez."
 
-#: panels/power/cc-power-panel.c:1082
+#: panels/power/cc-power-panel.c:1088
 msgid ""
 "Low battery: power saver enabled. Previous mode will be restored when "
 "battery is sufficiently charged."
 msgstr "Bateria gutxi: energia aurrezteko modua gaitu da. Bateria nahiko kargatuta dagoenean aurreko modua leheneratuko da."
 
 #. translators: "%s" is an application name
-#: panels/power/cc-power-panel.c:1090
+#: panels/power/cc-power-panel.c:1096
 #, c-format
 msgid "Power Saver mode activated by “%s”."
 msgstr "Energia aurrezteko modua aktibatuta: “%s”."
 
 #. translators: "%s" is an application name
-#: panels/power/cc-power-panel.c:1094
+#: panels/power/cc-power-panel.c:1100
 #, c-format
 msgid "Performance mode activated by “%s”."
 msgstr "Errendimendu modua aktibatuta: “%s”."
@@ -6531,7 +6534,7 @@ msgstr "Thunderbolt euskarria desgaitu egin da BIOSean."
 msgid "Thunderbolt security level could not be determined."
 msgstr "Thunderbolten segurtasun-maila ezin izan da zehaztu."
 
-#: panels/thunderbolt/cc-bolt-panel.c:679
+#: panels/thunderbolt/cc-bolt-panel.c:694
 #, c-format
 msgid "Error switching direct mode: %s"
 msgstr "Errorea modu zuzena aldatzean: %s"
@@ -7187,12 +7190,12 @@ msgid "Forever"
 msgstr "Beti"
 
 #: panels/usage/cc-usage-panel.c:347
-msgid "Delete all the recent files?"
-msgstr "Ezabatu azken aldiko fitxategi guztiak?"
+msgid "Clear File History?"
+msgstr "Garbitu fitxategi-historia?"
 
 #: panels/usage/cc-usage-panel.c:348
-msgid "All the recent files will be permanently deleted."
-msgstr "Azken aldiko fitxategi guztiak betirako ezabatuko dira."
+msgid "After clearing, lists of recently used files will appear empty."
+msgstr "Garbitu ondoren azken aldian erabilitako fitxategien zerrenda hutsik agertuko da."
 
 #: panels/usage/cc-usage-panel.c:349
 msgid "_Clear History"
@@ -9017,6 +9020,15 @@ msgstr[1] "%u sarrera"
 #: subprojects/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
 msgstr "Sistemaren soinuak"
+
+#~ msgid "Applications"
+#~ msgstr "Aplikazioak"
+
+#~ msgid "Delete all the recent files?"
+#~ msgstr "Ezabatu azken aldiko fitxategi guztiak?"
+
+#~ msgid "All the recent files will be permanently deleted."
+#~ msgstr "Azken aldiko fitxategi guztiak betirako ezabatuko dira."
 
 #~ msgid "Camera is Turned Off"
 #~ msgstr "Kamera itzalita dago"
