@@ -24,16 +24,16 @@ Forwarded: not-needed
  panels/ubuntu/cc-ubuntu-dock-dialog.c       |  103 ++
  panels/ubuntu/cc-ubuntu-dock-dialog.h       |   31 +
  panels/ubuntu/cc-ubuntu-dock-dialog.ui      |   81 ++
- panels/ubuntu/cc-ubuntu-panel.c             | 1714 +++++++++++++++++++++++++++
+ panels/ubuntu/cc-ubuntu-panel.c             | 1730 +++++++++++++++++++++++++++
  panels/ubuntu/cc-ubuntu-panel.h             |   35 +
- panels/ubuntu/cc-ubuntu-panel.ui            |  218 ++++
+ panels/ubuntu/cc-ubuntu-panel.ui            |  217 ++++
  panels/ubuntu/gnome-ubuntu-panel.desktop.in |   13 +
  panels/ubuntu/meson.build                   |   97 ++
  panels/ubuntu/ubuntu.gresource.xml          |    6 +
  po/POTFILES.in                              |    5 +
  shell/cc-panel-list.c                       |    1 +
  shell/cc-panel-loader.c                     |    3 +
- 16 files changed, 2315 insertions(+)
+ 16 files changed, 2330 insertions(+)
  create mode 100644 panels/ubuntu/assets/colors/color.svg.in
  create mode 100644 panels/ubuntu/assets/theme-dark.svg
  create mode 100644 panels/ubuntu/assets/theme-light.svg
@@ -321,10 +321,10 @@ index 0000000..2b51182
 +</interface>
 diff --git a/panels/ubuntu/cc-ubuntu-panel.c b/panels/ubuntu/cc-ubuntu-panel.c
 new file mode 100644
-index 0000000..f3789bc
+index 0000000..e44f521
 --- /dev/null
 +++ b/panels/ubuntu/cc-ubuntu-panel.c
-@@ -0,0 +1,1714 @@
+@@ -0,0 +1,1730 @@
 +/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 +/*
 + * Copyright (C) 2017-2022 Canonical Ltd
@@ -707,7 +707,11 @@ index 0000000..f3789bc
 +  gtk_widget_set_visible (GTK_WIDGET (self->dock_monitor_row), valid_monitors != NULL);
 +
 +  if (!valid_monitors)
-+    return;
++    {
++      gtk_widget_set_sensitive (GTK_WIDGET (self->dock_monitor_row),
++                                gtk_switch_get_active (self->dock_switch));
++      return;
++    }
 +
 +  all_displays_value_object = gtk_string_object_new (_("All displays"));
 +  g_list_store_insert (self->dock_monitors_list,
@@ -747,6 +751,9 @@ index 0000000..f3789bc
 +  g_list_store_insert (self->dock_monitors_list,
 +                       GSD_UBUNTU_DOCK_MONITOR_PRIMARY,
 +                       primary_value_object);
++
++  gtk_widget_set_sensitive (GTK_WIDGET (self->dock_monitor_row),
++                            gtk_switch_get_active (self->dock_switch));
 +}
 +
 +static void
@@ -1833,9 +1840,12 @@ index 0000000..f3789bc
 +      self->ding_settings = g_settings_new_full (schema, NULL, NULL);
 +
 +      populate_ding_size_row (self->ding_icon_size_row);
++      gtk_widget_set_sensitive (GTK_WIDGET (self->ding_icon_size_row),
++                                gtk_switch_get_active (self->ding_switch));
++
 +      g_settings_bind_with_mapping (self->ding_settings, "icon-size",
 +                                    self->ding_icon_size_row, "selected",
-+                                    G_SETTINGS_BIND_DEFAULT,
++                                    G_SETTINGS_BIND_NO_SENSITIVITY,
 +                                    ding_size_get_mapping,
 +                                    ding_size_set_mapping,
 +                                    self, NULL);
@@ -1843,14 +1853,14 @@ index 0000000..f3789bc
 +      populate_ding_start_corner_row (self->ding_icons_new_alignment_row);
 +      g_settings_bind_with_mapping (self->ding_settings, "start-corner",
 +                                    self->ding_icons_new_alignment_row, "selected",
-+                                    G_SETTINGS_BIND_DEFAULT,
++                                    G_SETTINGS_BIND_NO_SENSITIVITY,
 +                                    ding_start_corner_get_mapping,
 +                                    ding_start_corner_set_mapping,
 +                                    self, NULL);
 +
 +      g_settings_bind (self->ding_settings, "show-home",
 +                       self->ding_showhome_switch, "active",
-+                       G_SETTINGS_BIND_DEFAULT);
++                       G_SETTINGS_BIND_NO_SENSITIVITY);
 +
 +      g_signal_connect_object (self->gnome_shell_settings,
 +                               "changed::" GNOME_SHELL_ENABLED_EXTENSIONS,
@@ -1891,9 +1901,13 @@ index 0000000..f3789bc
 +      self->updating = TRUE;
 +      adw_combo_row_set_model (self->dock_monitor_row,
 +                               G_LIST_MODEL (self->dock_monitors_list));
++      gtk_widget_set_sensitive (GTK_WIDGET (self->dock_monitor_row),
++                                gtk_switch_get_active (self->dock_switch));
 +      self->updating = FALSE;
 +
 +      populate_dock_position_row (self->dock_position_row);
++      gtk_widget_set_sensitive (GTK_WIDGET (self->dock_position_row),
++                                gtk_switch_get_active (self->dock_switch));
 +
 +      g_signal_connect_object (self->dock_settings,
 +                               "changed::" ICONSIZE_KEY,
@@ -1913,16 +1927,17 @@ index 0000000..f3789bc
 +                               self, G_CONNECT_SWAPPED);
 +      g_settings_bind_with_mapping (self->dock_settings, "dock-position",
 +                                    self->dock_position_row, "selected",
-+                                    G_SETTINGS_BIND_DEFAULT,
++                                    G_SETTINGS_BIND_NO_SENSITIVITY,
 +                                    dock_position_get_mapping,
 +                                    dock_position_set_mapping,
 +                                    self, NULL);
 +      g_settings_bind (self->dock_settings, "dock-fixed",
 +                       self->dock_autohide_switch, "active",
-+                       G_SETTINGS_BIND_INVERT_BOOLEAN);
++                       G_SETTINGS_BIND_INVERT_BOOLEAN |
++                       G_SETTINGS_BIND_NO_SENSITIVITY);
 +      g_settings_bind (self->dock_settings, "extend-height",
 +                       self->dock_extendheight_switch, "active",
-+                       G_SETTINGS_BIND_DEFAULT);
++                       G_SETTINGS_BIND_NO_SENSITIVITY);
 +
 +      g_signal_connect_object (self->gnome_shell_settings,
 +                               "changed::" GNOME_SHELL_ENABLED_EXTENSIONS,
@@ -1989,10 +2004,11 @@ index 0000000..f3789bc
 +
 +      g_settings_bind (self->tiling_assistant_settings, "enable-tiling-popup",
 +                       self->tiling_assistant_popup_switch, "active",
-+                       G_SETTINGS_BIND_DEFAULT);
++                       G_SETTINGS_BIND_NO_SENSITIVITY);
 +      g_settings_bind (self->tiling_assistant_settings, "disable-tile-groups",
 +                       self->tiling_assistant_tiling_group, "active",
-+                       G_SETTINGS_BIND_INVERT_BOOLEAN);
++                       G_SETTINGS_BIND_INVERT_BOOLEAN |
++                       G_SETTINGS_BIND_NO_SENSITIVITY);
 +
 +      update_tiling_assistant_status (self);
 +
@@ -2082,10 +2098,10 @@ index 0000000..b13f611
 +#endif /* _CC_EDIT_DIALOG_H_ */
 diff --git a/panels/ubuntu/cc-ubuntu-panel.ui b/panels/ubuntu/cc-ubuntu-panel.ui
 new file mode 100644
-index 0000000..7585a38
+index 0000000..08046f1
 --- /dev/null
 +++ b/panels/ubuntu/cc-ubuntu-panel.ui
-@@ -0,0 +1,218 @@
+@@ -0,0 +1,217 @@
 +<?xml version="1.0" encoding="UTF-8"?>
 +<interface>
 +  <template class="CcUbuntuPanel" parent="CcPanel">
@@ -2235,7 +2251,6 @@ index 0000000..7585a38
 +            <child>
 +              <object class="AdwComboRow" id="dock_position_row">
 +                <property name="use_underline">True</property>
-+                <property name="can_focus">True</property>
 +                <property name="can_focus">True</property>
 +                <property name="width_request">100</property>
 +                <property name="title" translatable="yes">Position on screen</property>
