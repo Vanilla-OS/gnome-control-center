@@ -24,8 +24,8 @@ msgstr ""
 "Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-control-center/"
 "issues\n"
-"POT-Creation-Date: 2023-03-02 15:52+0000\n"
-"PO-Revision-Date: 2023-03-02 20:24+0300\n"
+"POT-Creation-Date: 2023-03-16 16:46+0000\n"
+"PO-Revision-Date: 2023-03-16 20:11+0300\n"
 "Last-Translator: Aleksandr Melman <Alexmelman88@gmail.com>\n"
 "Language-Team: Русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -129,9 +129,11 @@ msgstr "<b>%s</b> используется для открытия следую�
 msgid "%s of disk space used."
 msgstr "%s дискового пространства использовано."
 
+#. List of apps.
 #: panels/applications/cc-applications-panel.c:1415
 #: panels/applications/cc-applications-panel.ui:19
 #: panels/applications/gnome-applications-panel.desktop.in:3
+#: panels/notifications/cc-notifications-panel.ui:26
 msgid "Apps"
 msgstr "Приложения"
 
@@ -1249,7 +1251,7 @@ msgstr[1] "%d часа"
 msgstr[2] "%d часов"
 
 #. Translators: Option for "Blank Screen" in "Power" panel
-#: panels/common/cc-util.c:183 panels/power/cc-power-panel.c:849
+#: panels/common/cc-util.c:183 panels/power/cc-power-panel.c:855
 #, c-format
 msgid "%d minute"
 msgid_plural "%d minutes"
@@ -1332,7 +1334,7 @@ msgid "%e %B %Y, %R"
 msgstr "%-d %B %Y, %R"
 
 #. Translators: "city, country"
-#: panels/datetime/cc-datetime-panel.c:394
+#: panels/datetime/cc-datetime-panel.c:398
 #, c-format
 msgctxt "timezone loc"
 msgid "%s, %s"
@@ -1340,7 +1342,7 @@ msgstr "%s, %s"
 
 #. Update the timezone on the listbow row
 #. Translators: "timezone (details)"
-#: panels/datetime/cc-datetime-panel.c:411
+#: panels/datetime/cc-datetime-panel.c:415
 #, c-format
 msgctxt "timezone desc"
 msgid "%s (%s)"
@@ -1556,13 +1558,13 @@ msgstr "диагностика;крах;"
 
 #: panels/display/cc-display-panel.c:493
 #: panels/notifications/cc-notifications-panel.c:217
-#: panels/power/cc-power-panel.c:737 panels/power/cc-power-panel.c:744
+#: panels/power/cc-power-panel.c:743 panels/power/cc-power-panel.c:750
 msgid "On"
 msgstr "Включено"
 
 #: panels/display/cc-display-panel.c:495 panels/network/cc-net-proxy-page.c:166
 #: panels/notifications/cc-notifications-panel.c:217
-#: panels/power/cc-power-panel.c:731 panels/power/cc-power-panel.c:742
+#: panels/power/cc-power-panel.c:737 panels/power/cc-power-panel.c:748
 msgid "Off"
 msgstr "Выключено"
 
@@ -4616,11 +4618,6 @@ msgstr "_Не беспокоить"
 msgid "_Lock Screen Notifications"
 msgstr "Уведомления на экране _блокировки"
 
-#. List of apps.
-#: panels/notifications/cc-notifications-panel.ui:26
-msgid "Applications"
-msgstr "Приложения"
-
 #: panels/notifications/gnome-notifications-panel.desktop.in:4
 msgid "Control which notifications are displayed and what they show"
 msgstr "Управление отображением и содержанием уведомлений"
@@ -4833,7 +4830,7 @@ msgid "Gaming input device"
 msgstr "Игровое устройство ввода"
 
 #. TRANSLATORS: secondary battery, misc
-#: panels/power/cc-battery-row.c:218 panels/power/cc-power-panel.c:257
+#: panels/power/cc-battery-row.c:218 panels/power/cc-power-panel.c:263
 #: panels/power/cc-power-panel.ui:58
 msgid "Battery"
 msgstr "Батарея"
@@ -4852,51 +4849,57 @@ msgstr "Дополнительная"
 msgid "Batteries"
 msgstr "Батареи"
 
-#: panels/power/cc-power-panel.c:514
+#. Translators: UPS is an Uninterruptible Power Supply:
+#. * https://en.wikipedia.org/wiki/Uninterruptible_power_supply
+#: panels/power/cc-power-panel.c:260
+msgid "UPS"
+msgstr "ИБП"
+
+#: panels/power/cc-power-panel.c:520
 msgid "When _idle"
 msgstr "При п_ростое"
 
-#: panels/power/cc-power-panel.c:674
+#: panels/power/cc-power-panel.c:680
 msgid "Suspend"
 msgstr "Режим ожидания"
 
-#: panels/power/cc-power-panel.c:675
+#: panels/power/cc-power-panel.c:681
 msgid "Power Off"
 msgstr "Выключить"
 
-#: panels/power/cc-power-panel.c:676
+#: panels/power/cc-power-panel.c:682
 msgid "Hibernate"
 msgstr "Режим гибернации"
 
-#: panels/power/cc-power-panel.c:677
+#: panels/power/cc-power-panel.c:683
 msgid "Nothing"
 msgstr "Ничего не делать"
 
-#: panels/power/cc-power-panel.c:733
+#: panels/power/cc-power-panel.c:739
 msgid "When on battery power"
 msgstr "При работе от батареи"
 
-#: panels/power/cc-power-panel.c:735
+#: panels/power/cc-power-panel.c:741
 msgid "When plugged in"
 msgstr "При подключении к сети"
 
-#: panels/power/cc-power-panel.c:856
+#: panels/power/cc-power-panel.c:862
 msgctxt "Idle time"
 msgid "Never"
 msgstr "Никогда"
 
-#: panels/power/cc-power-panel.c:940
+#: panels/power/cc-power-panel.c:946
 msgid "Automatic suspend"
 msgstr "Автоматический режим ожидания"
 
-#: panels/power/cc-power-panel.c:1036
+#: panels/power/cc-power-panel.c:1042
 msgid ""
 "Performance mode temporarily disabled due to high operating temperature."
 msgstr ""
 "Режим высокой производительности временно запрещён из-за высокой температуры "
 "устройства."
 
-#: panels/power/cc-power-panel.c:1038
+#: panels/power/cc-power-panel.c:1044
 msgid ""
 "Lap detected: performance mode temporarily unavailable. Move the device to a "
 "stable surface to restore."
@@ -4905,11 +4908,11 @@ msgstr ""
 "на коленях. Переместите устройство на ровную поверхность для возобновления "
 "режима."
 
-#: panels/power/cc-power-panel.c:1040
+#: panels/power/cc-power-panel.c:1046
 msgid "Performance mode temporarily disabled."
 msgstr "Режим высокой производительности запрещён."
 
-#: panels/power/cc-power-panel.c:1082
+#: panels/power/cc-power-panel.c:1088
 msgid ""
 "Low battery: power saver enabled. Previous mode will be restored when "
 "battery is sufficiently charged."
@@ -4918,13 +4921,13 @@ msgstr ""
 "будет автоматически включён когда батарея будет заряжена."
 
 #. translators: "%s" is an application name
-#: panels/power/cc-power-panel.c:1090
+#: panels/power/cc-power-panel.c:1096
 #, c-format
 msgid "Power Saver mode activated by “%s”."
 msgstr "Режим низкого потребления активирован «%s»."
 
 #. translators: "%s" is an application name
-#: panels/power/cc-power-panel.c:1094
+#: panels/power/cc-power-panel.c:1100
 #, c-format
 msgid "Performance mode activated by “%s”."
 msgstr "Режим высокой производительности активирован «%s»."
@@ -6819,7 +6822,7 @@ msgstr "Поддержка Thunderbolt отключена в BIOS."
 msgid "Thunderbolt security level could not be determined."
 msgstr "Уровень безопасности Thunderbolt не может быть определен."
 
-#: panels/thunderbolt/cc-bolt-panel.c:679
+#: panels/thunderbolt/cc-bolt-panel.c:694
 #, c-format
 msgid "Error switching direct mode: %s"
 msgstr "Ошибка переключения в режим прямого доступа: %s"
@@ -7493,12 +7496,12 @@ msgid "Forever"
 msgstr "Неограниченно"
 
 #: panels/usage/cc-usage-panel.c:347
-msgid "Delete all the recent files?"
-msgstr "Удалить все недавние файлы?"
+msgid "Clear File History?"
+msgstr "Очистить историю файлов?"
 
 #: panels/usage/cc-usage-panel.c:348
-msgid "All the recent files will be permanently deleted."
-msgstr "Все недавние файлы будут безвозвратно удалены."
+msgid "After clearing, lists of recently used files will appear empty."
+msgstr "После очистки списки недавно использованных файлов будут пустыми."
 
 #: panels/usage/cc-usage-panel.c:349
 msgid "_Clear History"
@@ -9391,6 +9394,15 @@ msgstr[2] "%u входов"
 #: subprojects/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
 msgstr "Системные звуки"
+
+#~ msgid "Applications"
+#~ msgstr "Приложения"
+
+#~ msgid "Delete all the recent files?"
+#~ msgstr "Удалить все недавние файлы?"
+
+#~ msgid "All the recent files will be permanently deleted."
+#~ msgstr "Все недавние файлы будут безвозвратно удалены."
 
 #~ msgid "Primary Menu"
 #~ msgstr "Основное меню"
