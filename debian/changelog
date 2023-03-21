@@ -1,9 +1,9 @@
-gnome-control-center (1:44.0-1) UNRELEASED; urgency=medium
+gnome-control-center (1:44.0-1) experimental; urgency=medium
 
   * New upstream release
   * debian/patches: Refresh indexes
 
- -- Marco Trevisan (Treviño) <marco@ubuntu.com>  Tue, 21 Mar 2023 01:50:07 +0100
+ -- Marco Trevisan (Treviño) <marco@ubuntu.com>  Tue, 21 Mar 2023 01:50:16 +0100
 
 gnome-control-center (1:44~rc-1) experimental; urgency=medium
 
