@@ -1,4 +1,4 @@
-gnome-control-center (1:44.0-1ubuntu1) UNRELEASED; urgency=medium
+gnome-control-center (1:44.0-1ubuntu1) lunar; urgency=medium
 
   * Merge with debian, containing new upstream release
   * debian/patches: Refresh
@@ -63,7 +63,7 @@ gnome-control-center (1:44.0-1ubuntu1) UNRELEASED; urgency=medium
       - u/display-Allow-fractional-scaling-to-be-enabled.patch
       - u/mouse-Add-animations-following-the-accent-colors.patch
 
- -- Marco Trevisan (Treviño) <marco@ubuntu.com>  Tue, 21 Mar 2023 04:34:53 +0100
+ -- Marco Trevisan (Treviño) <marco@ubuntu.com>  Tue, 21 Mar 2023 04:42:47 +0100
 
 gnome-control-center (1:44.0-1) experimental; urgency=medium
 
