@@ -1,3 +1,17 @@
+gnome-control-center (1:44~rc-1ubuntu3) UNRELEASED; urgency=medium
+
+  * debian/changelog: Fix bug reference in previous upload
+  * debian/patches: Allow configuring all monitors at once (LP: #2012043)
+  * debian/patches: Use yaru's inkstone color for animation's black
+    (LP: #2011823)
+  * debian/patches: Actually use accented animations for mouse panel
+    (LP: #2011823)
+  * debian/patches: Do not mark an initialized extension as enabled
+    (LP: #2012034)
+  * debian/patches: Remove unused variable in colors selector
+
+ -- Marco Trevisan (Treviño) <marco@ubuntu.com>  Tue, 21 Mar 2023 01:52:38 +0100
+
 gnome-control-center (1:44~rc-1ubuntu2) lunar; urgency=medium
 
   * debian/patches: background, ensure dark theme option is honored
