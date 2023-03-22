@@ -366,15 +366,29 @@ index 00190f5..0547778 100644
  static void
  update_region (CcRegionPanel  *self,
                 CcLocaleTarget  target,
-@@ -322,6 +357,7 @@ update_region (CcRegionPanel  *self,
-         case USER:
-                 if (g_strcmp0 (region, self->region) == 0)
+@@ -324,8 +359,10 @@ update_region (CcRegionPanel  *self,
                          return;
-+                set_formats_locale (region);
                  if (region == NULL || region[0] == '\0')
                          g_settings_reset (self->locale_settings, KEY_REGION);
-                 else
-@@ -523,15 +559,19 @@ static void
+-                else
++                else {
++                        set_formats_locale (region);
+                         g_settings_set_string (self->locale_settings, KEY_REGION, region);
++                }
+                 if (self->login_auto_apply)
+                         set_system_region (self, region);
+ 
+@@ -359,7 +396,8 @@ language_response (CcRegionPanel     *self,
+                 update_language (self, target, language);
+ 
+                 /* Keep format strings consistent with the user's language */
+-                update_region (self, target, NULL);
++                /* ... or don't. This idea does not apply in Ubuntu. */
++                // update_region (self, target, NULL);
+         }
+ 
+         gtk_window_destroy (GTK_WINDOW (chooser));
+@@ -523,15 +561,19 @@ static void
  update_language_from_user (CcRegionPanel *self)
  {
          const gchar *language = NULL;
@@ -398,7 +412,7 @@ index 00190f5..0547778 100644
          update_user_language_row (self);
  }
  
-@@ -539,7 +579,7 @@ static void
+@@ -539,7 +581,7 @@ static void
  update_region_from_setting (CcRegionPanel *self)
  {
          g_free (self->region);
@@ -407,7 +421,7 @@ index 00190f5..0547778 100644
          update_user_region_row (self);
  }
  
-@@ -629,6 +669,16 @@ set_login_button_visibility (CcRegionPanel *self)
+@@ -609,6 +651,16 @@ set_login_button_visibility (CcRegionPanel *self)
  
  /* Callbacks */
  
@@ -424,7 +438,7 @@ index 00190f5..0547778 100644
  static void
  on_localed_properties_changed (GDBusProxy     *localed_proxy,
                                 GVariant       *changed_properties,
-@@ -637,33 +687,43 @@ on_localed_properties_changed (GDBusProxy     *localed_proxy,
+@@ -617,33 +669,43 @@ on_localed_properties_changed (GDBusProxy     *localed_proxy,
  {
          g_autoptr(GVariant) v = NULL;
  
