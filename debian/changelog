@@ -1,3 +1,13 @@
+gnome-control-center (1:44.0-1ubuntu3) UNRELEASED; urgency=medium
+
+  * debian/patches: Recolor widget animations instead of using many.
+    Reduce gresources by just providing default yaru color for animations
+    and while keeping the same colors recoloring them at runtime.
+  * debian/patch: Prevent duplicate sound device entries
+  * debian/patches: Do not crash when closing the color panel (LP: #2009913)
+
+ -- Marco Trevisan (Treviño) <marco@ubuntu.com>  Thu, 23 Mar 2023 05:59:55 +0100
+
 gnome-control-center (1:44.0-1ubuntu2) lunar; urgency=medium
 
   * Drop (again) update_region() call with NULL argument (LP: #2012552)
