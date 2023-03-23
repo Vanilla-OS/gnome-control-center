@@ -1,2 +1,3 @@
 debian/ubuntu-logo-icon.png
 debian/ubuntu-logo-dark.png
+debian/patches/ubuntu/mouse-Add-animations-following-the-accent-colors.patch
