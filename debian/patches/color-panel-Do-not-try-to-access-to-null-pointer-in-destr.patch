@@ -1,0 +1,44 @@
+From: =?utf-8?b?Ik1hcmNvIFRyZXZpc2FuIChUcmV2acOxbyki?= <mail@3v1n0.net>
+Date: Tue, 21 Mar 2023 15:32:34 +0100
+Subject: color-panel: Do not try to access to null pointer in destruction
+
+During destruction toolbar_devices is nullified, but
+gtk_widget_in_destruction() does not perform a NULL-check, and we could
+crash:
+
+==22708== Invalid read of size 1
+==22708== at 0x505CC0B: gtk_widget_in_destruction (gtkwidget.c:10643)
+==22708== by 0x189553: gcm_prefs_list_box_row_selected_cb (cc-color-panel.c:1708)
+==22708== by 0x4A61714: g_cclosure_marshal_VOID__OBJECTv (gmarshal.c:1910)
+==22708== by 0x4A5E148: _g_closure_invoke_va (gclosure.c:895)
+==22708== by 0x4A784F3: g_signal_emit_valist (gsignal.c:3462)
+==22708== by 0x4A78722: g_signal_emit (gsignal.c:3612)
+==22708== by 0x4F5B121: gtk_list_box_remove (gtklistbox.c:2420)
+==22708== by 0x4F5B222: gtk_list_box_dispose (gtklistbox.c:439)
+==22708== by 0x4A63338: g_object_unref (gobject.c:3891)
+==22708== by 0x4EAA994: gtk_box_dispose (gtkbox.c:230)
+==22708== by 0x4A63338: g_object_unref (gobject.c:3891)
+==22708== by 0x4EAA994: gtk_box_dispose (gtkbox.c:230)
+==22708== Address 0xfffffffffffffeb2 is not stack'd, malloc'd or (recently) free'd
+
+See: https://bugs.launchpad.net/ubuntu/+source/gnome-control-center/+bug/2009913
+
+Origin: https://gitlab.gnome.org/GNOME/gnome-control-center/-/commit/4b40073
+---
+ panels/color/cc-color-panel.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/panels/color/cc-color-panel.c b/panels/color/cc-color-panel.c
+index 42820c7..9af17ef 100644
+--- a/panels/color/cc-color-panel.c
++++ b/panels/color/cc-color-panel.c
+@@ -1705,7 +1705,8 @@ static void
+ gcm_prefs_list_box_row_selected_cb (CcColorPanel *panel,
+                                     GtkListBoxRow *row)
+ {
+-  if (gtk_widget_in_destruction (panel->toolbar_devices))
++  if (!panel->toolbar_devices ||
++      gtk_widget_in_destruction (panel->toolbar_devices))
+     return;
+ 
+   gcm_prefs_refresh_toolbar_buttons (panel);
