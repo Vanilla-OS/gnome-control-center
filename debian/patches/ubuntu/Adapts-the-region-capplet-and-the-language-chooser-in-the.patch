@@ -39,9 +39,9 @@ Subject: Adapts the region capplet and the language chooser in the user
 ---
  panels/common/cc-common-language.c   | 137 +++++++++++++++++++++++++++++------
  panels/common/cc-common-language.h   |   4 +
- panels/region/cc-region-panel.c      | 124 +++++++++++++++++++++++--------
+ panels/region/cc-region-panel.c      | 130 ++++++++++++++++++++++++---------
  panels/user-accounts/cc-user-panel.c |  12 ++-
- 4 files changed, 219 insertions(+), 58 deletions(-)
+ 4 files changed, 223 insertions(+), 60 deletions(-)
 
 diff --git a/panels/common/cc-common-language.c b/panels/common/cc-common-language.c
 index 9357c3e..c923d82 100644
@@ -269,7 +269,7 @@ index 1f578b7..2e5a446 100644
 +
  G_END_DECLS
 diff --git a/panels/region/cc-region-panel.c b/panels/region/cc-region-panel.c
-index 00190f5..0547778 100644
+index 00190f5..5961654 100644
 --- a/panels/region/cc-region-panel.c
 +++ b/panels/region/cc-region-panel.c
 @@ -237,27 +237,26 @@ set_localed_locale (CcRegionPanel *self)
@@ -421,7 +421,7 @@ index 00190f5..0547778 100644
          update_user_region_row (self);
  }
  
-@@ -609,6 +651,16 @@ set_login_button_visibility (CcRegionPanel *self)
+@@ -629,6 +671,16 @@ set_login_button_visibility (CcRegionPanel *self)
  
  /* Callbacks */
  
@@ -438,7 +438,7 @@ index 00190f5..0547778 100644
  static void
  on_localed_properties_changed (GDBusProxy     *localed_proxy,
                                 GVariant       *changed_properties,
-@@ -617,33 +669,43 @@ on_localed_properties_changed (GDBusProxy     *localed_proxy,
+@@ -637,33 +689,43 @@ on_localed_properties_changed (GDBusProxy     *localed_proxy,
  {
          g_autoptr(GVariant) v = NULL;
  
