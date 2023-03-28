@@ -1,0 +1,28 @@
+From: Gunnar Hjalmarsson <gunnarhj@ubuntu.com>
+Date: Sat, 25 Mar 2023 03:37:44 +0100
+Subject: region: Fix label of formats for the login screen
+
+When system_region equals system_language, the UI should state the
+country of the system_language as the selected login screen formats,
+and that is not always "United States".
+
+Origin: https://gitlab.gnome.org/GNOME/gnome-control-center/-/commit/33659beb
+Bug: https://gitlab.gnome.org/GNOME/gnome-control-center/-/issues/2418
+Bug-Ubuntu: https://launchpad.net/bugs/2012736
+---
+ panels/region/cc-region-panel.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/panels/region/cc-region-panel.c b/panels/region/cc-region-panel.c
+index 084904590c..afe0fae606 100644
+--- a/panels/region/cc-region-panel.c
++++ b/panels/region/cc-region-panel.c
+@@ -567,6 +567,8 @@ update_login_region (CcRegionPanel *self)
+ 
+         if (self->system_region)
+                 name = gnome_get_country_from_locale (self->system_region, self->system_region);
++        else if (self->system_language)
++                name = gnome_get_country_from_locale (self->system_language, self->system_language);
+ 
+         if (!name)
+                 name = gnome_get_country_from_locale (DEFAULT_LOCALE, DEFAULT_LOCALE);
