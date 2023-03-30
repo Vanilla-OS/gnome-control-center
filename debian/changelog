@@ -1,3 +1,13 @@
+gnome-control-center (1:44.0-1ubuntu4) lunar; urgency=medium
+
+  [ Gunnar Hjalmarsson ]
+  * Fix label of formats for the login screen (LP: #2012736)
+
+  [ Jeremy Bicha ]
+  * Depend on libgtk-4-media-gstreamer for Mouse & Touchpad art (LP: #2011849)
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Wed, 29 Mar 2023 20:20:35 -0400
+
 gnome-control-center (1:44.0-1ubuntu3) lunar; urgency=medium
 
   * debian/patches: Recolor widget animations instead of using many.
