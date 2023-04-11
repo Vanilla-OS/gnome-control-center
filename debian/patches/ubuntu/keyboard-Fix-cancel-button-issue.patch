@@ -1,0 +1,21 @@
+From: Gotam Gorabh <gautamy672@gmail.com>
+Date: Wed, 22 Mar 2023 23:02:55 +0530
+Subject: keyboard:Fix cancel button issue
+
+(cherry picked from commit ad0cc232846111a03307901e1d980fd35c5e31af)
+---
+ panels/keyboard/cc-keyboard-shortcut-dialog.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/panels/keyboard/cc-keyboard-shortcut-dialog.c b/panels/keyboard/cc-keyboard-shortcut-dialog.c
+index 523897f..714bf8b 100644
+--- a/panels/keyboard/cc-keyboard-shortcut-dialog.c
++++ b/panels/keyboard/cc-keyboard-shortcut-dialog.c
+@@ -340,6 +340,7 @@ on_reset_all_dialog_response_cb (GtkDialog                *dialog,
+ {
+   guint n_items, j_items;
+ 
++  gtk_window_destroy (GTK_WINDOW (dialog));
+   if (response != GTK_RESPONSE_ACCEPT)
+     return;
+ 

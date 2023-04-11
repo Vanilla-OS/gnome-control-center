@@ -1,0 +1,21 @@
+From: =?utf-8?q?Jonas_=C3=85dahl?= <jadahl@gmail.com>
+Date: Mon, 3 Apr 2023 11:18:29 +0200
+Subject: display/night-light: Don't leak config manager proxy
+
+(cherry picked from commit 2956cd682120866aa0e31e45f0c93d16a3f9f7d8)
+---
+ panels/display/cc-night-light-page.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/panels/display/cc-night-light-page.c b/panels/display/cc-night-light-page.c
+index 529bee6..8c1f633 100644
+--- a/panels/display/cc-night-light-page.c
++++ b/panels/display/cc-night-light-page.c
+@@ -630,6 +630,7 @@ cc_night_light_page_finalize (GObject *object)
+   g_cancellable_cancel (self->cancellable);
+ 
+   g_clear_object (&self->cancellable);
++  g_clear_object (&self->config_manager);
+   g_clear_object (&self->proxy_color);
+   g_clear_object (&self->proxy_color_props);
+   g_clear_object (&self->settings_display);

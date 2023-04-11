@@ -14,7 +14,7 @@ Bug-Ubuntu: https://launchpad.net/bugs/2012736
  1 file changed, 2 insertions(+)
 
 diff --git a/panels/region/cc-region-panel.c b/panels/region/cc-region-panel.c
-index 084904590c..afe0fae606 100644
+index 0849045..afe0fae 100644
 --- a/panels/region/cc-region-panel.c
 +++ b/panels/region/cc-region-panel.c
 @@ -567,6 +567,8 @@ update_login_region (CcRegionPanel *self)

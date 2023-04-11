@@ -1,3 +1,15 @@
+gnome-control-center (1:44.0-1ubuntu5) UNRELEASED; urgency=medium
+
+  * Cherry-pick a few fixes from upstream gnome-44 branch:
+    - ad0cc232: keyboard:Fix cancel button issue
+    - 03fcffdd: datetime: Fix NTP switch getting out of sync.
+    - aa7a6b09: sharing: Fix network row visible name bug
+    - 39afc8a3: display/night-light: Disconnect config manager changed
+      handler (LP: #2006500)
+    - 2956cd68: display/night-light: Don't leak config manager proxy
+
+ -- Amin Bandali <bandali@ubuntu.com>  Tue, 11 Apr 2023 16:43:49 -0400
+
 gnome-control-center (1:44.0-1ubuntu4) lunar; urgency=medium
 
   [ Gunnar Hjalmarsson ]

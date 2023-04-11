@@ -1,0 +1,29 @@
+From: =?utf-8?q?Jonas_=C3=85dahl?= <jadahl@gmail.com>
+Date: Mon, 3 Apr 2023 11:17:39 +0200
+Subject: display/night-light: Disconnect config manager changed handler
+
+Use g_signal_connect_object() to automatically disconnect the signal
+handle when the listener object gets destroyed.
+
+Closes: https://gitlab.gnome.org/GNOME/gnome-control-center/-/issues/2333
+(cherry picked from commit 39afc8a33c07bc2d30ae739e5f08388200762189)
+---
+ panels/display/cc-night-light-page.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/panels/display/cc-night-light-page.c b/panels/display/cc-night-light-page.c
+index 60c1667..529bee6 100644
+--- a/panels/display/cc-night-light-page.c
++++ b/panels/display/cc-night-light-page.c
+@@ -782,8 +782,9 @@ cc_night_light_page_init (CcNightLightPage *self)
+     }
+ 
+   self->config_manager = cc_display_config_manager_dbus_new ();
+-  g_signal_connect (self->config_manager, "changed",
+-                    G_CALLBACK (config_manager_changed_cb), self);
++  g_signal_connect_object (self->config_manager, "changed",
++                           G_CALLBACK (config_manager_changed_cb), self,
++                           G_CONNECT_DEFAULT);
+ 
+   dialog_update_state (self);
+ }
