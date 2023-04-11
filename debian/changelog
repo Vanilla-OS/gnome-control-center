@@ -1,4 +1,4 @@
-gnome-control-center (1:44.0-1ubuntu5) UNRELEASED; urgency=medium
+gnome-control-center (1:44.0-1ubuntu5) lunar; urgency=medium
 
   * Cherry-pick a few fixes from upstream gnome-44 branch:
     - ad0cc232: keyboard:Fix cancel button issue
