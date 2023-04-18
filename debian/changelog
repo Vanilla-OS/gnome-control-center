@@ -1,3 +1,10 @@
+gnome-control-center (1:44.0-1ubuntu6) UNRELEASED; urgency=medium
+
+  * debian/rules:
+    - reference to the right logo in dark mode variant (lp: #1995092)
+
+ -- Sebastien Bacher <seb128@ubuntu.com>  Tue, 18 Apr 2023 21:33:39 +0200
+
 gnome-control-center (1:44.0-1ubuntu5) lunar; urgency=medium
 
   * Cherry-pick a few fixes from upstream gnome-44 branch:
