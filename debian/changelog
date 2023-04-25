@@ -2,6 +2,9 @@ gnome-control-center (1:44.1-1) UNRELEASED; urgency=medium
 
   * New upstream release
 
+  [ Sebastien Bacher ]
+  * debian/rules: reference to the right dark logo image (LP: #1995092)
+
  -- Amin Bandali <bandali@ubuntu.com>  Mon, 24 Apr 2023 23:33:27 -0400
 
 gnome-control-center (1:44.0-1) experimental; urgency=medium
