@@ -1,6 +1,7 @@
-gnome-control-center (1:44.1-1) UNRELEASED; urgency=medium
+gnome-control-center (1:44.1-1) experimental; urgency=medium
 
   * New upstream release
+    - Fix Automatic Date & Time switch getting out of sync (LP: #2012994)
 
   [ Sebastien Bacher ]
   * debian/rules: reference to the right dark logo image (LP: #1995092)
