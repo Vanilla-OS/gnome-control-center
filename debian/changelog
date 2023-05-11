@@ -1,3 +1,10 @@
+gnome-control-center (1:44.1-1ubuntu1) UNRELEASED; urgency=medium
+
+  * debian/rules:
+    - reference to the right logo in dark mode variant (lp: #1995092) 
+
+ -- Jarred Wilson <jarred.wilson@canonical.com>  Thu, 11 May 2023 13:47:14 -0400
+
 gnome-control-center (1:44.1-1) experimental; urgency=medium
 
   * New upstream release
