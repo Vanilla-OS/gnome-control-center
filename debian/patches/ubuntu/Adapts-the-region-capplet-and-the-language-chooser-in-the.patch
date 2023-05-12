@@ -269,7 +269,7 @@ index 1f578b7..2e5a446 100644
 +
  G_END_DECLS
 diff --git a/panels/region/cc-region-panel.c b/panels/region/cc-region-panel.c
-index 72b9e14..001b0ff 100644
+index 00190f5..5961654 100644
 --- a/panels/region/cc-region-panel.c
 +++ b/panels/region/cc-region-panel.c
 @@ -237,27 +237,26 @@ set_localed_locale (CcRegionPanel *self)
@@ -421,7 +421,7 @@ index 72b9e14..001b0ff 100644
          update_user_region_row (self);
  }
  
-@@ -631,6 +673,16 @@ set_login_button_visibility (CcRegionPanel *self)
+@@ -629,6 +671,16 @@ set_login_button_visibility (CcRegionPanel *self)
  
  /* Callbacks */
  
@@ -438,7 +438,7 @@ index 72b9e14..001b0ff 100644
  static void
  on_localed_properties_changed (GDBusProxy     *localed_proxy,
                                 GVariant       *changed_properties,
-@@ -639,33 +691,43 @@ on_localed_properties_changed (GDBusProxy     *localed_proxy,
+@@ -637,33 +689,43 @@ on_localed_properties_changed (GDBusProxy     *localed_proxy,
  {
          g_autoptr(GVariant) v = NULL;
  
