@@ -1354,6 +1354,8 @@ on_permission_changed (CcUserPanel *self)
                 if (get_autologin_possible (user)) {
                         gtk_widget_set_visible (GTK_WIDGET (self->autologin_row), TRUE);
                         gtk_widget_set_sensitive (GTK_WIDGET (self->autologin_row), TRUE);
+
+                        remove_unlock_tooltip (GTK_WIDGET (self->autologin_row));
                 }
         }
         else {
@@ -1538,6 +1540,8 @@ cc_user_panel_init (CcUserPanel *self)
 
         /* register types that the builder might need */
         type = cc_permission_infobar_get_type ();
+        g_type_ensure (CC_TYPE_AVATAR_CHOOSER);
+        g_type_ensure (CC_TYPE_LIST_ROW);
 
         gtk_widget_init_template (GTK_WIDGET (self));
 
