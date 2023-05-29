@@ -20,6 +20,7 @@
  */
 
 #include "config.h"
+#include "cc-list-row.h"
 #include "cc-time-editor.h"
 #include "cc-datetime-panel.h"
 #include "cc-datetime-resources.h"
@@ -32,6 +33,7 @@
 #define GNOME_DESKTOP_USE_UNSTABLE_API
 
 #include <gdesktop-enums.h>
+#include "gdesktop-enums-types.h"
 #include <string.h>
 #include <stdlib.h>
 #include <libintl.h>
@@ -829,6 +831,10 @@ cc_date_time_panel_class_init (CcDateTimePanelClass *klass)
   object_class->dispose = cc_date_time_panel_dispose;
 
   panel_class->get_help_uri = cc_date_time_panel_get_help_uri;
+
+  g_type_ensure (CC_TYPE_LIST_ROW);
+  g_type_ensure (CC_TYPE_TZ_DIALOG);
+  g_type_ensure (G_DESKTOP_TYPE_DESKTOP_CLOCK_FORMAT);
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/datetime/cc-datetime-panel.ui");
 
