@@ -1,6 +1,19 @@
 gnome-control-center (1:44.2-1) UNRELEASED; urgency=medium
 
   * New upstream release
+    - Various small accessibility fixes.
+      (e.g. https://gitlab.gnome.org/GNOME/gnome-control-center/-/issues/2457)
+    - Fixes in Gtk template usage that causes crashes on some systems.
+    - Appearance:
+      + Clear dconf when resetting to defaults.
+    - Mouse:
+      + Hide entire "Touchpad" row when touchpad cannot be disabled
+        (https://gitlab.gnome.org/GNOME/gnome-control-center/-/issues/1649)
+    - Network:
+      + Fix racy radio buttons in connection editor.
+    - Users:
+      + Remove autologin row tooltip when unlocked.
+        (https://gitlab.gnome.org/GNOME/gnome-control-center/-/issues/2451)
 
  -- Amin Bandali <bandali@ubuntu.com>  Mon, 29 May 2023 12:22:07 -0400
 
