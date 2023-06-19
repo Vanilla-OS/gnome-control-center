@@ -6,4 +6,3 @@ usr/share/gettext/its
 usr/share/icons
 usr/share/pixmaps/faces
 usr/share/polkit-1
-debian/gnome-control-center.pkla /var/lib/polkit-1/localauthority/10-vendor.d/
