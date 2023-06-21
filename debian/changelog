@@ -1,3 +1,10 @@
+gnome-control-center (1:44.2-2) experimental; urgency=medium
+
+  [ Michael Biebl ]
+  * Remove deprecated polkit pkla file
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Wed, 21 Jun 2023 19:58:28 -0400
+
 gnome-control-center (1:44.2-1) experimental; urgency=medium
 
   * New upstream release
