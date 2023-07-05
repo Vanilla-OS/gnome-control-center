@@ -1,3 +1,9 @@
+gnome-control-center (1:44.3-1) experimental; urgency=medium
+
+  * New upstream release 44.3
+
+ -- Jarred Wilson <jarred.wilson@canonical.com>  Wed, 05 Jul 2023 17:14:06 -0400
+
 gnome-control-center (1:44.2-2) experimental; urgency=medium
 
   [ Michael Biebl ]
