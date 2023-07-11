@@ -2020,7 +2020,7 @@ index 0000000..e44f521
 +      gtk_widget_set_visible (GTK_WIDGET (self->tiling_assistant_preferences_group), FALSE);
 +    }
 +
-+  
++
 +  if (!update_panel_visibilty (self))
 +    return;
 +
@@ -2468,7 +2468,7 @@ index b2bc79b..eed19c9 100644
 +panels/ubuntu/gnome-ubuntu-panel.desktop.in
  panels/universal-access/cc-cursor-size-dialog.ui
  panels/universal-access/cc-ua-hearing-page.ui
- panels/universal-access/cc-ua-mouse-page.ui
+ panels/universal-access/cc-ua-hearing-page.c
 diff --git a/shell/cc-panel-list.c b/shell/cc-panel-list.c
 index 76a978a..6d24407 100644
 --- a/shell/cc-panel-list.c
