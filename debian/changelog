@@ -51,9 +51,42 @@ gnome-control-center (1:44.3-1ubuntu1) mantic; urgency=medium
       - u/applications-Launch-snap-store-if-it-is-installed.patch
       - u/display-Allow-fractional-scaling-to-be-enabled.patch
       - u/mouse-Add-animations-following-the-accent-colors.patch
-      - panels-mouse-Do-not-bind-sensitivity-to-touch-pad-setting.patch 
+      - panels-mouse-Do-not-bind-sensitivity-to-touch-pad-setting.patch
 
  -- Jarred Wilson <jarred.wilson@canonical.com>  Tue, 11 Jul 2023 12:58:48 -0400
+
+gnome-control-center (1:44.3-1) experimental; urgency=medium
+
+  * Team upload
+  * New upstream release 44.3
+
+ -- Jarred Wilson <jarred.wilson@canonical.com>  Wed, 05 Jul 2023 17:14:06 -0400
+
+gnome-control-center (1:44.2-2) experimental; urgency=medium
+
+  [ Michael Biebl ]
+  * Remove deprecated polkit pkla file
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Wed, 21 Jun 2023 19:58:28 -0400
+
+gnome-control-center (1:44.2-1) experimental; urgency=medium
+
+  * New upstream release
+    - Various small accessibility fixes.
+      (e.g. https://gitlab.gnome.org/GNOME/gnome-control-center/-/issues/2457)
+    - Fixes in Gtk template usage that causes crashes on some systems.
+    - Appearance:
+      + Clear dconf when resetting to defaults.
+    - Mouse:
+      + Hide entire "Touchpad" row when touchpad cannot be disabled
+        (https://gitlab.gnome.org/GNOME/gnome-control-center/-/issues/1649)
+    - Network:
+      + Fix racy radio buttons in connection editor.
+    - Users:
+      + Remove autologin row tooltip when unlocked.
+        (https://gitlab.gnome.org/GNOME/gnome-control-center/-/issues/2451)
+
+ -- Amin Bandali <bandali@ubuntu.com>  Mon, 29 May 2023 12:22:07 -0400
 
 gnome-control-center (1:44.1-1ubuntu1) mantic; urgency=medium
 
@@ -111,38 +144,6 @@ gnome-control-center (1:44.1-1ubuntu1) mantic; urgency=medium
       - panels-mouse-Do-not-bind-sensitivity-to-touch-pad-setting.patch
 
  -- Jarred Wilson <jarred.wilson@canonical.com>  Thu, 11 May 2023 13:47:14 -0400
-gnome-control-center (1:44.3-1) experimental; urgency=medium
-
-  * Team upload
-  * New upstream release 44.3
-
- -- Jarred Wilson <jarred.wilson@canonical.com>  Wed, 05 Jul 2023 17:14:06 -0400
-
-gnome-control-center (1:44.2-2) experimental; urgency=medium
-
-  [ Michael Biebl ]
-  * Remove deprecated polkit pkla file
-
- -- Jeremy Bícha <jbicha@ubuntu.com>  Wed, 21 Jun 2023 19:58:28 -0400
-
-gnome-control-center (1:44.2-1) experimental; urgency=medium
-
-  * New upstream release
-    - Various small accessibility fixes.
-      (e.g. https://gitlab.gnome.org/GNOME/gnome-control-center/-/issues/2457)
-    - Fixes in Gtk template usage that causes crashes on some systems.
-    - Appearance:
-      + Clear dconf when resetting to defaults.
-    - Mouse:
-      + Hide entire "Touchpad" row when touchpad cannot be disabled
-        (https://gitlab.gnome.org/GNOME/gnome-control-center/-/issues/1649)
-    - Network:
-      + Fix racy radio buttons in connection editor.
-    - Users:
-      + Remove autologin row tooltip when unlocked.
-        (https://gitlab.gnome.org/GNOME/gnome-control-center/-/issues/2451)
-
- -- Amin Bandali <bandali@ubuntu.com>  Mon, 29 May 2023 12:22:07 -0400
 
 gnome-control-center (1:44.1-1) experimental; urgency=medium
 
