@@ -7,7 +7,7 @@ Subject: build: Look for snapd-glib-2
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/meson.build b/meson.build
-index 9f364c7..d9a45c0 100644
+index d4bdbb3..5f6b622 100644
 --- a/meson.build
 +++ b/meson.build
 @@ -221,7 +221,7 @@ config_h.set10('HAVE_FN_EXPLICIT_BZERO',
