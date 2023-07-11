@@ -9,10 +9,10 @@ ignoring the send-events global setting binding.
  1 file changed, 10 insertions(+), 5 deletions(-)
 
 diff --git a/panels/mouse/cc-mouse-panel.c b/panels/mouse/cc-mouse-panel.c
-index 3d3a317..ae5fb69 100644
+index 3e8c227..5aa5f73 100644
 --- a/panels/mouse/cc-mouse-panel.c
 +++ b/panels/mouse/cc-mouse-panel.c
-@@ -333,23 +333,28 @@ setup_dialog (CcMousePanel *self)
+@@ -334,23 +334,28 @@ setup_dialog (CcMousePanel *self)
  
    g_settings_bind (self->touchpad_settings, "natural-scroll",
                     self->touchpad_scroll_direction_row, "use-default",

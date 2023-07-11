@@ -269,7 +269,7 @@ index 1f578b7..2e5a446 100644
 +
  G_END_DECLS
 diff --git a/panels/region/cc-region-panel.c b/panels/region/cc-region-panel.c
-index 72b9e14..001b0ff 100644
+index e986923..76c3c97 100644
 --- a/panels/region/cc-region-panel.c
 +++ b/panels/region/cc-region-panel.c
 @@ -237,27 +237,26 @@ set_localed_locale (CcRegionPanel *self)
@@ -493,7 +493,7 @@ index 72b9e14..001b0ff 100644
                  self->system_region = g_strdup (time);
  
 diff --git a/panels/user-accounts/cc-user-panel.c b/panels/user-accounts/cc-user-panel.c
-index e5b620d..fe2cfba 100644
+index d3844b8..e8ae3ab 100644
 --- a/panels/user-accounts/cc-user-panel.c
 +++ b/panels/user-accounts/cc-user-panel.c
 @@ -902,6 +902,7 @@ show_user (ActUser *user, CcUserPanel *self)

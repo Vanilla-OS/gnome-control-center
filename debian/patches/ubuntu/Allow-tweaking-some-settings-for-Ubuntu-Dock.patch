@@ -321,7 +321,7 @@ index 0000000..2b51182
 +</interface>
 diff --git a/panels/ubuntu/cc-ubuntu-panel.c b/panels/ubuntu/cc-ubuntu-panel.c
 new file mode 100644
-index 0000000..e44f521
+index 0000000..122969f
 --- /dev/null
 +++ b/panels/ubuntu/cc-ubuntu-panel.c
 @@ -0,0 +1,1730 @@
@@ -2454,7 +2454,7 @@ index 0000000..a636e9c
 +  </gresource>
 +</gresources>
 diff --git a/po/POTFILES.in b/po/POTFILES.in
-index b2bc79b..eed19c9 100644
+index 561d86d..8a1b302 100644
 --- a/po/POTFILES.in
 +++ b/po/POTFILES.in
 @@ -218,6 +218,11 @@ panels/thunderbolt/cc-bolt-device-entry.c

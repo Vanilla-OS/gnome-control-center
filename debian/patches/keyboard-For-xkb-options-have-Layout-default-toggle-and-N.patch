@@ -28,7 +28,7 @@ Last-Update: 2022-12-25
  4 files changed, 52 insertions(+), 37 deletions(-)
 
 diff --git a/panels/keyboard/cc-keyboard-panel.c b/panels/keyboard/cc-keyboard-panel.c
-index 25b70a2..058c27b 100644
+index d5a449c..cc7cd7b 100644
 --- a/panels/keyboard/cc-keyboard-panel.c
 +++ b/panels/keyboard/cc-keyboard-panel.c
 @@ -63,6 +63,7 @@ static const CcXkbModifier LV3_MODIFIER = {
