@@ -1,3 +1,10 @@
+gnome-control-center (1:44.3-1ubuntu2) mantic; urgency=medium
+
+  * Add patch to fix mirror mode crash when resolution of
+    the 2 monitors don't match (LP: #2026228)
+
+ -- Dirk Su <dirk.su@canonical.com>  Wed, 12 Jul 2023 13:29:55 -0400
+
 gnome-control-center (1:44.3-1ubuntu1) mantic; urgency=medium
 
   * Merge with Debian. Remaining changes:
