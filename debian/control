@@ -87,7 +87,6 @@ Depends: ${misc:Depends},
          gsettings-desktop-schemas (>= 42~),
          language-selector-gnome (>= 0.179~),
          libgtk-4-media-gstreamer,
-         system-config-printer (>= 1.4),
          whoopsie-preferences,
          webp-pixbuf-loader
 Recommends: cups-pk-helper,

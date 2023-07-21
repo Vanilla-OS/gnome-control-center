@@ -1,3 +1,13 @@
+gnome-control-center (1:44.3-1ubuntu3) UNRELEASED; urgency=medium
+
+  * d/p/u/printers-Temporarily-add-an-additional-advanced-printer-b.patch:
+    - remove the extra button to start system-config-printer, the utility
+      isn't compatible with the new cups as a snap stack
+  * debian/control.in:
+    - don't Depends on system-config-printer
+
+ -- Sebastien Bacher <seb128@ubuntu.com>  Fri, 21 Jul 2023 16:33:39 +0200
+
 gnome-control-center (1:44.3-1ubuntu2) mantic; urgency=medium
 
   * Add patch to fix mirror mode crash when resolution of

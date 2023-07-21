@@ -17,7 +17,6 @@ ubuntu/Modify-Mulitasking-assets-for-accent-colors.patch
 ubuntu/lock-Add-Lock-Screen-on-Suspend-option.patch
 ubuntu/region-Add-Language-Selector-button.patch
 ubuntu/Adapts-the-region-capplet-and-the-language-chooser-in-the.patch
-ubuntu/printers-Temporarily-add-an-additional-advanced-printer-b.patch
 ubuntu/notifications-Handle-.desktop-files-that-got-renamed.patch
 ubuntu/shell-Change-the-default-height-so-all-category-are-on-sc.patch
 ubuntu/connectivity-add-network-connectivity-checking-toggle.patch
