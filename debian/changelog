@@ -1,4 +1,4 @@
-gnome-control-center (1:44.3-1ubuntu3) UNRELEASED; urgency=medium
+gnome-control-center (1:44.3-1ubuntu3) mantic; urgency=medium
 
   * d/p/u/printers-Temporarily-add-an-additional-advanced-printer-b.patch:
     - remove the extra button to start system-config-printer, the utility
