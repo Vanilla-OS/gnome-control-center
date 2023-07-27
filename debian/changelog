@@ -1,3 +1,9 @@
+gnome-control-center (1:44.3-2) unstable; urgency=medium
+
+  * Release to unstable
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Thu, 27 Jul 2023 14:16:03 +0300
+
 gnome-control-center (1:44.3-1) experimental; urgency=medium
 
   * Team upload
