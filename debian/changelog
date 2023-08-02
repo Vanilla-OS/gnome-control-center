@@ -1,3 +1,12 @@
+gnome-control-center (1:44.3-3) UNRELEASED; urgency=medium
+
+  * d/control.in: Reduce fwupd from Depends to Recommends.
+    It should be installed by default, but isn't strictly required, and not
+    all systems have any devices with firmware supported by fwupd.
+    (Closes: #1042781)
+
+ -- Simon McVittie <smcv@debian.org>  Wed, 02 Aug 2023 10:32:08 +0100
+
 gnome-control-center (1:44.3-2) unstable; urgency=medium
 
   * Release to unstable
