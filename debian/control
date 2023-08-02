@@ -6,7 +6,7 @@ Source: gnome-control-center
 Section: gnome
 Priority: optional
 Maintainer: Debian GNOME Maintainers <pkg-gnome-maintainers@lists.alioth.debian.org>
-Uploaders: Gunnar Hjalmarsson <gunnarhj@debian.org>, Jeremy Bicha <jbicha@ubuntu.com>, Laurent Bigonville <bigon@debian.org>
+Uploaders: Amin Bandali <bandali@ubuntu.com>, Gunnar Hjalmarsson <gunnarhj@debian.org>, Jeremy Bícha <jbicha@ubuntu.com>, Laurent Bigonville <bigon@debian.org>, Marco Trevisan (Treviño) <marco@ubuntu.com>, Sebastien Bacher <seb128@debian.org>
 Build-Depends: debhelper-compat (= 13),
                dh-sequence-gnome (>= 0.22.2),
                libaccountsservice-dev (>= 0.6.39),
@@ -76,7 +76,6 @@ Depends: ${misc:Depends},
          colord (>= 0.1.34),
          desktop-base (>= 10.0.0),
          desktop-file-utils,
-         fwupd [linux-any],
          gnome-control-center-data (<< ${gnome:NextVersion}),
          gnome-control-center-data (>= ${source:Version}),
          gnome-desktop3-data,
@@ -84,6 +83,7 @@ Depends: ${misc:Depends},
          gsettings-desktop-schemas (>= 42~),
          webp-pixbuf-loader
 Recommends: cups-pk-helper,
+            fwupd [linux-any],
             gnome-bluetooth-sendto,
             gnome-online-accounts (>= 3.25.3),
             gnome-remote-desktop (>= 42),
