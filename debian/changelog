@@ -4,8 +4,9 @@ gnome-control-center (1:44.3-3) UNRELEASED; urgency=medium
     It should be installed by default, but isn't strictly required, and not
     all systems have any devices with firmware supported by fwupd.
     (Closes: #1042781)
+  * d/clean: Clean up tests/shared/__pycache__/ (Closes: #1045061)
 
- -- Simon McVittie <smcv@debian.org>  Wed, 02 Aug 2023 10:32:08 +0100
+ -- Simon McVittie <smcv@debian.org>  Mon, 14 Aug 2023 14:30:43 +0100
 
 gnome-control-center (1:44.3-2) unstable; urgency=medium
 
