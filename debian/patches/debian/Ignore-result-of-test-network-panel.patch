@@ -15,7 +15,7 @@ Forwarded: not-needed, Debian-specific workaround
  2 files changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/tests/network/meson.build b/tests/network/meson.build
-index e09ec5c..f9b3c2e 100644
+index a81e647..2ab1677 100644
 --- a/tests/network/meson.build
 +++ b/tests/network/meson.build
 @@ -30,6 +30,7 @@ test(
