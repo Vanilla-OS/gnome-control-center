@@ -7,12 +7,13 @@
     <child type="titlebar">
       <object class="AdwHeaderBar" id="titlebar">
         <property name="show-end-title-buttons">True</property>
-        <property name="show-start-title-buttons">False</property>
+        <property name="show-start-title-buttons" bind-source="CcUaPanel" bind-property="folded" bind-flags="default|sync-create" />
         <property name="title-widget">
           <object class="AdwWindowTitle" id="page_title"/>
         </property>
         <child type="start">
           <object class="GtkButton" id="back_button">
+            <property name="tooltip-text" translatable="yes">Back</property>
             <property name="visible">False</property>
             <property name="icon-name">go-previous-symbolic</property>
             <accessibility>
@@ -38,11 +39,10 @@
             <child>
               <object class="AdwPreferencesGroup">
                 <child>
-                  <object class="CcListRow" id="show_ua_menu_row">
+                  <object class="AdwSwitchRow" id="show_ua_menu_row">
                     <property name="title" translatable="yes">_Accessibility Menu</property>
                     <property name="subtitle" translatable="yes">Display menu for Accessibility settings in top bar</property>
                     <property name="use-underline">True</property>
-                    <property name="show-switch">True</property>
                   </object>
                 </child>
               </object>

@@ -7,13 +7,14 @@
     <child type="titlebar">
       <object class="AdwHeaderBar" id="titlebar">
         <property name="show-end-title-buttons">True</property>
-        <property name="show-start-title-buttons">False</property>
+        <property name="show-start-title-buttons" bind-source="CcNetworkPanel" bind-property="folded" bind-flags="default|sync-create" />
         <property name="title-widget">
           <object class="AdwWindowTitle" id="page_title"/>
         </property>
 
         <child type="start">
           <object class="GtkButton" id="back_button">
+            <property name="tooltip-text" translatable="yes">Back</property>
             <property name="visible">False</property>
             <property name="icon-name">go-previous-symbolic</property>
             <signal name="clicked" handler="network_panel_back_clicked_cb" swapped="yes"/>
@@ -72,7 +73,7 @@
         <child>
           <object class="AdwPreferencesGroup" id="container_bluetooth">
             <property name="visible">False</property>
-            <property name="title" translatable="yes">Other Devices</property>
+            <property name="title" translatable="yes">Bluetooth</property>
             <child>
               <object class="GtkListBox" id="box_bluetooth">
                 <property name="selection_mode">none</property>
@@ -98,7 +99,7 @@
                 <style>
                   <class name="flat" />
                 </style>
-                <signal name="clicked" handler="create_connection_cb" object="CcNetworkPanel" swapped="no" />
+                <signal name="clicked" handler="create_connection_cb" object="CcNetworkPanel" swapped="yes" />
               </object>
             </property>
             <child>

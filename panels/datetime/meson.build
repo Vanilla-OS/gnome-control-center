@@ -20,18 +20,10 @@ i18n.merge_file(
   install_dir: join_paths(control_center_datadir, 'polkit-1', 'actions')
 )
 
-resource_data = files(
-  'backward',
-  'cc-datetime-panel.ui',
-  'cc-tz-dialog.ui',
-  'cc-tz-row.ui',
-)
-
 resources = gnome.compile_resources(
   'cc-' + cappletname + '-resources',
   cappletname + '.gresource.xml',
   c_name: 'cc_' + cappletname,
-  dependencies: resource_data,
   export: true
 )
 
@@ -45,7 +37,7 @@ sources = files(
 
 enums = 'gdesktop-enums-types'
 enums_header = files(
-  gsettings_desktop_dep.get_pkgconfig_variable('prefix') + '/include/gsettings-desktop-schemas/gdesktop-enums.h',
+  gsettings_desktop_dep.get_variable(pkgconfig: 'prefix') + '/include/gsettings-desktop-schemas/gdesktop-enums.h',
   'cc-datetime-panel.h'
 )
 

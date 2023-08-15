@@ -200,8 +200,8 @@ pp_job_update_cb (GObject      *source_object,
 }
 
 static void
-on_priority_changed (PpJobRow     *job_row,
-                     PpJobsDialog *self)
+on_priority_changed (PpJobsDialog *self,
+                     PpJobRow     *job_row)
 {
   PpJob *job;
 
@@ -213,14 +213,15 @@ static GtkWidget *
 create_listbox_row (gpointer item,
                     gpointer user_data)
 {
+  PpJobsDialog *self = user_data;
   PpJobRow *job_row;
 
   job_row = pp_job_row_new (PP_JOB (item));
 
-  g_signal_connect (job_row,
-                    "priority-changed",
-                    G_CALLBACK (on_priority_changed),
-                    user_data);
+  g_signal_connect_swapped (job_row,
+                            "priority-changed",
+                            G_CALLBACK (on_priority_changed),
+                            self);
 
   return GTK_WIDGET (job_row);
 }
@@ -318,11 +319,11 @@ update_jobs_list_cb (GObject      *source_object,
       text = g_strdup_printf (ngettext ("%u Job Requires Authentication", "%u Jobs Require Authentication", num_of_auth_jobs), num_of_auth_jobs);
       gtk_label_set_text (self->authenticate_jobs_label, text);
 
-      gtk_widget_show (GTK_WIDGET (self->authentication_infobar));
+      gtk_widget_set_visible (GTK_WIDGET (self->authentication_infobar), TRUE);
     }
   else
     {
-      gtk_widget_hide (GTK_WIDGET (self->authentication_infobar));
+      gtk_widget_set_visible (GTK_WIDGET (self->authentication_infobar), FALSE);
     }
 
   authenticate_popover_update (self);

@@ -30,16 +30,16 @@ msgstr ""
 "Project-Id-Version: gnome-control-center master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-control-center/"
 "issues\n"
-"POT-Creation-Date: 2023-03-16 17:31+0000\n"
-"PO-Revision-Date: 2023-03-18 18:07+0100\n"
-"Last-Translator: Tim Sabsch <tim@sabsch.com>\n"
+"POT-Creation-Date: 2023-03-15 13:38+0000\n"
+"PO-Revision-Date: 2023-03-15 14:57+0100\n"
+"Last-Translator: Jürgen Benvenuti <gastornis@posteo.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.1.1\n"
 
 #: panels/applications/cc-applications-panel.c:822
 msgid "System Bus"
@@ -166,7 +166,8 @@ msgstr "Anwendungsdetails"
 #: panels/keyboard/cc-input-chooser.ui:75
 #: panels/printers/new-printer-dialog.ui:230
 #: panels/region/cc-format-chooser.ui:82
-#: panels/search/gnome-search-panel.desktop.in:3 shell/cc-window.ui:41
+#: panels/search/gnome-search-panel.desktop.in:3 shell/cc-window.ui:40
+#: shell/cc-window.ui:42
 msgid "Search"
 msgstr "Suchen"
 
@@ -909,13 +910,13 @@ msgstr "Erfordert ein schreibbares Speichermedium"
 
 #: panels/color/cc-color-panel.ui:313
 msgid ""
-"You may find these instructions on how to use the profile on <a "
-"href=\"linux\">GNU/Linux</a>, <a href=\"osx\">Apple OS X</a> and <a "
-"href=\"windows\">Microsoft Windows</a> systems useful."
+"You may find these instructions on how to use the profile on <a href=\"linux"
+"\">GNU/Linux</a>, <a href=\"osx\">Apple OS X</a> and <a href=\"windows"
+"\">Microsoft Windows</a> systems useful."
 msgstr ""
-"Eventuell sind diese Anweisungen hilfreich, wie ein Profil unter <a "
-"href=\"linux\">GNU/Linux</a>, <a href=\"osx\">Apple OS X</a> und <a "
-"href=\"windows\">Microsoft Windows</a> eingesetzt wird."
+"Eventuell sind diese Anweisungen hilfreich, wie ein Profil unter <a href="
+"\"linux\">GNU/Linux</a>, <a href=\"osx\">Apple OS X</a> und <a href=\"windows"
+"\">Microsoft Windows</a> eingesetzt wird."
 
 #: panels/color/cc-color-panel.ui:335
 msgid "Add Profile"
@@ -926,8 +927,8 @@ msgid ""
 "Problems detected. The profile may not work correctly. <a href=\"\">Show "
 "details.</a>"
 msgstr ""
-"Probleme entdeckt. Das Profil funktioniert eventuell nicht richtig. <a "
-"href=\"\">Details anzeigen.</a>"
+"Probleme entdeckt. Das Profil funktioniert eventuell nicht richtig. <a href="
+"\"\">Details anzeigen.</a>"
 
 #: panels/color/cc-color-panel.ui:384
 msgid "_Import File…"
@@ -2730,7 +2731,7 @@ msgid "Methods for entering symbols and letter variants using the keyboard."
 msgstr "Methoden, um mit der Tastatur Symbole und Zeichenvarianten einzugeben."
 
 #: panels/keyboard/cc-keyboard-panel.ui:82
-#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:7 shell/cc-window.ui:161
+#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:7 shell/cc-window.ui:162
 msgid "Keyboard Shortcuts"
 msgstr "Tastenkombinationen"
 
@@ -2995,7 +2996,7 @@ msgstr ""
 "microphone;recording;application;privacy;Mikrofon;Mikrophon;Aufnahme;"
 "Anwendung;Programm;Datenschutz;"
 
-#: panels/mouse/cc-mouse-panel.ui:30
+#: panels/mouse/cc-mouse-panel.ui:30 panels/wacom/cc-wacom-panel.ui:9
 msgid "Test _Settings"
 msgstr "_Einstellungen testen"
 
@@ -4867,7 +4868,6 @@ msgid "Batteries"
 msgstr "Akku"
 
 # https://de.wikipedia.org/wiki/Unterbrechungsfreie_Stromversorgung
-# - jb
 #. Translators: UPS is an Uninterruptible Power Supply:
 #. * https://en.wikipedia.org/wiki/Uninterruptible_power_supply
 #: panels/power/cc-power-panel.c:260
@@ -7510,7 +7510,7 @@ msgstr "Dateichronik löschen?"
 #: panels/usage/cc-usage-panel.c:348
 msgid "After clearing, lists of recently used files will appear empty."
 msgstr ""
-"Nach dem Löschen erscheinen die Listen der zuletzt verwendeten Dateien leer."
+"Nach dem Löschen erscheinen die Listen der zuletzt verwendeten Datei leer."
 
 #: panels/usage/cc-usage-panel.c:349
 msgid "_Clear History"
@@ -8624,10 +8624,6 @@ msgstr ""
 msgid "Calibrate"
 msgstr "Kalibrieren"
 
-#: panels/wacom/cc-wacom-panel.ui:9
-msgid "Test Your _Settings"
-msgstr "_Testen Sie Ihre Einstellungen"
-
 #: panels/wacom/cc-wacom-panel.ui:56
 msgid "No tablet detected"
 msgstr "Kein Grafiktablett erkannt"
@@ -9318,15 +9314,15 @@ msgstr "Verfügbare Leisten:"
 msgid "All Settings"
 msgstr "Alle Einstellungen"
 
-#: shell/cc-window.ui:53 shell/cc-window.ui:55
+#: shell/cc-window.ui:54 shell/cc-window.ui:56
 msgid "Main Menu"
 msgstr "Hauptmenü"
 
-#: shell/cc-window.ui:153
+#: shell/cc-window.ui:154
 msgid "Warning: Development Version"
 msgstr "Warnung: Entwicklerversion"
 
-#: shell/cc-window.ui:154
+#: shell/cc-window.ui:155
 msgid ""
 "This version of Settings should only be used for development purposes. You "
 "may experience incorrect system behavior, data loss, and other unexpected "
@@ -9336,7 +9332,7 @@ msgstr ""
 "werden. Die Verwendung kann zu inkorrektem Verhalten des Systems, "
 "Datenverlust und weiteren unerwarteten Ereignissen führen. "
 
-#: shell/cc-window.ui:165
+#: shell/cc-window.ui:166
 msgid "Help"
 msgstr "Hilfe"
 
@@ -9444,14 +9440,17 @@ msgstr[1] "%u Eingänge"
 msgid "System Sounds"
 msgstr "Systemklänge"
 
-#~ msgid "Applications"
-#~ msgstr "Anwendungen"
-
 #~ msgid "Delete all the recent files?"
 #~ msgstr "Alle kürzlich verwendeten Dateien löschen?"
 
 #~ msgid "All the recent files will be permanently deleted."
 #~ msgstr "Alle kürzlich verwendeten Dateien werden dauerhaft gelöscht."
+
+#~ msgid "Test Your _Settings"
+#~ msgstr "_Testen Sie Ihre Einstellungen"
+
+#~ msgid "Applications"
+#~ msgstr "Anwendungen"
 
 #~ msgid "Application"
 #~ msgstr "Anwendung"
@@ -10449,11 +10448,11 @@ msgstr "Systemklänge"
 #~ msgstr "Kann nicht geändert werden"
 
 #~ msgid ""
-#~ "Individual permissions for applications can be reviewed in the <a "
-#~ "href=\"privacy\">Privacy</a> Settings."
+#~ "Individual permissions for applications can be reviewed in the <a href="
+#~ "\"privacy\">Privacy</a> Settings."
 #~ msgstr ""
-#~ "Individuelle Berechtigungen für Anwendungen können in den <a "
-#~ "href=\"privacy\">Privatsphäre</a>-Einstellungen eingesehen werden."
+#~ "Individuelle Berechtigungen für Anwendungen können in den <a href="
+#~ "\"privacy\">Privatsphäre</a>-Einstellungen eingesehen werden."
 
 #~ msgid "Integration"
 #~ msgstr "Integration"

@@ -26,6 +26,7 @@ struct _CcWifiConnectionRow
   gboolean         constructed;
 
   gboolean         checkable;
+  gboolean         forgettable;
   gboolean         checked;
 
   NMDeviceWifi    *device;
@@ -38,6 +39,7 @@ struct _CcWifiConnectionRow
   GtkSpinner      *connecting_spinner;
   GtkImage        *encrypted_icon;
   GtkButton       *options_button;
+  GtkButton       *forget_button;
   GtkButton       *qr_code_button;
   GtkImage        *strength_icon;
 };
@@ -51,6 +53,7 @@ enum
   PROP_APS,
   PROP_CONNECTION,
   PROP_KNOWN_CONNECTION,
+  PROP_FORGETTABLE,
   PROP_LAST
 };
 
@@ -71,6 +74,7 @@ G_DEFINE_TYPE (CcWifiConnectionRow, cc_wifi_connection_row, ADW_TYPE_ACTION_ROW)
 static GParamSpec *props[PROP_LAST];
 
 static void configure_clicked_cb (CcWifiConnectionRow *self);
+static void forget_clicked_cb (CcWifiConnectionRow *self);
 static void qr_code_clicked_cb (CcWifiConnectionRow *self);
 
 static NMAccessPointSecurity
@@ -303,6 +307,7 @@ update_ui (CcWifiConnectionRow *self)
 
   if (best_ap)
     {
+      g_autofree char *description = NULL;
       gchar *icon_name;
 
       if (strength < 20)
@@ -318,10 +323,17 @@ update_ui (CcWifiConnectionRow *self)
 
       g_object_set (self->strength_icon, "icon-name", icon_name, NULL);
       gtk_widget_set_child_visible (GTK_WIDGET (self->strength_icon), TRUE);
+
+      description = g_strdup_printf(_("Signal strength %d%%"), strength);
+      gtk_accessible_update_property (GTK_ACCESSIBLE (self->strength_icon),
+                                      GTK_ACCESSIBLE_PROPERTY_DESCRIPTION,
+                                      description,
+                                      -1);
     }
   else
     {
       gtk_widget_set_child_visible (GTK_WIDGET (self->strength_icon), FALSE);
+      gtk_accessible_reset_property (GTK_ACCESSIBLE (self->strength_icon), GTK_ACCESSIBLE_PROPERTY_DESCRIPTION);
     }
 }
 
@@ -334,6 +346,7 @@ cc_wifi_connection_row_constructed (GObject *object)
 
   /* Reparent the label into the checkbox */
   gtk_widget_set_visible (GTK_WIDGET (self->checkbutton), self->checkable);
+  gtk_widget_set_visible (GTK_WIDGET (self->forget_button), self->forgettable);
 
   update_ui (CC_WIFI_CONNECTION_ROW (object));
 }
@@ -376,6 +389,9 @@ cc_wifi_connection_row_get_property (GObject    *object,
 
     case PROP_KNOWN_CONNECTION:
       g_value_set_boolean (value, self->known_connection);
+      break;
+    case PROP_FORGETTABLE:
+      g_value_set_boolean (value, self->forgettable);
       break;
 
     default:
@@ -428,6 +444,10 @@ cc_wifi_connection_row_set_property (GObject      *object,
       self->known_connection = g_value_get_boolean (value);
       break;
 
+    case PROP_FORGETTABLE:
+      self->forgettable = g_value_get_boolean (value);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
@@ -464,10 +484,12 @@ cc_wifi_connection_row_class_init (CcWifiConnectionRowClass *klass)
   gtk_widget_class_bind_template_child (widget_class, CcWifiConnectionRow, connecting_spinner);
   gtk_widget_class_bind_template_child (widget_class, CcWifiConnectionRow, encrypted_icon);
   gtk_widget_class_bind_template_child (widget_class, CcWifiConnectionRow, options_button);
+  gtk_widget_class_bind_template_child (widget_class, CcWifiConnectionRow, forget_button);
   gtk_widget_class_bind_template_child (widget_class, CcWifiConnectionRow, qr_code_button);
   gtk_widget_class_bind_template_child (widget_class, CcWifiConnectionRow, strength_icon);
 
   gtk_widget_class_bind_template_callback (widget_class, configure_clicked_cb);
+  gtk_widget_class_bind_template_callback (widget_class, forget_clicked_cb);
   gtk_widget_class_bind_template_callback (widget_class, qr_code_clicked_cb);
 
   props[PROP_CHECKABLE] = g_param_spec_boolean ("checkable", "checkable",
@@ -500,6 +522,11 @@ cc_wifi_connection_row_class_init (CcWifiConnectionRowClass *klass)
                                                 FALSE,
                                                 G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
 
+  props[PROP_FORGETTABLE] = g_param_spec_boolean ("forgettable", "forgettable",
+                                                  "Whether to show a checkbox to select the row",
+                                                  FALSE,
+                                                  G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
+
   g_object_class_install_properties (object_class,
                                      PROP_LAST,
                                      props);
@@ -509,6 +536,11 @@ cc_wifi_connection_row_class_init (CcWifiConnectionRowClass *klass)
                 G_SIGNAL_RUN_LAST,
                 0, NULL, NULL, NULL,
                 G_TYPE_NONE, 0);
+  g_signal_new ("forget",
+               CC_TYPE_WIFI_CONNECTION_ROW,
+               G_SIGNAL_RUN_LAST,
+               0, NULL, NULL, NULL,
+               G_TYPE_NONE, 0);
   g_signal_new ("show-qr-code",
                 CC_TYPE_WIFI_CONNECTION_ROW,
                 G_SIGNAL_RUN_LAST,
@@ -520,6 +552,12 @@ static void
 configure_clicked_cb (CcWifiConnectionRow *self)
 {
   g_signal_emit_by_name (self, "configure");
+}
+
+static void
+forget_clicked_cb (CcWifiConnectionRow *self)
+{
+  g_signal_emit_by_name (self, "forget");
 }
 
 static void
@@ -538,6 +576,11 @@ cc_wifi_connection_row_init (CcWifiConnectionRow *self)
   g_object_bind_property (self, "checked",
                           self->checkbutton, "active",
                           G_BINDING_BIDIRECTIONAL | G_BINDING_SYNC_CREATE);
+
+  gtk_accessible_update_relation (GTK_ACCESSIBLE (self),
+                                  GTK_ACCESSIBLE_RELATION_DESCRIBED_BY,
+                                  self->encrypted_icon, self->strength_icon, NULL,
+                                  -1);
 }
 
 CcWifiConnectionRow *
@@ -545,7 +588,8 @@ cc_wifi_connection_row_new (NMDeviceWifi  *device,
                             NMConnection  *connection,
                             GPtrArray     *aps,
                             gboolean       checkable,
-                            gboolean       known_connection)
+                            gboolean       known_connection,
+                            gboolean       forgettable)
 {
   return g_object_new (CC_TYPE_WIFI_CONNECTION_ROW,
                        "device", device,
@@ -553,6 +597,7 @@ cc_wifi_connection_row_new (NMDeviceWifi  *device,
                        "aps", aps,
                        "checkable", checkable,
                        "known-connection", known_connection,
+                       "forgettable", forgettable,
                        NULL);
 }
 
@@ -594,6 +639,14 @@ cc_wifi_connection_row_get_connection (CcWifiConnectionRow *self)
   g_return_val_if_fail (CC_WIFI_CONNECTION_ROW (self), NULL);
 
   return self->connection;
+}
+
+gboolean
+cc_wifi_connection_row_get_forgettable (CcWifiConnectionRow *self)
+{
+  g_return_val_if_fail (CC_WIFI_CONNECTION_ROW (self), FALSE);
+
+  return self->forgettable;
 }
 
 void

@@ -26,6 +26,7 @@
 
 #include "cc-illustrated-row.h"
 #include "cc-split-row.h"
+#include "cc-list-row-info-button.h"
 
 #include "cc-mouse-caps-helper.h"
 #include "cc-mouse-panel.h"
@@ -307,50 +308,31 @@ setup_dialog (CcMousePanel *self)
                                 touchpad_enabled_get_mapping,
                                 touchpad_enabled_set_mapping,
                                 NULL, NULL);
-  g_settings_bind_with_mapping (self->touchpad_settings, "send-events",
-                                self->touchpad_scroll_direction_row, "sensitive",
-                                G_SETTINGS_BIND_GET,
-                                touchpad_enabled_get_mapping,
-                                touchpad_enabled_set_mapping,
-                                NULL, NULL);
-  g_settings_bind_with_mapping (self->touchpad_settings, "send-events",
-                                self->touchpad_scroll_method_row, "sensitive",
-                                G_SETTINGS_BIND_GET,
-                                touchpad_enabled_get_mapping,
-                                touchpad_enabled_set_mapping,
-                                NULL, NULL);
-  g_settings_bind_with_mapping (self->touchpad_settings, "send-events",
-                                self->touchpad_speed_row, "sensitive",
-                                G_SETTINGS_BIND_GET,
-                                touchpad_enabled_get_mapping,
-                                touchpad_enabled_set_mapping,
-                                NULL, NULL);
-  g_settings_bind_with_mapping (self->touchpad_settings, "send-events",
-                                self->tap_to_click_row, "sensitive",
-                                G_SETTINGS_BIND_GET,
-                                touchpad_enabled_get_mapping,
-                                touchpad_enabled_set_mapping,
-                                NULL, NULL);
 
   g_settings_bind (self->touchpad_settings, "natural-scroll",
                    self->touchpad_scroll_direction_row, "use-default",
-                   G_SETTINGS_BIND_INVERT_BOOLEAN);
+                   G_SETTINGS_BIND_INVERT_BOOLEAN |
+                   G_SETTINGS_BIND_NO_SENSITIVITY);
 
   g_settings_bind (self->touchpad_settings, "speed",
                    gtk_range_get_adjustment (GTK_RANGE (self->touchpad_speed_scale)), "value",
-                   G_SETTINGS_BIND_DEFAULT);
+                   G_SETTINGS_BIND_DEFAULT |
+                   G_SETTINGS_BIND_NO_SENSITIVITY);
 
   g_settings_bind (self->touchpad_settings, "tap-to-click",
                    self->tap_to_click_switch, "active",
-                   G_SETTINGS_BIND_DEFAULT);
+                   G_SETTINGS_BIND_DEFAULT |
+                   G_SETTINGS_BIND_NO_SENSITIVITY);
 
   g_settings_bind (self->touchpad_settings, "two-finger-scrolling-enabled",
                    self->touchpad_scroll_method_row, "use-default",
-                   G_SETTINGS_BIND_DEFAULT);
+                   G_SETTINGS_BIND_DEFAULT |
+                   G_SETTINGS_BIND_NO_SENSITIVITY);
 
   g_settings_bind (self->touchpad_settings, "edge-scrolling-enabled",
                    self->touchpad_scroll_method_row, "use-default",
-                   G_SETTINGS_BIND_INVERT_BOOLEAN);
+                   G_SETTINGS_BIND_INVERT_BOOLEAN |
+                   G_SETTINGS_BIND_NO_SENSITIVITY);
 
   setup_touchpad_options (self);
 
@@ -444,6 +426,7 @@ cc_mouse_panel_class_init (CcMousePanelClass *klass)
 
   g_type_ensure (CC_TYPE_ILLUSTRATED_ROW);
   g_type_ensure (CC_TYPE_SPLIT_ROW);
+  g_type_ensure (CC_TYPE_LIST_ROW_INFO_BUTTON);
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/mouse/cc-mouse-panel.ui");
 

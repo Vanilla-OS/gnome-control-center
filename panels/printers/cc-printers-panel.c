@@ -724,7 +724,6 @@ add_printer_entry (CcPrintersPanel *self,
   content = (GtkWidget*) gtk_builder_get_object (self->builder, "content");
 
   printer_entry = pp_printer_entry_new (printer, self->is_authorized);
-  gtk_widget_show (GTK_WIDGET (printer_entry));
 
   widgets = pp_printer_entry_get_size_group_widgets (printer_entry);
   for (l = widgets; l != NULL; l = l->next)
@@ -941,7 +940,7 @@ printer_add_async_cb (GObject      *source_object,
                             "response",
                             G_CALLBACK (gtk_window_destroy),
                             NULL);
-          gtk_widget_show (message_dialog);
+          gtk_window_present (GTK_WINDOW (message_dialog));
         }
     }
 
@@ -987,7 +986,7 @@ printer_add_cb (CcPrintersPanel *self)
   gtk_window_set_transient_for (GTK_WINDOW (self->pp_new_printer_dialog),
                                             GTK_WINDOW (native));
 
-  gtk_widget_show (GTK_WIDGET (self->pp_new_printer_dialog));
+  gtk_widget_set_visible (GTK_WIDGET (self->pp_new_printer_dialog), TRUE);
 }
 
 static void
@@ -1311,7 +1310,7 @@ cc_printers_panel_init (CcPrintersPanel *self)
       cc_permission_infobar_set_permission (self->permission_infobar,
                                             self->permission);
       cc_permission_infobar_set_title (self->permission_infobar,
-				       _("Unlock to Add Printers and Change Settings"));
+				       _("Unlock to add printers and change settings"));
 
       on_permission_changed (self);
     }

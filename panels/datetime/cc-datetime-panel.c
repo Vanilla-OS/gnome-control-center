@@ -24,6 +24,7 @@
 #include "cc-time-editor.h"
 #include "cc-datetime-panel.h"
 #include "cc-datetime-resources.h"
+#include "cc-list-row.h"
 
 #include <langinfo.h>
 #include <sys/time.h>
@@ -54,6 +55,12 @@
 
 #define CLOCK_SCHEMA "org.gnome.desktop.interface"
 #define CLOCK_FORMAT_KEY "clock-format"
+#define CLOCK_SHOW_WEEKDAY_KEY "clock-show-weekday"
+#define CLOCK_SHOW_DATE_KEY "clock-show-date"
+#define CLOCK_SHOW_SECONDS_KEY "clock-show-seconds"
+
+#define CALENDAR_SCHEMA "org.gnome.desktop.calendar"
+#define CALENDAR_SHOW_WEEK_NUMBERS_KEY "show-weekdate"
 
 #define FILECHOOSER_SCHEMA "org.gtk.Settings.FileChooser"
 
@@ -73,32 +80,37 @@ struct _CcDateTimePanel
   GDateTime *date;
 
   GSettings *clock_settings;
+  GSettings *calendar_settings;
   GSettings *datetime_settings;
   GSettings *filechooser_settings;
   GDesktopClockFormat clock_format;
-  GtkWidget *auto_datetime_row;
-  GtkWidget *auto_timezone_row;
-  GtkWidget *auto_timezone_switch;
-  GtkWidget *date_grid;
-  GtkWidget *datetime_button;
-  GtkWidget *datetime_dialog;
-  GtkWidget *datetime_label;
-  GtkWidget *day_spinbutton;
-  GtkWidget *timeformat_row;
-  GtkWidget *h_spinbutton;
+  AdwActionRow *auto_datetime_row;
+  AdwActionRow *auto_timezone_row;
+  GtkSwitch *auto_timezone_switch;
+  AdwActionRow *datetime_row;
+  GtkDialog *datetime_dialog;
+  GtkLabel *datetime_label;
+  GtkSpinButton *day_spinbutton;
+  AdwComboRow *timeformat_row;
+  GtkSpinButton *h_spinbutton;
+  GtkWidget *weekday_row;
+  GtkWidget *weekday_switch;
+  GtkWidget *date_switch;
+  GtkWidget *seconds_switch;
+  GtkWidget *week_numbers_switch;
   GtkLockButton *lock_button;
   GtkListBox *date_box;
-  GtkListBoxRow *day_row;
+  AdwActionRow *day_row;
   GtkSingleSelection *month_model;
   GtkPopover  *month_popover;
-  GtkListBoxRow *month_row;
-  GtkListBoxRow *year_row;
-  GtkWidget *network_time_switch;
-  GtkWidget *time_editor;
-  GtkWidget *timezone_button;
-  GtkWidget *timezone_dialog;
-  GtkWidget *timezone_label;
-  GtkWidget *year_spinbutton;
+  CcListRow *month_row;
+  AdwActionRow *year_row;
+  GtkSwitch *network_time_switch;
+  CcTimeEditor *time_editor;
+  AdwActionRow *timezone_row;
+  CcTzDialog *timezone_dialog;
+  GtkLabel *timezone_label;
+  GtkSpinButton *year_spinbutton;
 
   GnomeWallClock *clock_tracker;
 
@@ -121,30 +133,31 @@ static void update_time (CcDateTimePanel *self);
 static void
 cc_date_time_panel_dispose (GObject *object)
 {
-  CcDateTimePanel *panel = CC_DATE_TIME_PANEL (object);
+  CcDateTimePanel *self = CC_DATE_TIME_PANEL (object);
 
-  if (panel->cancellable)
+  if (self->cancellable)
     {
-      g_cancellable_cancel (panel->cancellable);
-      g_clear_object (&panel->cancellable);
+      g_cancellable_cancel (self->cancellable);
+      g_clear_object (&self->cancellable);
     }
 
-  if (panel->toplevels)
+  if (self->toplevels)
     {
-      g_list_free_full (panel->toplevels, (GDestroyNotify) gtk_window_destroy);
-      panel->toplevels = NULL;
+      g_list_free_full (self->toplevels, (GDestroyNotify) gtk_window_destroy);
+      self->toplevels = NULL;
     }
 
-  g_clear_object (&panel->clock_tracker);
-  g_clear_object (&panel->dtm);
-  g_clear_object (&panel->permission);
-  g_clear_object (&panel->tz_permission);
-  g_clear_object (&panel->location_settings);
-  g_clear_object (&panel->clock_settings);
-  g_clear_object (&panel->datetime_settings);
-  g_clear_object (&panel->filechooser_settings);
+  g_clear_object (&self->clock_tracker);
+  g_clear_object (&self->dtm);
+  g_clear_object (&self->permission);
+  g_clear_object (&self->tz_permission);
+  g_clear_object (&self->location_settings);
+  g_clear_object (&self->clock_settings);
+  g_clear_object (&self->calendar_settings);
+  g_clear_object (&self->datetime_settings);
+  g_clear_object (&self->filechooser_settings);
 
-  g_clear_pointer (&panel->date, g_date_time_unref);
+  g_clear_pointer (&self->date, g_date_time_unref);
 
   G_OBJECT_CLASS (cc_date_time_panel_parent_class)->dispose (object);
 }
@@ -155,7 +168,7 @@ cc_date_time_panel_get_help_uri (CcPanel *panel)
   return "help:gnome-help/clock";
 }
 
-static void clock_settings_changed_cb (CcDateTimePanel *panel,
+static void clock_settings_changed_cb (CcDateTimePanel *self,
                                        gchar           *key);
 
 static char *
@@ -175,9 +188,7 @@ format_clock_name_cb (AdwEnumListItem *item,
 }
 
 static void
-change_clock_settings (GObject         *gobject,
-                       GParamSpec      *pspec,
-                       CcDateTimePanel *self)
+change_clock_settings (CcDateTimePanel *self)
 {
   GDesktopClockFormat value;
   AdwEnumListItem *item;
@@ -185,7 +196,7 @@ change_clock_settings (GObject         *gobject,
   g_signal_handlers_block_by_func (self->clock_settings, clock_settings_changed_cb,
                                    self);
 
-  item = ADW_ENUM_LIST_ITEM (adw_combo_row_get_selected_item (ADW_COMBO_ROW (self->timeformat_row)));
+  item = ADW_ENUM_LIST_ITEM (adw_combo_row_get_selected_item (self->timeformat_row));
   value = adw_enum_list_item_get_value (item);
 
   g_settings_set_enum (self->clock_settings, CLOCK_FORMAT_KEY, value);
@@ -209,9 +220,9 @@ clock_settings_changed_cb (CcDateTimePanel *self,
 
   g_signal_handlers_block_by_func (self->timeformat_row, change_clock_settings, self);
 
-  adw_combo_row_set_selected (ADW_COMBO_ROW (self->timeformat_row), value);
+  adw_combo_row_set_selected (self->timeformat_row, value);
 
-  cc_time_editor_set_am_pm (CC_TIME_EDITOR (self->time_editor),
+  cc_time_editor_set_am_pm (self->time_editor,
                             value == G_DESKTOP_CLOCK_FORMAT_12H);
   update_time (self);
 
@@ -231,7 +242,7 @@ update_time (CcDateTimePanel *self)
   else
     use_ampm = FALSE;
 
-  cc_time_editor_set_time (CC_TIME_EDITOR (self->time_editor),
+  cc_time_editor_set_time (self->time_editor,
                            g_date_time_get_hour (self->date),
                            g_date_time_get_minute (self->date));
 
@@ -249,7 +260,7 @@ update_time (CcDateTimePanel *self)
 
   self->month = g_date_time_get_month (self->date);
   gtk_single_selection_set_selected (self->month_model, self->month - 1);
-  gtk_label_set_text (GTK_LABEL (self->datetime_label), label);
+  gtk_label_set_text (self->datetime_label, label);
 }
 
 static void
@@ -307,7 +318,7 @@ set_using_ntp_cb (GObject      *source,
     }
   else
     {
-      gtk_switch_set_state (GTK_SWITCH (self->network_time_switch), self->pending_ntp_state);
+      gtk_switch_set_state (self->network_time_switch, self->pending_ntp_state);
     }
 }
 
@@ -362,15 +373,15 @@ change_date (CcDateTimePanel *self)
   guint y, d;
   g_autoptr(GDateTime) old_date = NULL;
 
-  y = gtk_spin_button_get_value_as_int (GTK_SPIN_BUTTON (self->year_spinbutton));
-  d = gtk_spin_button_get_value_as_int (GTK_SPIN_BUTTON (self->day_spinbutton));
+  y = gtk_spin_button_get_value_as_int (self->year_spinbutton);
+  d = gtk_spin_button_get_value_as_int (self->day_spinbutton);
 
   old_date = self->date;
   self->date = g_date_time_new_local (y, self->month, d,
                                       g_date_time_get_hour (old_date),
                                       g_date_time_get_minute (old_date),
                                       g_date_time_get_second (old_date));
-  cc_time_editor_set_time (CC_TIME_EDITOR (self->time_editor),
+  cc_time_editor_set_time (self->time_editor,
                            g_date_time_get_hour (self->date),
                            g_date_time_get_minute (self->date));
 
@@ -417,7 +428,7 @@ update_timezone (CcDateTimePanel *self)
   label = g_strdup_printf (C_("timezone desc", "%s (%s)"),
                            g_date_time_get_timezone_abbreviation (self->date),
                            city_country);
-  gtk_label_set_text (GTK_LABEL (self->timezone_label), label);
+  gtk_label_set_text (self->timezone_label, label);
 }
 
 static void
@@ -428,20 +439,20 @@ get_initial_timezone (CcDateTimePanel *self)
   timezone = timedate1_get_timezone (self->dtm);
 
   if (timezone == NULL ||
-      !cc_tz_dialog_set_tz (CC_TZ_DIALOG (self->timezone_dialog), timezone))
+      !cc_tz_dialog_set_tz (self->timezone_dialog, timezone))
     {
       g_warning ("Timezone '%s' is unhandled, setting %s as default", timezone ? timezone : "(null)", DEFAULT_TZ);
-      cc_tz_dialog_set_tz (CC_TZ_DIALOG (self->timezone_dialog), DEFAULT_TZ);
+      cc_tz_dialog_set_tz (self->timezone_dialog, DEFAULT_TZ);
     }
 
-  self->current_location = cc_tz_dialog_get_selected_location (CC_TZ_DIALOG (self->timezone_dialog));
+  self->current_location = cc_tz_dialog_get_selected_location (self->timezone_dialog);
   update_timezone (self);
 }
 
 static void
-day_changed (CcDateTimePanel *panel)
+day_changed (CcDateTimePanel *self)
 {
-  change_date (panel);
+  change_date (self);
 }
 
 static void
@@ -450,19 +461,17 @@ month_year_changed (CcDateTimePanel *self)
   guint y;
   guint num_days;
   GtkAdjustment *adj;
-  GtkSpinButton *day_spin;
 
-  y = gtk_spin_button_get_value_as_int (GTK_SPIN_BUTTON (self->year_spinbutton));
+  y = gtk_spin_button_get_value_as_int (self->year_spinbutton);
 
   /* Check the number of days in that month */
   num_days = g_date_get_days_in_month (self->month, y);
 
-  day_spin = GTK_SPIN_BUTTON (self->day_spinbutton);
-  adj = GTK_ADJUSTMENT (gtk_spin_button_get_adjustment (day_spin));
+  adj = GTK_ADJUSTMENT (gtk_spin_button_get_adjustment (self->day_spinbutton));
   gtk_adjustment_set_upper (adj, num_days + 1);
 
-  if (gtk_spin_button_get_value_as_int (day_spin) > num_days)
-    gtk_spin_button_set_value (day_spin, num_days);
+  if (gtk_spin_button_get_value_as_int (self->day_spinbutton) > num_days)
+    gtk_spin_button_set_value (self->day_spinbutton, num_days);
 
   change_date (self);
 }
@@ -473,7 +482,7 @@ on_date_box_row_activated_cb (CcDateTimePanel *self,
 {
   g_assert (CC_IS_DATE_TIME_PANEL (self));
 
-  if (row == self->month_row)
+  if (row == GTK_LIST_BOX_ROW (self->month_row))
     gtk_popover_popup (self->month_popover);
 }
 
@@ -494,13 +503,13 @@ on_month_selection_changed_cb (CcDateTimePanel *self)
 }
 
 static void
-on_clock_changed (CcDateTimePanel *panel,
+on_clock_changed (CcDateTimePanel *self,
 		  GParamSpec      *pspec)
 {
-  g_date_time_unref (panel->date);
-  panel->date = g_date_time_new_now_local ();
-  update_time (panel);
-  update_timezone (panel);
+  g_date_time_unref (self->date);
+  self->date = g_date_time_new_now_local ();
+  update_time (self);
+  update_timezone (self);
 }
 
 static gboolean
@@ -511,22 +520,6 @@ change_ntp (CcDateTimePanel *self,
 
   /* The new state will be visible once we see the reply. */
   return TRUE;
-}
-
-static void
-on_ntp_changed (CcDateTimePanel *self)
-{
-  gboolean ntp_on;
-
-  g_object_get (self->dtm, "ntp", &ntp_on, NULL);
-
-  g_signal_handlers_block_by_func (self->network_time_switch, change_ntp, self);
-
-  g_object_set (self->network_time_switch,
-                "active", ntp_on,
-                NULL);
-
-  g_signal_handlers_unblock_by_func (self->network_time_switch, change_ntp, self);
 }
 
 static gboolean
@@ -556,32 +549,32 @@ on_permission_changed (CcDateTimePanel *self)
   allowed = (self->permission != NULL && g_permission_get_allowed (self->permission));
   location_allowed = g_settings_get_boolean (self->location_settings, LOCATION_ENABLED);
   tz_allowed = (self->tz_permission != NULL && g_permission_get_allowed (self->tz_permission));
-  using_ntp = gtk_switch_get_active (GTK_SWITCH (self->network_time_switch));
-  auto_timezone = gtk_switch_get_active (GTK_SWITCH (self->auto_timezone_switch));
+  using_ntp = gtk_switch_get_active (self->network_time_switch);
+  auto_timezone = gtk_switch_get_active (self->auto_timezone_switch);
 
   /* All the widgets but the lock button and the 24h setting */
-  gtk_widget_set_sensitive (self->auto_datetime_row, allowed);
-  gtk_widget_set_sensitive (self->auto_timezone_row, location_allowed && (allowed || tz_allowed));
-  gtk_widget_set_sensitive (self->datetime_button, allowed && !using_ntp);
-  gtk_widget_set_sensitive (self->timezone_button, (allowed || tz_allowed) && (!auto_timezone || !location_allowed));
+  gtk_widget_set_sensitive (GTK_WIDGET (self->auto_datetime_row), allowed);
+  gtk_widget_set_sensitive (GTK_WIDGET (self->auto_timezone_row), location_allowed && (allowed || tz_allowed));
+  gtk_widget_set_sensitive (GTK_WIDGET (self->datetime_row), allowed && !using_ntp);
+  gtk_widget_set_sensitive (GTK_WIDGET (self->timezone_row), (allowed || tz_allowed) && (!auto_timezone || !location_allowed));
 
   /* Hide the subdialogs if we no longer have permissions */
   if (!allowed)
-      gtk_widget_hide (GTK_WIDGET (self->datetime_dialog));
+      gtk_widget_set_visible (GTK_WIDGET (self->datetime_dialog), FALSE);
   if (!allowed && !tz_allowed)
-      gtk_widget_hide (GTK_WIDGET (self->timezone_dialog));
+      gtk_widget_set_visible (GTK_WIDGET (self->timezone_dialog), FALSE);
 }
 
 static void
-on_location_settings_changed (CcDateTimePanel *panel)
+on_location_settings_changed (CcDateTimePanel *self)
 {
-  on_permission_changed (panel);
+  on_permission_changed (self);
 }
 
 static void
 on_can_ntp_changed (CcDateTimePanel *self)
 {
-  gtk_widget_set_visible (self->auto_datetime_row, is_ntp_available (self));
+  gtk_widget_set_visible (GTK_WIDGET (self->auto_datetime_row), is_ntp_available (self));
 }
 
 static void
@@ -623,7 +616,7 @@ on_timedated_properties_changed (CcDateTimePanel  *self,
 
 static void
 run_dialog (CcDateTimePanel *self,
-            GtkWidget       *dialog)
+            GtkDialog       *dialog)
 {
   GtkWidget *parent;
 
@@ -672,7 +665,7 @@ switch_to_row_transform_func (GBinding        *binding,
 
 static void
 bind_switch_to_row (CcDateTimePanel *self,
-                    GtkWidget       *gtkswitch,
+                    GtkSwitch       *gtkswitch,
                     GtkWidget       *listrow)
 {
   g_object_bind_property_full (gtkswitch, "active",
@@ -687,7 +680,7 @@ panel_tz_selection_changed_cb (CcDateTimePanel *self)
 {
   g_assert (CC_IS_DATE_TIME_PANEL (self));
 
-  self->current_location = cc_tz_dialog_get_selected_location (CC_TZ_DIALOG (self->timezone_dialog));
+  self->current_location = cc_tz_dialog_get_selected_location (self->timezone_dialog);
   queue_set_timezone (self);
 }
 
@@ -696,13 +689,13 @@ list_box_row_activated (CcDateTimePanel *self,
                         GtkListBoxRow   *row)
 
 {
-  if (row == GTK_LIST_BOX_ROW (self->datetime_button))
+  if (row == GTK_LIST_BOX_ROW (self->datetime_row))
     {
       run_dialog (self, self->datetime_dialog);
     }
-  else if (row == GTK_LIST_BOX_ROW (self->timezone_button))
+  else if (row == GTK_LIST_BOX_ROW (self->timezone_row))
     {
-      run_dialog (self, self->timezone_dialog);
+      run_dialog (self, GTK_DIALOG (self->timezone_dialog));
     }
 }
 
@@ -719,8 +712,8 @@ time_changed_cb (CcDateTimePanel *self,
   self->date = g_date_time_new_local (g_date_time_get_year (old_date),
                                       g_date_time_get_month (old_date),
                                       g_date_time_get_day_of_month (old_date),
-                                      cc_time_editor_get_hour (CC_TIME_EDITOR (self->time_editor)),
-                                      cc_time_editor_get_minute (CC_TIME_EDITOR (self->time_editor)),
+                                      cc_time_editor_get_hour (self->time_editor),
+                                      cc_time_editor_get_minute (self->time_editor),
                                       g_date_time_get_second (old_date));
 
   update_time (self);
@@ -758,8 +751,7 @@ setup_datetime_dialog (CcDateTimePanel *self)
                                        g_date_time_get_year (self->date));
   adjustment = (GtkAdjustment*) gtk_adjustment_new (g_date_time_get_day_of_month (self->date), 1,
                                                     num_days + 1, 1, 10, 1);
-  gtk_spin_button_set_adjustment (GTK_SPIN_BUTTON (self->day_spinbutton),
-                                  adjustment);
+  gtk_spin_button_set_adjustment (self->day_spinbutton, adjustment);
   g_signal_connect_object (G_OBJECT (self->day_spinbutton), "value-changed",
                            G_CALLBACK (day_changed), self, G_CONNECT_SWAPPED);
 
@@ -767,8 +759,7 @@ setup_datetime_dialog (CcDateTimePanel *self)
   adjustment = (GtkAdjustment*) gtk_adjustment_new (g_date_time_get_year (self->date),
                                                     1, G_MAXDOUBLE, 1,
                                                     10, 1);
-  gtk_spin_button_set_adjustment (GTK_SPIN_BUTTON (self->year_spinbutton),
-                                  adjustment);
+  gtk_spin_button_set_adjustment (self->year_spinbutton, adjustment);
   g_signal_connect_object (G_OBJECT (self->year_spinbutton), "value-changed",
                            G_CALLBACK (month_year_changed), self, G_CONNECT_SWAPPED);
 
@@ -782,39 +773,41 @@ sort_date_box (GtkListBoxRow   *a,
                GtkListBoxRow   *b,
                CcDateTimePanel *self)
 {
-  GtkListBoxRow *month_row;
+  GtkListBoxRow *day_row, *month_row, *year_row;
 
   g_assert (CC_IS_DATE_TIME_PANEL (self));
 
+  day_row = GTK_LIST_BOX_ROW (self->day_row);
   month_row = GTK_LIST_BOX_ROW (self->month_row);
+  year_row = GTK_LIST_BOX_ROW (self->year_row);
 
   switch (date_endian_get_default (FALSE)) {
   case DATE_ENDIANESS_BIG:
     /* year, month, day */
-    if (a == self->year_row || b == self->day_row)
+    if (a == year_row || b == day_row)
       return -1;
-    if (a == self->day_row || b == self->year_row)
+    if (a == day_row || b == year_row)
       return 1;
 
   case DATE_ENDIANESS_LITTLE:
     /* day, month, year */
-    if (a == self->day_row || b == self->year_row)
+    if (a == day_row || b == year_row)
       return -1;
-    if (a == self->year_row || b == self->day_row)
+    if (a == year_row || b == day_row)
       return 1;
 
   case DATE_ENDIANESS_MIDDLE:
     /* month, day, year */
-    if (a == month_row || b == self->year_row)
+    if (a == month_row || b == year_row)
       return -1;
-    if (a == self->year_row || b == month_row)
+    if (a == year_row || b == month_row)
       return 1;
 
   case DATE_ENDIANESS_YDM:
     /* year, day, month */
-    if (a == self->year_row || b == month_row)
+    if (a == year_row || b == month_row)
       return -1;
-    if (a == month_row || b == self->year_row)
+    if (a == month_row || b == year_row)
       return 1;
   }
 
@@ -842,19 +835,23 @@ cc_date_time_panel_class_init (CcDateTimePanelClass *klass)
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePanel, auto_timezone_row);
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePanel, auto_timezone_switch);
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePanel, date_box);
-  gtk_widget_class_bind_template_child (widget_class, CcDateTimePanel, datetime_button);
+  gtk_widget_class_bind_template_child (widget_class, CcDateTimePanel, datetime_row);
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePanel, datetime_dialog);
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePanel, datetime_label);
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePanel, day_row);
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePanel, day_spinbutton);
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePanel, timeformat_row);
+  gtk_widget_class_bind_template_child (widget_class, CcDateTimePanel, weekday_switch);
+  gtk_widget_class_bind_template_child (widget_class, CcDateTimePanel, date_switch);
+  gtk_widget_class_bind_template_child (widget_class, CcDateTimePanel, seconds_switch);
+  gtk_widget_class_bind_template_child (widget_class, CcDateTimePanel, week_numbers_switch);
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePanel, lock_button);
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePanel, month_model);
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePanel, month_popover);
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePanel, month_row);
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePanel, network_time_switch);
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePanel, time_editor);
-  gtk_widget_class_bind_template_child (widget_class, CcDateTimePanel, timezone_button);
+  gtk_widget_class_bind_template_child (widget_class, CcDateTimePanel, timezone_row);
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePanel, timezone_dialog);
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePanel, timezone_label);
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePanel, year_row);
@@ -932,18 +929,19 @@ cc_date_time_panel_init (CcDateTimePanel *self)
   /* set up network time switch */
   bind_switch_to_row (self,
                       self->network_time_switch,
-                      self->datetime_button);
-  g_signal_connect_object (self->dtm, "notify::ntp",
-                           G_CALLBACK (on_ntp_changed), self, G_CONNECT_SWAPPED);
+                      GTK_WIDGET (self->datetime_row));
+  g_object_bind_property (self->dtm, "ntp",
+                          self->network_time_switch, "active",
+                          G_BINDING_DEFAULT | G_BINDING_SYNC_CREATE);
+
   g_signal_connect_object (self->network_time_switch, "state-set",
                            G_CALLBACK (change_ntp), self, G_CONNECT_SWAPPED);
-  on_ntp_changed (self);
 
-  gtk_widget_set_visible (self->auto_datetime_row, is_ntp_available (self));
+  gtk_widget_set_visible (GTK_WIDGET (self->auto_datetime_row), is_ntp_available (self));
 
   /* Timezone settings */
   g_object_bind_property_full (self->auto_timezone_switch, "active",
-                               self->timezone_button, "sensitive",
+                               self->timezone_row, "sensitive",
                                G_BINDING_SYNC_CREATE,
                                (GBindingTransformFunc) tz_switch_to_row_transform_func,
                                NULL, self, NULL);
@@ -963,6 +961,26 @@ cc_date_time_panel_init (CcDateTimePanel *self)
   clock_settings_changed_cb (self, CLOCK_FORMAT_KEY);
   g_signal_connect_object (self->clock_settings, "changed::" CLOCK_FORMAT_KEY,
                            G_CALLBACK (clock_settings_changed_cb), self, G_CONNECT_SWAPPED);
+
+  /* setup top bar clock setting switches */
+  g_settings_bind (self->clock_settings, CLOCK_SHOW_WEEKDAY_KEY,
+                   self->weekday_switch, "active",
+                   G_SETTINGS_BIND_DEFAULT);
+
+  g_settings_bind (self->clock_settings, CLOCK_SHOW_DATE_KEY,
+                   self->date_switch, "active",
+                   G_SETTINGS_BIND_DEFAULT);
+
+  g_settings_bind (self->clock_settings, CLOCK_SHOW_SECONDS_KEY,
+                   self->seconds_switch, "active",
+                   G_SETTINGS_BIND_DEFAULT);
+
+  /* Calendar settings */
+  self->calendar_settings = g_settings_new (CALENDAR_SCHEMA);
+
+  g_settings_bind (self->calendar_settings, CALENDAR_SHOW_WEEK_NUMBERS_KEY,
+                   self->week_numbers_switch, "active",
+                   G_SETTINGS_BIND_DEFAULT);
 
   update_time (self);
 

@@ -129,8 +129,12 @@
                   <object class="AdwActionRow">
                     <property name="activatable-widget">local_account_type_switch</property>
                     <property name="title" translatable="yes">Administrator</property>
-                    <property name="subtitle" translatable="yes">Administrators can add and remove other users, and can change settings for all users. Parental controls cannot be applied to administrators.</property>
-                    <property name="subtitle-lines">3</property>
+                    <child type="suffix">
+                      <object class="CcListRowInfoButton">
+                        <property name="valign">center</property>
+                        <property name="text" translatable="yes">Administrators have extra abilities, including adding and removing users, changing login settings, and removing software. Parental controls cannot be applied to administrators.</property>
+                      </object>
+                    </child>
                     <child type="suffix">
                       <object class="GtkSwitch" id="local_account_type_switch">
                         <property name="valign">center</property>
@@ -189,7 +193,7 @@
                         <signal name="activate" handler="dialog_validate" object="CcAddUserDialog" swapped="yes"/>
                         <child>
                           <object class="GtkEventControllerKey">
-                            <signal name="key-pressed" handler="local_password_entry_key_press_event_cb" object="CcAddUserDialog" swapped="no"/>
+                            <signal name="key-pressed" handler="local_password_entry_key_press_event_cb" object="CcAddUserDialog" swapped="yes"/>
                           </object>
                         </child>
                         <child>

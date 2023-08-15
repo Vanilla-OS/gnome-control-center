@@ -337,11 +337,10 @@ on_text_toggle_overwrite_cb (GtkText     *text,
 }
 
 static gboolean
-on_key_pressed_cb (GtkEventControllerKey *key_controller,
+on_key_pressed_cb (CcTimeEntry           *self,
                    guint                  keyval,
                    guint                  keycode,
-                   GdkModifierType        state,
-                   CcTimeEntry           *self)
+                   GdkModifierType        state)
 {
   /* Allow entering numbers */
   if (!(state & GDK_SHIFT_MASK) &&
@@ -412,6 +411,7 @@ cc_time_entry_constructed (GObject *object)
 
   G_OBJECT_CLASS (cc_time_entry_parent_class)->constructed (object);
 
+  gtk_widget_set_direction (GTK_WIDGET (self->text), GTK_TEXT_DIR_LTR);
   time_entry_fill_time (CC_TIME_ENTRY (object));
 
   list = pango_attr_list_new ();
@@ -516,7 +516,7 @@ cc_time_entry_init (CcTimeEntry *self)
 
   key_controller = gtk_event_controller_key_new ();
   gtk_event_controller_set_propagation_phase (key_controller, GTK_PHASE_CAPTURE);
-  g_signal_connect (key_controller, "key-pressed", G_CALLBACK (on_key_pressed_cb), self);
+  g_signal_connect_swapped (key_controller, "key-pressed", G_CALLBACK (on_key_pressed_cb), self);
   gtk_widget_add_controller (GTK_WIDGET (self), key_controller);
 
   self->text = g_object_new (GTK_TYPE_TEXT,
