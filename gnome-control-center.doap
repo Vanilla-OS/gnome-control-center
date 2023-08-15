@@ -13,11 +13,20 @@
   <category rdf:resource="http://api.gnome.org/doap-extensions#core" />
   <programming-language>C</programming-language>
 
-  <!-- General, Region & Language -->
+  <!-- General, About, Camera, File History & Trash, Location, Microphone, Mouse & Touchpad, Printers, Search, Thunderbolt, User Accounts -->
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Felipe Borges</foaf:name>
+      <foaf:mbox rdf:resource="mailto:felipeborges@gnome.org" />
+      <gnome:userid>felipeborges</gnome:userid>
+    </foaf:Person>
+  </maintainer>
+
+  <!-- General -->
   <maintainer>
     <foaf:Person>
       <foaf:name>Robert Ancell</foaf:name>
-      <foaf:mbox rdf:resource="mailto:rancell@gnome.org" />
+      <foaf:mbox rdf:resource="mailto:robert.ancell@canonical.com" />
       <gnome:userid>rancell</gnome:userid>
     </foaf:Person>
   </maintainer>
@@ -40,29 +49,11 @@
     </foaf:Person>
   </maintainer>
 
-  <!-- About, Camera, File History & Trash, Location, Microphone, Mouse & Touchpad, Printers, Search, Thunderbolt, User Accounts -->
-  <maintainer>
-    <foaf:Person>
-      <foaf:name>Felipe Borges</foaf:name>
-      <foaf:mbox rdf:resource="mailto:felipeborges@gnome.org" />
-      <gnome:userid>felipeborges</gnome:userid>
-    </foaf:Person>
-  </maintainer>
-
-  <!-- Online Accounts -->
-  <maintainer>
-    <foaf:Person>
-      <foaf:name>Debarshi Ray</foaf:name>
-      <foaf:mbox rdf:resource="mailto:debarshir@gnome.org" />
-      <gnome:userid>debarshir</gnome:userid>
-    </foaf:Person>
-  </maintainer>
-
   <!-- Printers -->
   <maintainer>
     <foaf:Person>
       <foaf:name>Marek Kašík</foaf:name>
-      <foaf:mbox rdf:resource="mailto:mkasik@gnome.org" />
+      <foaf:mbox rdf:resource="mailto:mkasik@redhat.com" />
     </foaf:Person>
   </maintainer>
 

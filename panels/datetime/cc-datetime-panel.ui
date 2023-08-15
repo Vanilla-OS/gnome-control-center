@@ -126,15 +126,12 @@
                 <child>
                   <object class="GtkSwitch" id="network_time_switch">
                     <property name="valign">center</property>
-                    <accessibility>
-                      <property name="label" translatable="yes">Enable</property>
-                    </accessibility>
                   </object>
                 </child>
               </object>
             </child>
             <child>
-              <object class="AdwActionRow" id="datetime_button">
+              <object class="AdwActionRow" id="datetime_row">
                 <property name="title" translatable="yes">Date &amp;amp; _Time</property>
                 <property name="use_underline">True</property>
                 <property name="activatable">True</property>
@@ -166,15 +163,12 @@
                 <child>
                   <object class="GtkSwitch" id="auto_timezone_switch">
                     <property name="valign">center</property>
-                    <accessibility>
-                      <property name="label" translatable="yes">Enabled</property>
-                    </accessibility>
                   </object>
                 </child>
               </object>
             </child>
             <child>
-              <object class="AdwActionRow" id="timezone_button">
+              <object class="AdwActionRow" id="timezone_row">
                 <property name="title" translatable="yes">Time Z_one</property>
                 <property name="use_underline">True</property>
                 <property name="activatable">True</property>
@@ -202,7 +196,7 @@
               <object class="AdwComboRow" id="timeformat_row">
                 <property name="title" translatable="yes">Time _Format</property>
                 <property name="use_underline">True</property>
-                <signal name="notify::selected-item" handler="change_clock_settings" object="CcDateTimePanel" swapped="no"/>
+                <signal name="notify::selected-item" handler="change_clock_settings" object="CcDateTimePanel" swapped="yes"/>
                 <property name="model">
                   <object class="AdwEnumListModel">
                     <property name="enum-type">GDesktopClockFormat</property>
@@ -211,6 +205,60 @@
                 <property name="expression">
                   <closure type="gchararray" function="format_clock_name_cb"/>
                 </property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="AdwPreferencesGroup">
+            <property name="title" translatable="yes">Clock &amp;amp; Calendar</property>
+            <property name="description" translatable="yes">Control how the time and date is shown in the top bar</property>
+            <child>
+              <object class="AdwActionRow">
+                <property name="title" translatable="yes">Week Day</property>
+                <property name="use_underline">True</property>
+                <property name="activatable_widget">weekday_switch</property>
+                <child>
+                  <object class="GtkSwitch" id="weekday_switch">
+                    <property name="valign">center</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="AdwActionRow">
+                <property name="title" translatable="yes">Date</property>
+                <property name="use_underline">True</property>
+                <property name="activatable_widget">date_switch</property>
+                <child>
+                  <object class="GtkSwitch" id="date_switch">
+                    <property name="valign">center</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="AdwActionRow">
+                <property name="title" translatable="yes">Seconds</property>
+                <property name="use_underline">True</property>
+                <property name="activatable_widget">seconds_switch</property>
+                <child>
+                  <object class="GtkSwitch" id="seconds_switch">
+                    <property name="valign">center</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="AdwActionRow">
+                <property name="title" translatable="yes">Week Numbers</property>
+                <property name="use_underline">True</property>
+                <property name="activatable_widget">week_numbers_switch</property>
+                <child>
+                  <object class="GtkSwitch" id="week_numbers_switch">
+                    <property name="valign">center</property>
+                  </object>
+                </child>
               </object>
             </child>
           </object>

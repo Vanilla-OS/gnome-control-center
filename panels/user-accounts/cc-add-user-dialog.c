@@ -160,7 +160,7 @@ begin_action (CcAddUserDialog *self)
         gtk_widget_set_sensitive (GTK_WIDGET (self->enterprise_button), FALSE);
         gtk_widget_set_sensitive (GTK_WIDGET (self->add_button), FALSE);
 
-        gtk_widget_show (GTK_WIDGET (self->spinner));
+        gtk_widget_set_visible (GTK_WIDGET (self->spinner), TRUE);
         gtk_spinner_start (self->spinner);
 }
 
@@ -175,7 +175,7 @@ finish_action (CcAddUserDialog *self)
         gtk_widget_set_sensitive (GTK_WIDGET (self->enterprise_button), TRUE);
         gtk_widget_set_sensitive (GTK_WIDGET (self->add_button), TRUE);
 
-        gtk_widget_hide (GTK_WIDGET (self->spinner));
+        gtk_widget_set_visible (GTK_WIDGET (self->spinner), FALSE);
         gtk_spinner_stop (self->spinner);
 }
 
@@ -724,11 +724,11 @@ password_focus_out_event_cb (CcAddUserDialog *self)
 }
 
 static gboolean
-local_password_entry_key_press_event_cb (GtkEventControllerKey *controller,
+local_password_entry_key_press_event_cb (CcAddUserDialog       *self,
                                          guint                  keyval,
                                          guint                  keycode,
                                          GdkModifierType        state,
-                                         CcAddUserDialog       *self)
+                                         GtkEventControllerKey *controller)
 {
         if (keyval == GDK_KEY_Tab)
                local_password_timeout (self);
@@ -965,7 +965,7 @@ on_join_response (CcAddUserDialog *self,
                   gint response,
                   GtkDialog *dialog)
 {
-        gtk_widget_hide (GTK_WIDGET (dialog));
+        gtk_widget_set_visible (GTK_WIDGET (dialog), FALSE);
         if (response != GTK_RESPONSE_OK) {
                 finish_action (self);
                 return;
@@ -1336,7 +1336,7 @@ on_realm_manager_created (GObject *source,
                                    NULL, NULL);
 
         /* Show the 'Enterprise Login' stuff, and update mode */
-        gtk_widget_show (GTK_WIDGET (self->enterprise_group));
+        gtk_widget_set_visible (GTK_WIDGET (self->enterprise_group), TRUE);
         mode_change (self, self->mode);
 }
 
@@ -1360,7 +1360,7 @@ on_realmd_disappeared (GDBusConnection *unused1,
 
         clear_realm_manager (self);
         gtk_list_store_clear (self->enterprise_realm_model);
-        gtk_widget_hide (GTK_WIDGET (self->enterprise_group));
+        gtk_widget_set_visible (GTK_WIDGET (self->enterprise_group), FALSE);
         mode_change (self, MODE_LOCAL);
 }
 

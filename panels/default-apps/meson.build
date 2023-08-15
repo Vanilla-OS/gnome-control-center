@@ -16,18 +16,14 @@ i18n.merge_file(
 )
 
 sources = files(
-  'cc-default-apps-panel.c'
-)
-
-resource_data = files(
-  'cc-default-apps-panel.ui'
+  'cc-default-apps-panel.c',
+  'cc-default-apps-row.c'
 )
 
 sources += gnome.compile_resources(
   'cc-' + cappletname + '-resources',
   cappletname + '.gresource.xml',
   c_name: 'cc_' + cappletname.underscorify (),
-  dependencies: resource_data,
   export: true
 )
 

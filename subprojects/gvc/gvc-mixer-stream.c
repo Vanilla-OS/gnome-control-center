@@ -83,7 +83,9 @@ enum
         PROP_CARD_INDEX,
         PROP_PORT,
         PROP_STATE,
+        N_PROPS
 };
+static GParamSpec *obj_props[N_PROPS] = { NULL, };
 
 static void     gvc_mixer_stream_finalize   (GObject            *object);
 
@@ -198,7 +200,7 @@ gvc_mixer_stream_set_volume (GvcMixerStream *stream,
 
         if (!pa_cvolume_equal(gvc_channel_map_get_cvolume(stream->priv->channel_map), &cv)) {
                 gvc_channel_map_volume_changed(stream->priv->channel_map, &cv, FALSE);
-                g_object_notify (G_OBJECT (stream), "volume");
+                g_object_notify_by_pspec (G_OBJECT (stream), obj_props[PROP_VOLUME]);
                 return TRUE;
         }
 
@@ -218,7 +220,7 @@ gvc_mixer_stream_set_decibel (GvcMixerStream *stream,
 
         if (!pa_cvolume_equal(gvc_channel_map_get_cvolume(stream->priv->channel_map), &cv)) {
                 gvc_channel_map_volume_changed(stream->priv->channel_map, &cv, FALSE);
-                g_object_notify (G_OBJECT (stream), "volume");
+                g_object_notify_by_pspec (G_OBJECT (stream), obj_props[PROP_VOLUME]);
         }
 
         return TRUE;
@@ -246,7 +248,7 @@ gvc_mixer_stream_set_is_muted  (GvcMixerStream *stream,
 
         if (is_muted != stream->priv->is_muted) {
                 stream->priv->is_muted = is_muted;
-                g_object_notify (G_OBJECT (stream), "is-muted");
+                g_object_notify_by_pspec (G_OBJECT (stream), obj_props[PROP_IS_MUTED]);
         }
 
         return TRUE;
@@ -260,7 +262,7 @@ gvc_mixer_stream_set_can_decibel  (GvcMixerStream *stream,
 
         if (can_decibel != stream->priv->can_decibel) {
                 stream->priv->can_decibel = can_decibel;
-                g_object_notify (G_OBJECT (stream), "can-decibel");
+                g_object_notify_by_pspec (G_OBJECT (stream), obj_props[PROP_CAN_DECIBEL]);
         }
 
         return TRUE;
@@ -288,7 +290,7 @@ gvc_mixer_stream_set_name (GvcMixerStream *stream,
 
         g_free (stream->priv->name);
         stream->priv->name = g_strdup (name);
-        g_object_notify (G_OBJECT (stream), "name");
+        g_object_notify_by_pspec (G_OBJECT (stream), obj_props[PROP_NAME]);
 
         return TRUE;
 }
@@ -301,7 +303,7 @@ gvc_mixer_stream_set_description (GvcMixerStream *stream,
 
         g_free (stream->priv->description);
         stream->priv->description = g_strdup (description);
-        g_object_notify (G_OBJECT (stream), "description");
+        g_object_notify_by_pspec (G_OBJECT (stream), obj_props[PROP_DESCRIPTION]);
 
         return TRUE;
 }
@@ -321,7 +323,7 @@ gvc_mixer_stream_set_is_event_stream (GvcMixerStream *stream,
         g_return_val_if_fail (GVC_IS_MIXER_STREAM (stream), FALSE);
 
         stream->priv->is_event_stream = is_event_stream;
-        g_object_notify (G_OBJECT (stream), "is-event-stream");
+        g_object_notify_by_pspec (G_OBJECT (stream), obj_props[PROP_IS_EVENT_STREAM]);
 
         return TRUE;
 }
@@ -341,7 +343,7 @@ gvc_mixer_stream_set_is_virtual (GvcMixerStream *stream,
         g_return_val_if_fail (GVC_IS_MIXER_STREAM (stream), FALSE);
 
         stream->priv->is_virtual = is_virtual;
-        g_object_notify (G_OBJECT (stream), "is-virtual");
+        g_object_notify_by_pspec (G_OBJECT (stream), obj_props[PROP_IS_VIRTUAL]);
 
         return TRUE;
 }
@@ -361,7 +363,7 @@ gvc_mixer_stream_set_application_id (GvcMixerStream *stream,
 
         g_free (stream->priv->application_id);
         stream->priv->application_id = g_strdup (application_id);
-        g_object_notify (G_OBJECT (stream), "application-id");
+        g_object_notify_by_pspec (G_OBJECT (stream), obj_props[PROP_APPLICATION_ID]);
 
         return TRUE;
 }
@@ -374,7 +376,7 @@ on_channel_map_volume_changed (GvcChannelMap  *channel_map,
         if (set == TRUE)
                 gvc_mixer_stream_push_volume (stream);
 
-        g_object_notify (G_OBJECT (stream), "volume");
+        g_object_notify_by_pspec (G_OBJECT (stream), obj_props[PROP_VOLUME]);
 }
 
 static gboolean
@@ -402,7 +404,7 @@ gvc_mixer_stream_set_channel_map (GvcMixerStream *stream,
                                   G_CALLBACK (on_channel_map_volume_changed),
                                   stream);
 
-                g_object_notify (G_OBJECT (stream), "channel-map");
+                g_object_notify_by_pspec (G_OBJECT (stream), obj_props[PROP_CHANNEL_MAP]);
         }
 
         return TRUE;
@@ -452,7 +454,7 @@ gvc_mixer_stream_set_icon_name (GvcMixerStream *stream,
 
         g_free (stream->priv->icon_name);
         stream->priv->icon_name = g_strdup (icon_name);
-        g_object_notify (G_OBJECT (stream), "icon-name");
+        g_object_notify_by_pspec (G_OBJECT (stream), obj_props[PROP_ICON_NAME]);
 
         return TRUE;
 }
@@ -465,7 +467,7 @@ gvc_mixer_stream_set_form_factor (GvcMixerStream *stream,
 
         g_free (stream->priv->form_factor);
         stream->priv->form_factor = g_strdup (form_factor);
-        g_object_notify (G_OBJECT (stream), "form-factor");
+        g_object_notify_by_pspec (G_OBJECT (stream), obj_props[PROP_FORM_FACTOR]);
 
         return TRUE;
 }
@@ -478,7 +480,7 @@ gvc_mixer_stream_set_sysfs_path (GvcMixerStream *stream,
 
         g_free (stream->priv->sysfs_path);
         stream->priv->sysfs_path = g_strdup (sysfs_path);
-        g_object_notify (G_OBJECT (stream), "sysfs-path");
+        g_object_notify_by_pspec (G_OBJECT (stream), obj_props[PROP_SYSFS_PATH]);
 
         return TRUE;
 }
@@ -558,7 +560,7 @@ gvc_mixer_stream_set_port (GvcMixerStream *stream,
                 }
         }
 
-        g_object_notify (G_OBJECT (stream), "port");
+        g_object_notify_by_pspec (G_OBJECT (stream), obj_props[PROP_PORT]);
 
         return TRUE;
 }
@@ -591,7 +593,7 @@ gvc_mixer_stream_set_state (GvcMixerStream      *stream,
 
         if (stream->priv->state != state) {
                 stream->priv->state = state;
-                g_object_notify (G_OBJECT (stream), "state");
+                g_object_notify_by_pspec (G_OBJECT (stream), obj_props[PROP_STATE]);
         }
 
         return TRUE;
@@ -645,7 +647,7 @@ gvc_mixer_stream_set_card_index (GvcMixerStream *stream,
         g_return_val_if_fail (GVC_IS_MIXER_STREAM (stream), FALSE);
 
         stream->priv->card_index = card_index;
-        g_object_notify (G_OBJECT (stream), "card-index");
+        g_object_notify_by_pspec (G_OBJECT (stream), obj_props[PROP_CARD_INDEX]);
 
         return TRUE;
 }
@@ -897,140 +899,103 @@ gvc_mixer_stream_class_init (GvcMixerStreamClass *klass)
         klass->change_port = gvc_mixer_stream_real_change_port;
         klass->change_is_muted = gvc_mixer_stream_real_change_is_muted;
 
-        g_object_class_install_property (gobject_class,
-                                         PROP_INDEX,
-                                         g_param_spec_ulong ("index",
-                                                             "Index",
-                                                             "The index for this stream",
-                                                             0, G_MAXULONG, 0,
-                                                             G_PARAM_READWRITE|G_PARAM_CONSTRUCT_ONLY));
-        g_object_class_install_property (gobject_class,
-                                         PROP_ID,
-                                         g_param_spec_ulong ("id",
-                                                             "id",
-                                                             "The id for this stream",
-                                                             0, G_MAXULONG, 0,
-                                                             G_PARAM_READWRITE|G_PARAM_CONSTRUCT_ONLY));
-        g_object_class_install_property (gobject_class,
-                                         PROP_CHANNEL_MAP,
-                                         g_param_spec_object ("channel-map",
-                                                              "channel map",
-                                                              "The channel map for this stream",
-                                                              GVC_TYPE_CHANNEL_MAP,
-                                                              G_PARAM_READWRITE|G_PARAM_CONSTRUCT));
-        g_object_class_install_property (gobject_class,
-                                         PROP_PA_CONTEXT,
-                                         g_param_spec_pointer ("pa-context",
-                                                               "PulseAudio context",
-                                                               "The PulseAudio context for this stream",
-                                                               G_PARAM_READWRITE|G_PARAM_CONSTRUCT_ONLY));
-        g_object_class_install_property (gobject_class,
-                                         PROP_VOLUME,
-                                         g_param_spec_ulong ("volume",
-                                                             "Volume",
-                                                             "The volume for this stream",
-                                                             0, G_MAXULONG, 0,
-                                                             G_PARAM_READWRITE));
-        g_object_class_install_property (gobject_class,
-                                         PROP_DECIBEL,
-                                         g_param_spec_double ("decibel",
-                                                              "Decibel",
-                                                              "The decibel level for this stream",
-                                                              -G_MAXDOUBLE, G_MAXDOUBLE, 0,
-                                                              G_PARAM_READWRITE|G_PARAM_CONSTRUCT));
-
-        g_object_class_install_property (gobject_class,
-                                         PROP_NAME,
-                                         g_param_spec_string ("name",
-                                                              "Name",
-                                                              "Name to display for this stream",
-                                                              NULL,
-                                                              G_PARAM_READWRITE|G_PARAM_CONSTRUCT));
-        g_object_class_install_property (gobject_class,
-                                         PROP_DESCRIPTION,
-                                         g_param_spec_string ("description",
-                                                              "Description",
-                                                              "Description to display for this stream",
-                                                              NULL,
-                                                              G_PARAM_READWRITE|G_PARAM_CONSTRUCT));
-        g_object_class_install_property (gobject_class,
-                                         PROP_APPLICATION_ID,
-                                         g_param_spec_string ("application-id",
+        obj_props[PROP_INDEX] = g_param_spec_ulong ("index",
+                                                    "Index",
+                                                    "The index for this stream",
+                                                    0, G_MAXULONG, 0,
+                                                    G_PARAM_READWRITE|G_PARAM_CONSTRUCT_ONLY|G_PARAM_STATIC_STRINGS);
+        obj_props[PROP_ID] = g_param_spec_ulong ("id",
+                                                 "id",
+                                                 "The id for this stream",
+                                                 0, G_MAXULONG, 0,
+                                                 G_PARAM_READWRITE|G_PARAM_CONSTRUCT_ONLY|G_PARAM_STATIC_STRINGS);
+        obj_props[PROP_CHANNEL_MAP] = g_param_spec_object ("channel-map",
+                                                           "channel map",
+                                                           "The channel map for this stream",
+                                                           GVC_TYPE_CHANNEL_MAP,
+                                                           G_PARAM_READWRITE|G_PARAM_CONSTRUCT|G_PARAM_STATIC_STRINGS);
+        obj_props[PROP_PA_CONTEXT] = g_param_spec_pointer ("pa-context",
+                                                           "PulseAudio context",
+                                                           "The PulseAudio context for this stream",
+                                                           G_PARAM_READWRITE|G_PARAM_CONSTRUCT_ONLY|G_PARAM_STATIC_STRINGS);
+        obj_props[PROP_VOLUME] = g_param_spec_ulong ("volume",
+                                                     "Volume",
+                                                     "The volume for this stream",
+                                                     0, G_MAXULONG, 0,
+                                                     G_PARAM_READWRITE|G_PARAM_STATIC_STRINGS);
+        obj_props[PROP_DECIBEL] = g_param_spec_double ("decibel",
+                                                       "Decibel",
+                                                       "The decibel level for this stream",
+                                                       -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                       G_PARAM_READWRITE|G_PARAM_CONSTRUCT|G_PARAM_STATIC_STRINGS);
+        obj_props[PROP_NAME] = g_param_spec_string ("name",
+                                                    "Name",
+                                                    "Name to display for this stream",
+                                                    NULL,
+                                                    G_PARAM_READWRITE|G_PARAM_CONSTRUCT|G_PARAM_STATIC_STRINGS);
+        obj_props[PROP_DESCRIPTION] = g_param_spec_string ("description",
+                                                           "Description",
+                                                           "Description to display for this stream",
+                                                           NULL,
+                                                           G_PARAM_READWRITE|G_PARAM_CONSTRUCT|G_PARAM_STATIC_STRINGS);
+        obj_props[PROP_APPLICATION_ID] = g_param_spec_string ("application-id",
                                                               "Application identifier",
                                                               "Application identifier for this stream",
                                                               NULL,
-                                                              G_PARAM_READWRITE|G_PARAM_CONSTRUCT));
-        g_object_class_install_property (gobject_class,
-                                         PROP_ICON_NAME,
-                                         g_param_spec_string ("icon-name",
-                                                              "Icon Name",
-                                                              "Name of icon to display for this stream",
-                                                              NULL,
-                                                              G_PARAM_READWRITE|G_PARAM_CONSTRUCT));
-        g_object_class_install_property (gobject_class,
-                                         PROP_FORM_FACTOR,
-                                         g_param_spec_string ("form-factor",
-                                                              "Form Factor",
-                                                              "Device form factor for this stream, as reported by PulseAudio",
-                                                              NULL,
-                                                              G_PARAM_READWRITE|G_PARAM_CONSTRUCT));
-        g_object_class_install_property (gobject_class,
-                                         PROP_SYSFS_PATH,
-                                         g_param_spec_string ("sysfs-path",
-                                                              "Sysfs path",
-                                                              "Sysfs path for the device associated with this stream",
-                                                              NULL,
-                                                              G_PARAM_READWRITE|G_PARAM_CONSTRUCT));
-        g_object_class_install_property (gobject_class,
-                                         PROP_IS_MUTED,
-                                         g_param_spec_boolean ("is-muted",
-                                                               "is muted",
-                                                               "Whether stream is muted",
-                                                               FALSE,
-                                                               G_PARAM_READWRITE|G_PARAM_CONSTRUCT));
-        g_object_class_install_property (gobject_class,
-                                         PROP_CAN_DECIBEL,
-                                         g_param_spec_boolean ("can-decibel",
-                                                               "can decibel",
-                                                               "Whether stream volume can be converted to decibel units",
-                                                               FALSE,
-                                                               G_PARAM_READWRITE|G_PARAM_CONSTRUCT));
-        g_object_class_install_property (gobject_class,
-                                         PROP_IS_EVENT_STREAM,
-                                         g_param_spec_boolean ("is-event-stream",
-                                                               "is event stream",
-                                                               "Whether stream's role is to play an event",
-                                                               FALSE,
-                                                               G_PARAM_READWRITE|G_PARAM_CONSTRUCT));
-        g_object_class_install_property (gobject_class,
-                                         PROP_IS_VIRTUAL,
-                                         g_param_spec_boolean ("is-virtual",
-                                                               "is virtual stream",
-                                                               "Whether the stream is virtual",
-                                                               FALSE,
-                                                               G_PARAM_READWRITE|G_PARAM_CONSTRUCT));
-        g_object_class_install_property (gobject_class,
-                                         PROP_PORT,
-                                         g_param_spec_string ("port",
-                                                              "Port",
-                                                              "The name of the current port for this stream",
-                                                              NULL,
-                                                              G_PARAM_READWRITE));
-        g_object_class_install_property (gobject_class,
-                                         PROP_STATE,
-                                         g_param_spec_enum ("state",
-                                                            "State",
-                                                            "The current state of this stream",
-                                                            GVC_TYPE_MIXER_STREAM_STATE,
-                                                            GVC_STREAM_STATE_INVALID,
-                                                            G_PARAM_READWRITE));
-        g_object_class_install_property (gobject_class,
-                                         PROP_CARD_INDEX,
-                                         g_param_spec_long ("card-index",
-                                                             "Card index",
-                                                             "The index of the card for this stream",
-                                                             PA_INVALID_INDEX, G_MAXLONG, PA_INVALID_INDEX,
-                                                             G_PARAM_READWRITE|G_PARAM_CONSTRUCT));
+                                                              G_PARAM_READWRITE|G_PARAM_CONSTRUCT|G_PARAM_STATIC_STRINGS);
+        obj_props[PROP_ICON_NAME] = g_param_spec_string ("icon-name",
+                                                         "Icon Name",
+                                                         "Name of icon to display for this stream",
+                                                         NULL,
+                                                         G_PARAM_READWRITE|G_PARAM_CONSTRUCT|G_PARAM_STATIC_STRINGS);
+        obj_props[PROP_FORM_FACTOR] = g_param_spec_string ("form-factor",
+                                                           "Form Factor",
+                                                           "Device form factor for this stream, as reported by PulseAudio",
+                                                           NULL,
+                                                           G_PARAM_READWRITE|G_PARAM_CONSTRUCT|G_PARAM_STATIC_STRINGS);
+        obj_props[PROP_SYSFS_PATH] = g_param_spec_string ("sysfs-path",
+                                                          "Sysfs path",
+                                                          "Sysfs path for the device associated with this stream",
+                                                          NULL,
+                                                          G_PARAM_READWRITE|G_PARAM_CONSTRUCT|G_PARAM_STATIC_STRINGS);
+        obj_props[PROP_IS_MUTED] = g_param_spec_boolean ("is-muted",
+                                                         "is muted",
+                                                         "Whether stream is muted",
+                                                         FALSE,
+                                                         G_PARAM_READWRITE|G_PARAM_CONSTRUCT|G_PARAM_STATIC_STRINGS);
+        obj_props[PROP_CAN_DECIBEL] = g_param_spec_boolean ("can-decibel",
+                                                            "can decibel",
+                                                            "Whether stream volume can be converted to decibel units",
+                                                            FALSE,
+                                                            G_PARAM_READWRITE|G_PARAM_CONSTRUCT|G_PARAM_STATIC_STRINGS);
+        obj_props[PROP_IS_EVENT_STREAM] = g_param_spec_boolean ("is-event-stream",
+                                                                "is event stream",
+                                                                "Whether stream's role is to play an event",
+                                                                FALSE,
+                                                                G_PARAM_READWRITE|G_PARAM_CONSTRUCT|G_PARAM_STATIC_STRINGS);
+        obj_props[PROP_IS_VIRTUAL] = g_param_spec_boolean ("is-virtual",
+                                                           "is virtual stream",
+                                                           "Whether the stream is virtual",
+                                                           FALSE,
+                                                           G_PARAM_READWRITE|G_PARAM_CONSTRUCT|G_PARAM_STATIC_STRINGS);
+        obj_props[PROP_PORT] = g_param_spec_string ("port",
+                                                    "Port",
+                                                    "The name of the current port for this stream",
+                                                    NULL,
+                                                    G_PARAM_READWRITE|G_PARAM_STATIC_STRINGS);
+        obj_props[PROP_STATE] = g_param_spec_enum ("state",
+                                                   "State",
+                                                   "The current state of this stream",
+                                                   GVC_TYPE_MIXER_STREAM_STATE,
+                                                   GVC_STREAM_STATE_INVALID,
+                                                   G_PARAM_READWRITE|G_PARAM_STATIC_STRINGS);
+        obj_props[PROP_CARD_INDEX] = g_param_spec_long ("card-index",
+                                                        "Card index",
+                                                        "The index of the card for this stream",
+                                                        PA_INVALID_INDEX, G_MAXLONG, PA_INVALID_INDEX,
+                                                        G_PARAM_READWRITE|G_PARAM_CONSTRUCT|G_PARAM_STATIC_STRINGS);
+
+        g_object_class_install_properties (gobject_class, N_PROPS, obj_props);
 }
 
 static void

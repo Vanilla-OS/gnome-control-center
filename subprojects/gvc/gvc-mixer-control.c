@@ -54,8 +54,10 @@
 
 enum {
         PROP_0,
-        PROP_NAME
+        PROP_NAME,
+        N_PROPS
 };
+static GParamSpec *obj_props[N_PROPS] = { NULL, };
 
 struct GvcMixerControlPrivate
 {
@@ -1234,7 +1236,7 @@ match_stream_with_devices (GvcMixerControl    *control,
 
         for (d = devices; d != NULL; d = d->next) {
                 GvcMixerUIDevice *device;
-                gint              device_stream_id;
+                guint             device_stream_id;
                 gchar            *device_port_name;
                 gchar            *origin;
                 gchar            *description;
@@ -1276,7 +1278,7 @@ match_stream_with_devices (GvcMixerControl    *control,
                                          stream_id);
 
                                 g_object_set (G_OBJECT (device),
-                                              "stream-id", (gint)stream_id,
+                                              "stream-id", stream_id,
                                               NULL);
                                 in_possession = TRUE;
                         }
@@ -1322,7 +1324,6 @@ sync_devices (GvcMixerControl *control,
         const GList *stream_ports;
         const GList *n = NULL;
         gboolean     is_output = !GVC_IS_MIXER_SOURCE (stream);
-        gint         stream_port_count = 0;
 
         stream_ports = gvc_mixer_stream_get_ports (stream);
 
@@ -1366,7 +1367,7 @@ sync_devices (GvcMixerControl *control,
                         }
 
                         g_object_set (G_OBJECT (device),
-                                      "stream-id", (gint)gvc_mixer_stream_get_id (stream),
+                                      "stream-id", gvc_mixer_stream_get_id (stream),
                                       "description", gvc_mixer_stream_get_description (stream),
                                       "origin", "", /*Leave it empty for these special cases*/
                                       "port-name", NULL,
@@ -1376,7 +1377,7 @@ sync_devices (GvcMixerControl *control,
                         GObject *object;
 
                         object = g_object_new (GVC_TYPE_MIXER_UI_DEVICE,
-                                               "stream-id", (gint)gvc_mixer_stream_get_id (stream),
+                                               "stream-id", gvc_mixer_stream_get_id (stream),
                                                "description", gvc_mixer_stream_get_description (stream),
                                                "origin", "", /* Leave it empty for these special cases */
                                                "port-name", NULL,
@@ -1402,7 +1403,6 @@ sync_devices (GvcMixerControl *control,
 
                 GvcMixerStreamPort *stream_port;
                 stream_port = n->data;
-                stream_port_count ++;
 
                 if (match_stream_with_devices (control, stream_port, stream))
                         continue;
@@ -1806,7 +1806,7 @@ update_sink_input (GvcMixerControl          *control,
 
         set_application_id_from_proplist (stream, info->proplist);
         set_is_event_stream_from_proplist (stream, info->proplist);
-        set_icon_name_from_proplist (stream, info->proplist, "applications-multimedia");
+        set_icon_name_from_proplist (stream, info->proplist, "application-x-executable");
         gvc_mixer_stream_set_volume (stream, (guint)max_volume);
         gvc_mixer_stream_set_is_muted (stream, info->mute);
         gvc_mixer_stream_set_is_virtual (stream, info->client == PA_INVALID_INDEX);
@@ -2871,10 +2871,16 @@ update_event_role_stream (GvcMixerControl                  *control,
                                               GUINT_TO_POINTER (control->priv->event_sink_input_id));
         }
 
-        max_volume = pa_cvolume_max (&info->volume);
+        /* 0 channels here means there is no valid volume in
+         * pa_ext_stream_restore_info() and in the saved stream entry of
+         * module-stream-restore in PulseAudio. */
+        if (info->volume.channels == 0)
+                max_volume = PA_VOLUME_NORM;
+        else
+                max_volume = pa_cvolume_max (&info->volume);
 
         gvc_mixer_stream_set_name (stream, _("System Sounds"));
-        gvc_mixer_stream_set_icon_name (stream, "emblem-system-symbolic");
+        gvc_mixer_stream_set_icon_name (stream, "audio-x-generic");
         gvc_mixer_stream_set_volume (stream, (guint)max_volume);
         gvc_mixer_stream_set_is_muted (stream, info->mute);
 
@@ -3118,6 +3124,9 @@ remove_card (GvcMixerControl *control,
                 GvcMixerUIDevice *device = d->data;
 
                 g_object_get (G_OBJECT (device), "card", &card, NULL);
+
+                if (card == NULL)
+                        continue;
 
                 if (gvc_mixer_card_get_index (card) == index) {
                         g_signal_emit (G_OBJECT (control),
@@ -3434,15 +3443,22 @@ gvc_mixer_new_pa_context (GvcMixerControl *self)
 }
 
 static void
-remove_all_streams (GvcMixerControl *control, GHashTable *hash_table)
+remove_all_items (GvcMixerControl *control,
+                  GHashTable *hash_table,
+                  void (*remove_item)(GvcMixerControl *control, guint index))
 {
         GHashTableIter iter;
         gpointer key, value;
 
         g_hash_table_iter_init (&iter, hash_table);
         while (g_hash_table_iter_next (&iter, &key, &value)) {
-                remove_stream (control, value);
-                g_hash_table_iter_remove (&iter);
+                if (remove_item) {
+                        remove_item (control, GPOINTER_TO_UINT (key));
+                        g_hash_table_remove (hash_table, key);
+                        g_hash_table_iter_init (&iter, hash_table);
+                } else {
+                        g_hash_table_iter_remove (&iter);
+                }
         }
 }
 
@@ -3450,10 +3466,21 @@ static gboolean
 idle_reconnect (gpointer data)
 {
         GvcMixerControl *control = GVC_MIXER_CONTROL (data);
-        GHashTableIter iter;
-        gpointer key, value;
 
         g_return_val_if_fail (control, FALSE);
+
+        g_debug ("Reconnect: clean up all objects");
+
+        remove_all_items (control, control->priv->sinks, remove_sink);
+        remove_all_items (control, control->priv->sources, remove_source);
+        remove_all_items (control, control->priv->sink_inputs, remove_sink_input);
+        remove_all_items (control, control->priv->source_outputs, remove_source_output);
+        remove_all_items (control, control->priv->cards, remove_card);
+        remove_all_items (control, control->priv->ui_inputs, NULL);
+        remove_all_items (control, control->priv->ui_outputs, NULL);
+        remove_all_items (control, control->priv->clients, remove_client);
+
+        g_debug ("Reconnect: make new connection");
 
         if (control->priv->pa_context) {
                 pa_context_unref (control->priv->pa_context);
@@ -3461,15 +3488,6 @@ idle_reconnect (gpointer data)
                 control->priv->server_protocol_version = 0;
                 gvc_mixer_new_pa_context (control);
         }
-
-        remove_all_streams (control, control->priv->sinks);
-        remove_all_streams (control, control->priv->sources);
-        remove_all_streams (control, control->priv->sink_inputs);
-        remove_all_streams (control, control->priv->source_outputs);
-
-        g_hash_table_iter_init (&iter, control->priv->clients);
-        while (g_hash_table_iter_next (&iter, &key, &value))
-                g_hash_table_iter_remove (&iter);
 
         gvc_mixer_control_open (control); /* cannot fail */
 
@@ -3628,7 +3646,7 @@ gvc_mixer_control_set_property (GObject       *object,
         case PROP_NAME:
                 g_free (self->priv->name);
                 self->priv->name = g_value_dup_string (value);
-                g_object_notify (G_OBJECT (self), "name");
+                g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_NAME]);
                 break;
         default:
                 G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -3684,133 +3702,117 @@ gvc_mixer_control_class_init (GvcMixerControlClass *klass)
         object_class->set_property = gvc_mixer_control_set_property;
         object_class->get_property = gvc_mixer_control_get_property;
 
-        g_object_class_install_property (object_class,
-                                         PROP_NAME,
-                                         g_param_spec_string ("name",
-                                                              "Name",
-                                                              "Name to display for this mixer control",
-                                                              NULL,
-                                                              G_PARAM_READWRITE|G_PARAM_CONSTRUCT_ONLY));
+        obj_props[PROP_NAME] = g_param_spec_string ("name",
+                                                    "Name",
+                                                    "Name to display for this mixer control",
+                                                    NULL,
+                                                    G_PARAM_READWRITE|G_PARAM_CONSTRUCT_ONLY|G_PARAM_STATIC_STRINGS);
+        g_object_class_install_properties (object_class, N_PROPS, obj_props);
 
         signals [STATE_CHANGED] =
                 g_signal_new ("state-changed",
                               G_TYPE_FROM_CLASS (klass),
                               G_SIGNAL_RUN_LAST,
                               G_STRUCT_OFFSET (GvcMixerControlClass, state_changed),
-                              NULL, NULL,
-                              g_cclosure_marshal_VOID__UINT,
+                              NULL, NULL, NULL,
                               G_TYPE_NONE, 1, G_TYPE_UINT);
         signals [STREAM_ADDED] =
                 g_signal_new ("stream-added",
                               G_TYPE_FROM_CLASS (klass),
                               G_SIGNAL_RUN_LAST,
                               G_STRUCT_OFFSET (GvcMixerControlClass, stream_added),
-                              NULL, NULL,
-                              g_cclosure_marshal_VOID__UINT,
+                              NULL, NULL, NULL,
                               G_TYPE_NONE, 1, G_TYPE_UINT);
         signals [STREAM_REMOVED] =
                 g_signal_new ("stream-removed",
                               G_TYPE_FROM_CLASS (klass),
                               G_SIGNAL_RUN_LAST,
                               G_STRUCT_OFFSET (GvcMixerControlClass, stream_removed),
-                              NULL, NULL,
-                              g_cclosure_marshal_VOID__UINT,
+                              NULL, NULL, NULL,
                               G_TYPE_NONE, 1, G_TYPE_UINT);
         signals [STREAM_CHANGED] =
                 g_signal_new ("stream-changed",
                               G_TYPE_FROM_CLASS (klass),
                               G_SIGNAL_RUN_LAST,
                               G_STRUCT_OFFSET (GvcMixerControlClass, stream_changed),
-                              NULL, NULL,
-                              g_cclosure_marshal_VOID__UINT,
+                              NULL, NULL, NULL,
                               G_TYPE_NONE, 1, G_TYPE_UINT);
         signals [AUDIO_DEVICE_SELECTION_NEEDED] =
                 g_signal_new ("audio-device-selection-needed",
                               G_TYPE_FROM_CLASS (klass),
                               G_SIGNAL_RUN_LAST,
                               0,
-                              NULL, NULL,
-                              g_cclosure_marshal_generic,
+                              NULL, NULL, NULL,
                               G_TYPE_NONE, 3, G_TYPE_UINT, G_TYPE_BOOLEAN, G_TYPE_UINT);
         signals [CARD_ADDED] =
                 g_signal_new ("card-added",
                               G_TYPE_FROM_CLASS (klass),
                               G_SIGNAL_RUN_LAST,
                               G_STRUCT_OFFSET (GvcMixerControlClass, card_added),
-                              NULL, NULL,
-                              g_cclosure_marshal_VOID__UINT,
+                              NULL, NULL, NULL,
                               G_TYPE_NONE, 1, G_TYPE_UINT);
         signals [CARD_REMOVED] =
                 g_signal_new ("card-removed",
                               G_TYPE_FROM_CLASS (klass),
                               G_SIGNAL_RUN_LAST,
                               G_STRUCT_OFFSET (GvcMixerControlClass, card_removed),
-                              NULL, NULL,
-                              g_cclosure_marshal_VOID__UINT,
+                              NULL, NULL, NULL,
                               G_TYPE_NONE, 1, G_TYPE_UINT);
         signals [DEFAULT_SINK_CHANGED] =
                 g_signal_new ("default-sink-changed",
                               G_TYPE_FROM_CLASS (klass),
                               G_SIGNAL_RUN_LAST,
                               G_STRUCT_OFFSET (GvcMixerControlClass, default_sink_changed),
-                              NULL, NULL,
-                              g_cclosure_marshal_VOID__UINT,
+                              NULL, NULL, NULL,
                               G_TYPE_NONE, 1, G_TYPE_UINT);
         signals [DEFAULT_SOURCE_CHANGED] =
                 g_signal_new ("default-source-changed",
                               G_TYPE_FROM_CLASS (klass),
                               G_SIGNAL_RUN_LAST,
                               G_STRUCT_OFFSET (GvcMixerControlClass, default_source_changed),
-                              NULL, NULL,
-                              g_cclosure_marshal_VOID__UINT,
+                              NULL, NULL, NULL,
                               G_TYPE_NONE, 1, G_TYPE_UINT);
         signals [ACTIVE_OUTPUT_UPDATE] =
                 g_signal_new ("active-output-update",
                               G_TYPE_FROM_CLASS (klass),
                               G_SIGNAL_RUN_LAST,
                               G_STRUCT_OFFSET (GvcMixerControlClass, active_output_update),
-                              NULL, NULL,
-                              g_cclosure_marshal_VOID__UINT,
+                              NULL, NULL, NULL,
                               G_TYPE_NONE, 1, G_TYPE_UINT);
         signals [ACTIVE_INPUT_UPDATE] =
                 g_signal_new ("active-input-update",
                               G_TYPE_FROM_CLASS (klass),
                               G_SIGNAL_RUN_LAST,
                               G_STRUCT_OFFSET (GvcMixerControlClass, active_input_update),
-                              NULL, NULL,
-                              g_cclosure_marshal_VOID__UINT,
+                              NULL, NULL, NULL,
                               G_TYPE_NONE, 1, G_TYPE_UINT);
         signals [OUTPUT_ADDED] =
                 g_signal_new ("output-added",
                               G_TYPE_FROM_CLASS (klass),
                               G_SIGNAL_RUN_LAST,
                               G_STRUCT_OFFSET (GvcMixerControlClass, output_added),
-                              NULL, NULL,
-                              g_cclosure_marshal_VOID__UINT,
+                              NULL, NULL, NULL,
                               G_TYPE_NONE, 1, G_TYPE_UINT);
         signals [INPUT_ADDED] =
                 g_signal_new ("input-added",
                               G_TYPE_FROM_CLASS (klass),
                               G_SIGNAL_RUN_LAST,
                               G_STRUCT_OFFSET (GvcMixerControlClass, input_added),
-                              NULL, NULL,
-                              g_cclosure_marshal_VOID__UINT,
+                              NULL, NULL, NULL,
                               G_TYPE_NONE, 1, G_TYPE_UINT);
         signals [OUTPUT_REMOVED] =
                 g_signal_new ("output-removed",
                               G_TYPE_FROM_CLASS (klass),
                               G_SIGNAL_RUN_LAST,
                               G_STRUCT_OFFSET (GvcMixerControlClass, output_removed),
-                              NULL, NULL,
-                              g_cclosure_marshal_VOID__UINT,
+                              NULL, NULL, NULL,
                               G_TYPE_NONE, 1, G_TYPE_UINT);
         signals [INPUT_REMOVED] =
                 g_signal_new ("input-removed",
                               G_TYPE_FROM_CLASS (klass),
                               G_SIGNAL_RUN_LAST,
                               G_STRUCT_OFFSET (GvcMixerControlClass, input_removed),
-                              NULL, NULL,
-                              g_cclosure_marshal_VOID__UINT,
+                              NULL, NULL, NULL,
                               G_TYPE_NONE, 1, G_TYPE_UINT);
 }
 

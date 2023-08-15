@@ -3,31 +3,25 @@ subdir('common')
 panels = [
   'applications',
   'background',
-  'camera',
   'color',
   'datetime',
   'default-apps',
-  'diagnostics',
   'display',
-  'firmware-security',
   'info-overview',
   'keyboard',
-  'location',
-  'microphone',
   'mouse',
   'multitasking',
   'notifications',
   'online-accounts',
   'power',
   'printers',
+  'privacy',
   'region',
   'removable-media',
-  'screen',
   'search',
   'sharing',
   'sound',
   'universal-access',
-  'usage',
   'user-accounts',
  'wwan',
 ]
@@ -39,7 +33,6 @@ endif
 if host_is_linux_not_s390
   panels += [
     'bluetooth',
-    'thunderbolt',
     'wacom'
   ]
 endif

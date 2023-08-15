@@ -1,3 +1,28 @@
+gnome-control-center (1:45~beta-1) experimental; urgency=medium
+
+  * New upstream release
+  * debian/control.in: Bump minimum GTK4 and libadwaita
+  * Drop snapd-glib-2 patch: applied in new release
+  * Add patch to avoid using Tecla because it isn't ready yet
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Tue, 15 Aug 2023 15:10:39 -0400
+
+gnome-control-center (1:44.3-3) unstable; urgency=medium
+
+  * d/control.in: Reduce fwupd from Depends to Recommends.
+    It should be installed by default, but isn't strictly required, and not
+    all systems have any devices with firmware supported by fwupd.
+    (Closes: #1042781)
+  * d/clean: Clean up tests/shared/__pycache__/ (Closes: #1045061)
+
+ -- Simon McVittie <smcv@debian.org>  Mon, 14 Aug 2023 14:30:43 +0100
+
+gnome-control-center (1:44.3-2) unstable; urgency=medium
+
+  * Release to unstable
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Thu, 27 Jul 2023 14:16:03 +0300
+
 gnome-control-center (1:44.3-1ubuntu3) mantic; urgency=medium
 
   * d/p/u/printers-Temporarily-add-an-additional-advanced-printer-b.patch:

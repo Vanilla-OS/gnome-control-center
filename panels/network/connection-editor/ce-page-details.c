@@ -73,9 +73,40 @@ G_DEFINE_TYPE_WITH_CODE (CEPageDetails, ce_page_details, GTK_TYPE_GRID,
                          G_IMPLEMENT_INTERFACE (ce_page_get_type (), ce_page_iface_init))
 
 static void
+on_forget_cb (CEPageDetails *self,
+              gchar         *response)
+{
+        if (g_strcmp0 (response, "forget") == 0)
+                net_connection_editor_forget (self->editor);
+}
+
+static void
 forget_cb (CEPageDetails *self)
 {
-        net_connection_editor_forget (self->editor);
+        GtkWidget *dialog;
+        GtkNative *native;
+        g_autofree gchar *message = NULL;
+
+        native = gtk_widget_get_native (GTK_WIDGET (self));
+        /* Translators: "%s" is the user visible name of the network */
+        message = g_strdup_printf (_("Saved details for “%s” will be permanently lost. This includes passwords and any network changes."),
+                                   nm_connection_get_id (self->connection));
+        dialog = adw_message_dialog_new (GTK_WINDOW (native),
+                                        _("Forget Connection?"),
+                                        message);
+
+        adw_message_dialog_add_responses (ADW_MESSAGE_DIALOG (dialog),
+                                          "cancel",  _("_Cancel"),
+                                          "forget", _("Forget"),
+                                          NULL);
+        adw_message_dialog_set_response_appearance (ADW_MESSAGE_DIALOG (dialog),
+                                                    "forget",
+                                                    ADW_RESPONSE_DESTRUCTIVE);
+        adw_message_dialog_set_default_response (ADW_MESSAGE_DIALOG (dialog), "cancel");
+        adw_message_dialog_set_close_response (ADW_MESSAGE_DIALOG (dialog), "cancel");
+
+        g_signal_connect_swapped (dialog, "response", G_CALLBACK (on_forget_cb), self);
+        gtk_window_present (GTK_WINDOW (dialog));
 }
 
 static gchar *
@@ -374,10 +405,10 @@ connect_details_page (CEPageDetails *self)
 
                 route4_text = nm_ip_config_get_gateway (ipv4_config);
         } else {
-                gtk_widget_hide (GTK_WIDGET (self->ipv4_heading_label));
-                gtk_widget_hide (GTK_WIDGET (self->ipv4_label));
-                gtk_widget_hide (GTK_WIDGET (self->dns4_heading_label));
-                gtk_widget_hide (GTK_WIDGET (self->dns4_label));
+                gtk_widget_set_visible (GTK_WIDGET (self->ipv4_heading_label), FALSE);
+                gtk_widget_set_visible (GTK_WIDGET (self->ipv4_label), FALSE);
+                gtk_widget_set_visible (GTK_WIDGET (self->dns4_heading_label), FALSE);
+                gtk_widget_set_visible (GTK_WIDGET (self->dns4_label), FALSE);
         }
 
         if (ipv6_config != NULL) {
@@ -401,10 +432,10 @@ connect_details_page (CEPageDetails *self)
 
                 route6_text = nm_ip_config_get_gateway (ipv6_config);
         } else {
-                gtk_widget_hide (GTK_WIDGET (self->ipv6_heading_label));
-                gtk_widget_hide (GTK_WIDGET (self->ipv6_label));
-                gtk_widget_hide (GTK_WIDGET (self->dns6_heading_label));
-                gtk_widget_hide (GTK_WIDGET (self->dns6_label));
+                gtk_widget_set_visible (GTK_WIDGET (self->ipv6_heading_label), FALSE);
+                gtk_widget_set_visible (GTK_WIDGET (self->ipv6_label), FALSE);
+                gtk_widget_set_visible (GTK_WIDGET (self->dns6_heading_label), FALSE);
+                gtk_widget_set_visible (GTK_WIDGET (self->dns6_label), FALSE);
         }
 
         if (have_ipv4_address && have_ipv6_address) {
@@ -438,8 +469,8 @@ connect_details_page (CEPageDetails *self)
                 gtk_widget_set_valign (GTK_WIDGET (self->route_heading_label), GTK_ALIGN_START);
                 gtk_widget_set_visible (GTK_WIDGET (self->route_label), routes_text != NULL);
         } else {
-                gtk_widget_hide (GTK_WIDGET (self->route_heading_label));
-                gtk_widget_hide (GTK_WIDGET (self->route_label));
+                gtk_widget_set_visible (GTK_WIDGET (self->route_heading_label), FALSE);
+                gtk_widget_set_visible (GTK_WIDGET (self->route_label), FALSE);
         }
 
         if (!device_is_active && self->connection)
@@ -451,7 +482,7 @@ connect_details_page (CEPageDetails *self)
 
         /* Auto connect check */
         if (g_str_equal (type, NM_SETTING_VPN_SETTING_NAME)) {
-                gtk_widget_hide (GTK_WIDGET (self->auto_connect_check));
+                gtk_widget_set_visible (GTK_WIDGET (self->auto_connect_check), FALSE);
         } else {
                 g_object_bind_property (sc, "autoconnect",
                                         self->auto_connect_check, "active",
@@ -479,7 +510,7 @@ connect_details_page (CEPageDetails *self)
                  g_str_equal (type, NM_SETTING_WIREGUARD_SETTING_NAME))
                 gtk_button_set_label (self->forget_button, _("Remove VPN"));
         else
-                gtk_widget_hide (GTK_WIDGET (self->forget_button));
+                gtk_widget_set_visible (GTK_WIDGET (self->forget_button), FALSE);
 }
 
 static void

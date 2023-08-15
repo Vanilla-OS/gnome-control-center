@@ -284,11 +284,8 @@ row_moved_cb (CcSearchPanel    *self,
 }
 
 static void
-settings_row_activated (GtkWidget *widget,
-                        gpointer   user_data)
+settings_row_activated (CcSearchPanel *self)
 {
-  CcSearchPanel *self = user_data;
-
   if (self->locations_dialog == NULL)
     {
       self->locations_dialog = cc_search_locations_dialog_new (self);
@@ -401,6 +398,26 @@ switch_settings_mapping_get_default_disabled (GValue *value,
 {
   return switch_settings_mapping_get_generic (value, variant,
                                               user_data, FALSE);
+}
+
+static void
+search_panel_update_enabled_move_actions (CcSearchPanel *self)
+{
+  GtkWidget *child;
+
+  for (child = gtk_widget_get_first_child (GTK_WIDGET (self->list_box));
+       child;
+       child = gtk_widget_get_next_sibling (child))
+    {
+      gint row_idx;
+
+      if (!CC_IS_SEARCH_PANEL_ROW (child))
+        continue;
+
+      row_idx = gtk_list_box_row_get_index (GTK_LIST_BOX_ROW (child));
+      gtk_widget_action_set_enabled (GTK_WIDGET (child), "row.move-up", row_idx != 0);
+      gtk_widget_action_set_enabled (GTK_WIDGET (child), "row.move-down", GTK_LIST_BOX_ROW (gtk_widget_get_next_sibling (GTK_WIDGET (child))) != NULL);
+    }
 }
 
 static void
@@ -523,6 +540,8 @@ search_providers_discover_ready (GObject *source,
    * all the providers in the list.
    */
   search_panel_propagate_sort_order (self);
+
+  search_panel_update_enabled_move_actions (self);
 }
 
 static GList *

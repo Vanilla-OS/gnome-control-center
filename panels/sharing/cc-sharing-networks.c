@@ -85,8 +85,7 @@ cc_sharing_networks_update_status (CcSharingNetworks *self)
 
   if (self->networks == NULL)
     status = CC_SHARING_STATUS_OFF;
-  else if (gtk_widget_is_visible (self->current_switch) &&
-	   gtk_switch_get_active (GTK_SWITCH (self->current_switch)))
+  else if (gtk_switch_get_active (GTK_SWITCH (self->current_switch)))
     status = CC_SHARING_STATUS_ACTIVE;
   else
     status = CC_SHARING_STATUS_ENABLED;
@@ -203,6 +202,7 @@ cc_sharing_networks_new_row (const char        *uuid,
   const char *icon_name;
 
   row = adw_action_row_new ();
+  adw_preferences_row_set_use_markup (ADW_PREFERENCES_ROW (row), FALSE);
 
   if (g_strcmp0 (carrier_type, "802-11-wireless") == 0) {
     icon_name = "network-wireless-offline-symbolic";
@@ -238,6 +238,7 @@ cc_sharing_networks_new_current_row (CcSharingNetworks *self)
   GtkWidget *row, *w;
 
   row = adw_action_row_new ();
+  adw_preferences_row_set_use_markup (ADW_PREFERENCES_ROW (row), FALSE);
 
   /* Icon */
   w = gtk_image_new_from_icon_name ("image-missing");
@@ -278,7 +279,7 @@ static void
 cc_sharing_update_networks_box (CcSharingNetworks *self)
 {
   GtkWidget *child;
-  gboolean current_visible;
+  gboolean current_visible, current_network_enabled = FALSE;
   const char *current_network;
   GList *l;
 
@@ -297,7 +298,7 @@ cc_sharing_update_networks_box (CcSharingNetworks *self)
     gboolean available;
     const char *carrier_type, *icon_name, *current_network_name;
 
-    gtk_widget_show (self->current_row);
+    gtk_widget_set_visible (self->current_row, TRUE);
     current_visible = TRUE;
 
     /* Network name */
@@ -323,7 +324,7 @@ cc_sharing_update_networks_box (CcSharingNetworks *self)
     gtk_widget_set_sensitive (self->current_switch, available);
     //FIXME add a subtitle explaining why it's disabled
   } else {
-    gtk_widget_hide (self->current_row);
+    gtk_widget_set_visible (self->current_row, FALSE);
     current_visible = FALSE;
   }
 
@@ -332,11 +333,7 @@ cc_sharing_update_networks_box (CcSharingNetworks *self)
     GtkWidget *row;
 
     if (g_strcmp0 (net->uuid, current_network) == 0) {
-      g_signal_handlers_block_by_func (self->current_switch,
-				       cc_sharing_networks_enable_network, self);
-      gtk_switch_set_active (GTK_SWITCH (self->current_switch), TRUE);
-      g_signal_handlers_unblock_by_func (self->current_switch,
-					 cc_sharing_networks_enable_network, self);
+      current_network_enabled = TRUE;
       continue;
     }
 
@@ -344,15 +341,21 @@ cc_sharing_update_networks_box (CcSharingNetworks *self)
 				       net->network_name,
 				       net->carrier_type,
 				       self);
-    gtk_widget_show (row);
+    gtk_widget_set_visible (row, TRUE);
     gtk_list_box_insert (GTK_LIST_BOX (self->listbox), row, -1);
   }
 
+  g_signal_handlers_block_by_func (self->current_switch,
+                                   cc_sharing_networks_enable_network, self);
+  gtk_switch_set_active (GTK_SWITCH (self->current_switch), current_network_enabled);
+  g_signal_handlers_unblock_by_func (self->current_switch,
+                                     cc_sharing_networks_enable_network, self);
+
   if (self->networks == NULL &&
       !current_visible) {
-    gtk_widget_show (self->no_network_row);
+    gtk_widget_set_visible (self->no_network_row, TRUE);
   } else {
-    gtk_widget_hide (self->no_network_row);
+    gtk_widget_set_visible (self->no_network_row, FALSE);
   }
 
   cc_sharing_networks_update_status (self);

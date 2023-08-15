@@ -61,7 +61,9 @@ enum
         PROP_ICON_NAME,
         PROP_PROFILE,
         PROP_HUMAN_PROFILE,
+        N_PROPS
 };
+static GParamSpec *obj_props[N_PROPS] = { NULL, };
 
 static void     gvc_mixer_card_finalize   (GObject            *object);
 
@@ -117,7 +119,7 @@ gvc_mixer_card_set_name (GvcMixerCard *card,
 
         g_free (card->priv->name);
         card->priv->name = g_strdup (name);
-        g_object_notify (G_OBJECT (card), "name");
+        g_object_notify_by_pspec (G_OBJECT (card), obj_props[PROP_NAME]);
 
         return TRUE;
 }
@@ -137,7 +139,7 @@ gvc_mixer_card_set_icon_name (GvcMixerCard *card,
 
         g_free (card->priv->icon_name);
         card->priv->icon_name = g_strdup (icon_name);
-        g_object_notify (G_OBJECT (card), "icon-name");
+        g_object_notify_by_pspec (G_OBJECT (card), obj_props[PROP_ICON_NAME]);
 
         return TRUE;
 }
@@ -191,7 +193,7 @@ gvc_mixer_card_set_profile (GvcMixerCard *card,
                 }
         }
 
-        g_object_notify (G_OBJECT (card), "profile");
+        g_object_notify_by_pspec (G_OBJECT (card), obj_props[PROP_PROFILE]);
 
         return TRUE;
 }
@@ -468,54 +470,42 @@ gvc_mixer_card_class_init (GvcMixerCardClass *klass)
         gobject_class->set_property = gvc_mixer_card_set_property;
         gobject_class->get_property = gvc_mixer_card_get_property;
 
-        g_object_class_install_property (gobject_class,
-                                         PROP_INDEX,
-                                         g_param_spec_ulong ("index",
-                                                             "Index",
-                                                             "The index for this card",
-                                                             0, G_MAXULONG, 0,
-                                                             G_PARAM_READWRITE|G_PARAM_CONSTRUCT_ONLY));
-        g_object_class_install_property (gobject_class,
-                                         PROP_ID,
-                                         g_param_spec_ulong ("id",
-                                                             "id",
-                                                             "The id for this card",
-                                                             0, G_MAXULONG, 0,
-                                                             G_PARAM_READWRITE|G_PARAM_CONSTRUCT_ONLY));
-        g_object_class_install_property (gobject_class,
-                                         PROP_PA_CONTEXT,
-                                         g_param_spec_pointer ("pa-context",
-                                                               "PulseAudio context",
-                                                               "The PulseAudio context for this card",
-                                                               G_PARAM_READWRITE|G_PARAM_CONSTRUCT_ONLY));
-        g_object_class_install_property (gobject_class,
-                                         PROP_NAME,
-                                         g_param_spec_string ("name",
-                                                              "Name",
-                                                              "Name to display for this card",
-                                                              NULL,
-                                                              G_PARAM_READWRITE|G_PARAM_CONSTRUCT));
-        g_object_class_install_property (gobject_class,
-                                         PROP_ICON_NAME,
-                                         g_param_spec_string ("icon-name",
-                                                              "Icon Name",
-                                                              "Name of icon to display for this card",
-                                                              NULL,
-                                                              G_PARAM_READWRITE|G_PARAM_CONSTRUCT));
-        g_object_class_install_property (gobject_class,
-                                         PROP_PROFILE,
-                                         g_param_spec_string ("profile",
-                                                              "Profile",
-                                                              "Name of current profile for this card",
-                                                              NULL,
-                                                              G_PARAM_READWRITE));
-        g_object_class_install_property (gobject_class,
-                                         PROP_HUMAN_PROFILE,
-                                         g_param_spec_string ("human-profile",
-                                                              "Profile (Human readable)",
-                                                              "Name of current profile for this card in human readable form",
-                                                              NULL,
-                                                              G_PARAM_READABLE));
+        obj_props[PROP_INDEX] = g_param_spec_ulong ("index",
+                                                    "Index",
+                                                    "The index for this card",
+                                                    0, G_MAXULONG, 0,
+                                                    G_PARAM_READWRITE|G_PARAM_CONSTRUCT_ONLY|G_PARAM_STATIC_STRINGS);
+        obj_props[PROP_ID] = g_param_spec_ulong ("id",
+                                                 "id",
+                                                 "The id for this card",
+                                                 0, G_MAXULONG, 0,
+                                                 G_PARAM_READWRITE|G_PARAM_CONSTRUCT_ONLY|G_PARAM_STATIC_STRINGS);
+        obj_props[PROP_PA_CONTEXT] = g_param_spec_pointer ("pa-context",
+                                                           "PulseAudio context",
+                                                           "The PulseAudio context for this card",
+                                                           G_PARAM_READWRITE|G_PARAM_CONSTRUCT_ONLY|G_PARAM_STATIC_STRINGS);
+        obj_props[PROP_NAME] = g_param_spec_string ("name",
+                                                    "Name",
+                                                    "Name to display for this card",
+                                                    NULL,
+                                                    G_PARAM_READWRITE|G_PARAM_CONSTRUCT|G_PARAM_STATIC_STRINGS);
+        obj_props[PROP_ICON_NAME] = g_param_spec_string ("icon-name",
+                                                         "Icon Name",
+                                                         "Name of icon to display for this card",
+                                                         NULL,
+                                                         G_PARAM_READWRITE|G_PARAM_CONSTRUCT|G_PARAM_STATIC_STRINGS);
+        obj_props[PROP_PROFILE] = g_param_spec_string ("profile",
+                                                       "Profile",
+                                                       "Name of current profile for this card",
+                                                       NULL,
+                                                       G_PARAM_READWRITE|G_PARAM_STATIC_STRINGS);
+        obj_props[PROP_HUMAN_PROFILE] = g_param_spec_string ("human-profile",
+                                                             "Profile (Human readable)",
+                                                             "Name of current profile for this card in human readable form",
+                                                             NULL,
+                                                             G_PARAM_READABLE|G_PARAM_STATIC_STRINGS);
+
+        g_object_class_install_properties (gobject_class, N_PROPS, obj_props);
 }
 
 static void

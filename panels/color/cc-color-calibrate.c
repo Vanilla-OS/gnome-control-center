@@ -442,7 +442,6 @@ cc_color_calibrate_finished (CcColorCalibrate *calibrate,
   gtk_widget_set_visible (widget, FALSE);
   widget = GTK_WIDGET (gtk_builder_get_object (calibrate->builder,
                                                "button_done"));
-  gtk_widget_set_visible (widget, TRUE);
 
   str = g_string_new ("");
   if (code == CD_SESSION_ERROR_NONE)
@@ -861,15 +860,13 @@ cc_color_calibrate_start (CcColorCalibrate *calibrate,
   window = GTK_WINDOW (gtk_builder_get_object (calibrate->builder,
                                                "dialog_calibrate"));
   gtk_window_set_modal (window, TRUE);
-  gtk_widget_show (GTK_WIDGET (window));
+  gtk_window_present (window);
 
   /* show correct buttons */
   widget = GTK_WIDGET (gtk_builder_get_object (calibrate->builder,
                                                "button_cancel"));
-  gtk_widget_set_visible (widget, TRUE);
   widget = GTK_WIDGET (gtk_builder_get_object (calibrate->builder,
                                                "button_start"));
-  gtk_widget_set_visible (widget, TRUE);
   widget = GTK_WIDGET (gtk_builder_get_object (calibrate->builder,
                                                "button_resume"));
   gtk_widget_set_visible (widget, FALSE);
@@ -881,7 +878,7 @@ cc_color_calibrate_start (CcColorCalibrate *calibrate,
   cc_color_calibrate_inhibit (calibrate, parent);
 
   g_main_loop_run (calibrate->loop);
-  gtk_widget_hide (GTK_WIDGET (window));
+  gtk_window_close (window);
 
   /* we can go idle now */
   cc_color_calibrate_uninhibit (calibrate);
@@ -976,7 +973,7 @@ cc_color_calibrate_init (CcColorCalibrate *calibrate)
                                                "button_cancel"));
   g_signal_connect_object (widget, "clicked",
                            G_CALLBACK (cc_color_calibrate_button_cancel_cb), calibrate, G_CONNECT_SWAPPED);
-  gtk_widget_show (widget);
+  gtk_widget_set_visible (widget, TRUE);
 
   /* setup the specialist calibration window */
   window = GTK_WINDOW (gtk_builder_get_object (calibrate->builder,

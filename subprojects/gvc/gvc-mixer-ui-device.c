@@ -55,7 +55,9 @@ enum
         PROP_UI_DEVICE_TYPE,
         PROP_PORT_AVAILABLE,
         PROP_ICON_NAME,
+        N_PROPS
 };
+static GParamSpec *obj_props[N_PROPS] = { NULL, };
 
 static void     gvc_mixer_ui_device_finalize   (GObject               *object);
 
@@ -224,7 +226,6 @@ static void
 gvc_mixer_ui_device_class_init (GvcMixerUIDeviceClass *klass)
 {
         GObjectClass* object_class = G_OBJECT_CLASS (klass);
-        GParamSpec *pspec;
 
         object_class->constructor = gvc_mixer_ui_device_constructor;
         object_class->dispose = gvc_mixer_ui_device_dispose;
@@ -232,62 +233,64 @@ gvc_mixer_ui_device_class_init (GvcMixerUIDeviceClass *klass)
         object_class->set_property = gvc_mixer_ui_device_set_property;
         object_class->get_property = gvc_mixer_ui_device_get_property;
 
-        pspec = g_param_spec_string ("description",
+        obj_props[PROP_DESC_LINE_1] =
+                g_param_spec_string ("description",
                                      "Description construct prop",
                                      "Set first line description",
                                      "no-name-set",
-                                     G_PARAM_READWRITE);
-        g_object_class_install_property (object_class, PROP_DESC_LINE_1, pspec);
+                                     G_PARAM_READWRITE|G_PARAM_STATIC_STRINGS);
 
-        pspec = g_param_spec_string ("origin",
+        obj_props[PROP_DESC_LINE_2] =
+                g_param_spec_string ("origin",
                                      "origin construct prop",
                                      "Set second line description name",
                                      "no-name-set",
-                                     G_PARAM_READWRITE);
-        g_object_class_install_property (object_class, PROP_DESC_LINE_2, pspec);
+                                     G_PARAM_READWRITE|G_PARAM_STATIC_STRINGS);
 
-        pspec = g_param_spec_pointer ("card",
+        obj_props[PROP_CARD] =
+                g_param_spec_pointer ("card",
                                       "Card from pulse",
                                       "Set/Get card",
-                                      G_PARAM_READWRITE);
+                                      G_PARAM_READWRITE|G_PARAM_STATIC_STRINGS);
 
-        g_object_class_install_property (object_class, PROP_CARD, pspec);
-
-        pspec = g_param_spec_string ("port-name",
+        obj_props[PROP_PORT_NAME] =
+                g_param_spec_string ("port-name",
                                      "port-name construct prop",
                                      "Set port-name",
                                      NULL,
-                                     G_PARAM_READWRITE);
-        g_object_class_install_property (object_class, PROP_PORT_NAME, pspec);
+                                     G_PARAM_READWRITE|G_PARAM_STATIC_STRINGS);
 
-        pspec = g_param_spec_uint ("stream-id",
+        obj_props[PROP_STREAM_ID] =
+                g_param_spec_uint ("stream-id",
                                    "stream id assigned by gvc-stream",
                                    "Set/Get stream id",
                                    0,
                                    G_MAXUINT,
                                    GVC_MIXER_UI_DEVICE_INVALID,
-                                   G_PARAM_READWRITE);
-        g_object_class_install_property (object_class, PROP_STREAM_ID, pspec);
+                                   G_PARAM_READWRITE|G_PARAM_STATIC_STRINGS);
 
-        pspec = g_param_spec_uint ("type",
+        obj_props[PROP_UI_DEVICE_TYPE] =
+                g_param_spec_uint ("type",
                                    "ui-device type",
                                    "determine whether its an input and output",
-                                   0, 1, 0, G_PARAM_READWRITE);
-        g_object_class_install_property (object_class, PROP_UI_DEVICE_TYPE, pspec);
+                                   0, 1, 0,
+                                   G_PARAM_READWRITE|G_PARAM_STATIC_STRINGS);
 
-        pspec = g_param_spec_boolean ("port-available",
+        obj_props[PROP_PORT_AVAILABLE] =
+                g_param_spec_boolean ("port-available",
                                       "available",
                                       "determine whether this port is available",
                                       FALSE,
-                                      G_PARAM_READWRITE);
-        g_object_class_install_property (object_class, PROP_PORT_AVAILABLE, pspec);
+                                      G_PARAM_READWRITE|G_PARAM_STATIC_STRINGS);
 
-        pspec = g_param_spec_string ("icon-name",
+        obj_props[PROP_ICON_NAME] =
+                g_param_spec_string ("icon-name",
                                      "Icon Name",
                                      "Name of icon to display for this card",
                                      NULL,
-                                     G_PARAM_READWRITE|G_PARAM_CONSTRUCT);
-        g_object_class_install_property (object_class, PROP_ICON_NAME, pspec);
+                                     G_PARAM_READWRITE|G_PARAM_CONSTRUCT|G_PARAM_STATIC_STRINGS);
+
+        g_object_class_install_properties (object_class, N_PROPS, obj_props);
 }
 
 /* Removes the part of the string that starts with skip_prefix
@@ -650,7 +653,7 @@ gvc_mixer_ui_device_set_icon_name (GvcMixerUIDevice *device,
 
         g_free (device->priv->icon_name);
         device->priv->icon_name = g_strdup (icon_name);
-        g_object_notify (G_OBJECT (device), "icon-name");
+        g_object_notify_by_pspec (G_OBJECT (device), obj_props[PROP_ICON_NAME]);
 }
 
 

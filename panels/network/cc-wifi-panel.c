@@ -23,7 +23,6 @@
 #include "net-device-wifi.h"
 #include "network-dialogs.h"
 #include "panel-common.h"
-#include "cc-list-row.h"
 
 #include "shell/cc-application.h"
 #include "shell/cc-log.h"
@@ -49,12 +48,12 @@ struct _CcWifiPanel
 
   /* RFKill (Airplane Mode) */
   GDBusProxy         *rfkill_proxy;
-  CcListRow          *rfkill_row;
+  AdwSwitchRow       *rfkill_row;
   GtkWidget          *rfkill_widget;
 
   /* Main widgets */
   GtkStack           *center_stack;
-  GtkStack           *header_stack;
+  GtkStack           *device_stack;
   GtkBox             *hotspot_box;
   GtkLabel           *list_label;
   GtkStack           *main_stack;
@@ -75,9 +74,7 @@ struct _CcWifiPanel
   gchar              *arg_access_point;
 };
 
-static void          rfkill_switch_notify_activate_cb            (CcListRow          *rfkill_row,
-                                                                  GParamSpec         *pspec,
-                                                                  CcWifiPanel        *self);
+static void          rfkill_switch_notify_activate_cb            (CcWifiPanel        *self);
 
 static void          update_devices_names                        (CcWifiPanel        *self);
 
@@ -238,12 +235,11 @@ add_wifi_device (CcWifiPanel *self,
   net_device = net_device_wifi_new (CC_PANEL (self),
                                     self->client,
                                     device);
-  gtk_widget_show (GTK_WIDGET (net_device));
 
   /* And add to the header widgets */
   header_widget = net_device_wifi_get_header_widget (net_device);
 
-  gtk_stack_add_named (self->header_stack, header_widget, nm_device_get_udi (device));
+  gtk_stack_add_named (self->device_stack, header_widget, nm_device_get_udi (device));
 
   /* Setup custom title properties */
   g_ptr_array_add (self->devices, net_device);
@@ -291,8 +287,8 @@ remove_wifi_device (CcWifiPanel *self,
   child = gtk_stack_get_child_by_name (self->stack, id);
   gtk_stack_remove (self->stack, child);
 
-  child = gtk_stack_get_child_by_name (self->header_stack, id);
-  gtk_stack_remove (self->header_stack, child);
+  child = gtk_stack_get_child_by_name (self->device_stack, id);
+  gtk_stack_remove (self->device_stack, child);
 
   /* Update the title widget */
   update_devices_names (self);
@@ -307,7 +303,7 @@ check_main_stack_page (CcWifiPanel *self)
 
   nm_version = nm_client_get_version (self->client);
   wireless_enabled = nm_client_wireless_get_enabled (self->client);
-  airplane_mode_active = cc_list_row_get_active (self->rfkill_row);
+  airplane_mode_active = adw_switch_row_get_active (self->rfkill_row);
 
   if (!nm_version)
     gtk_stack_set_visible_child_name (self->main_stack, "nm-not-running");
@@ -371,7 +367,7 @@ sync_airplane_mode_switch (CcWifiPanel *self)
 
   enabled |= hw_enabled;
 
-  if (enabled != cc_list_row_get_active (self->rfkill_row))
+  if (enabled != adw_switch_row_get_active (self->rfkill_row))
     {
       g_signal_handlers_block_by_func (self->rfkill_row,
                                        rfkill_switch_notify_activate_cb,
@@ -383,7 +379,7 @@ sync_airplane_mode_switch (CcWifiPanel *self)
                                          self);
   }
 
-  cc_list_row_set_switch_sensitive (self->rfkill_row, !hw_enabled);
+  gtk_widget_set_sensitive (GTK_WIDGET (self->rfkill_row), !hw_enabled);
 
   check_main_stack_page (self);
 }
@@ -660,13 +656,11 @@ rfkill_proxy_acquired_cb (GObject      *source_object,
 }
 
 static void
-rfkill_switch_notify_activate_cb (CcListRow   *row,
-                                  GParamSpec  *pspec,
-                                  CcWifiPanel *self)
+rfkill_switch_notify_activate_cb (CcWifiPanel *self)
 {
   gboolean enable;
 
-  enable = cc_list_row_get_active (row);
+  enable = adw_switch_row_get_active (self->rfkill_row);
 
   g_dbus_proxy_call (self->rfkill_proxy,
                      "org.freedesktop.DBus.Properties.Set",
@@ -681,9 +675,7 @@ rfkill_switch_notify_activate_cb (CcListRow   *row,
 }
 
 static void
-on_stack_visible_child_changed_cb (GtkStack    *stack,
-                                   GParamSpec  *pspec,
-                                   CcWifiPanel *self)
+on_stack_visible_child_changed_cb (CcWifiPanel *self)
 {
   const gchar *visible_device_id = NULL;
   guint i;
@@ -693,7 +685,7 @@ on_stack_visible_child_changed_cb (GtkStack    *stack,
   /* Remove previous bindings */
   g_clear_pointer (&self->spinner_binding, g_binding_unbind);
 
-  visible_device_id = gtk_stack_get_visible_child_name (stack);
+  visible_device_id = gtk_stack_get_visible_child_name (self->stack);
   for (i = 0; i < self->devices->len; i++)
     {
       NetDeviceWifi *net_device = g_ptr_array_index (self->devices, i);
@@ -711,9 +703,9 @@ on_stack_visible_child_changed_cb (GtkStack    *stack,
 }
 
 static void
-on_stop_hotspot_dialog_response_cb (AdwMessageDialog   *dialog,
+on_stop_hotspot_dialog_response_cb (CcWifiPanel        *self,
                                     gchar              *response,
-                                    CcWifiPanel        *self)
+                                    AdwMessageDialog   *dialog)
 {
   if (g_strcmp0 (response, "turn-off") == 0)
     {
@@ -751,7 +743,7 @@ hotspot_stop_clicked_cb (CcWifiPanel *self)
   adw_message_dialog_set_default_response (ADW_MESSAGE_DIALOG (dialog), "cancel");
   adw_message_dialog_set_close_response (ADW_MESSAGE_DIALOG (dialog), "cancel");
 
-  g_signal_connect (dialog, "response", G_CALLBACK (on_stop_hotspot_dialog_response_cb), self);
+  g_signal_connect_swapped (dialog, "response", G_CALLBACK (on_stop_hotspot_dialog_response_cb), self);
   gtk_window_present (GTK_WINDOW (dialog));
 }
 
@@ -861,7 +853,7 @@ cc_wifi_panel_class_init (CcWifiPanelClass *klass)
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/network/cc-wifi-panel.ui");
 
   gtk_widget_class_bind_template_child (widget_class, CcWifiPanel, center_stack);
-  gtk_widget_class_bind_template_child (widget_class, CcWifiPanel, header_stack);
+  gtk_widget_class_bind_template_child (widget_class, CcWifiPanel, device_stack);
   gtk_widget_class_bind_template_child (widget_class, CcWifiPanel, hotspot_box);
   gtk_widget_class_bind_template_child (widget_class, CcWifiPanel, list_label);
   gtk_widget_class_bind_template_child (widget_class, CcWifiPanel, main_stack);

@@ -31,9 +31,16 @@ stages:
 
 .Build procedure: &build_procedure
   echo "== Building ==" &&
+  dnf install -y dnf5-plugins &&
+  git clone https://gitlab.gnome.org/GNOME/glib.git &&
+  cd glib &&
+  dnf builddep -y glib &&
+  meson setup . _build -Dprefix=/usr -Dlibdir=lib64 &&
+  ninja -C _build install &&
+  cd .. && rm -rf _build/ &&
   git clone https://gitlab.gnome.org/GNOME/gtk.git &&
   cd gtk &&
-  dnf install -y dnf-plugins-core && dnf builddep -y gtk4 &&
+  dnf builddep -y gtk4 &&
   meson setup . _build -Dprefix=/usr -Dlibdir=lib64 &&
   ninja -C _build install &&
   cd .. &&
@@ -58,7 +65,7 @@ stages:
     # stable branch.
     # Could probably also switch away from rawhide,
     # to stable fedora branch as well.
-    FDO_DISTRIBUTION_TAG: '2023-03-14.0-main'
+    FDO_DISTRIBUTION_TAG: '2023-06-07.0-main'
     FDO_DISTRIBUTION_VERSION: rawhide
 
 #############################################
@@ -104,6 +111,8 @@ build.container.fedora@x86_64:
       gtk3-devel ibus-devel
       gtk4-devel
       intltool
+      appstream-devel
+      sassc
       libadwaita-devel
       libcanberra-devel
       libgtop2-devel
@@ -138,6 +147,7 @@ build.container.fedora@x86_64:
       gcr3-devel
       gcr-devel
       setxkbmap
+      appstream-devel
     FDO_DISTRIBUTION_EXEC: |-
       git clone https://gitlab.gnome.org/GNOME/gsettings-desktop-schemas.git && \
         cd gsettings-desktop-schemas && \

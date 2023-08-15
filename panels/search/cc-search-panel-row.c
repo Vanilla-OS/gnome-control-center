@@ -44,6 +44,40 @@ enum
 static guint signals[SIGNAL_LAST] = { 0, };
 
 static void
+update_move_actions_after_row_moved_up (CcSearchPanelRow *self)
+{
+  GtkListBox *list_box = GTK_LIST_BOX (gtk_widget_get_parent (GTK_WIDGET (self)));
+  gint previous_idx = gtk_list_box_row_get_index (GTK_LIST_BOX_ROW (self)) - 1;
+  GtkListBoxRow *previous_row = gtk_list_box_get_row_at_index (list_box, previous_idx);
+
+  if (gtk_list_box_get_row_at_index (list_box, previous_idx - 1) == NULL)
+    {
+      gtk_widget_action_set_enabled (GTK_WIDGET (self), "row.move-up", FALSE);
+    }
+
+  gtk_widget_action_set_enabled (GTK_WIDGET (previous_row), "row.move-up", TRUE);
+  gtk_widget_action_set_enabled (GTK_WIDGET (previous_row), "row.move-down", gtk_widget_get_next_sibling (GTK_WIDGET (self)) != NULL);
+  gtk_widget_action_set_enabled (GTK_WIDGET (self), "row.move-down", TRUE);
+}
+
+static void
+update_move_actions_after_row_moved_down (CcSearchPanelRow *self)
+{
+  GtkListBox *list_box = GTK_LIST_BOX (gtk_widget_get_parent (GTK_WIDGET (self)));
+  gint next_idx = gtk_list_box_row_get_index (GTK_LIST_BOX_ROW (self)) + 1;
+  GtkListBoxRow *next_row = gtk_list_box_get_row_at_index (list_box, next_idx);
+
+  if (gtk_widget_get_next_sibling (GTK_WIDGET (next_row)) == NULL)
+    {
+      gtk_widget_action_set_enabled (GTK_WIDGET (self), "row.move-down", FALSE);
+    }
+
+  gtk_widget_action_set_enabled (GTK_WIDGET (next_row), "row.move-up", next_idx-1 != 0);
+  gtk_widget_action_set_enabled (GTK_WIDGET (next_row), "row.move-down", TRUE);
+  gtk_widget_action_set_enabled (GTK_WIDGET (self), "row.move-up", TRUE);
+}
+
+static void
 move_up_cb (GSimpleAction *action,
             GVariant      *parameter,
             gpointer       user_data)
@@ -55,6 +89,8 @@ move_up_cb (GSimpleAction *action,
 
   if (previous_row == NULL)
     return;
+
+  update_move_actions_after_row_moved_up (self);
 
   g_signal_emit (self,
                  signals[SIGNAL_MOVE_ROW],
@@ -75,6 +111,8 @@ move_down_cb (GSimpleAction *action,
   if (next_row == NULL)
     return;
 
+  update_move_actions_after_row_moved_down (self);
+
   g_signal_emit (next_row,
                  signals[SIGNAL_MOVE_ROW],
                  0,
@@ -82,10 +120,9 @@ move_down_cb (GSimpleAction *action,
 }
 
 static GdkContentProvider *
-drag_prepare_cb (GtkDragSource    *source,
+drag_prepare_cb (CcSearchPanelRow *self,
                  double            x,
-                 double            y,
-                 CcSearchPanelRow *self)
+                 double            y)
 {
   self->drag_x = x;
   self->drag_y = y;
@@ -94,9 +131,8 @@ drag_prepare_cb (GtkDragSource    *source,
 }
 
 static void
-drag_begin_cb (GtkDragSource    *source,
-               GdkDrag          *drag,
-               CcSearchPanelRow *self)
+drag_begin_cb (CcSearchPanelRow *self,
+               GdkDrag          *drag)
 {
   CcSearchPanelRow *panel_row;
   GtkAllocation alloc;
@@ -120,11 +156,10 @@ drag_begin_cb (GtkDragSource    *source,
 }
 
 static gboolean
-drop_cb (GtkDropTarget    *drop_target,
+drop_cb (CcSearchPanelRow *self,
          const GValue     *value,
          gdouble           x,
-         gdouble           y,
-         CcSearchPanelRow *self)
+         gdouble           y)
 {
   CcSearchPanelRow *source;
 
@@ -144,10 +179,22 @@ drop_cb (GtkDropTarget    *drop_target,
 }
 
 static void
+cc_search_panel_row_finalize (GObject *object)
+{
+  CcSearchPanelRow  *self = CC_SEARCH_PANEL_ROW (object);
+
+  g_clear_object (&self->app_info);
+
+  G_OBJECT_CLASS (cc_search_panel_row_parent_class)->finalize (object);
+}
+
+static void
 cc_search_panel_row_class_init (CcSearchPanelRowClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
+
+  object_class->finalize = cc_search_panel_row_finalize;
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/search/cc-search-panel-row.ui");
 
@@ -181,13 +228,13 @@ cc_search_panel_row_init (CcSearchPanelRow *self)
 
   drag_source = gtk_drag_source_new ();
   gtk_drag_source_set_actions (drag_source, GDK_ACTION_MOVE);
-  g_signal_connect (drag_source, "prepare", G_CALLBACK (drag_prepare_cb), self);
-  g_signal_connect (drag_source, "drag-begin", G_CALLBACK (drag_begin_cb), self);
+  g_signal_connect_swapped (drag_source, "prepare", G_CALLBACK (drag_prepare_cb), self);
+  g_signal_connect_swapped (drag_source, "drag-begin", G_CALLBACK (drag_begin_cb), self);
   gtk_widget_add_controller (GTK_WIDGET (self), GTK_EVENT_CONTROLLER (drag_source));
 
   drop_target = gtk_drop_target_new (CC_TYPE_SEARCH_PANEL_ROW, GDK_ACTION_MOVE);
   gtk_drop_target_set_preload (drop_target, TRUE);
-  g_signal_connect (drop_target, "drop", G_CALLBACK (drop_cb), self);
+  g_signal_connect_swapped (drop_target, "drop", G_CALLBACK (drop_cb), self);
   gtk_widget_add_controller (GTK_WIDGET (self), GTK_EVENT_CONTROLLER (drop_target));
 
   group = g_simple_action_group_new ();

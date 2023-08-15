@@ -235,7 +235,7 @@ cc_network_panel_finalize (GObject *object)
 }
 
 static const char *
-cc_network_panel_get_help_uri (CcPanel *self)
+cc_network_panel_get_help_uri (CcPanel *panel)
 {
 	return "help:gnome-help/net";
 }
@@ -669,11 +669,11 @@ panel_check_network_manager_version (CcNetworkPanel *self)
                 cc_panel_set_content (CC_PANEL (self), status_page);
 
                 adw_status_page_set_icon_name (ADW_STATUS_PAGE (status_page), "network-error-symbolic");
-                adw_status_page_set_title (ADW_STATUS_PAGE (status_page), _("Can’t Connect to Network"));
+                adw_status_page_set_title (ADW_STATUS_PAGE (status_page), _("Network Unavailable"));
                 adw_status_page_set_description (ADW_STATUS_PAGE (status_page),
-                                                 _("NetworkManager needs to be running to view or make "
-                                                   "connections. Contact a system administrator or the "
-                                                   "software vendor."));
+                                                 _("An error has occurred and network cannot be used."
+                                                   "\n Error details: NetworkManager not running."));
+
         } else {
                 manager_running (self);
         }
@@ -767,8 +767,7 @@ visible_child_changed_cb (CcNetworkPanel *self)
 }
 
 static void
-create_connection_cb (GtkWidget      *button,
-                      CcNetworkPanel *self)
+create_connection_cb (CcNetworkPanel *self)
 {
         NetConnectionEditor *editor;
 

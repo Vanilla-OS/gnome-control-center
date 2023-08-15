@@ -6,6 +6,7 @@
     <child>
       <object class="AdwLeaflet" id="main_leaflet">
         <property name="can-navigate-back">True</property>
+        <property name="visible-child">sidebar_box</property>
         <signal name="notify::folded" handler="on_main_leaflet_folded_changed_cb" object="CcWindow" swapped="yes" />
 
         <child>
@@ -24,6 +25,7 @@
                 </property>
                 <child>
                   <object class="GtkButton" id="previous_button">
+                    <property name="tooltip_text" translatable="yes">All Settings</property>
                     <property name="icon_name">go-previous-symbolic</property>
                     <signal name="clicked" handler="previous_button_clicked_cb" object="CcWindow" swapped="yes" />
                     <accessibility>
@@ -37,6 +39,7 @@
                 <child>
                   <object class="GtkToggleButton" id="search_button">
                     <property name="icon_name">edit-find-symbolic</property>
+                    <property name="tooltip_text" translatable="yes">Search</property>
                     <accessibility>
                       <property name="label" translatable="yes">Search</property>
                     </accessibility>
@@ -67,10 +70,16 @@
                 <property name="search_mode_enabled" bind-source="search_button" bind-property="active" bind-flags="sync-create|bidirectional" />
                 <child>
                   <object class="GtkSearchEntry" id="search_entry">
+                    <property name="placeholder_text" translatable="yes">Search settings</property>
                     <property name="width_chars">25</property>
                     <property name="max_width_chars">25</property>
                     <signal name="activate" handler="search_entry_activate_cb" object="CcWindow" swapped="yes" />
                     <signal name="notify::text" handler="update_list_title" object="CcWindow" swapped="yes" />
+                    <child>
+                      <object class="GtkEventControllerKey">
+                        <signal name="key-pressed" handler="search_entry_key_pressed_cb" object="CcWindow" swapped="yes" />
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>

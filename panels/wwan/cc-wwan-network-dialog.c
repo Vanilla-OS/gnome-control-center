@@ -29,7 +29,6 @@
 #include <glib/gi18n.h>
 #include <libmm-glib.h>
 
-#include "cc-list-row.h"
 #include "cc-wwan-errors-private.h"
 #include "cc-wwan-network-dialog.h"
 #include "cc-wwan-resources.h"
@@ -46,7 +45,7 @@ struct _CcWwanNetworkDialog
   GtkDialog     parent_instance;
 
   AdwToastOverlay *toast_overlay;
-  CcListRow    *automatic_row;
+  AdwSwitchRow *automatic_row;
   GtkButton    *button_apply;
   GtkSpinner   *loading_spinner;
   GtkBox       *network_search_title;
@@ -114,10 +113,10 @@ cc_wwan_network_changed_cb (CcWwanNetworkDialog *self,
     return;
 
   gtk_widget_set_sensitive (GTK_WIDGET (self->button_apply), TRUE);
-  gtk_widget_show (GTK_WIDGET (row->ok_emblem));
+  gtk_widget_set_visible (GTK_WIDGET (row->ok_emblem), TRUE);
 
   if (self->selected_row)
-    gtk_widget_hide (GTK_WIDGET (self->selected_row->ok_emblem));
+    gtk_widget_set_visible (GTK_WIDGET (self->selected_row->ok_emblem), FALSE);
 
   self->selected_row = row;
 }
@@ -139,7 +138,6 @@ cc_wwan_network_dialog_row_new (CcWwanNetworkDialog *self,
   row = g_object_new (CC_TYPE_WWAN_NETWORK_ROW, NULL);
 
   box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
-  gtk_widget_show (box);
   g_object_set (box,
                 "margin-top", 18,
                 "margin-bottom", 18,
@@ -154,7 +152,7 @@ cc_wwan_network_dialog_row_new (CcWwanNetworkDialog *self,
   gtk_box_append (GTK_BOX (box), label);
 
   image = gtk_image_new_from_icon_name ("emblem-ok-symbolic");
-  gtk_widget_hide (image);
+  gtk_widget_set_visible (image, FALSE);
   row->ok_emblem = GTK_IMAGE (image);
   gtk_box_append (GTK_BOX (box), image);
 
@@ -189,7 +187,7 @@ cc_wwan_network_dialog_update_current_network (CcWwanNetworkDialog *self)
 
   row = cc_wwan_network_dialog_row_new (self, operator_name, "");
   self->selected_row = row;
-  gtk_widget_show (GTK_WIDGET (row->ok_emblem));
+  gtk_widget_set_visible (GTK_WIDGET (row->ok_emblem), TRUE);
   gtk_list_box_append (GTK_LIST_BOX (self->operator_list_box), GTK_WIDGET (row));
 }
 
@@ -242,7 +240,7 @@ cc_wwan_network_scan_complete_cb (GObject      *object,
   if (!error)
     {
       cc_wwan_network_dialog_update (self);
-      gtk_widget_show (GTK_WIDGET (self->operator_list_box));
+      gtk_widget_set_visible (GTK_WIDGET (self->operator_list_box), TRUE);
     }
   else if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
     {
@@ -255,7 +253,7 @@ cc_wwan_network_scan_complete_cb (GObject      *object,
       toast = adw_toast_new (cc_wwan_error_get_message (error));
       adw_toast_overlay_add_toast (self->toast_overlay, toast);
 
-      gtk_widget_show (GTK_WIDGET (self->operator_list_box));
+      gtk_widget_set_visible (GTK_WIDGET (self->operator_list_box), TRUE);
       g_warning ("Error: scanning networks failed: %s", error->message);
     }
 }
@@ -277,7 +275,7 @@ cc_wwan_network_dialog_apply_clicked_cb (CcWwanNetworkDialog *self)
 
   g_assert (CC_IS_WWAN_NETWORK_DIALOG (self));
 
-  is_auto = cc_list_row_get_active (self->automatic_row);
+  is_auto = adw_switch_row_get_active (self->automatic_row);
 
   if (is_auto)
     cc_wwan_device_register_network (self->device, "", NULL, NULL, NULL);
@@ -286,20 +284,20 @@ cc_wwan_network_dialog_apply_clicked_cb (CcWwanNetworkDialog *self)
   else
     g_warn_if_reached ();
 
-  gtk_widget_hide (GTK_WIDGET (self));
+  gtk_widget_set_visible (GTK_WIDGET (self), FALSE);
 }
 
 static void
 cc_wwan_auto_network_changed_cb (CcWwanNetworkDialog *self,
                                  GParamSpec          *pspec,
-                                 CcListRow           *auto_network_row)
+                                 AdwSwitchRow        *auto_network_row)
 {
   gboolean is_auto;
 
   g_assert (CC_IS_WWAN_NETWORK_DIALOG (self));
-  g_assert (CC_IS_LIST_ROW (auto_network_row));
+  g_assert (ADW_IS_SWITCH_ROW (auto_network_row));
 
-  is_auto = cc_list_row_get_active (auto_network_row);
+  is_auto = adw_switch_row_get_active (auto_network_row);
   gtk_widget_set_sensitive (GTK_WIDGET (self->button_apply), is_auto);
 
   if (self->no_update_network)
@@ -311,7 +309,7 @@ cc_wwan_auto_network_changed_cb (CcWwanNetworkDialog *self,
   self->selected_row = NULL;
   gtk_widget_set_visible (GTK_WIDGET (self->network_search_title), !is_auto);
   gtk_widget_set_sensitive (GTK_WIDGET (self->operator_list_box), !is_auto);
-  gtk_widget_hide (GTK_WIDGET (self->operator_list_box));
+  gtk_widget_set_visible (GTK_WIDGET (self->operator_list_box), FALSE);
 
   if (is_auto)
     {

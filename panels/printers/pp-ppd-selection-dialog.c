@@ -162,10 +162,10 @@ fill_ppds_list (PpPPDSelectionDialog *self)
   GtkTreeIter      *preselect_iter = NULL;
   gint              i;
 
-  gtk_widget_hide (GTK_WIDGET (self->ppd_spinner));
+  gtk_widget_set_visible (GTK_WIDGET (self->ppd_spinner), FALSE);
   gtk_spinner_stop (self->ppd_spinner);
 
-  gtk_widget_hide (GTK_WIDGET (self->progress_label));
+  gtk_widget_set_visible (GTK_WIDGET (self->progress_label), FALSE);
 
   treeview = self->ppd_selection_manufacturers_treeview;
 
@@ -223,7 +223,7 @@ populate_dialog (PpPPDSelectionDialog *self)
   header = gtk_label_new (gtk_tree_view_column_get_title (column));
   gtk_widget_set_margin_start (header, 10);
   gtk_tree_view_column_set_widget (column, header);
-  gtk_widget_show (header);
+  gtk_widget_set_visible (header, TRUE);
   gtk_tree_view_append_column (manufacturers_treeview, column);
 
 
@@ -240,7 +240,6 @@ populate_dialog (PpPPDSelectionDialog *self)
   header = gtk_label_new (gtk_tree_view_column_get_title (column));
   gtk_widget_set_margin_start (header, 10);
   gtk_tree_view_column_set_widget (column, header);
-  gtk_widget_show (header);
   gtk_tree_view_append_column (models_treeview, column);
 
 
@@ -252,10 +251,10 @@ populate_dialog (PpPPDSelectionDialog *self)
 
   if (!self->list)
     {
-      gtk_widget_show (GTK_WIDGET (self->ppd_spinner));
+      gtk_widget_set_visible (GTK_WIDGET (self->ppd_spinner), TRUE);
       gtk_spinner_start (self->ppd_spinner);
 
-      gtk_widget_show (GTK_WIDGET (self->progress_label));
+      gtk_widget_set_visible (GTK_WIDGET (self->progress_label), TRUE);
     }
   else
     {

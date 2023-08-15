@@ -429,7 +429,7 @@ show_button_mapping_dialog (CcWacomPage *page)
 	g_signal_connect_object (dialog, "response",
 	                         G_CALLBACK (button_mapping_dialog_closed), page, G_CONNECT_SWAPPED);
 
-	gtk_widget_show (dialog);
+	gtk_window_present (GTK_WINDOW (dialog));
 
 	page->button_map = GTK_WINDOW (dialog);
 	g_object_add_weak_pointer (G_OBJECT (dialog), (gpointer *) &page->button_map);
@@ -494,17 +494,15 @@ on_map_buttons_activated (CcWacomPage *self)
 }
 
 static void
-on_display_selected (GtkWidget   *widget,
-		     GParamSpec  *pspec,
-		     CcWacomPage *page)
+on_display_selected (CcWacomPage *page)
 {
 	GListModel *list;
 	g_autoptr (GObject) obj = NULL;
 	GVariant *variant;
 	gint idx;
 
-	list = adw_combo_row_get_model (ADW_COMBO_ROW (widget));
-	idx = adw_combo_row_get_selected (ADW_COMBO_ROW (widget));
+	list = adw_combo_row_get_model (ADW_COMBO_ROW (page->tablet_display));
+	idx = adw_combo_row_get_selected (ADW_COMBO_ROW (page->tablet_display));
 	obj = g_list_model_get_item (list, idx);
 
 	variant = g_object_get_data (obj, "value-output");
