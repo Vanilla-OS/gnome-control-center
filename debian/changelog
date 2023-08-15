@@ -1,8 +1,11 @@
-gnome-control-center (1:45~beta-1) UNRELEASED; urgency=medium
+gnome-control-center (1:45~beta-1) experimental; urgency=medium
 
   * New upstream release
+  * debian/control.in: Bump minimum GTK4 and libadwaita
+  * Drop snapd-glib-2 patch: applied in new release
+  * Add patch to avoid using Tecla because it isn't ready yet
 
- -- Jeremy Bícha <jbicha@ubuntu.com>  Tue, 15 Aug 2023 14:48:40 -0400
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Tue, 15 Aug 2023 15:10:39 -0400
 
 gnome-control-center (1:44.3-3) unstable; urgency=medium
 
