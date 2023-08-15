@@ -1,3 +1,9 @@
+gnome-control-center (1:45~beta-1) UNRELEASED; urgency=medium
+
+  * New upstream release
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Tue, 15 Aug 2023 14:48:40 -0400
+
 gnome-control-center (1:44.3-3) unstable; urgency=medium
 
   * d/control.in: Reduce fwupd from Depends to Recommends.
