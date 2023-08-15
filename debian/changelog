@@ -1,4 +1,4 @@
-gnome-control-center (1:44.3-3) UNRELEASED; urgency=medium
+gnome-control-center (1:44.3-3) unstable; urgency=medium
 
   * d/control.in: Reduce fwupd from Depends to Recommends.
     It should be installed by default, but isn't strictly required, and not
