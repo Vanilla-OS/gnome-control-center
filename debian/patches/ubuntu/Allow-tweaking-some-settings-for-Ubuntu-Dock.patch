@@ -48,17 +48,17 @@ Forwarded: not-needed
  create mode 100644 panels/ubuntu/ubuntu.gresource.xml
 
 diff --git a/panels/meson.build b/panels/meson.build
-index b5abede..eefdd9b 100644
+index 502fa3b..9459839 100644
 --- a/panels/meson.build
 +++ b/panels/meson.build
-@@ -26,6 +26,7 @@ panels = [
+@@ -21,6 +21,7 @@ panels = [
    'search',
    'sharing',
    'sound',
 +  'ubuntu',
    'universal-access',
-   'usage',
    'user-accounts',
+  'wwan',
 diff --git a/panels/ubuntu/assets/colors/color.svg.in b/panels/ubuntu/assets/colors/color.svg.in
 new file mode 100644
 index 0000000..4c0e136
@@ -324,7 +324,7 @@ new file mode 100644
 index 0000000..122969f
 --- /dev/null
 +++ b/panels/ubuntu/cc-ubuntu-panel.c
-@@ -0,0 +1,1730 @@
+@@ -0,0 +1,1729 @@
 +/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 +/*
 + * Copyright (C) 2017-2022 Canonical Ltd
@@ -349,7 +349,6 @@ index 0000000..122969f
 +#include <glib/gi18n-lib.h>
 +#include <gio/gdesktopappinfo.h>
 +
-+#include "cc-list-row.h"
 +#include "cc-ubuntu-panel.h"
 +#include "cc-ubuntu-dock-dialog.h"
 +#include "cc-ubuntu-resources.h"
@@ -397,11 +396,11 @@ index 0000000..122969f
 +  GtkCenterBox           *no_settings_view;
 +  AdwComboRow            *ding_icon_size_row;
 +  AdwComboRow            *ding_icons_new_alignment_row;
-+  CcListRow              *ding_showhome_switch;
++  AdwSwitchRow           *ding_showhome_switch;
 +  AdwPreferencesGroup    *dock_preferences_group;
 +  GtkSwitch              *dock_switch;
-+  CcListRow              *dock_autohide_switch;
-+  CcListRow              *dock_extendheight_switch;
++  AdwSwitchRow           *dock_autohide_switch;
++  AdwSwitchRow           *dock_extendheight_switch;
 +  AdwComboRow            *dock_monitor_row;
 +  GListStore             *dock_monitors_list;
 +  AdwComboRow            *dock_position_row;
@@ -409,8 +408,8 @@ index 0000000..122969f
 +  GtkScale               *icon_size_scale;
 +  AdwPreferencesGroup    *tiling_assistant_preferences_group;
 +  GtkSwitch              *tiling_assistant_switch;
-+  CcListRow              *tiling_assistant_popup_switch;
-+  CcListRow              *tiling_assistant_tiling_group;
++  AdwSwitchRow           *tiling_assistant_popup_switch;
++  AdwSwitchRow           *tiling_assistant_tiling_group;
 +
 +  GSettings              *ding_settings;
 +  GSettings              *dock_settings;
@@ -2101,7 +2100,7 @@ new file mode 100644
 index 0000000..08046f1
 --- /dev/null
 +++ b/panels/ubuntu/cc-ubuntu-panel.ui
-@@ -0,0 +1,217 @@
+@@ -0,0 +1,212 @@
 +<?xml version="1.0" encoding="UTF-8"?>
 +<interface>
 +  <template class="CcUbuntuPanel" parent="CcPanel">
@@ -2180,10 +2179,9 @@ index 0000000..08046f1
 +              </object>
 +            </child>
 +            <child>
-+              <object class="CcListRow" id="ding_showhome_switch">
++              <object class="AdwSwitchRow" id="ding_showhome_switch">
 +                <property name="title" translatable="yes">Show Personal folder</property>
 +                <property name="use-underline">True</property>
-+                <property name="show-switch">True</property>
 +                <property name="sensitive" bind-source="ding_switch" bind-property="active" bind-flags="sync-create" />
 +              </object>
 +            </child>
@@ -2203,20 +2201,18 @@ index 0000000..08046f1
 +              </object>
 +            </property>
 +            <child>
-+              <object class="CcListRow" id="dock_autohide_switch">
++              <object class="AdwSwitchRow" id="dock_autohide_switch">
 +                <property name="title" translatable="yes">Auto-hide the Dock</property>
 +                <property name="subtitle" translatable="yes">The dock hides when any windows overlap with it.</property>
 +                <property name="use-underline">True</property>
-+                <property name="show-switch">True</property>
 +                <property name="sensitive" bind-source="dock_switch" bind-property="active" bind-flags="sync-create" />
 +              </object>
 +            </child>
 +            <child>
-+              <object class="CcListRow" id="dock_extendheight_switch">
++              <object class="AdwSwitchRow" id="dock_extendheight_switch">
 +                <property name="title" translatable="yes">Panel mode</property>
 +                <property name="subtitle" translatable="yes">The dock extends to the screen edge.</property>
 +                <property name="use-underline">True</property>
-+                <property name="show-switch">True</property>
 +                <property name="sensitive" bind-source="dock_switch" bind-property="active" bind-flags="sync-create" />
 +              </object>
 +            </child>
@@ -2290,20 +2286,18 @@ index 0000000..08046f1
 +              </object>
 +            </property>
 +            <child>
-+              <object class="CcListRow" id="tiling_assistant_popup_switch">
++              <object class="AdwSwitchRow" id="tiling_assistant_popup_switch">
 +                <property name="title" translatable="yes">Tiling Popup</property>
 +                <property name="subtitle" translatable="yes" comments="Tiling Assistant Tiling Popup feature explaination.">It provides a list of open apps and windows to tile to the free screen space. It appears after you tile a window and there is unambiguous screen space available. Unambiguous means that the free space consists of a single rectangle.</property>
 +                <property name="use-underline">True</property>
-+                <property name="show-switch">True</property>
 +                <property name="sensitive" bind-source="tiling_assistant_switch" bind-property="active" bind-flags="sync-create" />
 +              </object>
 +            </child>
 +            <child>
-+              <object class="CcListRow" id="tiling_assistant_tiling_group">
++              <object class="AdwSwitchRow" id="tiling_assistant_tiling_group">
 +                <property name="title" translatable="yes">Tile Groups</property>
 +                <property name="subtitle" translatable="yes" comments="Tiling Assistant Tile Groups feature explaination">A window is added to a tile group if it doesn't overlap any other windows in the tile group during the moment it was tiled. If a tiled window is raised, the other windows of its tile group are raised well</property>
 +                <property name="use-underline">True</property>
-+                <property name="show-switch">True</property>
 +                <property name="sensitive" bind-source="tiling_assistant_switch" bind-property="active" bind-flags="sync-create" />
 +              </object>
 +            </child>
@@ -2454,13 +2448,13 @@ index 0000000..a636e9c
 +  </gresource>
 +</gresources>
 diff --git a/po/POTFILES.in b/po/POTFILES.in
-index 561d86d..8a1b302 100644
+index 9f5bc4c..e7a31a6 100644
 --- a/po/POTFILES.in
 +++ b/po/POTFILES.in
-@@ -218,6 +218,11 @@ panels/thunderbolt/cc-bolt-device-entry.c
- panels/thunderbolt/cc-bolt-panel.c
- panels/thunderbolt/cc-bolt-panel.ui
- panels/thunderbolt/gnome-thunderbolt-panel.desktop.in
+@@ -218,6 +218,11 @@ panels/sound/cc-volume-levels-window.ui
+ panels/sound/cc-volume-slider.c
+ panels/sound/cc-volume-slider.ui
+ panels/sound/gnome-sound-panel.desktop.in
 +panels/ubuntu/cc-ubuntu-panel.c
 +panels/ubuntu/cc-ubuntu-panel.ui
 +panels/ubuntu/cc-ubuntu-dock-dialog.c
@@ -2470,10 +2464,10 @@ index 561d86d..8a1b302 100644
  panels/universal-access/cc-ua-hearing-page.ui
  panels/universal-access/cc-ua-hearing-page.c
 diff --git a/shell/cc-panel-list.c b/shell/cc-panel-list.c
-index 76a978a..6d24407 100644
+index f864a8e..29f9647 100644
 --- a/shell/cc-panel-list.c
 +++ b/shell/cc-panel-list.c
-@@ -392,6 +392,7 @@ static const gchar * const panel_order[] = {
+@@ -364,6 +364,7 @@ static const gchar * const panel_order[] = {
    "mobile-broadband",
    "bluetooth",
    "background",
@@ -2482,30 +2476,30 @@ index 76a978a..6d24407 100644
    "search",
    "multitasking",
 diff --git a/shell/cc-panel-loader.c b/shell/cc-panel-loader.c
-index 7a8673e..5396ad6 100644
+index 3b33f4e..24f37ed 100644
 --- a/shell/cc-panel-loader.c
 +++ b/shell/cc-panel-loader.c
-@@ -61,6 +61,7 @@ extern GType cc_sound_panel_get_type (void);
- extern GType cc_bolt_panel_get_type (void);
- #endif /* BUILD_THUNDERBOLT */
+@@ -59,6 +59,7 @@ extern GType cc_search_panel_get_type (void);
+ extern GType cc_sharing_panel_get_type (void);
+ extern GType cc_sound_panel_get_type (void);
  extern GType cc_ua_panel_get_type (void);
 +extern GType cc_ubuntu_panel_get_type(void);
  extern GType cc_user_panel_get_type (void);
  #ifdef BUILD_WACOM
  extern GType cc_wacom_panel_get_type (void);
-@@ -68,6 +69,7 @@ extern GType cc_wacom_panel_get_type (void);
+@@ -66,6 +67,7 @@ extern GType cc_wacom_panel_get_type (void);
  #ifdef BUILD_WWAN
  extern GType cc_wwan_panel_get_type (void);
  #endif /* BUILD_WWAN */
 +extern GType cc_ubuntu_panel_static_init_func (void);
- extern GType cc_location_panel_get_type (void);
- extern GType cc_firmware_security_panel_get_type (void);
- extern GType cc_camera_panel_get_type (void);
-@@ -134,6 +136,7 @@ static CcPanelLoaderVtable default_panels[] =
+ 
+ /* Static init functions */
+ #ifdef BUILD_NETWORK
+@@ -115,6 +117,7 @@ static CcPanelLoaderVtable default_panels[] =
    PANEL_TYPE("search",           cc_search_panel_get_type,               NULL),
    PANEL_TYPE("sharing",          cc_sharing_panel_get_type,              NULL),
    PANEL_TYPE("sound",            cc_sound_panel_get_type,                NULL),
 +  PANEL_TYPE("ubuntu",           cc_ubuntu_panel_get_type,               cc_ubuntu_panel_static_init_func),
- #ifdef BUILD_THUNDERBOLT
-   PANEL_TYPE("thunderbolt",      cc_bolt_panel_get_type,                 cc_thunderbolt_panel_static_init_func),
- #endif
+   PANEL_TYPE("universal-access", cc_ua_panel_get_type,                   NULL),
+   PANEL_TYPE("user-accounts",    cc_user_panel_get_type,                 NULL),
+ #ifdef BUILD_WACOM

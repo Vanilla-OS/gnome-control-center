@@ -9,7 +9,7 @@ Workaround for https://launchpad.net/bugs/1631750
  2 files changed, 44 insertions(+)
 
 diff --git a/panels/region/cc-region-panel.c b/panels/region/cc-region-panel.c
-index ad1216c..e986923 100644
+index 5dbab36..f13b26c 100644
 --- a/panels/region/cc-region-panel.c
 +++ b/panels/region/cc-region-panel.c
 @@ -560,6 +560,26 @@ setup_language_section (CcRegionPanel *self)
@@ -39,7 +39,7 @@ index ad1216c..e986923 100644
  static void
  update_login_region (CcRegionPanel *self)
  {
-@@ -852,6 +872,7 @@ cc_region_panel_class_init (CcRegionPanelClass * klass)
+@@ -847,6 +867,7 @@ cc_region_panel_class_init (CcRegionPanelClass * klass)
          gtk_widget_class_bind_template_callback (widget_class, on_user_formats_row_activated_cb);
          gtk_widget_class_bind_template_callback (widget_class, on_user_language_row_activated_cb);
          gtk_widget_class_bind_template_callback (widget_class, restart_now);
@@ -48,12 +48,12 @@ index ad1216c..e986923 100644
  
  static void
 diff --git a/panels/region/cc-region-panel.ui b/panels/region/cc-region-panel.ui
-index 79d31d1..49accb1 100644
+index 9b26cfa..f17bb4f 100644
 --- a/panels/region/cc-region-panel.ui
 +++ b/panels/region/cc-region-panel.ui
-@@ -46,6 +46,29 @@
-               </object>
-             </child>
+@@ -18,6 +18,29 @@
+           <object class="AdwPreferencesPage">
+             <property name="description" translatable="yes">The language setting is used for interface text and web pages. Formats are used for numbers, dates, and currencies.</property>
  
 +            <child>
 +              <object class="AdwPreferencesGroup">
@@ -64,7 +64,7 @@ index 79d31d1..49accb1 100644
 +                    <property name="use-underline">True</property>
 +                    <property name="title" translatable="yes">Manage Installed Languages</property>
 +                    <property name="activatable">True</property>
-+                    <signal name="activated" handler="show_language_support" object="CcRegionPanel" swapped="no" />
++                    <signal name="activated" handler="show_language_support" object="CcRegionPanel" swapped="yes" />
 +
 +                    <child>
 +                      <object class="GtkImage">

@@ -3,19 +3,19 @@ Date: Sat, 4 Jun 2022 14:57:01 +0200
 Subject: diagnostics: Add Whoopsie support
 
 ---
- meson.build                                        |   9 +
- meson_options.txt                                  |   1 +
- panels/diagnostics/cc-diagnostics-panel.c          | 224 +++++++++++++++++++++
- panels/diagnostics/cc-diagnostics-panel.ui         |  10 +-
- .../diagnostics/gnome-diagnostics-panel.desktop.in |   2 +-
- panels/diagnostics/meson.build                     |   7 +-
- 6 files changed, 250 insertions(+), 3 deletions(-)
+ meson.build                                   |   9 ++
+ meson_options.txt                             |   1 +
+ panels/privacy/cc-diagnostics-page.c          | 222 ++++++++++++++++++++++++++
+ panels/privacy/cc-diagnostics-page.ui         |  10 +-
+ panels/privacy/gnome-privacy-panel.desktop.in |   2 +-
+ panels/privacy/meson.build                    |   4 +
+ 6 files changed, 246 insertions(+), 2 deletions(-)
 
 diff --git a/meson.build b/meson.build
-index 3e2b0dd..f449140 100644
+index b927686..bf9526a 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -237,6 +237,14 @@ endif
+@@ -250,6 +250,14 @@ endif
  config_h.set('HAVE_MALCONTENT', enable_malcontent,
               description: 'Define to 1 if malcontent support is enabled')
  
@@ -28,9 +28,9 @@ index 3e2b0dd..f449140 100644
 +             description: 'Define to 1 if Whoopsie is enabled')
 +
  if host_is_linux
-   # network manager
+   # ModemManager
    mm_dep =  dependency('mm-glib', version: '>= 0.7')
-@@ -336,4 +344,5 @@ summary({
+@@ -350,4 +358,5 @@ summary({
    'IBus': enable_ibus,
    'Snap': enable_snap,
    'Malcontent': enable_malcontent,
@@ -45,20 +45,20 @@ index 8ee7b6e..beebcf2 100644
  option('distributor_logo', type: 'string', description: 'absolute path to distributor logo for the About panel')
  option('dark_mode_distributor_logo', type: 'string', description: 'absolute path to distributor logo dark mode variant')
 +option('whoopsie', type: 'boolean', value: false, description: 'build with Whoopsie support')
-diff --git a/panels/diagnostics/cc-diagnostics-panel.c b/panels/diagnostics/cc-diagnostics-panel.c
-index 9aeca6e..7d2e832 100644
---- a/panels/diagnostics/cc-diagnostics-panel.c
-+++ b/panels/diagnostics/cc-diagnostics-panel.c
+diff --git a/panels/privacy/cc-diagnostics-page.c b/panels/privacy/cc-diagnostics-page.c
+index 814d2ca..8583131 100644
+--- a/panels/privacy/cc-diagnostics-page.c
++++ b/panels/privacy/cc-diagnostics-page.c
 @@ -18,6 +18,8 @@
   * Author: Matthias Clasen <mclasen@redhat.com>
   */
  
 +#include <config.h>
 +
- #include "cc-diagnostics-panel.h"
- #include "cc-diagnostics-resources.h"
+ #include "cc-diagnostics-page.h"
  #include "cc-util.h"
-@@ -26,6 +28,10 @@
+ #include "shell/cc-application.h"
+@@ -25,6 +27,10 @@
  #include <gio/gdesktopappinfo.h>
  #include <glib/gi18n.h>
  
@@ -66,10 +66,10 @@ index 9aeca6e..7d2e832 100644
 +#  include <whoopsie-preferences/libwhoopsie-preferences.h>
 +#endif
 +
- struct _CcDiagnosticsPanel
+ struct _CcDiagnosticsPage
  {
-   CcPanel              parent_instance;
-@@ -34,6 +40,13 @@ struct _CcDiagnosticsPanel
+   AdwNavigationPage    parent_instance;
+@@ -33,6 +39,13 @@ struct _CcDiagnosticsPage
    GtkSwitch           *abrt_switch;
  
    GSettings           *privacy_settings;
@@ -82,13 +82,13 @@ index 9aeca6e..7d2e832 100644
 +#endif
  };
  
- CC_PANEL_REGISTER (CcDiagnosticsPanel, cc_diagnostics_panel)
-@@ -68,9 +81,190 @@ abrt_vanished_cb (GDBusConnection *connection,
-                   gpointer         user_data)
- {
+ G_DEFINE_TYPE (CcDiagnosticsPage, cc_diagnostics_page, ADW_TYPE_NAVIGATION_PAGE)
+@@ -59,9 +72,190 @@ abrt_vanished_cb (GDBusConnection *connection,
+   CcDiagnosticsPage *self = CC_DIAGNOSTICS_PAGE (user_data);
+ 
    g_debug ("ABRT vanished");
 +#ifndef HAVE_WHOOPSIE
-   set_panel_visibility (CC_PANEL_VISIBLE_IN_SEARCH);
+   gtk_widget_set_visible (GTK_WIDGET (self), FALSE);
 +#endif
 +}
 +
@@ -105,7 +105,7 @@ index 9aeca6e..7d2e832 100644
 +                                  GAsyncResult *res,
 +                                  gpointer user_data)
 +{
-+  CcDiagnosticsPanel *self = user_data;
++  CcDiagnosticsPage *self = user_data;
 +  g_autoptr(GError) error = NULL;
 +
 +  if (!whoopsie_preferences_call_set_report_crashes_finish (self->whoopsie, res, &error))
@@ -122,7 +122,7 @@ index 9aeca6e..7d2e832 100644
 +                                       GAsyncResult *res,
 +                                       gpointer user_data)
 +{
-+  CcDiagnosticsPanel *self = user_data;
++  CcDiagnosticsPage *self = user_data;
 +  g_autoptr(GError) error = NULL;
 +
 +  if (!whoopsie_preferences_call_set_automatically_report_crashes_finish (self->whoopsie, res, &error))
@@ -135,7 +135,7 @@ index 9aeca6e..7d2e832 100644
 +}
 +
 +static void
-+whoopsie_combo_row_changed_cb (CcDiagnosticsPanel *self)
++whoopsie_combo_row_changed_cb (CcDiagnosticsPage *self)
 +{
 +  g_autoptr (GObject) item = NULL;
 +  GListModel *model;
@@ -185,7 +185,7 @@ index 9aeca6e..7d2e832 100644
 +}
 +
 +static void
-+whoopsie_properties_changed (CcDiagnosticsPanel *self)
++whoopsie_properties_changed (CcDiagnosticsPage *self)
 +{
 +  WhoopsieButtonSettingType value = WHOOPSIE_BUTTON_SETTING_NEVER;
 +
@@ -233,7 +233,7 @@ index 9aeca6e..7d2e832 100644
 +                          GAsyncResult *res,
 +                          gpointer data)
 +{
-+  CcDiagnosticsPanel *self = data;
++  CcDiagnosticsPage *self = data;
 +  g_autoptr(GError) error = NULL;
 +
 +  self->whoopsie = whoopsie_preferences_proxy_new_for_bus_finish (res, &error);
@@ -267,50 +267,40 @@ index 9aeca6e..7d2e832 100644
 +}
 +#else
 +static void
-+whoopsie_combo_row_changed_cb (CcDiagnosticsPanel *self)
++whoopsie_combo_row_changed_cb (CcDiagnosticsPage *self)
 +{}
 +#endif
 +
- void
- cc_diagnostics_panel_static_init_func (void)
- {
-@@ -82,7 +276,9 @@ cc_diagnostics_panel_static_init_func (void)
-                     NULL,
-                     NULL);
- 
-+#ifndef HAVE_WHOOPSIE
-   set_panel_visibility (CC_PANEL_VISIBLE_IN_SEARCH);
-+#endif
- }
- 
  static void
-@@ -92,6 +288,12 @@ cc_diagnostics_panel_finalize (GObject *object)
- 
+ cc_diagnostics_page_finalize (GObject *object)
+ {
+@@ -70,6 +264,12 @@ cc_diagnostics_page_finalize (GObject *object)
    g_clear_object (&self->privacy_settings);
  
+   G_OBJECT_CLASS (cc_diagnostics_page_parent_class)->finalize (object);
++
 +#if HAVE_WHOOPISE
 +  g_cancellable_cancel (self->cancellable);
 +  g_clear_object (&self->cancellable);
 +  g_clear_object (&self->whoopsie);
 +#endif
-+
-   G_OBJECT_CLASS (cc_diagnostics_panel_parent_class)->finalize (object);
  }
  
-@@ -107,6 +309,12 @@ cc_diagnostics_panel_class_init (CcDiagnosticsPanelClass *klass)
+ static void
+@@ -84,6 +284,12 @@ cc_diagnostics_page_class_init (CcDiagnosticsPageClass *klass)
  
-   gtk_widget_class_bind_template_child (widget_class, CcDiagnosticsPanel, diagnostics_group);
-   gtk_widget_class_bind_template_child (widget_class, CcDiagnosticsPanel, abrt_switch);
+   gtk_widget_class_bind_template_child (widget_class, CcDiagnosticsPage, diagnostics_group);
+   gtk_widget_class_bind_template_child (widget_class, CcDiagnosticsPage, abrt_switch);
 +
 +#ifdef HAVE_WHOOPSIE
-+  gtk_widget_class_bind_template_child (widget_class, CcDiagnosticsPanel, abrt_row);
-+  gtk_widget_class_bind_template_child (widget_class, CcDiagnosticsPanel, whoopsie_combo_row);
++  gtk_widget_class_bind_template_child (widget_class, CcDiagnosticsPage, abrt_row);
++  gtk_widget_class_bind_template_child (widget_class, CcDiagnosticsPage, whoopsie_combo_row);
 +#endif
 +  gtk_widget_class_bind_template_callback (widget_class, whoopsie_combo_row_changed_cb);
  }
  
  static void
-@@ -127,6 +335,22 @@ cc_diagnostics_panel_init (CcDiagnosticsPanel *self)
+@@ -112,6 +318,22 @@ cc_diagnostics_page_init (CcDiagnosticsPage *self)
                     self->abrt_switch, "active",
                     G_SETTINGS_BIND_DEFAULT);
  
@@ -333,20 +323,20 @@ index 9aeca6e..7d2e832 100644
    os_name = g_get_os_info (G_OS_INFO_KEY_NAME);
    if (!os_name)
      os_name = g_strdup ("GNOME");
-diff --git a/panels/diagnostics/cc-diagnostics-panel.ui b/panels/diagnostics/cc-diagnostics-panel.ui
-index a08a4ca..7a0a3f9 100644
---- a/panels/diagnostics/cc-diagnostics-panel.ui
-+++ b/panels/diagnostics/cc-diagnostics-panel.ui
-@@ -7,7 +7,7 @@
-           <object class="AdwPreferencesGroup" id="diagnostics_group">
-             <property name="title" translatable="yes">Problem Reporting</property>
-             <child>
--              <object class="AdwActionRow">
-+              <object class="AdwActionRow" id ="abrt_row">
-                 <property name="title" translatable="yes">_Automatic Problem Reporting</property>
-                 <property name="use-underline">True</property>
-                 <property name="activatable-widget">abrt_switch</property>
-@@ -21,6 +21,14 @@
+diff --git a/panels/privacy/cc-diagnostics-page.ui b/panels/privacy/cc-diagnostics-page.ui
+index 987541f..e209fbf 100644
+--- a/panels/privacy/cc-diagnostics-page.ui
++++ b/panels/privacy/cc-diagnostics-page.ui
+@@ -15,7 +15,7 @@
+               <object class="AdwPreferencesGroup" id="diagnostics_group">
+                 <property name="title" translatable="yes">Problem Reporting</property>
+                 <child>
+-                  <object class="AdwActionRow">
++                  <object class="AdwActionRow" id="abrt_row">
+                     <property name="title" translatable="yes">_Automatic Problem Reporting</property>
+                     <property name="use-underline">True</property>
+                     <property name="activatable-widget">abrt_switch</property>
+@@ -28,6 +28,14 @@
                  </child>
                </object>
              </child>
@@ -355,43 +345,34 @@ index a08a4ca..7a0a3f9 100644
 +                <property name="visible">False</property>
 +                <property name="title" translatable="yes">Send error reports to Canonical</property>
 +                <property name="use_underline">True</property>
-+                <signal name="notify::selected-item" handler="whoopsie_combo_row_changed_cb" object="CcDiagnosticsPanel" swapped="yes"/>
++                <signal name="notify::selected-item" handler="whoopsie_combo_row_changed_cb" object="CcDiagnosticsPage" swapped="yes"/>
 +              </object>
 +            </child>
            </object>
-         </child>
+         </property>
        </object>
-diff --git a/panels/diagnostics/gnome-diagnostics-panel.desktop.in b/panels/diagnostics/gnome-diagnostics-panel.desktop.in
-index 06d187f..07d0c77 100644
---- a/panels/diagnostics/gnome-diagnostics-panel.desktop.in
-+++ b/panels/diagnostics/gnome-diagnostics-panel.desktop.in
-@@ -12,4 +12,4 @@ StartupNotify=true
- Categories=GNOME;GTK;Settings;DesktopSettings;X-GNOME-Settings-Panel;X-GNOME-PrivacySettings;
- OnlyShowIn=GNOME;Unity;
- # Translators: Search terms to find the Diagnostics panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
--Keywords=diagnostics;crash;
-+Keywords=diagnostics;crash;error;bug;whoopsie;launchpad;issue;
-diff --git a/panels/diagnostics/meson.build b/panels/diagnostics/meson.build
-index a17f0b8..64418e1 100644
---- a/panels/diagnostics/meson.build
-+++ b/panels/diagnostics/meson.build
-@@ -22,13 +22,18 @@ sources += gnome.compile_resources(
-   export: true
- )
+diff --git a/panels/privacy/gnome-privacy-panel.desktop.in b/panels/privacy/gnome-privacy-panel.desktop.in
+index 6206700..4a0e4ea 100644
+--- a/panels/privacy/gnome-privacy-panel.desktop.in
++++ b/panels/privacy/gnome-privacy-panel.desktop.in
+@@ -11,4 +11,4 @@ StartupNotify=true
+ Categories=GNOME;GTK;Settings;DesktopSettings;X-GNOME-Settings-Panel;X-GNOME-AccountSettings;
+ OnlyShowIn=GNOME;
+ # Translators: Search terms to find the Privacy panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+-Keywords=Privacy;Screen;Lock;Private;Usage;Recent;History;Files;Temporary;Tmp;Trash;Purge;Retain;Diagnostics;Crash;Location;Gps;Camera;Photos;Video;Webcam;Microphone;Recording;Security;Firmware;Thunderbolt;
++Keywords=Privacy;Screen;Lock;Private;Usage;Recent;History;Files;Temporary;Tmp;Trash;Purge;Retain;Diagnostics;Crash;Location;Gps;Camera;Photos;Video;Webcam;Microphone;Recording;Security;Firmware;Thunderbolt;error;bug;whoopsie;launchpad;issue;
+diff --git a/panels/privacy/meson.build b/panels/privacy/meson.build
+index b10c1e9..ee5f2dd 100644
+--- a/panels/privacy/meson.build
++++ b/panels/privacy/meson.build
+@@ -82,6 +82,10 @@ deps = deps + [
+   m_dep,
+ ]
  
-+deps = common_deps
 +if enable_whoopsie
 +  deps += whoopsie_dep
 +endif
 +
- cflags += '-DGNOMELOCALEDIR="@0@"'.format(control_center_localedir)
- 
  panels_libs += static_library(
    cappletname,
    sources: sources,
-   include_directories: [top_inc, common_inc],
--  dependencies: common_deps,
-+  dependencies: deps,
-   c_args: cflags
- )
- 

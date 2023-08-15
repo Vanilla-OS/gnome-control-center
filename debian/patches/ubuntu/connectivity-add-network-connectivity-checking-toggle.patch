@@ -304,22 +304,22 @@ index 0000000..94c0d23
 +  c_args: cflags
 +)
 diff --git a/panels/meson.build b/panels/meson.build
-index eefdd9b..575c310 100644
+index 9459839..90d8fbe 100644
 --- a/panels/meson.build
 +++ b/panels/meson.build
-@@ -5,6 +5,7 @@ panels = [
+@@ -4,6 +4,7 @@ panels = [
+   'applications',
    'background',
-   'camera',
    'color',
 +  'connectivity',
    'datetime',
    'default-apps',
-   'diagnostics',
+   'display',
 diff --git a/po/POTFILES.in b/po/POTFILES.in
-index df3df4c..e57a497 100644
+index 5b7ab8c..e062ef5 100644
 --- a/po/POTFILES.in
 +++ b/po/POTFILES.in
-@@ -32,6 +32,8 @@ panels/common/cc-time-editor.ui
+@@ -31,6 +31,8 @@ panels/common/cc-time-editor.ui
  panels/common/cc-time-entry.c
  panels/common/cc-util.c
  panels/common/hostname-helper.c
@@ -329,7 +329,7 @@ index df3df4c..e57a497 100644
  panels/datetime/cc-datetime-panel.ui
  panels/datetime/cc-tz-dialog.ui
 diff --git a/shell/cc-panel-loader.c b/shell/cc-panel-loader.c
-index 5396ad6..e309258 100644
+index 24f37ed..eceb4f6 100644
 --- a/shell/cc-panel-loader.c
 +++ b/shell/cc-panel-loader.c
 @@ -37,6 +37,7 @@ extern GType cc_background_panel_get_type (void);
@@ -340,11 +340,11 @@ index 5396ad6..e309258 100644
  extern GType cc_date_time_panel_get_type (void);
  extern GType cc_default_apps_panel_get_type (void);
  extern GType cc_display_panel_get_type (void);
-@@ -111,6 +112,7 @@ static CcPanelLoaderVtable default_panels[] =
+@@ -96,6 +97,7 @@ static CcPanelLoaderVtable default_panels[] =
+   PANEL_TYPE("bluetooth",        cc_bluetooth_panel_get_type,            NULL),
  #endif
-   PANEL_TYPE("camera",           cc_camera_panel_get_type,               NULL),
    PANEL_TYPE("color",            cc_color_panel_get_type,                NULL),
 +  PANEL_TYPE("connectivity",     cc_connectivity_panel_get_type,         NULL),
    PANEL_TYPE("datetime",         cc_date_time_panel_get_type,            NULL),
    PANEL_TYPE("default-apps",     cc_default_apps_panel_get_type,         NULL),
-   PANEL_TYPE("diagnostics",      cc_diagnostics_panel_get_type,          cc_diagnostics_panel_static_init_func),
+   PANEL_TYPE("display",          cc_display_panel_get_type,              NULL),

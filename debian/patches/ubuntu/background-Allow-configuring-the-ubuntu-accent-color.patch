@@ -24,7 +24,7 @@ given that these are per-process anyways.
  create mode 100644 panels/ubuntu/cc-ubuntu-colors-row.ui
 
 diff --git a/panels/background/cc-background-panel.c b/panels/background/cc-background-panel.c
-index de6c843..743ed97 100644
+index e90ed61..9851dc4 100644
 --- a/panels/background/cc-background-panel.c
 +++ b/panels/background/cc-background-panel.c
 @@ -35,6 +35,8 @@
@@ -70,15 +70,15 @@ index de6c843..743ed97 100644
  
    gtk_widget_class_bind_template_callback (widget_class, on_color_scheme_toggle_active_cb);
    gtk_widget_class_bind_template_callback (widget_class, on_chooser_background_chosen_cb);
-@@ -498,5 +506,9 @@ cc_background_panel_init (CcBackgroundPanel *panel)
+@@ -498,5 +506,9 @@ cc_background_panel_init (CcBackgroundPanel *self)
                              got_transition_proxy_cb,
-                             panel);
+                             self);
  
-+  g_signal_connect_object (panel->ubuntu_colors, "changed",
++  g_signal_connect_object (self->ubuntu_colors, "changed",
 +                           G_CALLBACK (transition_screen),
-+                           panel, G_CONNECT_SWAPPED);
++                           self, G_CONNECT_SWAPPED);
 +
-   load_custom_css (panel);
+   load_custom_css (self);
  }
 diff --git a/panels/background/cc-background-panel.ui b/panels/background/cc-background-panel.ui
 index 33a8638..89a5ef5 100644
@@ -1014,7 +1014,7 @@ index 529be08..d7f73e6 100644
    'cc-ubuntu-dock-dialog.ui',
  )
 diff --git a/po/POTFILES.in b/po/POTFILES.in
-index 8a1b302..df3df4c 100644
+index e7a31a6..5b7ab8c 100644
 --- a/po/POTFILES.in
 +++ b/po/POTFILES.in
 @@ -222,6 +222,8 @@ panels/ubuntu/cc-ubuntu-panel.c

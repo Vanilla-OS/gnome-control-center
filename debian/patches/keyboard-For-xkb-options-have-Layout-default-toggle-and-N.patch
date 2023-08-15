@@ -21,14 +21,14 @@ Bug-Ubuntu: https://launchpad.net/bugs/1867548
 Bug-GNOME: https://gitlab.gnome.org/GNOME/gnome-control-center/issues/918
 Last-Update: 2022-12-25
 ---
- panels/keyboard/cc-keyboard-panel.c       |  5 +-
- panels/keyboard/cc-xkb-modifier-dialog.c  | 78 +++++++++++++++++--------------
+ panels/keyboard/cc-keyboard-panel.c       |  4 ++
+ panels/keyboard/cc-xkb-modifier-dialog.c  | 76 +++++++++++++++++--------------
  panels/keyboard/cc-xkb-modifier-dialog.h  |  1 +
- panels/keyboard/cc-xkb-modifier-dialog.ui |  5 +-
- 4 files changed, 52 insertions(+), 37 deletions(-)
+ panels/keyboard/cc-xkb-modifier-dialog.ui |  7 +--
+ 4 files changed, 52 insertions(+), 36 deletions(-)
 
 diff --git a/panels/keyboard/cc-keyboard-panel.c b/panels/keyboard/cc-keyboard-panel.c
-index d5a449c..cc7cd7b 100644
+index 40626e1..a6dee70 100644
 --- a/panels/keyboard/cc-keyboard-panel.c
 +++ b/panels/keyboard/cc-keyboard-panel.c
 @@ -63,6 +63,7 @@ static const CcXkbModifier LV3_MODIFIER = {
@@ -39,17 +39,16 @@ index d5a449c..cc7cd7b 100644
      { NC_("keyboard key", "Left Alt"),    "lv3:lalt_switch" },
      { NC_("keyboard key", "Right Alt"),   "lv3:ralt_switch" },
      { NC_("keyboard key", "Left Super"),  "lv3:lwin_switch" },
-@@ -71,7 +72,8 @@ static const CcXkbModifier LV3_MODIFIER = {
-     { NC_("keyboard key", "Right Ctrl"),  "lv3:switch" },
+@@ -72,6 +73,8 @@ static const CcXkbModifier LV3_MODIFIER = {
      { NULL,                               NULL }
    },
--  NULL,
-+  "lv3:ralt_switch",
+   "lv3:ralt_switch",
 +  "lv3:ralt_alt",
++  NULL,
  };
  
  static const CcXkbModifier COMPOSE_MODIFIER = {
-@@ -93,6 +95,7 @@ static const CcXkbModifier COMPOSE_MODIFIER = {
+@@ -92,6 +95,7 @@ static const CcXkbModifier COMPOSE_MODIFIER = {
      { NULL,                                NULL }
    },
    NULL,
@@ -58,7 +57,7 @@ index d5a449c..cc7cd7b 100644
  
  static void
 diff --git a/panels/keyboard/cc-xkb-modifier-dialog.c b/panels/keyboard/cc-xkb-modifier-dialog.c
-index da8116e..e52eeb4 100644
+index 44bb5c5..d2a3508 100644
 --- a/panels/keyboard/cc-xkb-modifier-dialog.c
 +++ b/panels/keyboard/cc-xkb-modifier-dialog.c
 @@ -28,7 +28,7 @@ struct _CcXkbModifierDialog
@@ -170,18 +169,15 @@ index da8116e..e52eeb4 100644
      return;
  
    xkb_option = (gchar *)g_object_get_data (G_OBJECT (radio), "xkb-option");
-@@ -181,17 +193,17 @@ on_xkb_options_changed_cb (CcXkbModifierDialog *self)
+@@ -181,15 +193,15 @@ on_xkb_options_changed_cb (CcXkbModifierDialog *self)
  }
  
  static gboolean
--enable_switch_changed_cb (GtkSwitch *widget,
--                          gboolean   state,
--                          gpointer   user_data)
-+default_switch_changed_cb (GtkSwitch *widget,
-+                           gboolean   state,
-+                           gpointer   user_data)
+-enable_switch_changed_cb (CcXkbModifierDialog *self,
+-                          gboolean             state)
++default_switch_changed_cb (CcXkbModifierDialog *self,
++                           gboolean             state)
  {
-   CcXkbModifierDialog *self = user_data;
    gchar *xkb_option;
    GSList *l;
  
@@ -193,7 +189,7 @@ index da8116e..e52eeb4 100644
      {
        for (l = self->radio_group; l != NULL; l = l->next)
          {
-@@ -232,12 +244,12 @@ cc_xkb_modifier_dialog_class_init (CcXkbModifierDialogClass *klass)
+@@ -230,12 +242,12 @@ cc_xkb_modifier_dialog_class_init (CcXkbModifierDialogClass *klass)
    gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/keyboard/cc-xkb-modifier-dialog.ui");
  
    gtk_widget_class_bind_template_child (widget_class, CcXkbModifierDialog, description_label);
@@ -208,7 +204,7 @@ index da8116e..e52eeb4 100644
  }
  
  static void
-@@ -248,7 +260,7 @@ add_radio_buttons (CcXkbModifierDialog *self)
+@@ -246,7 +258,7 @@ add_radio_buttons (CcXkbModifierDialog *self)
    CcXkbOption *options = self->modifier->options;
    int i;
  
@@ -217,7 +213,7 @@ index da8116e..e52eeb4 100644
      {
        row = g_object_new (GTK_TYPE_LIST_BOX_ROW,
                            "visible", TRUE,
-@@ -310,12 +322,10 @@ cc_xkb_modifier_dialog_new (GSettings *input_settings,
+@@ -308,12 +320,10 @@ cc_xkb_modifier_dialog_new (GSettings *input_settings,
  
    self->modifier = modifier;
    gtk_window_set_title (GTK_WINDOW (self), gettext (modifier->title));
@@ -231,7 +227,7 @@ index da8116e..e52eeb4 100644
  
    return self;
  }
-@@ -329,6 +339,7 @@ xcb_modifier_transform_binding_to_label (GValue   *value,
+@@ -327,6 +337,7 @@ xcb_modifier_transform_binding_to_label (GValue   *value,
    const CcXkbOption *entry = NULL;
    const char **items;
    guint i;
@@ -239,7 +235,7 @@ index da8116e..e52eeb4 100644
  
    items = g_variant_get_strv (variant, NULL);
  
-@@ -337,19 +348,18 @@ xcb_modifier_transform_binding_to_label (GValue   *value,
+@@ -335,19 +346,18 @@ xcb_modifier_transform_binding_to_label (GValue   *value,
        entry = get_xkb_option_from_name (modifier, items[i]);
        if (entry != NULL)
          break;
@@ -281,23 +277,22 @@ index 91efbcd..fd05b32 100644
  
  #define CC_TYPE_XKB_MODIFIER_DIALOG (cc_xkb_modifier_dialog_get_type())
 diff --git a/panels/keyboard/cc-xkb-modifier-dialog.ui b/panels/keyboard/cc-xkb-modifier-dialog.ui
-index e5612ba..a0b6cf3 100644
+index 8887447..c61e802 100644
 --- a/panels/keyboard/cc-xkb-modifier-dialog.ui
 +++ b/panels/keyboard/cc-xkb-modifier-dialog.ui
-@@ -36,13 +36,14 @@
+@@ -36,11 +36,12 @@
                    <object class="AdwActionRow" id="switch_row">
                      <property name="activatable">False</property>
                      <property name="selectable">False</property>
+-                    <property name="activatable-widget">enabled_switch</property>
++                    <property name="activatable-widget">default_switch</property>
 +                    <property name="title" translatable="yes">Use layout default</property>
                      <child>
 -                      <object class="GtkSwitch" id="enabled_switch">
 +                      <object class="GtkSwitch" id="default_switch">
                          <property name="valign">center</property>
-                         <accessibility>
-                           <property name="label" translatable="yes">Enabled</property>
-                         </accessibility>
--                        <signal name="state-set" handler="enable_switch_changed_cb" object="CcXkbModifierDialog" swapped="no"/>
-+                        <signal name="state-set" handler="default_switch_changed_cb" object="CcXkbModifierDialog" swapped="no"/>
+-                        <signal name="state-set" handler="enable_switch_changed_cb" object="CcXkbModifierDialog" swapped="yes"/>
++                        <signal name="state-set" handler="default_switch_changed_cb" object="CcXkbModifierDialog" swapped="yes"/>
                        </object>
                      </child>
                    </object>
