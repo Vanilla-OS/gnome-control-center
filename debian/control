@@ -6,7 +6,7 @@ Source: gnome-control-center
 Section: gnome
 Priority: optional
 Maintainer: Debian GNOME Maintainers <pkg-gnome-maintainers@lists.alioth.debian.org>
-Uploaders: Amin Bandali <bandali@ubuntu.com>, Gunnar Hjalmarsson <gunnarhj@debian.org>, Jeremy Bícha <jbicha@ubuntu.com>, Laurent Bigonville <bigon@debian.org>, Marco Trevisan (Treviño) <marco@ubuntu.com>, Sebastien Bacher <seb128@debian.org>
+Uploaders: Amin Bandali <bandali@ubuntu.com>, Gunnar Hjalmarsson <gunnarhj@debian.org>, Jeremy Bícha <jbicha@ubuntu.com>, Laurent Bigonville <bigon@debian.org>, Marco Trevisan (Treviño) <marco@ubuntu.com>
 Build-Depends: debhelper-compat (= 13),
                dh-sequence-gnome (>= 0.22.2),
                libaccountsservice-dev (>= 0.6.39),
@@ -14,7 +14,7 @@ Build-Depends: debhelper-compat (= 13),
                gnome-settings-daemon-dev (>= 41),
                gsettings-desktop-schemas-dev (>= 42~),
                gtk-doc-tools,
-               libadwaita-1-dev (>= 1.2~alpha),
+               libadwaita-1-dev (>= 1.4~beta),
                libcolord-dev (>= 0.1.34),
                libcolord-gtk4-dev (>= 0.1.24),
                libcups2-dev,
@@ -31,7 +31,7 @@ Build-Depends: debhelper-compat (= 13),
                libgoa-1.0-dev (>= 3.45),
                libgoa-backend-1.0-dev (>= 3.45),
                libgsound-dev,
-               libgtk-4-dev (>= 4.9.3),
+               libgtk-4-dev (>= 4.11.2),
                libgtop2-dev,
                libgudev-1.0-dev (>= 232) [linux-any],
                libhandy-1-dev (>= 1.2.0),
