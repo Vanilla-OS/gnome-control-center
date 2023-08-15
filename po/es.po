@@ -21,8 +21,8 @@ msgstr ""
 "Project-Id-Version: gnome-control-center master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-control-center/"
 "issues\n"
-"POT-Creation-Date: 2023-05-05 07:06+0000\n"
-"PO-Revision-Date: 2023-03-13 10:43+0100\n"
+"POT-Creation-Date: 2023-03-15 13:38+0000\n"
+"PO-Revision-Date: 2023-03-16 09:32+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -155,7 +155,8 @@ msgstr "Detalles de la aplicación"
 #: panels/keyboard/cc-input-chooser.ui:75
 #: panels/printers/new-printer-dialog.ui:230
 #: panels/region/cc-format-chooser.ui:82
-#: panels/search/gnome-search-panel.desktop.in:3 shell/cc-window.ui:41
+#: panels/search/gnome-search-panel.desktop.in:3 shell/cc-window.ui:40
+#: shell/cc-window.ui:42
 msgid "Search"
 msgstr "Buscar"
 
@@ -181,7 +182,7 @@ msgstr "Recibir búsquedas del sistema y enviar los resultados"
 #: panels/user-accounts/cc-user-panel.c:821
 #: panels/user-accounts/cc-user-panel.c:951
 #: panels/wwan/cc-wwan-device-page.c:477
-#: subprojects/gvc/gvc-mixer-control.c:1908
+#: subprojects/gvc/gvc-mixer-control.c:1900
 msgid "Disabled"
 msgstr "Desactivado"
 
@@ -358,7 +359,7 @@ msgstr "Seleccionar una imagen"
 #: panels/background/cc-background-chooser.c:315
 #: panels/color/cc-color-calibrate.ui:22 panels/color/cc-color-panel.c:284
 #: panels/color/cc-color-panel.c:844 panels/common/cc-language-chooser.ui:21
-#: panels/display/cc-display-panel.ui:42 panels/keyboard/cc-input-chooser.ui:11
+#: panels/display/cc-display-panel.ui:31 panels/keyboard/cc-input-chooser.ui:11
 #: panels/keyboard/cc-keyboard-shortcut-editor.ui:23
 #: panels/network/cc-wifi-hotspot-dialog.ui:125
 #: panels/network/cc-wifi-panel.c:745
@@ -1308,21 +1309,21 @@ msgctxt "hotspot"
 msgid "Hotspot"
 msgstr "Hotspot"
 
-#: panels/datetime/cc-datetime-panel.c:167
+#: panels/datetime/cc-datetime-panel.c:165
 msgid "24-hour"
 msgstr "24 horas"
 
-#: panels/datetime/cc-datetime-panel.c:169
+#: panels/datetime/cc-datetime-panel.c:167
 msgid "AM / PM"
 msgstr "AM / PM"
 
 #. Translators: This is the full date and time format used in 12-hour mode.
-#: panels/datetime/cc-datetime-panel.c:240
+#: panels/datetime/cc-datetime-panel.c:238
 msgid "%e %B %Y, %l:%M %p"
 msgstr "%d/%b/%Y, %I:%M"
 
 #. Translators: This is the full date and time format used in 24-hour mode.
-#: panels/datetime/cc-datetime-panel.c:245
+#: panels/datetime/cc-datetime-panel.c:243
 msgid "%e %B %Y, %R"
 msgstr "%d/%b/%Y, %H:%M"
 
@@ -1550,33 +1551,37 @@ msgstr "Configuración para informar de un problema automáticamente"
 msgid "diagnostics;crash;"
 msgstr "diagnósticos;fallo;error;crash;"
 
-#: panels/display/cc-display-panel.c:496
+#: panels/display/cc-display-panel.c:493
 #: panels/notifications/cc-notifications-panel.c:217
 #: panels/power/cc-power-panel.c:743 panels/power/cc-power-panel.c:750
 msgid "On"
 msgstr "Encendido"
 
-#: panels/display/cc-display-panel.c:498 panels/network/cc-net-proxy-page.c:166
+#: panels/display/cc-display-panel.c:495 panels/network/cc-net-proxy-page.c:166
 #: panels/notifications/cc-notifications-panel.c:217
 #: panels/power/cc-power-panel.c:737 panels/power/cc-power-panel.c:748
 msgid "Off"
 msgstr "Apagado"
 
-#: panels/display/cc-display-panel.c:936
+#: panels/display/cc-display-panel.c:931
 msgid "Apply Changes?"
 msgstr "¿Aplicar los cambios?"
 
-#: panels/display/cc-display-panel.c:941
+#: panels/display/cc-display-panel.c:936
 msgid "Changes Cannot be Applied"
 msgstr "No se pueden aplicar los cambios"
 
-#: panels/display/cc-display-panel.c:943
+#: panels/display/cc-display-panel.c:938
 msgid "This could be due to hardware limitations."
 msgstr "Esto puede deber a limitaciones hardware."
 
-#: panels/display/cc-display-panel.ui:33 panels/display/cc-display-panel.ui:89
-#: panels/display/cc-display-panel.ui:220
-#: panels/display/cc-display-panel.ui:259 panels/mouse/cc-mouse-panel.ui:22
+#: panels/display/cc-display-panel.ui:43
+#: panels/network/connection-editor/connection-editor.ui:21
+msgid "_Apply"
+msgstr "_Aplicar"
+
+#: panels/display/cc-display-panel.ui:78 panels/display/cc-display-panel.ui:209
+#: panels/display/cc-display-panel.ui:248 panels/mouse/cc-mouse-panel.ui:22
 #: panels/network/cc-wifi-panel.ui:16 panels/printers/new-printer-dialog.ui:64
 #: panels/region/cc-format-chooser.ui:37
 #: panels/universal-access/cc-ua-panel.ui:19
@@ -1587,39 +1592,34 @@ msgstr "Esto puede deber a limitaciones hardware."
 msgid "Back"
 msgstr "Atrás"
 
-#: panels/display/cc-display-panel.ui:54
-#: panels/network/connection-editor/connection-editor.ui:21
-msgid "_Apply"
-msgstr "_Aplicar"
-
-#: panels/display/cc-display-panel.ui:111
+#: panels/display/cc-display-panel.ui:100
 msgid "Display Settings Disabled"
 msgstr "Configuración de pantalla desactivada"
 
-#: panels/display/cc-display-panel.ui:122
+#: panels/display/cc-display-panel.ui:111
 msgid "Multiple Displays"
 msgstr "Varias pantalla"
 
 #. 'Join' as in 'Join displays'
-#: panels/display/cc-display-panel.ui:131
+#: panels/display/cc-display-panel.ui:120
 msgid "Join"
 msgstr "Unir"
 
-#: panels/display/cc-display-panel.ui:138
+#: panels/display/cc-display-panel.ui:127
 msgid "Mirror"
 msgstr "Espejo"
 
-#: panels/display/cc-display-panel.ui:166
+#: panels/display/cc-display-panel.ui:155
 msgid "Contains top bar and Activities"
 msgstr "Contiene la barra superior y de Actividades"
 
-#: panels/display/cc-display-panel.ui:167
+#: panels/display/cc-display-panel.ui:156
 msgid "Primary Display"
 msgstr "Pantalla primaria"
 
 #. This is the redshift functionality where we suppress blue light when the sun has gone down
-#: panels/display/cc-display-panel.ui:188
-#: panels/display/cc-display-panel.ui:227
+#: panels/display/cc-display-panel.ui:177
+#: panels/display/cc-display-panel.ui:216
 #: panels/display/cc-night-light-page.ui:117
 msgid "Night Light"
 msgstr "Luz nocturna"
@@ -2711,7 +2711,7 @@ msgstr ""
 "Métodos para introducir símbolos y variantes de letras usando el teclado."
 
 #: panels/keyboard/cc-keyboard-panel.ui:82
-#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:7 shell/cc-window.ui:161
+#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:7 shell/cc-window.ui:162
 msgid "Keyboard Shortcuts"
 msgstr "Atajos del teclado"
 
@@ -2719,11 +2719,11 @@ msgstr "Atajos del teclado"
 msgid "View and Customize Shortcuts"
 msgstr "Ver y personalizar atajos"
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.c:382
+#: panels/keyboard/cc-keyboard-shortcut-dialog.c:381
 msgid "Reset All Shortcuts?"
 msgstr "¿Restablecer todos los atajos?"
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.c:385
+#: panels/keyboard/cc-keyboard-shortcut-dialog.c:384
 msgid ""
 "Resetting the shortcuts may affect your custom shortcuts. This cannot be "
 "undone."
@@ -2731,14 +2731,14 @@ msgstr ""
 "Restablecer todos los atajos puede afectar a sus atajos personalizados. Esto "
 "no se puede deshacer."
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.c:389
+#: panels/keyboard/cc-keyboard-shortcut-dialog.c:388
 #: panels/network/cc-network-panel.ui:26
 #: panels/printers/ppd-selection-dialog.ui:83
 #: panels/wwan/cc-wwan-device-page.c:188
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.c:390
+#: panels/keyboard/cc-keyboard-shortcut-dialog.c:389
 msgid "Reset All"
 msgstr "Restablecer todo"
 
@@ -2972,7 +2972,7 @@ msgstr "Restringir el acceso al micrófono"
 msgid "microphone;recording;application;privacy;"
 msgstr "micrófono;grabación;privado;privacidad;"
 
-#: panels/mouse/cc-mouse-panel.ui:30
+#: panels/mouse/cc-mouse-panel.ui:30 panels/wacom/cc-wacom-panel.ui:9
 msgid "Test _Settings"
 msgstr "_Probar la configuración"
 
@@ -3500,7 +3500,7 @@ msgstr "Desactiva la red inalámbrica, el Bluetooth y la red de banda ancha"
 
 #: panels/network/cc-wifi-panel.ui:96
 msgid "No Wi-Fi Adapter Found"
-msgstr "No se ha encontrado ningún adaptador inalámbrico"
+msgstr "No se han encontrado ningún adaptador inalámbrico"
 
 #: panels/network/cc-wifi-panel.ui:97
 msgid "Make sure you have a Wi-Fi adapter plugged and turned on"
@@ -4831,10 +4831,8 @@ msgstr "Baterías"
 #. Translators: UPS is an Uninterruptible Power Supply:
 #. * https://en.wikipedia.org/wiki/Uninterruptible_power_supply
 #: panels/power/cc-power-panel.c:260
-#, fuzzy
-#| msgid "USB"
 msgid "UPS"
-msgstr "USB"
+msgstr "SAI"
 
 #: panels/power/cc-power-panel.c:520
 msgid "When _idle"
@@ -7452,14 +7450,14 @@ msgid "Forever"
 msgstr "Para siempre"
 
 #: panels/usage/cc-usage-panel.c:347
-#, fuzzy
-#| msgid "_Clear History"
 msgid "Clear File History?"
-msgstr "_Limpiar el histórico"
+msgstr "¿Limpiar el histórico de archivos?"
 
 #: panels/usage/cc-usage-panel.c:348
 msgid "After clearing, lists of recently used files will appear empty."
 msgstr ""
+"Después de limpiarla, la lista de archivos usados recientemente aparecerá "
+"vacía."
 
 #: panels/usage/cc-usage-panel.c:349
 msgid "_Clear History"
@@ -8539,10 +8537,6 @@ msgstr ""
 msgid "Calibrate"
 msgstr "Calibrar"
 
-#: panels/wacom/cc-wacom-panel.ui:9
-msgid "Test Your _Settings"
-msgstr "_Probar su configuración"
-
 #: panels/wacom/cc-wacom-panel.ui:56
 msgid "No tablet detected"
 msgstr "No se ha detectado ninguna tableta"
@@ -9223,15 +9217,15 @@ msgstr "Paneles disponibles:"
 msgid "All Settings"
 msgstr "Todas las configuraciones"
 
-#: shell/cc-window.ui:53 shell/cc-window.ui:55
+#: shell/cc-window.ui:54 shell/cc-window.ui:56
 msgid "Main Menu"
 msgstr "Menú principal"
 
-#: shell/cc-window.ui:153
+#: shell/cc-window.ui:154
 msgid "Warning: Development Version"
 msgstr "Advertencia: versión de desarrollo"
 
-#: shell/cc-window.ui:154
+#: shell/cc-window.ui:155
 msgid ""
 "This version of Settings should only be used for development purposes. You "
 "may experience incorrect system behavior, data loss, and other unexpected "
@@ -9241,7 +9235,7 @@ msgstr ""
 "Puede experimentar un comportamiento incorrecto del sistema, pérdida de "
 "datos y otros problemas inesperados."
 
-#: shell/cc-window.ui:165
+#: shell/cc-window.ui:166
 msgid "Help"
 msgstr "Ayuda"
 
@@ -9328,7 +9322,7 @@ msgstr ""
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1915
+#: subprojects/gvc/gvc-mixer-control.c:1907
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -9337,14 +9331,14 @@ msgstr[1] "%u salidas"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1925
+#: subprojects/gvc/gvc-mixer-control.c:1917
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u entrada"
 msgstr[1] "%u entradas"
 
-#: subprojects/gvc/gvc-mixer-control.c:2876
+#: subprojects/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
 msgstr "Sonidos del sistema"
 
@@ -9356,6 +9350,9 @@ msgstr "Sonidos del sistema"
 
 #~ msgid "All the recent files will be permanently deleted."
 #~ msgstr "Todos los archivos recientes se eliminarán de manera permanente."
+
+#~ msgid "Test Your _Settings"
+#~ msgstr "_Probar su configuración"
 
 #~ msgid "Camera is Turned Off"
 #~ msgstr "La cámara está apagada"

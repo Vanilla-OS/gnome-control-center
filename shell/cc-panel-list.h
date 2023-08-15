@@ -30,7 +30,6 @@ G_BEGIN_DECLS
 typedef enum
 {
   CC_PANEL_LIST_MAIN,
-  CC_PANEL_LIST_PRIVACY,
   CC_PANEL_LIST_WIDGET,
   CC_PANEL_LIST_SEARCH
 } CcPanelListView;
@@ -61,6 +60,8 @@ void                 cc_panel_list_add_panel                     (CcPanelList   
                                                                   const gchar        *icon,
                                                                   CcPanelVisibility   visibility,
                                                                   gboolean            has_sidebar);
+
+const gchar*         cc_panel_list_get_current_panel             (CcPanelList        *self);
 
 void                 cc_panel_list_set_active_panel               (CcPanelList       *self,
                                                                    const gchar       *id);

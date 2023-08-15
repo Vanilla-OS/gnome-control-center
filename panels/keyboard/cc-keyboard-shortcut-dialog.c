@@ -158,6 +158,7 @@ static void
 shortuct_custom_items_changed (CcKeyboardShortcutDialog *self)
 {
   GListStore *section;
+  GtkWidget *page;
 
   g_assert (CC_IS_KEYBOARD_SHORTCUT_DIALOG (self));
 
@@ -165,7 +166,6 @@ shortuct_custom_items_changed (CcKeyboardShortcutDialog *self)
 
   if (self->visible_section == section)
     {
-      GtkWidget *page;
       guint n_items;
 
       n_items = g_list_model_get_n_items (G_LIST_MODEL (section));
@@ -174,9 +174,11 @@ shortuct_custom_items_changed (CcKeyboardShortcutDialog *self)
         page = GTK_WIDGET (self->shortcut_list_stack);
       else
         page = GTK_WIDGET (self->empty_custom_shortcut_page);
-
-      gtk_stack_set_visible_child (self->subview_stack, page);
     }
+  else
+    page = GTK_WIDGET (self->shortcut_list_stack);
+
+  gtk_stack_set_visible_child (self->subview_stack, page);
 }
 
 static int
@@ -324,7 +326,7 @@ add_custom_shortcut_clicked_cb (CcKeyboardShortcutDialog *self)
   cc_keyboard_shortcut_editor_set_mode (editor, CC_SHORTCUT_EDITOR_CREATE);
   cc_keyboard_shortcut_editor_set_item (editor, NULL);
 
-  gtk_widget_show (self->shortcut_editor);
+  gtk_widget_set_visible (self->shortcut_editor, TRUE);
 }
 
 static void
@@ -334,14 +336,15 @@ back_button_clicked_cb (CcKeyboardShortcutDialog *self)
 }
 
 static void
-on_reset_all_dialog_response_cb (GtkDialog                *dialog,
-                                 gint                      response,
-                                 CcKeyboardShortcutDialog *self)
+on_reset_all_dialog_response_cb (CcKeyboardShortcutDialog *self,
+                                 gchar                    *response,
+                                 AdwMessageDialog         *dialog)
 {
   guint n_items, j_items;
 
   gtk_window_destroy (GTK_WINDOW (dialog));
-  if (response != GTK_RESPONSE_ACCEPT)
+
+  if (g_strcmp0 (response, "cancel") == 0)
     return;
 
   n_items = g_list_model_get_n_items (G_LIST_MODEL (self->sections));
@@ -373,30 +376,34 @@ on_reset_all_dialog_response_cb (GtkDialog                *dialog,
 static void
 reset_all_clicked_cb (CcKeyboardShortcutDialog *self)
 {
-  GtkWidget *dialog, *button;
+  GtkWidget *dialog;
 
-  dialog = gtk_message_dialog_new (GTK_WINDOW (self),
-                                   GTK_DIALOG_MODAL | GTK_DIALOG_USE_HEADER_BAR | GTK_DIALOG_DESTROY_WITH_PARENT,
-                                   GTK_MESSAGE_WARNING,
-                                   GTK_BUTTONS_NONE,
-                                   _("Reset All Shortcuts?"));
+  dialog = adw_message_dialog_new (GTK_WINDOW (self),
+                                   _("Reset All Shortcuts?"),
+                                   NULL);
 
-  gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog),
-                                            _("Resetting the shortcuts may affect your custom shortcuts. "
-                                              "This cannot be undone."));
+  adw_message_dialog_format_body (ADW_MESSAGE_DIALOG (dialog),
+                                  _("Resetting the shortcuts may affect your custom shortcuts. This cannot be undone."));
 
-  gtk_dialog_add_buttons (GTK_DIALOG (dialog),
-                          _("Cancel"), GTK_RESPONSE_CANCEL,
-                          _("Reset All"), GTK_RESPONSE_ACCEPT,
-                          NULL);
+  adw_message_dialog_add_responses (ADW_MESSAGE_DIALOG (dialog),
+                                    "cancel",    _("Cancel"),
+                                    "reset_all", _("Reset All"),
+                                    NULL);
 
-  gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_CANCEL);
+  adw_message_dialog_set_response_appearance (ADW_MESSAGE_DIALOG (dialog),
+                                              "reset_all",
+                                              ADW_RESPONSE_DESTRUCTIVE);
 
-  /* Make the "Reset All" button destructive */
-  button = gtk_dialog_get_widget_for_response (GTK_DIALOG (dialog), GTK_RESPONSE_ACCEPT);
-  gtk_widget_add_css_class (button, "destructive-action");
+  adw_message_dialog_set_default_response (ADW_MESSAGE_DIALOG (dialog),
+                                           "cancel");
 
-  g_signal_connect (dialog, "response", G_CALLBACK (on_reset_all_dialog_response_cb), self);
+  adw_message_dialog_set_close_response (ADW_MESSAGE_DIALOG (dialog),
+                                         "cancel");
+
+  g_signal_connect_swapped (dialog,
+                            "response",
+                            G_CALLBACK (on_reset_all_dialog_response_cb),
+                            self);
 
   gtk_window_present (GTK_WINDOW (dialog));
 }
@@ -517,6 +524,8 @@ cc_keyboard_shortcut_dialog_class_init (CcKeyboardShortcutDialogClass *klass)
 
   object_class->constructed = cc_keyboard_shortcut_dialog_constructed;
   object_class->finalize = cc_keyboard_shortcut_dialog_finalize;
+
+  gtk_widget_class_add_binding_action (widget_class, GDK_KEY_Escape, 0, "window.close", NULL);
 
   gtk_widget_class_set_template_from_resource (widget_class,
                                                "/org/gnome/control-center/"

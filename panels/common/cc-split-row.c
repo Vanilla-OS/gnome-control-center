@@ -32,8 +32,8 @@ struct _CcSplitRow
   GtkCheckButton    *alternative_option_checkbutton;
   GtkCheckButton    *default_option_checkbutton;
 
-  const gchar       *alternative_resource_path;
-  const gchar       *default_resource_path;
+  gchar             *alternative_resource_path;
+  gchar             *default_resource_path;
 
   gchar             *alternative_option_title;
   gchar             *alternative_option_subtitle;
@@ -61,23 +61,24 @@ enum
 static GParamSpec *props[N_PROPS] = { NULL, };
 
 static void
-on_option_click_released_cb (GtkGestureClick *self,
-                             gint             n_press,
-                             gdouble          x,
-                             gdouble          y,
-                             GtkCheckButton  *check_button)
+on_default_option_click_released_cb (CcSplitRow *self)
 {
-  gtk_widget_activate (GTK_WIDGET (check_button));
+  gtk_widget_activate (GTK_WIDGET (self->default_option_checkbutton));
 }
 
 static void
-on_option_focus_leave_cb (GtkEventControllerMotion *controller,
-                          GtkPicture               *picture)
+on_alternative_option_click_released_cb (CcSplitRow *self)
+{
+  gtk_widget_activate (GTK_WIDGET (self->alternative_option_checkbutton));
+}
+
+static void
+focus_leave (GtkPicture *picture)
 {
   GtkMediaStream *stream;
   GdkPaintable *paintable;
 
-  paintable = gtk_picture_get_paintable (GTK_PICTURE (picture));
+  paintable = gtk_picture_get_paintable (picture);
 
   if (!GTK_IS_MEDIA_STREAM (paintable))
     return;
@@ -88,15 +89,24 @@ on_option_focus_leave_cb (GtkEventControllerMotion *controller,
 }
 
 static void
-on_option_focus_enter_cb (GtkEventControllerMotion *controller,
-                          gdouble                   x,
-                          gdouble                   y,
-                          GtkPicture               *picture)
+on_default_option_focus_leave_cb (CcSplitRow *self)
+{
+  focus_leave (self->default_option_picture);
+}
+
+static void
+on_alternative_option_focus_leave_cb (CcSplitRow *self)
+{
+  focus_leave (self->alternative_option_picture);
+}
+
+static void
+focus_enter (GtkPicture *picture)
 {
   GtkMediaStream *stream;
   GdkPaintable *paintable;
 
-  paintable = gtk_picture_get_paintable (GTK_PICTURE (picture));
+  paintable = gtk_picture_get_paintable (picture);
 
   if (!GTK_IS_MEDIA_STREAM (paintable))
     return;
@@ -104,6 +114,18 @@ on_option_focus_enter_cb (GtkEventControllerMotion *controller,
   stream = GTK_MEDIA_STREAM (paintable);
   gtk_media_stream_set_loop (stream, TRUE);
   gtk_media_stream_play (stream);
+}
+
+static void
+on_default_option_focus_enter_cb (CcSplitRow *self)
+{
+  focus_enter (self->default_option_picture);
+}
+
+static void
+on_alternative_option_focus_enter_cb (CcSplitRow *self)
+{
+  focus_enter (self->alternative_option_picture);
 }
 
 static void
@@ -117,6 +139,8 @@ cc_split_row_dispose (GObject *object)
 {
   CcSplitRow *self = CC_SPLIT_ROW (object);
 
+  g_clear_pointer (&self->default_resource_path, g_free);
+  g_clear_pointer (&self->alternative_resource_path, g_free);
   g_clear_pointer (&self->alternative_option_title, g_free);
   g_clear_pointer (&self->alternative_option_subtitle, g_free);
   g_clear_pointer (&self->default_option_title, g_free);
@@ -261,9 +285,12 @@ cc_split_row_class_init (CcSplitRowClass *klass)
   gtk_widget_class_bind_template_child (widget_class, CcSplitRow, default_option_picture);
 
   gtk_widget_class_bind_template_callback (widget_class, on_checkbutton_toggled_cb);
-  gtk_widget_class_bind_template_callback (widget_class, on_option_click_released_cb);
-  gtk_widget_class_bind_template_callback (widget_class, on_option_focus_enter_cb);
-  gtk_widget_class_bind_template_callback (widget_class, on_option_focus_leave_cb);
+  gtk_widget_class_bind_template_callback (widget_class, on_default_option_click_released_cb);
+  gtk_widget_class_bind_template_callback (widget_class, on_alternative_option_click_released_cb);
+  gtk_widget_class_bind_template_callback (widget_class, on_default_option_focus_enter_cb);
+  gtk_widget_class_bind_template_callback (widget_class, on_alternative_option_focus_enter_cb);
+  gtk_widget_class_bind_template_callback (widget_class, on_default_option_focus_leave_cb);
+  gtk_widget_class_bind_template_callback (widget_class, on_alternative_option_focus_leave_cb);
 }
 
 static void
@@ -288,7 +315,7 @@ cc_split_row_set_default_illustration_resource (CcSplitRow  *self,
 
   g_return_if_fail (CC_IS_SPLIT_ROW (self));
 
-  self->default_resource_path = resource_path;
+  g_set_str (&self->default_resource_path, resource_path);
   media_file = gtk_media_file_new_for_resource (resource_path);
 
   gtk_picture_set_paintable (self->default_option_picture, GDK_PAINTABLE (media_file));
@@ -312,7 +339,7 @@ cc_split_row_set_alternative_illustration_resource (CcSplitRow  *self,
 
   g_return_if_fail (CC_IS_SPLIT_ROW (self));
 
-  self->alternative_resource_path = resource_path;
+  g_set_str (&self->alternative_resource_path, resource_path);
   media_file = gtk_media_file_new_for_resource (resource_path);
   gtk_media_stream_set_loop (media_file, TRUE);
 

@@ -42,7 +42,6 @@ struct _CcPanelList
 {
   AdwBin              parent;
 
-  GtkWidget          *privacy_listbox;
   GtkWidget          *main_listbox;
   GtkWidget          *search_listbox;
   GtkStack           *stack;
@@ -51,8 +50,6 @@ struct _CcPanelList
    * automatically select the first panel of the list.
    */
   gboolean            autoselect_panel : 1;
-
-  GtkListBoxRow      *privacy_row;
 
   gchar              *current_panel_id;
   gchar              *search_query;
@@ -95,9 +92,6 @@ get_widget_from_view (CcPanelList     *self,
     case CC_PANEL_LIST_MAIN:
       return self->main_listbox;
 
-    case CC_PANEL_LIST_PRIVACY:
-      return self->privacy_listbox;
-
     case CC_PANEL_LIST_SEARCH:
       return self->search_listbox;
 
@@ -109,40 +103,21 @@ get_widget_from_view (CcPanelList     *self,
     }
 }
 
-static GtkWidget *
-get_listbox_from_category (CcPanelList     *self,
-                           CcPanelCategory  category)
-{
-
-  switch (category)
-    {
-    case CC_CATEGORY_PRIVACY:
-      return self->privacy_listbox;
-      break;
-
-    default:
-      return self->main_listbox;
-      break;
-    }
-
-  return NULL;
-}
-
 static void
 activate_row_below (CcPanelList *self,
                     RowData     *data)
 {
   GtkListBoxRow *next_row;
-  GtkListBox *listbox;
   guint row_index;
 
   row_index = gtk_list_box_row_get_index (GTK_LIST_BOX_ROW (data->row));
-  listbox = GTK_LIST_BOX (get_listbox_from_category (self, data->category));
-  next_row = gtk_list_box_get_row_at_index (listbox, row_index + 1);
+  next_row = gtk_list_box_get_row_at_index (GTK_LIST_BOX (self->main_listbox),
+                                            row_index + 1);
 
   /* Try the previous one if the current is invalid */
   if (!next_row)
-    next_row = gtk_list_box_get_row_at_index (listbox, row_index - 1);
+    next_row = gtk_list_box_get_row_at_index (GTK_LIST_BOX (self->main_listbox),
+                                              row_index - 1);
 
   if (next_row)
     g_signal_emit_by_name (next_row, "activate");
@@ -154,9 +129,6 @@ get_view_from_listbox (CcPanelList *self,
 {
   if (listbox == self->main_listbox)
     return CC_PANEL_LIST_MAIN;
-
-  if (listbox == self->privacy_listbox)
-    return CC_PANEL_LIST_PRIVACY;
 
   return CC_PANEL_LIST_SEARCH;
 }
@@ -227,15 +199,10 @@ update_search (CcPanelList *self)
       GtkSelectionMode selection_mode;
       gboolean autoselect_panel;
 
-      /* Autoselect panel only if allowed.  Autoselect of
-       * panel isn’t allowed if the panel is folded */
-      autoselect_panel = self->autoselect_panel;
-      selection_mode = gtk_list_box_get_selection_mode (GTK_LIST_BOX (self->main_listbox));
-      self->autoselect_panel = selection_mode != GTK_SELECTION_NONE;
+      /* Don't autoselect first panel when going back from search view */
+      self->autoselect_panel = FALSE;
 
       switch_to_view (self, self->previous_view);
-
-      self->autoselect_panel = autoselect_panel;
     }
 
   gtk_list_box_invalidate_filter (GTK_LIST_BOX (self->search_listbox));
@@ -247,12 +214,7 @@ get_panel_id_from_row (CcPanelList   *self,
                        GtkListBoxRow *row)
 {
 
-  RowData *row_data;
-
-  if (row == self->privacy_row)
-    return "privacy";
-
-  row_data = g_object_get_data (G_OBJECT (row), "data");
+  RowData *row_data = g_object_get_data (G_OBJECT (row), "data");
 
   g_assert (row_data != NULL);
   return row_data->id;
@@ -311,6 +273,11 @@ row_data_new (CcPanelCategory     category,
   gtk_label_set_xalign (GTK_LABEL (label), 0.0);
   gtk_widget_set_hexpand (label, TRUE);
   gtk_grid_attach (GTK_GRID (grid), label, 1, 0, 1, 1);
+  gtk_accessible_update_relation (GTK_ACCESSIBLE (data->row),
+                                  GTK_ACCESSIBLE_RELATION_LABELLED_BY,
+                                  label,
+                                  NULL,
+                                  -1);
 
   /* Description label */
   label = gtk_label_new (description);
@@ -318,7 +285,12 @@ row_data_new (CcPanelCategory     category,
   gtk_widget_set_hexpand (label, TRUE);
   gtk_label_set_max_width_chars (GTK_LABEL (label), 25);
   gtk_label_set_wrap (GTK_LABEL (label), TRUE);
-  gtk_widget_hide (label);
+  gtk_widget_set_visible (label, FALSE);
+  gtk_accessible_update_relation (GTK_ACCESSIBLE (data->row),
+                                  GTK_ACCESSIBLE_RELATION_DESCRIBED_BY,
+                                  label,
+                                  NULL,
+                                  -1);
 
   if (has_sidebar)
     {
@@ -399,16 +371,6 @@ static const gchar * const panel_order[] = {
   "privacy",
   "online-accounts",
   "sharing",
-
-  /* Privacy page */
-  "location",
-  "camera",
-  "microphone",
-  "thunderbolt",
-  "usage",
-  "lock",
-  "diagnostics",
-  "firmware-security",
 
   /* Devices page */
   "sound",
@@ -517,13 +479,6 @@ header_func (GtkListBoxRow *row,
   if (!before)
     return;
 
-  if (row == self->privacy_row || before == self->privacy_row)
-    return;
-
-  /*
-   * We can only retrieve the data after assuring that none
-   * of the rows are the Privacy row.
-   */
   row_data = g_object_get_data (G_OBJECT (row), "data");
   before_data = g_object_get_data (G_OBJECT (before), "data");
 
@@ -533,7 +488,6 @@ header_func (GtkListBoxRow *row,
 
       separator = gtk_separator_new (GTK_ORIENTATION_HORIZONTAL);
       gtk_widget_set_hexpand (separator, TRUE);
-      gtk_widget_show (separator);
 
       gtk_list_box_row_set_header (row, separator);
     }
@@ -552,25 +506,6 @@ row_activated_cb (GtkWidget     *listbox,
                   CcPanelList   *self)
 {
   RowData *data;
-
-  if (row == self->privacy_row)
-    {
-      switch_to_view (self, CC_PANEL_LIST_PRIVACY);
-      goto out;
-    }
-
-  /*
-   * When a panel is selected, the previous one should be
-   * unselected, except when it's search.
-   */
-  if (listbox != self->search_listbox)
-    {
-      if (listbox != self->main_listbox)
-        gtk_list_box_unselect_all (GTK_LIST_BOX (self->main_listbox));
-
-      if (listbox != self->privacy_listbox)
-        gtk_list_box_unselect_all (GTK_LIST_BOX (self->privacy_listbox));
-    }
 
   /*
    * Since we're not sure that the activated row is in the
@@ -594,7 +529,6 @@ row_activated_cb (GtkWidget     *listbox,
 
   g_signal_emit (self, signals[SHOW_PANEL], 0, data->id);
 
-out:
   /* After selecting the panel and eventually changing the view, reset the
    * autoselect flag. If necessary, cc_panel_list_set_active_panel() will
    * set it to FALSE again.
@@ -607,7 +541,6 @@ search_row_activated_cb (GtkWidget     *listbox,
                          GtkListBoxRow *row,
                          CcPanelList   *self)
 {
-  GtkWidget *real_listbox;
   GtkWidget *child;
   RowData *data;
 
@@ -615,13 +548,8 @@ search_row_activated_cb (GtkWidget     *listbox,
 
   data = g_object_get_data (G_OBJECT (row), "data");
 
-  if (data->category == CC_CATEGORY_PRIVACY)
-    real_listbox = self->privacy_listbox;
-  else
-    real_listbox = self->main_listbox;
-
   /* Select the correct row */
-  for (child = gtk_widget_get_first_child (real_listbox);
+  for (child = gtk_widget_get_first_child (self->main_listbox);
        child != NULL;
        child = gtk_widget_get_next_sibling (child))
     {
@@ -643,8 +571,12 @@ search_row_activated_cb (GtkWidget     *listbox,
 
           real_row = GTK_LIST_BOX_ROW (real_row_data->row);
 
-          gtk_list_box_select_row (GTK_LIST_BOX (real_listbox), real_row);
+          gtk_list_box_select_row (GTK_LIST_BOX (self->main_listbox), real_row);
           gtk_widget_grab_focus (GTK_WIDGET (real_row));
+
+          /* Don't autoselect first panel because we are already
+           * activating a panel from search result */
+          self->autoselect_panel = FALSE;
 
           g_signal_emit_by_name (real_row, "activate");
           break;
@@ -721,6 +653,28 @@ cc_panel_list_set_property (GObject      *object,
     }
 }
 
+static gboolean
+search_list_keynav_failed_cb (CcPanelList *self,
+                              GtkDirectionType direction)
+{
+  GtkWidget *toplevel;
+
+  /* We are in the first result of search list and pressing Arrow Up,
+   * so then we move focus back to search text entry */
+  if (direction == GTK_DIR_UP)
+    {
+      toplevel = GTK_WIDGET (gtk_widget_get_root (GTK_WIDGET (self)));
+
+      if (!toplevel)
+        return FALSE;
+
+      return gtk_widget_child_focus (toplevel, GTK_DIR_TAB_BACKWARD);
+    }
+
+  return FALSE;
+}
+
+
 static void
 cc_panel_list_class_init (CcPanelListClass *klass)
 {
@@ -783,14 +737,13 @@ cc_panel_list_class_init (CcPanelListClass *klass)
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/Settings/gtk/cc-panel-list.ui");
 
-  gtk_widget_class_bind_template_child (widget_class, CcPanelList, privacy_listbox);
-  gtk_widget_class_bind_template_child (widget_class, CcPanelList, privacy_row);
   gtk_widget_class_bind_template_child (widget_class, CcPanelList, main_listbox);
   gtk_widget_class_bind_template_child (widget_class, CcPanelList, search_listbox);
   gtk_widget_class_bind_template_child (widget_class, CcPanelList, stack);
 
   gtk_widget_class_bind_template_callback (widget_class, row_activated_cb);
   gtk_widget_class_bind_template_callback (widget_class, search_row_activated_cb);
+  gtk_widget_class_bind_template_callback (widget_class, search_list_keynav_failed_cb);
 }
 
 static void
@@ -803,11 +756,6 @@ cc_panel_list_init (CcPanelList *self)
   self->view = CC_PANEL_LIST_MAIN;
 
   gtk_list_box_set_sort_func (GTK_LIST_BOX (self->main_listbox),
-                              sort_function,
-                              self,
-                              NULL);
-
-  gtk_list_box_set_sort_func (GTK_LIST_BOX (self->privacy_listbox),
                               sort_function,
                               self,
                               NULL);
@@ -853,7 +801,8 @@ cc_panel_list_activate (CcPanelList *self)
   /* Select the first visible row */
   do
     row = gtk_list_box_get_row_at_index (GTK_LIST_BOX (listbox), i++);
-  while (row && !gtk_widget_get_visible (GTK_WIDGET (row)));
+  while (row && !(gtk_widget_get_visible (GTK_WIDGET (row)) &&
+         gtk_widget_get_child_visible (GTK_WIDGET (row))));
 
   /* If the row is valid, activate it */
   if (row)
@@ -933,6 +882,20 @@ cc_panel_list_go_previous (CcPanelList *self)
   switch_to_view (self, previous_view);
 }
 
+/**
+ * cc_panel_list_get_current_panel:
+ * @self: a #CcPanelList
+ *
+ * Returns: (allow-none): id string of current active panel on @self, or %NULL when there's none yet.
+ */
+const gchar*
+cc_panel_list_get_current_panel (CcPanelList *self)
+{
+  g_return_val_if_fail (CC_IS_PANEL_LIST (self), NULL);
+
+  return self->current_panel_id;
+}
+
 void
 cc_panel_list_add_panel (CcPanelList        *self,
                          CcPanelCategory     category,
@@ -944,7 +907,6 @@ cc_panel_list_add_panel (CcPanelList        *self,
                          CcPanelVisibility   visibility,
                          gboolean            has_sidebar)
 {
-  GtkWidget *listbox;
   RowData *data, *search_data;
 
   g_return_if_fail (CC_IS_PANEL_LIST (self));
@@ -953,8 +915,7 @@ cc_panel_list_add_panel (CcPanelList        *self,
   data = row_data_new (category, id, title, description, keywords, icon, visibility, has_sidebar);
   gtk_widget_set_visible (data->row, visibility == CC_PANEL_VISIBLE);
 
-  listbox = get_listbox_from_category (self, category);
-  gtk_list_box_append (GTK_LIST_BOX (listbox), data->row);
+  gtk_list_box_append (GTK_LIST_BOX (self->main_listbox), data->row);
 
   /* And add to the search listbox too */
   search_data = row_data_new (category, id, title, description, keywords, icon, visibility, has_sidebar);
@@ -964,10 +925,48 @@ cc_panel_list_add_panel (CcPanelList        *self,
 
   g_hash_table_insert (self->id_to_data, data->id, data);
   g_hash_table_insert (self->id_to_search_data, search_data->id, search_data);
+}
 
-  /* Only show the Devices/Details rows when there's at least one panel */
-  if (category == CC_CATEGORY_PRIVACY)
-    gtk_widget_show (GTK_WIDGET (self->privacy_row));
+/* Scrolls sibebar so that @row is at middle of the visible part of list */
+static void
+cc_panel_list_scroll_to_center_row (CcPanelList *self,
+                                    GtkWidget *row)
+{
+  double target_value;
+  graphene_point_t p;
+  GtkAdjustment *adj;
+  GtkWidget *scrolled_window;
+
+  g_return_if_fail (GTK_IS_LIST_BOX_ROW (row));
+
+  scrolled_window = gtk_widget_get_ancestor (row, GTK_TYPE_SCROLLED_WINDOW);
+  adj = gtk_scrolled_window_get_vadjustment (GTK_SCROLLED_WINDOW (scrolled_window));
+  if (!adj)
+    return;
+
+  if (!gtk_widget_compute_point (row, scrolled_window, &GRAPHENE_POINT_INIT (0, 0), &p))
+    return;
+
+  target_value = p.y + gtk_widget_get_height (row) / 2;
+
+  gtk_adjustment_set_value (adj, target_value - gtk_adjustment_get_page_size (adj) / 2);
+}
+
+typedef struct {
+  CcPanelList *panel_list;
+  GtkWidget *row;
+} ScrollData;
+
+static gboolean
+scroll_to_idle_cb (ScrollData *data)
+{
+  cc_panel_list_scroll_to_center_row (data->panel_list, data->row);
+
+  g_object_unref (data->panel_list);
+  g_object_unref (data->row);
+  g_free (data);
+
+  return FALSE;
 }
 
 /**
@@ -983,6 +982,7 @@ cc_panel_list_set_active_panel (CcPanelList *self,
 {
   GtkWidget *listbox;
   RowData *data;
+  ScrollData *sdata;
 
   g_return_if_fail (CC_IS_PANEL_LIST (self));
 
@@ -1017,7 +1017,7 @@ cc_panel_list_set_active_panel (CcPanelList *self,
   listbox = gtk_widget_get_parent (data->row);
 
   /* The row might be hidden now, so make sure it's visible */
-  gtk_widget_show (data->row);
+  gtk_widget_set_visible (data->row, TRUE);
 
   gtk_list_box_select_row (GTK_LIST_BOX (listbox), GTK_LIST_BOX_ROW (data->row));
   gtk_widget_grab_focus (data->row);
@@ -1033,6 +1033,14 @@ cc_panel_list_set_active_panel (CcPanelList *self,
   /* Store the current panel id */
   g_clear_pointer (&self->current_panel_id, g_free);
   self->current_panel_id = g_strdup (id);
+
+  /* Scroll the sidebar to the selected panel row, as that row may be
+   * out of view when panel is launched from a search or from cli */
+  sdata = g_new (ScrollData, 1);
+  sdata->panel_list = g_object_ref (self);
+  sdata->row = g_object_ref (data->row);
+
+  g_idle_add (G_SOURCE_FUNC (scroll_to_idle_cb), sdata);
 }
 
 /**
@@ -1090,7 +1098,7 @@ cc_panel_list_add_sidebar_widget (CcPanelList *self,
       gtk_stack_add_named (self->stack, widget, "custom-widget");
       switch_to_view (self, CC_PANEL_LIST_WIDGET);
     }
-  else if (self->view != CC_PANEL_LIST_PRIVACY)
+  else
     {
       switch_to_view (self, CC_PANEL_LIST_MAIN);
     }

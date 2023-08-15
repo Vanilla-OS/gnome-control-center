@@ -40,7 +40,7 @@
               <object class="GtkButton" id="cancel_button">
                 <property name="use-underline">True</property>
                 <property name="label" translatable="yes">_Cancel</property>
-                <signal name="clicked" handler="on_screen_changed" object="CcDisplayPanel" swapped="yes" />
+                <signal name="clicked" handler="cancel_current_configuration" object="CcDisplayPanel" swapped="yes" />
               </object>
             </child>
 
@@ -81,6 +81,7 @@
                         <property name="show-start-title-buttons" bind-source="CcDisplayPanel" bind-property="folded" bind-flags="default|sync-create" />
                         <child type="start">
                           <object class="GtkButton">
+                            <property name="tooltip-text" translatable="yes">Back</property>
                             <property name="visible" bind-source="CcDisplayPanel" bind-property="folded" bind-flags="default|sync-create" />
                             <property name="icon-name">go-previous-symbolic</property>
                             <property name="action-name">window.navigate</property>
@@ -187,7 +188,7 @@
                                 <property name="activatable">True</property>
                                 <property name="title" translatable="yes" comments="This is the redshift functionality where we suppress blue light when the sun has gone down">Night Light</property>
                                 <property name="show-arrow">True</property>
-                                <signal name="activated" handler="on_night_light_row_activated_cb" object="CcDisplayPanel" swapped="no" />
+                                <signal name="activated" handler="on_night_light_row_activated_cb" object="CcDisplayPanel" swapped="yes" />
                               </object>
                             </child>
                           </object>
@@ -211,7 +212,7 @@
                     <!-- Night Light titlebar -->
                     <child>
                       <object class="AdwHeaderBar" id="night_light_titlebar">
-                        <property name="show-start-title-buttons">True</property>
+                        <property name="show-start-title-buttons" bind-source="CcDisplayPanel" bind-property="folded" bind-flags="default|sync-create" />
                         <property name="show-end-title-buttons">True</property>
                         <child type="start">
                           <object class="GtkButton">
@@ -219,7 +220,7 @@
                             <accessibility>
                               <property name="label" translatable="yes">Back</property>
                             </accessibility>
-                            <signal name="clicked" handler="on_back_button_clicked_cb" object="CcDisplayPanel" swapped="no" />
+                            <signal name="clicked" handler="on_back_button_clicked_cb" object="CcDisplayPanel" swapped="yes" />
                           </object>
                         </child>
                         <property name="title-widget">
@@ -250,7 +251,7 @@
                     <!-- Display Settings titlebar -->
                     <child>
                       <object class="AdwHeaderBar" id="display_settings_titlebar">
-                        <property name="show-start-title-buttons">True</property>
+                        <property name="show-start-title-buttons" bind-source="CcDisplayPanel" bind-property="folded" bind-flags="default|sync-create" />
                         <property name="show-end-title-buttons">True</property>
                         <child type="start">
                           <object class="GtkButton">
@@ -258,7 +259,7 @@
                             <accessibility>
                               <property name="label" translatable="yes">Back</property>
                             </accessibility>
-                            <signal name="clicked" handler="on_back_button_clicked_cb" object="CcDisplayPanel" swapped="no" />
+                            <signal name="clicked" handler="on_back_button_clicked_cb" object="CcDisplayPanel" swapped="yes" />
                           </object>
                         </child>
                         <property name="title-widget">

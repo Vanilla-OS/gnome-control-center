@@ -24,22 +24,10 @@ common_sources += gnome.mkenums(
   vtail: '      { 0, NULL, NULL }\n    };\n    etype = g_@type@_register_static ("@EnumName@", values);\n  }\n  return etype;\n}\n'
 )
 
-resource_data = files(
-  'cc-illustrated-row.ui',
-  'cc-language-chooser.ui',
-  'cc-language-row.ui',
-  'cc-list-row.ui',
-  'cc-time-editor.ui',
-  'cc-permission-infobar.ui',
-  'cc-split-row.ui',
-  'cc-vertical-row.ui',
-)
-
 common_sources += gnome.compile_resources(
   'cc-common-resources',
   'common.gresource.xml',
   c_name: 'cc_common',
-  dependencies: resource_data,
   export: true
 )
 
@@ -70,6 +58,7 @@ sources = common_sources + files(
   'cc-language-chooser.c',
   'cc-language-row.c',
   'cc-list-row.c',
+  'cc-list-row-info-button.c',
   'cc-time-editor.c',
   'cc-permission-infobar.c',
   'cc-split-row.c',
@@ -129,4 +118,3 @@ configure_file(
   configuration: polkit_conf,
   install_dir: join_paths(control_center_datadir, 'polkit-1', 'rules.d')
 )
-

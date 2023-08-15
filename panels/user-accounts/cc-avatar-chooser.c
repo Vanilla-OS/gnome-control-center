@@ -107,7 +107,6 @@ cc_avatar_chooser_crop (CcAvatarChooser *self,
 
         /* Content */
         self->crop_area = cc_crop_area_new ();
-        gtk_widget_show (self->crop_area);
         cc_crop_area_set_min_size (CC_CROP_AREA (self->crop_area), 48, 48);
         cc_crop_area_set_paintable (CC_CROP_AREA (self->crop_area),
                                     GDK_PAINTABLE (gdk_texture_new_for_pixbuf (pixbuf)));
@@ -118,26 +117,29 @@ cc_avatar_chooser_crop (CcAvatarChooser *self,
 
         gtk_window_set_default_size (GTK_WINDOW (dialog), 400, 300);
 
-        gtk_widget_show (dialog);
+        gtk_window_present (GTK_WINDOW (dialog));
 }
 
 static void
-file_chooser_response (CcAvatarChooser *self,
-                       gint             response,
-                       GtkDialog       *chooser)
+file_dialog_open_cb (GObject            *source_object,
+                     GAsyncResult       *res,
+                     gpointer            user_data)
 {
+        CcAvatarChooser *self = CC_AVATAR_CHOOSER (user_data);
+        GtkFileDialog *file_dialog = GTK_FILE_DIALOG (source_object);
         g_autoptr(GError) error = NULL;
         g_autoptr(GdkPixbuf) pixbuf = NULL;
         g_autoptr(GdkPixbuf) pixbuf2 = NULL;
         g_autoptr(GFile) file = NULL;
         g_autoptr(GFileInputStream) stream = NULL;
 
-        if (response != GTK_RESPONSE_ACCEPT) {
-                gtk_window_destroy (GTK_WINDOW (chooser));
+        file = gtk_file_dialog_open_finish (file_dialog, res, &error);
+
+        if (error != NULL) {
+                g_warning ("Failed to pick avatar image: %s", error->message);
                 return;
         }
 
-        file = gtk_file_chooser_get_file (GTK_FILE_CHOOSER (chooser));
         stream = g_file_read (file, NULL, &error);
         pixbuf = gdk_pixbuf_new_from_stream (G_INPUT_STREAM (stream),
                                              NULL, &error);
@@ -147,44 +149,42 @@ file_chooser_response (CcAvatarChooser *self,
 
         pixbuf2 = gdk_pixbuf_apply_embedded_orientation (pixbuf);
 
-        gtk_window_destroy (GTK_WINDOW (chooser));
-
         cc_avatar_chooser_crop (self, pixbuf2);
 }
 
 static void
 cc_avatar_chooser_select_file (CcAvatarChooser *self)
 {
-        g_autoptr(GFile) folder = NULL;
-        GtkWidget *chooser;
+        g_autoptr(GFile) pictures_folder = NULL;
+        GtkFileDialog *file_dialog;
         GtkFileFilter *filter;
+        GListStore *filters;
         GtkWindow *toplevel;
 
-        toplevel = (GtkWindow*) gtk_widget_get_native (GTK_WIDGET (self->transient_for));
-        chooser = gtk_file_chooser_dialog_new (_("Browse for more pictures"),
-                                               toplevel,
-                                               GTK_FILE_CHOOSER_ACTION_OPEN,
-                                               _("_Cancel"), GTK_RESPONSE_CANCEL,
-                                               _("_Open"), GTK_RESPONSE_ACCEPT,
-                                               NULL);
+        g_return_if_fail (CC_IS_AVATAR_CHOOSER (self));
 
-        gtk_window_set_modal (GTK_WINDOW (chooser), TRUE);
+        toplevel = GTK_WINDOW (gtk_widget_get_native (GTK_WIDGET (self->transient_for)));
 
-        folder = g_file_new_for_path (g_get_user_special_dir (G_USER_DIRECTORY_PICTURES));
-        if (folder)
-                gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (chooser),
-                                                     folder,
-                                                     NULL);
+        file_dialog = gtk_file_dialog_new ();
+        gtk_file_dialog_set_title (file_dialog, _("Browse for more pictures"));
+        gtk_file_dialog_set_modal (file_dialog, TRUE);
 
         filter = gtk_file_filter_new ();
         gtk_file_filter_add_pixbuf_formats (filter);
-        gtk_file_chooser_set_filter (GTK_FILE_CHOOSER (chooser), filter);
 
-        g_signal_connect_object (chooser, "response",
-                                 G_CALLBACK (file_chooser_response), self, G_CONNECT_SWAPPED);
+        filters = g_list_store_new (GTK_TYPE_FILE_FILTER);
+        g_list_store_append (filters, filter);
+        gtk_file_dialog_set_filters (file_dialog, G_LIST_MODEL (filters));
+
+        pictures_folder = g_file_new_for_path (g_get_user_special_dir (G_USER_DIRECTORY_PICTURES));
+        gtk_file_dialog_set_initial_folder (file_dialog, pictures_folder);
 
         gtk_popover_popdown (GTK_POPOVER (self));
-        gtk_window_present (GTK_WINDOW (chooser));
+        gtk_file_dialog_open (file_dialog,
+                              toplevel,
+                              NULL,
+                              file_dialog_open_cb,
+                              self);
 }
 
 static void
@@ -220,7 +220,6 @@ create_face_widget (gpointer item,
         if (source_pixbuf == NULL) {
                 image = gtk_image_new_from_icon_name ("image-missing");
                 gtk_image_set_pixel_size (GTK_IMAGE (image), AVATAR_CHOOSER_PIXEL_SIZE);
-                gtk_widget_show (image);
 
                 g_object_set_data_full (G_OBJECT (image),
                                         "filename", g_steal_pointer (&image_path), g_free);
@@ -231,7 +230,6 @@ create_face_widget (gpointer item,
         pixbuf = round_image (source_pixbuf);
         image = gtk_image_new_from_pixbuf (pixbuf);
         gtk_image_set_pixel_size (GTK_IMAGE (image), AVATAR_CHOOSER_PIXEL_SIZE);
-        gtk_widget_show (image);
 
         g_object_set_data_full (G_OBJECT (image),
                                 "filename", g_steal_pointer (&image_path), g_free);
@@ -244,7 +242,7 @@ get_settings_facesdirs (void)
 {
         g_autoptr(GSettings) settings = g_settings_new ("org.gnome.desktop.interface");
         g_auto(GStrv) settings_dirs = g_settings_get_strv (settings, "avatar-directories");
-        GPtrArray *facesdirs = g_ptr_array_new ();
+        g_autoptr(GPtrArray) facesdirs = g_ptr_array_new ();
 
         if (settings_dirs != NULL) {
                 int i;
@@ -263,7 +261,7 @@ static GStrv
 get_system_facesdirs (void)
 {
         const char * const * data_dirs;
-        GPtrArray *facesdirs;
+        g_autoptr(GPtrArray) facesdirs = NULL;
         int i;
 
         facesdirs = g_ptr_array_new ();
@@ -280,13 +278,9 @@ get_system_facesdirs (void)
 static gboolean
 add_faces_from_dirs (GListStore *faces, GStrv facesdirs, gboolean add_all)
 {
-        GFile *file;
-        GFileType type;
-        const gchar *target;
-        guint i;
         gboolean added_faces = FALSE;
 
-        for (i = 0; facesdirs[i] != NULL; i++) {
+        for (guint i = 0; facesdirs[i] != NULL; i++) {
                 g_autoptr(GFile) dir = NULL;
                 g_autoptr(GFileEnumerator) enumerator = NULL;
 
@@ -304,6 +298,9 @@ add_faces_from_dirs (GListStore *faces, GStrv facesdirs, gboolean add_all)
                 }
 
                 while (TRUE) {
+                        GFile *file;
+                        GFileType type;
+                        const gchar *target;
                         g_autoptr(GFileInfo) info = g_file_enumerator_next_file (enumerator, NULL, NULL);
                         if (info == NULL) {
                                 break;
@@ -315,7 +312,8 @@ add_faces_from_dirs (GListStore *faces, GStrv facesdirs, gboolean add_all)
                                 continue;
                         }
 
-                        target = g_file_info_get_symlink_target (info);
+                        target = g_file_info_get_attribute_byte_string (info,
+                                                                        G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET);
                         if (target != NULL && g_str_has_prefix (target , "legacy/")) {
                                 continue;
                         }

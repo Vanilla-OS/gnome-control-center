@@ -147,8 +147,6 @@ activate_panel (CcWindow          *self,
 
   timer = g_timer_new ();
 
-  g_settings_set_string (self->settings, "last-panel", id);
-
   /* Begin the profile */
   g_timer_start (timer);
 
@@ -176,6 +174,8 @@ activate_panel (CcWindow          *self,
   ellapsed_time = g_timer_elapsed (timer, NULL);
 
   g_debug ("Time to open panel '%s': %lfs", name, ellapsed_time);
+
+  g_settings_set_string (self->settings, "last-panel", id);
 
   CC_RETURN (TRUE);
 }
@@ -238,10 +238,6 @@ update_list_title (CcWindow *self)
 
   switch (view)
     {
-    case CC_PANEL_LIST_PRIVACY:
-      title = g_strdup (_("Privacy"));
-      break;
-
     case CC_PANEL_LIST_MAIN:
       title = g_strdup (_("Settings"));
       break;
@@ -526,6 +522,9 @@ search_entry_activate_cb (CcWindow *self)
 {
   gboolean changed;
 
+  if (cc_panel_list_get_view (self->panel_list) != CC_PANEL_LIST_SEARCH)
+    return;
+
   changed = cc_panel_list_activate (self->panel_list);
 
   gtk_search_bar_set_search_mode (self->search_bar, !changed);
@@ -586,7 +585,7 @@ on_development_warning_dialog_responded_cb (CcWindow *self)
   g_debug ("Disabling development build warning dialog");
   g_settings_set_boolean (self->settings, "show-development-warning", FALSE);
 
-  gtk_widget_hide (GTK_WIDGET (self->development_warning_dialog));
+  gtk_window_close (GTK_WINDOW (self->development_warning_dialog));
 }
 
 static void
@@ -720,19 +719,15 @@ cc_window_set_property (GObject      *object,
 }
 
 static void
-cc_window_constructed (GObject *object)
+maybe_load_last_panel (CcWindow *self)
 {
-  CcWindow *self = CC_WINDOW (object);
   g_autofree char *id = NULL;
 
-  load_window_state (self);
-
-  /* Add the panels */
-  setup_model (self);
-
-  /* After everything is loaded, select the last used panel, if any,
-   * or the first visible panel */
   id = g_settings_get_string (self->settings, "last-panel");
+  if (cc_panel_list_get_current_panel (self->panel_list))
+    return;
+
+  /* select the last used panel, if any, or the first visible panel */
   if (id != NULL && cc_shell_model_has_panel (self->store, id))
     cc_panel_list_set_active_panel (self->panel_list, id);
   else
@@ -742,10 +737,24 @@ cc_window_constructed (GObject *object)
                             "notify::view",
                             G_CALLBACK (update_headerbar_buttons),
                             self);
-
   update_headerbar_buttons (self);
-  adw_leaflet_set_visible_child (self->main_leaflet,
-                                 GTK_WIDGET (self->sidebar_box));
+}
+
+static void
+cc_window_constructed (GObject *object)
+{
+  CcWindow *self = CC_WINDOW (object);
+
+  load_window_state (self);
+
+  /* Add the panels */
+  setup_model (self);
+
+  /* After everything is loaded, select the last used panel, if any,
+   * or the first visible panel. We do that in an idle handler so we
+   * have a chance to skip it when another panel has been explicitly
+   * activated from commandline parameter or from DBus method */
+  g_idle_add_once ((GSourceOnceFunc) maybe_load_last_panel, self);
 
   G_OBJECT_CLASS (cc_window_parent_class)->constructed (object);
 }
@@ -776,6 +785,29 @@ cc_window_finalize (GObject *object)
   g_clear_object (&self->settings);
 
   G_OBJECT_CLASS (cc_window_parent_class)->finalize (object);
+}
+
+static gboolean
+search_entry_key_pressed_cb (CcWindow              *self,
+                             guint                  keyval,
+                             guint                  keycode,
+                             GdkModifierType        state,
+                             GtkEventControllerKey *key_controller)
+{
+  GtkWidget *toplevel;
+
+  /* When pressing Arrow Down on the entry we move focus to match results list */
+  if (keyval == GDK_KEY_Down || keyval == GDK_KEY_KP_Down)
+    {
+      toplevel = GTK_WIDGET (gtk_widget_get_root (GTK_WIDGET (self)));
+
+      if (!toplevel)
+        return FALSE;
+
+      return gtk_widget_child_focus (toplevel, GTK_DIR_TAB_FORWARD);
+    }
+
+  return FALSE;
 }
 
 static void
@@ -832,6 +864,7 @@ cc_window_class_init (CcWindowClass *klass)
   gtk_widget_class_bind_template_callback (widget_class, search_entry_activate_cb);
   gtk_widget_class_bind_template_callback (widget_class, show_panel_cb);
   gtk_widget_class_bind_template_callback (widget_class, update_list_title);
+  gtk_widget_class_bind_template_callback (widget_class, search_entry_key_pressed_cb);
 
   gtk_widget_class_add_binding (widget_class, GDK_KEY_Left, GDK_ALT_MASK, go_back_shortcut_cb, NULL);
   gtk_widget_class_add_binding (widget_class, GDK_KEY_f, GDK_CONTROL_MASK, search_shortcut_cb, NULL);

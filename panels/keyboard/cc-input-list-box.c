@@ -239,10 +239,10 @@ row_layout_cb (CcInputListBox *self,
   layout_variant = cc_input_source_get_layout_variant (source);
 
   if (layout_variant && layout_variant[0])
-    commandline = g_strdup_printf ("gkbd-keyboard-display -l \"%s\t%s\"",
+    commandline = g_strdup_printf ("tecla \"%s+%s\"",
 				   layout, layout_variant);
   else
-    commandline = g_strdup_printf ("gkbd-keyboard-display -l %s",
+    commandline = g_strdup_printf ("tecla %s",
 				   layout);
 
   g_spawn_command_line_async (commandline, NULL);
@@ -282,13 +282,19 @@ update_input_rows (CcInputListBox *self)
        child;
        child = gtk_widget_get_next_sibling (child)) {
     CcInputRow *row;
+    gint row_idx;
 
     if (!CC_IS_INPUT_ROW (child))
       continue;
     row = CC_INPUT_ROW (child);
+    row_idx = gtk_list_box_row_get_index (GTK_LIST_BOX_ROW (row));
 
     cc_input_row_set_removable (row, n_input_rows > 1);
     cc_input_row_set_draggable (row, n_input_rows > 1);
+
+    gtk_widget_action_set_enabled (GTK_WIDGET (row), "row.move-up", row_idx != 1);
+    gtk_widget_action_set_enabled (GTK_WIDGET (row), "row.move-down", GTK_LIST_BOX_ROW (gtk_widget_get_next_sibling (child)) != self->add_input_row);
+
   }
 }
 
@@ -300,7 +306,6 @@ add_input_row (CcInputListBox *self, CcInputSource *source)
   gtk_widget_set_visible (GTK_WIDGET (self->no_inputs_row), FALSE);
 
   row = cc_input_row_new (source);
-  gtk_widget_show (GTK_WIDGET (row));
   g_signal_connect_object (row, "show-settings", G_CALLBACK (row_settings_cb), self, G_CONNECT_SWAPPED);
   g_signal_connect_object (row, "show-layout", G_CALLBACK (row_layout_cb), self, G_CONNECT_SWAPPED);
   g_signal_connect_object (row, "move-row", G_CALLBACK (row_moved_cb), self, G_CONNECT_SWAPPED);
@@ -455,9 +460,9 @@ update_input (CcInputListBox *self)
 }
 
 static void
-on_chooser_response_cb (GtkDialog      *dialog,
+on_chooser_response_cb (CcInputListBox *self,
                         gint            response,
-                        CcInputListBox *self)
+                        GtkDialog      *dialog)
 {
 
   if (response == GTK_RESPONSE_OK) {
@@ -487,7 +492,7 @@ show_input_chooser (CcInputListBox *self)
 				  );
   gtk_window_set_transient_for (GTK_WINDOW (chooser),
                                 GTK_WINDOW (gtk_widget_get_native (GTK_WIDGET (self))));
-  g_signal_connect (chooser, "response", G_CALLBACK (on_chooser_response_cb), self);
+  g_signal_connect_swapped (chooser, "response", G_CALLBACK (on_chooser_response_cb), self);
   gtk_window_present (GTK_WINDOW (chooser));
 }
 

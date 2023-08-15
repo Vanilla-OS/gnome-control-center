@@ -1,6 +1,6 @@
 project(
   'gnome-control-center', 'c',
-        version : '44.3',
+        version : '45.beta',
         license : 'GPL2+',
   meson_version : '>= 0.57.0'
 )
@@ -119,7 +119,7 @@ pulse_req_version = '>= 2.0'
 
 gtk_dep = dependency(
   'gtk4',
-  version: '>= 4.9.3',
+  version: '>= 4.11.2',
   fallback: ['gtk', 'gtk_dep'],
   default_options: [
     'introspection=disabled',
@@ -132,10 +132,23 @@ gtk_dep = dependency(
 
 libadwaita_dep = dependency(
   'libadwaita-1',
-  version: '>= 1.2.alpha',
-  fallback: ['libadwaita', 'libadwaita_dep'],
-  default_options: ['examples=false', 'introspection=disabled', 'tests=false', 'vapi=false'],
+  version: '>= 1.4.alpha',
+  required: false
 )
+# FIXME: this is a workaround because interactive-tests don't work with libadwaita as a subproject. See !1754
+libadwaita_is_subproject = not libadwaita_dep.found()
+if libadwaita_is_subproject
+  libadwaita = subproject(
+    'libadwaita',
+    default_options: [
+      'examples=false',
+      'introspection=disabled',
+      'tests=false',
+      'vapi=false',
+    ],
+  )
+  libadwaita_dep = libadwaita.get_variable('libadwaita_dep')
+endif
 
 accounts_dep = dependency('accountsservice', version: '>= 0.6.39')
 colord_dep = dependency('colord', version: '>= 0.1.34')
@@ -221,7 +234,7 @@ config_h.set10('HAVE_FN_EXPLICIT_BZERO',
 enable_snap = get_option('snap')
 if enable_snap
   snapd_glib_deps = [
-    dependency('snapd-glib', version: '>= 1.57')
+    dependency('snapd-glib-2', version: '>= 1.62')
   ]
 endif
 config_h.set('HAVE_SNAP', enable_snap,
@@ -238,8 +251,9 @@ config_h.set('HAVE_MALCONTENT', enable_malcontent,
              description: 'Define to 1 if malcontent support is enabled')
 
 if host_is_linux
-  # network manager
+  # ModemManager
   mm_dep =  dependency('mm-glib', version: '>= 0.7')
+  # NetworkManager
   network_manager_deps = [
     dependency('libnm', version: '>= 1.24.0'),
     dependency('libnma-gtk4', version: '>= 1.10.2'),
@@ -285,8 +299,8 @@ gnome = import('gnome')
 i18n = import('i18n')
 pkg = import('pkgconfig')
 
-po_dir = join_paths(meson.source_root(), 'po')
-its_dir = join_paths(meson.source_root(), 'gettext')
+po_dir = join_paths(meson.project_source_root(), 'po')
+its_dir = join_paths(meson.project_source_root(), 'gettext')
 
 install_subdir(
   'gettext',

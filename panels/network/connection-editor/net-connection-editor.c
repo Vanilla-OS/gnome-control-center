@@ -56,6 +56,7 @@ struct _NetConnectionEditor
         GtkButton        *apply_button;
         GtkButton        *cancel_button;
         GtkNotebook      *notebook;
+        AdwToastOverlay  *toast_overlay;
         GtkStack         *toplevel_stack;
 
         NMClient         *client;
@@ -198,7 +199,7 @@ static void
 update_complete (NetConnectionEditor *self,
                  gboolean             success)
 {
-        gtk_widget_hide (GTK_WIDGET (self));
+        gtk_widget_set_visible (GTK_WIDGET (self), FALSE);
         g_signal_emit (self, signals[DONE], 0, success);
 }
 
@@ -286,6 +287,8 @@ apply_clicked_cb (NetConnectionEditor *self)
                                                            self->cancellable,
                                                            updated_connection_cb, self);
         }
+
+        gtk_window_destroy (GTK_WINDOW (self));
 }
 
 static void
@@ -335,38 +338,12 @@ net_connection_editor_class_init (NetConnectionEditorClass *class)
         gtk_widget_class_bind_template_child (widget_class, NetConnectionEditor, apply_button);
         gtk_widget_class_bind_template_child (widget_class, NetConnectionEditor, cancel_button);
         gtk_widget_class_bind_template_child (widget_class, NetConnectionEditor, notebook);
+        gtk_widget_class_bind_template_child (widget_class, NetConnectionEditor, toast_overlay);
         gtk_widget_class_bind_template_child (widget_class, NetConnectionEditor, toplevel_stack);
 
         gtk_widget_class_bind_template_callback (widget_class, cancel_clicked_cb);
         gtk_widget_class_bind_template_callback (widget_class, close_request_cb);
         gtk_widget_class_bind_template_callback (widget_class, apply_clicked_cb);
-}
-
-static void
-net_connection_editor_error_dialog (NetConnectionEditor *self,
-                                    const char *primary_text,
-                                    const char *secondary_text)
-{
-        GtkWidget *dialog;
-        GtkWindow *parent;
-
-        if (gtk_widget_is_visible (GTK_WIDGET (self)))
-                parent = GTK_WINDOW (self);
-        else
-                parent = gtk_window_get_transient_for (GTK_WINDOW (self));
-
-        dialog = gtk_message_dialog_new (parent,
-                                         GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-                                         GTK_MESSAGE_ERROR,
-                                         GTK_BUTTONS_OK,
-                                         "%s", primary_text);
-
-        if (secondary_text) {
-                gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog),
-                                                          "%s", secondary_text);
-        }
-
-        gtk_window_present (GTK_WINDOW (dialog));
 }
 
 static void
@@ -384,10 +361,15 @@ net_connection_editor_do_fallback (NetConnectionEditor *self, const gchar *type)
 
         g_spawn_command_line_async (cmdline, &error);
 
-        if (error)
-                net_connection_editor_error_dialog (self,
-                                                    _("Unable to open connection editor"),
-                                                    error->message);
+        if (error) {
+                AdwToast *toast;
+                g_autofree gchar *message = NULL;
+
+                message = g_strdup_printf (_("Unable to open connection editor: %s"), error->message);
+                toast = adw_toast_new (message);
+
+                adw_toast_overlay_add_toast (self->toast_overlay, toast);
+        }
 
         g_signal_emit (self, signals[DONE], 0, FALSE);
 }
@@ -512,6 +494,10 @@ recheck_initialization (NetConnectionEditor *self)
         gtk_notebook_set_current_page (self->notebook, 0);
 
         g_idle_add (idle_validate, self);
+
+        if (self->is_new_connection)
+                adw_bin_set_child (self->add_connection_frame, NULL);
+
 }
 
 static void
@@ -729,9 +715,7 @@ complete_vpn_connection (NetConnectionEditor *self,
 static void
 finish_add_connection (NetConnectionEditor *self, NMConnection *connection)
 {
-        adw_bin_set_child (self->add_connection_frame, NULL);
-        gtk_stack_set_visible_child (self->toplevel_stack, GTK_WIDGET (self->notebook));
-        gtk_widget_show (GTK_WIDGET (self->apply_button));
+        gtk_widget_set_visible (GTK_WIDGET (self->apply_button), TRUE);
 
         if (connection)
                 net_connection_editor_set_connection (self, connection);
@@ -745,7 +729,13 @@ vpn_import_complete (NMConnection *connection, gpointer user_data)
         NMSettingConnection *s_con;
 
         if (!connection) {
-                /* The import code shows its own error dialogs. */
+                AdwToast *toast;
+                g_autofree gchar *message = NULL;
+
+                message = g_strdup_printf (_("Invalid VPN configuration file"));
+                toast = adw_toast_new (message);
+                adw_toast_overlay_add_toast (self->toast_overlay, toast);
+
                 g_signal_emit (self, signals[DONE], 0, FALSE);
                 return;
         }
@@ -910,7 +900,7 @@ net_connection_editor_add_connection (NetConnectionEditor *self)
         adw_bin_set_child (self->add_connection_frame, GTK_WIDGET (list));
 
         gtk_stack_set_visible_child (self->toplevel_stack, GTK_WIDGET (self->add_connection_box));
-        gtk_widget_hide (GTK_WIDGET (self->apply_button));
+        gtk_widget_set_visible (GTK_WIDGET (self->apply_button), FALSE);
         gtk_window_set_title (GTK_WINDOW (self), _("Add VPN"));
 }
 

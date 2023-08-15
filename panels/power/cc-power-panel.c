@@ -160,14 +160,14 @@ load_custom_css (CcPowerPanel *self,
 }
 
 static void
-add_battery (CcPowerPanel *panel, UpDevice *device, gboolean primary)
+add_battery (CcPowerPanel *self, UpDevice *device, gboolean primary)
 {
   CcBatteryRow *row = cc_battery_row_new (device, primary);
-  cc_battery_row_set_level_sizegroup (row, panel->level_sizegroup);
-  cc_battery_row_set_row_sizegroup (row, panel->battery_row_sizegroup);
+  cc_battery_row_set_level_sizegroup (row, self->level_sizegroup);
+  cc_battery_row_set_row_sizegroup (row, self->battery_row_sizegroup);
 
-  gtk_list_box_append (panel->battery_listbox, GTK_WIDGET (row));
-  gtk_widget_set_visible (GTK_WIDGET (panel->battery_section), TRUE);
+  gtk_list_box_append (self->battery_listbox, GTK_WIDGET (row));
+  gtk_widget_set_visible (GTK_WIDGET (self->battery_section), TRUE);
 }
 
 static void
@@ -849,7 +849,7 @@ populate_blank_screen_row (AdwComboRow *combo_row)
   for (i = 0; i < G_N_ELEMENTS (minutes); i++)
     {
       g_autoptr (GObject) item = NULL;
-      gchar *text = NULL;
+      g_autofree gchar *text = NULL;
 
       /* Translators: Option for "Blank Screen" in "Power" panel */
       text = g_strdup_printf (g_dngettext (GETTEXT_PACKAGE, "%d minute", "%d minutes", minutes[i]), minutes[i]);
@@ -939,7 +939,8 @@ setup_power_saving (CcPowerPanel *self)
     }
 
   /* Automatic suspend row */
-  if (can_suspend_or_hibernate (self, "CanSuspend"))
+  if (can_suspend_or_hibernate (self, "CanSuspend") && 
+      g_strcmp0 (self->chassis_type, "vm") != 0)
     {
       gtk_widget_set_visible (GTK_WIDGET (self->automatic_suspend_row), TRUE);
       gtk_accessible_update_property (GTK_ACCESSIBLE (self->automatic_suspend_row),

@@ -51,7 +51,7 @@ struct _CcOnlineAccountsPanel
   GtkBox        *editor_box;
   GtkLabel      *notification_label;
   GtkRevealer   *notification_revealer;
-  GtkLabel      *offline_label;
+  AdwBanner     *offline_banner;
   GtkListBox    *providers_listbox;
   GtkButton     *remove_account_button;
   GtkBox        *accounts_vbox;
@@ -82,7 +82,7 @@ hide_row_for_account_cb (CcOnlineAccountsPanel *self,
                          GtkWidget             *row,
                          GList                 *other_rows)
 {
-  gtk_widget_hide (row);
+  gtk_widget_set_visible (row, FALSE);
   gtk_widget_set_visible (GTK_WIDGET (self->accounts_frame), other_rows != NULL);
 }
 
@@ -100,8 +100,8 @@ show_row_for_account_cb (CcOnlineAccountsPanel *self,
                          GtkWidget             *row,
                          GList                 *other_rows)
 {
-  gtk_widget_show (row);
-  gtk_widget_show (GTK_WIDGET (self->accounts_frame));
+  gtk_widget_set_visible (row, TRUE);
+  gtk_widget_set_visible (GTK_WIDGET (self->accounts_frame), TRUE);
 }
 
 static void
@@ -380,7 +380,6 @@ add_provider_row (CcOnlineAccountsPanel *self,
 
   row = cc_online_account_provider_row_new (provider);
 
-  gtk_widget_show (GTK_WIDGET (row));
   gtk_list_box_append (self->providers_listbox, GTK_WIDGET (row));
 }
 
@@ -426,7 +425,7 @@ add_account (CcOnlineAccountsPanel *self,
 
   /* Add to the listbox */
   gtk_list_box_append (self->accounts_listbox, GTK_WIDGET (row));
-  gtk_widget_show (GTK_WIDGET (self->accounts_frame));
+  gtk_widget_set_visible (GTK_WIDGET (self->accounts_frame), TRUE);
 }
 
 static void
@@ -642,26 +641,23 @@ sort_providers_func (GtkListBoxRow *a,
 }
 
 static void
-on_account_added_cb (GoaClient             *client,
-                     GoaObject             *object,
-                     CcOnlineAccountsPanel *self)
+on_account_added_cb (CcOnlineAccountsPanel *self,
+                     GoaObject             *object)
 {
   add_account (self, object);
 }
 
 static void
-on_account_changed_cb (GoaClient             *client,
-                       GoaObject             *object,
-                       CcOnlineAccountsPanel *self)
+on_account_changed_cb (CcOnlineAccountsPanel *self,
+                       GoaObject             *object)
 {
   if (self->active_object == object)
     show_account (self, self->active_object);
 }
 
 static void
-on_account_removed_cb (GoaClient             *client,
-                       GoaObject             *object,
-                       CcOnlineAccountsPanel *self)
+on_account_removed_cb (CcOnlineAccountsPanel *self,
+                       GoaObject             *object)
 {
   modify_row_for_account (self, object, remove_row_for_account_cb);
 }
@@ -701,8 +697,7 @@ on_client_remove_account_finish_cb (GoaAccount   *account,
 }
 
 static void
-on_notification_closed_cb (GtkButton             *button,
-                           CcOnlineAccountsPanel *self)
+on_notification_closed_cb (CcOnlineAccountsPanel *self)
 {
   goa_account_call_remove (goa_object_peek_account (self->removed_object),
                            cc_panel_get_cancellable (CC_PANEL (self)),
@@ -716,8 +711,7 @@ on_notification_closed_cb (GtkButton             *button,
 }
 
 static void
-on_undo_button_clicked_cb (GtkButton             *button,
-                           CcOnlineAccountsPanel *self)
+on_undo_button_clicked_cb (CcOnlineAccountsPanel *self)
 {
   /* Simply show the account row and hide the notification */
   modify_row_for_account (self, self->removed_object, show_row_for_account_cb);
@@ -827,12 +821,12 @@ cc_online_accounts_panel_constructed (GObject *object)
 static void
 cc_online_accounts_panel_finalize (GObject *object)
 {
-  CcOnlineAccountsPanel *panel = CC_ONLINE_ACCOUNTS_PANEL (object);
+  CcOnlineAccountsPanel *self = CC_ONLINE_ACCOUNTS_PANEL (object);
 
-  if (panel->removed_object != NULL)
+  if (self->removed_object != NULL)
     {
       g_autoptr(GError) error = NULL;
-      goa_account_call_remove_sync (goa_object_peek_account (panel->removed_object),
+      goa_account_call_remove_sync (goa_object_peek_account (self->removed_object),
                                     NULL, /* GCancellable */
                                     &error);
 
@@ -845,7 +839,7 @@ cc_online_accounts_panel_finalize (GObject *object)
         }
     }
 
-  g_clear_object (&panel->client);
+  g_clear_object (&self->client);
 
   G_OBJECT_CLASS (cc_online_accounts_panel_parent_class)->finalize (object);
 }
@@ -875,7 +869,7 @@ cc_online_accounts_panel_class_init (CcOnlineAccountsPanelClass *klass)
   gtk_widget_class_bind_template_child (widget_class, CcOnlineAccountsPanel, close_notification_button);
   gtk_widget_class_bind_template_child (widget_class, CcOnlineAccountsPanel, notification_label);
   gtk_widget_class_bind_template_child (widget_class, CcOnlineAccountsPanel, notification_revealer);
-  gtk_widget_class_bind_template_child (widget_class, CcOnlineAccountsPanel, offline_label);
+  gtk_widget_class_bind_template_child (widget_class, CcOnlineAccountsPanel, offline_banner);
   gtk_widget_class_bind_template_child (widget_class, CcOnlineAccountsPanel, providers_listbox);
 
   gtk_widget_class_bind_template_callback (widget_class, on_accounts_listbox_row_activated);
@@ -907,8 +901,8 @@ cc_online_accounts_panel_init (CcOnlineAccountsPanel *self)
   monitor = g_network_monitor_get_default();
   g_object_bind_property (monitor,
                           "network-available",
-                          self->offline_label,
-                          "visible",
+                          self->offline_banner,
+                          "revealed",
                           G_BINDING_SYNC_CREATE | G_BINDING_INVERT_BOOLEAN);
 
   g_object_bind_property (monitor,
@@ -927,20 +921,20 @@ cc_online_accounts_panel_init (CcOnlineAccountsPanel *self)
       return;
     }
 
-  g_signal_connect (self->client,
-                    "account-added",
-                    G_CALLBACK (on_account_added_cb),
-                    self);
+  g_signal_connect_swapped (self->client,
+                            "account-added",
+                            G_CALLBACK (on_account_added_cb),
+                            self);
 
-  g_signal_connect (self->client,
-                    "account-changed",
-                    G_CALLBACK (on_account_changed_cb),
-                    self);
+  g_signal_connect_swapped (self->client,
+                            "account-changed",
+                            G_CALLBACK (on_account_changed_cb),
+                            self);
 
-  g_signal_connect (self->client,
-                    "account-removed",
-                    G_CALLBACK (on_account_removed_cb),
-                    self);
+  g_signal_connect_swapped (self->client,
+                            "account-removed",
+                            G_CALLBACK (on_account_removed_cb),
+                            self);
 
   fill_accounts_listbox (self);
   load_custom_css ();

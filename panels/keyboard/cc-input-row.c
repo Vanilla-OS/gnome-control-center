@@ -46,10 +46,9 @@ enum
 static guint signals[SIGNAL_LAST] = { 0, };
 
 static GdkContentProvider *
-drag_prepare_cb (GtkDragSource *source,
+drag_prepare_cb (CcInputRow    *self,
                  double         x,
-                 double         y,
-                 CcInputRow    *self)
+                 double         y)
 {
   self->drag_x = x;
   self->drag_y = y;
@@ -58,9 +57,8 @@ drag_prepare_cb (GtkDragSource *source,
 }
 
 static void
-drag_begin_cb (GtkDragSource *source,
-               GdkDrag       *drag,
-               CcInputRow    *self)
+drag_begin_cb (CcInputRow    *self,
+               GdkDrag       *drag)
 {
   GtkAllocation alloc;
   CcInputRow *drag_row;
@@ -81,11 +79,10 @@ drag_begin_cb (GtkDragSource *source,
 }
 
 static gboolean
-drop_cb (GtkDropTarget *drop_target,
+drop_cb (CcInputRow    *self,
          const GValue  *value,
          gdouble        x,
-         gdouble        y,
-         CcInputRow    *self)
+         gdouble        y)
 {
   CcInputRow *source;
 
@@ -113,7 +110,11 @@ move_up_cb (GtkWidget  *widget,
   GtkListBoxRow *previous_row = gtk_list_box_get_row_at_index (list_box, previous_idx);
 
   if (previous_row == NULL || !CC_IS_INPUT_ROW (previous_row))
-    return;
+    {
+      gtk_widget_action_set_enabled (widget, "row.move-up", FALSE);
+      gtk_widget_action_set_enabled (GTK_WIDGET (gtk_list_box_get_row_at_index (list_box, 0)), "row.move-up", TRUE);
+      return;
+    }
 
   g_signal_emit (self,
                  signals[SIGNAL_MOVE_ROW],
@@ -132,7 +133,11 @@ move_down_cb (GtkWidget  *widget,
   GtkListBoxRow *next_row = gtk_list_box_get_row_at_index (list_box, next_idx);
 
   if (next_row == NULL || !CC_IS_INPUT_ROW (next_row))
-    return;
+    {
+      gtk_widget_action_set_enabled (widget, "row.move-down", FALSE);
+      gtk_widget_action_set_enabled (GTK_WIDGET (gtk_list_box_get_row_at_index (list_box, next_idx-1)), "row.move-down", TRUE);
+      return;
+    }
 
   g_signal_emit (next_row,
                  signals[SIGNAL_MOVE_ROW],
@@ -249,13 +254,13 @@ cc_input_row_init (CcInputRow *self)
 
   self->drag_source = gtk_drag_source_new ();
   gtk_drag_source_set_actions (self->drag_source, GDK_ACTION_MOVE);
-  g_signal_connect (self->drag_source, "prepare", G_CALLBACK (drag_prepare_cb), self);
-  g_signal_connect (self->drag_source, "drag-begin", G_CALLBACK (drag_begin_cb), self);
+  g_signal_connect_swapped (self->drag_source, "prepare", G_CALLBACK (drag_prepare_cb), self);
+  g_signal_connect_swapped (self->drag_source, "drag-begin", G_CALLBACK (drag_begin_cb), self);
   gtk_widget_add_controller (GTK_WIDGET (self), GTK_EVENT_CONTROLLER (self->drag_source));
 
   drop_target = gtk_drop_target_new (CC_TYPE_INPUT_ROW, GDK_ACTION_MOVE);
   gtk_drop_target_set_preload (drop_target, TRUE);
-  g_signal_connect (drop_target, "drop", G_CALLBACK (drop_cb), self);
+  g_signal_connect_swapped (drop_target, "drop", G_CALLBACK (drop_cb), self);
   gtk_widget_add_controller (GTK_WIDGET (self), GTK_EVENT_CONTROLLER (drop_target));
 }
 
@@ -304,3 +309,4 @@ cc_input_row_set_draggable (CcInputRow *self,
   gtk_event_controller_set_propagation_phase (GTK_EVENT_CONTROLLER (self->drag_source),
                                               draggable ? GTK_PHASE_BUBBLE : GTK_PHASE_NONE);
 }
+

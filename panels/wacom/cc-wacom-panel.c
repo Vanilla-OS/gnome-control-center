@@ -145,16 +145,18 @@ lookup_wacom_device (CcWacomPanel *self,
 static void
 highlight_widget (CcWacomPanel *self, GtkWidget *widget)
 {
-	double y;
+	graphene_point_t p;
 
 	if (self->highlighted_widget == widget)
 		return;
 
-	gtk_widget_translate_coordinates (widget,
-					  self->scrollable,
-					  0, 0,
-					  NULL, &y);
-	gtk_adjustment_set_value (self->vadjustment, y);
+	if (!gtk_widget_compute_point (widget,
+                                       self->scrollable,
+                                       &GRAPHENE_POINT_INIT (0, 0),
+                                       &p))
+		return;
+
+	gtk_adjustment_set_value (self->vadjustment, p.y);
 	self->highlighted_widget = widget;
 }
 
@@ -367,17 +369,17 @@ update_initial_state (CcWacomPanel *self)
 }
 
 static void
-update_highlighted_stylus (CcWacomPanel *panel,
+update_highlighted_stylus (CcWacomPanel *self,
 			   CcWacomTool  *stylus)
 {
 	GtkWidget *widget;
 
-	widget = g_hash_table_lookup (panel->stylus_pages, stylus);
-	highlight_widget (panel, widget);
+	widget = g_hash_table_lookup (self->stylus_pages, stylus);
+	highlight_widget (self, widget);
 }
 
 static void
-update_current_tool (CcWacomPanel  *panel,
+update_current_tool (CcWacomPanel  *self,
 		     GdkDevice     *device,
 		     GdkDeviceTool *tool)
 {
@@ -397,7 +399,7 @@ update_current_tool (CcWacomPanel  *panel,
 	if (!gsd_device)
 		return;
 
-	wacom_device = g_hash_table_lookup (panel->devices, gsd_device);
+	wacom_device = g_hash_table_lookup (self->devices, gsd_device);
 	if (!wacom_device)
 		return;
 
@@ -411,7 +413,7 @@ update_current_tool (CcWacomPanel  *panel,
 	if (serial == 1)
 		serial = 0;
 
-	stylus = cc_tablet_tool_map_lookup_tool (panel->tablet_tool_map,
+	stylus = cc_tablet_tool_map_lookup_tool (self->tablet_tool_map,
 						 wacom_device, serial);
 
 	if (!stylus) {
@@ -435,39 +437,39 @@ update_current_tool (CcWacomPanel  *panel,
 			return;
         }
 
-	add_stylus (panel, stylus);
+	add_stylus (self, stylus);
 
-	update_highlighted_stylus (panel, stylus);
+	update_highlighted_stylus (self, stylus);
 
-	cc_tablet_tool_map_add_relation (panel->tablet_tool_map,
+	cc_tablet_tool_map_add_relation (self->tablet_tool_map,
 					 wacom_device, stylus);
 }
 
 static void
-on_stylus_proximity_cb (GtkGestureStylus *gesture,
+on_stylus_proximity_cb (CcWacomPanel     *self,
 			double            x,
 			double            y,
-			CcWacomPanel     *panel)
+			GtkGestureStylus *gesture)
 {
 	GdkDevice *device;
 	GdkDeviceTool *tool;
 
 	device = gtk_event_controller_get_current_event_device (GTK_EVENT_CONTROLLER (gesture));
 	tool = gtk_gesture_stylus_get_device_tool (gesture);
-	update_current_tool (panel, device, tool);
+	update_current_tool (self, device, tool);
 }
 
 static gboolean
 show_mock_stylus_cb (gpointer user_data)
 {
-	CcWacomPanel *panel = user_data;
+	CcWacomPanel *self = user_data;
 	GList *device_list;
 	CcWacomDevice *wacom_device;
 	CcWacomTool *stylus;
 
-	panel->mock_stylus_id = 0;
+	self->mock_stylus_id = 0;
 
-	device_list = g_hash_table_get_values (panel->devices);
+	device_list = g_hash_table_get_values (self->devices);
 	if (device_list == NULL) {
 		g_warning ("Could not create fake stylus event because could not find tablet device");
 		return G_SOURCE_REMOVE;
@@ -477,9 +479,9 @@ show_mock_stylus_cb (gpointer user_data)
 	g_list_free (device_list);
 
 	stylus = cc_wacom_tool_new (0, 0, wacom_device);
-	add_stylus (panel, stylus);
-	update_highlighted_stylus (panel, stylus);
-	cc_tablet_tool_map_add_relation (panel->tablet_tool_map,
+	add_stylus (self, stylus);
+	update_highlighted_stylus (self, stylus);
+	cc_tablet_tool_map_add_relation (self->tablet_tool_map,
 					 wacom_device, stylus);
 
 	return G_SOURCE_REMOVE;
@@ -497,8 +499,8 @@ cc_wacom_panel_constructed (GObject *object)
 	shell = cc_panel_get_shell (CC_PANEL (self));
 
 	self->stylus_gesture = gtk_gesture_stylus_new ();
-	g_signal_connect (self->stylus_gesture, "proximity",
-			  G_CALLBACK (on_stylus_proximity_cb), self);
+	g_signal_connect_swapped (self->stylus_gesture, "proximity",
+                                  G_CALLBACK (on_stylus_proximity_cb), self);
 	gtk_widget_add_controller (GTK_WIDGET (shell),
 				   GTK_EVENT_CONTROLLER (self->stylus_gesture));
 
