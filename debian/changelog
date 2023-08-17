@@ -1,3 +1,9 @@
+gnome-control-center (1:45~beta-1ubuntu2) mantic; urgency=medium
+
+  * Use Ubuntu's version of debian/control.in
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Thu, 17 Aug 2023 16:58:53 -0400
+
 gnome-control-center (1:45~beta-1ubuntu1) mantic; urgency=medium
 
   * Merge with Debian. Remaining changes:
