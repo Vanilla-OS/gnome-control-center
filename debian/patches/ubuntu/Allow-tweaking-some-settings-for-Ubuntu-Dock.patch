@@ -2462,10 +2462,10 @@ index 9f5bc4c..e7a31a6 100644
  panels/universal-access/cc-ua-hearing-page.ui
  panels/universal-access/cc-ua-hearing-page.c
 diff --git a/shell/cc-panel-list.c b/shell/cc-panel-list.c
-index f864a8e..29f9647 100644
+index b54de58..31c2316 100644
 --- a/shell/cc-panel-list.c
 +++ b/shell/cc-panel-list.c
-@@ -364,6 +364,7 @@ static const gchar * const panel_order[] = {
+@@ -360,6 +360,7 @@ static const gchar * const panel_order[] = {
    "mobile-broadband",
    "bluetooth",
    "background",

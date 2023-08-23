@@ -5,14 +5,14 @@ Subject: diagnostics: Add Whoopsie support
 ---
  meson.build                                   |   9 ++
  meson_options.txt                             |   1 +
- panels/privacy/cc-diagnostics-page.c          | 222 ++++++++++++++++++++++++++
+ panels/privacy/cc-diagnostics-page.c          | 224 ++++++++++++++++++++++++++
  panels/privacy/cc-diagnostics-page.ui         |  10 +-
  panels/privacy/gnome-privacy-panel.desktop.in |   2 +-
  panels/privacy/meson.build                    |   4 +
- 6 files changed, 246 insertions(+), 2 deletions(-)
+ 6 files changed, 248 insertions(+), 2 deletions(-)
 
 diff --git a/meson.build b/meson.build
-index b927686..bf9526a 100644
+index 378a1a9..151f237 100644
 --- a/meson.build
 +++ b/meson.build
 @@ -250,6 +250,14 @@ endif
@@ -46,7 +46,7 @@ index 8ee7b6e..beebcf2 100644
  option('dark_mode_distributor_logo', type: 'string', description: 'absolute path to distributor logo dark mode variant')
 +option('whoopsie', type: 'boolean', value: false, description: 'build with Whoopsie support')
 diff --git a/panels/privacy/cc-diagnostics-page.c b/panels/privacy/cc-diagnostics-page.c
-index 814d2ca..8583131 100644
+index 814d2ca..55b3c0d 100644
 --- a/panels/privacy/cc-diagnostics-page.c
 +++ b/panels/privacy/cc-diagnostics-page.c
 @@ -18,6 +18,8 @@
@@ -63,7 +63,7 @@ index 814d2ca..8583131 100644
  #include <glib/gi18n.h>
  
 +#ifdef HAVE_WHOOPSIE
-+#  include <whoopsie-preferences/libwhoopsie-preferences.h>
++#include <whoopsie-preferences/libwhoopsie-preferences.h>
 +#endif
 +
  struct _CcDiagnosticsPage
@@ -83,7 +83,7 @@ index 814d2ca..8583131 100644
  };
  
  G_DEFINE_TYPE (CcDiagnosticsPage, cc_diagnostics_page, ADW_TYPE_NAVIGATION_PAGE)
-@@ -59,9 +72,190 @@ abrt_vanished_cb (GDBusConnection *connection,
+@@ -59,9 +72,191 @@ abrt_vanished_cb (GDBusConnection *connection,
    CcDiagnosticsPage *self = CC_DIAGNOSTICS_PAGE (user_data);
  
    g_debug ("ABRT vanished");
@@ -105,7 +105,7 @@ index 814d2ca..8583131 100644
 +                                  GAsyncResult *res,
 +                                  gpointer user_data)
 +{
-+  CcDiagnosticsPage *self = user_data;
++  CcDiagnosticsPage *self = CC_DIAGNOSTICS_PAGE (user_data);
 +  g_autoptr(GError) error = NULL;
 +
 +  if (!whoopsie_preferences_call_set_report_crashes_finish (self->whoopsie, res, &error))
@@ -115,14 +115,14 @@ index 814d2ca..8583131 100644
 +
 +      g_warning ("Failed to toggle crash reporting: %s", error->message);
 +    }
- }
- 
++}
++
 +static void
 +whoopsie_set_report_crashes_mode_done (GObject *source_object,
 +                                       GAsyncResult *res,
 +                                       gpointer user_data)
 +{
-+  CcDiagnosticsPage *self = user_data;
++  CcDiagnosticsPage *self = CC_DIAGNOSTICS_PAGE (user_data);
 +  g_autoptr(GError) error = NULL;
 +
 +  if (!whoopsie_preferences_call_set_automatically_report_crashes_finish (self->whoopsie, res, &error))
@@ -182,8 +182,8 @@ index 814d2ca..8583131 100644
 +          return;
 +        }
 +    }
-+}
-+
+ }
+ 
 +static void
 +whoopsie_properties_changed (CcDiagnosticsPage *self)
 +{
@@ -233,7 +233,7 @@ index 814d2ca..8583131 100644
 +                          GAsyncResult *res,
 +                          gpointer data)
 +{
-+  CcDiagnosticsPage *self = data;
++  CcDiagnosticsPage *self = CC_DIAGNOSTICS_PAGE (data);
 +  g_autoptr(GError) error = NULL;
 +
 +  self->whoopsie = whoopsie_preferences_proxy_new_for_bus_finish (res, &error);
@@ -249,6 +249,7 @@ index 814d2ca..8583131 100644
 +    }
 +
 +  g_debug ("Whoopsie available");
++  gtk_widget_set_visible (GTK_WIDGET (self), TRUE);
 +  gtk_widget_set_visible (GTK_WIDGET (self->whoopsie_combo_row), TRUE);
 +  gtk_widget_set_sensitive (GTK_WIDGET (self->whoopsie_combo_row), TRUE);
 +
@@ -274,7 +275,7 @@ index 814d2ca..8583131 100644
  static void
  cc_diagnostics_page_finalize (GObject *object)
  {
-@@ -70,6 +264,12 @@ cc_diagnostics_page_finalize (GObject *object)
+@@ -70,6 +265,12 @@ cc_diagnostics_page_finalize (GObject *object)
    g_clear_object (&self->privacy_settings);
  
    G_OBJECT_CLASS (cc_diagnostics_page_parent_class)->finalize (object);
@@ -287,7 +288,7 @@ index 814d2ca..8583131 100644
  }
  
  static void
-@@ -84,6 +284,12 @@ cc_diagnostics_page_class_init (CcDiagnosticsPageClass *klass)
+@@ -84,6 +285,12 @@ cc_diagnostics_page_class_init (CcDiagnosticsPageClass *klass)
  
    gtk_widget_class_bind_template_child (widget_class, CcDiagnosticsPage, diagnostics_group);
    gtk_widget_class_bind_template_child (widget_class, CcDiagnosticsPage, abrt_switch);
@@ -300,7 +301,7 @@ index 814d2ca..8583131 100644
  }
  
  static void
-@@ -112,6 +318,22 @@ cc_diagnostics_page_init (CcDiagnosticsPage *self)
+@@ -112,6 +319,23 @@ cc_diagnostics_page_init (CcDiagnosticsPage *self)
                     self->abrt_switch, "active",
                     G_SETTINGS_BIND_DEFAULT);
  
@@ -314,7 +315,8 @@ index 814d2ca..8583131 100644
 +                                          self->cancellable,
 +                                          on_new_whoopsie_proxy_cb,
 +                                          self);
-+
++                                          
++  gtk_widget_set_visible (GTK_WIDGET (self), TRUE);
 +  gtk_widget_set_visible (GTK_WIDGET (self->whoopsie_combo_row), TRUE);
 +  gtk_widget_set_visible (GTK_WIDGET (self->abrt_row), FALSE);
 +  gtk_widget_set_sensitive (GTK_WIDGET (self->whoopsie_combo_row), FALSE);
@@ -324,10 +326,10 @@ index 814d2ca..8583131 100644
    if (!os_name)
      os_name = g_strdup ("GNOME");
 diff --git a/panels/privacy/cc-diagnostics-page.ui b/panels/privacy/cc-diagnostics-page.ui
-index 987541f..e209fbf 100644
+index 1dee196..623ff5f 100644
 --- a/panels/privacy/cc-diagnostics-page.ui
 +++ b/panels/privacy/cc-diagnostics-page.ui
-@@ -15,7 +15,7 @@
+@@ -14,7 +14,7 @@
                <object class="AdwPreferencesGroup" id="diagnostics_group">
                  <property name="title" translatable="yes">Problem Reporting</property>
                  <child>
@@ -336,7 +338,7 @@ index 987541f..e209fbf 100644
                      <property name="title" translatable="yes">_Automatic Problem Reporting</property>
                      <property name="use-underline">True</property>
                      <property name="activatable-widget">abrt_switch</property>
-@@ -28,6 +28,14 @@
+@@ -27,6 +27,14 @@
                  </child>
                </object>
              </child>
@@ -352,22 +354,22 @@ index 987541f..e209fbf 100644
          </property>
        </object>
 diff --git a/panels/privacy/gnome-privacy-panel.desktop.in b/panels/privacy/gnome-privacy-panel.desktop.in
-index 6206700..4a0e4ea 100644
+index beaf33d..bdfa355 100644
 --- a/panels/privacy/gnome-privacy-panel.desktop.in
 +++ b/panels/privacy/gnome-privacy-panel.desktop.in
 @@ -11,4 +11,4 @@ StartupNotify=true
  Categories=GNOME;GTK;Settings;DesktopSettings;X-GNOME-Settings-Panel;X-GNOME-AccountSettings;
  OnlyShowIn=GNOME;
  # Translators: Search terms to find the Privacy panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
--Keywords=Privacy;Screen;Lock;Private;Usage;Recent;History;Files;Temporary;Tmp;Trash;Purge;Retain;Diagnostics;Crash;Location;Gps;Camera;Photos;Video;Webcam;Microphone;Recording;Security;Firmware;Thunderbolt;
-+Keywords=Privacy;Screen;Lock;Private;Usage;Recent;History;Files;Temporary;Tmp;Trash;Purge;Retain;Diagnostics;Crash;Location;Gps;Camera;Photos;Video;Webcam;Microphone;Recording;Security;Firmware;Thunderbolt;error;bug;whoopsie;launchpad;issue;
+-Keywords=Privacy;Screen;Lock;Private;Usage;Recent;History;Files;Temporary;Tmp;Trash;Purge;Retain;Diagnostics;Crash;Location;Gps;Camera;Photos;Video;Webcam;Microphone;Recording;Security;Firmware;Thunderbolt;Network;
++Keywords=Privacy;Screen;Lock;Private;Usage;Recent;History;Files;Temporary;Tmp;Trash;Purge;Retain;Diagnostics;Crash;Location;Gps;Camera;Photos;Video;Webcam;Microphone;Recording;Security;Firmware;Thunderbolt;Network;error;bug;whoopsie;launchpad;issue;
 diff --git a/panels/privacy/meson.build b/panels/privacy/meson.build
-index b10c1e9..ee5f2dd 100644
+index c5ed21a..7c6b711 100644
 --- a/panels/privacy/meson.build
 +++ b/panels/privacy/meson.build
-@@ -82,6 +82,10 @@ deps = deps + [
-   m_dep,
- ]
+@@ -87,6 +87,10 @@ if host_is_linux
+   deps += network_manager_deps
+ endif
  
 +if enable_whoopsie
 +  deps += whoopsie_dep

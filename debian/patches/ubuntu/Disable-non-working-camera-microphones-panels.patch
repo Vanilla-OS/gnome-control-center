@@ -15,10 +15,10 @@ here and the Zoom snap still works and it isn't listed as an app
  1 file changed, 1 insertion(+)
 
 diff --git a/panels/privacy/cc-privacy-panel.ui b/panels/privacy/cc-privacy-panel.ui
-index 27d6c4c..df1fba6 100644
+index f60fc2c..add5810 100644
 --- a/panels/privacy/cc-privacy-panel.ui
 +++ b/panels/privacy/cc-privacy-panel.ui
-@@ -94,6 +94,7 @@
+@@ -76,6 +76,7 @@
                      <child>
                        <object class="AdwPreferencesGroup">
                          <property name="title" translatable="yes">Devices</property>

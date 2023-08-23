@@ -24,7 +24,7 @@ given that these are per-process anyways.
  create mode 100644 panels/ubuntu/cc-ubuntu-colors-row.ui
 
 diff --git a/panels/background/cc-background-panel.c b/panels/background/cc-background-panel.c
-index e90ed61..9851dc4 100644
+index e90ed61..a14d687 100644
 --- a/panels/background/cc-background-panel.c
 +++ b/panels/background/cc-background-panel.c
 @@ -35,6 +35,8 @@
@@ -81,19 +81,19 @@ index e90ed61..9851dc4 100644
    load_custom_css (self);
  }
 diff --git a/panels/background/cc-background-panel.ui b/panels/background/cc-background-panel.ui
-index 33a8638..89a5ef5 100644
+index 8d6b11c..a12fee3 100644
 --- a/panels/background/cc-background-panel.ui
 +++ b/panels/background/cc-background-panel.ui
-@@ -90,6 +90,10 @@
+@@ -96,6 +96,10 @@
+                   </object>
+                 </child>
+ 
++                <child>
++                  <object class="CcUbuntuColorsRow" id="ubuntu_colors" />
++                </child>
++
                </object>
              </child>
- 
-+            <child>
-+              <object class="CcUbuntuColorsRow" id="ubuntu_colors" />
-+            </child>
-+
-           </object>
-         </child>
  
 diff --git a/panels/ubuntu/cc-ubuntu-colors-row.c b/panels/ubuntu/cc-ubuntu-colors-row.c
 new file mode 100644

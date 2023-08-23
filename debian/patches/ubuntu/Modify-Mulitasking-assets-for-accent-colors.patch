@@ -13,8 +13,8 @@ Subject: Modify Mulitasking assets for accent-colors
  .../multitasking/assets/workspaces-primary-display.svg  |  6 +++++-
  panels/multitasking/assets/workspaces-span-displays.svg |  6 +++++-
  panels/multitasking/cc-multitasking-panel.c             | 17 +++++++++++++++++
- panels/multitasking/cc-multitasking-panel.ui            | 13 ++++++++++++-
- 8 files changed, 43 insertions(+), 7 deletions(-)
+ panels/multitasking/cc-multitasking-panel.ui            | 12 ++++++++++++
+ 8 files changed, 43 insertions(+), 6 deletions(-)
 
 diff --git a/panels/multitasking/assets/active-screen-edges-rtl.svg b/panels/multitasking/assets/active-screen-edges-rtl.svg
 index 4c2bd1a..346a900 100644
@@ -110,51 +110,46 @@ index 5f70de4..1faacee 100644
 +  load_custom_css (self);
  }
 diff --git a/panels/multitasking/cc-multitasking-panel.ui b/panels/multitasking/cc-multitasking-panel.ui
-index fecdd71..3bddfb1 100644
+index fe3f091..1576bd7 100644
 --- a/panels/multitasking/cc-multitasking-panel.ui
 +++ b/panels/multitasking/cc-multitasking-panel.ui
-@@ -1,4 +1,3 @@
--<?xml version="1.0" encoding="UTF-8"?>
- <interface>
-   <template class="CcMultitaskingPanel" parent="CcPanel">
-     <child type="content">
-@@ -16,6 +15,9 @@
-                 <property name="subtitle" translatable="yes">Touch the top-left corner to open the Activities Overview.</property>
-                 <property name="use_underline">True</property>
-                 <property name="resource">/org/gnome/control-center/multitasking/assets/hot-corner.svg</property>
-+                <style>
-+                  <class name="multitasking-assets" />
-+                </style>
-                 <child>
-                   <object class="GtkSwitch" id="hot_corner_switch">
-                     <property name="valign">center</property>
-@@ -37,6 +39,9 @@
-                     <property name="valign">center</property>
+@@ -22,6 +22,9 @@
+                     <property name="subtitle" translatable="yes">Touch the top-left corner to open the Activities Overview.</property>
+                     <property name="use_underline">True</property>
+                     <property name="resource">/org/gnome/control-center/multitasking/assets/hot-corner.svg</property>
++                    <style>
++                      <class name="multitasking-assets" />
++                    </style>
+                     <child>
+                       <object class="GtkSwitch" id="hot_corner_switch">
+                         <property name="valign">center</property>
+@@ -43,6 +46,9 @@
+                         <property name="valign">center</property>
+                       </object>
+                     </child>
++                    <style>
++                      <class name="multitasking-assets" />
++                    </style>
                    </object>
                  </child>
-+                <style>
-+                  <class name="multitasking-assets" />
-+                </style>
-               </object>
-             </child>
  
-@@ -113,6 +118,9 @@
-                     <property name="valign">center</property>
+@@ -119,6 +125,9 @@
+                         <property name="valign">center</property>
+                       </object>
+                     </child>
++                    <style>
++                      <class name="multitasking-assets" />
++                    </style>
                    </object>
                  </child>
-+                <style>
-+                  <class name="multitasking-assets" />
-+                </style>
-               </object>
-             </child>
  
-@@ -129,6 +137,9 @@
-                     <property name="group">workspaces_primary_display_radio</property>
+@@ -135,6 +144,9 @@
+                         <property name="group">workspaces_primary_display_radio</property>
+                       </object>
+                     </child>
++                    <style>
++                      <class name="multitasking-assets" />
++                    </style>
                    </object>
                  </child>
-+                <style>
-+                  <class name="multitasking-assets" />
-+                </style>
-               </object>
-             </child>
  

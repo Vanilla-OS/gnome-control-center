@@ -15,7 +15,7 @@ ubuntu/lock-Add-Lock-Screen-on-Suspend-option.patch
 ubuntu/region-Add-Language-Selector-button.patch
 ubuntu/Adapts-the-region-capplet-and-the-language-chooser-in-the.patch
 ubuntu/notifications-Handle-.desktop-files-that-got-renamed.patch
-ubuntu/shell-Change-the-default-height-so-all-category-are-on-sc.patch
+#ubuntu/shell-Change-the-default-height-so-all-category-are-on-sc.patch
 ubuntu/connectivity-add-network-connectivity-checking-toggle.patch
 ubuntu/diagnostics-Add-Whoopsie-support.patch
 ubuntu/online-accounts-Hide-window-after-adding-an-online-accoun.patch
@@ -25,4 +25,4 @@ ubuntu/info-overview-Show-updates-in-software-propeties-instead-.patch
 ubuntu/sound-Add-a-button-to-select-the-default-theme.patch
 ubuntu/applications-Launch-snap-store-if-it-is-installed.patch
 ubuntu/display-Allow-fractional-scaling-to-be-enabled.patch
-ubuntu/mouse-Add-animations-following-the-accent-colors.patch
+#ubuntu/mouse-Add-animations-following-the-accent-colors.patch

@@ -125,48 +125,48 @@ index 6adfc87..b3a820f 100644
 +    }
  }
 diff --git a/panels/multitasking/cc-multitasking-panel.ui b/panels/multitasking/cc-multitasking-panel.ui
-index c668161..fecdd71 100644
+index c9c2816..fe3f091 100644
 --- a/panels/multitasking/cc-multitasking-panel.ui
 +++ b/panels/multitasking/cc-multitasking-panel.ui
-@@ -171,6 +171,41 @@
-           </object>
-         </child>
+@@ -177,6 +177,41 @@
+               </object>
+             </child>
  
-+        <child>
-+          <object class="AdwPreferencesGroup" id="monitor_isolation_group">
-+
-+            <!-- All Monitors -->
 +            <child>
-+              <object class="AdwActionRow">
-+                <property name="activatable-widget">dock_monitors_isolation_radio</property>
-+                <property name="title" translatable="yes">Include apps from all _monitors</property>
-+                <property name="use_underline">True</property>
-+                <child type="prefix">
-+                  <object class="GtkCheckButton" id="dock_monitors_isolation_radio">
-+                    <property name="valign">center</property>
++              <object class="AdwPreferencesGroup" id="monitor_isolation_group">
++    
++                <!-- All Monitors -->
++                <child>
++                  <object class="AdwActionRow">
++                    <property name="activatable-widget">dock_monitors_isolation_radio</property>
++                    <property name="title" translatable="yes">Include apps from all _monitors</property>
++                    <property name="use_underline">True</property>
++                    <child type="prefix">
++                      <object class="GtkCheckButton" id="dock_monitors_isolation_radio">
++                        <property name="valign">center</property>
++                      </object>
++                    </child>
 +                  </object>
 +                </child>
++    
++                <!-- Monitor Isolation -->
++                <child>
++                  <object class="AdwActionRow">
++                    <property name="activatable-widget">dock_each_monitor_radio</property>
++                    <property name="title" translatable="yes">Include apps from _each monitor only</property>
++                    <property name="use_underline">True</property>
++                    <child type="prefix">
++                      <object class="GtkCheckButton" id="dock_each_monitor_radio">
++                        <property name="valign">center</property>
++                        <property name="group">dock_monitors_isolation_radio</property>
++                      </object>
++                    </child>
++                  </object>
++                </child>
++    
 +              </object>
 +            </child>
 +
-+            <!-- Monitor Isolation -->
-+            <child>
-+              <object class="AdwActionRow">
-+                <property name="activatable-widget">dock_each_monitor_radio</property>
-+                <property name="title" translatable="yes">Include apps from _each monitor only</property>
-+                <property name="use_underline">True</property>
-+                <child type="prefix">
-+                  <object class="GtkCheckButton" id="dock_each_monitor_radio">
-+                    <property name="valign">center</property>
-+                    <property name="group">dock_monitors_isolation_radio</property>
-+                  </object>
-+                </child>
-+              </object>
-+            </child>
-+
-+          </object>
-+        </child>
-+
+           </object>
+         </property>
        </object>
-     </child>
-   </template>

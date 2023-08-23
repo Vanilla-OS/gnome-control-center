@@ -61,21 +61,21 @@ index 0d73c42..35de348 100644
    gvc_mixer_control_open (self->mixer_control);
  
 diff --git a/panels/sound/cc-sound-panel.ui b/panels/sound/cc-sound-panel.ui
-index 0d6b12c..ce987a8 100644
+index 97ae875..bc2331b 100644
 --- a/panels/sound/cc-sound-panel.ui
 +++ b/panels/sound/cc-sound-panel.ui
-@@ -200,6 +200,14 @@
+@@ -206,6 +206,14 @@
+                     </child>
+                   </object>
                  </child>
++                <child>
++                  <object class="AdwSwitchRow" id="allow_amplify_row">
++                    <property name="title" translatable="yes">_Overamplification</property>
++                    <property name="subtitle" translatable="yes">Allow volume to exceed 100%. This will result in quality loss. It is better to increase application volume settings, if possible.</property>
++                    <property name="subtitle-lines">6</property>
++                    <property name="use-underline">True</property>
++                  </object>
++                </child>
                </object>
              </child>
-+            <child>
-+              <object class="AdwSwitchRow" id="allow_amplify_row">
-+                <property name="title" translatable="yes">Overamplification</property>
-+                <property name="subtitle" translatable="yes">Allow volume to exceed 100%. This will result in quality loss; it is better to increase application volume settings, if possible.</property>
-+                <property name="subtitle-lines">6</property>
-+                <property name="use-underline">True</property>
-+              </object>
-+            </child>
-           </object>
-         </child>
-         <child>
+             <child>

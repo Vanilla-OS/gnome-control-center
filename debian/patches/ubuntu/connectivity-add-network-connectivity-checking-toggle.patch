@@ -11,29 +11,28 @@ panel.
 
 https://bugzilla.gnome.org/show_bug.cgi?id=737362
 ---
- panels/connectivity/cc-connectivity-panel.c        | 131 +++++++++++++++++++++
- panels/connectivity/cc-connectivity-panel.h        |  28 +++++
- panels/connectivity/cc-connectivity-panel.ui       |  21 ++++
- panels/connectivity/connectivity.gresource.xml     |   6 +
- .../gnome-connectivity-panel.desktop.in            |  15 +++
- panels/connectivity/meson.build                    |  38 ++++++
- panels/meson.build                                 |   1 +
- po/POTFILES.in                                     |   2 +
- shell/cc-panel-loader.c                            |   2 +
- 9 files changed, 244 insertions(+)
- create mode 100644 panels/connectivity/cc-connectivity-panel.c
- create mode 100644 panels/connectivity/cc-connectivity-panel.h
- create mode 100644 panels/connectivity/cc-connectivity-panel.ui
- create mode 100644 panels/connectivity/connectivity.gresource.xml
- create mode 100644 panels/connectivity/gnome-connectivity-panel.desktop.in
- create mode 100644 panels/connectivity/meson.build
+ panels/privacy/cc-connectivity-page.c              | 128 +++++++++++++++++++++
+ panels/privacy/cc-connectivity-page.h              |  28 +++++
+ panels/privacy/cc-connectivity-page.ui             |  30 +++++
+ panels/privacy/cc-privacy-panel.c                  |   2 +
+ panels/privacy/cc-privacy-panel.ui                 |  16 +++
+ panels/privacy/gnome-privacy-panel.desktop.in      |   2 +-
+ .../actions/network-workgroup-symbolic.svg         |   7 ++
+ panels/privacy/meson.build                         |   5 +
+ panels/privacy/privacy.gresource.xml               |   2 +
+ po/POTFILES.in                                     |   1 +
+ 10 files changed, 220 insertions(+), 1 deletion(-)
+ create mode 100644 panels/privacy/cc-connectivity-page.c
+ create mode 100644 panels/privacy/cc-connectivity-page.h
+ create mode 100644 panels/privacy/cc-connectivity-page.ui
+ create mode 100644 panels/privacy/icons/scalable/actions/network-workgroup-symbolic.svg
 
-diff --git a/panels/connectivity/cc-connectivity-panel.c b/panels/connectivity/cc-connectivity-panel.c
+diff --git a/panels/privacy/cc-connectivity-page.c b/panels/privacy/cc-connectivity-page.c
 new file mode 100644
-index 0000000..6abb6e8
+index 0000000..124f9b5
 --- /dev/null
-+++ b/panels/connectivity/cc-connectivity-panel.c
-@@ -0,0 +1,131 @@
++++ b/panels/privacy/cc-connectivity-page.c
+@@ -0,0 +1,128 @@
 +/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*-
 + *
 + * Copyright (C) 2020 Canonical Ltd
@@ -60,14 +59,13 @@ index 0000000..6abb6e8
 +
 +#include "shell/cc-object-storage.h"
 +
-+#include "cc-connectivity-panel.h"
-+#include "cc-connectivity-resources.h"
++#include "cc-connectivity-page.h"
 +
 +#include <glib/gi18n.h>
 +
-+struct _CcConnectivityPanel
++struct _CcConnectivityPage
 +{
-+  CcPanel parent_instance;
++  AdwNavigationPage parent_instance;
 +
 +  GtkWidget *connectivity_switch;
 +
@@ -77,11 +75,11 @@ index 0000000..6abb6e8
 +#endif
 +};
 +
-+CC_PANEL_REGISTER (CcConnectivityPanel, cc_connectivity_panel)
++G_DEFINE_TYPE (CcConnectivityPage, cc_connectivity_page, ADW_TYPE_NAVIGATION_PAGE)
 +
 +static void
-+setup_nm_client (CcConnectivityPanel *self,
-+                 NMClient            *client)
++setup_nm_client (CcConnectivityPage *self,
++                 NMClient           *client)
 +{
 +  self->nm_client = client;
 +
@@ -99,7 +97,7 @@ index 0000000..6abb6e8
 +                    GAsyncResult *res,
 +                    gpointer user_data)
 +{
-+  CcConnectivityPanel *self;
++  CcConnectivityPage *self;
 +  NMClient *client;
 +  g_autoptr(GError) error = NULL;
 +
@@ -122,9 +120,9 @@ index 0000000..6abb6e8
 +}
 +
 +static void
-+cc_connectivity_panel_dispose (GObject *object)
++cc_connectivity_page_dispose (GObject *object)
 +{
-+  CcConnectivityPanel *self = CC_CONNECTIVITY_PANEL (object);
++  CcConnectivityPage *self = CC_CONNECTIVITY_PAGE (object);
 +
 +  g_cancellable_cancel (self->cancellable);
 +
@@ -132,27 +130,25 @@ index 0000000..6abb6e8
 +  g_clear_object (&self->nm_client);
 +#endif
 +
-+  G_OBJECT_CLASS (cc_connectivity_panel_parent_class)->dispose (object);
++  G_OBJECT_CLASS (cc_connectivity_page_parent_class)->dispose (object);
 +}
 +
 +static void
-+cc_connectivity_panel_class_init (CcConnectivityPanelClass *klass)
++cc_connectivity_page_class_init (CcConnectivityPageClass *klass)
 +{
 +  GObjectClass *object_class = G_OBJECT_CLASS (klass);
 +  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 +
-+  object_class->dispose = cc_connectivity_panel_dispose;
++  object_class->dispose = cc_connectivity_page_dispose;
 +
-+  gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/connectivity/cc-connectivity-panel.ui");
++  gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/privacy/cc-connectivity-page.ui");
 +
-+  gtk_widget_class_bind_template_child (widget_class, CcConnectivityPanel, connectivity_switch);
++  gtk_widget_class_bind_template_child (widget_class, CcConnectivityPage, connectivity_switch);
 +}
 +
 +static void
-+cc_connectivity_panel_init (CcConnectivityPanel *self)
++cc_connectivity_page_init (CcConnectivityPage *self)
 +{
-+  g_resources_register (cc_connectivity_get_resource ());
-+
 +  gtk_widget_init_template (GTK_WIDGET (self));
 +
 +  self->cancellable = g_cancellable_new ();
@@ -165,11 +161,11 @@ index 0000000..6abb6e8
 +    nm_client_new_async (self->cancellable, nm_client_ready_cb, self);
 +#endif
 +}
-diff --git a/panels/connectivity/cc-connectivity-panel.h b/panels/connectivity/cc-connectivity-panel.h
+diff --git a/panels/privacy/cc-connectivity-page.h b/panels/privacy/cc-connectivity-page.h
 new file mode 100644
-index 0000000..1a21b5b
+index 0000000..12c4074
 --- /dev/null
-+++ b/panels/connectivity/cc-connectivity-panel.h
++++ b/panels/privacy/cc-connectivity-page.h
 @@ -0,0 +1,28 @@
 +/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*-
 + *
@@ -191,160 +187,179 @@ index 0000000..1a21b5b
 +
 +#pragma once
 +
-+#include <shell/cc-panel.h>
++#include <adwaita.h>
 +
 +G_BEGIN_DECLS
 +
-+#define CC_TYPE_CONNECTIVITY_PANEL (cc_connectivity_panel_get_type ())
-+G_DECLARE_FINAL_TYPE (CcConnectivityPanel, cc_connectivity_panel, CC, CONNECTIVITY_PANEL, CcPanel)
++#define CC_TYPE_CONNECTIVITY_PAGE (cc_connectivity_page_get_type ())
++G_DECLARE_FINAL_TYPE (CcConnectivityPage, cc_connectivity_page, CC, CONNECTIVITY_PAGE, AdwNavigationPage)
 +
 +G_END_DECLS
-diff --git a/panels/connectivity/cc-connectivity-panel.ui b/panels/connectivity/cc-connectivity-panel.ui
+diff --git a/panels/privacy/cc-connectivity-page.ui b/panels/privacy/cc-connectivity-page.ui
 new file mode 100644
-index 0000000..709dc2d
+index 0000000..901d392
 --- /dev/null
-+++ b/panels/connectivity/cc-connectivity-panel.ui
-@@ -0,0 +1,21 @@
++++ b/panels/privacy/cc-connectivity-page.ui
+@@ -0,0 +1,30 @@
 +<?xml version="1.0" encoding="UTF-8"?>
 +<interface>
-+  <template class="CcConnectivityPanel" parent="CcPanel">
-+    <child type="content">
-+      <object class="AdwPreferencesPage">
-+        <child>
-+          <object class="AdwPreferencesGroup">
-+            <property name="description" translatable="yes">Connectivity checking is used to detect connection issues and helps you to stay online. If your network communications are being monitored, it could be used to gather technical information about this computer.</property>
++  <template class="CcConnectivityPage" parent="AdwNavigationPage">
++    <property name="title" translatable="yes">Connectivity</property>
++    <property name="tag">connectivity-page</property>
++    <property name="child">
++      <object class="AdwToolbarView">
++        <property name="top-bar-style">raised</property>
++        <child type="top">
++          <object class="AdwHeaderBar"/>
++        </child>
++        <property name="content">
++          <object class="AdwPreferencesPage">
 +            <child>
-+              <object class="CcListRow" id="connectivity_switch">
-+                <property name="title" translatable="yes">_Connectivity Checking</property>
-+                <property name="use-underline">True</property>
-+                <property name="show-switch">True</property>
++              <object class="AdwPreferencesGroup">
++                <property name="description" translatable="yes">Connectivity checking is used to detect connection issues and helps you to stay online. If your network communications are being monitored, it could be used to gather technical information about this computer.</property>
++                <child>
++                  <object class="AdwSwitchRow" id="connectivity_switch">
++                    <property name="title" translatable="yes">_Connectivity Checking</property>
++                    <property name="use-underline">True</property>
++                  </object>
++                </child>
 +              </object>
 +            </child>
 +          </object>
-+        </child>
++        </property>
 +      </object>
-+    </child>
++    </property>
 +  </template>
 +</interface>
-diff --git a/panels/connectivity/connectivity.gresource.xml b/panels/connectivity/connectivity.gresource.xml
+diff --git a/panels/privacy/cc-privacy-panel.c b/panels/privacy/cc-privacy-panel.c
+index 1fcb396..8d136f1 100644
+--- a/panels/privacy/cc-privacy-panel.c
++++ b/panels/privacy/cc-privacy-panel.c
+@@ -26,6 +26,7 @@
+ #include "cc-bolt-page.h"
+ #endif
+ #include "cc-camera-page.h"
++#include "cc-connectivity-page.h"
+ #include "cc-diagnostics-page.h"
+ #include "cc-firmware-security-page.h"
+ #include "cc-list-row.h"
+@@ -75,6 +76,7 @@ cc_privacy_panel_class_init (CcPrivacyPanelClass *klass)
+   gtk_widget_class_bind_template_child (widget_class, CcPrivacyPanel, bolt_row);
+ 
+   g_type_ensure (CC_TYPE_CAMERA_PAGE);
++  g_type_ensure (CC_TYPE_CONNECTIVITY_PAGE);
+   g_type_ensure (CC_TYPE_DIAGNOSTICS_PAGE);
+   g_type_ensure (CC_TYPE_FIRMWARE_SECURITY_PAGE);
+   g_type_ensure (CC_TYPE_LOCATION_PAGE);
+diff --git a/panels/privacy/cc-privacy-panel.ui b/panels/privacy/cc-privacy-panel.ui
+index f60fc2c..dd32332 100644
+--- a/panels/privacy/cc-privacy-panel.ui
++++ b/panels/privacy/cc-privacy-panel.ui
+@@ -20,6 +20,18 @@
+                       <object class="AdwPreferencesGroup">
+                         <property name="title" translatable="yes">System</property>
+ 
++                        <child>
++                          <object class="CcListRow">
++                            <property name="title" translatable="yes">Co_nnectivity</property>
++                            <property name="subtitle" translatable="yes">Detect connection issues</property>
++                            <property name="icon-name">network-workgroup-symbolic</property>
++                            <property name="use-underline">True</property>
++                            <property name="show-arrow">True</property>
++                            <property name="action-name">navigation.push</property>
++                            <property name="action-target">'connectivity-page'</property>
++                          </object>
++                        </child>
++
+                         <child>
+                           <object class="CcListRow">
+                             <property name="title" translatable="yes">_Screen Lock</property>
+@@ -139,6 +151,10 @@
+           </object>
+         </child>
+ 
++        <child>
++          <object class="CcConnectivityPage"/>
++        </child>
++
+         <child>
+           <object class="CcScreenPage"/>
+         </child>
+diff --git a/panels/privacy/gnome-privacy-panel.desktop.in b/panels/privacy/gnome-privacy-panel.desktop.in
+index 6206700..beaf33d 100644
+--- a/panels/privacy/gnome-privacy-panel.desktop.in
++++ b/panels/privacy/gnome-privacy-panel.desktop.in
+@@ -11,4 +11,4 @@ StartupNotify=true
+ Categories=GNOME;GTK;Settings;DesktopSettings;X-GNOME-Settings-Panel;X-GNOME-AccountSettings;
+ OnlyShowIn=GNOME;
+ # Translators: Search terms to find the Privacy panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+-Keywords=Privacy;Screen;Lock;Private;Usage;Recent;History;Files;Temporary;Tmp;Trash;Purge;Retain;Diagnostics;Crash;Location;Gps;Camera;Photos;Video;Webcam;Microphone;Recording;Security;Firmware;Thunderbolt;
++Keywords=Privacy;Screen;Lock;Private;Usage;Recent;History;Files;Temporary;Tmp;Trash;Purge;Retain;Diagnostics;Crash;Location;Gps;Camera;Photos;Video;Webcam;Microphone;Recording;Security;Firmware;Thunderbolt;Network;
+diff --git a/panels/privacy/icons/scalable/actions/network-workgroup-symbolic.svg b/panels/privacy/icons/scalable/actions/network-workgroup-symbolic.svg
 new file mode 100644
-index 0000000..e102045
+index 0000000..09bd2ad
 --- /dev/null
-+++ b/panels/connectivity/connectivity.gresource.xml
-@@ -0,0 +1,6 @@
++++ b/panels/privacy/icons/scalable/actions/network-workgroup-symbolic.svg
+@@ -0,0 +1,7 @@
 +<?xml version="1.0" encoding="UTF-8"?>
-+<gresources>
-+  <gresource prefix="/org/gnome/control-center/connectivity">
-+    <file preprocess="xml-stripblanks">cc-connectivity-panel.ui</file>
-+  </gresource>
-+</gresources>
-diff --git a/panels/connectivity/gnome-connectivity-panel.desktop.in b/panels/connectivity/gnome-connectivity-panel.desktop.in
-new file mode 100644
-index 0000000..b36f569
---- /dev/null
-+++ b/panels/connectivity/gnome-connectivity-panel.desktop.in
-@@ -0,0 +1,15 @@
-+[Desktop Entry]
-+Name=Connectivity
-+Comment=Protect connectivity feature
-+Exec=gnome-control-center connectivity
-+# FIXME
-+# Translators: Do NOT translate or transliterate this text (this is an icon file name)!
-+Icon=network-workgroup
-+Terminal=false
-+Type=Application
-+NoDisplay=true
-+StartupNotify=true
-+Categories=GNOME;GTK;Settings;DesktopSettings;X-GNOME-Settings-Panel;X-GNOME-PrivacySettings;
-+OnlyShowIn=GNOME;Unity;
-+# Translators: Search terms to find the Privacy panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
-+Keywords=network;privacy;
-diff --git a/panels/connectivity/meson.build b/panels/connectivity/meson.build
-new file mode 100644
-index 0000000..94c0d23
---- /dev/null
-+++ b/panels/connectivity/meson.build
-@@ -0,0 +1,38 @@
-+panels_list += cappletname
-+desktop = 'gnome-@0@-panel.desktop'.format(cappletname)
-+
-+i18n.merge_file(
-+  type: 'desktop',
-+  input: desktop + '.in',
-+  output: desktop,
-+  po_dir: po_dir,
-+  install: true,
-+  install_dir: control_center_desktopdir
-+)
-+
-+sources = files('cc-connectivity-panel.c')
-+
-+resource_data = files('cc-connectivity-panel.ui')
-+
-+sources += gnome.compile_resources(
-+  'cc-' + cappletname + '-resources',
-+  cappletname + '.gresource.xml',
-+  c_name: 'cc_' + cappletname,
-+  dependencies: resource_data,
-+  export: true
-+)
-+
-+deps = common_deps
++<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
++ <g color="#bebebe" fill="#474747" font-weight="400">
++  <path d="M1.75 4C.798 4 0 4.798 0 5.75v4.5C0 11.202.798 12 1.75 12h.125l-.781 1.563L.375 15h9.25l-.719-1.437L8.125 12h.125c.952 0 1.75-.798 1.75-1.75v-4.5C10 4.798 9.202 4 8.25 4zM2 6h6v4H2z" font-family="Sans" overflow="visible" style="text-decoration-line:none;text-indent:0;text-transform:none"/>
++  <path d="M7.75 1C6.798 1 6 1.798 6 2.75V3h8v4h-3v3.25c0 .66-.252 1.27-.656 1.75h5.28l-1.5-3h.126C15.202 9 16 8.202 16 7.25v-4.5C16 1.798 15.202 1 14.25 1z" font-family="Andale Mono" overflow="visible" style="text-decoration-line:none;text-indent:0;text-transform:none"/>
++ </g>
++</svg>
+diff --git a/panels/privacy/meson.build b/panels/privacy/meson.build
+index b10c1e9..c5ed21a 100644
+--- a/panels/privacy/meson.build
++++ b/panels/privacy/meson.build
+@@ -12,6 +12,7 @@ i18n.merge_file(
+ 
+ sources = files(
+   'cc-camera-page.c',
++  'cc-connectivity-page.c',
+   'cc-diagnostics-page.c',
+   'cc-firmware-security-boot-dialog.c',
+   'cc-firmware-security-dialog.c',
+@@ -82,6 +83,10 @@ deps = deps + [
+   m_dep,
+ ]
+ 
 +if host_is_linux
 +  deps += network_manager_deps
 +endif
 +
-+cflags += '-DGNOMELOCALEDIR="@0@"'.format(control_center_localedir)
-+
-+panels_libs += static_library(
-+  cappletname,
-+  sources: sources,
-+  include_directories: [top_inc, common_inc],
-+  dependencies: deps,
-+  c_args: cflags
-+)
-diff --git a/panels/meson.build b/panels/meson.build
-index 9459839..90d8fbe 100644
---- a/panels/meson.build
-+++ b/panels/meson.build
-@@ -4,6 +4,7 @@ panels = [
-   'applications',
-   'background',
-   'color',
-+  'connectivity',
-   'datetime',
-   'default-apps',
-   'display',
+ panels_libs += static_library(
+   cappletname,
+   sources: sources,
+diff --git a/panels/privacy/privacy.gresource.xml b/panels/privacy/privacy.gresource.xml
+index 3fcf63c..8b81422 100644
+--- a/panels/privacy/privacy.gresource.xml
++++ b/panels/privacy/privacy.gresource.xml
+@@ -5,6 +5,7 @@
+     <file preprocess="xml-stripblanks">cc-bolt-device-entry.ui</file>
+     <file preprocess="xml-stripblanks">cc-bolt-page.ui</file>
+     <file preprocess="xml-stripblanks">cc-camera-page.ui</file>
++    <file preprocess="xml-stripblanks">cc-connectivity-page.ui</file>
+     <file preprocess="xml-stripblanks">cc-diagnostics-page.ui</file>
+     <file preprocess="xml-stripblanks">cc-firmware-security-boot-dialog.ui</file>
+     <file preprocess="xml-stripblanks">cc-firmware-security-dialog.ui</file>
+@@ -25,6 +26,7 @@
+     <file preprocess="xml-stripblanks">icons/scalable/actions/location-symbolic.svg</file>
+     <file preprocess="xml-stripblanks">icons/scalable/actions/lock-symbolic.svg</file>
+     <file preprocess="xml-stripblanks">icons/scalable/actions/microphone-symbolic.svg</file>
++    <file preprocess="xml-stripblanks">icons/scalable/actions/network-workgroup-symbolic.svg</file>
+     <file preprocess="xml-stripblanks">icons/scalable/actions/security-symbolic.svg</file>
+     <file preprocess="xml-stripblanks">icons/scalable/actions/trash-symbolic.svg</file>
+   </gresource>
 diff --git a/po/POTFILES.in b/po/POTFILES.in
-index 5b7ab8c..e062ef5 100644
+index 5b7ab8c..0a59ea2 100644
 --- a/po/POTFILES.in
 +++ b/po/POTFILES.in
-@@ -31,6 +31,8 @@ panels/common/cc-time-editor.ui
- panels/common/cc-time-entry.c
- panels/common/cc-util.c
- panels/common/hostname-helper.c
-+panels/connectivity/cc-connectivity-panel.ui
-+panels/connectivity/gnome-connectivity-panel.desktop.in
- panels/datetime/cc-datetime-panel.c
- panels/datetime/cc-datetime-panel.ui
- panels/datetime/cc-tz-dialog.ui
-diff --git a/shell/cc-panel-loader.c b/shell/cc-panel-loader.c
-index 24f37ed..eceb4f6 100644
---- a/shell/cc-panel-loader.c
-+++ b/shell/cc-panel-loader.c
-@@ -37,6 +37,7 @@ extern GType cc_background_panel_get_type (void);
- extern GType cc_bluetooth_panel_get_type (void);
- #endif /* BUILD_BLUETOOTH */
- extern GType cc_color_panel_get_type (void);
-+extern GType cc_connectivity_panel_get_type (void);
- extern GType cc_date_time_panel_get_type (void);
- extern GType cc_default_apps_panel_get_type (void);
- extern GType cc_display_panel_get_type (void);
-@@ -96,6 +97,7 @@ static CcPanelLoaderVtable default_panels[] =
-   PANEL_TYPE("bluetooth",        cc_bluetooth_panel_get_type,            NULL),
- #endif
-   PANEL_TYPE("color",            cc_color_panel_get_type,                NULL),
-+  PANEL_TYPE("connectivity",     cc_connectivity_panel_get_type,         NULL),
-   PANEL_TYPE("datetime",         cc_date_time_panel_get_type,            NULL),
-   PANEL_TYPE("default-apps",     cc_default_apps_panel_get_type,         NULL),
-   PANEL_TYPE("display",          cc_display_panel_get_type,              NULL),
+@@ -166,6 +166,7 @@ panels/privacy/cc-bolt-device-entry.c
+ panels/privacy/cc-bolt-page.c
+ panels/privacy/cc-bolt-page.ui
+ panels/privacy/cc-camera-page.ui
++panels/privacy/cc-connectivity-page.ui
+ panels/privacy/cc-diagnostics-page.c
+ panels/privacy/cc-diagnostics-page.ui
+ panels/privacy/cc-firmware-security-boot-dialog.c

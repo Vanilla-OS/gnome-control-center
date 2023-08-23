@@ -5,8 +5,8 @@ Subject: region: Add Language Selector button
 Workaround for https://launchpad.net/bugs/1631750
 ---
  panels/region/cc-region-panel.c  | 21 +++++++++++++++++++++
- panels/region/cc-region-panel.ui | 23 +++++++++++++++++++++++
- 2 files changed, 44 insertions(+)
+ panels/region/cc-region-panel.ui | 22 ++++++++++++++++++++++
+ 2 files changed, 43 insertions(+)
 
 diff --git a/panels/region/cc-region-panel.c b/panels/region/cc-region-panel.c
 index 5dbab36..f13b26c 100644
@@ -48,36 +48,35 @@ index 5dbab36..f13b26c 100644
  
  static void
 diff --git a/panels/region/cc-region-panel.ui b/panels/region/cc-region-panel.ui
-index 9b26cfa..f17bb4f 100644
+index c17e9d0..3600ea2 100644
 --- a/panels/region/cc-region-panel.ui
 +++ b/panels/region/cc-region-panel.ui
-@@ -18,6 +18,29 @@
-           <object class="AdwPreferencesPage">
-             <property name="description" translatable="yes">The language setting is used for interface text and web pages. Formats are used for numbers, dates, and currencies.</property>
+@@ -23,6 +23,28 @@
+               <object class="AdwPreferencesPage">
+                 <property name="description" translatable="yes">The language setting is used for interface text and web pages. Formats are used for numbers, dates, and currencies.</property>
  
-+            <child>
-+              <object class="AdwPreferencesGroup">
-+                <property name="title" translatable="yes">System</property>
-+
 +                <child>
-+                  <object class="AdwActionRow">
-+                    <property name="use-underline">True</property>
-+                    <property name="title" translatable="yes">Manage Installed Languages</property>
-+                    <property name="activatable">True</property>
-+                    <signal name="activated" handler="show_language_support" object="CcRegionPanel" swapped="yes" />
++                  <object class="AdwPreferencesGroup">
++                    <property name="title" translatable="yes">System</property>
 +
 +                    <child>
-+                      <object class="GtkImage">
-+                        <property name="valign">center</property>
-+                        <property name="icon-name">go-next-symbolic</property>
++                      <object class="AdwActionRow">
++                        <property name="use-underline">True</property>
++                        <property name="title" translatable="yes">Manage Installed Languages</property>
++                        <property name="activatable">True</property>
++                        <signal name="activated" handler="show_language_support" object="CcRegionPanel" swapped="yes" />
++
++                        <child>
++                          <object class="GtkImage">
++                            <property name="valign">center</property>
++                            <property name="icon-name">go-next-symbolic</property>
++                          </object>
++                        </child>
 +                      </object>
 +                    </child>
++
 +                  </object>
 +                </child>
-+
-+              </object>
-+            </child>
-+
-             <child>
-               <object class="AdwPreferencesGroup">
-                 <property name="title" translatable="yes">Your Account</property>
+                 <child>
+                   <object class="AdwPreferencesGroup">
+                     <property name="title" translatable="yes">Your Account</property>

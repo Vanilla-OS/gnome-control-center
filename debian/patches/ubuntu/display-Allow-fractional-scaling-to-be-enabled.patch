@@ -6,9 +6,9 @@ Subject: display: Allow fractional scaling to be enabled
  panels/display/cc-display-config-dbus.c |  60 ++++++++
  panels/display/cc-display-config.c      | 244 ++++++++++++++++++++++++++++++++
  panels/display/cc-display-config.h      |  11 ++
- panels/display/cc-display-settings.c    |  27 ++++
- panels/display/cc-display-settings.ui   |   9 ++
- 5 files changed, 351 insertions(+)
+ panels/display/cc-display-settings.c    |  26 ++++
+ panels/display/cc-display-settings.ui   |   6 +
+ 5 files changed, 347 insertions(+)
 
 diff --git a/panels/display/cc-display-config-dbus.c b/panels/display/cc-display-config-dbus.c
 index 630309d..342cd0b 100644
@@ -513,10 +513,10 @@ index 4c00119..145399b 100644
  const char*       cc_display_monitor_get_display_name       (CcDisplayMonitor   *monitor);
  gboolean          cc_display_monitor_is_active              (CcDisplayMonitor   *monitor);
 diff --git a/panels/display/cc-display-settings.c b/panels/display/cc-display-settings.c
-index 79de8b6..c9de291 100644
+index 9d67a2e..5bcf925 100644
 --- a/panels/display/cc-display-settings.c
 +++ b/panels/display/cc-display-settings.c
-@@ -55,6 +56,7 @@ struct _CcDisplaySettings
+@@ -55,6 +55,7 @@ struct _CcDisplaySettings
    GtkWidget        *scale_bbox;
    GtkWidget        *scale_buttons_row;
    GtkWidget        *scale_combo_row;
@@ -524,7 +524,7 @@ index 79de8b6..c9de291 100644
    GtkWidget        *underscanning_row;
    GtkWidget        *underscanning_switch;
  };
-@@ -256,6 +258,7 @@ cc_display_settings_rebuild_ui (CcDisplaySettings *self)
+@@ -256,6 +257,7 @@ cc_display_settings_rebuild_ui (CcDisplaySettings *self)
        gtk_widget_set_visible (self->resolution_row, FALSE);
        gtk_widget_set_visible (self->scale_combo_row, FALSE);
        gtk_widget_set_visible (self->scale_buttons_row, FALSE);
@@ -532,9 +532,9 @@ index 79de8b6..c9de291 100644
        gtk_widget_set_visible (self->underscanning_row, FALSE);
  
        return G_SOURCE_REMOVE;
-@@ -464,6 +467,11 @@ cc_display_settings_rebuild_ui (CcDisplaySettings *self)
+@@ -464,6 +466,11 @@ cc_display_settings_rebuild_ui (CcDisplaySettings *self)
      }
-   cc_display_settings_refresh_layout (self, self->folded);
+   cc_display_settings_refresh_layout (self, self->collapsed);
  
 +  gtk_widget_set_visible (self->scale_fractional_row, TRUE);
 +  g_object_set (G_OBJECT (self->scale_fractional_row), "active",
@@ -544,7 +544,7 @@ index 79de8b6..c9de291 100644
    gtk_widget_set_visible (self->underscanning_row,
                            cc_display_monitor_supports_underscanning (self->selected_output) &&
                            !cc_display_config_is_cloning (self->config));
-@@ -747,6 +755,7 @@ cc_display_settings_class_init (CcDisplaySettingsClass *klass)
+@@ -747,6 +754,7 @@ cc_display_settings_class_init (CcDisplaySettingsClass *klass)
    gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, scale_bbox);
    gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, scale_buttons_row);
    gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, scale_combo_row);
@@ -552,7 +552,7 @@ index 79de8b6..c9de291 100644
    gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, underscanning_row);
    gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, underscanning_switch);
  
-@@ -758,6 +767,19 @@ cc_display_settings_class_init (CcDisplaySettingsClass *klass)
+@@ -758,6 +766,19 @@ cc_display_settings_class_init (CcDisplaySettingsClass *klass)
    gtk_widget_class_bind_template_callback (widget_class, on_underscanning_switch_active_changed_cb);
  }
  
@@ -572,7 +572,7 @@ index 79de8b6..c9de291 100644
  static void
  cc_display_settings_init (CcDisplaySettings *self)
  {
-@@ -793,6 +815,11 @@ cc_display_settings_init (CcDisplaySettings *self)
+@@ -793,6 +814,11 @@ cc_display_settings_init (CcDisplaySettings *self)
    adw_combo_row_set_model (ADW_COMBO_ROW (self->resolution_row),
                             G_LIST_MODEL (self->resolution_list));
  
@@ -585,7 +585,7 @@ index 79de8b6..c9de291 100644
  }
  
 diff --git a/panels/display/cc-display-settings.ui b/panels/display/cc-display-settings.ui
-index 6de2ba6..8e73149 100644
+index 6de2ba6..dec9f52 100644
 --- a/panels/display/cc-display-settings.ui
 +++ b/panels/display/cc-display-settings.ui
 @@ -95,6 +95,12 @@

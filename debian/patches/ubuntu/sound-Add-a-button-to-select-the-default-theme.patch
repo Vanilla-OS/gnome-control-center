@@ -14,11 +14,11 @@ https://launchpad.net/bugs/1871320
  2 files changed, 65 insertions(+), 4 deletions(-)
 
 diff --git a/panels/sound/cc-alert-chooser-window.c b/panels/sound/cc-alert-chooser-window.c
-index b103235..9b2dd8b 100644
+index d6fb7b2..98d61f1 100644
 --- a/panels/sound/cc-alert-chooser-window.c
 +++ b/panels/sound/cc-alert-chooser-window.c
 @@ -29,6 +29,7 @@ struct _CcAlertChooserWindow
-   GtkWindow       parent_instance;
+   AdwWindow       parent_instance;
  
    GtkCheckButton *none_button;
 +  GtkCheckButton *default_button;
@@ -140,27 +140,27 @@ index b103235..9b2dd8b 100644
      return _("Click");
    else if (g_strcmp0 (alert_name, "hum") == 0)
 diff --git a/panels/sound/cc-alert-chooser-window.ui b/panels/sound/cc-alert-chooser-window.ui
-index f76c1b1..9bd63e4 100644
+index fab56a8..2550c4b 100644
 --- a/panels/sound/cc-alert-chooser-window.ui
 +++ b/panels/sound/cc-alert-chooser-window.ui
-@@ -29,6 +29,20 @@
+@@ -27,6 +27,20 @@
+                     </child>
+                   </object>
                  </child>
-               </object>
-             </child>
-+            <child>
-+              <object class="AdwActionRow">
-+                <property name="title" translatable="yes">Default</property>
-+                <property name="activatable-widget">default_button</property>
 +                <child>
-+                  <object class="GtkCheckButton" id="default_button">
-+                    <property name="valign">center</property>
-+                    <property name="group">none_button</property>
-+                    <signal name="activate" handler="activate_cb" swapped="yes"/>
-+                    <signal name="toggled" handler="toggled_cb" swapped="yes"/>
++                  <object class="AdwActionRow">
++                    <property name="title" translatable="yes">Default</property>
++                    <property name="activatable-widget">default_button</property>
++                    <child>
++                      <object class="GtkCheckButton" id="default_button">
++                        <property name="valign">center</property>
++                        <property name="group">none_button</property>
++                        <signal name="activate" handler="activate_cb" swapped="yes"/>
++                        <signal name="toggled" handler="toggled_cb" swapped="yes"/>
++                      </object>
++                    </child>
 +                  </object>
 +                </child>
-+              </object>
-+            </child>
-             <child>
-               <object class="AdwActionRow">
-                 <property name="title" translatable="yes">Click</property>
+                 <child>
+                   <object class="AdwActionRow">
+                     <property name="title" translatable="yes">Click</property>
