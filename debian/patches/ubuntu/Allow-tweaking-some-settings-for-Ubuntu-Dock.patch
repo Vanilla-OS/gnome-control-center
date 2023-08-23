@@ -23,17 +23,17 @@ Forwarded: not-needed
  panels/ubuntu/assets/theme-light.svg        |    1 +
  panels/ubuntu/cc-ubuntu-dock-dialog.c       |  103 ++
  panels/ubuntu/cc-ubuntu-dock-dialog.h       |   31 +
- panels/ubuntu/cc-ubuntu-dock-dialog.ui      |   81 ++
- panels/ubuntu/cc-ubuntu-panel.c             | 1730 +++++++++++++++++++++++++++
+ panels/ubuntu/cc-ubuntu-dock-dialog.ui      |   79 ++
+ panels/ubuntu/cc-ubuntu-panel.c             | 1729 +++++++++++++++++++++++++++
  panels/ubuntu/cc-ubuntu-panel.h             |   35 +
- panels/ubuntu/cc-ubuntu-panel.ui            |  217 ++++
+ panels/ubuntu/cc-ubuntu-panel.ui            |  212 ++++
  panels/ubuntu/gnome-ubuntu-panel.desktop.in |   13 +
  panels/ubuntu/meson.build                   |   97 ++
  panels/ubuntu/ubuntu.gresource.xml          |    6 +
  po/POTFILES.in                              |    5 +
  shell/cc-panel-list.c                       |    1 +
  shell/cc-panel-loader.c                     |    3 +
- 16 files changed, 2330 insertions(+)
+ 16 files changed, 2322 insertions(+)
  create mode 100644 panels/ubuntu/assets/colors/color.svg.in
  create mode 100644 panels/ubuntu/assets/theme-dark.svg
  create mode 100644 panels/ubuntu/assets/theme-light.svg
@@ -88,7 +88,7 @@ index 0000000..0a8f29f
 \ No newline at end of file
 diff --git a/panels/ubuntu/cc-ubuntu-dock-dialog.c b/panels/ubuntu/cc-ubuntu-dock-dialog.c
 new file mode 100644
-index 0000000..4a64f2d
+index 0000000..266f486
 --- /dev/null
 +++ b/panels/ubuntu/cc-ubuntu-dock-dialog.c
 @@ -0,0 +1,103 @@
@@ -125,10 +125,10 @@ index 0000000..4a64f2d
 +
 +  GSettings      *settings;
 +
-+  CcListRow      *volumes_switch;
++  AdwSwitchRow   *volumes_switch;
 +  GtkCheckButton *unmounted_check;
 +  GtkCheckButton *network_volumes_check;
-+  CcListRow      *trash_switch;
++  AdwSwitchRow   *trash_switch;
 +};
 +
 +G_DEFINE_TYPE (CcUbuntuDockDialog, cc_ubuntu_dock_dialog, GTK_TYPE_DIALOG)
@@ -234,10 +234,10 @@ index 0000000..cd84651
 +G_END_DECLS
 diff --git a/panels/ubuntu/cc-ubuntu-dock-dialog.ui b/panels/ubuntu/cc-ubuntu-dock-dialog.ui
 new file mode 100644
-index 0000000..2b51182
+index 0000000..c7dcd20
 --- /dev/null
 +++ b/panels/ubuntu/cc-ubuntu-dock-dialog.ui
-@@ -0,0 +1,81 @@
+@@ -0,0 +1,79 @@
 +<?xml version="1.0" encoding="UTF-8"?>
 +<interface>
 +  <template class="CcUbuntuDockDialog" parent="GtkDialog">
@@ -258,10 +258,9 @@ index 0000000..2b51182
 +            <property name="margin-start">12</property>
 +            <property name="margin-end">12</property>
 +            <child>
-+              <object class="CcListRow" id="volumes_switch">
++              <object class="AdwSwitchRow" id="volumes_switch">
 +                <property name="use_underline">True</property>
 +                <property name="can_focus">True</property>
-+                <property name="show-switch">True</property>
 +                <property name="title" translatable="yes">Show _Volumes and _Devices</property>
 +              </object>
 +            </child>
@@ -306,10 +305,9 @@ index 0000000..2b51182
 +            <property name="margin-start">12</property>
 +            <property name="margin-end">12</property>
 +            <child>
-+              <object class="CcListRow" id="trash_switch">
++              <object class="AdwSwitchRow" id="trash_switch">
 +                <property name="use_underline">True</property>
 +                <property name="can_focus">True</property>
-+                <property name="show-switch">True</property>
 +                <property name="title" translatable="yes">Show _Trash</property>
 +              </object>
 +            </child>
@@ -321,7 +319,7 @@ index 0000000..2b51182
 +</interface>
 diff --git a/panels/ubuntu/cc-ubuntu-panel.c b/panels/ubuntu/cc-ubuntu-panel.c
 new file mode 100644
-index 0000000..122969f
+index 0000000..8c964af
 --- /dev/null
 +++ b/panels/ubuntu/cc-ubuntu-panel.c
 @@ -0,0 +1,1729 @@
@@ -2097,7 +2095,7 @@ index 0000000..b13f611
 +#endif /* _CC_EDIT_DIALOG_H_ */
 diff --git a/panels/ubuntu/cc-ubuntu-panel.ui b/panels/ubuntu/cc-ubuntu-panel.ui
 new file mode 100644
-index 0000000..08046f1
+index 0000000..95d9abb
 --- /dev/null
 +++ b/panels/ubuntu/cc-ubuntu-panel.ui
 @@ -0,0 +1,212 @@
