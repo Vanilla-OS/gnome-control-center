@@ -54,10 +54,9 @@ struct _CcApplicationsPanel
 {
   CcPanel          parent;
 
-  GtkBox          *sidebar_box;
+  AdwNavigationPage *sidebar_box;
   GtkListBox      *sidebar_listbox;
   GtkEntry        *sidebar_search_entry;
-  AdwWindowTitle  *header_title;
   GAppInfoMonitor *monitor;
   gulong           monitor_id;
 #ifdef HAVE_MALCONTENT
@@ -108,7 +107,7 @@ struct _CcApplicationsPanel
   AdwSwitchRow    *microphone;
   CcInfoRow       *no_microphone;
   CcInfoRow       *builtin;
-  GtkDialog       *builtin_dialog;
+  GtkWindow       *builtin_dialog;
   AdwPreferencesPage *builtin_page;
   GtkListBox      *builtin_list;
 #ifdef HAVE_SNAP
@@ -116,7 +115,7 @@ struct _CcApplicationsPanel
 #endif
 
   GtkButton       *handler_reset;
-  GtkDialog       *handler_dialog;
+  GtkWindow       *handler_dialog;
   AdwPreferencesPage *handler_page;
   CcInfoRow       *handler_row;
   AdwPreferencesGroup *handler_file_group;
@@ -126,7 +125,7 @@ struct _CcApplicationsPanel
 
   GtkWidget       *usage_section;
   CcInfoRow       *storage;
-  GtkDialog       *storage_dialog;
+  GtkWindow       *storage_dialog;
   CcInfoRow       *app;
   CcInfoRow       *data;
   CcInfoRow       *cache;
@@ -139,7 +138,8 @@ struct _CcApplicationsPanel
 };
 
 static void select_app (CcApplicationsPanel *self,
-                        const gchar         *app_id);
+                        const gchar         *app_id,
+                        gboolean             emit_activate);
 
 G_DEFINE_TYPE (CcApplicationsPanel, cc_applications_panel, CC_TYPE_PANEL)
 
@@ -1207,9 +1207,9 @@ on_builtin_row_activated_cb (CcApplicationsPanel *self)
 {
   CcShell *shell = cc_panel_get_shell (CC_PANEL (self));
 
-  gtk_window_set_transient_for (GTK_WINDOW (self->builtin_dialog),
+  gtk_window_set_transient_for (self->builtin_dialog,
                                 GTK_WINDOW (cc_shell_get_toplevel (shell)));
-  gtk_window_present (GTK_WINDOW (self->builtin_dialog));
+  gtk_window_present (self->builtin_dialog);
 }
 
 static void
@@ -1217,9 +1217,9 @@ on_handler_row_activated_cb (CcApplicationsPanel *self)
 {
   CcShell *shell = cc_panel_get_shell (CC_PANEL (self));
 
-  gtk_window_set_transient_for (GTK_WINDOW (self->handler_dialog),
+  gtk_window_set_transient_for (self->handler_dialog,
                                 GTK_WINDOW (cc_shell_get_toplevel (shell)));
-  gtk_window_present (GTK_WINDOW (self->handler_dialog));
+  gtk_window_present (self->handler_dialog);
 }
 
 static void
@@ -1227,9 +1227,9 @@ on_storage_row_activated_cb (CcApplicationsPanel *self)
 {
   CcShell *shell = cc_panel_get_shell (CC_PANEL (self));
 
-  gtk_window_set_transient_for (GTK_WINDOW (self->storage_dialog),
+  gtk_window_set_transient_for (self->storage_dialog,
                                 GTK_WINDOW (cc_shell_get_toplevel (shell)));
-  gtk_window_present (GTK_WINDOW (self->storage_dialog));
+  gtk_window_present (self->storage_dialog);
 }
 
 static void
@@ -1408,7 +1408,7 @@ update_panel (CcApplicationsPanel *self,
 
   if (row == NULL)
     {
-      adw_window_title_set_title (self->header_title, _("Apps"));
+      adw_navigation_page_set_title (ADW_NAVIGATION_PAGE (self), _("Apps"));
       gtk_stack_set_visible_child (self->stack, self->empty_box);
       gtk_widget_set_visible (GTK_WIDGET (self->view_details_button), FALSE);
       return;
@@ -1416,7 +1416,8 @@ update_panel (CcApplicationsPanel *self,
 
   info = cc_applications_row_get_info (CC_APPLICATIONS_ROW (row));
 
-  adw_window_title_set_title (self->header_title, g_app_info_get_display_name (info));
+  adw_navigation_page_set_title (ADW_NAVIGATION_PAGE (self),
+                                 g_app_info_get_display_name (info));
   gtk_stack_set_visible_child (self->stack, self->settings_box);
   gtk_widget_set_visible (GTK_WIDGET (self->view_details_button), gnome_software_is_installed ());
 
@@ -1555,7 +1556,8 @@ on_perm_store_ready (GObject      *source_object,
 
 static void
 select_app (CcApplicationsPanel *self,
-            const gchar         *app_id)
+            const gchar         *app_id,
+            gboolean             emit_activate)
 {
   GtkWidget *child;
 
@@ -1568,7 +1570,8 @@ select_app (CcApplicationsPanel *self,
       if (g_str_has_prefix (g_app_info_get_id (info), app_id))
         {
           gtk_list_box_select_row (self->sidebar_listbox, GTK_LIST_BOX_ROW (row));
-          g_signal_emit_by_name (row, "activate");
+          if (emit_activate)
+            g_signal_emit_by_name (row, "activate");
           break;
         }
     }
@@ -1631,6 +1634,10 @@ static void
 cc_applications_panel_dispose (GObject *object)
 {
   CcApplicationsPanel *self = CC_APPLICATIONS_PANEL (object);
+
+  g_clear_pointer (&self->builtin_dialog, gtk_window_destroy);
+  g_clear_pointer (&self->handler_dialog, gtk_window_destroy);
+  g_clear_pointer (&self->storage_dialog, gtk_window_destroy);
 
   remove_all_handler_rows (self);
 #ifdef HAVE_SNAP
@@ -1697,7 +1704,7 @@ cc_applications_panel_set_property (GObject      *object,
                            (gchar *)g_variant_get_type (v));
               g_variant_unref (v);
 
-              select_app (CC_APPLICATIONS_PANEL (object), first_arg);
+              select_app (CC_APPLICATIONS_PANEL (object), first_arg, TRUE);
             }
 
           return;
@@ -1720,11 +1727,57 @@ cc_applications_panel_constructed (GObject *object)
   gtk_list_box_select_row (self->sidebar_listbox, row);
 }
 
-static GtkWidget*
+static void
+notify_collapsed_cb (CcApplicationsPanel *self)
+{
+  GtkSelectionMode selection_mode;
+  gboolean collapsed;
+  GtkRoot *root;
+
+  g_assert (CC_IS_APPLICATIONS_PANEL (self));
+
+  root = gtk_widget_get_root (GTK_WIDGET (self));
+  g_object_get (root, "collapsed", &collapsed, NULL);
+
+  selection_mode = collapsed ? GTK_SELECTION_NONE : GTK_SELECTION_SINGLE;
+
+  gtk_list_box_set_selection_mode (self->sidebar_listbox, selection_mode);
+
+  if (!collapsed && self->current_app_id)
+    select_app (self, self->current_app_id, FALSE);
+}
+
+static void
+cc_applications_panel_root (GtkWidget *widget)
+{
+  CcApplicationsPanel *self = CC_APPLICATIONS_PANEL (widget);
+  GtkRoot *root;
+
+  GTK_WIDGET_CLASS (cc_applications_panel_parent_class)->root (widget);
+
+  root = gtk_widget_get_root (widget);
+
+  g_signal_connect_swapped (root, "notify::collapsed", G_CALLBACK (notify_collapsed_cb), self);
+
+  notify_collapsed_cb (self);
+}
+
+static void
+cc_applications_panel_unroot (GtkWidget *widget)
+{
+  CcApplicationsPanel *self = CC_APPLICATIONS_PANEL (widget);
+  GtkRoot *root = gtk_widget_get_root (widget);
+
+  g_signal_handlers_disconnect_by_func (root, notify_collapsed_cb, self);
+
+  GTK_WIDGET_CLASS (cc_applications_panel_parent_class)->unroot (widget);
+}
+
+static AdwNavigationPage*
 cc_applications_panel_get_sidebar_widget (CcPanel *panel)
 {
   CcApplicationsPanel *self = CC_APPLICATIONS_PANEL (panel);
-  return GTK_WIDGET (self->sidebar_box);
+  return self->sidebar_box;
 }
 
 static void
@@ -1738,6 +1791,9 @@ cc_applications_panel_class_init (CcApplicationsPanelClass *klass)
   object_class->finalize = cc_applications_panel_finalize;
   object_class->constructed = cc_applications_panel_constructed;
   object_class->set_property = cc_applications_panel_set_property;
+
+  widget_class->root = cc_applications_panel_root;
+  widget_class->unroot = cc_applications_panel_unroot;
 
   panel_class->get_sidebar_widget = cc_applications_panel_get_sidebar_widget;
 
@@ -1763,7 +1819,6 @@ cc_applications_panel_class_init (CcApplicationsPanelClass *klass)
   gtk_widget_class_bind_template_child (widget_class, CcApplicationsPanel, handler_link_group);
   gtk_widget_class_bind_template_child (widget_class, CcApplicationsPanel, handler_row);
   gtk_widget_class_bind_template_child (widget_class, CcApplicationsPanel, handler_reset);
-  gtk_widget_class_bind_template_child (widget_class, CcApplicationsPanel, header_title);
   gtk_widget_class_bind_template_child (widget_class, CcApplicationsPanel, install_button);
   gtk_widget_class_bind_template_child (widget_class, CcApplicationsPanel, integration_section);
   gtk_widget_class_bind_template_child (widget_class, CcApplicationsPanel, launch_button);
