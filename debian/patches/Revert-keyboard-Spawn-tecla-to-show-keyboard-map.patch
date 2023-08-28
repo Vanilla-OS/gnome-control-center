@@ -11,10 +11,10 @@ This reverts commit 4e340b76026ffe564941bcc7cfa8f7d2f09b2bc8
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/panels/keyboard/cc-input-list-box.c b/panels/keyboard/cc-input-list-box.c
-index 225f6cf..2a0222c 100644
+index fc0e320..89b66ca 100644
 --- a/panels/keyboard/cc-input-list-box.c
 +++ b/panels/keyboard/cc-input-list-box.c
-@@ -239,10 +239,10 @@ row_layout_cb (CcInputListBox *self,
+@@ -240,10 +240,10 @@ row_layout_cb (CcInputListBox *self,
    layout_variant = cc_input_source_get_layout_variant (source);
  
    if (layout_variant && layout_variant[0])
