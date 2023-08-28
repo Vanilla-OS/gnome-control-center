@@ -1,4 +1,4 @@
-gnome-control-center (1:45~rc-1ubuntu1) UNRELEASED; urgency=medium
+gnome-control-center (1:45~rc-1ubuntu1) mantic; urgency=medium
 
   * Merge with Debian. Remaining changes:
     + Add gnome-control-center-faces package to share with unity-control-center
@@ -52,7 +52,7 @@ gnome-control-center (1:45~rc-1ubuntu1) UNRELEASED; urgency=medium
       - panels-mouse-Do-not-bind-sensitivity-to-touch-pad-setting.patch
   * Refresh patches
 
- -- Jeremy Bícha <jbicha@ubuntu.com>  Mon, 28 Aug 2023 07:46:45 -0400
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Mon, 28 Aug 2023 15:13:49 -0400
 
 gnome-control-center (1:45~rc-1) unstable; urgency=medium
 
