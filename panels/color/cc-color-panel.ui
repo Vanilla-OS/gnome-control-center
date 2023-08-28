@@ -402,125 +402,137 @@
     </action-widgets>
   </object>
   <template class="CcColorPanel" parent="CcPanel">
-    <child type="content">
-      <object class="GtkScrolledWindow" id="dialog_scroll">
-        <child>
-          <object class="AdwClamp">
-            <property name="margin_top">32</property>
-            <property name="margin_bottom">32</property>
-            <property name="margin_start">12</property>
-            <property name="margin_end">12</property>
+    <property name="child">
+      <object class="AdwToolbarView">
+        <child type="top">
+          <object class="AdwHeaderBar"/>
+        </child>
+
+        <property name="content">
+          <object class="GtkScrolledWindow" id="dialog_scroll">
             <child>
-              <object class="GtkBox">
-                <property name="orientation">vertical</property>
-                <property name="spacing">12</property>
-                <property name="hexpand">True</property>
+              <object class="AdwClamp">
+                <property name="margin_top">32</property>
+                <property name="margin_bottom">32</property>
+                <property name="margin_start">12</property>
+                <property name="margin_end">12</property>
                 <child>
-                  <object class="GtkBox" id="hbox3">
-                    <child>
-                      <object class="AdwPreferencesGroup" id="pref_group_devices"/>
-                    </child>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkBox" id="box_devices">
+                  <object class="GtkBox">
                     <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <property name="hexpand">True</property>
                     <child>
-                      <object class="GtkListBox" id="list_box">
-                        <property name="activate-on-single-click">False</property>
-                        <property name="selection-mode">single</property>
+                      <object class="GtkBox" id="hbox3">
+                        <child>
+                          <object class="AdwPreferencesGroup" id="pref_group_devices"/>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkBox" id="box_devices">
+                        <property name="orientation">vertical</property>
+                        <child>
+                          <object class="GtkListBox" id="list_box">
+                            <property name="activate-on-single-click">False</property>
+                            <property name="selection-mode">single</property>
+                            <style>
+                              <class name="boxed-list" />
+                            </style>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkBox" id="toolbar_devices">
+                            <property name="visible">False</property>
+                            <property name="margin_top">6</property>
+                            <property name="spacing">6</property>
+                            <child>
+                              <object class="GtkBox" id="left_button_group_box">
+                                <property name="halign">start</property>
+                                <property name="hexpand">True</property>
+                                <style>
+                                  <class name="linked" />
+                                </style>
+                                <child>
+                                  <object class="GtkButton" id="toolbutton_device_default">
+                                    <property name="label" translatable="yes">_Set for all users</property>
+                                    <property name="has_tooltip">True</property>
+                                    <property name="tooltip_text" translatable="yes">Set this profile for all users on this computer</property>
+                                    <property name="use_underline">True</property>
+                                    <property name="can-shrink">True</property>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="toolbutton_device_enable">
+                                    <property name="label" translatable="yes">_Enable</property>
+                                    <property name="has_tooltip">True</property>
+                                    <property name="tooltip_markup" translatable="yes">Set this profile for all users on this computer</property>
+                                    <property name="tooltip_text" translatable="yes">Set this profile for all users on this computer</property>
+                                    <property name="use_underline">True</property>
+                                    <property name="can-shrink">True</property>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkBox" id="right_button_group_box">
+                                <style>
+                                  <class name="linked" />
+                                </style>
+                                <child>
+                                  <object class="GtkButton" id="toolbutton_profile_add">
+                                    <property name="label" translatable="yes">_Add profile</property>
+                                    <property name="use_underline">True</property>
+                                    <property name="can-shrink">True</property>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="toolbutton_device_calibrate">
+                                    <property name="label" translatable="yes">_Calibrate…</property>
+                                    <property name="has_tooltip">True</property>
+                                    <property name="tooltip_text" translatable="yes">Calibrate the device</property>
+                                    <property name="use_underline">True</property>
+                                    <property name="can-shrink">True</property>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="toolbutton_profile_remove">
+                                    <property name="label" translatable="yes">_Remove profile</property>
+                                    <property name="use_underline">True</property>
+                                    <property name="can-shrink">True</property>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="toolbutton_profile_view">
+                                    <property name="label" translatable="yes">_View details</property>
+                                    <property name="use_underline">True</property>
+                                    <property name="can-shrink">True</property>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="label_no_devices">
+                        <property name="label" translatable="yes">Unable to detect any devices that can be color managed</property>
                         <style>
-                          <class name="boxed-list" />
+                          <class name="dim-label"/>
                         </style>
+                        <attributes>
+                          <attribute name="weight" value="bold"/>
+                        </attributes>
                       </object>
                     </child>
-                    <child>
-                      <object class="GtkBox" id="toolbar_devices">
-                        <property name="visible">False</property>
-                        <property name="margin_top">6</property>
-                        <property name="margin_bottom">6</property>
-                        <property name="margin_start">6</property>
-                        <property name="margin_end">6</property>
-                        <child>
-                          <object class="GtkBox" id="left_button_group_box">
-                            <property name="halign">start</property>
-                            <property name="hexpand">True</property>
-                            <style>
-                              <class name="linked" />
-                            </style>
-                            <child>
-                              <object class="GtkButton" id="toolbutton_device_default">
-                                <property name="label" translatable="yes">_Set for all users</property>
-                                <property name="has_tooltip">True</property>
-                                <property name="tooltip_text" translatable="yes">Set this profile for all users on this computer</property>
-                                <property name="use_underline">True</property>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkButton" id="toolbutton_device_enable">
-                                <property name="label" translatable="yes">_Enable</property>
-                                <property name="has_tooltip">True</property>
-                                <property name="tooltip_markup" translatable="yes">Set this profile for all users on this computer</property>
-                                <property name="tooltip_text" translatable="yes">Set this profile for all users on this computer</property>
-                                <property name="use_underline">True</property>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkBox" id="right_button_group_box">
-                            <style>
-                              <class name="linked" />
-                            </style>
-                            <child>
-                              <object class="GtkButton" id="toolbutton_profile_add">
-                                <property name="label" translatable="yes">_Add profile</property>
-                                <property name="use_underline">True</property>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkButton" id="toolbutton_device_calibrate">
-                                <property name="label" translatable="yes">_Calibrate…</property>
-                                <property name="has_tooltip">True</property>
-                                <property name="tooltip_text" translatable="yes">Calibrate the device</property>
-                                <property name="use_underline">True</property>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkButton" id="toolbutton_profile_remove">
-                                <property name="label" translatable="yes">_Remove profile</property>
-                                <property name="use_underline">True</property>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkButton" id="toolbutton_profile_view">
-                                <property name="label" translatable="yes">_View details</property>
-                                <property name="use_underline">True</property>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkLabel" id="label_no_devices">
-                    <property name="label" translatable="yes">Unable to detect any devices that can be color managed</property>
-                    <style>
-                      <class name="dim-label"/>
-                    </style>
-                    <attributes>
-                      <attribute name="weight" value="bold"/>
-                    </attributes>
                   </object>
                 </child>
               </object>
             </child>
           </object>
-        </child>
+        </property>
       </object>
-    </child>
+    </property>
   </template>
   <object class="GtkListStore" id="liststore_assign">
     <columns>
@@ -665,20 +677,6 @@
     <widgets>
       <widget name="label_assign_warning"/>
       <widget name="scrolledwindow_assign"/>
-    </widgets>
-  </object>
-  <object class="GtkSizeGroup" id="sizegroup_buttons">
-    <widgets>
-      <widget name="toolbutton_profile_add"/>
-      <widget name="toolbutton_device_calibrate"/>
-      <widget name="toolbutton_profile_remove"/>
-      <widget name="toolbutton_profile_view"/>
-    </widgets>
-  </object>
-  <object class="GtkSizeGroup" id="sizegroup_buttons_enable">
-    <widgets>
-      <widget name="toolbutton_device_default"/>
-      <widget name="toolbutton_device_enable"/>
     </widgets>
   </object>
   <object class="GtkSizeGroup" id="sizegroup_combos"/>
