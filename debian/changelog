@@ -1,3 +1,67 @@
+gnome-control-center (1:45~rc-1ubuntu1) UNRELEASED; urgency=medium
+
+  * Merge with Debian. Remaining changes:
+    + Add gnome-control-center-faces package to share with unity-control-center
+    + Install apport hook
+    + debian/control.in:
+      - Build-Depend on libwhoopsie-preferences-dev
+      - Depend on language-selector-gnome, system-config-printer &
+        whoopsie-preferences
+      - Depend on libgtk-4-media-gstreamer for Mouse & Touchpad art
+        (LP: #2011849)
+      - Don't depend on desktop-base
+      - Recommend ibus
+      - Suggest instead of recommend gnome-user-share & realmd
+      - Don't recommend malcontent-gui or system-config-printer-common
+      - Don't recommend libnss-myhostname since we use systemd-resolved
+    + debian/gnome-control-center-data.install:
+      - Don't install gnome-control-center.pkla since we use
+        policykit-desktop-privileges instead
+      - Install additional assets used by unity-control-center
+    * debian/ubuntu-logo-icon.png, debian/source/include-binaries,
+      debian/gnome-control-center-data.install: Include an Ubuntu logo
+    * debian/gnome-control-center-data.links:
+      - Link audio-speaker-center* to audio-speaker-mono* so that an
+        icon is shown in the test speaker panel. (LP: #1704002)
+    + debian/rules: Enable whoospie integration
+    + Add patches:
+      - keyboard-For-xkb-options-have-Layout-default-toggle-and-N.patch
+      - keyboard-Avoid-modifying-xkb-options-when-user-changes-n.patch
+      - u/keyboard-Add-launch-terminal-shortcut.patch
+      - u/sound-Allow-volume-to-be-set-above-100.patch
+      - u/Allow-tweaking-some-settings-for-Ubuntu-Dock.patch
+      - u/background-Allow-configuring-the-ubuntu-accent-color.patch
+      - u/multitasking-panel-Sync-workspace-and-monitor-isolation-d.patch
+      - u/multitasking-panel-Sync-workspace-isolation-setting-on-ti.patch
+      - u/Modify-Mulitasking-assets-for-accent-colors.patch
+      - u/lock-Add-Lock-Screen-on-Suspend-option.patch
+      - u/region-Add-Language-Selector-button.patch
+      - u/Adapts-the-region-capplet-and-the-language-chooser-in-the.patch
+      - u/notifications-Handle-.desktop-files-that-got-renamed.patch
+      - u/shell-Change-the-default-height-so-all-category-are-on-sc.patch
+      - u/connectivity-add-network-connectivity-checking-toggle.patch
+      - u/diagnostics-Add-Whoopsie-support.patch
+      - u/online-accounts-Hide-window-after-adding-an-online-accoun.patch
+      - u/display-Support-UI-scaled-logical-monitor-mode.patch
+      - u/Disable-non-working-camera-microphones-panels.patch
+      - u/info-overview-Show-updates-in-software-propeties-instead-.patch
+      - u/sound-Add-a-button-to-select-the-default-theme.patch
+      - u/applications-Launch-snap-store-if-it-is-installed.patch
+      - u/display-Allow-fractional-scaling-to-be-enabled.patch
+      - u/mouse-Add-animations-following-the-accent-colors.patch
+      - panels-mouse-Do-not-bind-sensitivity-to-touch-pad-setting.patch
+  * Refresh patches
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Mon, 28 Aug 2023 07:46:45 -0400
+
+gnome-control-center (1:45~rc-1) unstable; urgency=medium
+
+  * New upstream release
+  * Refresh patches
+  * Release to unstable
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Mon, 28 Aug 2023 07:43:46 -0400
+
 gnome-control-center (1:45~beta-1ubuntu2) mantic; urgency=medium
 
   * Use Ubuntu's version of debian/control.in

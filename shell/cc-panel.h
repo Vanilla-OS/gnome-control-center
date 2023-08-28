@@ -46,7 +46,7 @@ typedef void (*CcPanelStaticInitFunc) (void);
 
 
 #define CC_TYPE_PANEL (cc_panel_get_type())
-G_DECLARE_DERIVABLE_TYPE (CcPanel, cc_panel, CC, PANEL, AdwBin)
+G_DECLARE_DERIVABLE_TYPE (CcPanel, cc_panel, CC, PANEL, AdwNavigationPage)
 
 /**
  * CcPanelVisibility:
@@ -75,11 +75,11 @@ G_BEGIN_DECLS
 struct _CcPanelClass
 {
   /*< private >*/
-  AdwBinClass   parent_class;
+  AdwNavigationPageClass parent_class;
 
   const gchar* (*get_help_uri)       (CcPanel *panel);
 
-  GtkWidget*   (*get_sidebar_widget) (CcPanel *panel);
+  AdwNavigationPage*   (*get_sidebar_widget) (CcPanel *panel);
 };
 
 CcShell*      cc_panel_get_shell          (CcPanel     *panel);
@@ -88,21 +88,9 @@ GPermission*  cc_panel_get_permission     (CcPanel     *panel);
 
 const gchar*  cc_panel_get_help_uri       (CcPanel     *panel);
 
-GtkWidget*    cc_panel_get_sidebar_widget (CcPanel     *panel);
+AdwNavigationPage* cc_panel_get_sidebar_widget (CcPanel     *panel);
 
 GCancellable *cc_panel_get_cancellable    (CcPanel     *panel);
-
-gboolean      cc_panel_get_folded         (CcPanel     *panel);
-
-GtkWidget*    cc_panel_get_content        (CcPanel     *panel);
-
-void          cc_panel_set_content        (CcPanel     *panel,
-                                           GtkWidget   *content);
-
-GtkWidget*    cc_panel_get_titlebar       (CcPanel     *panel);
-
-void          cc_panel_set_titlebar       (CcPanel     *panel,
-                                           GtkWidget   *titlebar);
 
 void          cc_panel_deactivate         (CcPanel     *panel);
 
