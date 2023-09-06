@@ -1,3 +1,10 @@
+gnome-control-center (1:45~rc-2) unstable; urgency=medium
+
+  * Drop patch reverting use of Tecla, the new GTK4 keyboard layout viewer
+  * Depend on tecla instead of gkbd-capplet
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Wed, 06 Sep 2023 11:41:09 -0400
+
 gnome-control-center (1:45~rc-1) unstable; urgency=medium
 
   * New upstream release
