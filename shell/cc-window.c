@@ -429,7 +429,7 @@ on_split_view_collapsed_changed_cb (CcWindow *self)
   selection_mode = collapsed ? GTK_SELECTION_NONE : GTK_SELECTION_SINGLE;
   cc_panel_list_set_selection_mode (self->panel_list, selection_mode);
 
-  if (collapsed && adw_navigation_view_get_visible_page (self->sidebar_view) == self->main_sidebar_page)
+  if (collapsed && self->current_panel && adw_navigation_view_get_visible_page (self->sidebar_view) == self->main_sidebar_page)
     {
       AdwNavigationPage *sidebar_widget;
       sidebar_widget = cc_panel_get_sidebar_widget (CC_PANEL (self->current_panel));
@@ -515,7 +515,12 @@ cc_window_set_active_panel_from_id (CcShell      *shell,
                                     GVariant     *parameters,
                                     GError      **error)
 {
-  return set_active_panel_from_id (CC_WINDOW (shell), start_id, parameters, TRUE, TRUE, error);
+  CcWindow *self = CC_WINDOW (shell);
+
+  g_return_val_if_fail (self != NULL, FALSE);
+
+  cc_panel_list_center_activated_row (self->panel_list, TRUE);
+  return set_active_panel_from_id (self, start_id, parameters, TRUE, TRUE, error);
 }
 
 static GtkWidget *
@@ -628,7 +633,10 @@ maybe_load_last_panel (CcWindow *self)
 
   /* select the last used panel, if any, or the first visible panel */
   if (id != NULL && cc_shell_model_has_panel (self->store, id))
-    cc_panel_list_set_active_panel (self->panel_list, id);
+    {
+      cc_panel_list_center_activated_row (self->panel_list, TRUE);
+      cc_panel_list_set_active_panel (self->panel_list, id);
+    }
   else
     cc_panel_list_activate (self->panel_list);
 }
