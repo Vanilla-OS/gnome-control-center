@@ -1,3 +1,9 @@
+gnome-control-center (1:45.0-1) UNRELEASED; urgency=medium
+
+  * New upstream release
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Fri, 15 Sep 2023 16:17:40 -0400
+
 gnome-control-center (1:45~rc-2) unstable; urgency=medium
 
   * Drop patch reverting use of Tecla, the new GTK4 keyboard layout viewer
