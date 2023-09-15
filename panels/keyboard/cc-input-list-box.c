@@ -240,12 +240,13 @@ row_layout_cb (CcInputListBox *self,
   layout_variant = cc_input_source_get_layout_variant (source);
 
   if (layout_variant && layout_variant[0])
-    commandline = g_strdup_printf ("tecla \"%s+%s\"",
+    commandline = g_strdup_printf (KEYBOARD_PREVIEWER_EXEC " \"%s+%s\"",
 				   layout, layout_variant);
   else
-    commandline = g_strdup_printf ("tecla %s",
+    commandline = g_strdup_printf (KEYBOARD_PREVIEWER_EXEC " %s",
 				   layout);
 
+  g_debug ("Launching keyboard previewer with command line: '%s'\n", commandline);
   g_spawn_command_line_async (commandline, NULL);
 }
 
@@ -459,7 +460,7 @@ set_input_settings (CcInputListBox *self)
    * and we don't need to do anything extra.
    */
   if (g_settings_get_user_value (self->input_settings, KEY_MRU_SOURCES) == NULL)
-    g_settings_set_value (self->input_settings, KEY_MRU_SOURCES, value);
+    g_settings_set_value (self->input_settings, KEY_MRU_SOURCES, previous_value);
 
   g_variant_unref (value);
   g_variant_unref (previous_value);

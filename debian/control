@@ -7,7 +7,7 @@ Section: gnome
 Priority: optional
 Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
 XSBC-Original-Maintainer: Debian GNOME Maintainers <pkg-gnome-maintainers@lists.alioth.debian.org>
-Uploaders: Amin Bandali <bandali@ubuntu.com>, Jeremy Bícha <jbicha@ubuntu.com>, Marco Trevisan (Treviño) <marco@ubuntu.com>
+Uploaders: Jeremy Bícha <jbicha@ubuntu.com>
 Build-Depends: debhelper-compat (= 13),
                dh-sequence-gnome (>= 0.22.2),
                libaccountsservice-dev (>= 0.6.39),
@@ -61,6 +61,7 @@ Build-Depends: debhelper-compat (= 13),
                meson (>= 0.57.0),
                polkitd,
                shared-mime-info,
+               tecla,
                tzdata <!nocheck>,
                xvfb,
                python3-dbusmock,
@@ -87,6 +88,7 @@ Depends: ${misc:Depends},
          language-selector-gnome (>= 0.179~),
          libgtk-4-media-gstreamer,
          whoopsie-preferences,
+         tecla (>= 45~rc),
          webp-pixbuf-loader
 Recommends: cups-pk-helper,
             fwupd [linux-any],
@@ -94,7 +96,6 @@ Recommends: cups-pk-helper,
             gnome-online-accounts (>= 3.25.3),
             gnome-remote-desktop (>= 42),
             gnome-user-docs,
-            gkbd-capplet,
             ibus,
             iso-codes,
             libcanberra-pulse,
