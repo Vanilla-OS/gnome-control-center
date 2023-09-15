@@ -1,6 +1,6 @@
 project(
   'gnome-control-center', 'c',
-        version : '45.rc',
+        version : '45.0',
         license : 'GPL2+',
   meson_version : '>= 0.57.0'
 )
@@ -148,6 +148,19 @@ if libadwaita_is_subproject
     ],
   )
   libadwaita_dep = libadwaita.get_variable('libadwaita_dep')
+endif
+
+tecla_dep = dependency(
+  'tecla',
+  required: false
+)
+
+# Needs to be a subproject since tecla does not declare dependencies
+tecla_is_subproject = not tecla_dep.found()
+if tecla_is_subproject
+  tecla = subproject(
+    'tecla'
+  )
 endif
 
 accounts_dep = dependency('accountsservice', version: '>= 0.6.39')
