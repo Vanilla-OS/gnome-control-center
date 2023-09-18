@@ -1,4 +1,4 @@
-gnome-control-center (1:45.0-1ubuntu1) UNRELEASED; urgency=medium
+gnome-control-center (1:45.0-1ubuntu1) mantic; urgency=medium
 
   * Merge with Debian (LP: #2034579). Remaining changes:
     + Add gnome-control-center-faces package to share with unity-control-center
@@ -50,8 +50,9 @@ gnome-control-center (1:45.0-1ubuntu1) UNRELEASED; urgency=medium
       - u/display-Allow-fractional-scaling-to-be-enabled.patch
       - u/mouse-Add-animations-following-the-accent-colors.patch
       - panels-mouse-Do-not-bind-sensitivity-to-touch-pad-setting.patch
+  * Fix missing headerbar in Ubuntu Desktop page (LP: #2033658)
 
- -- Jeremy Bícha <jbicha@ubuntu.com>  Wed, 13 Sep 2023 18:38:31 -0400
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Mon, 18 Sep 2023 14:23:05 -0400
 
 gnome-control-center (1:45.0-1) unstable; urgency=medium
 
