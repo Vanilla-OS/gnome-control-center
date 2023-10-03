@@ -1,3 +1,4 @@
+gitlab-fix-vpn.patch
 keyboard-For-xkb-options-have-Layout-default-toggle-and-N.patch
 keyboard-Avoid-modifying-xkb-options-when-user-changes-n.patch
 debian/Expose-touchpad-settings-if-synaptics-is-in-use.patch
