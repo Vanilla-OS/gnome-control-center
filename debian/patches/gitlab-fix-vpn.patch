@@ -16,6 +16,8 @@ configuration. We need to update the configuration first, then only bail
 before proceeding to update the device, not sooner.
 
 Fix #2668
+
+Origin: upstream, after 45.0
 ---
  .../connection-editor/net-connection-editor.c | 21 ++++++++++++-------
  1 file changed, 13 insertions(+), 8 deletions(-)
