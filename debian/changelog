@@ -1,10 +1,10 @@
-gnome-control-center (1:45.0-1ubuntu3) UNRELEASED; urgency=medium
+gnome-control-center (1:45.0-1ubuntu3) mantic; urgency=medium
 
   * d/p/u/Disable-non-working-camera-microphones-panels.patch:
     - fix the patch to not disable the entire privacy->devices section
       and restore access to the thunderbolt and security panels (lp: #2038907)
 
- -- Sebastien Bacher <seb128@ubuntu.com>  Tue, 10 Oct 2023 11:39:42 +0200
+ -- Sebastien Bacher <seb128@ubuntu.com>  Tue, 10 Oct 2023 11:50:37 +0200
 
 gnome-control-center (1:45.0-1ubuntu2) mantic; urgency=medium
 
