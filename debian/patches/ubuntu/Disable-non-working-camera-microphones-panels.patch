@@ -14,15 +14,23 @@ here and the Zoom snap still works and it isn't listed as an app
  panels/privacy/cc-privacy-panel.ui | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/panels/privacy/cc-privacy-panel.ui b/panels/privacy/cc-privacy-panel.ui
-index f60fc2c..add5810 100644
---- a/panels/privacy/cc-privacy-panel.ui
-+++ b/panels/privacy/cc-privacy-panel.ui
-@@ -76,6 +76,7 @@
-                     <child>
-                       <object class="AdwPreferencesGroup">
-                         <property name="title" translatable="yes">Devices</property>
-+                        <property name="visible">False</property>
- 
-                         <child>
+Index: gnome-control-center/panels/privacy/cc-privacy-panel.ui
+===================================================================
+--- gnome-control-center.orig/panels/privacy/cc-privacy-panel.ui	2023-10-10 11:33:09.189278433 +0200
++++ gnome-control-center/panels/privacy/cc-privacy-panel.ui	2023-10-10 11:38:37.078359292 +0200
+@@ -93,6 +93,7 @@
                            <object class="CcListRow">
+                             <property name="title" translatable="yes">_Cameras</property>
+                             <property name="subtitle" translatable="yes">Control camera access</property>
++                            <property name="visible">False</property>
+                             <property name="icon-name">camera-symbolic</property>
+                             <property name="use-underline">True</property>
+                             <property name="show-arrow">True</property>
+@@ -105,6 +106,7 @@
+                           <object class="CcListRow">
+                             <property name="title" translatable="yes">_Microphones</property>
+                             <property name="subtitle" translatable="yes">Control microphone access</property>
++                            <property name="visible">False</property>
+                             <property name="icon-name">microphone-symbolic</property>
+                             <property name="use-underline">True</property>
+                             <property name="show-arrow">True</property>
