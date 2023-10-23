@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amberol\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-control-center/issues\n"
-"POT-Creation-Date: 2023-08-28 08:12+0000\n"
-"PO-Revision-Date: 2023-08-28 13:09+0330\n"
+"POT-Creation-Date: 2023-09-23 15:25+0000\n"
+"PO-Revision-Date: 2023-09-24 16:05+0330\n"
 "Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Farsi\n"
 "Language: fa\n"
@@ -75,7 +75,7 @@ msgstr "سامانه پرونده"
 
 #: panels/applications/cc-applications-panel.c:847
 #: panels/keyboard/01-launchers.xml.in:6
-#: shell/appdata/org.gnome.Settings.appdata.xml.in:7 shell/cc-window.c:794
+#: shell/appdata/org.gnome.Settings.appdata.xml.in:7 shell/cc-window.c:802
 #: shell/cc-window.ui:24 shell/cc-window.ui:31 shell/org.gnome.Settings.desktop.in:3
 msgid "Settings"
 msgstr "تنظیمات"
@@ -838,7 +838,7 @@ msgstr "درون‌ریزی _پرونده…"
 
 #: panels/color/cc-color-panel.ui:390 panels/keyboard/cc-input-chooser.ui:18
 #: panels/keyboard/cc-keyboard-shortcut-editor.ui:41
-#: panels/network/connection-editor/net-connection-editor.c:606
+#: panels/network/connection-editor/net-connection-editor.c:610
 #: panels/printers/new-printer-dialog.ui:91
 #: panels/user-accounts/cc-add-user-dialog.ui:39
 msgid "_Add"
@@ -2647,7 +2647,7 @@ msgstr ""
 "جزییات خطا: مدیر شبکه در حال اجرا نیست."
 
 #: panels/network/cc-network-panel.ui:46 panels/network/cc-network-panel.ui:80
-#: panels/network/connection-editor/net-connection-editor.c:694
+#: panels/network/connection-editor/net-connection-editor.c:698
 msgid "VPN"
 msgstr "وی‌پی‌ان"
 
@@ -2773,33 +2773,33 @@ msgid "Scan to Connect"
 msgstr "برای اتّصال بپویید"
 
 #. TRANSLATORS: This happens when the connection name does not contain the SSID.
-#: panels/network/cc-wifi-connection-row.c:222
+#: panels/network/cc-wifi-connection-row.c:223
 #, c-format
 msgctxt "Wi-Fi Connection"
 msgid "%s (SSID: %s)"
 msgstr "%s (SSID: %s)"
 
-#: panels/network/cc-wifi-connection-row.c:282
+#: panels/network/cc-wifi-connection-row.c:283
 msgid "Insecure network (WEP)"
 msgstr "شبکهٔ ناامن (WEP)"
 
-#: panels/network/cc-wifi-connection-row.c:286
+#: panels/network/cc-wifi-connection-row.c:287
 msgid "Secure network (WPA)"
 msgstr "شبکهٔ امن (WPA)"
 
-#: panels/network/cc-wifi-connection-row.c:290
+#: panels/network/cc-wifi-connection-row.c:291
 msgid "Secure network (WPA2)"
 msgstr "شبکهٔ امن (WPA2)"
 
-#: panels/network/cc-wifi-connection-row.c:294
+#: panels/network/cc-wifi-connection-row.c:295
 msgid "Secure network (WPA3)"
 msgstr "شبکهٔ امن (WPA3)"
 
-#: panels/network/cc-wifi-connection-row.c:298
+#: panels/network/cc-wifi-connection-row.c:299
 msgid "Secure network"
 msgstr "شبکهٔ امن"
 
-#: panels/network/cc-wifi-connection-row.c:327
+#: panels/network/cc-wifi-connection-row.c:328
 #, c-format
 msgid "Signal strength %d%%"
 msgstr "قدرت سیگنال %Id٪"
@@ -3242,7 +3242,7 @@ msgid "WPA3 Personal"
 msgstr "WPA3 شخصی"
 
 #: panels/network/connection-editor/ce-page-wireguard.c:106
-#: panels/network/connection-editor/net-connection-editor.c:854
+#: panels/network/connection-editor/net-connection-editor.c:858
 msgid "WireGuard"
 msgstr "وایرگارد"
 
@@ -3425,32 +3425,32 @@ msgstr "خودکار، فقط DHCP"
 msgid "Prefix"
 msgstr "پیشوند"
 
-#: panels/network/connection-editor/net-connection-editor.c:368
+#: panels/network/connection-editor/net-connection-editor.c:372
 #, c-format
 msgid "Unable to open connection editor: %s"
 msgstr "ناتوان در گودن ویرایشگر اتّصال: %s"
 
-#: panels/network/connection-editor/net-connection-editor.c:387
+#: panels/network/connection-editor/net-connection-editor.c:391
 msgid "New Profile"
 msgstr "نمایهٔ جدید"
 
-#: panels/network/connection-editor/net-connection-editor.c:454
+#: panels/network/connection-editor/net-connection-editor.c:458
 #, c-format
 msgid "Invalid setting %s: %s"
 msgstr "تنظیم نامعتبر %s: %s"
 
-#: panels/network/connection-editor/net-connection-editor.c:457
+#: panels/network/connection-editor/net-connection-editor.c:461
 #, c-format
 msgid "Invalid setting %s"
 msgstr "تنظیم نامعتبر %s"
 
-#: panels/network/connection-editor/net-connection-editor.c:735
+#: panels/network/connection-editor/net-connection-editor.c:739
 #, c-format
 msgid "Invalid VPN configuration file"
 msgstr "پروندهٔ پیکربندی وی‌پی‌ان نامعتبر"
 
 #. Translators: VPN add dialog Wireguard description
-#: panels/network/connection-editor/net-connection-editor.c:842
+#: panels/network/connection-editor/net-connection-editor.c:846
 msgid ""
 "Free and open-source VPN solution designed for ease of use, high speed performance "
 "and low attack surface."
@@ -3458,11 +3458,11 @@ msgstr ""
 "راهکار نرم‌افزار آزاد VPN طرّاحی شده برای سادگی استفاده، کارایی با سرعت بالا و سطح "
 "حملهٔ پایین."
 
-#: panels/network/connection-editor/net-connection-editor.c:878
+#: panels/network/connection-editor/net-connection-editor.c:882
 msgid "Import from file…"
 msgstr "درون ریزی از پرونده…"
 
-#: panels/network/connection-editor/net-connection-editor.c:904
+#: panels/network/connection-editor/net-connection-editor.c:908
 msgid "Add VPN"
 msgstr "افزودن وی‌پی‌ان"
 
@@ -3570,9 +3570,78 @@ msgstr "_افزودن مسیرهای همتا"
 msgid "_Peers"
 msgstr "_همتاها"
 
+#: panels/network/connection-editor/wireguard-page.ui:235
+msgid "Add WireGuard peer"
+msgstr "افزودن نقطهٔ وایرگارد"
+
 #: panels/network/connection-editor/wireguard-page.ui:257
 msgid "No peers set up"
 msgstr "همتایی برپا نشده"
+
+#: panels/network/connection-editor/wireguard-peer.ui:88
+msgid "_Endpoint"
+msgstr "_نقطهٔ نهایی"
+
+#: panels/network/connection-editor/wireguard-peer.ui:98
+msgid "An endpoint IP or hostname, followed by a colon, and then a port number."
+msgstr "آی‌پی یا نام میزبان، دونقطه و سپس شمارهٔ درگاه."
+
+#: panels/network/connection-editor/wireguard-peer.ui:110
+msgid "_Public key"
+msgstr "_کلید عمومی"
+
+#: panels/network/connection-editor/wireguard-peer.ui:120
+msgid "A base64 public key calculated by 'wg pubkey' from a private key."
+msgstr "کلید عمومی base64 محاسبه شده با wg pubkey از یک کلید خصوصی."
+
+#: panels/network/connection-editor/wireguard-peer.ui:135
+msgid "_Pre-shared key"
+msgstr "_کلید هم‌رسانده"
+
+#: panels/network/connection-editor/wireguard-peer.ui:145
+msgid ""
+"A base64 preshared key generated by 'wg genpsk'. Optional, and may be omitted. "
+"Adds an additional layer of symmetric-key cryptography to be mixed into the "
+"already existing public-key cryptography, for post-quantum resistance."
+msgstr ""
+"کلید هم‌رساندهٔ base64 محاسبه شده با wg genpsk. اختیاری و دارای احتمال حذف. برای "
+"مقاومت در برابر پساکوانتوم، لایه‌ای اضافی از رمزنگاری کلید متفاررن را به رمزنگاری "
+"موجود کلید عمومی می‌افزاید."
+
+#: panels/network/connection-editor/wireguard-peer.ui:162
+msgid "Allowed _IP addresses"
+msgstr "نشانی‌های آی‌پی _مجاز"
+
+#: panels/network/connection-editor/wireguard-peer.ui:172
+msgid ""
+"Comma-separated list of IP (v4 or v6) addresses with CIDR masks from which "
+"incoming traffic for this peer is allowed and to which outgoing traffic for this "
+"peer is directed."
+msgstr ""
+"سیاهه‌ای جدا شده با کاما از نشانی‌های آی‌پی (ن۴ یا ن۶) با نقاب‌های CIDR که شدآمد ورودی "
+"برای این نقطه از آن مجاز بوده و شدآمد خروجی برای این نقطه به آن هدایت می‌شود."
+
+#: panels/network/connection-editor/wireguard-peer.ui:184
+msgid "_Persistent keepalive"
+msgstr "زنده‌نگه‌دار _ماندگار"
+
+#: panels/network/connection-editor/wireguard-peer.ui:197
+msgid ""
+"How often to send an authenticated empty packet to the peer for the purpose of "
+"keeping a stateful firewall or NAT mapping valid. This is optional and not "
+"recommended outside of specific setups."
+msgstr ""
+"هر چند وقت یک بار بستهٔ خالی هویت‌سنجیده‌ای با هدف معتبر نگه داشتن دیوار آتش حالت‌دار "
+"یا نگاشت NAT فرستاده شود. این مقدار اختیاری بوده و خارج از پرباسازی‌های خاص توصیه "
+"نمی‌شود."
+
+#: panels/network/connection-editor/wireguard-peer.ui:206
+msgid "seconds"
+msgstr "ثانیه"
+
+#: panels/network/connection-editor/wireguard-peer.ui:222
+msgid "Apply"
+msgstr "اعمال"
 
 #: panels/network/gnome-network-panel.desktop.in:4
 msgid "Control how you connect to the Internet"
@@ -3648,6 +3717,10 @@ msgstr "سیاست سامانه استفاده از نقطهٔ داغ را من�
 #: panels/network/net-device-wifi.c:1267
 msgid "Wireless device does not support Hotspot mode"
 msgstr "افزارهٔ بی‌سیم از حالت نقطهٔ داغ پشتیبانی نمی‌کند"
+
+#: panels/network/network-ethernet.ui:10
+msgid "Add Ethernet connection"
+msgstr "افزودن اتّصال اترنت"
 
 #: panels/network/network-mobile.ui:27 panels/wwan/cc-wwan-details-dialog.ui:237
 msgid "IMEI"
@@ -4886,7 +4959,7 @@ msgstr "دو طرفه"
 
 #: panels/printers/pp-options-dialog.c:88
 msgid "Paper Type"
-msgstr "نوع کاغذ"
+msgstr "گونهٔ کاغذ"
 
 #: panels/printers/pp-options-dialog.c:89
 msgid "Paper Source"
@@ -5410,7 +5483,7 @@ msgstr "_گزارش خودکار اشکالات"
 
 #. TRANSLATORS: secure boot refers to the system firmware security mode
 #: panels/privacy/cc-firmware-security-boot-dialog.c:72
-#: panels/privacy/cc-firmware-security-page.c:120
+#: panels/privacy/cc-firmware-security-page.c:121
 msgid "Secure Boot is Active"
 msgstr "راه‌اندازی امن فعّال است"
 
@@ -5488,7 +5561,7 @@ msgstr ""
 
 #. TRANSLATORS: in reference to firmware protection: 0/4 stars
 #: panels/privacy/cc-firmware-security-dialog.c:106
-#: panels/privacy/cc-firmware-security-page.c:537
+#: panels/privacy/cc-firmware-security-page.c:540
 msgid "Checks Failed"
 msgstr "بررسی‌ها شکست خوردند"
 
@@ -5512,7 +5585,7 @@ msgstr ""
 
 #. TRANSLATORS: in reference to firmware protection: 1/4 stars
 #: panels/privacy/cc-firmware-security-dialog.c:120
-#: panels/privacy/cc-firmware-security-page.c:544
+#: panels/privacy/cc-firmware-security-page.c:547
 msgid "Checks Passed"
 msgstr "بررسی‌ها قبول شدند"
 
@@ -5528,7 +5601,7 @@ msgstr ""
 
 #. TRANSLATORS: in reference to firmware protection: 2~4 stars
 #: panels/privacy/cc-firmware-security-dialog.c:134
-#: panels/privacy/cc-firmware-security-page.c:553
+#: panels/privacy/cc-firmware-security-page.c:556
 msgid "Protected"
 msgstr "محافظت شده"
 
@@ -5544,7 +5617,7 @@ msgstr ""
 
 #. TRANSLATORS: in reference to firmware protection: ??? stars
 #: panels/privacy/cc-firmware-security-dialog.c:145
-#: panels/privacy/cc-firmware-security-page.c:560
+#: panels/privacy/cc-firmware-security-page.c:563
 msgid "Checks Unavailable"
 msgstr "بررسی‌ها موجود نیستند"
 
@@ -5604,28 +5677,28 @@ msgstr ""
 "امنیت افزاره فقط یکی از زوایای امنیت است و وضعیت کلی امنیت سامانه و برنامه‌ها را "
 "منعکس نمی‌کند."
 
-#: panels/privacy/cc-firmware-security-page.c:121
+#: panels/privacy/cc-firmware-security-page.c:122
 msgid "Protected against malicious software when the device starts."
 msgstr "محافظت در برابر نرم‌افزارهای مخرّب هنگام آغاز به کار افزاره."
 
-#: panels/privacy/cc-firmware-security-page.c:127
+#: panels/privacy/cc-firmware-security-page.c:128
 msgid "Secure Boot has Problems"
 msgstr "راه‌اندازی امن مشکلاتی دارد"
 
-#: panels/privacy/cc-firmware-security-page.c:128
+#: panels/privacy/cc-firmware-security-page.c:129
 msgid "Some protection when the device is started."
 msgstr "برخی محافظت‌ها هنگام آغاز به کار افزاره."
 
-#: panels/privacy/cc-firmware-security-page.c:133
+#: panels/privacy/cc-firmware-security-page.c:134
 msgid "Secure Boot is Off"
 msgstr "راه‌اندازی امن خاموش است"
 
-#: panels/privacy/cc-firmware-security-page.c:134
+#: panels/privacy/cc-firmware-security-page.c:135
 msgid "No protection when the device is started."
 msgstr "بدون محافظت هنگام آغاز به کار افزاره."
 
 #. TRANSLATORS: this is to explain an event that has already happened
-#: panels/privacy/cc-firmware-security-page.c:153
+#: panels/privacy/cc-firmware-security-page.c:154
 msgid ""
 "This issue could have been caused by a change in UEFI firmware settings, an "
 "operating system configuration change, or because of malicious software on this "
@@ -5635,7 +5708,7 @@ msgstr ""
 "سیستم‌عامل یا نرم‌افزاری مخرّب روی این سامانه باشد."
 
 #. TRANSLATORS: this is to explain an event that has already happened
-#: panels/privacy/cc-firmware-security-page.c:161
+#: panels/privacy/cc-firmware-security-page.c:162
 msgid ""
 "This issue could have been caused by a change in the UEFI firmware settings, or "
 "because of malicious software on this system."
@@ -5644,7 +5717,7 @@ msgstr ""
 "سامانه باشد."
 
 #. TRANSLATORS: this is to explain an event that has already happened
-#: panels/privacy/cc-firmware-security-page.c:168
+#: panels/privacy/cc-firmware-security-page.c:169
 msgid ""
 "This issue could have been caused by an operating system configuration change, or "
 "because of malicious software on this system."
@@ -5654,39 +5727,39 @@ msgstr ""
 
 #. TRANSLATOR: this is the date in "%Y-%m-%d %H:%M:%S" format,
 #. for example: 2022-08-01 22:48:00
-#: panels/privacy/cc-firmware-security-page.c:226
+#: panels/privacy/cc-firmware-security-page.c:227
 #, c-format
 msgid "%1$s"
 msgstr "%1$s"
 
 #. TRANSLATOR: This is the text event status output when the event status is "success"
-#: panels/privacy/cc-firmware-security-page.c:232
+#: panels/privacy/cc-firmware-security-page.c:233
 msgid "Pass"
 msgstr "قبول"
 
 #. TRANSLATOR: This is the text event status output when the event status is not "success"
-#: panels/privacy/cc-firmware-security-page.c:235
+#: panels/privacy/cc-firmware-security-page.c:236
 msgid "! Fail"
 msgstr "! شکست"
 
-#: panels/privacy/cc-firmware-security-page.c:238
+#: panels/privacy/cc-firmware-security-page.c:239
 #, c-format
 msgid "(%1$s → %2$s)"
 msgstr "(%1$s ← %2$s)"
 
-#: panels/privacy/cc-firmware-security-page.c:538
+#: panels/privacy/cc-firmware-security-page.c:541
 msgid "Hardware does not pass checks."
 msgstr "سخت‌افزار آزمون‌ها را رد نمی‌کند."
 
-#: panels/privacy/cc-firmware-security-page.c:545
+#: panels/privacy/cc-firmware-security-page.c:548
 msgid "Hardware meets basic security requirements."
 msgstr "سخت‌افزار نیازمندی‌های امنیتی پایه را برآورده می‌کند."
 
-#: panels/privacy/cc-firmware-security-page.c:554
+#: panels/privacy/cc-firmware-security-page.c:557
 msgid "Hardware has a good level of protection."
 msgstr "سخت‌افزار سطح خوبی از محافظت دارد."
 
-#: panels/privacy/cc-firmware-security-page.c:561
+#: panels/privacy/cc-firmware-security-page.c:564
 msgid "Security levels are not available for this device."
 msgstr "سطوح امنیتی برای این افزاره موجود نیست."
 
@@ -6490,7 +6563,7 @@ msgstr "_کنش:"
 
 #: panels/removable-media/cc-removable-media-panel.ui:303
 msgid "_Type:"
-msgstr "_نوع:"
+msgstr "_گونه:"
 
 #: panels/removable-media/gnome-removable-media-panel.desktop.in:3
 msgid "Removable Media"
@@ -7027,7 +7100,7 @@ msgstr "بلند"
 
 #: panels/universal-access/cc-ua-mouse-page.ui:64
 msgid "Click Assist"
-msgstr "همکار کلیک"
+msgstr "همیار کلیک"
 
 #: panels/universal-access/cc-ua-mouse-page.ui:67
 msgid "_Simulated Secondary Click"
@@ -7231,7 +7304,7 @@ msgstr "نوشتن برای آزمودن"
 
 #: panels/universal-access/cc-ua-typing-page.ui:98
 msgid "Typing Assist"
-msgstr "همکار تایپ"
+msgstr "همیار نوشتن"
 
 #: panels/universal-access/cc-ua-typing-page.ui:102
 msgid "_Repeat Keys"
@@ -7784,7 +7857,7 @@ msgstr "لطفاً گذرواژهٔ دیگری انتخاب کنید."
 
 #: panels/user-accounts/cc-password-dialog.c:136
 msgid "Please type your current password again."
-msgstr "لطفاً گذرواژهٔ فعلی خود را دوباره وارد کنید."
+msgstr "لطفاً دوباره گذرواژهٔ فعلیتان را بنویسید."
 
 #: panels/user-accounts/cc-password-dialog.c:142
 msgid "Password could not be changed"
@@ -7820,7 +7893,7 @@ msgstr "هم‌اکنون یک گذرواژه تنظیم کنید"
 
 #: panels/user-accounts/cc-realm-manager.c:303
 msgid "Cannot automatically join this type of domain"
-msgstr "نمی‌توان به‌طور خودکار به این نوع از دامنه پیوست"
+msgstr "نمی‌توان به‌طور خودکار به این گونه از دامنه پیوست"
 
 #: panels/user-accounts/cc-realm-manager.c:306
 msgid "No such domain or realm found"
@@ -8004,7 +8077,7 @@ msgid ""
 msgstr ""
 "بری استفاده از ورود سازمانی، لازم است این رایانه\n"
 "در دامنه ثبت‌شده باشد. لطفاً از مدیر شبکه‌تان بخواهید\n"
-"گذرواژه‌اش را اینجا بنویسد."
+"گذرواژه‌اش را این‌جا بنویسد."
 
 #: panels/user-accounts/data/join-dialog.ui:90
 msgid "_Domain"
@@ -8102,8 +8175,8 @@ msgid ""
 "Try to avoid repeating the same type of character: you need to mix up letters, "
 "numbers and punctuation."
 msgstr ""
-"سعی کنید از تکرار یک نوع نویسه خودداری کنید: شما باید تلفیقی از حروف، اعداد و "
-"نقطه‌گذاری‌ها را بکار ببرید."
+"سعی کنید از تکرار یک گونه نویسه خودداری کنید: باید حروف، اعداد و نشانه‌ها را ترکیب "
+"کنید."
 
 #: panels/user-accounts/pw-utils.c:126
 msgctxt "Password hint"
