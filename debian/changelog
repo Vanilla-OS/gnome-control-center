@@ -1,3 +1,25 @@
+gnome-control-center (1:45.2-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Wed, 13 Dec 2023 16:46:52 -0500
+
+gnome-control-center (1:45.1-1) unstable; urgency=medium
+
+  * New upstream release
+  * Drop patch applied in new release
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Thu, 26 Oct 2023 14:26:44 -0400
+
+gnome-control-center (1:45.0-2) unstable; urgency=medium
+
+  [ Sebastien Bacher ]
+  * debian/patches/gitlab-fix-vpn.patch:
+    - cherry pick an upstream fix for a recent regression in the VPN
+      configuration (LP: #2037011) (Closes: #1053566)
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Fri, 06 Oct 2023 09:13:49 -0400
+
 gnome-control-center (1:45.0-1ubuntu4) noble; urgency=medium
 
   * SECURITY UPDATE: SSH remote access status not displayed correctly

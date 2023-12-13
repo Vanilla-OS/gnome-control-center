@@ -24,8 +24,8 @@ msgstr ""
 "Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-control-center/"
 "issues\n"
-"POT-Creation-Date: 2023-08-25 15:55+0000\n"
-"PO-Revision-Date: 2023-08-26 11:48+0300\n"
+"POT-Creation-Date: 2023-11-21 02:58+0000\n"
+"PO-Revision-Date: 2023-11-21 14:37+0300\n"
 "Last-Translator: Artur So <arturios2005@mail.ru>\n"
 "Language-Team: Русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -34,34 +34,34 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Poedit 3.4.1\n"
 
-#: panels/applications/cc-applications-panel.c:821
+#: panels/applications/cc-applications-panel.c:823
 msgid "System Bus"
 msgstr "Системная шина"
 
-#: panels/applications/cc-applications-panel.c:821
 #: panels/applications/cc-applications-panel.c:823
-#: panels/applications/cc-applications-panel.c:836
-#: panels/applications/cc-applications-panel.c:841
+#: panels/applications/cc-applications-panel.c:825
+#: panels/applications/cc-applications-panel.c:838
+#: panels/applications/cc-applications-panel.c:843
 msgid "Full access"
 msgstr "Полный доступ"
 
-#: panels/applications/cc-applications-panel.c:823
+#: panels/applications/cc-applications-panel.c:825
 msgid "Session Bus"
 msgstr "Шина сеанса"
 
-#: panels/applications/cc-applications-panel.c:827
+#: panels/applications/cc-applications-panel.c:829
 #: panels/power/cc-power-panel.ui:81 panels/privacy/cc-bolt-page.ui:240
 #: panels/privacy/cc-bolt-page.ui:284 panels/privacy/cc-privacy-panel.ui:78
 msgid "Devices"
 msgstr "Устройства"
 
-#: panels/applications/cc-applications-panel.c:827
+#: panels/applications/cc-applications-panel.c:829
 msgid "Full access to /dev"
 msgstr "Полный доступ к /dev"
 
-#: panels/applications/cc-applications-panel.c:831
+#: panels/applications/cc-applications-panel.c:833
 #: panels/network/cc-network-panel.ui:8
 #: panels/network/gnome-network-panel.desktop.in:3
 #: panels/network/network-mobile.ui:235 panels/wwan/cc-wwan-device-page.ui:61
@@ -69,39 +69,39 @@ msgstr "Полный доступ к /dev"
 msgid "Network"
 msgstr "Сеть"
 
-#: panels/applications/cc-applications-panel.c:831
+#: panels/applications/cc-applications-panel.c:833
 msgid "Has network access"
 msgstr "Имеет доступ к сети"
 
-#: panels/applications/cc-applications-panel.c:836
 #: panels/applications/cc-applications-panel.c:838
+#: panels/applications/cc-applications-panel.c:840
 #: panels/search/cc-search-locations-dialog.c:384
 msgid "Home"
 msgstr "Домашняя папка"
 
-#: panels/applications/cc-applications-panel.c:838
-#: panels/applications/cc-applications-panel.c:843
+#: panels/applications/cc-applications-panel.c:840
+#: panels/applications/cc-applications-panel.c:845
 msgid "Read-only"
 msgstr "Только для чтения"
 
-#: panels/applications/cc-applications-panel.c:841
 #: panels/applications/cc-applications-panel.c:843
+#: panels/applications/cc-applications-panel.c:845
 msgid "File System"
 msgstr "Файловая система"
 
-#: panels/applications/cc-applications-panel.c:847
+#: panels/applications/cc-applications-panel.c:849
 #: panels/keyboard/01-launchers.xml.in:6
-#: shell/appdata/org.gnome.Settings.appdata.xml.in:7 shell/cc-window.c:794
+#: shell/appdata/org.gnome.Settings.appdata.xml.in:7 shell/cc-window.c:802
 #: shell/cc-window.ui:24 shell/cc-window.ui:31
 #: shell/org.gnome.Settings.desktop.in:3
 msgid "Settings"
 msgstr "Настройки"
 
-#: panels/applications/cc-applications-panel.c:847
+#: panels/applications/cc-applications-panel.c:849
 msgid "Can change settings"
 msgstr "Может изменять настройки"
 
-#: panels/applications/cc-applications-panel.c:849
+#: panels/applications/cc-applications-panel.c:851
 #, c-format
 msgid ""
 "<b>%s</b> requires access to the following system resources. To stop this "
@@ -110,7 +110,7 @@ msgstr ""
 "Приложение <b>%s</b> требует доступа к следующим системным ресурсам. Чтобы "
 "прекратить этот доступ, приложение должно быть удалено."
 
-#: panels/applications/cc-applications-panel.c:1191
+#: panels/applications/cc-applications-panel.c:1195
 #, c-format
 msgid "%u file and link type that is opened by the app"
 msgid_plural "%u file and link types that are opened by the app"
@@ -118,18 +118,18 @@ msgstr[0] "%u тип файла и ссылки, которые открываю
 msgstr[1] "%u типа файлов и ссылок, которые открываются приложением"
 msgstr[2] "%u типов файлов и ссылок, которые открываются приложением"
 
-#: panels/applications/cc-applications-panel.c:1198
+#: panels/applications/cc-applications-panel.c:1202
 #, c-format
 msgid "<b>%s</b> is used to open the following types of files and links."
 msgstr "<b>%s</b> используется для открытия следующих типов файлов и ссылок."
 
 #. Translators: '%s' is the formatted size, e.g. "26.2 MB"
-#: panels/applications/cc-applications-panel.c:1247
+#: panels/applications/cc-applications-panel.c:1251
 #, c-format
 msgid "%s of disk space used."
 msgstr "%s дискового пространства использовано."
 
-#: panels/applications/cc-applications-panel.c:1411
+#: panels/applications/cc-applications-panel.c:1415
 #: panels/applications/cc-applications-panel.ui:247
 #: panels/applications/gnome-applications-panel.desktop.in:3
 msgid "Apps"
@@ -879,7 +879,7 @@ msgstr "_Импортировать файл…"
 
 #: panels/color/cc-color-panel.ui:390 panels/keyboard/cc-input-chooser.ui:18
 #: panels/keyboard/cc-keyboard-shortcut-editor.ui:41
-#: panels/network/connection-editor/net-connection-editor.c:606
+#: panels/network/connection-editor/net-connection-editor.c:615
 #: panels/printers/new-printer-dialog.ui:91
 #: panels/user-accounts/cc-add-user-dialog.ui:39
 msgid "_Add"
@@ -1181,8 +1181,9 @@ msgstr "Вчера"
 
 #. Translators: This is a date format string in the style of "Feb 24".
 #: panels/common/cc-util.c:138
+#, c-format
 msgid "%b %e"
-msgstr "%-d %b"
+msgstr "%b %e"
 
 #. Translators: This is a date format string in the style of "Feb 24, 2013".
 #: panels/common/cc-util.c:143
@@ -1463,33 +1464,33 @@ msgstr ""
 msgid "_Web"
 msgstr "_Интернет"
 
-#: panels/default-apps/cc-default-apps-panel.ui:26
+#: panels/default-apps/cc-default-apps-panel.ui:27
 msgid "_Mail"
 msgstr "_Почта"
 
-#: panels/default-apps/cc-default-apps-panel.ui:33
+#: panels/default-apps/cc-default-apps-panel.ui:35
 msgid "_Calendar"
 msgstr "_Календарь"
 
-#: panels/default-apps/cc-default-apps-panel.ui:40
+#: panels/default-apps/cc-default-apps-panel.ui:43
 msgid "M_usic"
 msgstr "_Музыка"
 
-#: panels/default-apps/cc-default-apps-panel.ui:48
+#: panels/default-apps/cc-default-apps-panel.ui:52
 msgid "_Video"
 msgstr "_Видео"
 
-#: panels/default-apps/cc-default-apps-panel.ui:56
+#: panels/default-apps/cc-default-apps-panel.ui:61
 #: panels/removable-media/cc-removable-media-panel.ui:133
 msgid "_Photos"
 msgstr "_Фото"
 
 #. Translators: This is a telephone call
-#: panels/default-apps/cc-default-apps-panel.ui:65
+#: panels/default-apps/cc-default-apps-panel.ui:71
 msgid "_Calls"
 msgstr "_Звонки"
 
-#: panels/default-apps/cc-default-apps-panel.ui:73
+#: panels/default-apps/cc-default-apps-panel.ui:80
 msgid "_SMS"
 msgstr "_SMS"
 
@@ -1594,7 +1595,6 @@ msgid "Landscape (flipped)"
 msgstr "Ландшафтная (перевернутая)"
 
 #: panels/display/cc-display-settings.c:179
-#, c-format
 msgid "%.2lf Hz"
 msgstr "%.2lf Гц"
 
@@ -1672,7 +1672,7 @@ msgstr "Расписание"
 
 #: panels/display/cc-night-light-page.ui:106
 msgid "Sunset to Sunrise"
-msgstr "От заката до восхода солнца"
+msgstr "От заката до рассвета"
 
 #: panels/display/cc-night-light-page.ui:107
 msgid "Manual Schedule"
@@ -2338,28 +2338,28 @@ msgstr "Сбросить все комбинации клавиш на знач�
 msgid "Search shortcuts"
 msgstr "Поиск комбинаций клавиш"
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:49
+#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:50
 msgid "Search Shortcuts"
 msgstr "Поиск комбинаций клавиш"
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:88
+#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:89
 msgid "No keyboard shortcut found"
 msgstr "Комбинация клавиш не найдена"
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:89
+#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:90
 msgid "Try a different search."
 msgstr "Попробуйте другой поисковый запрос."
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:120
+#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:121
 msgid "Add Custom Shortcuts"
 msgstr "Добавить свою комбинацию клавиш"
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:121
+#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:122
 msgid "Set up custom shortcuts for launching apps, running scripts, and more."
 msgstr ""
 "Установка своих комбинаций для запуска приложений, сценариев и прочего."
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:126
+#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:127
 msgid "_Add Shortcut…"
 msgstr "_Добавить комбинацию…"
 
@@ -2738,7 +2738,7 @@ msgstr ""
 "Подробности ошибки: NetworkManager не запущен."
 
 #: panels/network/cc-network-panel.ui:46 panels/network/cc-network-panel.ui:80
-#: panels/network/connection-editor/net-connection-editor.c:694
+#: panels/network/connection-editor/net-connection-editor.c:703
 msgid "VPN"
 msgstr "VPN"
 
@@ -2765,7 +2765,7 @@ msgstr "Прокси"
 #: panels/network/connection-editor/ip6-page.ui:244
 #: panels/wacom/cc-wacom-page.c:657
 msgid "Automatic"
-msgstr "Автоматический"
+msgstr "Автоматически"
 
 #: panels/network/cc-net-proxy-page.c:186
 #: panels/network/cc-net-proxy-page.ui:60
@@ -2777,6 +2777,10 @@ msgstr "Вручную"
 #: panels/network/cc-net-proxy-page.ui:23
 msgid "Save"
 msgstr "Сохранить"
+
+#: panels/network/cc-net-proxy-page.ui:40
+msgid "Network Proxy"
+msgstr "Сетевой прокси"
 
 #: panels/network/cc-net-proxy-page.ui:52 panels/sound/cc-sound-panel.ui:82
 #: panels/sound/cc-sound-panel.ui:290
@@ -2867,33 +2871,33 @@ msgid "Scan to Connect"
 msgstr "Сканировать для подключения"
 
 #. TRANSLATORS: This happens when the connection name does not contain the SSID.
-#: panels/network/cc-wifi-connection-row.c:222
+#: panels/network/cc-wifi-connection-row.c:223
 #, c-format
 msgctxt "Wi-Fi Connection"
 msgid "%s (SSID: %s)"
 msgstr "%s (SSID: %s)"
 
-#: panels/network/cc-wifi-connection-row.c:282
+#: panels/network/cc-wifi-connection-row.c:283
 msgid "Insecure network (WEP)"
 msgstr "Незащищённая сеть (WEP)"
 
-#: panels/network/cc-wifi-connection-row.c:286
+#: panels/network/cc-wifi-connection-row.c:287
 msgid "Secure network (WPA)"
 msgstr "Защищённая сеть (WPA)"
 
-#: panels/network/cc-wifi-connection-row.c:290
+#: panels/network/cc-wifi-connection-row.c:291
 msgid "Secure network (WPA2)"
 msgstr "Защищённая сеть (WPA2)"
 
-#: panels/network/cc-wifi-connection-row.c:294
+#: panels/network/cc-wifi-connection-row.c:295
 msgid "Secure network (WPA3)"
 msgstr "Защищённая сеть (WPA3)"
 
-#: panels/network/cc-wifi-connection-row.c:298
+#: panels/network/cc-wifi-connection-row.c:299
 msgid "Secure network"
 msgstr "Защищённая сеть"
 
-#: panels/network/cc-wifi-connection-row.c:327
+#: panels/network/cc-wifi-connection-row.c:328
 #, c-format
 msgid "Signal strength %d%%"
 msgstr "Мощность сигнала %d%%"
@@ -3301,16 +3305,16 @@ msgstr "Идентификация"
 msgid "Delete Address"
 msgstr "Удалить адрес"
 
-#: panels/network/connection-editor/ce-page-ip4.c:419
-#: panels/network/connection-editor/ce-page-ip6.c:386
+#: panels/network/connection-editor/ce-page-ip4.c:425
+#: panels/network/connection-editor/ce-page-ip6.c:392
 msgid "Delete Route"
 msgstr "Удалить маршрут"
 
-#: panels/network/connection-editor/ce-page-ip4.c:763
+#: panels/network/connection-editor/ce-page-ip4.c:768
 msgid "IPv4"
 msgstr "IPv4"
 
-#: panels/network/connection-editor/ce-page-ip6.c:727
+#: panels/network/connection-editor/ce-page-ip6.c:732
 msgid "IPv6"
 msgstr "IPv6"
 
@@ -3348,7 +3352,7 @@ msgid "WPA3 Personal"
 msgstr "WPA3 Personal"
 
 #: panels/network/connection-editor/ce-page-wireguard.c:106
-#: panels/network/connection-editor/net-connection-editor.c:854
+#: panels/network/connection-editor/net-connection-editor.c:863
 msgid "WireGuard"
 msgstr "WireGuard"
 
@@ -3467,22 +3471,22 @@ msgid "Addresses"
 msgstr "Адреса"
 
 #: panels/network/connection-editor/ip4-page.ui:118
-#: panels/network/connection-editor/ip4-page.ui:256
+#: panels/network/connection-editor/ip4-page.ui:255
 #: panels/network/connection-editor/ip6-page.ui:129
-#: panels/network/connection-editor/ip6-page.ui:267
+#: panels/network/connection-editor/ip6-page.ui:266
 #: panels/printers/pp-details-dialog.ui:100
 msgid "Address"
 msgstr "Адрес"
 
 #: panels/network/connection-editor/ip4-page.ui:130
-#: panels/network/connection-editor/ip4-page.ui:268
+#: panels/network/connection-editor/ip4-page.ui:266
 msgid "Netmask"
 msgstr "Маска сети"
 
 #: panels/network/connection-editor/ip4-page.ui:142
-#: panels/network/connection-editor/ip4-page.ui:280
+#: panels/network/connection-editor/ip4-page.ui:277
 #: panels/network/connection-editor/ip6-page.ui:153
-#: panels/network/connection-editor/ip6-page.ui:291
+#: panels/network/connection-editor/ip6-page.ui:288
 msgid "Gateway"
 msgstr "Шлюз"
 
@@ -3512,14 +3516,14 @@ msgid "Automatic Routes"
 msgstr "Автоматические маршруты"
 
 #. Translators: Please see https://en.wikipedia.org/wiki/Metrics_(networking)
-#: panels/network/connection-editor/ip4-page.ui:291
-#: panels/network/connection-editor/ip6-page.ui:302
+#: panels/network/connection-editor/ip4-page.ui:288
+#: panels/network/connection-editor/ip6-page.ui:299
 #: panels/region/cc-format-preview.ui:98
 msgid "Metric"
 msgstr "Метрика"
 
-#: panels/network/connection-editor/ip4-page.ui:314
-#: panels/network/connection-editor/ip6-page.ui:325
+#: panels/network/connection-editor/ip4-page.ui:311
+#: panels/network/connection-editor/ip6-page.ui:322
 msgid "Use this connection _only for resources on its network"
 msgstr "Использовать это подключение _только для ресурсов в этой сети"
 
@@ -3532,36 +3536,36 @@ msgid "Automatic, DHCP only"
 msgstr "Автоматический, только DHCP"
 
 #: panels/network/connection-editor/ip6-page.ui:141
-#: panels/network/connection-editor/ip6-page.ui:279
+#: panels/network/connection-editor/ip6-page.ui:277
 msgid "Prefix"
 msgstr "Префикс"
 
-#: panels/network/connection-editor/net-connection-editor.c:368
+#: panels/network/connection-editor/net-connection-editor.c:377
 #, c-format
 msgid "Unable to open connection editor: %s"
 msgstr "Не удалось открыть редактор соединений: %s"
 
-#: panels/network/connection-editor/net-connection-editor.c:387
+#: panels/network/connection-editor/net-connection-editor.c:396
 msgid "New Profile"
 msgstr "Создать профиль"
 
-#: panels/network/connection-editor/net-connection-editor.c:454
+#: panels/network/connection-editor/net-connection-editor.c:463
 #, c-format
 msgid "Invalid setting %s: %s"
 msgstr "Неверная настройка %s: %s"
 
-#: panels/network/connection-editor/net-connection-editor.c:457
+#: panels/network/connection-editor/net-connection-editor.c:466
 #, c-format
 msgid "Invalid setting %s"
 msgstr "Неверная настройка %s"
 
-#: panels/network/connection-editor/net-connection-editor.c:735
+#: panels/network/connection-editor/net-connection-editor.c:744
 #, c-format
 msgid "Invalid VPN configuration file"
 msgstr "Неверный файл конфигурации VPN"
 
 #. Translators: VPN add dialog Wireguard description
-#: panels/network/connection-editor/net-connection-editor.c:842
+#: panels/network/connection-editor/net-connection-editor.c:851
 msgid ""
 "Free and open-source VPN solution designed for ease of use, high speed "
 "performance and low attack surface."
@@ -3569,11 +3573,11 @@ msgstr ""
 "Бесплатное решение VPN с открытым исходным кодом, разработанное для простоты "
 "использования, высокой скорости работы и низкой площади атаки."
 
-#: panels/network/connection-editor/net-connection-editor.c:878
+#: panels/network/connection-editor/net-connection-editor.c:887
 msgid "Import from file…"
 msgstr "Импортировать из файла…"
 
-#: panels/network/connection-editor/net-connection-editor.c:904
+#: panels/network/connection-editor/net-connection-editor.c:913
 msgid "Add VPN"
 msgstr "Добавить VPN"
 
@@ -3683,9 +3687,87 @@ msgstr "_Добавить маршруты узла"
 msgid "_Peers"
 msgstr "_Узлы"
 
+#: panels/network/connection-editor/wireguard-page.ui:235
+msgid "Add WireGuard peer"
+msgstr "Добавить узел WireGuard"
+
 #: panels/network/connection-editor/wireguard-page.ui:257
 msgid "No peers set up"
 msgstr "Узлы не настроены"
+
+#: panels/network/connection-editor/wireguard-peer.ui:88
+msgid "_Endpoint"
+msgstr "_Конечная точка"
+
+#: panels/network/connection-editor/wireguard-peer.ui:98
+msgid ""
+"An endpoint IP or hostname, followed by a colon, and then a port number."
+msgstr ""
+"IP-адрес или имя хоста конечной точки, за которым следует двоеточие, а затем "
+"номер порта."
+
+#: panels/network/connection-editor/wireguard-peer.ui:110
+msgid "_Public key"
+msgstr "_Открытый ключ"
+
+#: panels/network/connection-editor/wireguard-peer.ui:120
+msgid "A base64 public key calculated by 'wg pubkey' from a private key."
+msgstr ""
+"Открытый ключ в формате base64, вычисленный с помощью 'wg pubkey' из "
+"закрытого ключа."
+
+#: panels/network/connection-editor/wireguard-peer.ui:135
+msgid "_Pre-shared key"
+msgstr "_Предварительно-общий ключ"
+
+#: panels/network/connection-editor/wireguard-peer.ui:145
+msgid ""
+"A base64 preshared key generated by 'wg genpsk'. Optional, and may be "
+"omitted. Adds an additional layer of symmetric-key cryptography to be mixed "
+"into the already existing public-key cryptography, for post-quantum "
+"resistance."
+msgstr ""
+"Предварительно-общий ключ в формате base64, сгенерированный с помощью 'wg "
+"genpsk'. Необязателен и может быть не задан. Добавляет дополнительный "
+"уровень симметрично-ключевой криптографии к уже существующей криптографии с "
+"открытым ключом для обеспечения постквантовой стойкости."
+
+#: panels/network/connection-editor/wireguard-peer.ui:162
+msgid "Allowed _IP addresses"
+msgstr "Разрешенные _IP-адреса"
+
+#: panels/network/connection-editor/wireguard-peer.ui:172
+msgid ""
+"Comma-separated list of IP (v4 or v6) addresses with CIDR masks from which "
+"incoming traffic for this peer is allowed and to which outgoing traffic for "
+"this peer is directed."
+msgstr ""
+"Список IP-адресов (v4 или v6) с масками CIDR, с которых разрешен входящий "
+"трафик для данного узла и на которые направлен исходящий трафик для данного "
+"узла, разделенный запятыми."
+
+#: panels/network/connection-editor/wireguard-peer.ui:184
+msgid "_Persistent keepalive"
+msgstr "П_остоянный keepalive"
+
+#: panels/network/connection-editor/wireguard-peer.ui:197
+msgid ""
+"How often to send an authenticated empty packet to the peer for the purpose "
+"of keeping a stateful firewall or NAT mapping valid. This is optional and "
+"not recommended outside of specific setups."
+msgstr ""
+"Как часто отправлять аутентифицированный пустой пакет узлу для поддержания "
+"работоспособности межсетевого экрана или NAT-сопоставления. Этот параметр "
+"является необязательным и не рекомендуется для использования в других "
+"системах."
+
+#: panels/network/connection-editor/wireguard-peer.ui:206
+msgid "seconds"
+msgstr "секунды"
+
+#: panels/network/connection-editor/wireguard-peer.ui:222
+msgid "Apply"
+msgstr "Применить"
 
 #: panels/network/gnome-network-panel.desktop.in:4
 msgid "Control how you connect to the Internet"
@@ -3729,7 +3811,7 @@ msgstr "Последнее использование"
 #: panels/network/net-device-ethernet.c:264
 #: panels/network/network-bluetooth.ui:5 panels/network/network-ethernet.ui:5
 msgid "Wired"
-msgstr "Проводное соединение"
+msgstr "Проводное подключение"
 
 #: panels/network/net-device-mobile.c:208
 msgid "Add new connection"
@@ -3758,6 +3840,10 @@ msgstr "Использование в качестве точки доступа
 #: panels/network/net-device-wifi.c:1267
 msgid "Wireless device does not support Hotspot mode"
 msgstr "Беспроводное устройство не поддерживает режим точки доступа"
+
+#: panels/network/network-ethernet.ui:10
+msgid "Add Ethernet connection"
+msgstr "Добавить проводное подключение"
 
 #: panels/network/network-mobile.ui:27
 #: panels/wwan/cc-wwan-details-dialog.ui:237
@@ -5569,7 +5655,7 @@ msgstr "_Автоматическое сообщение об ошибках"
 
 #. TRANSLATORS: secure boot refers to the system firmware security mode
 #: panels/privacy/cc-firmware-security-boot-dialog.c:72
-#: panels/privacy/cc-firmware-security-page.c:120
+#: panels/privacy/cc-firmware-security-page.c:121
 msgid "Secure Boot is Active"
 msgstr "Безопасная загрузка активна"
 
@@ -5657,7 +5743,7 @@ msgstr ""
 
 #. TRANSLATORS: in reference to firmware protection: 0/4 stars
 #: panels/privacy/cc-firmware-security-dialog.c:106
-#: panels/privacy/cc-firmware-security-page.c:537
+#: panels/privacy/cc-firmware-security-page.c:540
 msgid "Checks Failed"
 msgstr "Проверка не удалась"
 
@@ -5681,7 +5767,7 @@ msgstr ""
 
 #. TRANSLATORS: in reference to firmware protection: 1/4 stars
 #: panels/privacy/cc-firmware-security-dialog.c:120
-#: panels/privacy/cc-firmware-security-page.c:544
+#: panels/privacy/cc-firmware-security-page.c:547
 msgid "Checks Passed"
 msgstr "Проверка пройдена"
 
@@ -5698,7 +5784,7 @@ msgstr ""
 
 #. TRANSLATORS: in reference to firmware protection: 2~4 stars
 #: panels/privacy/cc-firmware-security-dialog.c:134
-#: panels/privacy/cc-firmware-security-page.c:553
+#: panels/privacy/cc-firmware-security-page.c:556
 msgid "Protected"
 msgstr "Защищено"
 
@@ -5714,7 +5800,7 @@ msgstr ""
 
 #. TRANSLATORS: in reference to firmware protection: ??? stars
 #: panels/privacy/cc-firmware-security-dialog.c:145
-#: panels/privacy/cc-firmware-security-page.c:560
+#: panels/privacy/cc-firmware-security-page.c:563
 msgid "Checks Unavailable"
 msgstr "Проверка недоступна"
 
@@ -5777,28 +5863,28 @@ msgstr ""
 "Безопасность устройства - это лишь один из аспектов безопасности, который не "
 "отражает общего состояния безопасности системы и приложений."
 
-#: panels/privacy/cc-firmware-security-page.c:121
+#: panels/privacy/cc-firmware-security-page.c:122
 msgid "Protected against malicious software when the device starts."
 msgstr "Обеспечена защита от вредоносных программ при запуске устройства."
 
-#: panels/privacy/cc-firmware-security-page.c:127
+#: panels/privacy/cc-firmware-security-page.c:128
 msgid "Secure Boot has Problems"
 msgstr "Проблемы с безопасной загрузкой"
 
-#: panels/privacy/cc-firmware-security-page.c:128
+#: panels/privacy/cc-firmware-security-page.c:129
 msgid "Some protection when the device is started."
 msgstr "Некоторая защита при запуске устройства."
 
-#: panels/privacy/cc-firmware-security-page.c:133
+#: panels/privacy/cc-firmware-security-page.c:134
 msgid "Secure Boot is Off"
 msgstr "Безопасная загрузка отключена"
 
-#: panels/privacy/cc-firmware-security-page.c:134
+#: panels/privacy/cc-firmware-security-page.c:135
 msgid "No protection when the device is started."
 msgstr "Без защиты при запуске устройства."
 
 #. TRANSLATORS: this is to explain an event that has already happened
-#: panels/privacy/cc-firmware-security-page.c:153
+#: panels/privacy/cc-firmware-security-page.c:154
 msgid ""
 "This issue could have been caused by a change in UEFI firmware settings, an "
 "operating system configuration change, or because of malicious software on "
@@ -5809,7 +5895,7 @@ msgstr ""
 "программного обеспечения в этой системе."
 
 #. TRANSLATORS: this is to explain an event that has already happened
-#: panels/privacy/cc-firmware-security-page.c:161
+#: panels/privacy/cc-firmware-security-page.c:162
 msgid ""
 "This issue could have been caused by a change in the UEFI firmware settings, "
 "or because of malicious software on this system."
@@ -5818,7 +5904,7 @@ msgstr ""
 "наличием вредоносного программного обеспечения в данной системе."
 
 #. TRANSLATORS: this is to explain an event that has already happened
-#: panels/privacy/cc-firmware-security-page.c:168
+#: panels/privacy/cc-firmware-security-page.c:169
 msgid ""
 "This issue could have been caused by an operating system configuration "
 "change, or because of malicious software on this system."
@@ -5828,39 +5914,39 @@ msgstr ""
 
 #. TRANSLATOR: this is the date in "%Y-%m-%d %H:%M:%S" format,
 #. for example: 2022-08-01 22:48:00
-#: panels/privacy/cc-firmware-security-page.c:226
+#: panels/privacy/cc-firmware-security-page.c:227
 #, c-format
 msgid "%1$s"
 msgstr "%1$s"
 
 #. TRANSLATOR: This is the text event status output when the event status is "success"
-#: panels/privacy/cc-firmware-security-page.c:232
+#: panels/privacy/cc-firmware-security-page.c:233
 msgid "Pass"
 msgstr "Пройдено"
 
 #. TRANSLATOR: This is the text event status output when the event status is not "success"
-#: panels/privacy/cc-firmware-security-page.c:235
+#: panels/privacy/cc-firmware-security-page.c:236
 msgid "! Fail"
 msgstr "Неудачно"
 
-#: panels/privacy/cc-firmware-security-page.c:238
+#: panels/privacy/cc-firmware-security-page.c:239
 #, c-format
 msgid "(%1$s → %2$s)"
 msgstr "(%1$s → %2$s)"
 
-#: panels/privacy/cc-firmware-security-page.c:538
+#: panels/privacy/cc-firmware-security-page.c:541
 msgid "Hardware does not pass checks."
 msgstr "Оборудование не проходит проверку."
 
-#: panels/privacy/cc-firmware-security-page.c:545
+#: panels/privacy/cc-firmware-security-page.c:548
 msgid "Hardware meets basic security requirements."
 msgstr "Оборудование соответствует базовым требованиям безопасности."
 
-#: panels/privacy/cc-firmware-security-page.c:554
+#: panels/privacy/cc-firmware-security-page.c:557
 msgid "Hardware has a good level of protection."
 msgstr "Оборудование имеет хороший уровень защиты."
 
-#: panels/privacy/cc-firmware-security-page.c:561
+#: panels/privacy/cc-firmware-security-page.c:564
 msgid "Security levels are not available for this device."
 msgstr "Уровни безопасности для этого устройства недоступны."
 
@@ -6763,11 +6849,11 @@ msgstr "Больше параметров…"
 
 #: panels/search/cc-search-panel.ui:16
 msgid "App Search"
-msgstr "Поиск приложений"
+msgstr "Поиск по приложениям"
 
 #: panels/search/cc-search-panel.ui:17
 msgid "Include app-provided search results."
-msgstr "Включать результаты поиска, предоставляемые приложением."
+msgstr "Включать результаты поиска, предоставляемые приложениями."
 
 #: panels/search/cc-search-panel.ui:29
 msgid "Folders which are searched by system apps."
@@ -8140,7 +8226,7 @@ msgid "Delete the selected user account"
 msgstr "Удалить выбранную учётную запись пользователя"
 
 #: panels/user-accounts/cc-user-panel.c:1098
-#: panels/user-accounts/cc-user-panel.c:1204
+#: panels/user-accounts/cc-user-panel.c:1208
 msgid ""
 "To delete the selected user account,\n"
 "click the * icon first"
@@ -8148,7 +8234,7 @@ msgstr ""
 "Чтобы удалить выбранную учётную запись пользователя,\n"
 "сначала нажмите на значок *"
 
-#: panels/user-accounts/cc-user-panel.c:1250
+#: panels/user-accounts/cc-user-panel.c:1254
 msgid "Unlock to add users and change settings"
 msgstr "Разблокировать для добавления пользователей и изменения настроек"
 
@@ -9390,6 +9476,10 @@ msgid "System Sounds"
 msgstr "Системные звуки"
 
 #, c-format
+#~ msgid "%d %%"
+#~ msgstr "%d %%"
+
+#, c-format
 #~ msgid "Could not load ui: %s"
 #~ msgstr "Не удалось загрузить интерфейс пользователя: %s"
 
@@ -10379,9 +10469,6 @@ msgstr "Системные звуки"
 #~ msgid "1 (Default)"
 #~ msgstr "1 (по умолчанию)"
 
-#~ msgid "Shared Key"
-#~ msgstr "Общий ключ"
-
 #~ msgid "_Key"
 #~ msgstr "_Ключ"
 
@@ -10598,9 +10685,6 @@ msgstr "Системные звуки"
 #~ msgid "This is not recommended for untrusted public networks."
 #~ msgstr ""
 #~ "Не рекомендуется использовать для непроверенных общедоступных сетей."
-
-#~ msgid "Network Proxy"
-#~ msgstr "Сетевой прокси"
 
 #~ msgid "_Socks Host"
 #~ msgstr "Хост S_ocks"
