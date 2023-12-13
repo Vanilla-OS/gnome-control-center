@@ -1014,10 +1014,10 @@ index 529be08..d7f73e6 100644
    'cc-ubuntu-dock-dialog.ui',
  )
 diff --git a/po/POTFILES.in b/po/POTFILES.in
-index e7a31a6..5b7ab8c 100644
+index c66ef8e..bf5143a 100644
 --- a/po/POTFILES.in
 +++ b/po/POTFILES.in
-@@ -222,6 +222,8 @@ panels/ubuntu/cc-ubuntu-panel.c
+@@ -223,6 +223,8 @@ panels/ubuntu/cc-ubuntu-panel.c
  panels/ubuntu/cc-ubuntu-panel.ui
  panels/ubuntu/cc-ubuntu-dock-dialog.c
  panels/ubuntu/cc-ubuntu-dock-dialog.ui

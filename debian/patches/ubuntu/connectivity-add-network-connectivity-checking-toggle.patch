@@ -252,7 +252,7 @@ index 1fcb396..8d136f1 100644
    g_type_ensure (CC_TYPE_FIRMWARE_SECURITY_PAGE);
    g_type_ensure (CC_TYPE_LOCATION_PAGE);
 diff --git a/panels/privacy/cc-privacy-panel.ui b/panels/privacy/cc-privacy-panel.ui
-index f60fc2c..dd32332 100644
+index f60fc2c..fdfcdb5 100644
 --- a/panels/privacy/cc-privacy-panel.ui
 +++ b/panels/privacy/cc-privacy-panel.ui
 @@ -20,6 +20,18 @@
@@ -352,10 +352,10 @@ index 3fcf63c..8b81422 100644
      <file preprocess="xml-stripblanks">icons/scalable/actions/trash-symbolic.svg</file>
    </gresource>
 diff --git a/po/POTFILES.in b/po/POTFILES.in
-index 5b7ab8c..0a59ea2 100644
+index bf5143a..b194a98 100644
 --- a/po/POTFILES.in
 +++ b/po/POTFILES.in
-@@ -166,6 +166,7 @@ panels/privacy/cc-bolt-device-entry.c
+@@ -167,6 +167,7 @@ panels/privacy/cc-bolt-device-entry.c
  panels/privacy/cc-bolt-page.c
  panels/privacy/cc-bolt-page.ui
  panels/privacy/cc-camera-page.ui

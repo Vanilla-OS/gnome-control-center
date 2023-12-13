@@ -7,10 +7,10 @@ Subject: applications: Launch snap-store if it is installed
  1 file changed, 14 insertions(+), 2 deletions(-)
 
 diff --git a/panels/applications/cc-applications-panel.c b/panels/applications/cc-applications-panel.c
-index a55dbf2..3f4a886 100644
+index 12fc721..e9a08a4 100644
 --- a/panels/applications/cc-applications-panel.c
 +++ b/panels/applications/cc-applications-panel.c
-@@ -156,6 +156,13 @@ gnome_software_is_installed (void)
+@@ -158,6 +158,13 @@ gnome_software_is_installed (void)
    return path != NULL;
  }
  
@@ -24,7 +24,7 @@ index a55dbf2..3f4a886 100644
  /* Callbacks */
  
  static gboolean
-@@ -175,6 +182,9 @@ open_software_cb (CcApplicationsPanel *self)
+@@ -177,6 +184,9 @@ open_software_cb (CcApplicationsPanel *self)
  {
    const gchar *argv[] = { "gnome-software", "--details", "appid", NULL };
  
@@ -34,7 +34,7 @@ index a55dbf2..3f4a886 100644
    if (self->current_app_id == NULL)
      argv[1] = NULL;
    else
-@@ -1419,7 +1429,8 @@ update_panel (CcApplicationsPanel *self,
+@@ -1423,7 +1433,8 @@ update_panel (CcApplicationsPanel *self,
    adw_navigation_page_set_title (ADW_NAVIGATION_PAGE (self),
                                   g_app_info_get_display_name (info));
    gtk_stack_set_visible_child (self->stack, self->settings_box);
@@ -44,7 +44,7 @@ index a55dbf2..3f4a886 100644
  
    g_clear_pointer (&self->current_app_id, g_free);
    g_clear_pointer (&self->current_portal_app_id, g_free);
-@@ -1884,7 +1895,8 @@ cc_applications_panel_init (CcApplicationsPanel *self)
+@@ -1898,7 +1909,8 @@ cc_applications_panel_init (CcApplicationsPanel *self)
  
    gtk_widget_init_template (GTK_WIDGET (self));
  

@@ -2452,10 +2452,10 @@ index 0000000..a636e9c
 +  </gresource>
 +</gresources>
 diff --git a/po/POTFILES.in b/po/POTFILES.in
-index d30c936..75c0e09 100644
+index a206934..c66ef8e 100644
 --- a/po/POTFILES.in
 +++ b/po/POTFILES.in
-@@ -218,6 +218,11 @@ panels/sound/cc-volume-levels-window.ui
+@@ -219,6 +219,11 @@ panels/sound/cc-volume-levels-window.ui
  panels/sound/cc-volume-slider.c
  panels/sound/cc-volume-slider.ui
  panels/sound/gnome-sound-panel.desktop.in

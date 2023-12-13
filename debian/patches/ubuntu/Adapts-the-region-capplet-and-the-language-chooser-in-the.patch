@@ -493,7 +493,7 @@ index f13b26c..bb45fbb 100644
                  self->system_region = g_strdup (time);
  
 diff --git a/panels/user-accounts/cc-user-panel.c b/panels/user-accounts/cc-user-panel.c
-index 3fdfe96..bd85307 100644
+index 35d0bcd..5a4c2c6 100644
 --- a/panels/user-accounts/cc-user-panel.c
 +++ b/panels/user-accounts/cc-user-panel.c
 @@ -768,6 +768,7 @@ show_user (ActUser *user, CcUserPanel *self)

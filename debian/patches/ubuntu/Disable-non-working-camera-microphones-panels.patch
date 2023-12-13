@@ -11,13 +11,13 @@ doesn't seem to work with Snap apps. I disabled the camera and microphone
 here and the Zoom snap still works and it isn't listed as an app
 "requesting permission".
 ---
- panels/privacy/cc-privacy-panel.ui | 1 +
- 1 file changed, 1 insertion(+)
+ panels/privacy/cc-privacy-panel.ui | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Index: gnome-control-center/panels/privacy/cc-privacy-panel.ui
-===================================================================
---- gnome-control-center.orig/panels/privacy/cc-privacy-panel.ui	2023-10-10 11:33:09.189278433 +0200
-+++ gnome-control-center/panels/privacy/cc-privacy-panel.ui	2023-10-10 11:38:37.078359292 +0200
+diff --git a/panels/privacy/cc-privacy-panel.ui b/panels/privacy/cc-privacy-panel.ui
+index fdfcdb5..9820070 100644
+--- a/panels/privacy/cc-privacy-panel.ui
++++ b/panels/privacy/cc-privacy-panel.ui
 @@ -93,6 +93,7 @@
                            <object class="CcListRow">
                              <property name="title" translatable="yes">_Cameras</property>

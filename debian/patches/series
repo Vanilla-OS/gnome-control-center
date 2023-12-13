@@ -14,7 +14,6 @@ ubuntu/lock-Add-Lock-Screen-on-Suspend-option.patch
 ubuntu/region-Add-Language-Selector-button.patch
 ubuntu/Adapts-the-region-capplet-and-the-language-chooser-in-the.patch
 ubuntu/notifications-Handle-.desktop-files-that-got-renamed.patch
-#ubuntu/shell-Change-the-default-height-so-all-category-are-on-sc.patch
 ubuntu/connectivity-add-network-connectivity-checking-toggle.patch
 ubuntu/diagnostics-Add-Whoopsie-support.patch
 ubuntu/online-accounts-Hide-window-after-adding-an-online-accoun.patch
