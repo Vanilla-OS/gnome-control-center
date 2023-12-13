@@ -233,9 +233,11 @@ get_connection_security_type (NMConnection *c)
   if (g_strcmp0 (key_mgmt, "none") == 0)
     return "WEP";
 
-  if (g_strcmp0 (key_mgmt, "wpa-none") == 0 ||
-      g_strcmp0 (key_mgmt, "wpa-psk") == 0)
+  if (g_strcmp0 (key_mgmt, "wpa-psk") == 0)
     return "WPA";
+
+  if (g_strcmp0 (key_mgmt, "sae") == 0)
+    return "SAE";
 
   return "nopass";
 }
@@ -245,8 +247,17 @@ is_qr_code_supported (NMConnection *c)
 {
   NMSettingWirelessSecurity *setting;
   const char *key_mgmt;
+  NMSettingConnection *s_con;
+  guint64 timestamp;
 
   g_return_val_if_fail (c, TRUE);
+
+  s_con = nm_connection_get_setting_connection (c);
+  timestamp = nm_setting_connection_get_timestamp (s_con);
+
+  /* Check timestamp to determine if connection was successful in the past */
+  if (timestamp == 0)
+    return FALSE;
 
   setting = nm_connection_get_setting_wireless_security (c);
 
@@ -255,12 +266,9 @@ is_qr_code_supported (NMConnection *c)
 
   key_mgmt = nm_setting_wireless_security_get_key_mgmt (setting);
 
-  /* No IEEE 802.1x */
-  if (g_str_equal (key_mgmt, "none"))
-    return TRUE;
-
-  if (g_str_equal (key_mgmt, "wpa-none") ||
-      g_str_equal (key_mgmt, "wpa-psk"))
+  if (g_str_equal (key_mgmt, "none") ||
+      g_str_equal (key_mgmt, "wpa-psk") ||
+      g_str_equal (key_mgmt, "sae"))
     return TRUE;
 
   return FALSE;
