@@ -34,6 +34,7 @@ stages:
   dnf install -y dnf5-plugins &&
   git clone https://gitlab.gnome.org/GNOME/gtk.git &&
   cd gtk &&
+  dnf5 install -y glslc &&
   dnf5 builddep -y gtk4 &&
   meson setup . _build -Dprefix=/usr -Dlibdir=lib64 &&
   ninja -C _build install &&
@@ -221,8 +222,21 @@ build:
 ##
 # Stage: Test
 #
+# Runs static checks.
 # Runs the unit tests.
 ##
+style-check-diff:
+  extends:
+  - '.fdo.distribution-image@fedora'
+  - '.fedora.container.common'
+  needs:
+  - build.container.fedora@x86_64
+  stage: test
+  when: always
+  allow_failure: true
+  script:
+    - .gitlab-ci/run-style-check-diff.sh
+
 test:
   extends:
     - '.fdo.distribution-image@fedora'

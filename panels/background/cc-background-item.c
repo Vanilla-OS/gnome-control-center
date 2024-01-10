@@ -31,6 +31,7 @@
 
 #include "cc-background-item.h"
 #include "gdesktop-enums-types.h"
+#include "cc-background-enum-types.h"
 
 typedef struct {
         int        width;
@@ -222,15 +223,15 @@ cc_background_item_get_frame_thumbnail (CcBackgroundItem             *item,
                 pixbuf = gnome_bg_create_frame_thumbnail (bg,
                                                           thumbs,
                                                           &monitor_layout,
-                                                          width,
-                                                          height,
+                                                          scale_factor * width,
+                                                          scale_factor * height,
                                                           frame);
         } else {
                 pixbuf = gnome_bg_create_thumbnail (bg,
                                                     thumbs,
                                                     &monitor_layout,
-                                                    width,
-                                                    height);
+                                                    scale_factor * width,
+                                                    scale_factor * height);
         }
 
         update_size (item);
@@ -770,7 +771,7 @@ cc_background_item_class_init (CcBackgroundItemClass *klass)
 					 g_param_spec_flags ("flags",
 							     "flags",
 							     "flags",
-							     G_DESKTOP_TYPE_BACKGROUND_ITEM_FLAGS,
+							     CC_TYPE_BACKGROUND_ITEM_FLAGS,
 							     0,
 							     G_PARAM_READWRITE));
 
@@ -884,7 +885,7 @@ flags_to_str (CcBackgroundItemFlags flag)
 	GFlagsClass *fclass;
 	GFlagsValue *value;
 
-	fclass = G_FLAGS_CLASS (g_type_class_peek (G_DESKTOP_TYPE_BACKGROUND_ITEM_FLAGS));
+	fclass = G_FLAGS_CLASS (g_type_class_peek (CC_TYPE_BACKGROUND_ITEM_FLAGS));
 	value = g_flags_get_first_value (fclass, flag);
 
 	g_assert (value);

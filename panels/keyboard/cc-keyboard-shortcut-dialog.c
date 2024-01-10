@@ -375,11 +375,11 @@ reset_all_clicked_cb (CcKeyboardShortcutDialog *self)
                                    NULL);
 
   adw_message_dialog_format_body (ADW_MESSAGE_DIALOG (dialog),
-                                  _("Resetting the shortcuts may affect your custom shortcuts. This cannot be undone."));
+                                  _("All changes to keyboard shortcuts will be lost."));
 
   adw_message_dialog_add_responses (ADW_MESSAGE_DIALOG (dialog),
-                                    "cancel",    _("Cancel"),
-                                    "reset_all", _("Reset All"),
+                                    "cancel",    _("_Cancel"),
+                                    "reset_all", _("_Reset All"),
                                     NULL);
 
   adw_message_dialog_set_response_appearance (ADW_MESSAGE_DIALOG (dialog),
@@ -562,13 +562,16 @@ cc_keyboard_shortcut_dialog_class_init (CcKeyboardShortcutDialogClass *klass)
 static void
 cc_keyboard_shortcut_dialog_init (CcKeyboardShortcutDialog *self)
 {
+  GtkWindow *toplevel;
+
   gtk_widget_init_template (GTK_WIDGET (self));
   gtk_search_entry_set_key_capture_widget (self->search_entry, GTK_WIDGET (self));
   shortcut_dialog_visible_page_changed_cb (self);
 
   self->manager = cc_keyboard_manager_new ();
 
-  self->shortcut_editor = cc_keyboard_shortcut_editor_new (self->manager);
+  toplevel = GTK_WINDOW (gtk_widget_get_native (GTK_WIDGET (self)));
+  self->shortcut_editor = cc_keyboard_shortcut_editor_new (toplevel, self->manager);
   shortcut_dialog_visible_page_changed_cb (self);
 
   self->sections = g_list_store_new (G_TYPE_LIST_STORE);

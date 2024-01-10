@@ -25,19 +25,8 @@
                     <property name="icon-name">folder-remote-symbolic</property>
                     <property name="show-arrow">True</property>
                     <property name="subtitle" translatable="yes">Share files with other devices on the current network</property>
-                    <property name="use-underline">True</property>
                     <property name="title" translatable="yes">_File Sharing</property>
                     <signal name="activated" handler="gtk_window_present" object="personal_file_sharing_dialog"/>
-                  </object>
-                </child>
-                <child>
-                  <object class="CcListRow" id="remote_desktop_row">
-                    <property name="icon-name">preferences-desktop-remote-desktop-symbolic</property>
-                    <property name="show-arrow">True</property>
-                    <property name="subtitle" translatable="yes">View and control the desktop from another device</property>
-                    <property name="use-underline">True</property>
-                    <property name="title" translatable="yes">Remote _Desktop</property>
-                    <signal name="activated" handler="gtk_window_present" object="remote_desktop_dialog"/>
                   </object>
                 </child>
                 <child>
@@ -45,7 +34,6 @@
                     <property name="icon-name">applications-multimedia-symbolic</property>
                     <property name="show-arrow">True</property>
                     <property name="subtitle" translatable="yes">Stream music, photos and videos to devices on the current network</property>
-                    <property name="use-underline">True</property>
                     <property name="title" translatable="yes">_Media Sharing</property>
                     <signal name="activated" handler="gtk_window_present" object="media_sharing_dialog"/>
                   </object>
@@ -55,7 +43,6 @@
                     <property name="icon-name">utilities-terminal-symbolic</property>
                     <property name="show-arrow">True</property>
                     <property name="subtitle" translatable="yes">Enable SSH access for this device</property>
-                    <property name="use-underline">True</property>
                     <property name="title" translatable="yes">_Remote Login</property>
                     <signal name="activated" handler="gtk_window_present" object="remote_login_dialog"/>
                   </object>
@@ -70,9 +57,13 @@
 
   <object class="AdwWindow" id="personal_file_sharing_dialog">
     <property name="title" translatable="yes">File Sharing</property>
-    <property name="resizable">False</property>
     <property name="modal">True</property>
     <property name="hide-on-close">True</property>
+    <property name="destroy-with-parent">True</property>
+    <property name="width-request">360</property>
+    <property name="height-request">294</property>
+    <property name="default-width">400</property>
+    <property name="default-height">360</property>
     <child>
       <object class="GtkShortcutController">
         <property name="scope">managed</property>
@@ -90,80 +81,38 @@
           <object class="AdwHeaderBar" id="personal_file_sharing_headerbar"/>
         </child>
         <property name="content">
-          <object class="GtkGrid" id="personal_file_sharing_grid">
-            <property name="margin_start">24</property>
-            <property name="margin_end">24</property>
-            <property name="margin_top">24</property>
-            <property name="margin_bottom">24</property>
-            <property name="row_spacing">12</property>
-            <property name="column_spacing">6</property>
+          <object class="AdwPreferencesPage" id="personal_file_sharing_page">
             <child>
-              <object class="GtkLabel" id="personal_file_sharing_label">
-                <property name="xalign">0</property>
-                <property name="use_markup">True</property>
-                <property name="wrap">True</property>
-                <property name="max-width-chars">36</property>
-                <layout>
-                  <property name="column">0</property>
-                  <property name="row">0</property>
-                  <property name="column-span">2</property>
-                </layout>
+              <object class="AdwPreferencesGroup">
+                <child>
+                  <object class="AdwSwitchRow" id="personal_file_sharing_require_password_switch_row">
+                    <property name="title" translatable="yes">_Require Password</property>
+                    <property name="use_underline">True</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="AdwPasswordEntryRow" id="personal_file_sharing_password_entry_row">
+                    <property name="title" translatable="yes">_Password</property>
+                    <property name="use_underline">True</property>
+                  </object>
+                </child>
               </object>
             </child>
             <child>
-              <object class="GtkGrid" id="require_password_grid">
-                <property name="row_spacing">12</property>
-                <property name="column_spacing">6</property>
-                <layout>
-                  <property name="column">0</property>
-                  <property name="row">2</property>
-                  <property name="column-span">2</property>
-                </layout>
+              <object class="AdwPreferencesGroup">
+                <property name="title" translatable="yes">Networks</property>
                 <child>
-                  <object class="GtkLabel" id="label17">
-                    <property name="halign">start</property>
-                    <property name="label" translatable="yes">_Require Password</property>
-                    <property name="use_markup">True</property>
-                    <property name="use_underline">True</property>
-                    <property name="mnemonic_widget">personal_file_sharing_require_password_switch</property>
-                    <layout>
-                      <property name="column">0</property>
-                      <property name="row">0</property>
-                    </layout>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkLabel" id="personal_file_sharing_password_label">
-                    <property name="halign">start</property>
-                    <property name="hexpand">True</property>
-                    <property name="label" translatable="yes">_Password</property>
-                    <property name="use_underline">True</property>
-                    <property name="mnemonic_widget">personal_file_sharing_password_entry</property>
-                    <layout>
-                      <property name="column">0</property>
-                      <property name="row">1</property>
-                    </layout>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkSwitch" id="personal_file_sharing_require_password_switch">
-                    <property name="halign">end</property>
-                    <layout>
-                      <property name="column">1</property>
-                      <property name="row">0</property>
-                    </layout>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkEntry" id="personal_file_sharing_password_entry">
-                    <property name="visibility">False</property>
-                    <property name="invisible_char">●</property>
-                    <property name="invisible_char_set">True</property>
-                    <property name="input_purpose">password</property>
-                    <layout>
-                      <property name="column">1</property>
-                      <property name="row">1</property>
-                    </layout>
+                  <object class="GtkBox" id="personal_file_sharing_vbox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                      <object class="GtkListBox">
+                        <property name="selection-mode">none</property>
+                        <style>
+                          <class name="boxed-list"/>
+                        </style>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>
@@ -179,6 +128,10 @@
     <property name="resizable">False</property>
     <property name="modal">True</property>
     <property name="hide-on-close">True</property>
+    <property name="width-request">360</property>
+    <property name="height-request">294</property>
+    <property name="default-width">360</property>
+    <property name="default-height">294</property>
     <child>
       <object class="GtkShortcutController">
         <property name="scope">managed</property>
@@ -196,21 +149,7 @@
           <object class="AdwHeaderBar"/>
         </child>
         <property name="content">
-          <object class="GtkBox">
-            <property name="margin-top">12</property>
-            <property name="margin-bottom">12</property>
-            <property name="margin-start">12</property>
-            <property name="margin-end">12</property>
-            <property name="spacing">12</property>
-            <property name="orientation">vertical</property>
-            <child>
-              <object class="GtkLabel" id="remote_login_label">
-                <property name="xalign">0</property>
-                <property name="use_markup">True</property>
-                <property name="wrap">True</property>
-                <property name="max-width-chars">36</property>
-              </object>
-            </child>
+          <object class="AdwPreferencesPage" id="remote_login_page">
             <child>
               <object class="AdwPreferencesGroup">
                 <child>
@@ -226,250 +165,15 @@
     </property>
   </object>
 
-  <object class="AdwWindow" id="remote_desktop_dialog">
-    <property name="title" translatable="yes">Remote Desktop</property>
-    <property name="modal">True</property>
-    <property name="width-request">360</property>
-    <property name="height-request">294</property>
-    <property name="default-width">640</property>
-    <property name="hide-on-close">True</property>
-    <child>
-      <object class="GtkShortcutController">
-        <property name="scope">managed</property>
-        <child>
-          <object class="GtkShortcut">
-            <property name="trigger">Escape</property>
-            <property name="action">action(window.close)</property>
-          </object>
-        </child>
-      </object>
-    </child>
-    <property name="content">
-      <object class="AdwToolbarView">
-        <child type="top">
-          <object class="AdwHeaderBar"/>
-        </child>
-        <property name="content">
-          <object class="AdwToastOverlay" id="remote_desktop_toast_overlay">
-            <child>
-              <object class="AdwPreferencesPage">
-                <property name="description" translatable="yes">Remote desktop allows viewing and controlling your desktop from another computer.</property>
-
-                <child>
-                  <object class="AdwPreferencesGroup">
-                    <child>
-                      <object class="AdwActionRow">
-                        <property name="title" translatable="yes">Remote Desktop</property>
-                        <property name="subtitle" translatable="yes">Enable or disable remote desktop connections to this computer.</property>
-                        <property name="activatable_widget">remote_desktop_switch</property>
-                        <child type="suffix">
-                          <object class="GtkSwitch" id="remote_desktop_switch">
-                            <property name="active">False</property>
-                            <property name="valign">center</property>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
-
-                    <child>
-                      <object class="AdwActionRow">
-                        <property name="title" translatable="yes">Remote Control</property>
-                        <property name="subtitle" translatable="yes">Allows remote connections to control the screen.</property>
-                        <property name="activatable_widget">remote_control_switch</property>
-                        <child type="suffix">
-                          <object class="GtkSwitch" id="remote_control_switch">
-                            <property name="valign">center</property>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-
-                <child>
-                  <object class="AdwPreferencesGroup">
-                    <property name="title" translatable="yes">How to Connect</property>
-                    <property name="description" translatable="yes">Connect to this computer using the device name or remote desktop address.</property>
-
-                    <child>
-                      <object class="AdwActionRow">
-                        <property name="title" translatable="yes">Device Name</property>
-                        <child type="suffix">
-                          <object class="GtkBox">
-                            <property name="spacing">10</property>
-                            <child>
-                              <object class="GtkLabel" id="remote_desktop_device_name_label">
-                                <property name="selectable">True</property>
-                                <property name="label" bind-source="hostname_entry" bind-property="text"/>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkButton" id="remote_desktop_device_name_copy">
-                                <property name="valign">center</property>
-                                <property name="icon-name">edit-copy-symbolic</property>
-                                <accessibility>
-                                  <property name="label" translatable="yes">Copy</property>
-                                </accessibility>
-                                <style>
-                                  <class name="flat"/>
-                                </style>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="AdwActionRow">
-                        <property name="title" translatable="yes">Remote Desktop Address</property>
-                        <child type="suffix">
-                          <object class="GtkBox">
-                            <property name="spacing">10</property>
-                            <child>
-                              <object class="GtkLabel" id="remote_desktop_address_label">
-                                <property name="selectable">True</property>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkButton" id="remote_desktop_address_copy">
-                                <property name="valign">center</property>
-                                <property name="icon-name">edit-copy-symbolic</property>
-                                <accessibility>
-                                  <property name="label" translatable="yes">Copy</property>
-                                </accessibility>
-                                <style>
-                                  <class name="flat"/>
-                                </style>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-
-                <child>
-                  <object class="AdwPreferencesGroup">
-                    <property name="title" translatable="yes">Authentication</property>
-                    <property name="description" translatable="yes">The user name and password are required to connect to this computer.</property>
-
-                    <child>
-                      <object class="AdwEntryRow" id="remote_desktop_username_entry">
-                        <property name="title" translatable="yes">User Name</property>
-                        <child type="suffix">
-                          <object class="GtkButton" id="remote_desktop_username_copy">
-                            <property name="valign">center</property>
-                            <property name="icon-name">edit-copy-symbolic</property>
-                            <accessibility>
-                              <property name="label" translatable="yes">Copy</property>
-                            </accessibility>
-                            <style>
-                              <class name="flat"/>
-                            </style>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
-
-                    <child>
-                      <object class="AdwPasswordEntryRow" id="remote_desktop_password_entry">
-                        <property name="title" translatable="yes">Password</property>
-                        <child type="suffix">
-                          <object class="GtkButton" id="remote_desktop_password_copy">
-                            <property name="valign">center</property>
-                            <property name="icon-name">edit-copy-symbolic</property>
-                            <accessibility>
-                              <property name="label" translatable="yes">Copy</property>
-                            </accessibility>
-                            <style>
-                              <class name="flat"/>
-                            </style>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
-
-                    <child>
-                      <object class="GtkButton" id="remote_desktop_verify_encryption">
-                        <property name="sensitive">False</property>
-                        <property name="halign">end</property>
-                        <property name="margin-top">12</property>
-                        <property name="label" translatable="yes">Verify Encryption</property>
-                        <signal name="clicked" handler="remote_desktop_show_encryption_fingerprint" swapped="yes"/>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child>
-          </object>
-        </property>
-      </object>
-    </property>
-  </object>
-
-  <object class="AdwWindow" id="remote_desktop_fingerprint_dialog">
-    <property name="default-width">360</property>
-    <property name="default-height">360</property>
-    <property name="hide-on-close">True</property>
-    <property name="modal">True</property>
-    <child>
-      <object class="GtkShortcutController">
-        <property name="scope">managed</property>
-        <child>
-          <object class="GtkShortcut">
-            <property name="trigger">Escape</property>
-            <property name="action">action(window.close)</property>
-          </object>
-        </child>
-      </object>
-    </child>
-    <property name="content">
-      <object class="AdwToolbarView">
-        <child type="top">
-          <object class="AdwHeaderBar">
-            <property name="show-title">False</property>
-          </object>
-        </child>
-        <property name="content">
-          <object class="AdwStatusPage">
-            <property name="title" translatable="yes">Encryption Fingerprint</property>
-            <property name="description" translatable="yes">The encryption fingerprint can be seen in connecting clients and should be identical.</property>
-            <child>
-              <object class="GtkBox">
-                <property name="orientation">horizontal</property>
-                <property name="halign">center</property>
-                <style>
-                  <class name="tls-cert-verification" />
-                </style>
-                <child>
-                  <object class="GtkLabel" id="remote_desktop_fingerprint_left">
-                    <style>
-                      <class name="tls-cert-fingerprint" />
-                    </style>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkLabel" id="remote_desktop_fingerprint_right">
-                    <style>
-                      <class name="tls-cert-fingerprint" />
-                    </style>
-                  </object>
-                </child>
-              </object>
-            </child>
-          </object>
-        </property>
-      </object>
-    </property>
-  </object>
-
   <object class="AdwWindow" id="media_sharing_dialog">
     <property name="title" translatable="yes">Media Sharing</property>
-    <property name="resizable">False</property>
     <property name="modal">True</property>
     <property name="hide-on-close">True</property>
+    <property name="destroy-with-parent">True</property>
+    <property name="width-request">360</property>
+    <property name="height-request">294</property>
+    <property name="default-width">360</property>
+    <property name="default-height">500</property>
     <child>
       <object class="GtkShortcutController">
         <property name="scope">managed</property>
@@ -487,52 +191,30 @@
           <object class="AdwHeaderBar" id="media_sharing_headerbar"/>
         </child>
         <property name="content">
-          <object class="GtkGrid" id="shared_folders_grid">
-            <property name="margin_start">24</property>
-            <property name="margin_end">24</property>
-            <property name="margin_top">24</property>
-            <property name="margin_bottom">24</property>
-            <property name="row_spacing">12</property>
-            <property name="column_spacing">6</property>
+          <object class="AdwPreferencesPage">
+            <property name="description" translatable="yes">Share music, photos and videos over the network.</property>
             <child>
-              <object class="GtkLabel" id="label13">
-                <property name="xalign">0</property>
-                <property name="label" translatable="yes">Share music, photos and videos over the network.</property>
-                <property name="max-width-chars">36</property>
-                <property name="wrap">True</property>
-                <layout>
-                  <property name="column">0</property>
-                  <property name="row">0</property>
-                  <property name="column-span">2</property>
-                </layout>
-              </object>
-            </child>
-            <child>
-              <object class="GtkLabel" id="label15">
-                <property name="xalign">0</property>
-                <property name="label" translatable="yes">Folders</property>
-                <property name="mnemonic_widget">shared_folders_listbox</property>
-                <layout>
-                  <property name="column">0</property>
-                  <property name="row">1</property>
-                  <property name="column-span">2</property>
-                </layout>
-                <attributes>
-                  <attribute name="weight" value="bold"/>
-                </attributes>
-              </object>
-            </child>
-            <child>
-              <object class="GtkListBox" id="shared_folders_listbox">
-                <property name="selection-mode">none</property>
-                <style>
-                  <class name="boxed-list" />
-                </style>
-                <layout>
-                  <property name="column">0</property>
-                  <property name="row">3</property>
-                  <property name="column-span">2</property>
-                </layout>
+              <object class="AdwPreferencesGroup">
+                <property name="title" translatable="yes">Folders</property>
+                <child>
+                  <object class="GtkGrid" id="shared_folders_grid">
+                    <property name="row_spacing">12</property>
+                    <property name="column_spacing">6</property>
+                    <child>
+                      <object class="GtkListBox" id="shared_folders_listbox">
+                        <property name="selection-mode">none</property>
+                        <style>
+                          <class name="boxed-list" />
+                        </style>
+                        <layout>
+                          <property name="column">0</property>
+                          <property name="row">3</property>
+                          <property name="column-span">2</property>
+                        </layout>
+                      </object>
+                    </child>
+                  </object>
+                </child>
               </object>
             </child>
           </object>

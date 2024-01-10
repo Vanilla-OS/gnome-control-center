@@ -46,18 +46,8 @@ typedef struct
   GCancellable *cancellable;
 } CcPanelPrivate;
 
-static void cc_panel_buildable_init (GtkBuildableIface *iface);
-
 G_DEFINE_ABSTRACT_TYPE_WITH_CODE (CcPanel, cc_panel, ADW_TYPE_NAVIGATION_PAGE,
                                   G_ADD_PRIVATE (CcPanel))
-
-static GtkBuildableIface *parent_buildable_iface;
-
-enum
-{
-  SIDEBAR_ACTIVATED,
-  LAST_SIGNAL
-};
 
 enum
 {
@@ -68,8 +58,6 @@ enum
 };
 
 static GParamSpec *properties [N_PROPS];
-
-static guint signals [LAST_SIGNAL] = { 0 };
 
 /* GtkBuildable interface */
 
@@ -160,18 +148,10 @@ static void
 cc_panel_class_init (CcPanelClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
   object_class->get_property = cc_panel_get_property;
   object_class->set_property = cc_panel_set_property;
   object_class->finalize = cc_panel_finalize;
-
-  signals[SIDEBAR_ACTIVATED] = g_signal_new ("sidebar-activated",
-                                             G_TYPE_FROM_CLASS (object_class),
-                                             G_SIGNAL_RUN_LAST,
-                                             0, NULL, NULL,
-                                             g_cclosure_marshal_VOID__VOID,
-                                             G_TYPE_NONE, 0);
 
   properties[PROP_SHELL] = g_param_spec_object ("shell",
                                                 "Shell",
@@ -221,24 +201,6 @@ cc_panel_get_help_uri (CcPanel *panel)
 
   if (class->get_help_uri)
     return class->get_help_uri (panel);
-
-  return NULL;
-}
-
-AdwNavigationPage*
-cc_panel_get_sidebar_widget (CcPanel *panel)
-{
-  CcPanelClass *class = CC_PANEL_GET_CLASS (panel);
-
-  if (class->get_sidebar_widget)
-    {
-      AdwNavigationPage *sidebar_widget;
-
-      sidebar_widget = class->get_sidebar_widget (panel);
-      g_assert (sidebar_widget != NULL);
-
-      return sidebar_widget;
-    }
 
   return NULL;
 }

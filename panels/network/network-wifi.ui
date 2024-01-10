@@ -92,12 +92,11 @@
     <child>
       <object class="CcListRow" id="connect_hidden_row">
         <property name="title" translatable="yes">_Connect to Hidden Network…</property>
-        <property name="use_underline">True</property>
         <property name="show-arrow">True</property>
         <property name="activatable">True</property>
         <signal name="activated" handler="on_connect_hidden_network" object="NetDeviceWifi" swapped="yes"/>
         <accessibility>
-          <property name="label" translatable="yes">Show Saved Networks</property>
+          <property name="label" translatable="yes">Connect to hidden network</property>
         </accessibility>
       </object>
     </child>
@@ -106,12 +105,51 @@
     <child>
       <object class="CcListRow" id="hotspot_row">
         <property name="title" translatable="yes">_Turn On Wi-Fi Hotspot…</property>
-        <property name="use_underline">True</property>
         <property name="show-arrow">True</property>
         <property name="activatable">True</property>
         <signal name="activated" handler="on_wifi_hotspot_network" object="NetDeviceWifi" swapped="yes"/>
       </object>
     </child>
 
+  </object>
+
+  <object class="AdwWindow" id="saved_networks_dialog">
+    <property name="title" translatable="yes">Saved Wi-Fi Networks</property>
+    <property name="destroy-with-parent">True</property>
+    <property name="hide-on-close">True</property>
+    <property name="modal">True</property>
+    <property name="width_request">360</property>
+    <property name="height_request">294</property>
+    <property name="default_width">500</property>
+    <property name="default_height">600</property>
+    <child>
+      <object class="GtkShortcutController">
+        <property name="scope">managed</property>
+        <child>
+          <object class="GtkShortcut">
+            <property name="trigger">Escape</property>
+            <property name="action">action(window.close)</property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="AdwToolbarView">
+        <child type="top">
+          <object class="AdwHeaderBar"/>
+        </child>
+        <child>
+          <object class="AdwToastOverlay" id="saved_networks_toast_overlay">
+            <child>
+              <object class="AdwPreferencesPage">
+                <child>
+                  <object class="AdwPreferencesGroup" id="saved_networks_box"/>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
   </object>
 </interface>

@@ -49,35 +49,48 @@ struct _CcWacomStylusPage
 
 G_DEFINE_TYPE (CcWacomStylusPage, cc_wacom_stylus_page, GTK_TYPE_BOX)
 
-/* GSettings stores pressurecurve as 4 values like the driver. We map slider
- * scale to these values given the array below. These settings were taken from
- * wacomcpl, where they've been around for years.
- */
-#define N_PRESSURE_CURVES 7
-static const gint32 PRESSURE_CURVES[N_PRESSURE_CURVES][4] = {
-		{	0,	75,	25,	100	},	/* soft */
-		{	0,	50,	50,	100	},
-		{	0,	25,	75,	100	},
-		{	0,	0,	100,	100	},	/* neutral */
-		{	25,	0,	100,	75	},
-		{	50,	0,	100,	50	},
-		{	75,	0,	100,	25	}	/* firm */
-};
+static void
+map_pressurecurve (double val, graphene_point_t *p1, graphene_point_t *p2)
+{
+	g_return_if_fail (val >= 0.0 && val <= 100.0);
+
+	/* The second point's x/y axis is an inverse of the first point's y/x axis,
+	 * so that:
+	 *    0% maps to 0/100  0/100
+	 *   10% maps to 0/80  20/100
+	 *   50% maps to 0/0   100/100
+	 *   60% maps to 20/0  100/80
+	 *  100% maps to 100/0 100/0
+	 */
+
+	p1->x = -100 + val * 2;
+	p1->y = 100 - val * 2;
+	p1->x = CLAMP(p1->x, 0, 100);
+	p1->y = CLAMP(p1->y, 0, 100);
+
+	p2->x = 100 - p1->y;
+	p2->y = 100 - p1->x;
+}
 
 static void
 set_pressurecurve (GtkRange *range, GSettings *settings, const gchar *key)
 {
-	gint		slider_val = gtk_range_get_value (range);
-	GVariant	*values[4],
-			*array;
-	int		i;
+	gint			slider_val = gtk_range_get_value (range) / 2;
+	graphene_point_t	p1, p2;
+	GVariantBuilder		builder;
 
-	for (i = 0; i < G_N_ELEMENTS (values); i++)
-		values[i] = g_variant_new_int32 (PRESSURE_CURVES[slider_val][i]);
+	g_return_if_fail (slider_val >= 0 && slider_val <= 100);
 
-	array = g_variant_new_array (G_VARIANT_TYPE_INT32, values, G_N_ELEMENTS (values));
+	map_pressurecurve (slider_val, &p1, &p2);
 
-	g_settings_set_value (settings, key, array);
+	g_variant_builder_init (&builder, G_VARIANT_TYPE ("ai"));
+	g_variant_builder_add (&builder, "i", (int)p1.x);
+	g_variant_builder_add (&builder, "i", (int)p1.y);
+	g_variant_builder_add (&builder, "i", (int)p2.x);
+	g_variant_builder_add (&builder, "i", (int)p2.y);
+
+	g_settings_set_value (settings, key, g_variant_builder_end (&builder));
+
 }
 
 static void
@@ -95,10 +108,11 @@ on_eraser_pressure_value_changed (CcWacomStylusPage *page)
 static void
 set_feel_from_gsettings (GtkAdjustment *adjustment, GSettings *settings, const gchar *key)
 {
-	GVariant	*variant;
-	const gint32	*values;
-	gsize		nvalues;
-	int		i;
+	GVariant		*variant;
+	const gint32		*values;
+	gsize			 nvalues;
+	int			 i;
+	graphene_point_t	 p1, p2;
 
 	variant = g_settings_get_value (settings, key);
 	values = g_variant_get_fixed_array (variant, &nvalues, sizeof (gint32));
@@ -108,10 +122,39 @@ set_feel_from_gsettings (GtkAdjustment *adjustment, GSettings *settings, const g
 		return;
 	}
 
-	for (i = 0; i < N_PRESSURE_CURVES; i++) {
-		if (memcmp (PRESSURE_CURVES[i], values, sizeof (gint32) * 4) == 0) {
-			gtk_adjustment_set_value (adjustment, i);
+	p1 = GRAPHENE_POINT_INIT (values[0], values[1]);
+	p2 = GRAPHENE_POINT_INIT (values[2], values[3]);
+
+	/* Our functions in set_pressurecurve() are lossy thanks to CLAMP so
+	 * we calculate a (possibly wrong) slider value from our points, compare
+	 * what points that value would produce and if they match - hooray!
+	 */
+	for (i = 0; i < 4; i++) {
+		double val;
+
+		switch (i) {
+		case 0:
+			val = (p1.x + 100) / 2.0;
 			break;
+		case 1:
+			val = (-p1.y + 100) / 2.0;
+			break;
+		case 2:
+			val = p2.x / 2.0;
+			break;
+		case 3:
+			val = (-p2.y + 200) / 2.0;
+			break;
+		}
+
+		if (val >= 0.0 && val <= 100.0) {
+			graphene_point_t mapped_p1, mapped_p2;
+
+			map_pressurecurve (val, &mapped_p1, &mapped_p2);
+			if (graphene_point_equal(&p1, &mapped_p1) && graphene_point_equal(&p2, &mapped_p2)) {
+				gtk_adjustment_set_value (adjustment, (int)(val * 2));
+				break;
+			}
 		}
 	}
 }
@@ -201,12 +244,7 @@ cc_wacom_stylus_page_class_init (CcWacomStylusPageClass *klass)
 static void
 add_marks (GtkScale *scale)
 {
-#if 0
-	gint i;
-
-	for (i = 0; i < N_PRESSURE_CURVES; i++)
-		gtk_scale_add_mark (scale, i, GTK_POS_BOTTOM, NULL);
-#endif
+	gtk_scale_add_mark (scale, 100, GTK_POS_BOTTOM, NULL);
 }
 
 static void

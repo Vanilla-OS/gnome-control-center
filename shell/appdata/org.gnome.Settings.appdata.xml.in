@@ -3,7 +3,7 @@
 <component type="desktop">
   <id>org.gnome.Settings.desktop</id>
   <metadata_license>CC0-1.0</metadata_license>
-  <project_license>GPL-2.0+</project_license>
+  <project_license>GPL-2.0-or-later</project_license>
   <name>Settings</name>
   <summary>Utility to configure the GNOME desktop</summary>
   <description>
@@ -25,13 +25,20 @@
       <image>https://gitlab.gnome.org/GNOME/gnome-control-center/raw/HEAD/shell/appdata/screenshot-keyboard.png</image>
     </screenshot>
   </screenshots>
+  <url type="homepage">https://apps.gnome.org/Settings/</url>
   <url type="bugtracker">https://gitlab.gnome.org/GNOME/gnome-control-center/issues/</url>
-  <url type="donation">https://www.gnome.org/friends/</url>
+  <url type="contact">https://discourse.gnome.org/tag/settings</url>
+  <url type="donation">https://www.gnome.org/donate/</url>
+  <url type="help">https://discourse.gnome.org/tag/settings</url>
   <url type="translate">https://wiki.gnome.org/TranslationProject</url>
-  <update_contact>gnomecc-list_at_gnome.org</update_contact>
+  <url type="vcs-browser">https://gitlab.gnome.org/GNOME/gnome-control-center/</url>
   <project_group>GNOME</project_group>
   <launchable type="desktop-id">org.gnome.Settings.desktop</launchable>
+  <!-- developer_name tag deprecated with Appstream 1.0 -->
   <developer_name>The GNOME Project</developer_name>
+  <developer id="gnome.org">
+    <name>The GNOME Project</name>
+  </developer>
   <compulsory_for_desktop>GNOME</compulsory_for_desktop>
   <kudos>
     <kudo>HiDpiIcon</kudo>
@@ -42,31 +49,6 @@
   </kudos>
 
   <releases>
-    <release version="45.2" date="2023-12-07">
-    <description>
-      <ul>
-        <li>Improve background preview performance</li>
-        <li>Fix crash on the Privacy panel</li>
-        <li>Fix "File and Link Association" interface not reflecting changes</li>
-        <li>Share WPA3 (SAE) networks with QR Code</li>
-        <li>Various other fixes, improvements, and translation updates</li>
-      </ul>
-    </description>
-    </release>
-
-    <release version="45.1" date="2023-10-23">
-    <description>
-      <ul>
-        <li>Fix blurry illustrations in Mouse and Multitasking settings</li>
-        <li>Make keyboard shortcuts and cursor size dialogs close on Escape key</li>
-        <li>Fix mouse primary button style in Right-To-Left languages</li>
-        <li>Fix editing network connections without a device (VPN)</li>
-        <li>Support more types of processors in the About page</li>
-        <li>Various other fixes, improvements, and translation updates</li>
-      </ul>
-    </description>
-    </release>
-
     <release version="45.0" date="2023-09-15">
     <description>
       <ul>
@@ -76,7 +58,7 @@
       </ul>
     </description>
     </release>
-    <release version="45.rc" date="2023-08-25">
+    <release version="45~rc" date="2023-08-25">
     <description>
       <ul>
         <li>Settings panels have been ported to modern libadwaita navigation widgets</li>
@@ -85,7 +67,7 @@
       </ul>
     </description>
     </release>
-    <release version="45.beta" date="2023-08-07">
+    <release version="45~beta" date="2023-08-07">
     <description>
       <ul>
         <li>Performance improvements when loading a panel at startup</li>
@@ -102,8 +84,7 @@
   </releases>
 
   <translation type="gettext">gnome-control-center-2.0</translation>
-  <custom>
-    <value key="Purism::form_factor">workstation</value>
-    <value key="Purism::form_factor">mobile</value>
-  </custom>
+  <requires>
+    <display_length compare="ge">360</display_length>
+  </requires>
 </component>

@@ -302,6 +302,8 @@
             "buildsystem" : "meson",
             "config-opts" : [
                 "-Dsystemdsystemunitdir=/app/lib/systemd/system",
+                "-Dudevrulesdir=/app/lib/udev",
+                "-Dudevhwdbdir=/app/lib/udev",
                 "-Dgtk-doc=false",
                 "-Dman=false",
                 "-Dintrospection=disabled"
@@ -309,7 +311,8 @@
             "sources" : [
                 {
                     "type" : "git",
-                    "url" : "git://anongit.freedesktop.org/upower"
+                    "url" : "https://gitlab.freedesktop.org/upower/upower.git",
+                    "tag" : "v1.90.2"
                 }
             ]
         },
@@ -360,7 +363,8 @@
                 "-Dqt=false",
                 "-Dselinux=false",
                 "-Dsession_tracking=no",
-                "-Dsystemdsystemunitdir='no'",
+                "-Dsystemdsystemunitdir=/app/lib/systemd/system",
+                "-Dudev_dir=/app/lib/udev",
                 "-Dsystemd_journal=false",
                 "-Dtests=no",
                 "-Dvapi=false"
@@ -424,8 +428,14 @@
             "config-opts" : [
                 "-Dintrospection=false",
                 "-Dbash_completion=false",
-                "-Dudevdir=/app/lib",
+                "-Dudevdir=/app/lib/udev",
                 "-Dsystemdsystemunitdir=/app/lib/systemd/system",
+                "-Ddbus_policy_dir=/app/etc/dbus-1/system.d",
+                "-Dsystemd_journal=false",
+                "-Dtests=false",
+                "-Dman=false",
+                "-Dfuzzer=false",
+                "-Dexamples=false",
                 "-Dmbim=false",
                 "-Dplugin_dell=disabled",
                 "-Dplugin_foxconn=disabled",
@@ -436,7 +446,7 @@
             "sources" : [
                 {
                     "type" : "git",
-                    "url" : "git://anongit.freedesktop.org/ModemManager/ModemManager",
+                    "url" : "https://gitlab.freedesktop.org/mobile-broadband/ModemManager.git",
                     "branch" : "main"
                 }
             ]
@@ -445,6 +455,7 @@
             "name" : "gnome-settings-daemon",
             "buildsystem" : "meson",
             "config-opts" : [
+                "-Dudev_dir=/app/lib/udev",
                 "-Dsystemd=false"
             ],
             "sources" : [
@@ -619,6 +630,54 @@
             ]
         },
         {
+            "name": "python3-jinja2",
+            "buildsystem": "simple",
+            "build-commands": [
+                "pip3 install --verbose --exists-action=i --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} \"jinja2\" --no-build-isolation"
+            ],
+            "sources": [
+                {
+                    "type": "file",
+                    "url": "https://files.pythonhosted.org/packages/1d/97/2288fe498044284f39ab8950703e88abbac2abbdf65524d576157af70556/MarkupSafe-2.1.1.tar.gz",
+                    "sha256": "7f91197cc9e48f989d12e4e6fbc46495c446636dfc81b9ccf50bb0ec74b91d4b"
+                },
+                {
+                    "type": "file",
+                    "url": "https://files.pythonhosted.org/packages/bc/c3/f068337a370801f372f2f8f6bad74a5c140f6fda3d9de154052708dd3c65/Jinja2-3.1.2-py3-none-any.whl",
+                    "sha256": "6088930bfe239f0e6710546ab9c19c9ef35e29792895fed6e6e31a023a182a61"
+                }
+            ]
+        },
+        {
+            "name": "python3-attrs",
+            "buildsystem": "simple",
+            "build-commands": [
+                "pip3 install --verbose --exists-action=i --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} \"attrs\" --no-build-isolation"
+            ],
+            "sources": [
+                {
+                    "type": "file",
+                    "url": "https://files.pythonhosted.org/packages/f0/eb/fcb708c7bf5056045e9e98f62b93bd7467eb718b0202e7698eb11d66416c/attrs-23.1.0-py3-none-any.whl",
+                    "sha256": "1f28b4522cdc2fb4256ac1a020c78acf9cba2c6b461ccd2c126f3aa8e8335d04"
+                }
+            ]
+        },
+        {
+            "name" : "libei",
+            "buildsystem" : "meson",
+            "config-opts" : [
+                "-Dliboeffis=disabled",
+                "-Dtests=disabled"
+            ],
+            "sources" : [
+                {
+                    "type" : "git",
+                    "branch" : "main",
+                    "url" : "https://gitlab.freedesktop.org/libinput/libei.git"
+                }
+            ]
+        },
+        {
             "name" : "mutter",
             "buildsystem" : "meson",
             "config-opts" : [
@@ -636,6 +695,7 @@
                 "-Dintrospection=true",
                 "-Ddocs=false",
                 "-Dtests=false",
+                "-Dnative_tests=false",
                 "-Dprofiler=false"
             ],
             "sources" : [
@@ -743,6 +803,7 @@
                 "-Dman=false",
                 "-Dtests=false",
                 "-Dnetworkmanager=false",
+                "-Dcamera_monitor=false",
                 "-Dsystemd=false"
             ],
             "sources" : [
@@ -775,6 +836,8 @@
                 }
             ],
             "config-opts" : [
+                "-Dsnap=false",
+                "-Dtests=false",
                 "-Dprofile=development"
             ]
         }
