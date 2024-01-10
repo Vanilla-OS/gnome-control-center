@@ -69,7 +69,7 @@ index e3f1e46..fe01630 100644
    set_blank_screen_delay_value (self, value);
  
 diff --git a/panels/privacy/cc-screen-page.ui b/panels/privacy/cc-screen-page.ui
-index 6c42db7..2c91c27 100644
+index 7814355..25bde9a 100644
 --- a/panels/privacy/cc-screen-page.ui
 +++ b/panels/privacy/cc-screen-page.ui
 @@ -81,6 +81,20 @@

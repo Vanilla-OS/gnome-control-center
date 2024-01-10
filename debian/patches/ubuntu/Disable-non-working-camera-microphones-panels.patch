@@ -15,22 +15,22 @@ here and the Zoom snap still works and it isn't listed as an app
  1 file changed, 2 insertions(+)
 
 diff --git a/panels/privacy/cc-privacy-panel.ui b/panels/privacy/cc-privacy-panel.ui
-index fdfcdb5..9820070 100644
+index daec435..4a11e7b 100644
 --- a/panels/privacy/cc-privacy-panel.ui
 +++ b/panels/privacy/cc-privacy-panel.ui
-@@ -93,6 +93,7 @@
+@@ -89,6 +89,7 @@
                            <object class="CcListRow">
                              <property name="title" translatable="yes">_Cameras</property>
                              <property name="subtitle" translatable="yes">Control camera access</property>
 +                            <property name="visible">False</property>
                              <property name="icon-name">camera-symbolic</property>
-                             <property name="use-underline">True</property>
                              <property name="show-arrow">True</property>
-@@ -105,6 +106,7 @@
+                             <property name="action-name">navigation.push</property>
+@@ -100,6 +101,7 @@
                            <object class="CcListRow">
                              <property name="title" translatable="yes">_Microphones</property>
                              <property name="subtitle" translatable="yes">Control microphone access</property>
 +                            <property name="visible">False</property>
                              <property name="icon-name">microphone-symbolic</property>
-                             <property name="use-underline">True</property>
                              <property name="show-arrow">True</property>
+                             <property name="action-name">navigation.push</property>

@@ -8,7 +8,7 @@ Subject: multitasking-panel: Sync workspace isolation setting on tiling
  1 file changed, 42 insertions(+)
 
 diff --git a/panels/multitasking/cc-multitasking-panel.c b/panels/multitasking/cc-multitasking-panel.c
-index b3a820f..5f70de4 100644
+index 98b6298..3399ded 100644
 --- a/panels/multitasking/cc-multitasking-panel.c
 +++ b/panels/multitasking/cc-multitasking-panel.c
 @@ -32,6 +32,7 @@ struct _CcMultitaskingPanel

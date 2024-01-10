@@ -28,7 +28,7 @@ Last-Update: 2022-12-25
  4 files changed, 52 insertions(+), 36 deletions(-)
 
 diff --git a/panels/keyboard/cc-keyboard-panel.c b/panels/keyboard/cc-keyboard-panel.c
-index 40626e1..a6dee70 100644
+index 47a383c..086db4c 100644
 --- a/panels/keyboard/cc-keyboard-panel.c
 +++ b/panels/keyboard/cc-keyboard-panel.c
 @@ -63,6 +63,7 @@ static const CcXkbModifier LV3_MODIFIER = {
@@ -48,7 +48,7 @@ index 40626e1..a6dee70 100644
  };
  
  static const CcXkbModifier COMPOSE_MODIFIER = {
-@@ -92,6 +95,7 @@ static const CcXkbModifier COMPOSE_MODIFIER = {
+@@ -94,6 +97,7 @@ static const CcXkbModifier COMPOSE_MODIFIER = {
      { NULL,                                NULL }
    },
    NULL,
@@ -57,11 +57,11 @@ index 40626e1..a6dee70 100644
  
  static void
 diff --git a/panels/keyboard/cc-xkb-modifier-dialog.c b/panels/keyboard/cc-xkb-modifier-dialog.c
-index 44bb5c5..d2a3508 100644
+index 3d5763d..af6af9e 100644
 --- a/panels/keyboard/cc-xkb-modifier-dialog.c
 +++ b/panels/keyboard/cc-xkb-modifier-dialog.c
 @@ -28,7 +28,7 @@ struct _CcXkbModifierDialog
-   GtkDialog       parent_instance;
+   AdwWindow       parent_instance;
  
    GtkLabel       *description_label;
 -  GtkSwitch      *enabled_switch;
@@ -189,7 +189,7 @@ index 44bb5c5..d2a3508 100644
      {
        for (l = self->radio_group; l != NULL; l = l->next)
          {
-@@ -230,12 +242,12 @@ cc_xkb_modifier_dialog_class_init (CcXkbModifierDialogClass *klass)
+@@ -232,12 +244,12 @@ cc_xkb_modifier_dialog_class_init (CcXkbModifierDialogClass *klass)
    gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/keyboard/cc-xkb-modifier-dialog.ui");
  
    gtk_widget_class_bind_template_child (widget_class, CcXkbModifierDialog, description_label);
@@ -204,7 +204,7 @@ index 44bb5c5..d2a3508 100644
  }
  
  static void
-@@ -246,7 +258,7 @@ add_radio_buttons (CcXkbModifierDialog *self)
+@@ -248,7 +260,7 @@ add_radio_buttons (CcXkbModifierDialog *self)
    CcXkbOption *options = self->modifier->options;
    int i;
  
@@ -265,10 +265,10 @@ index 44bb5c5..d2a3508 100644
    return TRUE;
  }
 diff --git a/panels/keyboard/cc-xkb-modifier-dialog.h b/panels/keyboard/cc-xkb-modifier-dialog.h
-index 91efbcd..fd05b32 100644
+index 285fd46..f184c6a 100644
 --- a/panels/keyboard/cc-xkb-modifier-dialog.h
 +++ b/panels/keyboard/cc-xkb-modifier-dialog.h
-@@ -37,6 +37,7 @@ typedef struct
+@@ -38,6 +38,7 @@ typedef struct
    gchar *description;
    CcXkbOption *options;
    gchar *default_option;
@@ -277,22 +277,22 @@ index 91efbcd..fd05b32 100644
  
  #define CC_TYPE_XKB_MODIFIER_DIALOG (cc_xkb_modifier_dialog_get_type())
 diff --git a/panels/keyboard/cc-xkb-modifier-dialog.ui b/panels/keyboard/cc-xkb-modifier-dialog.ui
-index 8887447..c61e802 100644
+index 2ba9dd8..e817015 100644
 --- a/panels/keyboard/cc-xkb-modifier-dialog.ui
 +++ b/panels/keyboard/cc-xkb-modifier-dialog.ui
-@@ -36,11 +36,12 @@
-                   <object class="AdwActionRow" id="switch_row">
-                     <property name="activatable">False</property>
-                     <property name="selectable">False</property>
--                    <property name="activatable-widget">enabled_switch</property>
-+                    <property name="activatable-widget">default_switch</property>
-+                    <property name="title" translatable="yes">Use layout default</property>
-                     <child>
--                      <object class="GtkSwitch" id="enabled_switch">
-+                      <object class="GtkSwitch" id="default_switch">
-                         <property name="valign">center</property>
--                        <signal name="state-set" handler="enable_switch_changed_cb" object="CcXkbModifierDialog" swapped="yes"/>
-+                        <signal name="state-set" handler="default_switch_changed_cb" object="CcXkbModifierDialog" swapped="yes"/>
+@@ -42,11 +42,12 @@
+                       <object class="AdwActionRow" id="switch_row">
+                         <property name="activatable">False</property>
+                         <property name="selectable">False</property>
+-                        <property name="activatable-widget">enabled_switch</property>
++                        <property name="activatable-widget">default_switch</property>
++                        <property name="title" translatable="yes">Use layout default</property>
+                         <child>
+-                          <object class="GtkSwitch" id="enabled_switch">
++                          <object class="GtkSwitch" id="default_switch">
+                             <property name="valign">center</property>
+-                            <signal name="state-set" handler="enable_switch_changed_cb" object="CcXkbModifierDialog" swapped="yes"/>
++                            <signal name="state-set" handler="default_switch_changed_cb" object="CcXkbModifierDialog" swapped="yes"/>
+                           </object>
+                         </child>
                        </object>
-                     </child>
-                   </object>

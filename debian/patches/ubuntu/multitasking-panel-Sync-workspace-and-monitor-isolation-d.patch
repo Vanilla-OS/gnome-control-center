@@ -17,7 +17,7 @@ Forwarded: not-need
  2 files changed, 92 insertions(+)
 
 diff --git a/panels/multitasking/cc-multitasking-panel.c b/panels/multitasking/cc-multitasking-panel.c
-index 6adfc87..b3a820f 100644
+index be3d3de..98b6298 100644
 --- a/panels/multitasking/cc-multitasking-panel.c
 +++ b/panels/multitasking/cc-multitasking-panel.c
 @@ -31,6 +31,7 @@ struct _CcMultitaskingPanel
@@ -36,7 +36,7 @@ index 6adfc87..b3a820f 100644
 +  GtkCheckButton  *dock_each_monitor_radio;
    CcIllustratedRow *hot_corner_row;
    GtkSwitch       *hot_corner_switch;
-   GtkSpinButton   *number_of_workspaces_spin;
+   AdwSpinRow      *number_of_workspaces_spin_row;
    GtkCheckButton  *workspaces_primary_display_radio;
    GtkCheckButton  *workspaces_span_displays_radio;
 +
@@ -74,7 +74,7 @@ index 6adfc87..b3a820f 100644
  
    G_OBJECT_CLASS (cc_multitasking_panel_parent_class)->finalize (object);
 @@ -86,11 +109,17 @@ cc_multitasking_panel_class_init (CcMultitaskingPanelClass *klass)
-   gtk_widget_class_bind_template_child (widget_class, CcMultitaskingPanel, number_of_workspaces_spin);
+   gtk_widget_class_bind_template_child (widget_class, CcMultitaskingPanel, number_of_workspaces_spin_row);
    gtk_widget_class_bind_template_child (widget_class, CcMultitaskingPanel, workspaces_primary_display_radio);
    gtk_widget_class_bind_template_child (widget_class, CcMultitaskingPanel, workspaces_span_displays_radio);
 +
@@ -125,10 +125,10 @@ index 6adfc87..b3a820f 100644
 +    }
  }
 diff --git a/panels/multitasking/cc-multitasking-panel.ui b/panels/multitasking/cc-multitasking-panel.ui
-index c9c2816..fe3f091 100644
+index 94375c7..e7b0c2c 100644
 --- a/panels/multitasking/cc-multitasking-panel.ui
 +++ b/panels/multitasking/cc-multitasking-panel.ui
-@@ -177,6 +177,41 @@
+@@ -171,6 +171,41 @@
                </object>
              </child>
  

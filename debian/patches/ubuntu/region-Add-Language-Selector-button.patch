@@ -4,21 +4,20 @@ Subject: region: Add Language Selector button
 
 Workaround for https://launchpad.net/bugs/1631750
 ---
- panels/region/cc-region-panel.c  | 21 +++++++++++++++++++++
- panels/region/cc-region-panel.ui | 22 ++++++++++++++++++++++
- 2 files changed, 43 insertions(+)
+ panels/system/region/cc-region-page.c  | 20 ++++++++++++++++++++
+ panels/system/region/cc-region-page.ui | 22 ++++++++++++++++++++++
+ 2 files changed, 42 insertions(+)
 
-diff --git a/panels/region/cc-region-panel.c b/panels/region/cc-region-panel.c
-index 5dbab36..f13b26c 100644
---- a/panels/region/cc-region-panel.c
-+++ b/panels/region/cc-region-panel.c
-@@ -560,6 +560,26 @@ setup_language_section (CcRegionPanel *self)
+diff --git a/panels/system/region/cc-region-page.c b/panels/system/region/cc-region-page.c
+index e354faa..25a1431 100644
+--- a/panels/system/region/cc-region-page.c
++++ b/panels/system/region/cc-region-page.c
+@@ -572,6 +572,25 @@ setup_language_section (CcRegionPage *self)
          update_region_from_setting (self);
  }
  
-+
 +static void
-+show_language_support (CcRegionPanel *self)
++show_language_support (CcRegionPage *self)
 +{
 +        g_autoptr(GAppInfo) app_info = NULL;
 +        g_autoptr(GdkAppLaunchContext) ctx = NULL;
@@ -37,9 +36,9 @@ index 5dbab36..f13b26c 100644
 +}
 +
  static void
- update_login_region (CcRegionPanel *self)
+ update_login_region (CcRegionPage *self)
  {
-@@ -847,6 +867,7 @@ cc_region_panel_class_init (CcRegionPanelClass * klass)
+@@ -851,6 +870,7 @@ cc_region_page_class_init (CcRegionPageClass * klass)
          gtk_widget_class_bind_template_callback (widget_class, on_user_formats_row_activated_cb);
          gtk_widget_class_bind_template_callback (widget_class, on_user_language_row_activated_cb);
          gtk_widget_class_bind_template_callback (widget_class, restart_now);
@@ -47,14 +46,14 @@ index 5dbab36..f13b26c 100644
  }
  
  static void
-diff --git a/panels/region/cc-region-panel.ui b/panels/region/cc-region-panel.ui
-index c17e9d0..3600ea2 100644
---- a/panels/region/cc-region-panel.ui
-+++ b/panels/region/cc-region-panel.ui
-@@ -23,6 +23,28 @@
+diff --git a/panels/system/region/cc-region-page.ui b/panels/system/region/cc-region-page.ui
+index 800a8fa..dd1c5d3 100644
+--- a/panels/system/region/cc-region-page.ui
++++ b/panels/system/region/cc-region-page.ui
+@@ -25,6 +25,28 @@
+             <child>
                <object class="AdwPreferencesPage">
                  <property name="description" translatable="yes">The language setting is used for interface text and web pages. Formats are used for numbers, dates, and currencies.</property>
- 
 +                <child>
 +                  <object class="AdwPreferencesGroup">
 +                    <property name="title" translatable="yes">System</property>
@@ -64,7 +63,7 @@ index c17e9d0..3600ea2 100644
 +                        <property name="use-underline">True</property>
 +                        <property name="title" translatable="yes">Manage Installed Languages</property>
 +                        <property name="activatable">True</property>
-+                        <signal name="activated" handler="show_language_support" object="CcRegionPanel" swapped="yes" />
++                        <signal name="activated" handler="show_language_support" object="CcRegionPage" swapped="yes" />
 +
 +                        <child>
 +                          <object class="GtkImage">

@@ -81,7 +81,7 @@ index e90ed61..a14d687 100644
    load_custom_css (self);
  }
 diff --git a/panels/background/cc-background-panel.ui b/panels/background/cc-background-panel.ui
-index 8d6b11c..a12fee3 100644
+index 61a79bd..da840c0 100644
 --- a/panels/background/cc-background-panel.ui
 +++ b/panels/background/cc-background-panel.ui
 @@ -96,6 +96,10 @@
@@ -1014,15 +1014,15 @@ index 529be08..d7f73e6 100644
    'cc-ubuntu-dock-dialog.ui',
  )
 diff --git a/po/POTFILES.in b/po/POTFILES.in
-index c66ef8e..bf5143a 100644
+index aa483b6..18e2eef 100644
 --- a/po/POTFILES.in
 +++ b/po/POTFILES.in
-@@ -223,6 +223,8 @@ panels/ubuntu/cc-ubuntu-panel.c
- panels/ubuntu/cc-ubuntu-panel.ui
- panels/ubuntu/cc-ubuntu-dock-dialog.c
- panels/ubuntu/cc-ubuntu-dock-dialog.ui
+@@ -240,6 +240,8 @@ panels/system/users/org.gnome.controlcenter.system/users.policy.in
+ panels/system/users/pw-utils.c
+ panels/system/users/run-passwd.c
+ panels/system/users/user-utils.c
 +panels/ubuntu/cc-ubuntu-colors-row.c
 +panels/ubuntu/cc-ubuntu-colors-row.ui
- panels/ubuntu/gnome-ubuntu-panel.desktop.in
- panels/universal-access/cc-cursor-size-dialog.ui
- panels/universal-access/cc-ua-hearing-page.ui
+ panels/ubuntu/cc-ubuntu-panel.c
+ panels/ubuntu/cc-ubuntu-panel.ui
+ panels/ubuntu/cc-ubuntu-dock-dialog.c

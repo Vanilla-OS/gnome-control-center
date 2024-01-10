@@ -77,7 +77,7 @@ index 571ee10..8e9eb01 100644
 + </g>
 +</svg>
 diff --git a/panels/multitasking/cc-multitasking-panel.c b/panels/multitasking/cc-multitasking-panel.c
-index 5f70de4..1faacee 100644
+index 3399ded..0e2c3f2 100644
 --- a/panels/multitasking/cc-multitasking-panel.c
 +++ b/panels/multitasking/cc-multitasking-panel.c
 @@ -90,6 +90,21 @@ keep_tiling_assistant_settings_in_sync (CcMultitaskingPanel *self)
@@ -110,7 +110,7 @@ index 5f70de4..1faacee 100644
 +  load_custom_css (self);
  }
 diff --git a/panels/multitasking/cc-multitasking-panel.ui b/panels/multitasking/cc-multitasking-panel.ui
-index fe3f091..1576bd7 100644
+index e7b0c2c..11277be 100644
 --- a/panels/multitasking/cc-multitasking-panel.ui
 +++ b/panels/multitasking/cc-multitasking-panel.ui
 @@ -22,6 +22,9 @@
@@ -133,7 +133,7 @@ index fe3f091..1576bd7 100644
                    </object>
                  </child>
  
-@@ -119,6 +125,9 @@
+@@ -113,6 +119,9 @@
                          <property name="valign">center</property>
                        </object>
                      </child>
@@ -143,7 +143,7 @@ index fe3f091..1576bd7 100644
                    </object>
                  </child>
  
-@@ -135,6 +144,9 @@
+@@ -129,6 +138,9 @@
                          <property name="group">workspaces_primary_display_radio</property>
                        </object>
                      </child>

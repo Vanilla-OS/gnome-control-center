@@ -12,10 +12,10 @@ Subject: diagnostics: Add Whoopsie support
  6 files changed, 248 insertions(+), 2 deletions(-)
 
 diff --git a/meson.build b/meson.build
-index 3764158..01782e4 100644
+index 98dfc31..db65d20 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -263,6 +263,14 @@ endif
+@@ -271,6 +271,14 @@ endif
  config_h.set('HAVE_MALCONTENT', enable_malcontent,
               description: 'Define to 1 if malcontent support is enabled')
  
@@ -30,17 +30,17 @@ index 3764158..01782e4 100644
  if host_is_linux
    # ModemManager
    mm_dep =  dependency('mm-glib', version: '>= 0.7')
-@@ -363,4 +371,5 @@ summary({
+@@ -371,4 +379,5 @@ summary({
    'IBus': enable_ibus,
    'Snap': enable_snap,
    'Malcontent': enable_malcontent,
 +  'Whoopsie': enable_whoopsie,
  }, section: 'Optional Dependencies')
 diff --git a/meson_options.txt b/meson_options.txt
-index 8ee7b6e..beebcf2 100644
+index e53d6e3..d09ba43 100644
 --- a/meson_options.txt
 +++ b/meson_options.txt
-@@ -8,3 +8,4 @@ option('profile', type: 'combo', choices: ['default','development'], value: 'def
+@@ -9,3 +9,4 @@ option('profile', type: 'combo', choices: ['default','development'], value: 'def
  option('malcontent', type: 'boolean', value: false, description: 'build with malcontent support')
  option('distributor_logo', type: 'string', description: 'absolute path to distributor logo for the About panel')
  option('dark_mode_distributor_logo', type: 'string', description: 'absolute path to distributor logo dark mode variant')
@@ -354,7 +354,7 @@ index 1dee196..b21d157 100644
              </child>
            </object>
 diff --git a/panels/privacy/gnome-privacy-panel.desktop.in b/panels/privacy/gnome-privacy-panel.desktop.in
-index beaf33d..bdfa355 100644
+index 541b9f5..4490af5 100644
 --- a/panels/privacy/gnome-privacy-panel.desktop.in
 +++ b/panels/privacy/gnome-privacy-panel.desktop.in
 @@ -11,4 +11,4 @@ StartupNotify=true

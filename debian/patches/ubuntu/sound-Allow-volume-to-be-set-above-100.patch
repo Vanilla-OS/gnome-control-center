@@ -61,10 +61,10 @@ index 0d73c42..35de348 100644
    gvc_mixer_control_open (self->mixer_control);
  
 diff --git a/panels/sound/cc-sound-panel.ui b/panels/sound/cc-sound-panel.ui
-index 97ae875..bc2331b 100644
+index 1211d26..88ad97a 100644
 --- a/panels/sound/cc-sound-panel.ui
 +++ b/panels/sound/cc-sound-panel.ui
-@@ -206,6 +206,14 @@
+@@ -213,6 +213,14 @@
                      </child>
                    </object>
                  </child>

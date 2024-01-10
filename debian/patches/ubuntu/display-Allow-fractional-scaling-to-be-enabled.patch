@@ -513,26 +513,26 @@ index 4c00119..145399b 100644
  const char*       cc_display_monitor_get_display_name       (CcDisplayMonitor   *monitor);
  gboolean          cc_display_monitor_is_active              (CcDisplayMonitor   *monitor);
 diff --git a/panels/display/cc-display-settings.c b/panels/display/cc-display-settings.c
-index 9d67a2e..5bcf925 100644
+index 8c289d0..d5bc23e 100644
 --- a/panels/display/cc-display-settings.c
 +++ b/panels/display/cc-display-settings.c
-@@ -55,6 +55,7 @@ struct _CcDisplaySettings
+@@ -54,6 +54,7 @@ struct _CcDisplaySettings
    GtkWidget        *scale_bbox;
    GtkWidget        *scale_buttons_row;
    GtkWidget        *scale_combo_row;
 +  GtkWidget        *scale_fractional_row;
-   GtkWidget        *underscanning_row;
-   GtkWidget        *underscanning_switch;
+   AdwSwitchRow     *underscanning_row;
  };
-@@ -256,6 +257,7 @@ cc_display_settings_rebuild_ui (CcDisplaySettings *self)
+ 
+@@ -254,6 +255,7 @@ cc_display_settings_rebuild_ui (CcDisplaySettings *self)
        gtk_widget_set_visible (self->resolution_row, FALSE);
        gtk_widget_set_visible (self->scale_combo_row, FALSE);
        gtk_widget_set_visible (self->scale_buttons_row, FALSE);
 +      gtk_widget_set_visible (self->scale_fractional_row, FALSE);
-       gtk_widget_set_visible (self->underscanning_row, FALSE);
+       gtk_widget_set_visible (GTK_WIDGET (self->underscanning_row), FALSE);
  
        return G_SOURCE_REMOVE;
-@@ -464,6 +466,11 @@ cc_display_settings_rebuild_ui (CcDisplaySettings *self)
+@@ -462,6 +464,11 @@ cc_display_settings_rebuild_ui (CcDisplaySettings *self)
      }
    cc_display_settings_refresh_layout (self, self->collapsed);
  
@@ -541,19 +541,19 @@ index 9d67a2e..5bcf925 100644
 +                cc_display_config_get_fractional_scaling (self->config),
 +                NULL);
 +
-   gtk_widget_set_visible (self->underscanning_row,
+   gtk_widget_set_visible (GTK_WIDGET (self->underscanning_row),
                            cc_display_monitor_supports_underscanning (self->selected_output) &&
                            !cc_display_config_is_cloning (self->config));
-@@ -747,6 +754,7 @@ cc_display_settings_class_init (CcDisplaySettingsClass *klass)
+@@ -744,6 +751,7 @@ cc_display_settings_class_init (CcDisplaySettingsClass *klass)
    gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, scale_bbox);
    gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, scale_buttons_row);
    gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, scale_combo_row);
 +  gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, scale_fractional_row);
    gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, underscanning_row);
-   gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, underscanning_switch);
  
-@@ -758,6 +766,19 @@ cc_display_settings_class_init (CcDisplaySettingsClass *klass)
-   gtk_widget_class_bind_template_callback (widget_class, on_underscanning_switch_active_changed_cb);
+   gtk_widget_class_bind_template_callback (widget_class, on_enabled_row_active_changed_cb);
+@@ -754,6 +762,19 @@ cc_display_settings_class_init (CcDisplaySettingsClass *klass)
+   gtk_widget_class_bind_template_callback (widget_class, on_underscanning_row_active_changed_cb);
  }
  
 +static void
@@ -572,7 +572,7 @@ index 9d67a2e..5bcf925 100644
  static void
  cc_display_settings_init (CcDisplaySettings *self)
  {
-@@ -793,6 +814,11 @@ cc_display_settings_init (CcDisplaySettings *self)
+@@ -789,6 +810,11 @@ cc_display_settings_init (CcDisplaySettings *self)
    adw_combo_row_set_model (ADW_COMBO_ROW (self->resolution_row),
                             G_LIST_MODEL (self->resolution_list));
  
@@ -585,10 +585,10 @@ index 9d67a2e..5bcf925 100644
  }
  
 diff --git a/panels/display/cc-display-settings.ui b/panels/display/cc-display-settings.ui
-index 6de2ba6..dec9f52 100644
+index 6937735..8261471 100644
 --- a/panels/display/cc-display-settings.ui
 +++ b/panels/display/cc-display-settings.ui
-@@ -95,6 +95,12 @@
+@@ -83,6 +83,12 @@
              <signal name="notify::selected-item" handler="on_scale_selection_changed_cb" swapped="yes"/>
            </object>
          </child>
