@@ -19,12 +19,6 @@ MALCONTENT := -Dmalcontent=false
 endif
 endif
 
-ifeq ($(DEB_HOST_ARCH_OS),linux)
-SNAP := -Dsnap=true
-else
-SNAP := -Dsnap=false
-endif
-
 %:
 	dh $@
 
@@ -34,8 +28,7 @@ override_dh_auto_configure:
 		-Ddocumentation=true \
 		-Ddistributor_logo=$(DISTRIBUTOR_LOGO) \
 		-Ddark_mode_distributor_logo=$(DISTRIBUTOR_LOGO_DARK) \
-		$(MALCONTENT) \
-		$(SNAP)
+		$(MALCONTENT)
 
 # Ubuntu-specific
 override_dh_translations:
