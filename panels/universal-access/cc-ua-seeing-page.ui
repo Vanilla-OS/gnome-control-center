@@ -23,7 +23,7 @@
 
                 <child>
                   <object class="AdwSwitchRow" id="animations_row">
-                    <property name="title" translatable="yes">_Reduce Animation</property>
+                    <property name="title" translatable="yes">Reduce _Animation</property>
                     <property name="subtitle" translatable="yes">Reduce animations in the user interface to reduce motion</property>
                     <property name="use-underline">True</property>
                   </object>
@@ -41,7 +41,6 @@
                   <object class="CcListRow" id="cursor_size_row">
                     <property name="title" translatable="yes">_Cursor Size</property>
                     <property name="subtitle" translatable="yes">The size of the cursor can be increased to make it easier to see</property>
-                    <property name="use-underline">True</property>
                     <signal name="activated" handler="ua_cursor_row_activated_cb" swapped="yes"/>
                     <property name="show-arrow">True</property>
                   </object>
@@ -56,9 +55,9 @@
                 </child>
 
                 <child>
-                  <object class="AdwSwitchRow" id="overlay_scrollbars_row">
-                    <property name="title" translatable="yes">_Overlay Scrollbars</property>
-                    <property name="subtitle" translatable="yes">Use scrollbars that overlay the content and automatically hide</property>
+                  <object class="AdwSwitchRow" id="show_scrollbars_row">
+                    <property name="title" translatable="yes">Always Show Scroll_bars</property>
+                    <property name="subtitle" translatable="yes">Make scrollbars always visible</property>
                     <property name="use-underline">True</property>
                   </object>
                 </child>

@@ -32,6 +32,8 @@ struct _CcLocationPage
 {
   AdwNavigationPage parent_instance;
 
+  GtkLabel     *privacy_policy_link;
+
   GtkListBox   *location_apps_list_box;
   AdwSwitchRow *location_row;
 
@@ -195,6 +197,7 @@ add_location_app (CcLocationPage *self,
 
   icon = g_app_info_get_icon (G_APP_INFO (app_info));
   w = gtk_image_new_from_gicon (icon);
+  gtk_image_set_icon_size (GTK_IMAGE (w), GTK_ICON_SIZE_LARGE);
   gtk_widget_set_valign (w, GTK_ALIGN_CENTER);
   gtk_size_group_add_widget (self->location_icon_size_group, w);
   adw_action_row_add_prefix (ADW_ACTION_ROW (row), w);
@@ -389,6 +392,7 @@ cc_location_page_class_init (CcLocationPageClass *klass)
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/privacy/cc-location-page.ui");
 
+  gtk_widget_class_bind_template_child (widget_class, CcLocationPage, privacy_policy_link);
   gtk_widget_class_bind_template_child (widget_class, CcLocationPage, location_apps_list_box);
   gtk_widget_class_bind_template_child (widget_class, CcLocationPage, location_row);
 }
@@ -396,12 +400,18 @@ cc_location_page_class_init (CcLocationPageClass *klass)
 static void
 cc_location_page_init (CcLocationPage *self)
 {
+  g_autofree gchar *privacy_policy_link = NULL;
+
   gtk_widget_init_template (GTK_WIDGET (self));
 
   self->location_icon_size_group = gtk_size_group_new (GTK_SIZE_GROUP_BOTH);
   self->location_settings = g_settings_new ("org.gnome.system.location");
 
   self->cancellable = g_cancellable_new ();
+
+  /* Translators: This will be presented as the text of a link to the privacy policy */
+  privacy_policy_link = g_strdup_printf ("<a href='https://location.services.mozilla.com/privacy'>%s</a>", _("Learn about what data is collected, and how it is used."));
+  gtk_label_set_label (GTK_LABEL (self->privacy_policy_link), privacy_policy_link);
 
   g_settings_bind (self->location_settings,
                    LOCATION_ENABLED,

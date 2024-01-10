@@ -412,7 +412,10 @@ list_providers (CcOnlineAccountsPanel *self)
   g_variant_iter_init (&iter, providers_variant);
 
   while ((provider = g_variant_iter_next_value (&iter)))
-    add_provider_row (self, provider);
+    {
+      add_provider_row (self, provider);
+      g_variant_unref (provider);
+    }
 }
 
 static void
@@ -495,6 +498,8 @@ unexport_window_handle (CcOnlineAccountsPanel *self)
       gdk_wayland_toplevel_unexport_handle (GDK_TOPLEVEL (surface));
     }
 #endif
+
+  g_clear_pointer (&self->window_export_handle, g_free);
 }
 
 static void
@@ -699,10 +704,13 @@ on_client_remove_account_finish_cb (GoaAccount   *account,
 static void
 on_notification_closed_cb (CcOnlineAccountsPanel *self)
 {
-  goa_account_call_remove (goa_object_peek_account (self->removed_object),
-                           cc_panel_get_cancellable (CC_PANEL (self)),
-                           (GAsyncReadyCallback) on_client_remove_account_finish_cb,
-                           g_object_ref (self));
+  if (self->removed_object != NULL)
+    {
+      goa_account_call_remove (goa_object_peek_account (self->removed_object),
+                               cc_panel_get_cancellable (CC_PANEL (self)),
+                               (GAsyncReadyCallback) on_client_remove_account_finish_cb,
+                               g_object_ref (self));
+    }
 
   gtk_revealer_set_reveal_child (self->notification_revealer, FALSE);
 

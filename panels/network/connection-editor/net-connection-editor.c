@@ -35,6 +35,7 @@
 #include "ce-page-ip6.h"
 #include "ce-page-security.h"
 #include "ce-page-ethernet.h"
+#include "ce-page-bluetooth.h"
 #include "ce-page-8021x-security.h"
 #include "ce-page-vpn.h"
 #include "ce-page-wireguard.h"
@@ -49,7 +50,7 @@ static guint signals[LAST_SIGNAL] = { 0 };
 
 struct _NetConnectionEditor
 {
-        GtkDialog parent;
+        AdwWindow parent;
 
         GtkBox           *add_connection_box;
         AdwBin           *add_connection_frame;
@@ -76,7 +77,7 @@ struct _NetConnectionEditor
         gboolean          title_set;
 };
 
-G_DEFINE_TYPE (NetConnectionEditor, net_connection_editor, GTK_TYPE_DIALOG)
+G_DEFINE_TYPE (NetConnectionEditor, net_connection_editor, ADW_TYPE_WINDOW)
 
 /* Used as both GSettings keys and GObject data tags */
 #define IGNORE_CA_CERT_TAG "ignore-ca-cert"
@@ -174,10 +175,12 @@ cancel_editing (NetConnectionEditor *self)
         gtk_window_destroy (GTK_WINDOW (self));
 }
 
-static void
-close_request_cb (NetConnectionEditor *self)
+static gboolean
+net_connection_editor_close_request (GtkWindow *window)
 {
-        cancel_editing (self);
+        cancel_editing (NET_CONNECTION_EDITOR (window));
+
+        return GTK_WINDOW_CLASS (net_connection_editor_parent_class)->close_request (window);
 }
 
 static void
@@ -327,10 +330,13 @@ net_connection_editor_class_init (NetConnectionEditorClass *class)
 {
         GObjectClass *object_class = G_OBJECT_CLASS (class);
         GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (class);
+        GtkWindowClass *window_class = GTK_WINDOW_CLASS (class);
 
         g_resources_register (net_connection_editor_get_resource ());
 
         object_class->finalize = net_connection_editor_finalize;
+
+        window_class->close_request = net_connection_editor_close_request;
 
         signals[DONE] = g_signal_new ("done",
                                       G_OBJECT_CLASS_TYPE (object_class),
@@ -339,6 +345,8 @@ net_connection_editor_class_init (NetConnectionEditorClass *class)
                                       NULL, NULL,
                                       NULL,
                                       G_TYPE_NONE, 1, G_TYPE_BOOLEAN);
+
+        gtk_widget_class_add_binding_action (widget_class, GDK_KEY_Escape, 0, "window.close", NULL);
 
         gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/network/connection-editor.ui");
 
@@ -351,7 +359,6 @@ net_connection_editor_class_init (NetConnectionEditorClass *class)
         gtk_widget_class_bind_template_child (widget_class, NetConnectionEditor, toplevel_stack);
 
         gtk_widget_class_bind_template_callback (widget_class, cancel_clicked_cb);
-        gtk_widget_class_bind_template_callback (widget_class, close_request_cb);
         gtk_widget_class_bind_template_callback (widget_class, apply_clicked_cb);
 }
 
@@ -637,6 +644,7 @@ net_connection_editor_set_connection (NetConnectionEditor *self,
         gboolean is_wifi;
         gboolean is_vpn;
         gboolean is_wireguard;
+        gboolean is_bluetooth;
 
         self->is_new_connection = !nm_client_get_connection_by_uuid (self->client,
                                                                        nm_connection_get_uuid (connection));
@@ -660,9 +668,9 @@ net_connection_editor_set_connection (NetConnectionEditor *self,
         is_wifi = g_str_equal (type, NM_SETTING_WIRELESS_SETTING_NAME);
         is_vpn = g_str_equal (type, NM_SETTING_VPN_SETTING_NAME);
         is_wireguard = g_str_equal (type, NM_SETTING_WIREGUARD_SETTING_NAME);
+        is_bluetooth = g_str_equal (type, NM_SETTING_BLUETOOTH_SETTING_NAME);
 
-        if (!self->is_new_connection)
-                add_page (self, CE_PAGE (ce_page_details_new (self->connection, self->device, self->ap, self)));
+        add_page (self, CE_PAGE (ce_page_details_new (self->connection, self->device, self->ap, self, self->is_new_connection)));
 
         if (is_wifi)
                 add_page (self, CE_PAGE (ce_page_wifi_new (self->connection, self->client)));
@@ -672,6 +680,8 @@ net_connection_editor_set_connection (NetConnectionEditor *self,
                 add_page (self, CE_PAGE (ce_page_vpn_new (self->connection)));
         else if (is_wireguard)
                 add_page (self, CE_PAGE (ce_page_wireguard_new (self->connection)));
+        else if (is_bluetooth)
+                add_page (self, CE_PAGE (ce_page_bluetooth_new (self->connection)));
         else {
                 /* Unsupported type */
                 net_connection_editor_do_fallback (self, type);
@@ -827,8 +837,7 @@ static void
 select_vpn_type (NetConnectionEditor *self, GtkListBox *list)
 {
         GSList *vpn_plugins, *iter;
-        GtkWidget *row, *row_box;
-        GtkWidget *name_label, *desc_label;
+        GtkWidget *row;
         GtkWidget *child;
 
         /* Get the available VPN types */
@@ -853,26 +862,11 @@ select_vpn_type (NetConnectionEditor *self, GtkListBox *list)
                               NULL);
                 desc_markup = g_markup_printf_escaped ("<span size='smaller'>%s</span>", desc);
 
-                row = gtk_list_box_row_new ();
+                row = adw_action_row_new ();
+                gtk_list_box_row_set_activatable (GTK_LIST_BOX_ROW (row), TRUE);
+                adw_preferences_row_set_title (ADW_PREFERENCES_ROW (row), name);
+                adw_action_row_set_subtitle (ADW_ACTION_ROW (row), desc_markup);
 
-                row_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
-                gtk_widget_set_margin_start (row_box, 12);
-                gtk_widget_set_margin_end (row_box, 12);
-                gtk_widget_set_margin_top (row_box, 12);
-                gtk_widget_set_margin_bottom (row_box, 12);
-
-                name_label = gtk_label_new (name);
-                gtk_widget_set_halign (name_label, GTK_ALIGN_START);
-                gtk_box_append (GTK_BOX (row_box), name_label);
-
-                desc_label = gtk_label_new (NULL);
-                gtk_label_set_markup (GTK_LABEL (desc_label), desc_markup);
-                gtk_label_set_wrap (GTK_LABEL (desc_label), TRUE);
-                gtk_widget_set_halign (desc_label, GTK_ALIGN_START);
-                gtk_widget_add_css_class (desc_label, "dim-label");
-                gtk_box_append (GTK_BOX (row_box), desc_label);
-
-                gtk_list_box_row_set_child (GTK_LIST_BOX_ROW (row), row_box);
                 g_object_set_data_full (G_OBJECT (row), "service_name", g_steal_pointer (&service_name), g_free);
                 gtk_list_box_append (list, row);
         }
@@ -882,43 +876,19 @@ select_vpn_type (NetConnectionEditor *self, GtkListBox *list)
                         "of use, high speed performance and low attack surface.");
         gchar *desc_markup = g_markup_printf_escaped ("<span size='smaller'>%s</span>", desc);
 
-        row = gtk_list_box_row_new ();
+        row = adw_action_row_new ();
+        gtk_list_box_row_set_activatable (GTK_LIST_BOX_ROW (row), TRUE);
+        adw_preferences_row_set_title (ADW_PREFERENCES_ROW (row), _("WireGuard"));
+        adw_action_row_set_subtitle (ADW_ACTION_ROW (row), desc_markup);
 
-        row_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
-        gtk_widget_set_margin_start (row_box, 12);
-        gtk_widget_set_margin_end (row_box, 12);
-        gtk_widget_set_margin_top (row_box, 12);
-        gtk_widget_set_margin_bottom (row_box, 12);
-
-        name_label = gtk_label_new (_("WireGuard"));
-        gtk_widget_set_halign (name_label, GTK_ALIGN_START);
-        gtk_box_append (GTK_BOX (row_box), name_label);
-
-        desc_label = gtk_label_new (NULL);
-        gtk_label_set_markup (GTK_LABEL (desc_label), desc_markup);
-        gtk_label_set_wrap (GTK_LABEL (desc_label), TRUE);
-        gtk_widget_set_halign (desc_label, GTK_ALIGN_START);
-        gtk_widget_add_css_class (desc_label, "dim-label");
-        gtk_box_append (GTK_BOX (row_box), desc_label);
-
-        gtk_list_box_row_set_child (GTK_LIST_BOX_ROW (row), row_box);
         g_object_set_data (G_OBJECT (row), "service_name", "wireguard");
         gtk_list_box_append (list, row);
 
         /* Import */
-        row = gtk_list_box_row_new ();
+        row = adw_action_row_new ();
+        gtk_list_box_row_set_activatable (GTK_LIST_BOX_ROW (row), TRUE);
+        adw_preferences_row_set_title (ADW_PREFERENCES_ROW (row), _("Import from file…"));
 
-        row_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
-        gtk_widget_set_margin_start (row_box, 12);
-        gtk_widget_set_margin_end (row_box, 12);
-        gtk_widget_set_margin_top (row_box, 12);
-        gtk_widget_set_margin_bottom (row_box, 12);
-
-        name_label = gtk_label_new (_("Import from file…"));
-        gtk_widget_set_halign (name_label, GTK_ALIGN_START);
-        gtk_box_append (GTK_BOX (row_box), name_label);
-
-        gtk_list_box_row_set_child (GTK_LIST_BOX_ROW (row), row_box);
         g_object_set_data (G_OBJECT (row), "service_name", "import");
         gtk_list_box_append (list, row);
 
@@ -933,6 +903,7 @@ net_connection_editor_add_connection (NetConnectionEditor *self)
 
         list = GTK_LIST_BOX (gtk_list_box_new ());
         gtk_list_box_set_selection_mode (list, GTK_SELECTION_NONE);
+        gtk_widget_add_css_class (GTK_WIDGET (list), "boxed-list");
 
         select_vpn_type (self, list);
 
@@ -967,10 +938,7 @@ net_connection_editor_new (NMConnection     *connection,
 {
         NetConnectionEditor *self;
 
-        self = g_object_new (net_connection_editor_get_type (),
-                             /* This doesn't seem to work for a template, so it is also hardcoded. */
-                             "use-header-bar", 1,
-                             NULL);
+        self = g_object_new (net_connection_editor_get_type (), NULL);
 
         self->cancellable = g_cancellable_new ();
 

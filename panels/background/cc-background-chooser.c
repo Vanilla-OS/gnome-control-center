@@ -24,11 +24,13 @@
 #include <glib/gi18n.h>
 #include <libgnome-desktop/gnome-desktop-thumbnail.h>
 
-#include "bg-colors-source.h"
 #include "bg-recent-source.h"
 #include "bg-wallpapers-source.h"
 #include "cc-background-chooser.h"
 #include "cc-background-paintable.h"
+
+#define THUMBNAIL_WIDTH 144
+#define THUMBNAIL_HEIGHT (THUMBNAIL_WIDTH * 3 / 4)
 
 struct _CcBackgroundChooser
 {
@@ -42,6 +44,8 @@ struct _CcBackgroundChooser
 
   BgWallpapersSource *wallpapers_source;
   BgRecentSource     *recent_source;
+
+  GnomeDesktopThumbnailFactory *thumbnail_factory;
 };
 
 G_DEFINE_TYPE (CcBackgroundChooser, cc_background_chooser, GTK_TYPE_BOX)
@@ -100,6 +104,7 @@ create_widget_func (gpointer model_item,
                     gpointer user_data)
 {
   g_autoptr(CcBackgroundPaintable) paintable = NULL;
+  GnomeDesktopThumbnailFactory *thumbnail_factory;
   CcBackgroundItem *item;
   GtkWidget *overlay;
   GtkWidget *child;
@@ -112,7 +117,13 @@ create_widget_func (gpointer model_item,
   source = BG_SOURCE (user_data);
   item = CC_BACKGROUND_ITEM (model_item);
 
-  paintable = cc_background_paintable_new (source, item);
+  thumbnail_factory = g_object_get_data (G_OBJECT (source), "thumbnail-factory");
+
+  paintable = cc_background_paintable_new (thumbnail_factory,
+                                           item,
+                                           CC_BACKGROUND_PAINT_LIGHT_DARK,
+                                           THUMBNAIL_WIDTH,
+                                           THUMBNAIL_HEIGHT);
 
   picture = gtk_picture_new_for_paintable (GDK_PAINTABLE (paintable));
   gtk_picture_set_can_shrink (GTK_PICTURE (picture), FALSE);
@@ -142,6 +153,8 @@ create_widget_func (gpointer model_item,
       gtk_widget_add_css_class (button, "osd");
       gtk_widget_add_css_class (button, "circular");
       gtk_widget_add_css_class (button, "remove-button");
+
+     gtk_widget_set_tooltip_text (GTK_WIDGET (button), _("Remove Background"));
 
       g_signal_connect (button,
                         "clicked",
@@ -264,6 +277,7 @@ cc_background_chooser_finalize (GObject *object)
 
   g_clear_object (&self->recent_source);
   g_clear_object (&self->wallpapers_source);
+  g_clear_object (&self->thumbnail_factory);
 
   G_OBJECT_CLASS (cc_background_chooser_parent_class)->finalize (object);
 }
@@ -298,8 +312,13 @@ cc_background_chooser_init (CcBackgroundChooser *self)
 {
   gtk_widget_init_template (GTK_WIDGET (self));
 
-  self->recent_source = bg_recent_source_new (GTK_WIDGET (self));
-  self->wallpapers_source = bg_wallpapers_source_new (GTK_WIDGET (self));
+  self->recent_source = bg_recent_source_new ();
+  self->wallpapers_source = bg_wallpapers_source_new ();
+
+  self->thumbnail_factory = gnome_desktop_thumbnail_factory_new (GNOME_DESKTOP_THUMBNAIL_SIZE_LARGE);
+  g_object_set_data (G_OBJECT (self->recent_source), "thumbnail-factory", self->thumbnail_factory);
+  g_object_set_data (G_OBJECT (self->wallpapers_source), "thumbnail-factory", self->thumbnail_factory);
+
   setup_flowbox (self);
 }
 

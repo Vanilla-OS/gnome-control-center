@@ -32,7 +32,7 @@
 
 struct _CEPageDetails
 {
-        GtkGrid parent;
+        AdwBin parent;
 
         GtkCheckButton *all_user_check;
         GtkCheckButton *auto_connect_check;
@@ -65,11 +65,12 @@ struct _CEPageDetails
         NMDevice *device;
         NMAccessPoint *ap;
         NetConnectionEditor *editor;
+        gboolean is_new_connection;
 };
 
 static void ce_page_iface_init (CEPageInterface *);
 
-G_DEFINE_TYPE_WITH_CODE (CEPageDetails, ce_page_details, GTK_TYPE_GRID,
+G_DEFINE_TYPE_WITH_CODE (CEPageDetails, ce_page_details, ADW_TYPE_BIN,
                          G_IMPLEMENT_INTERFACE (ce_page_get_type (), ce_page_iface_init))
 
 static void
@@ -251,8 +252,11 @@ update_restrict_data (CEPageDetails *self)
         /* Disable for VPN; NetworkManager does not implement that yet (see
          * bug https://bugzilla.gnome.org/show_bug.cgi?id=792618) */
         type = nm_setting_connection_get_connection_type (s_con);
-        if (g_str_equal (type, NM_SETTING_VPN_SETTING_NAME))
+        if (g_str_equal (type, NM_SETTING_VPN_SETTING_NAME) ||
+            g_str_equal (type, NM_SETTING_WIREGUARD_SETTING_NAME)) {
+                gtk_widget_set_visible(GTK_WIDGET (self->restrict_data_check), FALSE);
                 return;
+        }
 
         metered = nm_setting_connection_get_metered (s_con);
 
@@ -473,7 +477,7 @@ connect_details_page (CEPageDetails *self)
                 gtk_widget_set_visible (GTK_WIDGET (self->route_label), FALSE);
         }
 
-        if (!device_is_active && self->connection)
+        if (!device_is_active && self->connection && !self->is_new_connection)
                 update_last_used (self, self->connection);
         else {
                 gtk_widget_set_visible (GTK_WIDGET (self->last_used_heading_label), FALSE);
@@ -481,7 +485,8 @@ connect_details_page (CEPageDetails *self)
         }
 
         /* Auto connect check */
-        if (g_str_equal (type, NM_SETTING_VPN_SETTING_NAME)) {
+        if (g_str_equal (type, NM_SETTING_VPN_SETTING_NAME) ||
+            g_str_equal(type, NM_SETTING_WIREGUARD_SETTING_NAME)) {
                 gtk_widget_set_visible (GTK_WIDGET (self->auto_connect_check), FALSE);
         } else {
                 g_object_bind_property (sc, "autoconnect",
@@ -500,17 +505,23 @@ connect_details_page (CEPageDetails *self)
         update_restrict_data (self);
 
         /* Forget button */
-        g_signal_connect_object (self->forget_button, "clicked", G_CALLBACK (forget_cb), self, G_CONNECT_SWAPPED);
-
-        if (g_str_equal (type, NM_SETTING_WIRELESS_SETTING_NAME))
-                gtk_button_set_label (self->forget_button, _("Forget Connection"));
-        else if (g_str_equal (type, NM_SETTING_WIRED_SETTING_NAME))
-                gtk_button_set_label (self->forget_button, _("Remove Connection Profile"));
-        else if (g_str_equal (type, NM_SETTING_VPN_SETTING_NAME) ||
-                 g_str_equal (type, NM_SETTING_WIREGUARD_SETTING_NAME))
-                gtk_button_set_label (self->forget_button, _("Remove VPN"));
-        else
+        if (!self->is_new_connection) {
+                g_signal_connect_object (self->forget_button, "clicked", G_CALLBACK (forget_cb), self, G_CONNECT_SWAPPED);
+                
+                if (g_str_equal (type, NM_SETTING_WIRELESS_SETTING_NAME))
+                        gtk_button_set_label (self->forget_button, _("Forget Connection…"));
+                else if (g_str_equal (type, NM_SETTING_WIRED_SETTING_NAME))
+                        gtk_button_set_label (self->forget_button, _("Remove Connection Profile…"));
+                else if (g_str_equal (type, NM_SETTING_BLUETOOTH_SETTING_NAME))
+                        gtk_button_set_label (self->forget_button, _("Remove Connection…"));
+                else if (g_str_equal (type, NM_SETTING_VPN_SETTING_NAME) ||
+                        g_str_equal (type, NM_SETTING_WIREGUARD_SETTING_NAME))
+                        gtk_button_set_label (self->forget_button, _("Remove VPN…"));
+                else
+                        gtk_widget_set_visible (GTK_WIDGET (self->forget_button), FALSE);
+        } else {
                 gtk_widget_set_visible (GTK_WIDGET (self->forget_button), FALSE);
+        }
 }
 
 static void
@@ -583,7 +594,8 @@ CEPageDetails *
 ce_page_details_new (NMConnection        *connection,
                      NMDevice            *device,
                      NMAccessPoint       *ap,
-                     NetConnectionEditor *editor)
+                     NetConnectionEditor *editor,
+                     gboolean            is_new_connection)
 {
         CEPageDetails *self;
 
@@ -593,6 +605,7 @@ ce_page_details_new (NMConnection        *connection,
         self->editor = editor;
         self->device = device;
         self->ap = ap;
+        self->is_new_connection = is_new_connection;
 
         connect_details_page (self);
 

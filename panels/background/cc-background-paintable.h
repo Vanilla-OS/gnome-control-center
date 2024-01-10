@@ -23,13 +23,25 @@
 
 #include "bg-source.h"
 #include "cc-background-item.h"
+#include <libgnome-desktop/gnome-desktop-thumbnail.h>
 
 G_BEGIN_DECLS
 
 #define CC_TYPE_BACKGROUND_PAINTABLE (cc_background_paintable_get_type ())
 G_DECLARE_FINAL_TYPE (CcBackgroundPaintable, cc_background_paintable, CC, BACKGROUND_PAINTABLE, GObject)
 
-CcBackgroundPaintable * cc_background_paintable_new (BgSource         *source,
-                                                     CcBackgroundItem *item);
+typedef enum {
+    CC_BACKGROUND_PAINT_LIGHT = 1 << 0,
+    CC_BACKGROUND_PAINT_DARK  = 1 << 1
+} CcBackgroundPaintFlags;
+
+#define CC_BACKGROUND_PAINT_LIGHT_DARK (CC_BACKGROUND_PAINT_LIGHT |	\
+                                        CC_BACKGROUND_PAINT_DARK)
+
+CcBackgroundPaintable * cc_background_paintable_new (GnomeDesktopThumbnailFactory *thumbnail_factory,
+                                                     CcBackgroundItem             *item,
+                                                     CcBackgroundPaintFlags        paint_flags,
+                                                     int                           width,
+                                                     int                           height);
 
 G_END_DECLS

@@ -1,8 +1,8 @@
 project(
   'gnome-control-center', 'c',
-        version : '45.2',
+        version : '46.alpha',
         license : 'GPL2+',
-  meson_version : '>= 0.57.0'
+  meson_version : '>= 0.58.0'
 )
 
 control_center_prefix = get_option('prefix')
@@ -72,6 +72,15 @@ config_h.set('USER_DIR_MODE', '0700',
 
 # compiler flags
 common_flags = ['-DHAVE_CONFIG_H']
+
+# We have so many deprecation warnings that it becomes impossible to notice any other useful
+# warning, thus making the compiler output completely useless. Ideally, we should fix all
+# of those but, until then, it's better to add this flag so that we avoid adding even more
+# warnings by accident. If you want to fix some of those, just build Settings with:
+# meson _build -Ddeprecated-declarions=enabled
+if get_option('deprecated-declarations').disabled()
+  common_flags += '-Wno-deprecated-declarations'
+endif
 
 # Only add this when optimizing is enabled (default)
 optimized_src = '''
@@ -167,7 +176,7 @@ accounts_dep = dependency('accountsservice', version: '>= 0.6.39')
 colord_dep = dependency('colord', version: '>= 0.1.34')
 gdk_pixbuf_dep = dependency('gdk-pixbuf-2.0', version: '>= 2.23.0')
 gio_dep = dependency('gio-2.0')
-glib_dep = dependency('glib-2.0', version: '>= 2.75.0')
+glib_dep = dependency('glib-2.0', version: '>= 2.76.6')
 gnome_desktop_dep = dependency('gnome-desktop-4')
 gnome_bg_dep = dependency('gnome-bg-4')
 gnome_rr_dep = dependency('gnome-rr-4')
@@ -246,9 +255,8 @@ config_h.set10('HAVE_FN_EXPLICIT_BZERO',
 # Snap support
 enable_snap = get_option('snap')
 if enable_snap
-  snapd_glib_deps = [
-    dependency('snapd-glib-2', version: '>= 1.62')
-  ]
+  json_glib_dep = dependency('json-glib-1.0')
+  libsoup_dep = dependency('libsoup-3.0')
 endif
 config_h.set('HAVE_SNAP', enable_snap,
              description: 'Define to 1 if Snap support is enabled')
