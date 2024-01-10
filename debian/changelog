@@ -37,7 +37,6 @@ gnome-control-center (1:46~alpha-2ubuntu1) UNRELEASED; urgency=medium
       - u/lock-Add-Lock-Screen-on-Suspend-option.patch
       - u/region-Add-Language-Selector-button.patch
       - u/Adapts-the-region-capplet-and-the-language-chooser-in-the.patch
-      - u/notifications-Handle-.desktop-files-that-got-renamed.patch
       - u/shell-Change-the-default-height-so-all-category-are-on-sc.patch
       - u/connectivity-add-network-connectivity-checking-toggle.patch
       - u/diagnostics-Add-Whoopsie-support.patch
@@ -51,6 +50,8 @@ gnome-control-center (1:46~alpha-2ubuntu1) UNRELEASED; urgency=medium
       - u/mouse-Add-animations-following-the-accent-colors.patch
       - panels-mouse-Do-not-bind-sensitivity-to-touch-pad-setting.patch
       - CVE-2023-5616.patch: Use sshd socket
+  * Drop renamed .desktop notifications patch: the compatibility .desktop files
+    were dropped long ago
 
  -- Jeremy Bícha <jbicha@ubuntu.com>  Wed, 10 Jan 2024 16:08:34 -0500
 
