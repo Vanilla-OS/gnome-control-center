@@ -2,14 +2,17 @@ Source: gnome-control-center
 Section: gnome
 Priority: optional
 Maintainer: Debian GNOME Maintainers <pkg-gnome-maintainers@lists.alioth.debian.org>
-Uploaders: Amin Bandali <bandali@ubuntu.com>, Jeremy Bícha <jbicha@ubuntu.com>, Laurent Bigonville <bigon@debian.org>, Marco Trevisan (Treviño) <marco@ubuntu.com>
+Uploaders: Amin Bandali <bandali@ubuntu.com>,
+           Jeremy Bícha <jbicha@ubuntu.com>,
+           Laurent Bigonville <bigon@debian.org>,
+           Marco Trevisan (Treviño) <marco@ubuntu.com>
 Build-Depends: debhelper-compat (= 13),
-               dh-sequence-gnome (>= 0.22.2),
-               libaccountsservice-dev (>= 0.6.39),
                desktop-file-utils,
+               dh-sequence-gnome (>= 0.22.2),
                gnome-settings-daemon-dev (>= 41),
                gsettings-desktop-schemas-dev (>= 42~),
                gtk-doc-tools,
+               libaccountsservice-dev (>= 0.6.39),
                libadwaita-1-dev (>= 1.4~beta),
                libcolord-dev (>= 0.1.34),
                libcolord-gtk4-dev (>= 0.1.24),
@@ -18,11 +21,10 @@ Build-Depends: debhelper-compat (= 13),
                libgdk-pixbuf-2.0-dev (>= 2.23.0),
                libgirepository1.0-dev,
                libglib2.0-dev (>= 2.76.6),
-               libgnome-desktop-4-dev,
                libgnome-bg-4-dev,
-               libgnome-rr-4-dev,
                libgnome-bluetooth-ui-3.0-dev [linux-any],
-               libibus-1.0-dev (>= 1.5.2),
+               libgnome-desktop-4-dev,
+               libgnome-rr-4-dev,
                libgnutls28-dev,
                libgoa-1.0-dev (>= 3.45),
                libgoa-backend-1.0-dev (>= 3.45),
@@ -31,12 +33,13 @@ Build-Depends: debhelper-compat (= 13),
                libgtop2-dev,
                libgudev-1.0-dev (>= 232) [linux-any],
                libhandy-1-dev (>= 1.2.0),
+               libibus-1.0-dev (>= 1.5.2),
                libjson-glib-dev,
                libkrb5-dev,
-               libnm-dev (>= 1.24.0) [linux-any],
-               libnma-gtk4-dev (>= 1.10.2) [linux-any],
                libmalcontent-0-dev (>= 0.7.0) [amd64 arm64 armel armhf i386 mips mipsel mips64el ppc64el s390x hppa powerpc powerpcspe ppc64],
                libmm-glib-dev [linux-any],
+               libnm-dev (>= 1.24.0) [linux-any],
+               libnma-gtk4-dev (>= 1.10.2) [linux-any],
                libpolkit-gobject-1-dev (>= 0.103),
                libpulse-dev (>= 13.0~),
                libpwquality-dev (>= 1.2.2),
@@ -46,20 +49,20 @@ Build-Depends: debhelper-compat (= 13),
                libudisks2-dev,
                libupower-glib-dev (>= 0.99.8),
                libwacom-dev (>= 0.7) [linux-any],
-               libxi-dev (>= 2:1.2),
                libx11-dev (>= 2:1.8),
                libxft-dev (>= 2.1.2),
+               libxi-dev (>= 2:1.2),
                libxklavier-dev (>= 5.1),
                libxml2-dev,
                libxml2-utils,
                locales,
                meson (>= 0.57.0),
                polkitd,
+               python3-dbusmock,
                shared-mime-info,
                tecla,
                tzdata <!nocheck>,
-               xvfb,
-               python3-dbusmock,
+               xvfb
 Standards-Version: 4.6.2
 Rules-Requires-Root: no
 Vcs-Git: https://salsa.debian.org/gnome-team/gnome-control-center.git
@@ -67,9 +70,7 @@ Vcs-Browser: https://salsa.debian.org/gnome-team/gnome-control-center
 
 Package: gnome-control-center
 Architecture: any
-Depends: ${misc:Depends},
-         ${shlibs:Depends},
-         accountsservice,
+Depends: accountsservice,
          apg,
          colord (>= 0.1.34),
          desktop-base (>= 10.0.0),
@@ -80,8 +81,11 @@ Depends: ${misc:Depends},
          gnome-settings-daemon (>= 41),
          gsettings-desktop-schemas (>= 42~),
          tecla (>= 45~rc),
-         webp-pixbuf-loader
-Recommends: cups-pk-helper,
+         webp-pixbuf-loader,
+         ${misc:Depends},
+         ${shlibs:Depends}
+Recommends: cracklib-runtime,
+            cups-pk-helper,
             fwupd [linux-any],
             gnome-bluetooth-sendto,
             gnome-online-accounts (>= 3.25.3),
@@ -90,16 +94,15 @@ Recommends: cups-pk-helper,
             gnome-user-share,
             iso-codes,
             libcanberra-pulse,
-            polkitd,
-            power-profiles-daemon,
-            rygel | rygel-tracker,
-            system-config-printer-common (>= 1.4),
+            libnss-myhostname,
+            libspa-0.2-bluetooth | pulseaudio-module-bluetooth,
             malcontent-gui [amd64 arm64 armel armhf i386 mips mipsel mips64el ppc64el s390x hppa powerpc powerpcspe ppc64],
             network-manager-gnome (>= 0.9.8),
-            libnss-myhostname,
-            cracklib-runtime,
-            libspa-0.2-bluetooth | pulseaudio-module-bluetooth,
-            realmd
+            polkitd,
+            power-profiles-daemon,
+            realmd,
+            rygel | rygel-tracker,
+            system-config-printer-common (>= 1.4)
 Suggests: gnome-software | gnome-packagekit,
           gstreamer1.0-pulseaudio,
           pkexec,
@@ -119,8 +122,8 @@ Package: gnome-control-center-dev
 Architecture: all
 Multi-Arch: foreign
 Section: devel
-Depends: ${misc:Depends},
-         gnome-control-center-data
+Depends: gnome-control-center-data,
+         ${misc:Depends}
 Description: utilities to configure the GNOME desktop
  This package contains the file required to get the keydirs location
 
