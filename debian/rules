@@ -40,3 +40,5 @@ override_dh_auto_configure:
 # Ubuntu-specific
 override_dh_translations:
 	dh_translations --domain=gnome-control-center-2.0
+
+override_dh_gnome_clean:
