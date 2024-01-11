@@ -1,3 +1,10 @@
+gnome-control-center (1:46~alpha-2) unstable; urgency=medium
+
+  * Move gnome-remote-desktop from Recommends to Depends (Closes: #1060465)
+  * Update architectures where malcontent is available
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Thu, 11 Jan 2024 18:02:28 -0500
+
 gnome-control-center (1:46~alpha-1) unstable; urgency=medium
 
   * New upstream release
