@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="CcSystemPanel" parent="CcPanel">
+    <child type="child">
+      <object class="AdwNavigationView" id="navigation">
+
+        <child>
+          <object class="AdwNavigationPage">
+            <property name="title" translatable="yes">System</property>
+            <property name="child">
+              <object class="AdwToolbarView">
+                <child type="top">
+                  <object class="AdwHeaderBar"/>
+                </child>
+
+                <property name="content">
+                  <object class="AdwPreferencesPage">
+                    <child>
+                      <object class="AdwPreferencesGroup">
+
+                        <child>
+                          <object class="CcListRow">
+                            <property name="title" translatable="yes">_Region &amp;amp; Language</property>
+                            <property name="subtitle" translatable="yes">System language and localization</property>
+                            <property name="icon-name">org.gnome.Settings-region-symbolic</property>
+                            <property name="show-arrow">True</property>
+                            <property name="action-name">navigation.push</property>
+                            <property name="action-target">'system-region-page'</property>
+                          </object>
+                        </child>
+
+                        <child>
+                          <object class="CcListRow">
+                            <property name="title" translatable="yes">_Date &amp;amp; Time</property>
+                            <property name="subtitle" translatable="yes">Time zone and clock settings</property>
+                            <property name="icon-name">org.gnome.Settings-time-symbolic</property>
+                            <property name="show-arrow">True</property>
+                            <property name="action-name">navigation.push</property>
+                            <property name="action-target">'system-date-time-page'</property>
+                          </object>
+                        </child>
+
+                        <child>
+                          <object class="CcListRow">
+                            <property name="title" translatable="yes">Users</property>
+                            <property name="subtitle" translatable="yes">Add and remove accounts, change password</property>
+                            <property name="icon-name">org.gnome.Settings-users-symbolic</property>
+                            <property name="use-underline">True</property>
+                            <property name="show-arrow">True</property>
+                            <property name="action-name">navigation.push</property>
+                            <property name="action-target">'system-users-page'</property>
+                          </object>
+                        </child>
+
+                        <child>
+                          <object class="CcListRow">
+                            <property name="title" translatable="yes">_Remote Desktop</property>
+                            <property name="subtitle" translatable="yes">Allow this device to be used remotely</property>
+                            <property name="icon-name">preferences-desktop-display-symbolic</property>
+                            <property name="show-arrow">True</property>
+                            <property name="action-name">navigation.push</property>
+                            <property name="action-target">'system-remote-desktop-page'</property>
+                          </object>
+                        </child>
+
+                        <child>
+                          <object class="CcListRow">
+                            <property name="title" translatable="yes">About</property>
+                            <property name="subtitle" translatable="yes">Hardware details and software versions</property>
+                            <property name="icon-name">info-symbolic</property>
+                            <property name="show-arrow">True</property>
+                            <property name="action-name">navigation.push</property>
+                            <property name="action-target">'system-about-page'</property>
+                          </object>
+                        </child>
+
+                      </object>
+                    </child>
+                  </object>
+                </property>
+
+              </object>
+            </property>
+          </object>
+        </child>
+
+        <child>
+          <object class="CcRegionPage" id="region_page"/>
+        </child>
+        <child>
+          <object class="CcDateTimePage" id="datetime_page"/>
+        </child>
+        <child>
+          <object class="CcUsersPage" id="users_page"/>
+        </child>
+        <child>
+          <object class="CcRemoteDesktopPage" id="remote_desktop_page"/>
+        </child>
+        <child>
+          <object class="CcAboutPage" id="about_page"/>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

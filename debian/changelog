@@ -1,3 +1,22 @@
+gnome-control-center (1:46~alpha-2) unstable; urgency=medium
+
+  * Move gnome-remote-desktop from Recommends to Depends (Closes: #1060465)
+  * Update architectures where malcontent is available
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Thu, 11 Jan 2024 18:02:28 -0500
+
+gnome-control-center (1:46~alpha-1) unstable; urgency=medium
+
+  * New upstream release
+    - Allow using Left Ctrl as Compose Key (LP: #1973226)
+  * debian/control: Bump minimum glib to 2.76.6
+  * Build-Depend on libsoup3 and json-glib instead of snapd-glib
+  * Stop using debian/control.in and dh_gnome_clean
+  * Refresh patches
+  * Run wrap-and-sort
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Wed, 10 Jan 2024 15:30:27 -0500
+
 gnome-control-center (1:45.2-1) unstable; urgency=medium
 
   * New upstream release

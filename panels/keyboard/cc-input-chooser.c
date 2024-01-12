@@ -15,6 +15,7 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <adwaita.h>
 #include <config.h>
 #include <locale.h>
 #include <glib/gi18n.h>
@@ -54,7 +55,7 @@ typedef enum
 
 struct _CcInputChooser
 {
-  GtkDialog          parent_instance;
+  AdwWindow          parent_instance;
 
   GtkButton         *add_button;
   GtkSearchEntry    *filter_entry;
@@ -75,7 +76,15 @@ struct _CcInputChooser
   gboolean           is_login;
 };
 
-G_DEFINE_TYPE (CcInputChooser, cc_input_chooser, GTK_TYPE_DIALOG)
+G_DEFINE_TYPE (CcInputChooser, cc_input_chooser, ADW_TYPE_WINDOW)
+
+enum
+{
+  SIGNAL_SOURCE_SELECTED,
+  SIGNAL_LAST
+};
+
+static guint signals[SIGNAL_LAST] = { 0, };
 
 typedef struct
 {
@@ -303,6 +312,15 @@ add_input_source_rows_for_locale (CcInputChooser *self,
   g_hash_table_iter_init (&iter, info->engine_rows_by_id);
   while (g_hash_table_iter_next (&iter, (gpointer *) &id, (gpointer *) &row))
     gtk_list_box_append (self->input_sources_listbox, row);
+}
+
+static void
+cc_input_chooser_emit_source_selected (CcInputChooser *self)
+{
+  g_signal_emit (self, signals[SIGNAL_SOURCE_SELECTED], 0,
+                 cc_input_chooser_get_source (self));
+
+  gtk_window_close (GTK_WINDOW (self));
 }
 
 static void
@@ -611,11 +629,19 @@ static void
 show_more (CcInputChooser *self)
 {
   gtk_widget_set_visible (GTK_WIDGET (self->filter_entry), TRUE);
+
+  gtk_search_entry_set_key_capture_widget (self->filter_entry, GTK_WIDGET (self));
   gtk_widget_grab_focus (GTK_WIDGET (self->filter_entry));
 
   self->showing_extra = TRUE;
 
   gtk_list_box_invalidate_filter (self->input_sources_listbox);
+}
+
+static void
+on_add_button_clicked_cb (CcInputChooser *self)
+{
+  cc_input_chooser_emit_source_selected (self);
 }
 
 static void
@@ -643,9 +669,7 @@ on_input_sources_listbox_row_activated_cb (CcInputChooser *self, GtkListBoxRow  
   if (data)
     {
       if (gtk_widget_is_sensitive (GTK_WIDGET (self->add_button)))
-        gtk_dialog_response (GTK_DIALOG (self),
-                             gtk_dialog_get_response_for_widget (GTK_DIALOG (self),
-                                                                 GTK_WIDGET (self->add_button)));
+        cc_input_chooser_emit_source_selected (self);
       return;
     }
 
@@ -676,6 +700,17 @@ on_input_sources_listbox_selected_rows_changed_cb (CcInputChooser *self)
     sensitive = FALSE;
 
   gtk_widget_set_sensitive (GTK_WIDGET (self->add_button), sensitive);
+}
+
+static void
+on_stop_search_cb (CcInputChooser *self)
+{
+  const char *search_text = gtk_editable_get_text (GTK_EDITABLE (self->filter_entry));
+
+  if (search_text && g_strcmp0 (search_text, "") != 0)
+    gtk_editable_set_text (GTK_EDITABLE (self->filter_entry), "");
+  else
+    gtk_window_close (GTK_WINDOW (self));
 }
 
 static void
@@ -892,7 +927,7 @@ layout_lists_intersection (GList *first_list,
 
   while (first_list != NULL)
     {
-      const char *layout;
+      char *layout;
 
       layout = first_list->data;
       g_hash_table_insert (first_set, layout, layout);
@@ -901,7 +936,7 @@ layout_lists_intersection (GList *first_list,
 
   while (second_list != NULL)
     {
-      const char *layout;
+      char *layout;
 
       layout = second_list->data;
       if (g_hash_table_remove (first_set, layout))
@@ -1052,7 +1087,17 @@ cc_input_chooser_class_init (CcInputChooserClass *klass)
 
   object_class->dispose = cc_input_chooser_dispose;
 
+  gtk_widget_class_add_binding_action (widget_class, GDK_KEY_Escape, 0, "window.close", NULL);
+
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/keyboard/cc-input-chooser.ui");
+
+  signals[SIGNAL_SOURCE_SELECTED] = g_signal_new ("source-selected",
+                                                  CC_TYPE_INPUT_CHOOSER,
+                                                  G_SIGNAL_RUN_LAST,
+                                                  0, NULL, NULL, NULL,
+                                                  G_TYPE_NONE,
+                                                  1,
+                                                  CC_TYPE_INPUT_SOURCE);
 
   gtk_widget_class_bind_template_child (widget_class, CcInputChooser, add_button);
   gtk_widget_class_bind_template_child (widget_class, CcInputChooser, filter_entry);
@@ -1063,6 +1108,8 @@ cc_input_chooser_class_init (CcInputChooserClass *klass)
   gtk_widget_class_bind_template_callback (widget_class, on_input_sources_listbox_row_activated_cb);
   gtk_widget_class_bind_template_callback (widget_class, on_input_sources_listbox_selected_rows_changed_cb);
   gtk_widget_class_bind_template_callback (widget_class, on_filter_entry_search_changed_cb);
+  gtk_widget_class_bind_template_callback (widget_class, on_add_button_clicked_cb);
+  gtk_widget_class_bind_template_callback (widget_class, on_stop_search_cb);
   //gtk_widget_class_bind_template_callback (widget_class, on_filter_entry_key_release_event_cb);
 }
 
@@ -1070,8 +1117,6 @@ void
 cc_input_chooser_init (CcInputChooser *self)
 {
   gtk_widget_init_template (GTK_WIDGET (self));
-
-  gtk_search_entry_set_key_capture_widget (self->filter_entry, GTK_WIDGET (self));
 }
 
 CcInputChooser *
@@ -1081,9 +1126,7 @@ cc_input_chooser_new (gboolean      is_login,
 {
   CcInputChooser *self;
 
-  self = g_object_new (CC_TYPE_INPUT_CHOOSER,
-                       "use-header-bar", 1,
-                       NULL);
+  self = g_object_new (CC_TYPE_INPUT_CHOOSER, NULL);
 
   self->is_login = is_login;
   self->xkb_info = g_object_ref (xkb_info);

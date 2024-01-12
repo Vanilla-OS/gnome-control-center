@@ -46,6 +46,7 @@
                         <property name="title" translatable="yes">VPN</property>
                         <property name="header-suffix">
                           <object class="GtkButton">
+                            <property name="tooltip-text" translatable="yes">Add VPN</property>
                             <property name="icon_name">list-add-symbolic</property>
                             <accessibility>
                               <property name="label" translatable="yes">Add connection</property>
@@ -95,7 +96,7 @@
                         <property name="title" translatable="yes">Proxy</property>
                         <child>
                           <object class="CcListRow" id="proxy_row">
-                            <property name="title" translatable="yes">Proxy</property>
+                            <property name="title" translatable="yes">_Proxy</property>
                             <property name="show-arrow">True</property>
                             <property name="icon-name">preferences-system-network-proxy-symbolic</property>
                             <property name="subtitle" bind-source="proxy_page" bind-property="state-text" bind-flags="sync-create"/>

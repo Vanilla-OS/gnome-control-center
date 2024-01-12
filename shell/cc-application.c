@@ -53,6 +53,10 @@ static void help_activated         (GSimpleAction *action,
                                     GVariant      *parameter,
                                     gpointer       user_data);
 
+static void about_activated        (GSimpleAction *action,
+                                    GVariant      *parameter,
+                                    gpointer       user_data);
+
 static gboolean cmd_verbose_cb     (const char    *option_name,
                                     const char    *value,
                                     gpointer       data,
@@ -72,7 +76,8 @@ const GOptionEntry all_options[] = {
 static const GActionEntry cc_app_actions[] = {
   { "launch-panel", launch_panel_activated, "(sav)", NULL, NULL, { 0 } },
   { "help", help_activated, NULL, NULL, NULL, { 0 } },
-  { "quit", cc_application_quit, NULL, NULL, NULL, { 0 } }
+  { "quit", cc_application_quit, NULL, NULL, NULL, { 0 } },
+  { "about", about_activated, NULL, NULL, NULL, { 0 } }
 };
 
 static void
@@ -93,6 +98,26 @@ help_activated (GSimpleAction *action,
   gtk_show_uri (GTK_WINDOW (window),
                 uri ? uri : "help:gnome-help/prefs",
                 GDK_CURRENT_TIME);
+}
+
+static void
+about_activated (GSimpleAction *action,
+                 GVariant      *parameter,
+                 gpointer       user_data)
+
+{
+  CcApplication *self = CC_APPLICATION (user_data);
+  GtkWidget *about_window;
+  const char *developer_name;
+
+  about_window = adw_about_window_new_from_appdata ("/org/gnome/Settings/appdata", VERSION);
+  developer_name = adw_about_window_get_developer_name (ADW_ABOUT_WINDOW (about_window));
+  /* Translators should localize the following string which will be displayed in the About dialog giving credit to the translator(s). */
+  adw_about_window_set_translator_credits (ADW_ABOUT_WINDOW (about_window), _("translator-credits"));
+  adw_about_window_set_copyright (ADW_ABOUT_WINDOW (about_window), g_strdup_printf (_("© 1998 %s"), developer_name));
+  gtk_window_set_transient_for (GTK_WINDOW (about_window), GTK_WINDOW (self->window));
+
+  gtk_window_present (GTK_WINDOW (about_window));
 }
 
 static gboolean
@@ -129,14 +154,50 @@ launch_panel_activated (GSimpleAction *action,
   g_application_activate (G_APPLICATION (self));
 }
 
+static char **
+get_current_desktops (void)
+{
+  const char *envvar;
+
+  envvar = g_getenv ("XDG_CURRENT_DESKTOP");
+
+  if (!envvar)
+    return g_new0 (char *, 0 + 1);
+
+  return g_strsplit (envvar, G_SEARCHPATH_SEPARATOR_S, 0);
+}
+
+static gboolean
+is_supported_desktop (void)
+{
+  g_auto(GStrv) desktops = NULL;
+  guint i;
+
+  desktops = get_current_desktops ();
+  for (i = 0; desktops[i] != NULL; i++)
+    {
+      /* This matches OnlyShowIn in gnome-control-center.desktop.in.in */
+      if (g_ascii_strcasecmp (desktops[i], "GNOME") == 0)
+        return TRUE;
+    }
+
+  return FALSE;
+}
+
 static gint
 cc_application_handle_local_options (GApplication *application,
                                      GVariantDict *options)
 {
   if (g_variant_dict_contains (options, "version"))
     {
-      g_print ("%s %s\n", PACKAGE, VERSION);
+      g_print ("Local options %s %s\n", PACKAGE, VERSION);
       return 0;
+    }
+
+  if (!is_supported_desktop ())
+    {
+      g_printerr ("Running gnome-control-center is only supported under GNOME and Unity, exiting\n");
+      return 1;
     }
 
   if (g_variant_dict_contains (options, "list"))
