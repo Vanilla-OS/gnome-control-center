@@ -1,6 +1,6 @@
-gnome-control-center (1:46~alpha-2ubuntu1) UNRELEASED; urgency=medium
+gnome-control-center (1:46~alpha-2ubuntu1) noble; urgency=medium
 
-  * Merge with Debian (LP: #2034579). Remaining changes:
+  * Merge with Debian. Remaining changes:
     + Add gnome-control-center-faces package to share with unity-control-center
     + Install apport hook
     + debian/control:
@@ -50,10 +50,16 @@ gnome-control-center (1:46~alpha-2ubuntu1) UNRELEASED; urgency=medium
       - u/mouse-Add-animations-following-the-accent-colors.patch
       - panels-mouse-Do-not-bind-sensitivity-to-touch-pad-setting.patch
       - CVE-2023-5616.patch: Use sshd socket
+  * Refresh patches
   * Drop renamed .desktop notifications patch: the compatibility .desktop files
     were dropped long ago
+  * Add patch to fix closing Users language dialog
+  * Update Ubuntu patches to adjust capitalization and mnemonics
+  * Update snap-store patch to launch snap-store with higher priority
+    than gnome-software
+  * Add temporary Build-Depends: libevdev to work around #1060687
 
- -- Jeremy Bícha <jbicha@ubuntu.com>  Wed, 10 Jan 2024 16:08:34 -0500
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Fri, 12 Jan 2024 16:33:03 -0500
 
 gnome-control-center (1:46~alpha-2) unstable; urgency=medium
 
