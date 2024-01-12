@@ -1,0 +1,24 @@
+From: =?utf-8?q?Jeremy_B=C3=ADcha?= <jeremy.bicha@canonical.com>
+Date: Fri, 12 Jan 2024 14:32:40 -0500
+Subject: users: Close language dialog when Select is clicked
+
+Closes: #2841
+
+Forwarded: https://gitlab.gnome.org/GNOME/gnome-control-center/-/merge_requests/2153
+---
+ panels/system/users/cc-user-page.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/panels/system/users/cc-user-page.c b/panels/system/users/cc-user-page.c
+index 29f151e..043422b0 100644
+--- a/panels/system/users/cc-user-page.c
++++ b/panels/system/users/cc-user-page.c
+@@ -290,6 +290,8 @@ language_chooser_response (CcUserPage        *self,
+ 
+     language_name = gnome_get_language_from_locale (selected_language, NULL);
+     cc_list_row_set_secondary_label (self->language_row, language_name);
++
++    gtk_window_close (GTK_WINDOW (chooser));
+ }
+ 
+ static void
