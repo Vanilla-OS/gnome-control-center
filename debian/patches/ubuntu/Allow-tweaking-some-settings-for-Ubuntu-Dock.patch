@@ -2095,7 +2095,7 @@ index 0000000..b13f611
 +#endif /* _CC_EDIT_DIALOG_H_ */
 diff --git a/panels/ubuntu/cc-ubuntu-panel.ui b/panels/ubuntu/cc-ubuntu-panel.ui
 new file mode 100644
-index 0000000..b523383
+index 0000000..d2f750d
 --- /dev/null
 +++ b/panels/ubuntu/cc-ubuntu-panel.ui
 @@ -0,0 +1,219 @@
@@ -2182,7 +2182,7 @@ index 0000000..b523383
 +                </child>
 +                <child>
 +                  <object class="AdwSwitchRow" id="ding_showhome_switch">
-+                    <property name="title" translatable="yes">Show Personal folder</property>
++                    <property name="title" translatable="yes">Show _Home Folder</property>
 +                    <property name="use-underline">True</property>
 +                    <property name="sensitive" bind-source="ding_switch" bind-property="active" bind-flags="sync-create" />
 +                  </object>
