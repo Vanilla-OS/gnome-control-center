@@ -1,6 +1,6 @@
 From: Robert Ancell <robert.ancell@canonical.com>
 Date: Mon, 3 Feb 2020 14:23:34 +1300
-Subject: info-overview: Show updates in software properties instead of GNOME
+Subject: info-overview: Show updates in update-manager instead of GNOME
  Software
 
 ---
@@ -8,7 +8,7 @@ Subject: info-overview: Show updates in software properties instead of GNOME
  1 file changed, 11 insertions(+), 5 deletions(-)
 
 diff --git a/panels/system/about/cc-about-page.c b/panels/system/about/cc-about-page.c
-index 80969f0..465096d 100644
+index 80969f0..f6e88cd 100644
 --- a/panels/system/about/cc-about-page.c
 +++ b/panels/system/about/cc-about-page.c
 @@ -104,6 +104,13 @@ does_gnome_software_allow_updates (void)
@@ -16,9 +16,9 @@ index 80969f0..465096d 100644
  }
  
 +static gboolean
-+does_software_properties_exist (void)
++does_update_manager_exist (void)
 +{
-+  g_autofree gchar *path = g_find_program_in_path ("software-properties-gtk");
++  g_autofree gchar *path = g_find_program_in_path ("update-manager");
 +  return path != NULL;
 +}
 +
@@ -30,12 +30,12 @@ index 80969f0..465096d 100644
    char *argv[3];
  
 -  if (does_gnome_software_exist ())
-+  if (does_software_properties_exist ())
++  if (does_update_manager_exist ())
      {
 -      argv[0] = "gnome-software";
 -      argv[1] = "--mode=updates";
 -      argv[2] = NULL;
-+      argv[0] = "software-properties-gtk";
++      argv[0] = "update-manager";
 +      argv[1] = NULL;
      }
    else
@@ -45,7 +45,7 @@ index 80969f0..465096d 100644
    gtk_widget_init_template (GTK_WIDGET (self));
  
 -  if ((!does_gnome_software_exist () || !does_gnome_software_allow_updates ()) && !does_gpk_update_viewer_exist ())
-+  if (!does_software_properties_exist () && (!does_gnome_software_exist () || !does_gnome_software_allow_updates ()) && !does_gpk_update_viewer_exist ())
++  if (!does_update_manager_exist () && (!does_gnome_software_exist () || !does_gnome_software_allow_updates ()) && !does_gpk_update_viewer_exist ())
      gtk_widget_set_visible (GTK_WIDGET (self->software_updates_group), FALSE);
  
    about_page_setup_overview (self);
