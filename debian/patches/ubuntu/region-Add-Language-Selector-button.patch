@@ -47,7 +47,7 @@ index e354faa..25a1431 100644
  
  static void
 diff --git a/panels/system/region/cc-region-page.ui b/panels/system/region/cc-region-page.ui
-index 800a8fa..dd1c5d3 100644
+index 800a8fa..36e6f49 100644
 --- a/panels/system/region/cc-region-page.ui
 +++ b/panels/system/region/cc-region-page.ui
 @@ -25,6 +25,28 @@
@@ -61,7 +61,7 @@ index 800a8fa..dd1c5d3 100644
 +                    <child>
 +                      <object class="AdwActionRow">
 +                        <property name="use-underline">True</property>
-+                        <property name="title" translatable="yes">Manage Installed Languages</property>
++                        <property name="title" translatable="yes">Manage _Installed Languages</property>
 +                        <property name="activatable">True</property>
 +                        <signal name="activated" handler="show_language_support" object="CcRegionPage" swapped="yes" />
 +

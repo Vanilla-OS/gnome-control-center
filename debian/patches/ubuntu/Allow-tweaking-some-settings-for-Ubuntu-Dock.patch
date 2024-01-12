@@ -1,5 +1,5 @@
-From: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
-Date: Wed, 15 Jan 2020 16:56:17 +1300
+From: Didier Roche <didier.roche@canonical.com>
+Date: Thu, 17 Aug 2017 08:44:12 +0200
 Subject: ubuntu-panel: Allow tweaking some Ubuntu specific settings
 
 Expose some of the settings that most users will find useful for our
@@ -26,14 +26,14 @@ Forwarded: not-needed
  panels/ubuntu/cc-ubuntu-dock-dialog.ui      |   79 ++
  panels/ubuntu/cc-ubuntu-panel.c             | 1729 +++++++++++++++++++++++++++
  panels/ubuntu/cc-ubuntu-panel.h             |   35 +
- panels/ubuntu/cc-ubuntu-panel.ui            |  218 ++++
+ panels/ubuntu/cc-ubuntu-panel.ui            |  219 ++++
  panels/ubuntu/gnome-ubuntu-panel.desktop.in |   13 +
  panels/ubuntu/meson.build                   |   97 ++
  panels/ubuntu/ubuntu.gresource.xml          |    6 +
  po/POTFILES.in                              |    5 +
  shell/cc-panel-list.c                       |    1 +
  shell/cc-panel-loader.c                     |    3 +
- 16 files changed, 2328 insertions(+)
+ 16 files changed, 2329 insertions(+)
  create mode 100644 panels/ubuntu/assets/colors/color.svg.in
  create mode 100644 panels/ubuntu/assets/theme-dark.svg
  create mode 100644 panels/ubuntu/assets/theme-light.svg
@@ -2095,10 +2095,10 @@ index 0000000..b13f611
 +#endif /* _CC_EDIT_DIALOG_H_ */
 diff --git a/panels/ubuntu/cc-ubuntu-panel.ui b/panels/ubuntu/cc-ubuntu-panel.ui
 new file mode 100644
-index 0000000..0b453fc
+index 0000000..b523383
 --- /dev/null
 +++ b/panels/ubuntu/cc-ubuntu-panel.ui
-@@ -0,0 +1,218 @@
+@@ -0,0 +1,219 @@
 +<?xml version="1.0" encoding="UTF-8"?>
 +<interface>
 +  <template class="CcUbuntuPanel" parent="CcPanel">
@@ -2134,7 +2134,7 @@ index 0000000..0b453fc
 +                  <object class="GtkLabel">
 +                    <property name="margin-top">12</property>
 +                    <property name="wrap">True</property>
-+                    <property name="label" translatable="yes">No ubuntu settings found</property>
++                    <property name="label" translatable="yes">No Ubuntu settings found</property>
 +                  </object>
 +                </child>
 +                <child type="end">
@@ -2166,7 +2166,7 @@ index 0000000..0b453fc
 +                    <property name="can_focus">True</property>
 +                    <property name="can_focus">True</property>
 +                    <property name="width_request">100</property>
-+                    <property name="title" translatable="yes" context="Desktop Icons Size">Size</property>
++                    <property name="title" translatable="yes" context="Desktop Icons Size">Si_ze</property>
 +                    <property name="sensitive" bind-source="ding_switch" bind-property="active" bind-flags="sync-create" />
 +                  </object>
 +                </child>
@@ -2176,7 +2176,7 @@ index 0000000..0b453fc
 +                    <property name="can_focus">True</property>
 +                    <property name="can_focus">True</property>
 +                    <property name="width_request">100</property>
-+                    <property name="title" translatable="yes" context="Desktop Icons Size">Position of New Icons</property>
++                    <property name="title" translatable="yes" context="Desktop Icons Size">Position of _New Icons</property>
 +                    <property name="sensitive" bind-source="ding_switch" bind-property="active" bind-flags="sync-create" />
 +                  </object>
 +                </child>
@@ -2204,16 +2204,16 @@ index 0000000..0b453fc
 +                </property>
 +                <child>
 +                  <object class="AdwSwitchRow" id="dock_autohide_switch">
-+                    <property name="title" translatable="yes">Auto-hide the Dock</property>
-+                    <property name="subtitle" translatable="yes">The dock hides when any windows overlap with it.</property>
++                    <property name="title" translatable="yes">_Auto-hide the Dock</property>
++                    <property name="subtitle" translatable="yes">The dock hides when any windows overlap with it</property>
 +                    <property name="use-underline">True</property>
 +                    <property name="sensitive" bind-source="dock_switch" bind-property="active" bind-flags="sync-create" />
 +                  </object>
 +                </child>
 +                <child>
 +                  <object class="AdwSwitchRow" id="dock_extendheight_switch">
-+                    <property name="title" translatable="yes">Panel mode</property>
-+                    <property name="subtitle" translatable="yes">The dock extends to the screen edge.</property>
++                    <property name="title" translatable="yes">Panel _Mode</property>
++                    <property name="subtitle" translatable="yes">The dock extends to the screen edge</property>
 +                    <property name="use-underline">True</property>
 +                    <property name="sensitive" bind-source="dock_switch" bind-property="active" bind-flags="sync-create" />
 +                  </object>
@@ -2222,7 +2222,7 @@ index 0000000..0b453fc
 +                  <object class="AdwActionRow">
 +                    <property name="use_underline">True</property>
 +                    <property name="can_focus">True</property>
-+                    <property name="title" translatable="yes">Icon size</property>
++                    <property name="title" translatable="yes">_Icon Size</property>
 +                    <property name="activatable">True</property>
 +                    <property name="sensitive" bind-source="dock_switch" bind-property="active" bind-flags="sync-create" />
 +                    <child>
@@ -2241,7 +2241,7 @@ index 0000000..0b453fc
 +                    <property name="use_underline">True</property>
 +                    <property name="can_focus">True</property>
 +                    <property name="width_request">100</property>
-+                    <property name="title" translatable="yes">Show on</property>
++                    <property name="title" translatable="yes">_Show on</property>
 +                    <property name="sensitive" bind-source="dock_switch" bind-property="active" bind-flags="sync-create" />
 +                    <signal name="notify::selected-item" handler="on_dock_monitor_row_changed" swapped="yes"/>
 +                  </object>
@@ -2251,14 +2251,15 @@ index 0000000..0b453fc
 +                    <property name="use_underline">True</property>
 +                    <property name="can_focus">True</property>
 +                    <property name="width_request">100</property>
-+                    <property name="title" translatable="yes">Position on screen</property>
++                    <property name="title" translatable="yes">_Position on Screen</property>
 +                    <property name="sensitive" bind-source="dock_switch" bind-property="active" bind-flags="sync-create" />
 +                  </object>
 +                </child>
 +                <child>
 +                  <object class="AdwActionRow" id="dock_behavior_row">
 +                    <property name="can_focus">True</property>
-+                    <property name="title" translatable="yes">Configure dock behavior</property>
++                    <property name="title" translatable="yes">_Configure Dock Behavior</property>
++                    <property name="use-underline">True</property>
 +                    <property name="activatable">True</property>
 +                    <property name="sensitive" bind-source="dock_switch" bind-property="active" bind-flags="sync-create" />
 +                    <signal name="activated" handler="on_dock_behavior_row_activated" object="CcUbuntuPanel" swapped="yes"/>
@@ -2289,7 +2290,7 @@ index 0000000..0b453fc
 +                </property>
 +                <child>
 +                  <object class="AdwSwitchRow" id="tiling_assistant_popup_switch">
-+                    <property name="title" translatable="yes">Tiling Popup</property>
++                    <property name="title" translatable="yes">_Tiling Popup</property>
 +                    <property name="subtitle" translatable="yes" comments="Tiling Assistant Tiling Popup feature explaination.">It provides a list of open apps and windows to tile to the free screen space. It appears after you tile a window and there is unambiguous screen space available. Unambiguous means that the free space consists of a single rectangle.</property>
 +                    <property name="use-underline">True</property>
 +                    <property name="sensitive" bind-source="tiling_assistant_switch" bind-property="active" bind-flags="sync-create" />
@@ -2297,8 +2298,8 @@ index 0000000..0b453fc
 +                </child>
 +                <child>
 +                  <object class="AdwSwitchRow" id="tiling_assistant_tiling_group">
-+                    <property name="title" translatable="yes">Tile Groups</property>
-+                    <property name="subtitle" translatable="yes" comments="Tiling Assistant Tile Groups feature explaination">A window is added to a tile group if it doesn't overlap any other windows in the tile group during the moment it was tiled. If a tiled window is raised, the other windows of its tile group are raised well</property>
++                    <property name="title" translatable="yes">Tile _Groups</property>
++                    <property name="subtitle" translatable="yes" comments="Tiling Assistant Tile Groups feature explaination">A window is added to a tile group if it doesn't overlap any other windows in the tile group during the moment it was tiled. If a tiled window is raised, the other windows of its tile group are also raised.</property>
 +                    <property name="use-underline">True</property>
 +                    <property name="sensitive" bind-source="tiling_assistant_switch" bind-property="active" bind-flags="sync-create" />
 +                  </object>

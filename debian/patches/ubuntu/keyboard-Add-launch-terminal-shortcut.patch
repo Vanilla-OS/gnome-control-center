@@ -1,7 +1,11 @@
-From: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
-Date: Tue, 31 Jul 2018 04:44:12 +0100
+From: Jeremy Bicha <jbicha@ubuntu.com>
+Date: Sun, 26 Aug 2012 11:13:00 -0400
 Subject: keyboard: Add launch terminal shortcut
 
+The keyboard shortcut for "Launch terminal" was dropped in the
+gconf>gsettings migration. Restore it. (LP: #1010558, LP: #1040081)
+
+This could return upstream if GNOME integrates xdg-terminal-exec support
 ---
  panels/keyboard/01-launchers.xml.in | 2 ++
  1 file changed, 2 insertions(+)

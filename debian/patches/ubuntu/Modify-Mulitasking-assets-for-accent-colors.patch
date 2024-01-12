@@ -110,7 +110,7 @@ index 3399ded..0e2c3f2 100644
 +  load_custom_css (self);
  }
 diff --git a/panels/multitasking/cc-multitasking-panel.ui b/panels/multitasking/cc-multitasking-panel.ui
-index e7b0c2c..11277be 100644
+index b6bdc35..1bcd632 100644
 --- a/panels/multitasking/cc-multitasking-panel.ui
 +++ b/panels/multitasking/cc-multitasking-panel.ui
 @@ -22,6 +22,9 @@

@@ -125,7 +125,7 @@ index be3d3de..98b6298 100644
 +    }
  }
 diff --git a/panels/multitasking/cc-multitasking-panel.ui b/panels/multitasking/cc-multitasking-panel.ui
-index 94375c7..e7b0c2c 100644
+index 94375c7..b6bdc35 100644
 --- a/panels/multitasking/cc-multitasking-panel.ui
 +++ b/panels/multitasking/cc-multitasking-panel.ui
 @@ -171,6 +171,41 @@
@@ -134,7 +134,7 @@ index 94375c7..e7b0c2c 100644
  
 +            <child>
 +              <object class="AdwPreferencesGroup" id="monitor_isolation_group">
-+    
++
 +                <!-- All Monitors -->
 +                <child>
 +                  <object class="AdwActionRow">
@@ -148,7 +148,7 @@ index 94375c7..e7b0c2c 100644
 +                    </child>
 +                  </object>
 +                </child>
-+    
++
 +                <!-- Monitor Isolation -->
 +                <child>
 +                  <object class="AdwActionRow">
@@ -163,7 +163,7 @@ index 94375c7..e7b0c2c 100644
 +                    </child>
 +                  </object>
 +                </child>
-+    
++
 +              </object>
 +            </child>
 +
