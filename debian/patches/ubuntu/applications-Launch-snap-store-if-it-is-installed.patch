@@ -2,12 +2,16 @@ From: Robert Ancell <robert.ancell@canonical.com>
 Date: Mon, 6 Apr 2020 10:30:27 +1200
 Subject: applications: Launch snap-store if it is installed
 
+TODO: snap-store doesn't yet support launching to specific app details page
+https://github.com/ubuntu/app-center/issues/1572
+
+TODO: Launch GNOME Software for Flatpaks since snap-store can't handle those
 ---
  panels/applications/cc-applications-panel.c | 16 ++++++++++++++--
  1 file changed, 14 insertions(+), 2 deletions(-)
 
 diff --git a/panels/applications/cc-applications-panel.c b/panels/applications/cc-applications-panel.c
-index f236f29..b52c2f8 100644
+index f236f29..3d271cd 100644
 --- a/panels/applications/cc-applications-panel.c
 +++ b/panels/applications/cc-applications-panel.c
 @@ -165,6 +165,13 @@ gnome_software_is_installed (void)
@@ -28,7 +32,7 @@ index f236f29..b52c2f8 100644
  {
    const gchar *argv[] = { "gnome-software", "--details", "appid", NULL };
  
-+  if (!gnome_software_is_installed ())
++  if (snap_store_is_installed ())
 +    argv[0] = "snap-store";
 +
    if (self->current_app_id == NULL)
