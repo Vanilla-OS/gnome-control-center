@@ -92,7 +92,7 @@ jobs:
         wget https://github.com/vanilla-os/gnome-control-center/tarball/main
         mv main ../gnome-control-center_45~rc.orig.tar.gz
         dpkg-buildpackage --no-sign
-        mv ../*.deb ../gnome-control-center.deb
+        mv *.deb ../gnome-control-center.deb
 
     - uses: softprops/action-gh-release@v1
       with:
