@@ -26,7 +26,7 @@ jobs:
       run: |
         apt install -y \
           dpkg-dev \
-          build-essentia \
+          build-essential \
           debhelper-compat \
           desktop-file-utils \
           dh-sequence-gnome \
