@@ -24,7 +24,7 @@ jobs:
 
     - name: Install needed packages
       run: |
-        sudo apt install -y \
+        apt install -y \
           dpkg-dev \
           build-essentia \
           debhelper-compat \
