@@ -1,0 +1,99 @@
+name: build
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    container:
+      image: ghcr.io/vanilla-os/pico:main
+      volumes:
+        - /proc:/proc
+        - /:/run/host
+      options: --privileged -it
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: De-bloat stock image
+      run: |
+        rm -r /run/host/usr/share/dotnet
+        rm -r /run/host${{ runner.tool_cache }}
+
+    - name: Install needed packages
+      run: |
+        sudo apt install -y \
+          dpkg-dev \
+          build-essentia \
+          debhelper-compat \
+          desktop-file-utils \
+          dh-sequence-gnome \
+          gnome-settings-daemon-dev \
+          gsettings-desktop-schemas-dev \
+          gtk-doc-tools \
+          libaccountsservice-dev \
+          libadwaita-1-dev \
+          libcolord-dev \
+          libcolord-gtk4-dev \
+          libcups2-dev \
+          libgcr-3-dev \
+          libgdk-pixbuf-2.0-dev \
+          libgirepository1.0-dev \
+          libglib2.0-dev \
+          libgnome-bg-4-dev \
+          libgnome-bluetooth-ui-3.0-dev \
+          libgnome-desktop-4-dev \
+          libgnome-rr-4-dev \
+          libgnutls28-dev \
+          libgoa-1.0-dev \
+          libgoa-backend-1.0-dev \
+          libgsound-dev \
+          libgtk-4-dev \
+          libgtop2-dev \
+          libgudev-1.0-dev \
+          libhandy-1-dev \
+          libibus-1.0-dev \
+          libjson-glib-dev \
+          libkrb5-dev \
+          libmalcontent-0-dev \
+          libmm-glib-dev \
+          libnm-dev \
+          libnma-gtk4-dev \
+          libpolkit-gobject-1-dev \
+          libpulse-dev \
+          libpwquality-dev \
+          libsecret-1-dev \
+          libsmbclient-dev \
+          libsoup-3.0-dev \
+          libudisks2-dev \
+          libupower-glib-dev \
+          libwacom-dev \
+          libx11-dev \
+          libxft-dev \
+          libxi-dev \
+          libxklavier-dev \
+          libxml2-dev \
+          libxml2-utils \
+          locales \
+          meson \
+          polkitd \
+          python3-dbusmock \
+          shared-mime-info \
+          tecla \
+          tzdata \
+          xvfb
+    - name: Build debian package
+      run: |
+        dpkg-buildpackage --no-sign
+        mv ../*.deb ../gnome-control-center.deb
+
+    - uses: softprops/action-gh-release@v1
+      with:
+        token: "${{ secrets.GITHUB_TOKEN }}"
+        tag_name: "continuous"
+        prerelease: true
+        name: "Continuous Build"
+        files: |
+          /__w/gnome-control-center/gnome-control-center.deb
