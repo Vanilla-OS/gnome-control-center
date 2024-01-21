@@ -92,9 +92,6 @@ jobs:
         wget https://github.com/vanilla-os/gnome-control-center/tarball/main
         mv main ../gnome-control-center_45~rc.orig.tar.gz
         dpkg-buildpackage --no-sign
-        ls
-        ls ..
-        mv ../*.deb ../gnome-control-center.deb
 
     - uses: softprops/action-gh-release@v1
       with:
@@ -103,4 +100,5 @@ jobs:
         prerelease: true
         name: "Continuous Build"
         files: |
-          /__w/gnome-control-center/gnome-control-center.deb
+          /__w/gnome-control-center/gnome-control-center-data_45~rc-2_all.deb
+          /__w/gnome-control-center/gnome-control-center_45~rc-2_amd64.deb
