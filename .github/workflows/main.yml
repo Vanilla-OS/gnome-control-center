@@ -24,7 +24,8 @@ jobs:
 
     - name: Install needed packages
       run: |
-        apt install -y \
+        DEBIAN_FRONTEND=noninteractive apt update
+        DEBIAN_FRONTEND=noninteractive apt install -y \
           dpkg-dev \
           build-essential \
           debhelper-compat \
