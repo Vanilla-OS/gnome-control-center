@@ -88,7 +88,7 @@ jobs:
           xvfb
     - name: Build debian package
       run: |
-        tar cvf ../gnome-control-center_45~rc.orig.tar.gz *
+        tar cvf ../gnome-control-center_45~rc.orig.tar *
         dpkg-buildpackage --no-sign
         mv ../*.deb ../gnome-control-center.deb
 
