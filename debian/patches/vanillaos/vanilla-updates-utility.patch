@@ -1,13 +1,13 @@
-diff --git a/panels/system/about/cc-about-page.c b/panels/system/about/cc-about-page.c
-index 80969f0bf..46a9d231d 100644
---- a/panels/system/about/cc-about-page.c
-+++ b/panels/system/about/cc-about-page.c
-@@ -83,38 +83,9 @@ about_page_setup_overview (CcAboutPage *self)
+diff --git a/panels/info-overview/cc-info-overview-panel.c b/panels/info-overview/cc-info-overview-panel.c
+index 700df61d2..13b417508 100644
+--- a/panels/info-overview/cc-info-overview-panel.c
++++ b/panels/info-overview/cc-info-overview-panel.c
+@@ -87,38 +87,9 @@ info_overview_panel_setup_overview (CcInfoOverviewPanel *self)
  }
  
  static gboolean
 -does_gnome_software_allow_updates (void)
-+does_vos_updates_utility_exist (void)
++does_vos_update_utility_exist (void)
  {
 -  const gchar *schema_id  = "org.gnome.software";
 -  GSettingsSchemaSource *source;
@@ -39,16 +39,16 @@ index 80969f0bf..46a9d231d 100644
 -does_gpk_update_viewer_exist (void)
 -{
 -  g_autofree gchar *path = g_find_program_in_path ("gpk-update-viewer");
-+  g_autofree gchar *path = g_find_program_in_path ("vanilla-updates-utility");
++  g_autofree gchar *path = g_find_program_in_path("vanilla-updates-utility");
    return path != NULL;
  }
  
-@@ -135,16 +106,16 @@ cc_about_page_open_software_update (CcAboutPage *self)
+@@ -140,18 +111,19 @@ cc_info_panel_open_software_update (CcInfoOverviewPanel *self)
    gboolean ret;
    char *argv[3];
  
 -  if (does_gnome_software_exist ())
-+  if (does_vos_updates_utility_exist ())
++  if (does_vos_update_utility_exist ())
      {
 -      argv[0] = "gnome-software";
 -      argv[1] = "--mode=updates";
@@ -60,17 +60,20 @@ index 80969f0bf..46a9d231d 100644
      {
 -      argv[0] = "gpk-update-viewer";
 -      argv[1] = NULL;
-+      g_warning ("Vanilla update utility not found!");
++      g_warning("Vanilla update utility not found!");
 +      return;
      }
    ret = g_spawn_async (NULL, argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, &error);
++
    if (!ret)
-@@ -235,7 +206,7 @@ cc_about_page_init (CcAboutPage *self)
+       g_warning ("Failed to spawn %s: %s", argv[0], error->message);
+ }
+@@ -242,7 +214,7 @@ cc_info_overview_panel_init (CcInfoOverviewPanel *self)
  
-   gtk_widget_init_template (GTK_WIDGET (self));
+   g_resources_register (cc_info_overview_get_resource ());
  
 -  if ((!does_gnome_software_exist () || !does_gnome_software_allow_updates ()) && !does_gpk_update_viewer_exist ())
-+  if (!does_vos_updates_utility_exist ())
++  if (!does_vos_update_utility_exist ())
      gtk_widget_set_visible (GTK_WIDGET (self->software_updates_group), FALSE);
  
-   about_page_setup_overview (self);
+   info_overview_panel_setup_overview (self);
