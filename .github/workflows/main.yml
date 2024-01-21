@@ -85,10 +85,12 @@ jobs:
           shared-mime-info \
           tecla \
           tzdata \
-          xvfb
+          xvfb \
+          wget
     - name: Build debian package
       run: |
-        tar cvf ../gnome-control-center_45~rc.orig.tar *
+        wget https://github.com/vanilla-os/gnome-control-center/tarball/main
+        mv main ../gnome-control-center_45~rc.orig.tar.gz
         dpkg-buildpackage --no-sign
         mv ../*.deb ../gnome-control-center.deb
 
