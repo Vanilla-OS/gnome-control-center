@@ -1,21 +1,32 @@
-From: Jeremy Bicha <jeremy.bicha@canonical.com>
-Date: Tue, 15 Aug 2023 20:22:35 -0400
-Subject: Disable non working camera/microphones panels
+From: Robert Ancell <robert.ancell@canonical.com>
+Date: Thu, 30 Jan 2020 10:16:06 +1300
+Subject: privacy: Hide non-functional camera panel
 
 Upstream: https://gitlab.gnome.org/GNOME/gnome-control-center/issues/381
 https://gitlab.gnome.org/GNOME/gnome-control-center/-/issues/741
+https://gitlab.gnome.org/GNOME/gnome-control-center/-/issues/2848
 https://gitlab.gnome.org/GNOME/cheese/-/issues/95
 
-Even with improved text from the original implementation, the panel
-doesn't seem to work with Snap apps. I disabled the camera and microphone
-here and the Zoom snap still works and it isn't listed as an app
-"requesting permission".
+This panel does not work to disable webcams for .deb apps,
+including for gnome-snapshot which tries to use the Camera portal.
+It apparently accesses the Camera directly when the Camera portal
+does not work.
+
+It also does not work to disable webcam for Snap apps. Snap
+does have a camera permission; it just isn't integrated on this page.
+
+It is still possible to disable camera access for individual
+Snap or Flatpak apps via the Apps panel.
+
+Recognizing the shortcomings, the description text for this panel
+was updated from its original implementation but it still is
+inadequate to document these significant limitations.
 ---
- panels/privacy/cc-privacy-panel.ui | 2 ++
- 1 file changed, 2 insertions(+)
+ panels/privacy/cc-privacy-panel.ui | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/panels/privacy/cc-privacy-panel.ui b/panels/privacy/cc-privacy-panel.ui
-index daec435..4a11e7b 100644
+index aa2aaeb..4a11e7b 100644
 --- a/panels/privacy/cc-privacy-panel.ui
 +++ b/panels/privacy/cc-privacy-panel.ui
 @@ -89,6 +89,7 @@
@@ -24,13 +35,5 @@ index daec435..4a11e7b 100644
                              <property name="subtitle" translatable="yes">Control camera access</property>
 +                            <property name="visible">False</property>
                              <property name="icon-name">camera-symbolic</property>
-                             <property name="show-arrow">True</property>
-                             <property name="action-name">navigation.push</property>
-@@ -100,6 +101,7 @@
-                           <object class="CcListRow">
-                             <property name="title" translatable="yes">_Microphones</property>
-                             <property name="subtitle" translatable="yes">Control microphone access</property>
-+                            <property name="visible">False</property>
-                             <property name="icon-name">microphone-symbolic</property>
                              <property name="show-arrow">True</property>
                              <property name="action-name">navigation.push</property>

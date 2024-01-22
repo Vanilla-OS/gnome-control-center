@@ -1,0 +1,49 @@
+From: Will Thompson <wjt@endlessos.org>
+Date: Thu, 18 Jan 2024 14:17:47 +0000
+Subject: privacy: Hide non-functional microphone panel
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+There is currently no portal through which applications can request
+access to the microphone. So all applications either access the
+PulseAudio/Pipewire socket directly (which cannot be controlled by this
+panel) or do not access the microphone (in which case they do not appear
+here).
+
+Hide the panel until such a portal exists. Remove the “microphone”
+keyword from the panel's desktop file, used for in-app and desktop
+search results.
+
+Fixes https://gitlab.gnome.org/GNOME/gnome-control-center/-/issues/2848
+
+(cherry picked from commit f46fbd18a616b4492bc70e386074e7dd6e0bdffb)
+
+Origin: upstream, after 46.alpha
+---
+ panels/privacy/cc-privacy-panel.ui            | 1 +
+ panels/privacy/gnome-privacy-panel.desktop.in | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/panels/privacy/cc-privacy-panel.ui b/panels/privacy/cc-privacy-panel.ui
+index e8f9027..aae8e36 100644
+--- a/panels/privacy/cc-privacy-panel.ui
++++ b/panels/privacy/cc-privacy-panel.ui
+@@ -88,6 +88,7 @@
+                           <object class="CcListRow">
+                             <property name="title" translatable="yes">_Microphones</property>
+                             <property name="subtitle" translatable="yes">Control microphone access</property>
++                            <property name="visible">False</property>
+                             <property name="icon-name">microphone-symbolic</property>
+                             <property name="show-arrow">True</property>
+                             <property name="action-name">navigation.push</property>
+diff --git a/panels/privacy/gnome-privacy-panel.desktop.in b/panels/privacy/gnome-privacy-panel.desktop.in
+index fa723ff..5abe66b 100644
+--- a/panels/privacy/gnome-privacy-panel.desktop.in
++++ b/panels/privacy/gnome-privacy-panel.desktop.in
+@@ -11,4 +11,4 @@ StartupNotify=true
+ Categories=GNOME;GTK;Settings;DesktopSettings;X-GNOME-Settings-Panel;X-GNOME-AccountSettings;
+ OnlyShowIn=GNOME;
+ # Translators: Search terms to find the Privacy panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+-Keywords=Privacy;Screen;Lock;Private;Usage;Recent;History;Files;Temporary;Tmp;Trash;Purge;Retain;Diagnostics;Crash;Location;Gps;Camera;Photos;Video;Webcam;Microphone;Recording;Security;Firmware;Thunderbolt;
++Keywords=Privacy;Screen;Lock;Private;Usage;Recent;History;Files;Temporary;Tmp;Trash;Purge;Retain;Diagnostics;Crash;Location;Gps;Camera;Photos;Video;Webcam;Recording;Security;Firmware;Thunderbolt;

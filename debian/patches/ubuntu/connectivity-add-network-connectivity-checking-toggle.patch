@@ -252,7 +252,7 @@ index 1fcb396..8d136f1 100644
    g_type_ensure (CC_TYPE_FIRMWARE_SECURITY_PAGE);
    g_type_ensure (CC_TYPE_LOCATION_PAGE);
 diff --git a/panels/privacy/cc-privacy-panel.ui b/panels/privacy/cc-privacy-panel.ui
-index e8f9027..daec435 100644
+index aae8e36..aa2aaeb 100644
 --- a/panels/privacy/cc-privacy-panel.ui
 +++ b/panels/privacy/cc-privacy-panel.ui
 @@ -20,6 +20,18 @@
@@ -274,7 +274,7 @@ index e8f9027..daec435 100644
                          <child>
                            <object class="CcListRow">
                              <property name="title" translatable="yes">_Screen Lock</property>
-@@ -131,6 +143,10 @@
+@@ -132,6 +144,10 @@
            </object>
          </child>
  
@@ -286,15 +286,15 @@ index e8f9027..daec435 100644
            <object class="CcScreenPage"/>
          </child>
 diff --git a/panels/privacy/gnome-privacy-panel.desktop.in b/panels/privacy/gnome-privacy-panel.desktop.in
-index fa723ff..541b9f5 100644
+index 5abe66b..f88fd44 100644
 --- a/panels/privacy/gnome-privacy-panel.desktop.in
 +++ b/panels/privacy/gnome-privacy-panel.desktop.in
 @@ -11,4 +11,4 @@ StartupNotify=true
  Categories=GNOME;GTK;Settings;DesktopSettings;X-GNOME-Settings-Panel;X-GNOME-AccountSettings;
  OnlyShowIn=GNOME;
  # Translators: Search terms to find the Privacy panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
--Keywords=Privacy;Screen;Lock;Private;Usage;Recent;History;Files;Temporary;Tmp;Trash;Purge;Retain;Diagnostics;Crash;Location;Gps;Camera;Photos;Video;Webcam;Microphone;Recording;Security;Firmware;Thunderbolt;
-+Keywords=Privacy;Screen;Lock;Private;Usage;Recent;History;Files;Temporary;Tmp;Trash;Purge;Retain;Diagnostics;Crash;Location;Gps;Camera;Photos;Video;Webcam;Microphone;Recording;Security;Firmware;Thunderbolt;Network;
+-Keywords=Privacy;Screen;Lock;Private;Usage;Recent;History;Files;Temporary;Tmp;Trash;Purge;Retain;Diagnostics;Crash;Location;Gps;Camera;Photos;Video;Webcam;Recording;Security;Firmware;Thunderbolt;
++Keywords=Privacy;Screen;Lock;Private;Usage;Recent;History;Files;Temporary;Tmp;Trash;Purge;Retain;Diagnostics;Crash;Location;Gps;Camera;Photos;Video;Webcam;Recording;Security;Firmware;Thunderbolt;Network;
 diff --git a/panels/privacy/icons/scalable/actions/network-workgroup-symbolic.svg b/panels/privacy/icons/scalable/actions/network-workgroup-symbolic.svg
 new file mode 100644
 index 0000000..09bd2ad
