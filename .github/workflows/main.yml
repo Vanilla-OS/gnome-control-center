@@ -90,7 +90,7 @@ jobs:
     - name: Build debian package
       run: |
         wget https://github.com/vanilla-os/gnome-control-center/tarball/main
-        mv main ../gnome-control-center_45~orchid-rc.orig.tar.gz
+        mv main ../gnome-control-center_45~99-orchid-rc.orig.tar.gz
         dpkg-buildpackage --no-sign
         tar cvf ../gnome-control-center.tar.xz ../*.deb
 
@@ -101,6 +101,6 @@ jobs:
         prerelease: true
         name: "Continuous Build"
         files: |
-          /__w/gnome-control-center/gnome-control-center-data_45~orchid-rc-2_all.deb
-          /__w/gnome-control-center/gnome-control-center_45~orchid-rc-2_amd64.deb
+          /__w/gnome-control-center/gnome-control-center-data_45~99-orchid-rc-2_all.deb
+          /__w/gnome-control-center/gnome-control-center_45~99-orchid-rc-2_amd64.deb
           /__w/gnome-control-center/gnome-control-center.tar.xz
