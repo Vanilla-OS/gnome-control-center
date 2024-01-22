@@ -1,3 +1,9 @@
+gnome-control-center (1:45~orchid-rc-2) unstable; urgency=medium
+
+  * Bump
+
+ -- Mirko Brombin <send@mirko.pm>  Mon, 22 Jan 2024 02:09:09 -0400
+
 gnome-control-center (1:45~rc-2) unstable; urgency=medium
 
   * Drop patch reverting use of Tecla, the new GTK4 keyboard layout viewer
