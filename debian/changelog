@@ -1,3 +1,13 @@
+gnome-control-center (1:46~alpha-2ubuntu2) noble; urgency=medium
+
+  * Don't recommend libnss-myhostname since we use systemd-resolved
+  * Revert "Add temporary Build-Depends: libevdev to work around #1060687"
+  * Show Software Updates in the Software Updater app instead of the config app
+  * Update Ubuntu Desktop patch to use Home folder label instead of Personal folder
+  * Cherry-pick commit to reorder panels
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Mon, 22 Jan 2024 10:47:07 -0500
+
 gnome-control-center (1:46~alpha-2ubuntu1) noble; urgency=medium
 
   * Merge with Debian. Remaining changes:
