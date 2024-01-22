@@ -2469,17 +2469,17 @@ index 85548e4..aa483b6 100644
  panels/universal-access/cc-ua-hearing-page.c
  panels/universal-access/cc-ua-hearing-page.ui
 diff --git a/shell/cc-panel-list.c b/shell/cc-panel-list.c
-index 770de59..c9c8c74 100644
+index 79e82d5..7173321 100644
 --- a/shell/cc-panel-list.c
 +++ b/shell/cc-panel-list.c
-@@ -355,6 +355,7 @@ static const gchar * const panel_order[] = {
-   "mobile-broadband",
-   "bluetooth",
+@@ -362,6 +362,7 @@ static const gchar * const panel_order[] = {
+   "power",
+   "multitasking",
    "background",
 +  "ubuntu",
-   "notifications",
-   "search",
-   "multitasking",
+ 
+   "separator",
+ 
 diff --git a/shell/cc-panel-loader.c b/shell/cc-panel-loader.c
 index 014825c..a920389 100644
 --- a/shell/cc-panel-loader.c
