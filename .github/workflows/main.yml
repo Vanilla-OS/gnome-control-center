@@ -90,11 +90,8 @@ jobs:
           git
     - name: Build debian package
       run: |
-        mkdir work
-        git clone --depth 1 --branch "debian/1%46_alpha-2" https://salsa.debian.org/gnome-team/gnome-control-center.git work
-        cd work
-        tar -czvf ../../gnome-control-center_46~99-orchid-alpha.orig.tar.gz .
-        cd ..
+        wget https://github.com/vanilla-os/gnome-control-center/tarball/main
+        mv main ../gnome-control-center_46~99-orchid-alpha.orig.tar.gz
         dpkg-buildpackage --no-sign
         tar cvf ../gnome-control-center.tar.xz ../*.deb
 
