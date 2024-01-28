@@ -1,8 +1,8 @@
-diff --git a/panels/info-overview/cc-info-overview-panel.c b/panels/info-overview/cc-info-overview-panel.c
-index 700df61d2..13b417508 100644
---- a/panels/info-overview/cc-info-overview-panel.c
-+++ b/panels/info-overview/cc-info-overview-panel.c
-@@ -87,38 +87,9 @@ info_overview_panel_setup_overview (CcInfoOverviewPanel *self)
+diff --git a/panels/system/about/cc-about-page.c b/panels/system/about/cc-about-page.c
+index 80969f0bfa..1a58f6260f 100644
+--- a/panels/system/about/cc-about-page.c
++++ b/panels/system/about/cc-about-page.c
+@@ -83,38 +83,9 @@ about_page_setup_overview (CcAboutPage *self)
  }
  
  static gboolean
@@ -43,7 +43,7 @@ index 700df61d2..13b417508 100644
    return path != NULL;
  }
  
-@@ -140,18 +111,19 @@ cc_info_panel_open_software_update (CcInfoOverviewPanel *self)
+@@ -135,16 +106,16 @@ cc_about_page_open_software_update (CcAboutPage *self)
    gboolean ret;
    char *argv[3];
  
@@ -64,16 +64,13 @@ index 700df61d2..13b417508 100644
 +      return;
      }
    ret = g_spawn_async (NULL, argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, &error);
-+
    if (!ret)
-       g_warning ("Failed to spawn %s: %s", argv[0], error->message);
- }
-@@ -242,7 +214,7 @@ cc_info_overview_panel_init (CcInfoOverviewPanel *self)
+@@ -235,7 +206,7 @@ cc_about_page_init (CcAboutPage *self)
  
-   g_resources_register (cc_info_overview_get_resource ());
+   gtk_widget_init_template (GTK_WIDGET (self));
  
 -  if ((!does_gnome_software_exist () || !does_gnome_software_allow_updates ()) && !does_gpk_update_viewer_exist ())
 +  if (!does_vos_update_utility_exist ())
      gtk_widget_set_visible (GTK_WIDGET (self->software_updates_group), FALSE);
  
-   info_overview_panel_setup_overview (self);
+   about_page_setup_overview (self);
