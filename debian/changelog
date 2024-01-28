@@ -33,6 +33,12 @@ gnome-control-center (1:46~beta-1) unstable; urgency=medium
 
  -- Jeremy Bícha <jbicha@ubuntu.com>  Tue, 13 Feb 2024 18:35:48 -0500
 
+gnome-control-center (1:46~99-orchid-alpha-2) unstable; urgency=medium
+
+  * Bump for Orchid
+
+ -- Mirko Brombin <send@mirko.pm>  Sun, 28 Jan 2024 20:32:28 -0500
+
 gnome-control-center (1:46~alpha-2) unstable; urgency=medium
 
   * Move gnome-remote-desktop from Recommends to Depends (Closes: #1060465)
