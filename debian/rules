@@ -29,6 +29,7 @@ override_dh_auto_configure:
 		-Ddocumentation=true \
 		-Ddistributor_logo=$(DISTRIBUTOR_LOGO) \
 		-Ddark_mode_distributor_logo=$(DISTRIBUTOR_LOGO_DARK) \
+		-Dtests=false \
 		$(MALCONTENT)
 
 # Ubuntu-specific
