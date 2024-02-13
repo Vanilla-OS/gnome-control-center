@@ -10,7 +10,7 @@ This reverts commit 484866e27ee7c99240cf815946f16e0d42fd49be.
  3 files changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/meson.build b/meson.build
-index e73be27..aeafd69 100644
+index 9f52f48..ed43b49 100644
 --- a/meson.build
 +++ b/meson.build
 @@ -194,7 +194,7 @@ gudev_dep = dependency('gudev-1.0', version: '>= 232')
