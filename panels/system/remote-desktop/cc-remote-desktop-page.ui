@@ -3,6 +3,7 @@
   <template class="CcRemoteDesktopPage" parent="AdwNavigationPage">
     <property name="title" translatable="yes">Remote Desktop</property>
     <property name="tag">system-remote-desktop-page</property>
+    <property name="visible">False</property>
 
     <property name="child">
       <object class="AdwToolbarView">
@@ -17,31 +18,18 @@
                   <object class="AdwPreferencesGroup">
 
                     <child>
-                      <object class="AdwActionRow">
+                      <object class="AdwSwitchRow" id="remote_desktop_row">
                         <property name="title" translatable="yes">Remote _Desktop</property>
                         <property name="use-underline">True</property>
-                        <property name="subtitle" translatable="yes">Enable or disable remote desktop connections to this computer.</property>
-                        <property name="activatable_widget">remote_desktop_switch</property>
-                        <child type="suffix">
-                          <object class="GtkSwitch" id="remote_desktop_switch">
-                            <property name="active">False</property>
-                            <property name="valign">center</property>
-                          </object>
-                        </child>
+                        <property name="subtitle" translatable="yes">Enable or disable remote desktop connections to this computer</property>
                       </object>
                     </child>
 
                     <child>
-                      <object class="AdwActionRow">
+                      <object class="AdwSwitchRow" id="remote_control_row">
                         <property name="title" translatable="yes">Remote _Control</property>
                         <property name="use-underline">True</property>
-                        <property name="subtitle" translatable="yes">Allows remote connections to control the screen.</property>
-                        <property name="activatable_widget">remote_control_switch</property>
-                        <child type="suffix">
-                          <object class="GtkSwitch" id="remote_control_switch">
-                            <property name="valign">center</property>
-                          </object>
-                        </child>
+                        <property name="subtitle" translatable="yes">Allows remote connections to control the screen</property>
                       </object>
                     </child>
                   </object>
@@ -50,11 +38,13 @@
                 <child>
                   <object class="AdwPreferencesGroup">
                     <property name="title" translatable="yes">How to Connect</property>
-                    <property name="description" translatable="yes">Connect to this computer using the device name or remote desktop address.</property>
+                    <property name="description" translatable="yes">Connect to this computer using the device name or remote desktop address</property>
 
                     <child>
                       <object class="AdwActionRow">
-                        <property name="title" translatable="yes">Device Name</property>
+                        <property name="title" translatable="yes">D_evice Name</property>
+                        <property name="use-underline">True</property>
+                        <property name="activatable-widget">copy_device_name_button</property>
                         <child type="suffix">
                           <object class="GtkBox">
                             <property name="spacing">10</property>
@@ -64,7 +54,7 @@
                               </object>
                             </child>
                             <child>
-                              <object class="GtkButton">
+                              <object class="GtkButton" id="copy_device_name_button">
                                 <property name="tooltip-text" translatable="yes">Copy</property>
                                 <property name="valign">center</property>
                                 <property name="icon-name">edit-copy-symbolic</property>
@@ -83,7 +73,9 @@
                     </child>
                     <child>
                       <object class="AdwActionRow">
-                        <property name="title" translatable="yes">Remote Desktop Address</property>
+                        <property name="title" translatable="yes">Re_mote Desktop Address</property>
+                        <property name="use-underline">True</property>
+                        <property name="activatable-widget">copy_device_address_button</property>
                         <child type="suffix">
                           <object class="GtkBox">
                             <property name="spacing">10</property>
@@ -93,7 +85,7 @@
                               </object>
                             </child>
                             <child>
-                              <object class="GtkButton">
+                              <object class="GtkButton" id="copy_device_address_button">
                                 <property name="tooltip-text" translatable="yes">Copy</property>
                                 <property name="valign">center</property>
                                 <property name="icon-name">edit-copy-symbolic</property>
@@ -116,11 +108,12 @@
                 <child>
                   <object class="AdwPreferencesGroup">
                     <property name="title" translatable="yes">Authentication</property>
-                    <property name="description" translatable="yes">The user name and password are required to connect to this computer.</property>
+                    <property name="description" translatable="yes">The user name and password are required to connect to this computer</property>
 
                     <child>
                       <object class="AdwEntryRow" id="remote_desktop_username_entry">
-                        <property name="title" translatable="yes">User Name</property>
+                        <property name="title" translatable="yes">_User Name</property>
+                        <property name="use-underline">True</property>
                         <child type="suffix">
                           <object class="GtkButton">
                             <property name="tooltip-text" translatable="yes">Copy</property>
@@ -140,7 +133,8 @@
 
                     <child>
                       <object class="AdwPasswordEntryRow" id="remote_desktop_password_entry">
-                        <property name="title" translatable="yes">Password</property>
+                        <property name="title" translatable="yes">_Password</property>
+                        <property name="use-underline">True</property>
                         <child type="suffix">
                           <object class="GtkButton">
                             <property name="tooltip-text" translatable="yes">Copy</property>
@@ -200,7 +194,7 @@
         <child>
           <object class="AdwStatusPage">
             <property name="title" translatable="yes">Encryption Fingerprint</property>
-            <property name="description" translatable="yes">The encryption fingerprint can be seen in connecting clients and should be identical.</property>
+            <property name="description" translatable="yes">The encryption fingerprint can be seen in connecting clients and should be identical</property>
             <property name="vexpand">True</property>
             <child>
               <object class="GtkBox">

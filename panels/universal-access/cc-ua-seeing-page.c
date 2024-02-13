@@ -48,6 +48,7 @@ struct _CcUaSeeingPage
   AdwNavigationPage   parent_instance;
 
   AdwSwitchRow       *high_contrast_row;
+  AdwSwitchRow       *status_shapes_row;
   AdwSwitchRow       *animations_row;
   AdwSwitchRow       *large_text_row;
   CcListRow          *cursor_size_row;
@@ -60,11 +61,6 @@ struct _CcUaSeeingPage
   GSettings          *interface_settings;
   GSettings          *application_settings;
   GSettings          *a11y_interface_settings;
-
-  char               *old_gtk_theme;
-  char               *old_icon_theme;
-
-  gboolean            is_self_change;
 };
 
 G_DEFINE_TYPE (CcUaSeeingPage, cc_ua_seeing_page, ADW_TYPE_NAVIGATION_PAGE)
@@ -139,47 +135,6 @@ ua_seeing_interface_cursor_size_changed_cb (CcUaSeeingPage *self)
 }
 
 static void
-ua_seeing_a11y_high_contrast_changed_cb (CcUaSeeingPage *self)
-{
-  g_assert (CC_IS_UA_SEEING_PAGE (self));
-
-  self->is_self_change = TRUE;
-
-  if (g_settings_get_boolean (self->a11y_interface_settings, KEY_HIGH_CONTRAST))
-    {
-      /* xxx: Should we not set high contrast icons? */
-      g_settings_set_string (self->interface_settings, KEY_ICON_THEME, HIGH_CONTRAST_THEME);
-    }
-  else
-    {
-      if (self->old_icon_theme && !g_str_equal (self->old_gtk_theme, HIGH_CONTRAST_THEME))
-        g_settings_set_string (self->interface_settings, KEY_ICON_THEME, self->old_icon_theme);
-      else
-        g_settings_reset (self->interface_settings, KEY_ICON_THEME);
-    }
-
-  self->is_self_change = FALSE;
-}
-
-static void
-ua_seeing_interface_settings_changed_cb (CcUaSeeingPage *self)
-{
-  g_assert (CC_IS_UA_SEEING_PAGE (self));
-
-  if (self->is_self_change)
-    return;
-
-  if (!g_settings_get_boolean (self->a11y_interface_settings, KEY_HIGH_CONTRAST))
-    {
-      g_free (self->old_gtk_theme);
-      g_free (self->old_icon_theme);
-
-      self->old_gtk_theme = g_settings_get_string (self->interface_settings, KEY_GTK_THEME);
-      self->old_icon_theme = g_settings_get_string (self->interface_settings, KEY_ICON_THEME);
-    }
-}
-
-static void
 ua_cursor_row_activated_cb (CcUaSeeingPage *self)
 {
   GtkWindow *dialog;
@@ -204,9 +159,6 @@ cc_ua_seeing_page_dispose (GObject *object)
   g_clear_object (&self->application_settings);
   g_clear_object (&self->a11y_interface_settings);
 
-  g_clear_pointer (&self->old_gtk_theme, g_free);
-  g_clear_pointer (&self->old_icon_theme, g_free);
-
   G_OBJECT_CLASS (cc_ua_seeing_page_parent_class)->dispose (object);
 }
 
@@ -223,6 +175,7 @@ cc_ua_seeing_page_class_init (CcUaSeeingPageClass *klass)
                                                "universal-access/cc-ua-seeing-page.ui");
 
   gtk_widget_class_bind_template_child (widget_class, CcUaSeeingPage, high_contrast_row);
+  gtk_widget_class_bind_template_child (widget_class, CcUaSeeingPage, status_shapes_row);
   gtk_widget_class_bind_template_child (widget_class, CcUaSeeingPage, animations_row);
   gtk_widget_class_bind_template_child (widget_class, CcUaSeeingPage, large_text_row);
   gtk_widget_class_bind_template_child (widget_class, CcUaSeeingPage, cursor_size_row);
@@ -247,6 +200,11 @@ cc_ua_seeing_page_init (CcUaSeeingPage *self)
   /* High contrast */
   g_settings_bind (self->a11y_interface_settings, KEY_HIGH_CONTRAST,
                    self->high_contrast_row, "active",
+                   G_SETTINGS_BIND_DEFAULT);
+
+  /* Switch shapes */
+  g_settings_bind (self->a11y_interface_settings, KEY_STATUS_SHAPES,
+                   self->status_shapes_row, "active",
                    G_SETTINGS_BIND_DEFAULT);
 
   /* Enable Animations */
@@ -282,15 +240,6 @@ cc_ua_seeing_page_init (CcUaSeeingPage *self)
                            G_CALLBACK (ua_seeing_interface_cursor_size_changed_cb),
                            self, G_CONNECT_SWAPPED | G_CONNECT_AFTER);
 
-  g_signal_connect_object (self->a11y_interface_settings, "changed::" KEY_HIGH_CONTRAST,
-                           G_CALLBACK (ua_seeing_a11y_high_contrast_changed_cb),
-                           self, G_CONNECT_SWAPPED | G_CONNECT_AFTER);
-
-  g_signal_connect_object (self->interface_settings, "changed",
-                           G_CALLBACK (ua_seeing_interface_settings_changed_cb),
-                           self, G_CONNECT_SWAPPED | G_CONNECT_AFTER);
-
-  ua_seeing_interface_settings_changed_cb (self);
   ua_seeing_interface_cursor_size_changed_cb (self);
 }
 

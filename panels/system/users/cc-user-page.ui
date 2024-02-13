@@ -38,10 +38,8 @@
                             <property name="valign">end</property>
                             <child>
                               <object class="GtkMenuButton" id="avatar_edit_button">
+                                <property name="tooltip-text" translatable="yes">Change Avatar</property>
                                 <property name="icon-name">document-edit-symbolic</property>
-                                <accessibility>
-                                  <property name="label" translatable="yes">Edit avatar</property>
-                                </accessibility>
                                 <style>
                                   <class name="circular"/>
                                 </style>
@@ -58,11 +56,9 @@
                             <property name="valign">start</property>
                             <child>
                               <object class="GtkButton" id="avatar_remove_button">
+                                <property name="tooltip-text" translatable="yes">Remove Avatar</property>
                                 <property name="icon-name">user-trash-symbolic</property>
                                 <signal name="clicked" handler="remove_avatar" object="CcUserPage" swapped="yes"/>
-                                <accessibility>
-                                  <property name="label" translatable="yes">Remove avatar</property>
-                                </accessibility>
                                 <style>
                                   <class name="circular"/>
                                   <class name="destructive-image-button"/>
@@ -85,7 +81,8 @@
                         <property name="tooltip-text" translatable="yes">Unlock to Change This Setting</property>
                         <property name="input-purpose">name</property>
                         <property name="show-apply-button">True</property>
-                        <property name="title" translatable="yes">Name</property>
+                        <property name="title" translatable="yes">_Name</property>
+                        <property name="use-underline">True</property>
                         <signal name="apply" handler="fullname_entry_apply_cb" object="CcUserPage" swapped="yes"/>
                       </object>
                     </child>
@@ -95,7 +92,7 @@
                         <property name="has-tooltip" bind-source="CcUserPage" bind-property="editable" bind-flags="invert-boolean"/>
                         <property name="tooltip-text" translatable="yes">Unlock to Change This Setting</property>
                         <property name="activatable">True</property>
-                        <property name="title" translatable="yes">Password</property>
+                        <property name="title" translatable="yes">Pa_ssword</property>
                         <property name="use_underline">True</property>
                         <property name="show-arrow">True</property>
                         <signal name="activated" handler="change_password" object="CcUserPage" swapped="yes"/>
@@ -116,7 +113,8 @@
                     </child>
                     <child>
                       <object class="AdwSwitchRow" id="auto_login_row">
-                        <property name="title" translatable="yes">Automatic Login</property>
+                        <property name="title" translatable="yes">A_utomatic Login</property>
+                        <property name="use-underline">True</property>
                         <property name="sensitive" bind-source="CcUserPage" bind-property="locked" bind-flags="invert-boolean"/>
                         <property name="has-tooltip" bind-source="CcUserPage" bind-property="locked" bind-flags="sync-create"/>
                         <property name="tooltip-text" translatable="yes">Unlock to Change This Setting</property>
@@ -156,7 +154,7 @@
                       <object class="CcListRow" id="parental_controls_row">
                         <property name="visible" bind-source="CcUserPage" bind-property="is-admin" bind-flags="invert-boolean|sync-create"/>
                         <property name="title" translatable="yes">_Parental Controls</property>
-                        <property name="subtitle" translatable="yes">Open the Parental Controls app.</property>
+                        <property name="subtitle" translatable="yes">Open the Parental Controls app</property>
                         <property name="subtitle-lines">0</property>
                         <property name="use_underline">True</property>
                         <property name="activatable">True</property>
@@ -190,7 +188,8 @@
                           <object class="GtkButton" id="remove_user_button">
                             <property name="visible" bind-source="CcUserPage" bind-property="is-current-user" bind-flags="invert-boolean"/>
                             <property name="sensitive" bind-source="CcUserPage" bind-property="editable" bind-flags="sync-create"/>
-                            <property name="label" translatable="yes">Remove User</property>
+                            <property name="label" translatable="yes">_Remove User</property>
+                            <property name="use-underline">True</property>
                             <property name="halign">center</property>
                             <signal name="clicked" handler="remove_user" object="CcUserPage" swapped="yes"/>
                             <style>
@@ -215,7 +214,7 @@
     <property name="modal">True</property>
     <property name="hide-on-close">True</property>
     <property name="destroy_with_parent">True</property>
-    <property name="body" translatable="yes">The user will not be able to use this device once their account has been removed.</property>
+    <property name="body" translatable="yes">The user will not be able to use this device once their account has been removed</property>
     <property name="default-response">cancel</property>
     <property name="close-response">cancel</property>
     <signal name="response" handler="remove_local_user_response" object="CcUserPage" swapped="yes"/>
