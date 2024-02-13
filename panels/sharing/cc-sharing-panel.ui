@@ -13,7 +13,8 @@
                 <property name="margin-bottom">12</property>
                 <child>
                   <object class="CcHostnameEntry" id="hostname_entry">
-                    <property name="title" translatable="yes">Device Name</property>
+                    <property name="title" translatable="yes">_Device Name</property>
+                    <property name="use-underline">True</property>
                   </object>
                 </child>
               </object>
@@ -36,15 +37,6 @@
                     <property name="subtitle" translatable="yes">Stream music, photos and videos to devices on the current network</property>
                     <property name="title" translatable="yes">_Media Sharing</property>
                     <signal name="activated" handler="gtk_window_present" object="media_sharing_dialog"/>
-                  </object>
-                </child>
-                <child>
-                  <object class="CcListRow" id="remote_login_row">
-                    <property name="icon-name">utilities-terminal-symbolic</property>
-                    <property name="show-arrow">True</property>
-                    <property name="subtitle" translatable="yes">Enable SSH access for this device</property>
-                    <property name="title" translatable="yes">_Remote Login</property>
-                    <signal name="activated" handler="gtk_window_present" object="remote_login_dialog"/>
                   </object>
                 </child>
               </object>
@@ -78,10 +70,20 @@
     <property name="content">
       <object class="AdwToolbarView">
         <child type="top">
-          <object class="AdwHeaderBar" id="personal_file_sharing_headerbar"/>
+          <object class="AdwHeaderBar"/>
         </child>
         <property name="content">
           <object class="AdwPreferencesPage" id="personal_file_sharing_page">
+            <child>
+              <object class="AdwPreferencesGroup">
+                <child>
+                  <object class="AdwActionRow" id="personal_file_sharing_enable_row">
+                    <property name="title" translatable="yes">_File Sharing</property>
+                    <property name="use-underline">True</property>
+                  </object>
+                </child>
+              </object>
+            </child>
             <child>
               <object class="AdwPreferencesGroup">
                 <child>
@@ -104,15 +106,6 @@
                 <child>
                   <object class="GtkBox" id="personal_file_sharing_vbox">
                     <property name="orientation">vertical</property>
-                    <property name="spacing">12</property>
-                    <child>
-                      <object class="GtkListBox">
-                        <property name="selection-mode">none</property>
-                        <style>
-                          <class name="boxed-list"/>
-                        </style>
-                      </object>
-                    </child>
                   </object>
                 </child>
               </object>
@@ -123,47 +116,6 @@
     </property>
   </object>
 
-  <object class="AdwWindow" id="remote_login_dialog">
-    <property name="title" translatable="yes">Remote Login</property>
-    <property name="resizable">False</property>
-    <property name="modal">True</property>
-    <property name="hide-on-close">True</property>
-    <property name="width-request">360</property>
-    <property name="height-request">294</property>
-    <property name="default-width">360</property>
-    <property name="default-height">294</property>
-    <child>
-      <object class="GtkShortcutController">
-        <property name="scope">managed</property>
-        <child>
-          <object class="GtkShortcut">
-            <property name="trigger">Escape</property>
-            <property name="action">action(window.close)</property>
-          </object>
-        </child>
-      </object>
-    </child>
-    <property name="content">
-      <object class="AdwToolbarView">
-        <child type="top">
-          <object class="AdwHeaderBar"/>
-        </child>
-        <property name="content">
-          <object class="AdwPreferencesPage" id="remote_login_page">
-            <child>
-              <object class="AdwPreferencesGroup">
-                <child>
-                  <object class="AdwSwitchRow" id="remote_login_switch">
-                    <property name="title" translatable="yes">Remote Login</property>
-                  </object>
-                </child>
-              </object>
-            </child>
-          </object>
-        </property>
-      </object>
-    </property>
-  </object>
 
   <object class="AdwWindow" id="media_sharing_dialog">
     <property name="title" translatable="yes">Media Sharing</property>
@@ -188,31 +140,40 @@
     <property name="content">
       <object class="AdwToolbarView">
         <child type="top">
-          <object class="AdwHeaderBar" id="media_sharing_headerbar"/>
+          <object class="AdwHeaderBar"/>
         </child>
         <property name="content">
           <object class="AdwPreferencesPage">
-            <property name="description" translatable="yes">Share music, photos and videos over the network.</property>
+            <property name="description" translatable="yes">Share music, photos and videos over the network</property>
+            <child>
+              <object class="AdwPreferencesGroup">
+                <child>
+                  <object class="AdwActionRow" id="media_sharing_enable_row">
+                    <property name="title" translatable="yes">_Media Sharing</property>
+                    <property name="use-underline">True</property>
+                  </object>
+                </child>
+              </object>
+            </child>
             <child>
               <object class="AdwPreferencesGroup">
                 <property name="title" translatable="yes">Folders</property>
                 <child>
-                  <object class="GtkGrid" id="shared_folders_grid">
-                    <property name="row_spacing">12</property>
-                    <property name="column_spacing">6</property>
-                    <child>
-                      <object class="GtkListBox" id="shared_folders_listbox">
-                        <property name="selection-mode">none</property>
-                        <style>
-                          <class name="boxed-list" />
-                        </style>
-                        <layout>
-                          <property name="column">0</property>
-                          <property name="row">3</property>
-                          <property name="column-span">2</property>
-                        </layout>
-                      </object>
-                    </child>
+                  <object class="GtkListBox" id="shared_folders_listbox">
+                    <property name="selection-mode">none</property>
+                    <style>
+                      <class name="boxed-list" />
+                    </style>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="AdwPreferencesGroup">
+                <property name="title" translatable="yes">Networks</property>
+                <child>
+                  <object class="GtkBox" id="media_sharing_vbox">
+                    <property name="orientation">vertical</property>
                   </object>
                 </child>
               </object>

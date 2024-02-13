@@ -1,0 +1,50 @@
+From: =?utf-8?q?Jeremy_B=C3=ADcha?= <jeremy.bicha@canonical.com>
+Date: Tue, 13 Feb 2024 16:47:28 -0500
+Subject: Revert "system, wwan: Depend on gcr4"
+
+This reverts commit 484866e27ee7c99240cf815946f16e0d42fd49be.
+---
+ meson.build                                           | 2 +-
+ panels/system/remote-desktop/cc-remote-desktop-page.c | 2 +-
+ panels/wwan/cc-wwan-device-page.c                     | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/meson.build b/meson.build
+index 9f52f48..ed43b49 100644
+--- a/meson.build
++++ b/meson.build
+@@ -194,7 +194,7 @@ gudev_dep = dependency('gudev-1.0', version: '>= 232')
+ x11_dep = dependency('x11', version: '>= 1.8')
+ xi_dep = dependency('xi', version: '>= 1.2')
+ epoxy_dep = dependency('epoxy')
+-gcr_dep = dependency('gcr-4', version: '>= 4.1.0')
++gcr_dep = dependency('gcr-base-3')
+ pwquality_dep = dependency('pwquality', version: '>= 1.2.2')
+ 
+ m_dep = cc.find_library('m')
+diff --git a/panels/system/remote-desktop/cc-remote-desktop-page.c b/panels/system/remote-desktop/cc-remote-desktop-page.c
+index 44c8d55..5328a85 100644
+--- a/panels/system/remote-desktop/cc-remote-desktop-page.c
++++ b/panels/system/remote-desktop/cc-remote-desktop-page.c
+@@ -42,7 +42,7 @@
+ #endif
+ 
+ #define GCR_API_SUBJECT_TO_CHANGE
+-#include <gcr/gcr.h>
++#include <gcr/gcr-base.h>
+ 
+ #include "org.gnome.SettingsDaemon.Sharing.h"
+ 
+diff --git a/panels/wwan/cc-wwan-device-page.c b/panels/wwan/cc-wwan-device-page.c
+index 5ac5962..ba8fc61 100644
+--- a/panels/wwan/cc-wwan-device-page.c
++++ b/panels/wwan/cc-wwan-device-page.c
+@@ -29,7 +29,7 @@
+ #include <glib/gi18n.h>
+ #include <libmm-glib.h>
+ #define GCR_API_SUBJECT_TO_CHANGE
+-#include <gcr/gcr.h>
++#include <gcr/gcr-base.h>
+ 
+ #include "cc-list-row.h"
+ #include "cc-wwan-data.h"

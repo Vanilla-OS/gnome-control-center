@@ -1,3 +1,13 @@
+gnome-control-center (1:46~beta-1) unstable; urgency=medium
+
+  * New upstream release
+  * Bump minimum gsettings-desktop-schemas to 46~beta
+  * Change gnome-remote-desktop from Depends to Recommends (Closes: #1014879)
+  * Cherry-pick translation update patches
+  * Add patch to keep using gcr version 3 for now
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Tue, 13 Feb 2024 18:35:48 -0500
+
 gnome-control-center (1:46~alpha-2ubuntu2) noble; urgency=medium
 
   * Don't recommend libnss-myhostname since we use systemd-resolved

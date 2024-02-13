@@ -42,35 +42,38 @@
 
 #define EKR_VENDOR "056a"
 #define EKR_PRODUCT "0331"
+#define POLL_MS 300
 
 struct _CcWacomPanel
 {
-	CcPanel           parent_instance;
+	CcPanel                 parent_instance;
 
-	GtkWidget        *test_popover;
-	GtkWidget        *test_draw_area;
-	GtkWidget        *test_button;
-	GtkWidget        *scrollable;
-	GtkWidget        *tablets;
-	GtkWidget        *styli;
-	GtkWidget        *initial_state_stack;
-	GtkWidget        *panel_view;
-	GtkWidget        *panel_empty_state;
-	GHashTable       *devices; /* key=GsdDevice, value=CcWacomDevice */
-	GHashTable       *pages; /* key=CcWacomDevice, value=GtkWidget */
-	GHashTable       *stylus_pages; /* key=CcWacomTool, value=GtkWidget */
-	guint             mock_stylus_id;
+	GtkWidget              *test_popover;
+	GtkWidget              *test_draw_area;
+	GtkWidget              *test_button;
+	GtkWidget              *scrollable;
+	GtkWidget              *tablets;
+	GtkWidget              *styli;
+	GtkWidget              *initial_state_stack;
+	GtkWidget              *panel_view;
+	GtkWidget              *panel_empty_state;
+	GHashTable             *devices; /* key=GsdDevice, value=CcWacomDevice */
+	GHashTable             *pages; /* key=CcWacomDevice, value=GtkWidget */
+	GHashTable             *stylus_pages; /* key=CcWacomTool, value=CcWacomStylusPage */
+	guint                   mock_stylus_id;
 
-	CcTabletToolMap  *tablet_tool_map;
+	CcTabletToolMap        *tablet_tool_map;
 
-	GtkAdjustment    *vadjustment;
-	GtkGesture       *stylus_gesture;
+	GtkAdjustment          *vadjustment;
+	GtkGesture             *stylus_gesture;
 
-	GtkWidget        *highlighted_widget;
+	GtkWidget              *highlighted_widget;
+	CcWacomStylusPage      *highlighted_stylus_page;
+	guint                   highlight_timeout_id;
 
 	/* DBus */
-	GDBusProxy    *proxy;
-	GDBusProxy    *input_mapping_proxy;
+	GDBusProxy             *proxy;
+	GDBusProxy             *input_mapping_proxy;
 };
 
 CC_PANEL_REGISTER (CcWacomPanel, cc_wacom_panel)
@@ -295,6 +298,8 @@ cc_wacom_panel_dispose (GObject *object)
 	g_clear_pointer (&self->pages, g_hash_table_unref);
 	g_clear_pointer (&self->stylus_pages, g_hash_table_unref);
 	g_clear_handle_id (&self->mock_stylus_id, g_source_remove);
+	g_clear_handle_id (&self->highlight_timeout_id, g_source_remove);
+	g_clear_object (&self->highlighted_stylus_page);
 
 	G_OBJECT_CLASS (cc_wacom_panel_parent_class)->dispose (object);
 }
@@ -305,7 +310,7 @@ check_remove_stylus_pages (CcWacomPanel *self)
 	GHashTableIter iter;
 	CcWacomDevice *device;
 	CcWacomTool *tool;
-	GtkWidget *page;
+	CcWacomStylusPage *page;
 	GList *tools;
 	g_autoptr(GList) total = NULL;
 
@@ -324,9 +329,15 @@ check_remove_stylus_pages (CcWacomPanel *self)
 		if (g_list_find (total, tool))
 			continue;
 
-		gtk_box_remove (GTK_BOX (self->styli), page);
+		if (page == self->highlighted_stylus_page) {
+			g_clear_object (&self->highlighted_stylus_page);
+			g_clear_handle_id (&self->highlight_timeout_id, g_source_remove);
+		}
+
+		gtk_box_remove (GTK_BOX (self->styli), GTK_WIDGET (page));
 		g_hash_table_iter_remove (&iter);
 	}
+
 }
 
 static gboolean
@@ -338,7 +349,7 @@ add_stylus (CcWacomPanel *self,
 	if (g_hash_table_lookup (self->stylus_pages, tool))
 		return FALSE;
 
-	page = cc_wacom_stylus_page_new (tool);
+	page = cc_wacom_stylus_page_new (self, tool);
 	gtk_box_append (GTK_BOX (self->styli), page);
 	g_hash_table_insert (self->stylus_pages, tool, page);
 
@@ -369,13 +380,36 @@ update_initial_state (CcWacomPanel *self)
 }
 
 static void
-update_highlighted_stylus (CcWacomPanel *self,
-			   CcWacomTool  *stylus)
+on_stylus_timeout (gpointer data)
 {
-	GtkWidget *widget;
+	CcWacomPanel *panel = CC_WACOM_PANEL (data);
 
-	widget = g_hash_table_lookup (self->stylus_pages, stylus);
-	highlight_widget (self, widget);
+	cc_wacom_stylus_page_set_highlight (panel->highlighted_stylus_page, FALSE);
+	g_clear_object (&panel->highlighted_stylus_page);
+	panel->highlight_timeout_id = 0;
+}
+
+static void
+update_highlighted_stylus (CcWacomPanel *self,
+			   CcWacomTool  *stylus_to_highlight)
+{
+	GHashTableIter iter;
+	CcWacomTool *stylus;
+	CcWacomStylusPage *page;
+
+	g_hash_table_iter_init (&iter, self->stylus_pages);
+	while (g_hash_table_iter_next (&iter, (gpointer *)&stylus, (gpointer *)&page)) {
+		gboolean highlight = stylus == stylus_to_highlight;
+		cc_wacom_stylus_page_set_highlight (page, highlight);
+		if (highlight) {
+			highlight_widget (self, GTK_WIDGET (page));
+			g_clear_object (&self->highlighted_stylus_page);
+			g_clear_handle_id (&self->highlight_timeout_id, g_source_remove);
+			self->highlight_timeout_id = g_timeout_add_once (POLL_MS, on_stylus_timeout, self);
+			self->highlighted_stylus_page = g_object_ref (page);
+		}
+	}
+
 }
 
 static void

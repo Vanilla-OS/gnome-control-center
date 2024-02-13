@@ -27,10 +27,10 @@ struct _CcXkbModifierDialog
 {
   AdwWindow       parent_instance;
 
-  GtkLabel       *description_label;
+  AdwPreferencesPage *xkb_modifier_page;
   GtkSwitch      *enabled_switch;
-  GtkListBox     *listbox;
-  GtkListBox     *switch_listbox;
+  AdwPreferencesGroup *options_group;
+  AdwPreferencesGroup *switch_group;
   AdwActionRow   *switch_row;
 
   GSettings      *input_source_settings;
@@ -187,7 +187,7 @@ enable_switch_changed_cb (CcXkbModifierDialog *self,
   gchar *xkb_option;
   GSList *l;
 
-  gtk_widget_set_sensitive (GTK_WIDGET (self->listbox), state);
+  gtk_widget_set_sensitive (GTK_WIDGET (self->options_group), state);
 
   if (state)
     {
@@ -231,10 +231,10 @@ cc_xkb_modifier_dialog_class_init (CcXkbModifierDialogClass *klass)
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/keyboard/cc-xkb-modifier-dialog.ui");
 
-  gtk_widget_class_bind_template_child (widget_class, CcXkbModifierDialog, description_label);
+  gtk_widget_class_bind_template_child (widget_class, CcXkbModifierDialog, xkb_modifier_page);
   gtk_widget_class_bind_template_child (widget_class, CcXkbModifierDialog, enabled_switch);
-  gtk_widget_class_bind_template_child (widget_class, CcXkbModifierDialog, listbox);
-  gtk_widget_class_bind_template_child (widget_class, CcXkbModifierDialog, switch_listbox);
+  gtk_widget_class_bind_template_child (widget_class, CcXkbModifierDialog, options_group);
+  gtk_widget_class_bind_template_child (widget_class, CcXkbModifierDialog, switch_group);
   gtk_widget_class_bind_template_child (widget_class, CcXkbModifierDialog, switch_row);
 
   gtk_widget_class_bind_template_callback (widget_class, enable_switch_changed_cb);
@@ -250,20 +250,20 @@ add_radio_buttons (CcXkbModifierDialog *self)
 
   for (i = 0; options[i].label && options[i].xkb_option; i++)
     {
-      row = g_object_new (GTK_TYPE_LIST_BOX_ROW,
-                          "visible", TRUE,
+      row = g_object_new (ADW_TYPE_ACTION_ROW,
                           "selectable", FALSE,
                           NULL);
-      gtk_list_box_append (self->listbox, row);
+      adw_preferences_group_add (self->options_group, row);
 
       radio_button = g_object_new (GTK_TYPE_CHECK_BUTTON,
-                                   "label", g_dpgettext2 (NULL, "keyboard key", options[i].label),
+                                   "valign", GTK_ALIGN_CENTER,
                                    "group", last_button,
                                    NULL);
-      gtk_widget_add_css_class (radio_button, "xkb-option-button");
       g_object_set_data (G_OBJECT (radio_button), "xkb-option", options[i].xkb_option);
       g_signal_connect_object (radio_button, "toggled", (GCallback)on_active_radio_changed_cb, self, G_CONNECT_SWAPPED);
-      gtk_list_box_row_set_child (GTK_LIST_BOX_ROW (row), radio_button);
+      adw_action_row_add_prefix (ADW_ACTION_ROW (row), radio_button);
+      adw_preferences_row_set_title (ADW_PREFERENCES_ROW (row), options[i].label);
+      adw_action_row_set_activatable_widget (ADW_ACTION_ROW (row), radio_button);
 
       last_button = radio_button;
       group = g_slist_prepend (group, radio_button);
@@ -309,11 +309,11 @@ cc_xkb_modifier_dialog_new (GSettings *input_settings,
   self->modifier = modifier;
   gtk_window_set_title (GTK_WINDOW (self), gettext (modifier->title));
   adw_preferences_row_set_title (ADW_PREFERENCES_ROW (self->switch_row), gettext (modifier->title));
-  gtk_label_set_markup (self->description_label, gettext (modifier->description));
-  gtk_widget_set_visible (GTK_WIDGET (self->switch_listbox), modifier->default_option == NULL);
+  adw_preferences_page_set_description (self->xkb_modifier_page, gettext (modifier->description));
+  gtk_widget_set_visible (GTK_WIDGET (self->switch_group), modifier->default_option == NULL);
   add_radio_buttons (self);
   update_active_radio (self);
-  gtk_widget_set_sensitive (GTK_WIDGET (self->listbox), gtk_switch_get_state (self->enabled_switch));
+  gtk_widget_set_sensitive (GTK_WIDGET (self->options_group), gtk_switch_get_state (self->enabled_switch));
 
   return self;
 }

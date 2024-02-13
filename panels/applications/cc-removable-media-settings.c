@@ -52,13 +52,11 @@ struct _CcRemovableMediaSettings
   GtkWidget           *software_row;
   GtkWidget           *other_media_row;
 
-  AdwSwitchRow        *disable_autostart_row;
-
   GtkAppChooserButton *audio_cdda_chooser;
   GtkAppChooserButton *dcf_chooser;
   GtkAppChooserButton *music_player_chooser;
-  GtkDialog           *other_type_dialog;
-  GtkLabel            *other_action_label;
+  AdwWindow           *other_type_dialog;
+  AdwActionRow        *other_action_row;
   GtkBox              *other_action_box;
   GtkComboBox         *other_type_combo_box;
   GtkListStore        *other_type_list_store;
@@ -341,7 +339,7 @@ on_other_type_combo_box_changed (CcRemovableMediaSettings *self)
   gtk_box_append (self->other_action_box, GTK_WIDGET (self->other_application_chooser));
   prepare_chooser (self, self->other_application_chooser, NULL);
 
-  gtk_label_set_mnemonic_widget (self->other_action_label, GTK_WIDGET (self->other_application_chooser));
+  adw_action_row_set_activatable_widget (self->other_action_row, GTK_WIDGET (self->other_application_chooser));
 }
 
 static gboolean
@@ -365,8 +363,6 @@ on_extra_options_button_clicked (CcRemovableMediaSettings *self)
   GtkWidget *toplevel = cc_shell_get_toplevel (shell);
 
   gtk_window_set_transient_for (GTK_WINDOW (self->other_type_dialog), GTK_WINDOW (toplevel));
-  gtk_window_set_modal (GTK_WINDOW (self->other_type_dialog), TRUE);
-  gtk_window_set_title (GTK_WINDOW (self->other_type_dialog), _("Other Media"));
   /* update other_application_chooser */
   on_other_type_combo_box_changed (self);
   gtk_window_present (GTK_WINDOW (self->other_type_dialog));
@@ -475,12 +471,6 @@ info_panel_setup_media (CcRemovableMediaSettings *self)
 
   g_settings_bind (self->settings,
                    PREF_MEDIA_AUTORUN_NEVER,
-                   self->disable_autostart_row,
-                   "active",
-                   G_SETTINGS_BIND_DEFAULT);
-
-  g_settings_bind (self->settings,
-                   PREF_MEDIA_AUTORUN_NEVER,
                    self->cd_audio_row,
                    "sensitive",
                    G_SETTINGS_BIND_INVERT_BOOLEAN);
@@ -549,12 +539,11 @@ cc_removable_media_settings_class_init (CcRemovableMediaSettingsClass *klass)
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/applications/cc-removable-media-settings.ui");
 
   gtk_widget_class_bind_template_child (widget_class, CcRemovableMediaSettings, audio_cdda_chooser);
-  gtk_widget_class_bind_template_child (widget_class, CcRemovableMediaSettings, disable_autostart_row);
   gtk_widget_class_bind_template_child (widget_class, CcRemovableMediaSettings, dcf_chooser);
   gtk_widget_class_bind_template_child (widget_class, CcRemovableMediaSettings, music_player_chooser);
   gtk_widget_class_bind_template_child (widget_class, CcRemovableMediaSettings, other_type_dialog);
+  gtk_widget_class_bind_template_child (widget_class, CcRemovableMediaSettings, other_action_row);
   gtk_widget_class_bind_template_child (widget_class, CcRemovableMediaSettings, other_action_box);
-  gtk_widget_class_bind_template_child (widget_class, CcRemovableMediaSettings, other_action_label);
   gtk_widget_class_bind_template_child (widget_class, CcRemovableMediaSettings, other_type_combo_box);
   gtk_widget_class_bind_template_child (widget_class, CcRemovableMediaSettings, other_type_list_store);
   gtk_widget_class_bind_template_child (widget_class, CcRemovableMediaSettings, software_chooser);
