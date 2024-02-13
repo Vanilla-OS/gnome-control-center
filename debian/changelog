@@ -1,3 +1,9 @@
+gnome-control-center (1:46~beta-1) UNRELEASED; urgency=medium
+
+  * New upstream release
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Tue, 13 Feb 2024 18:22:12 -0500
+
 gnome-control-center (1:46~alpha-2) unstable; urgency=medium
 
   * Move gnome-remote-desktop from Recommends to Depends (Closes: #1060465)
