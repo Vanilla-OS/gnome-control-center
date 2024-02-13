@@ -1,5 +1,3 @@
-panel-list-Reorder-panel-list.patch
-privacy-Hide-non-functional-microphone-panel.patch
 keyboard-For-xkb-options-have-Layout-default-toggle-and-N.patch
 keyboard-Avoid-modifying-xkb-options-when-user-changes-n.patch
 debian/Expose-touchpad-settings-if-synaptics-is-in-use.patch
@@ -33,4 +31,3 @@ ubuntu/applications-Launch-snap-store-if-it-is-installed.patch
 ubuntu/display-Allow-fractional-scaling-to-be-enabled.patch
 #ubuntu/mouse-Add-animations-following-the-accent-colors.patch
 ubuntu/CVE-2023-5616.patch
-users-Close-language-dialog-when-Select-is-clicked.patch
