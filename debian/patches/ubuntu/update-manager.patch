@@ -8,10 +8,10 @@ Subject: info-overview: Show updates in update-manager instead of GNOME
  1 file changed, 11 insertions(+), 5 deletions(-)
 
 diff --git a/panels/system/about/cc-about-page.c b/panels/system/about/cc-about-page.c
-index 80969f0..f6e88cd 100644
+index 84dcf66..933709d 100644
 --- a/panels/system/about/cc-about-page.c
 +++ b/panels/system/about/cc-about-page.c
-@@ -104,6 +104,13 @@ does_gnome_software_allow_updates (void)
+@@ -100,6 +100,13 @@ does_gnome_software_allow_updates (void)
    return g_settings_get_boolean (settings, "allow-updates");
  }
  
@@ -25,7 +25,7 @@ index 80969f0..f6e88cd 100644
  static gboolean
  does_gnome_software_exist (void)
  {
-@@ -135,11 +142,10 @@ cc_about_page_open_software_update (CcAboutPage *self)
+@@ -147,11 +154,10 @@ cc_about_page_open_software_update (CcAboutPage *self)
    gboolean ret;
    char *argv[3];
  
@@ -40,7 +40,7 @@ index 80969f0..f6e88cd 100644
      }
    else
      {
-@@ -235,7 +241,7 @@ cc_about_page_init (CcAboutPage *self)
+@@ -264,7 +270,7 @@ cc_about_page_init (CcAboutPage *self)
  
    gtk_widget_init_template (GTK_WIDGET (self));
  

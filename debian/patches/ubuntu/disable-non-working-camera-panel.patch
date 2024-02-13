@@ -26,7 +26,7 @@ inadequate to document these significant limitations.
  1 file changed, 1 insertion(+)
 
 diff --git a/panels/privacy/cc-privacy-panel.ui b/panels/privacy/cc-privacy-panel.ui
-index aa2aaeb..4a11e7b 100644
+index 06ab864..49081b4 100644
 --- a/panels/privacy/cc-privacy-panel.ui
 +++ b/panels/privacy/cc-privacy-panel.ui
 @@ -89,6 +89,7 @@
@@ -34,6 +34,6 @@ index aa2aaeb..4a11e7b 100644
                              <property name="title" translatable="yes">_Cameras</property>
                              <property name="subtitle" translatable="yes">Control camera access</property>
 +                            <property name="visible">False</property>
-                             <property name="icon-name">camera-symbolic</property>
+                             <property name="icon-name">camera-access-symbolic</property>
                              <property name="show-arrow">True</property>
                              <property name="action-name">navigation.push</property>

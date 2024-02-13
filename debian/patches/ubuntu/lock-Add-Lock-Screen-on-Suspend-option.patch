@@ -4,33 +4,31 @@ Subject: lock: Add "Lock Screen on Suspend" option
 
 https://launchpad.net/bugs/938076
 ---
- panels/privacy/cc-screen-page.c  | 21 +++++++++++++++++++++
- panels/privacy/cc-screen-page.ui | 14 ++++++++++++++
- 2 files changed, 35 insertions(+)
+ panels/privacy/cc-screen-page.c  | 19 +++++++++++++++++++
+ panels/privacy/cc-screen-page.ui |  8 ++++++++
+ 2 files changed, 27 insertions(+)
 
 diff --git a/panels/privacy/cc-screen-page.c b/panels/privacy/cc-screen-page.c
-index e3f1e46..fe01630 100644
+index 2dd8682..2527da8 100644
 --- a/panels/privacy/cc-screen-page.c
 +++ b/panels/privacy/cc-screen-page.c
-@@ -50,6 +50,8 @@ struct _CcScreenPage
-   GtkSwitch           *automatic_screen_lock_switch;
-   GtkSwitch           *privacy_screen_switch;
-   GtkSwitch           *show_notifications_switch;
-+  GtkListBoxRow       *lock_on_suspend_row;
-+  GtkSwitch           *lock_on_suspend_switch;
-   GtkSwitch           *usb_protection_switch;
- };
- 
-@@ -274,6 +276,8 @@ cc_screen_page_class_init (CcScreenPageClass *klass)
-   gtk_widget_class_bind_template_child (widget_class, CcScreenPage, privacy_screen_switch);
-   gtk_widget_class_bind_template_child (widget_class, CcScreenPage, screen_privacy_group);
-   gtk_widget_class_bind_template_child (widget_class, CcScreenPage, show_notifications_switch);
+@@ -47,6 +47,7 @@ struct _CcScreenPage
+   AdwPreferencesGroup *screen_privacy_group;
+   GDBusProxy          *usb_proxy;
+   AdwSwitchRow        *automatic_screen_lock_row;
++  AdwSwitchRow        *lock_on_suspend_row;
+   AdwSwitchRow        *privacy_screen_row;
+   AdwSwitchRow        *show_notifications_row;
+   AdwSwitchRow        *usb_protection_row;
+@@ -270,6 +271,7 @@ cc_screen_page_class_init (CcScreenPageClass *klass)
+   gtk_widget_class_bind_template_child (widget_class, CcScreenPage, automatic_screen_lock_row);
+   gtk_widget_class_bind_template_child (widget_class, CcScreenPage, blank_screen_row);
+   gtk_widget_class_bind_template_child (widget_class, CcScreenPage, lock_after_row);
 +  gtk_widget_class_bind_template_child (widget_class, CcScreenPage, lock_on_suspend_row);
-+  gtk_widget_class_bind_template_child (widget_class, CcScreenPage, lock_on_suspend_switch);
-   gtk_widget_class_bind_template_child (widget_class, CcScreenPage, usb_protection_row);
-   gtk_widget_class_bind_template_child (widget_class, CcScreenPage, usb_protection_switch);
- 
-@@ -318,6 +322,7 @@ update_display_config (CcScreenPage *self)
+   gtk_widget_class_bind_template_child (widget_class, CcScreenPage, privacy_screen_row);
+   gtk_widget_class_bind_template_child (widget_class, CcScreenPage, screen_privacy_group);
+   gtk_widget_class_bind_template_child (widget_class, CcScreenPage, show_notifications_row);
+@@ -316,6 +318,7 @@ update_display_config (CcScreenPage *self)
  static void
  cc_screen_page_init (CcScreenPage *self)
  {
@@ -38,7 +36,7 @@ index e3f1e46..fe01630 100644
    guint value;
  
    gtk_widget_init_template (GTK_WIDGET (self));
-@@ -329,6 +334,8 @@ cc_screen_page_init (CcScreenPage *self)
+@@ -327,6 +330,8 @@ cc_screen_page_init (CcScreenPage *self)
    self->notification_settings = g_settings_new ("org.gnome.desktop.notifications");
    self->session_settings = g_settings_new ("org.gnome.desktop.session");
  
@@ -46,8 +44,8 @@ index e3f1e46..fe01630 100644
 +
    g_settings_bind (self->lock_settings,
                     "lock-enabled",
-                    self->automatic_screen_lock_switch,
-@@ -349,6 +356,20 @@ cc_screen_page_init (CcScreenPage *self)
+                    self->automatic_screen_lock_row,
+@@ -347,6 +352,20 @@ cc_screen_page_init (CcScreenPage *self)
                     "active",
                     G_SETTINGS_BIND_DEFAULT);
  
@@ -55,7 +53,7 @@ index e3f1e46..fe01630 100644
 +    {
 +      g_settings_bind (self->lock_settings,
 +                       "ubuntu-lock-on-suspend",
-+                       self->lock_on_suspend_switch,
++                       self->lock_on_suspend_row,
 +                       "active",
 +                       G_SETTINGS_BIND_DEFAULT);
 +    }
@@ -69,27 +67,21 @@ index e3f1e46..fe01630 100644
    set_blank_screen_delay_value (self, value);
  
 diff --git a/panels/privacy/cc-screen-page.ui b/panels/privacy/cc-screen-page.ui
-index 7814355..f83d03e 100644
+index f233df4..bb42b27 100644
 --- a/panels/privacy/cc-screen-page.ui
 +++ b/panels/privacy/cc-screen-page.ui
-@@ -81,6 +81,20 @@
+@@ -69,6 +69,14 @@
                    </object>
                  </child>
  
 +                <!-- Automatic Screen Lock Delay row -->
 +                <child>
-+                  <object class="AdwActionRow" id="lock_on_suspend_row">
++                  <object class="AdwSwitchRow" id="lock_on_suspend_row">
 +                    <property name="title" translatable="yes">Lock Screen _on Suspend</property>
-+                    <property name="activatable-widget">lock_on_suspend_switch</property>
 +                    <property name="use-underline">true</property>
-+                    <child>
-+                      <object class="GtkSwitch" id="lock_on_suspend_switch">
-+                        <property name="valign">center</property>
-+                      </object>
-+                    </child>
 +                  </object>
 +                </child>
 +
                  <!-- USB protection row -->
                  <child>
-                   <object class="AdwActionRow" id="usb_protection_row">
+                   <object class="AdwSwitchRow" id="usb_protection_row">

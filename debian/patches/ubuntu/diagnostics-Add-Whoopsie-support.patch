@@ -5,17 +5,17 @@ Subject: diagnostics: Add Whoopsie support
 ---
  meson.build                                   |   9 ++
  meson_options.txt                             |   1 +
- panels/privacy/cc-diagnostics-page.c          | 224 ++++++++++++++++++++++++++
- panels/privacy/cc-diagnostics-page.ui         |  10 +-
+ panels/privacy/cc-diagnostics-page.c          | 222 ++++++++++++++++++++++++++
+ panels/privacy/cc-diagnostics-page.ui         |   8 +
  panels/privacy/gnome-privacy-panel.desktop.in |   2 +-
  panels/privacy/meson.build                    |   4 +
- 6 files changed, 248 insertions(+), 2 deletions(-)
+ 6 files changed, 245 insertions(+), 1 deletion(-)
 
 diff --git a/meson.build b/meson.build
-index 98dfc31..db65d20 100644
+index ed43b49..7581fc4 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -271,6 +271,14 @@ endif
+@@ -274,6 +274,14 @@ endif
  config_h.set('HAVE_MALCONTENT', enable_malcontent,
               description: 'Define to 1 if malcontent support is enabled')
  
@@ -30,7 +30,7 @@ index 98dfc31..db65d20 100644
  if host_is_linux
    # ModemManager
    mm_dep =  dependency('mm-glib', version: '>= 0.7')
-@@ -371,4 +379,5 @@ summary({
+@@ -374,4 +382,5 @@ summary({
    'IBus': enable_ibus,
    'Snap': enable_snap,
    'Malcontent': enable_malcontent,
@@ -46,7 +46,7 @@ index e53d6e3..d09ba43 100644
  option('dark_mode_distributor_logo', type: 'string', description: 'absolute path to distributor logo dark mode variant')
 +option('whoopsie', type: 'boolean', value: false, description: 'build with Whoopsie support')
 diff --git a/panels/privacy/cc-diagnostics-page.c b/panels/privacy/cc-diagnostics-page.c
-index 814d2ca..05c9410 100644
+index 849ba10..068270d 100644
 --- a/panels/privacy/cc-diagnostics-page.c
 +++ b/panels/privacy/cc-diagnostics-page.c
 @@ -18,6 +18,8 @@
@@ -69,21 +69,20 @@ index 814d2ca..05c9410 100644
  struct _CcDiagnosticsPage
  {
    AdwNavigationPage    parent_instance;
-@@ -33,6 +39,13 @@ struct _CcDiagnosticsPage
-   GtkSwitch           *abrt_switch;
+@@ -32,6 +38,12 @@ struct _CcDiagnosticsPage
+   AdwPreferencesGroup *diagnostics_group;
+   AdwSwitchRow        *abrt_row;
  
-   GSettings           *privacy_settings;
-+
 +#ifdef HAVE_WHOOPSIE
-+  AdwActionRow        *abrt_row;
 +  AdwComboRow         *whoopsie_combo_row;
 +  WhoopsiePreferences *whoopsie;
 +  GCancellable        *cancellable;
 +#endif
++
+   GSettings           *privacy_settings;
  };
  
- G_DEFINE_TYPE (CcDiagnosticsPage, cc_diagnostics_page, ADW_TYPE_NAVIGATION_PAGE)
-@@ -59,9 +72,191 @@ abrt_vanished_cb (GDBusConnection *connection,
+@@ -59,9 +71,191 @@ abrt_vanished_cb (GDBusConnection *connection,
    CcDiagnosticsPage *self = CC_DIAGNOSTICS_PAGE (user_data);
  
    g_debug ("ABRT vanished");
@@ -275,7 +274,7 @@ index 814d2ca..05c9410 100644
  static void
  cc_diagnostics_page_finalize (GObject *object)
  {
-@@ -70,6 +265,12 @@ cc_diagnostics_page_finalize (GObject *object)
+@@ -70,6 +264,12 @@ cc_diagnostics_page_finalize (GObject *object)
    g_clear_object (&self->privacy_settings);
  
    G_OBJECT_CLASS (cc_diagnostics_page_parent_class)->finalize (object);
@@ -288,21 +287,20 @@ index 814d2ca..05c9410 100644
  }
  
  static void
-@@ -84,6 +285,12 @@ cc_diagnostics_page_class_init (CcDiagnosticsPageClass *klass)
+@@ -84,6 +284,11 @@ cc_diagnostics_page_class_init (CcDiagnosticsPageClass *klass)
  
    gtk_widget_class_bind_template_child (widget_class, CcDiagnosticsPage, diagnostics_group);
-   gtk_widget_class_bind_template_child (widget_class, CcDiagnosticsPage, abrt_switch);
+   gtk_widget_class_bind_template_child (widget_class, CcDiagnosticsPage, abrt_row);
 +
 +#ifdef HAVE_WHOOPSIE
-+  gtk_widget_class_bind_template_child (widget_class, CcDiagnosticsPage, abrt_row);
 +  gtk_widget_class_bind_template_child (widget_class, CcDiagnosticsPage, whoopsie_combo_row);
 +#endif
 +  gtk_widget_class_bind_template_callback (widget_class, whoopsie_combo_row_changed_cb);
  }
  
  static void
-@@ -112,6 +319,23 @@ cc_diagnostics_page_init (CcDiagnosticsPage *self)
-                    self->abrt_switch, "active",
+@@ -112,6 +317,23 @@ cc_diagnostics_page_init (CcDiagnosticsPage *self)
+                    self->abrt_row, "active",
                     G_SETTINGS_BIND_DEFAULT);
  
 +#ifdef HAVE_WHOOPSIE
@@ -326,20 +324,11 @@ index 814d2ca..05c9410 100644
    if (!os_name)
      os_name = g_strdup ("GNOME");
 diff --git a/panels/privacy/cc-diagnostics-page.ui b/panels/privacy/cc-diagnostics-page.ui
-index 1dee196..b21d157 100644
+index 310226c..b40605c 100644
 --- a/panels/privacy/cc-diagnostics-page.ui
 +++ b/panels/privacy/cc-diagnostics-page.ui
-@@ -14,7 +14,7 @@
-               <object class="AdwPreferencesGroup" id="diagnostics_group">
-                 <property name="title" translatable="yes">Problem Reporting</property>
-                 <child>
--                  <object class="AdwActionRow">
-+                  <object class="AdwActionRow" id="abrt_row">
-                     <property name="title" translatable="yes">_Automatic Problem Reporting</property>
+@@ -19,6 +19,14 @@
                      <property name="use-underline">True</property>
-                     <property name="activatable-widget">abrt_switch</property>
-@@ -25,6 +25,14 @@
-                     </child>
                    </object>
                  </child>
 +                <child>

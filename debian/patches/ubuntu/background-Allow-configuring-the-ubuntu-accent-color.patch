@@ -81,10 +81,10 @@ index e90ed61..a14d687 100644
    load_custom_css (self);
  }
 diff --git a/panels/background/cc-background-panel.ui b/panels/background/cc-background-panel.ui
-index 61a79bd..da840c0 100644
+index 2c3cf11..5ef75d0 100644
 --- a/panels/background/cc-background-panel.ui
 +++ b/panels/background/cc-background-panel.ui
-@@ -96,6 +96,10 @@
+@@ -100,6 +100,10 @@
                    </object>
                  </child>
  
@@ -1014,10 +1014,10 @@ index 529be08..d7f73e6 100644
    'cc-ubuntu-dock-dialog.ui',
  )
 diff --git a/po/POTFILES.in b/po/POTFILES.in
-index aa483b6..18e2eef 100644
+index a4f7c73..9988985 100644
 --- a/po/POTFILES.in
 +++ b/po/POTFILES.in
-@@ -240,6 +240,8 @@ panels/system/users/org.gnome.controlcenter.system/users.policy.in
+@@ -243,6 +243,8 @@ panels/system/users/org.gnome.controlcenter.user-accounts.policy.in
  panels/system/users/pw-utils.c
  panels/system/users/run-passwd.c
  panels/system/users/user-utils.c

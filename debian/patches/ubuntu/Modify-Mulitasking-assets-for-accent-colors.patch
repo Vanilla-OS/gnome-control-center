@@ -110,11 +110,11 @@ index 3399ded..0e2c3f2 100644
 +  load_custom_css (self);
  }
 diff --git a/panels/multitasking/cc-multitasking-panel.ui b/panels/multitasking/cc-multitasking-panel.ui
-index b6bdc35..1bcd632 100644
+index 3963d01..0316f73 100644
 --- a/panels/multitasking/cc-multitasking-panel.ui
 +++ b/panels/multitasking/cc-multitasking-panel.ui
 @@ -22,6 +22,9 @@
-                     <property name="subtitle" translatable="yes">Touch the top-left corner to open the Activities Overview.</property>
+                     <property name="subtitle" translatable="yes">Touch the top-left corner to open the Activities Overview</property>
                      <property name="use_underline">True</property>
                      <property name="resource">/org/gnome/control-center/multitasking/assets/hot-corner.svg</property>
 +                    <style>

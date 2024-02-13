@@ -493,7 +493,7 @@ index 25a1431..248b255 100644
                  self->system_region = g_strdup (time);
  
 diff --git a/panels/system/users/cc-user-page.c b/panels/system/users/cc-user-page.c
-index 50f615d..29f151e 100644
+index bed6975..043422b0 100644
 --- a/panels/system/users/cc-user-page.c
 +++ b/panels/system/users/cc-user-page.c
 @@ -156,6 +156,7 @@ get_user_language (ActUser *user)
@@ -522,7 +522,7 @@ index 50f615d..29f151e 100644
          return;
      }
  
-@@ -294,8 +297,11 @@ change_language (CcUserPage *self)
+@@ -296,8 +299,11 @@ change_language (CcUserPage *self)
  {
      CcLanguageChooser *language_chooser;
      const gchar *current_language;

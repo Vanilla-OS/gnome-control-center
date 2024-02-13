@@ -513,7 +513,7 @@ index 4c00119..145399b 100644
  const char*       cc_display_monitor_get_display_name       (CcDisplayMonitor   *monitor);
  gboolean          cc_display_monitor_is_active              (CcDisplayMonitor   *monitor);
 diff --git a/panels/display/cc-display-settings.c b/panels/display/cc-display-settings.c
-index 8c289d0..d5bc23e 100644
+index a06b678..62c44c5 100644
 --- a/panels/display/cc-display-settings.c
 +++ b/panels/display/cc-display-settings.c
 @@ -54,6 +54,7 @@ struct _CcDisplaySettings
@@ -544,7 +544,7 @@ index 8c289d0..d5bc23e 100644
    gtk_widget_set_visible (GTK_WIDGET (self->underscanning_row),
                            cc_display_monitor_supports_underscanning (self->selected_output) &&
                            !cc_display_config_is_cloning (self->config));
-@@ -744,6 +751,7 @@ cc_display_settings_class_init (CcDisplaySettingsClass *klass)
+@@ -742,6 +749,7 @@ cc_display_settings_class_init (CcDisplaySettingsClass *klass)
    gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, scale_bbox);
    gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, scale_buttons_row);
    gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, scale_combo_row);
@@ -552,7 +552,7 @@ index 8c289d0..d5bc23e 100644
    gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, underscanning_row);
  
    gtk_widget_class_bind_template_callback (widget_class, on_enabled_row_active_changed_cb);
-@@ -754,6 +762,19 @@ cc_display_settings_class_init (CcDisplaySettingsClass *klass)
+@@ -752,6 +760,19 @@ cc_display_settings_class_init (CcDisplaySettingsClass *klass)
    gtk_widget_class_bind_template_callback (widget_class, on_underscanning_row_active_changed_cb);
  }
  
@@ -572,7 +572,7 @@ index 8c289d0..d5bc23e 100644
  static void
  cc_display_settings_init (CcDisplaySettings *self)
  {
-@@ -789,6 +810,11 @@ cc_display_settings_init (CcDisplaySettings *self)
+@@ -787,6 +808,11 @@ cc_display_settings_init (CcDisplaySettings *self)
    adw_combo_row_set_model (ADW_COMBO_ROW (self->resolution_row),
                             G_LIST_MODEL (self->resolution_list));
  
