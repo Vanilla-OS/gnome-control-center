@@ -1,6 +1,6 @@
 project(
   'gnome-control-center', 'c',
-        version : '46.alpha',
+        version : '46.beta',
         license : 'GPL2+',
   meson_version : '>= 0.58.0'
 )
@@ -39,12 +39,15 @@ else
 endif
 application_id = 'org.gnome.Settings@0@'.format(profile)
 
+version_split = meson.project_version().split('.')
+
 # defines
 set_defines = [
   # package
   ['PACKAGE', meson.project_name()],
   ['PACKAGE_VERSION', meson.project_version()],
   ['VERSION', meson.project_version()],
+  ['MAJOR_VERSION', version_split[0]],
   ['PROFILE', get_option('profile')],
   # i18n
   ['GETTEXT_PACKAGE', control_center_gettext]
@@ -191,7 +194,7 @@ gudev_dep = dependency('gudev-1.0', version: '>= 232')
 x11_dep = dependency('x11', version: '>= 1.8')
 xi_dep = dependency('xi', version: '>= 1.2')
 epoxy_dep = dependency('epoxy')
-gcr_dep = dependency('gcr-base-3')
+gcr_dep = dependency('gcr-4', version: '>= 4.1.0')
 pwquality_dep = dependency('pwquality', version: '>= 1.2.2')
 
 m_dep = cc.find_library('m')

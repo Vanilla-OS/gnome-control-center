@@ -7,9 +7,6 @@
       <object class="GtkButton">
         <property name="tooltip-text" translatable="yes">Add Ethernet Connection</property>
         <property name="icon_name">list-add-symbolic</property>
-        <accessibility>
-          <property name="label" translatable="yes">Add Ethernet connection</property>
-        </accessibility>
         <signal name="clicked" handler="add_profile_button_clicked_cb" object="NetDeviceEthernet" swapped="yes"/>
         <style>
           <class name="flat" />
@@ -47,13 +44,10 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="details_button">
-                    <property name="tooltip-text" translatable="yes">Options</property>
+                    <property name="tooltip-text" translatable="yes">Network Options</property>
                     <property name="valign">center</property>
                     <property name="icon-name">emblem-system-symbolic</property>
                     <signal name="clicked" handler="details_button_clicked_cb" object="NetDeviceEthernet" swapped="yes"/>
-                    <accessibility>
-                      <property name="label" translatable="yes">Options…</property>
-                    </accessibility>
                     <style>
                       <class name="flat"/>
                     </style>

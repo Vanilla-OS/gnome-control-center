@@ -91,7 +91,7 @@
                         <property name="vexpand">True</property>
                         <property name="icon_name">edit-find-symbolic</property>
                         <property name="title" translatable="yes">No keyboard shortcut found</property>
-                        <property name="description" translatable="yes">Try a different search.</property>
+                        <property name="description" translatable="yes">Try a different search</property>
                       </object>
                     </child>
 
@@ -104,6 +104,7 @@
 
         <child>
           <object class="AdwNavigationPage" id="subview_page">
+            <property name="title"> </property>
             <property name="child">
               <object class="AdwToolbarView">
                 <child type="top">
@@ -123,7 +124,7 @@
                         <property name="vexpand">True</property>
                         <property name="icon-name">input-keyboard-symbolic</property>
                         <property name="title" translatable="yes">Add Custom Shortcuts</property>
-                        <property name="description" translatable="yes">Set up custom shortcuts for launching apps, running scripts, and more.</property>
+                        <property name="description" translatable="yes">Set up custom shortcuts for launching apps, running scripts, and more</property>
                         <child>
                           <object class="GtkButton">
                             <property name="halign">center</property>

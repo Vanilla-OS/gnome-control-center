@@ -199,6 +199,7 @@ panels/sound/cc-fade-slider.ui
 panels/sound/cc-output-test-wheel.c
 panels/sound/cc-output-test-window.ui
 panels/sound/cc-sound-panel.ui
+panels/sound/cc-speaker-test-button.c
 panels/sound/cc-subwoofer-slider.ui
 panels/sound/cc-volume-levels-window.ui
 panels/sound/cc-volume-slider.c
@@ -236,7 +237,7 @@ panels/system/users/cc-user-page.ui
 panels/system/users/cc-users-page.c
 panels/system/users/cc-users-page.ui
 panels/system/users/data/join-dialog.ui
-panels/system/users/org.gnome.controlcenter.system/users.policy.in
+panels/system/users/org.gnome.controlcenter.user-accounts.policy.in
 panels/system/users/pw-utils.c
 panels/system/users/run-passwd.c
 panels/system/users/user-utils.c
@@ -261,6 +262,8 @@ panels/wacom/cc-wacom-page.c
 panels/wacom/cc-wacom-page.ui
 panels/wacom/cc-wacom-panel.c
 panels/wacom/cc-wacom-panel.ui
+panels/wacom/cc-wacom-stylus-action-dialog.c
+panels/wacom/cc-wacom-stylus-action-dialog.ui
 panels/wacom/cc-wacom-stylus-page.c
 panels/wacom/cc-wacom-stylus-page.ui
 panels/wacom/cc-wacom-tool.c

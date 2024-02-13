@@ -42,7 +42,7 @@
 
                         <child>
                           <object class="CcListRow">
-                            <property name="title" translatable="yes">Users</property>
+                            <property name="title" translatable="yes">_Users</property>
                             <property name="subtitle" translatable="yes">Add and remove accounts, change password</property>
                             <property name="icon-name">org.gnome.Settings-users-symbolic</property>
                             <property name="use-underline">True</property>
@@ -54,9 +54,10 @@
 
                         <child>
                           <object class="CcListRow">
-                            <property name="title" translatable="yes">_Remote Desktop</property>
+                            <property name="visible" bind-source="remote_desktop_page" bind-property="visible" bind-flags="sync-create"/>
+                            <property name="title" translatable="yes">R_emote Desktop</property>
                             <property name="subtitle" translatable="yes">Allow this device to be used remotely</property>
-                            <property name="icon-name">preferences-desktop-display-symbolic</property>
+                            <property name="icon-name">org.gnome.Settings-remote-desktop-symbolic</property>
                             <property name="show-arrow">True</property>
                             <property name="action-name">navigation.push</property>
                             <property name="action-target">'system-remote-desktop-page'</property>
@@ -65,9 +66,19 @@
 
                         <child>
                           <object class="CcListRow">
-                            <property name="title" translatable="yes">About</property>
+                            <property name="title" translatable="yes">Secu_re Shell</property>
+                            <property name="subtitle" translatable="yes">SSH network access</property>
+                            <property name="icon-name">utilities-terminal-symbolic</property>
+                            <property name="show-arrow">True</property>
+                            <signal name="activated" handler="on_secure_shell_row_clicked" object="CcSystemPanel" swapped="yes"/>
+                          </object>
+                        </child>
+
+                        <child>
+                          <object class="CcListRow">
+                            <property name="title" translatable="yes">_About</property>
                             <property name="subtitle" translatable="yes">Hardware details and software versions</property>
-                            <property name="icon-name">info-symbolic</property>
+                            <property name="icon-name">org.gnome.Settings-about-symbolic</property>
                             <property name="show-arrow">True</property>
                             <property name="action-name">navigation.push</property>
                             <property name="action-target">'system-about-page'</property>

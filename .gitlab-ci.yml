@@ -32,14 +32,6 @@ stages:
 .Build procedure: &build_procedure
   echo "== Building ==" &&
   dnf install -y dnf5-plugins &&
-  git clone https://gitlab.gnome.org/GNOME/gtk.git &&
-  cd gtk &&
-  dnf5 install -y glslc &&
-  dnf5 builddep -y gtk4 &&
-  meson setup . _build -Dprefix=/usr -Dlibdir=lib64 &&
-  ninja -C _build install &&
-  cd .. &&
-  rm -rf _build/ &&
   meson . _build ${BUILD_OPTS} -Dprofile=development &&
   ninja -C _build 2>&1 | tee compilation.log
 
@@ -60,7 +52,7 @@ stages:
     # stable branch.
     # Could probably also switch away from rawhide,
     # to stable fedora branch as well.
-    FDO_DISTRIBUTION_TAG: '2023-06-07.0-main'
+    FDO_DISTRIBUTION_TAG: '2024-01-31.0-main'
     FDO_DISTRIBUTION_VERSION: rawhide
 
 #############################################
@@ -88,6 +80,7 @@ build.container.fedora@x86_64:
       accountsservice-devel
       cheese-libs-devel
       chrpath
+      clang-tools-extra
       colord-devel colord-gtk-devel
       cups-devel
       desktop-file-utils
@@ -133,13 +126,12 @@ build.container.fedora@x86_64:
       mesa-dri-drivers
       libsecret-devel
       geocode-glib2-devel
-      libgweather-devel
+      libgweather4-devel
       lcms2-devel
       geoclue2-devel
       libnotify-devel
       alsa-lib-devel
       nss-devel
-      gcr3-devel
       gcr-devel
       setxkbmap
       appstream-devel
@@ -185,7 +177,8 @@ build.container.fedora@x86_64:
         meson . _build --prefix=/usr && \
         ninja -C _build && \
         ninja -C _build install && \
-        cd ..
+        cd .. && \
+      dnf remove -y systemtap-runtime
 
 ##
 # Stage: Build
