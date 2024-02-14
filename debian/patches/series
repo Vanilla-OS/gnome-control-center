@@ -30,4 +30,4 @@ ubuntu/sound-Add-a-button-to-select-the-default-theme.patch
 ubuntu/applications-Launch-snap-store-if-it-is-installed.patch
 ubuntu/display-Allow-fractional-scaling-to-be-enabled.patch
 #ubuntu/mouse-Add-animations-following-the-accent-colors.patch
-ubuntu/CVE-2023-5616.patch
+#ubuntu/CVE-2023-5616.patch
