@@ -105,7 +105,6 @@ Recommends: cracklib-runtime,
             system-config-printer-common (>= 1.4)
 Suggests: gnome-software | gnome-packagekit,
           gstreamer1.0-pulseaudio,
-          pkexec,
           x11-xserver-utils
 Breaks: gnome-remote-desktop (<< 42),
         gnome-shell (<< 42)
