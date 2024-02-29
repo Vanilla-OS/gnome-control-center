@@ -2,7 +2,6 @@ keyboard-Allow-disabling-alternate-characters-key.patch
 debian/Expose-touchpad-settings-if-synaptics-is-in-use.patch
 debian/Debian-s-adduser-doesn-t-allow-uppercase-letters-by-defau.patch
 debian/Ignore-result-of-test-network-panel.patch
-Revert-system-wwan-Depend-on-gcr4.patch
 po-Fix-POTFILES.in-for-the-Remote-Login-move.patch
 Update-Persian-translation.patch
 Update-Georgian-translation.patch
