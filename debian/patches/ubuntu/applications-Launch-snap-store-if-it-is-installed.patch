@@ -11,7 +11,7 @@ TODO: Launch GNOME Software for Flatpaks since snap-store can't handle those
  1 file changed, 14 insertions(+), 2 deletions(-)
 
 diff --git a/panels/applications/cc-applications-panel.c b/panels/applications/cc-applications-panel.c
-index 0ac1cf0..cf9f217 100644
+index e50e7b6..5ebd058 100644
 --- a/panels/applications/cc-applications-panel.c
 +++ b/panels/applications/cc-applications-panel.c
 @@ -168,6 +168,13 @@ gnome_software_is_installed (void)
@@ -38,7 +38,7 @@ index 0ac1cf0..cf9f217 100644
    if (self->current_app_id == NULL)
      argv[1] = NULL;
    else
-@@ -1438,7 +1448,8 @@ update_panel (CcApplicationsPanel *self,
+@@ -1432,7 +1442,8 @@ update_panel (CcApplicationsPanel *self,
    adw_navigation_page_set_title (self->app_settings_page,
                                   g_app_info_get_display_name (info));
    adw_navigation_view_push_by_tag(self->navigation_view, "settings-box");
@@ -48,7 +48,7 @@ index 0ac1cf0..cf9f217 100644
  
    g_clear_pointer (&self->current_app_id, g_free);
    g_clear_pointer (&self->current_portal_app_id, g_free);
-@@ -1874,7 +1885,8 @@ cc_applications_panel_init (CcApplicationsPanel *self)
+@@ -1868,7 +1879,8 @@ cc_applications_panel_init (CcApplicationsPanel *self)
  
    gtk_widget_init_template (GTK_WIDGET (self));
  

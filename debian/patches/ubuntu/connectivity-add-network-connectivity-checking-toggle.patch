@@ -352,10 +352,10 @@ index 416b3a1..1b3d6b0 100644
      <file preprocess="xml-stripblanks">icons/scalable/actions/thunderbolt-access-symbolic.svg</file>
      <file preprocess="xml-stripblanks">icons/scalable/actions/trash-file-history-symbolic.svg</file>
 diff --git a/po/POTFILES.in b/po/POTFILES.in
-index 9988985..2a5ec1c 100644
+index 3067c91..092d27a 100644
 --- a/po/POTFILES.in
 +++ b/po/POTFILES.in
-@@ -161,6 +161,7 @@ panels/privacy/cc-bolt-device-entry.c
+@@ -160,6 +160,7 @@ panels/privacy/cc-bolt-device-entry.c
  panels/privacy/cc-bolt-page.c
  panels/privacy/cc-bolt-page.ui
  panels/privacy/cc-camera-page.ui

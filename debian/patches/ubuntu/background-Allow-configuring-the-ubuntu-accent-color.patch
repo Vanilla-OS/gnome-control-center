@@ -24,19 +24,19 @@ given that these are per-process anyways.
  create mode 100644 panels/ubuntu/cc-ubuntu-colors-row.ui
 
 diff --git a/panels/background/cc-background-panel.c b/panels/background/cc-background-panel.c
-index e90ed61..a14d687 100644
+index b888eb4..0a291bd 100644
 --- a/panels/background/cc-background-panel.c
 +++ b/panels/background/cc-background-panel.c
-@@ -35,6 +35,8 @@
+@@ -34,6 +34,8 @@
+ #include "cc-background-preview.h"
  #include "cc-background-resources.h"
- #include "cc-background-xml.h"
  
 +#include "panels/ubuntu/cc-ubuntu-colors-row.h"
 +
  #define WP_PATH_ID "org.gnome.desktop.background"
  #define WP_LOCK_PATH_ID "org.gnome.desktop.screensaver"
  #define WP_URI_KEY "picture-uri"
-@@ -66,6 +68,8 @@ struct _CcBackgroundPanel
+@@ -65,6 +67,8 @@ struct _CcBackgroundPanel
    CcBackgroundPreview *dark_preview;
    GtkToggleButton *default_toggle;
    GtkToggleButton *dark_toggle;
@@ -45,7 +45,7 @@ index e90ed61..a14d687 100644
  };
  
  CC_PANEL_REGISTER (CcBackgroundPanel, cc_background_panel)
-@@ -102,6 +106,8 @@ reload_color_scheme_toggles (CcBackgroundPanel *self)
+@@ -103,6 +107,8 @@ reload_color_scheme_toggles (CcBackgroundPanel *self)
        gtk_toggle_button_set_active (self->default_toggle, FALSE);
        gtk_toggle_button_set_active (self->dark_toggle, FALSE);
      }
@@ -54,7 +54,7 @@ index e90ed61..a14d687 100644
  }
  
  static void
-@@ -429,6 +435,7 @@ cc_background_panel_class_init (CcBackgroundPanelClass *klass)
+@@ -386,6 +392,7 @@ cc_background_panel_class_init (CcBackgroundPanelClass *klass)
  
    g_type_ensure (CC_TYPE_BACKGROUND_CHOOSER);
    g_type_ensure (CC_TYPE_BACKGROUND_PREVIEW);
@@ -62,7 +62,7 @@ index e90ed61..a14d687 100644
  
    panel_class->get_help_uri = cc_background_panel_get_help_uri;
  
-@@ -442,6 +449,7 @@ cc_background_panel_class_init (CcBackgroundPanelClass *klass)
+@@ -399,6 +406,7 @@ cc_background_panel_class_init (CcBackgroundPanelClass *klass)
    gtk_widget_class_bind_template_child (widget_class, CcBackgroundPanel, dark_preview);
    gtk_widget_class_bind_template_child (widget_class, CcBackgroundPanel, default_toggle);
    gtk_widget_class_bind_template_child (widget_class, CcBackgroundPanel, dark_toggle);
@@ -70,7 +70,7 @@ index e90ed61..a14d687 100644
  
    gtk_widget_class_bind_template_callback (widget_class, on_color_scheme_toggle_active_cb);
    gtk_widget_class_bind_template_callback (widget_class, on_chooser_background_chosen_cb);
-@@ -498,5 +506,9 @@ cc_background_panel_init (CcBackgroundPanel *self)
+@@ -455,5 +463,9 @@ cc_background_panel_init (CcBackgroundPanel *self)
                              got_transition_proxy_cb,
                              self);
  
@@ -1014,10 +1014,10 @@ index 529be08..d7f73e6 100644
    'cc-ubuntu-dock-dialog.ui',
  )
 diff --git a/po/POTFILES.in b/po/POTFILES.in
-index a4f7c73..9988985 100644
+index 34bb05f..3067c91 100644
 --- a/po/POTFILES.in
 +++ b/po/POTFILES.in
-@@ -243,6 +243,8 @@ panels/system/users/org.gnome.controlcenter.user-accounts.policy.in
+@@ -249,6 +249,8 @@ panels/system/users/org.gnome.controlcenter.user-accounts.policy.in
  panels/system/users/pw-utils.c
  panels/system/users/run-passwd.c
  panels/system/users/user-utils.c

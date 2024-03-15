@@ -4,48 +4,44 @@ Subject: info-overview: Show updates in update-manager instead of GNOME
  Software
 
 ---
- panels/system/about/cc-about-page.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ panels/system/cc-system-panel.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/panels/system/about/cc-about-page.c b/panels/system/about/cc-about-page.c
-index 84dcf66..933709d 100644
---- a/panels/system/about/cc-about-page.c
-+++ b/panels/system/about/cc-about-page.c
-@@ -100,6 +100,13 @@ does_gnome_software_allow_updates (void)
-   return g_settings_get_boolean (settings, "allow-updates");
+diff --git a/panels/system/cc-system-panel.c b/panels/system/cc-system-panel.c
+index ccaceca..8640e2c 100644
+--- a/panels/system/cc-system-panel.c
++++ b/panels/system/cc-system-panel.c
+@@ -88,11 +88,18 @@ gpk_update_viewer_exists (void)
+   return path != NULL;
  }
  
 +static gboolean
-+does_update_manager_exist (void)
++update_manager_exists (void)
 +{
 +  g_autofree gchar *path = g_find_program_in_path ("update-manager");
 +  return path != NULL;
 +}
 +
  static gboolean
- does_gnome_software_exist (void)
+ show_software_updates_group (CcSystemPanel *self)
  {
-@@ -147,11 +154,10 @@ cc_about_page_open_software_update (CcAboutPage *self)
+   return (gnome_software_exists () && gnome_software_allows_updates ()) ||
+-         gpk_update_viewer_exists ();
++         gpk_update_viewer_exists () || update_manager_exists();
+ }
+ 
+ static void
+@@ -102,7 +109,12 @@ cc_system_page_open_software_update (CcSystemPanel *self)
    gboolean ret;
    char *argv[3];
  
--  if (does_gnome_software_exist ())
-+  if (does_update_manager_exist ())
-     {
--      argv[0] = "gnome-software";
--      argv[1] = "--mode=updates";
--      argv[2] = NULL;
+-  if (gnome_software_exists ())
++  if (update_manager_exists ())
++    {
 +      argv[0] = "update-manager";
 +      argv[1] = NULL;
-     }
-   else
++    }
++  else if (gnome_software_exists ())
      {
-@@ -264,7 +270,7 @@ cc_about_page_init (CcAboutPage *self)
- 
-   gtk_widget_init_template (GTK_WIDGET (self));
- 
--  if ((!does_gnome_software_exist () || !does_gnome_software_allow_updates ()) && !does_gpk_update_viewer_exist ())
-+  if (!does_update_manager_exist () && (!does_gnome_software_exist () || !does_gnome_software_allow_updates ()) && !does_gpk_update_viewer_exist ())
-     gtk_widget_set_visible (GTK_WIDGET (self->software_updates_group), FALSE);
- 
-   about_page_setup_overview (self);
+       argv[0] = "gnome-software";
+       argv[1] = "--mode=updates";

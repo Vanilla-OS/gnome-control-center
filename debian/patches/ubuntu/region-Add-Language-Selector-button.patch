@@ -47,7 +47,7 @@ index e354faa..25a1431 100644
  
  static void
 diff --git a/panels/system/region/cc-region-page.ui b/panels/system/region/cc-region-page.ui
-index 800a8fa..36e6f49 100644
+index 87ba26b..8fac58a 100644
 --- a/panels/system/region/cc-region-page.ui
 +++ b/panels/system/region/cc-region-page.ui
 @@ -25,6 +25,28 @@

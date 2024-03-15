@@ -493,7 +493,7 @@ index 25a1431..248b255 100644
                  self->system_region = g_strdup (time);
  
 diff --git a/panels/system/users/cc-user-page.c b/panels/system/users/cc-user-page.c
-index bed6975..043422b0 100644
+index a135124..4e5dfa7 100644
 --- a/panels/system/users/cc-user-page.c
 +++ b/panels/system/users/cc-user-page.c
 @@ -156,6 +156,7 @@ get_user_language (ActUser *user)
