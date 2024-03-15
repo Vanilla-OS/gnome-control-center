@@ -1,3 +1,11 @@
+gnome-control-center (1:46~beta-2) unstable; urgency=medium
+
+  * Drop patch reverting switch to gcr4
+  * Update Build-Depends
+  * Drop obsolete Suggests: pkexec
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Wed, 28 Feb 2024 22:15:57 -0500
+
 gnome-control-center (1:46~beta-1ubuntu1) noble; urgency=medium
 
   * Merge with Debian. Remaining changes:
