@@ -3,12 +3,6 @@ keyboard-Avoid-modifying-xkb-options-when-user-changes-n.patch
 debian/Expose-touchpad-settings-if-synaptics-is-in-use.patch
 debian/Debian-s-adduser-doesn-t-allow-uppercase-letters-by-defau.patch
 debian/Ignore-result-of-test-network-panel.patch
-po-Fix-POTFILES.in-for-the-Remote-Login-move.patch
-Update-Persian-translation.patch
-Update-Georgian-translation.patch
-Update-Turkish-translation.patch
-Update-Russian-translation.patch
-Update-Ukrainian-translation.patch
 ubuntu/keyboard-Add-launch-terminal-shortcut.patch
 ubuntu/sound-Allow-volume-to-be-set-above-100.patch
 ubuntu/Allow-tweaking-some-settings-for-Ubuntu-Dock.patch
