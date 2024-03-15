@@ -76,6 +76,11 @@ typedef enum _CcDisplayMonitorPrivacy
   CC_DISPLAY_MONITOR_PRIVACY_LOCKED = 1 << 2,
 } CcDisplayMonitorPrivacy;
 
+typedef enum _CcDisplayModeRefreshRateMode
+{
+  MODE_REFRESH_RATE_MODE_FIXED,
+  MODE_REFRESH_RATE_MODE_VARIABLE,
+} CcDisplayModeRefreshRateMode;
 
 #define CC_TYPE_DISPLAY_MODE (cc_display_mode_get_type ())
 G_DECLARE_DERIVABLE_TYPE (CcDisplayMode, cc_display_mode,
@@ -89,6 +94,7 @@ struct _CcDisplayModeClass
   void          (*get_resolution)       (CcDisplayMode *self, int *w, int *h);
   GArray*       (*get_supported_scales) (CcDisplayMode *self);
   double        (*get_preferred_scale)  (CcDisplayMode *self);
+  CcDisplayModeRefreshRateMode (*get_refresh_rate_mode) (CcDisplayMode *self);
   gboolean      (*is_interlaced)        (CcDisplayMode *self);
   gboolean      (*is_preferred)         (CcDisplayMode *self);
   int           (*get_freq)             (CcDisplayMode *self);
@@ -127,6 +133,8 @@ struct _CcDisplayMonitorClass
                                                int               *y,
                                                int               *w,
                                                int               *h);
+  int               (*get_min_freq)           (CcDisplayMonitor  *self);
+  gboolean          (*supports_variable_refresh_rate) (CcDisplayMonitor  *self);
   gboolean          (*supports_underscanning) (CcDisplayMonitor  *self);
   gboolean          (*get_underscanning)      (CcDisplayMonitor  *self);
   void              (*set_underscanning)      (CcDisplayMonitor  *self,
@@ -139,6 +147,8 @@ struct _CcDisplayMonitorClass
                                                   CcDisplayMode     *m);
   void              (*set_mode)               (CcDisplayMonitor  *self,
                                                CcDisplayMode     *m);
+  void              (*set_refresh_rate_mode)  (CcDisplayMonitor             *self,
+                                               CcDisplayModeRefreshRateMode  refresh_rate_mode);
   void              (*set_position)           (CcDisplayMonitor  *self,
                                                int                x,
                                                int                y);
@@ -223,6 +233,7 @@ void              cc_display_monitor_set_primary            (CcDisplayMonitor  *
                                                              gboolean           primary);
 guint32           cc_display_monitor_get_id                 (CcDisplayMonitor  *monitor);
 
+gboolean          cc_display_monitor_supports_variable_refresh_rate (CcDisplayMonitor *self);
 gboolean          cc_display_monitor_supports_underscanning (CcDisplayMonitor  *monitor);
 gboolean          cc_display_monitor_get_underscanning      (CcDisplayMonitor  *monitor);
 void              cc_display_monitor_set_underscanning      (CcDisplayMonitor  *monitor,
@@ -236,6 +247,7 @@ void              cc_display_monitor_get_geometry           (CcDisplayMonitor  *
                                                              int               *y,
                                                              int               *width,
                                                              int               *height);
+int               cc_display_monitor_get_min_freq           (CcDisplayMonitor  *monitor);
 GList*            cc_display_monitor_get_modes              (CcDisplayMonitor  *monitor);
 CcDisplayMode*    cc_display_monitor_get_preferred_mode     (CcDisplayMonitor  *monitor);
 double            cc_display_monitor_get_scale              (CcDisplayMonitor  *monitor);
@@ -246,6 +258,8 @@ void              cc_display_monitor_set_compatible_clone_mode (CcDisplayMonitor
                                                                 CcDisplayMode     *mode);
 void              cc_display_monitor_set_mode               (CcDisplayMonitor  *monitor,
                                                              CcDisplayMode     *mode);
+void              cc_display_monitor_set_refresh_rate_mode  (CcDisplayMonitor             *self,
+                                                             CcDisplayModeRefreshRateMode  refresh_rate_mode);
 void              cc_display_monitor_set_position           (CcDisplayMonitor  *monitor,
                                                              int                x,
                                                              int                y);
@@ -265,6 +279,7 @@ void              cc_display_mode_get_resolution            (CcDisplayMode     *
                                                              int               *height);
 GArray*           cc_display_mode_get_supported_scales      (CcDisplayMode     *self);
 double            cc_display_mode_get_preferred_scale       (CcDisplayMode     *self);
+CcDisplayModeRefreshRateMode cc_display_mode_get_refresh_rate_mode (CcDisplayMode *mode);
 gboolean          cc_display_mode_is_interlaced             (CcDisplayMode     *mode);
 gboolean          cc_display_mode_is_preferred              (CcDisplayMode     *mode);
 int               cc_display_mode_get_freq                  (CcDisplayMode     *mode);

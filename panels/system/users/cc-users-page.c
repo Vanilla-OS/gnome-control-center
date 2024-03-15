@@ -30,6 +30,7 @@
 #endif
 
 #include "cc-add-user-dialog.h"
+#include "cc-enterprise-login-dialog.h"
 #include "cc-users-page.h"
 #include "cc-list-row.h"
 #include "cc-user-page.h"
@@ -50,6 +51,7 @@ struct _CcUsersPage {
     AdwNavigationPage  parent_instance;
 
     GtkButton         *add_user_button;
+    GtkButton         *add_enterprise_user_button;
     CcUserPage        *current_user_page;
     AdwNavigationView *navigation;
     GtkWidget         *other_users_group;
@@ -61,6 +63,16 @@ struct _CcUsersPage {
 };
 
 G_DEFINE_TYPE (CcUsersPage, cc_users_page, ADW_TYPE_NAVIGATION_PAGE)
+
+static void
+add_enterprise_user (CcUsersPage *self)
+{
+    CcEnterpriseLoginDialog *dialog = cc_enterprise_login_dialog_new ();
+
+    gtk_window_set_transient_for (GTK_WINDOW (dialog),
+                                  GTK_WINDOW (gtk_widget_get_native (GTK_WIDGET (self))));
+    gtk_window_present (GTK_WINDOW (dialog));
+}
 
 static void
 add_user (CcUsersPage *self)
@@ -85,8 +97,6 @@ on_user_row_activated (CcUsersPage  *self,
 
     user_page = cc_user_page_new ();
     cc_user_page_set_user (user_page, user, self->permission);
-    adw_navigation_page_set_title (ADW_NAVIGATION_PAGE (user_page), get_real_or_user_name (user));
-
     adw_navigation_view_push (self->navigation, ADW_NAVIGATION_PAGE (user_page));
 }
 
@@ -144,37 +154,50 @@ static void
 on_user_changed (CcUsersPage *self,
                  ActUser     *user)
 {
-    CcUserPage *visible_user_page;
+  CcUserPage *page;
+  guint position;
 
-    visible_user_page = CC_USER_PAGE (adw_navigation_view_get_visible_page (self->navigation));
-    cc_user_page_set_user (visible_user_page, user, self->permission);
+  /* Refresh the users list */
+  g_list_store_sort (self->model, sort_users, self);
+
+  /* If the user has a page open, refresh that page */
+  page = CC_USER_PAGE (adw_navigation_view_find_page (self->navigation, act_user_get_user_name (user)));
+  if (page != NULL)
+    cc_user_page_set_user (page, user, self->permission);
 }
 
 static void
 on_user_added (CcUsersPage *self,
                ActUser     *user)
 {
-    CcUserPage *user_page;
-    g_list_store_insert_sorted (self->model, user, sort_users, self);
+  CcUserPage *page;
+  g_list_store_insert_sorted (self->model, user, sort_users, self);
 
-    user_page = cc_user_page_new ();
-    cc_user_page_set_user (user_page, user, self->permission);
-    adw_navigation_page_set_title (ADW_NAVIGATION_PAGE (user_page), get_real_or_user_name (user));
+  page = CC_USER_PAGE (adw_navigation_view_get_visible_page (self->navigation));
+  if (page != self->current_user_page)
+    return;
 
-    adw_navigation_view_push (self->navigation, ADW_NAVIGATION_PAGE (user_page));
+  /* We're on the current user's page and a new user was just created. It's very likely the user
+   * was just created by our own add-user dialog. So let's display the new user */
+
+  page = cc_user_page_new ();
+  cc_user_page_set_user (page, user, self->permission);
+  adw_navigation_view_push (self->navigation, ADW_NAVIGATION_PAGE (page));
 }
 
 static void
 on_user_removed (CcUsersPage *self,
                  ActUser     *user)
 {
-    guint position;
+  AdwNavigationPage *page;
+  guint position;
 
-    if (g_list_store_find (self->model, user, &position)) {
-        g_list_store_remove (self->model, position);
-    }
+  if (g_list_store_find (self->model, user, &position))
+    g_list_store_remove (self->model, position);
 
-    adw_navigation_view_pop (self->navigation);
+  page = adw_navigation_view_find_page (self->navigation, act_user_get_user_name (user));
+  if (page != NULL)
+    adw_navigation_view_pop_to_page (self->navigation, ADW_NAVIGATION_PAGE (self->current_user_page));
 }
 
 static void
@@ -206,6 +229,57 @@ users_loaded (CcUsersPage *self)
                                     sort_users,
                                     self);
     }
+}
+
+static void
+check_realmd_list_names_cb (GObject      *object,
+                            GAsyncResult *result,
+                            gpointer      user_data)
+{
+    g_autoptr(CcUsersPage) self = CC_USERS_PAGE (user_data);
+    g_autoptr(GVariant) ret = NULL;
+    g_autoptr(GVariant) names = NULL;
+    GVariantIter iter;
+    gchar *name;
+    g_autoptr(GError) error = NULL;
+
+    ret = g_dbus_connection_call_finish (G_DBUS_CONNECTION (object), result, &error);
+    if (ret == NULL) {
+        g_warning ("Unable to query dbus: %s", error->message);
+        return;
+    }
+
+    names = g_variant_get_child_value (ret, 0);
+    g_variant_iter_init (&iter, names);
+    while (g_variant_iter_loop (&iter, "&s", &name)) {
+        if (g_str_equal (name, "org.freedesktop.realmd"))
+            gtk_widget_set_visible (GTK_WIDGET (self->add_enterprise_user_button), TRUE);
+    }
+}
+
+static void
+check_realmd (CcUsersPage *self)
+{
+    g_autoptr(GDBusConnection) connection = NULL;
+    g_autoptr(GError) error = NULL;
+
+    connection = g_bus_get_sync (G_BUS_TYPE_SYSTEM, NULL, &error);
+    if (connection == NULL) {
+        g_warning ("Unable to connect to dbus: %s", error->message);
+        return;
+    }
+
+    g_dbus_connection_call (connection,
+                            "org.freedesktop.DBus",
+                            "/org/freedesktop/DBus",
+                            "org.freedesktop.DBus",
+                            "ListActivatableNames",
+                            NULL,
+                            G_VARIANT_TYPE ("(as)"),
+                            G_DBUS_CALL_FLAGS_NONE,
+                            -1, NULL,
+                            check_realmd_list_names_cb,
+                            g_object_ref (self));
 }
 
 static void
@@ -279,6 +353,8 @@ cc_users_page_init (CcUsersPage *self)
     if (is_loaded) {
         users_loaded (self);
     }
+
+    check_realmd (self);
 }
 
 static void
@@ -294,6 +370,7 @@ cc_users_page_class_init (CcUsersPageClass * klass)
 
     gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/system/users/cc-users-page.ui");
 
+    gtk_widget_class_bind_template_child (widget_class, CcUsersPage, add_enterprise_user_button);
     gtk_widget_class_bind_template_child (widget_class, CcUsersPage, add_user_button);
     gtk_widget_class_bind_template_child (widget_class, CcUsersPage, current_user_page);
     gtk_widget_class_bind_template_child (widget_class, CcUsersPage, navigation);
@@ -301,5 +378,6 @@ cc_users_page_class_init (CcUsersPageClass * klass)
     gtk_widget_class_bind_template_child (widget_class, CcUsersPage, user_list);
 
     gtk_widget_class_bind_template_callback (widget_class, add_user);
+    gtk_widget_class_bind_template_callback (widget_class, add_enterprise_user);
     gtk_widget_class_bind_template_callback (widget_class, on_user_row_activated);
 }

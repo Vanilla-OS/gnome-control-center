@@ -68,8 +68,7 @@ struct _CcWacomPage
 	GtkWidget      *tablet_map_buttons;
 	AdwSwitchRow   *tablet_mode_row;
 	AdwSwitchRow   *tablet_left_handed_row;
-	GtkWidget      *tablet_aspect_ratio;
-	GtkWidget      *tablet_aspect_ratio_switch;
+	AdwSwitchRow   *tablet_aspect_ratio_row;
 	GtkWidget      *display_section;
 
 	GnomeRRScreen  *rr_screen;
@@ -171,45 +170,6 @@ finish_calibration (CcCalibArea *area,
 	gtk_widget_set_sensitive (page->tablet_calibrate, TRUE);
 }
 
-static GdkDevice *
-cc_wacom_page_get_gdk_device (CcWacomPage *page)
-{
-	GsdDevice *gsd_device;
-	GdkDevice *gdk_device = NULL;
-	GdkDisplay *display;
-	GdkSeat *seat;
-	g_autoptr(GList) slaves = NULL;
-	GList *l;
-
-	gsd_device = cc_wacom_device_get_device (page->stylus);
-	g_return_val_if_fail (GSD_IS_DEVICE (gsd_device), NULL);
-
-	display = gtk_widget_get_display (GTK_WIDGET (page));
-	seat = gdk_display_get_default_seat (display);
-	slaves = gdk_seat_get_devices (seat, GDK_SEAT_CAPABILITY_TABLET_STYLUS);
-
-	for (l = slaves; l && !gdk_device; l = l->next) {
-		g_autofree gchar *device_node = NULL;
-
-		if (gdk_device_get_source (l->data) != GDK_SOURCE_PEN)
-			continue;
-
-#ifdef GDK_WINDOWING_X11
-		if (GDK_IS_X11_DISPLAY (display))
-			device_node = xdevice_get_device_node (gdk_x11_device_get_id (l->data));
-#endif
-#ifdef GDK_WINDOWING_WAYLAND
-		if (GDK_IS_WAYLAND_DISPLAY (display))
-			device_node = g_strdup (gdk_wayland_device_get_node_path (l->data));
-#endif
-
-		if (g_strcmp0 (device_node, gsd_device_get_device_file (gsd_device)) == 0)
-			gdk_device = l->data;
-	}
-
-	return gdk_device;
-}
-
 static gboolean
 run_calibration (CcWacomPage *page,
 		 GVariant    *old_calibration,
@@ -219,12 +179,12 @@ run_calibration (CcWacomPage *page,
 	g_assert (page->area == NULL);
 
 	page->area = cc_calib_area_new (NULL,
-                                        monitor,
-                                        cc_wacom_page_get_gdk_device (page),
-                                        finish_calibration,
-                                        page,
-                                        THRESHOLD_MISCLICK,
-                                        THRESHOLD_DOUBLECLICK);
+					monitor,
+					cc_wacom_device_get_device (page->stylus),
+					finish_calibration,
+					page,
+					THRESHOLD_MISCLICK,
+					THRESHOLD_DOUBLECLICK);
 
 	g_object_set_data_full (G_OBJECT (page),
 				"old-calibration",
@@ -579,8 +539,7 @@ cc_wacom_page_class_init (CcWacomPageClass *klass)
 	gtk_widget_class_bind_template_child (widget_class, CcWacomPage, tablet_map_buttons);
 	gtk_widget_class_bind_template_child (widget_class, CcWacomPage, tablet_mode_row);
 	gtk_widget_class_bind_template_child (widget_class, CcWacomPage, tablet_left_handed_row);
-	gtk_widget_class_bind_template_child (widget_class, CcWacomPage, tablet_aspect_ratio);
-	gtk_widget_class_bind_template_child (widget_class, CcWacomPage, tablet_aspect_ratio_switch);
+	gtk_widget_class_bind_template_child (widget_class, CcWacomPage, tablet_aspect_ratio_row);
 	gtk_widget_class_bind_template_child (widget_class, CcWacomPage, display_section);
 
 	gtk_widget_class_bind_template_callback (widget_class, on_map_buttons_activated);
@@ -817,7 +776,7 @@ cc_wacom_page_new (CcWacomPanel  *panel,
 			 page->tablet_left_handed_row, "active",
 			 G_SETTINGS_BIND_DEFAULT);
 	g_settings_bind (page->wacom_settings, "keep-aspect",
-			 page->tablet_aspect_ratio_switch, "active",
+			 page->tablet_aspect_ratio_row, "active",
 			 G_SETTINGS_BIND_DEFAULT);
 
 	/* Tablet icon */

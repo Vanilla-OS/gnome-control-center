@@ -25,6 +25,7 @@ install_data(
 )
 
 sources = files(
+  'cc-password-utils.c',
   'cc-system-panel.c',
   'about/cc-about-page.c',
   'about/cc-system-details-window.c',
@@ -38,8 +39,11 @@ sources = files(
   'region/cc-region-page.c',
   'region/cc-format-chooser.c',
   'region/cc-format-preview.c',
+  'remote-desktop/cc-desktop-sharing-page.c',
+  'remote-desktop/cc-encryption-fingerprint-dialog.c',
   'remote-desktop/cc-gnome-remote-desktop.c',
   'remote-desktop/cc-remote-desktop-page.c',
+  'remote-desktop/cc-remote-session-page.c',
   'remote-desktop/cc-tls-certificate.c',
   'remote-desktop/cc-systemd-service.c',
   'remote-login/cc-remote-login.c',
@@ -48,6 +52,8 @@ sources = files(
   'users/cc-add-user-dialog.c',
   'users/cc-avatar-chooser.c',
   'users/cc-crop-area.c',
+  'users/cc-entry-feedback.c',
+  'users/cc-enterprise-login-dialog.c',
   'users/cc-fingerprint-dialog.c',
   'users/cc-fingerprint-manager.c',
   'users/cc-password-dialog.c',
@@ -136,6 +142,7 @@ sources += gnome.gdbus_codegen(
 
 cflags += [
    '-DDATADIR="@0@"'.format(control_center_datadir),
+   '-DSYSCONFDIR="@0@"'.format(control_center_sysconfdir),
    '-DLIBEXECDIR="@0@"'.format(control_center_libexecdir),
   '-DGNOMECC_DATA_DIR="@0@"'.format(control_center_pkgdatadir)
 ]

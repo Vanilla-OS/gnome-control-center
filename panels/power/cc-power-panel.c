@@ -27,6 +27,7 @@
 #include <gio/gdesktopappinfo.h>
 
 #include "shell/cc-object-storage.h"
+#include "cc-list-row.h"
 #include "cc-battery-row.h"
 #include "cc-hostname.h"
 #include "cc-power-profile-row.h"
@@ -41,24 +42,20 @@ struct _CcPowerPanel
 
   AdwSwitchRow      *als_row;
   GtkWindow         *automatic_suspend_dialog;
-  GtkLabel          *automatic_suspend_label;
-  GtkListBoxRow     *automatic_suspend_row;
+  CcListRow         *automatic_suspend_row;
   GtkListBox        *battery_listbox;
   AdwSwitchRow      *battery_percentage_row;
-  GtkSizeGroup      *battery_row_sizegroup;
   AdwPreferencesGroup *battery_section;
   AdwComboRow       *blank_screen_row;
   GtkListBox        *device_listbox;
   AdwPreferencesGroup *device_section;
   AdwSwitchRow      *dim_screen_row;
   AdwPreferencesGroup *general_section;
-  GtkSizeGroup      *level_sizegroup;
   AdwComboRow       *power_button_row;
   GtkListBox        *power_profile_listbox;
   GtkListBox        *power_profile_info_listbox;
   AdwPreferencesGroup *power_profile_section;
   AdwSwitchRow      *power_saver_low_battery_row;
-  GtkSizeGroup      *row_sizegroup;
   GtkComboBox       *suspend_on_battery_delay_combo;
   AdwSwitchRow      *suspend_on_battery_switch_row;
   GtkWidget         *suspend_on_battery_group;
@@ -116,8 +113,6 @@ static void
 add_battery (CcPowerPanel *self, UpDevice *device, gboolean primary)
 {
   CcBatteryRow *row = cc_battery_row_new (device, primary);
-  cc_battery_row_set_level_sizegroup (row, self->level_sizegroup);
-  cc_battery_row_set_row_sizegroup (row, self->battery_row_sizegroup);
 
   gtk_list_box_append (self->battery_listbox, GTK_WIDGET (row));
   gtk_widget_set_visible (GTK_WIDGET (self->battery_section), TRUE);
@@ -127,8 +122,6 @@ static void
 add_device (CcPowerPanel *self, UpDevice *device)
 {
   CcBatteryRow *row = cc_battery_row_new (device, FALSE);
-  cc_battery_row_set_level_sizegroup (row, self->level_sizegroup);
-  cc_battery_row_set_row_sizegroup (row, self->row_sizegroup);
 
   gtk_list_box_append (self->device_listbox, GTK_WIDGET (row));
   gtk_widget_set_visible (GTK_WIDGET (self->device_section), TRUE);
@@ -579,13 +572,6 @@ automatic_suspend_row_activated_cb (CcPowerPanel *self)
 }
 
 static gboolean
-automatic_suspend_label_mnemonic_activate_cb (CcPowerPanel *self)
-{
-  automatic_suspend_row_activated_cb (self);
-  return TRUE;
-}
-
-static gboolean
 get_sleep_type (GValue   *value,
                 GVariant *variant,
                 gpointer  data)
@@ -700,8 +686,7 @@ update_automatic_suspend_label (CcPowerPanel *self)
         s = _("On");
     }
 
-  if (self->automatic_suspend_label)
-    gtk_label_set_label (self->automatic_suspend_label, s);
+  cc_list_row_set_secondary_label (self->automatic_suspend_row, s);
 }
 
 static void
@@ -893,9 +878,6 @@ setup_power_saving (CcPowerPanel *self)
       g_strcmp0 (self->chassis_type, "vm") != 0)
     {
       gtk_widget_set_visible (GTK_WIDGET (self->automatic_suspend_row), TRUE);
-      gtk_accessible_update_property (GTK_ACCESSIBLE (self->automatic_suspend_row),
-                                      GTK_ACCESSIBLE_PROPERTY_LABEL, _("Automatic suspend"),
-                                      -1);
 
       g_signal_connect_object (self->gsd_settings, "changed", G_CALLBACK (on_suspend_settings_changed), self, G_CONNECT_SWAPPED);
 
@@ -1061,17 +1043,6 @@ power_profile_update_info_boxes (CcPowerPanel *self)
       else
         gtk_list_box_insert (GTK_LIST_BOX (self->power_profile_info_listbox), GTK_WIDGET (row), next_insert);
     }
-}
-
-static void
-power_profiles_row_activated_cb (GtkListBox    *box,
-                                 GtkListBoxRow *box_row,
-                                 gpointer       user_data)
-{
-  if (!gtk_widget_is_sensitive (GTK_WIDGET (box_row)))
-    return;
-
-  cc_power_profile_row_set_active (CC_POWER_PROFILE_ROW(box_row), TRUE);
 }
 
 static gint
@@ -1276,7 +1247,6 @@ setup_power_profiles (CcPowerPanel *self)
                                0);
       self->power_profiles_row[profile] = row;
       gtk_list_box_append (self->power_profile_listbox, GTK_WIDGET (row));
-      gtk_size_group_add_widget (self->row_sizegroup, GTK_WIDGET (row));
 
       /* Connect radio button to group */
       button = cc_power_profile_row_get_radio_button (row);
@@ -1404,24 +1374,20 @@ cc_power_panel_class_init (CcPowerPanelClass *klass)
 
   gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, als_row);
   gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, automatic_suspend_dialog);
-  gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, automatic_suspend_label);
   gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, automatic_suspend_row);
   gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, battery_listbox);
   gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, battery_percentage_row);
-  gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, battery_row_sizegroup);
   gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, battery_section);
   gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, blank_screen_row);
   gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, device_listbox);
   gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, device_section);
   gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, dim_screen_row);
   gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, general_section);
-  gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, level_sizegroup);
   gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, power_button_row);
   gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, power_profile_listbox);
   gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, power_profile_info_listbox);
   gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, power_profile_section);
   gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, power_saver_low_battery_row);
-  gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, row_sizegroup);
   gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, suspend_on_battery_delay_combo);
   gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, suspend_on_battery_switch_row);
   gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, suspend_on_battery_group);
@@ -1429,11 +1395,9 @@ cc_power_panel_class_init (CcPowerPanelClass *klass)
   gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, suspend_on_ac_switch_row);
 
   gtk_widget_class_bind_template_callback (widget_class, als_row_changed_cb);
-  gtk_widget_class_bind_template_callback (widget_class, automatic_suspend_label_mnemonic_activate_cb);
   gtk_widget_class_bind_template_callback (widget_class, blank_screen_row_changed_cb);
   gtk_widget_class_bind_template_callback (widget_class, keynav_failed_cb);
   gtk_widget_class_bind_template_callback (widget_class, power_button_row_changed_cb);
-  gtk_widget_class_bind_template_callback (widget_class, power_profiles_row_activated_cb);
   gtk_widget_class_bind_template_callback (widget_class, automatic_suspend_row_activated_cb);
 }
 
