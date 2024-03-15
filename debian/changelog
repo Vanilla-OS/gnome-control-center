@@ -1,3 +1,63 @@
+gnome-control-center (1:46~rc-0ubuntu1) UNRELEASED; urgency=medium
+
+  * Merge with Debian. Remaining changes:
+    + Add gnome-control-center-faces package to share with unity-control-center
+    + Install apport hook
+    + debian/control:
+      - Build-Depend on libwhoopsie-preferences-dev
+      - Depend on language-selector-gnome & whoopsie-preferences
+      - Depend on libgtk-4-media-gstreamer for Mouse & Touchpad art
+        (LP: #2011849)
+      - Don't depend on desktop-base
+      - Recommend ibus
+      - Don't recommend malcontent-gui
+      - Don't recommend libnss-myhostname since we use systemd-resolved
+      - Suggest instead of recommend gnome-user-share & realmd
+    + debian/gnome-control-center-data.install:
+      - Don't install gnome-control-center.pkla since we use
+        policykit-desktop-privileges instead
+      - Install additional assets used by unity-control-center
+    * debian/ubuntu-logo-icon.png, debian/source/include-binaries,
+      debian/gnome-control-center-data.install: Include an Ubuntu logo
+    * debian/gnome-control-center-data.links:
+      - Link audio-speaker-center* to audio-speaker-mono* so that an
+        icon is shown in the test speaker panel. (LP: #1704002)
+    + debian/rules: Enable whoospie integration
+    + debian/rules: set SSHD_SOCKET=ssh.socket via CPPFLAGS in debian/rules.
+    + Add patches:
+      - keyboard-For-xkb-options-have-Layout-default-toggle-and-N.patch
+      - keyboard-Avoid-modifying-xkb-options-when-user-changes-n.patch
+      - u/keyboard-Add-launch-terminal-shortcut.patch
+      - u/sound-Allow-volume-to-be-set-above-100.patch
+      - u/Allow-tweaking-some-settings-for-Ubuntu-Dock.patch
+      - u/background-Allow-configuring-the-ubuntu-accent-color.patch
+      - u/multitasking-panel-Sync-workspace-and-monitor-isolation-d.patch
+      - u/multitasking-panel-Sync-workspace-isolation-setting-on-ti.patch
+      - u/Modify-Mulitasking-assets-for-accent-colors.patch
+      - u/lock-Add-Lock-Screen-on-Suspend-option.patch
+      - u/region-Add-Language-Selector-button.patch
+      - u/Adapts-the-region-capplet-and-the-language-chooser-in-the.patch
+      - u/shell-Change-the-default-height-so-all-category-are-on-sc.patch
+      - u/connectivity-add-network-connectivity-checking-toggle.patch
+      - u/diagnostics-Add-Whoopsie-support.patch
+      - u/online-accounts-Hide-window-after-adding-an-online-accoun.patch
+      - u/display-Support-UI-scaled-logical-monitor-mode.patch
+      - u/Disable-non-working-camera-microphones-panels.patch
+      - u/info-overview-Show-updates-in-software-propeties-instead-.patch
+      - u/sound-Add-a-button-to-select-the-default-theme.patch
+      - u/applications-Launch-snap-store-if-it-is-installed.patch
+      - u/display-Allow-fractional-scaling-to-be-enabled.patch
+      - u/mouse-Add-animations-following-the-accent-colors.patch
+      - panels-mouse-Do-not-bind-sensitivity-to-touch-pad-setting.patch
+      - CVE-2023-5616.patch: Use sshd socket
+      - Temporarily disable CVE-2023-5616 (sshd socket) patch until it can be
+        rewritten
+  * New upstream release
+  * Use the same Overamplification description text in Sound
+    as in Accessibility>Hearing
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Fri, 15 Mar 2024 11:10:06 -0400
+
 gnome-control-center (1:46~beta-2) unstable; urgency=medium
 
   * Drop patch reverting switch to gcr4
