@@ -1,4 +1,4 @@
-gnome-control-center (1:46~rc-0ubuntu1) UNRELEASED; urgency=medium
+gnome-control-center (1:46~rc-0ubuntu1) noble; urgency=medium
 
   * Merge with Debian. Remaining changes:
     + Add gnome-control-center-faces package to share with unity-control-center
@@ -53,10 +53,13 @@ gnome-control-center (1:46~rc-0ubuntu1) UNRELEASED; urgency=medium
       - Temporarily disable CVE-2023-5616 (sshd socket) patch until it can be
         rewritten
   * New upstream release
-  * Use the same Overamplification description text in Sound
-    as in Accessibility>Hearing
+  * Bump minimum gnome-online-accounts
+  * Use the same Overamplification description text in Sound as in
+    Accessibility>Hearing
+  * Drop 6 patches applied in new release
+  * Refresh patches
 
- -- Jeremy Bícha <jbicha@ubuntu.com>  Fri, 15 Mar 2024 11:10:06 -0400
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Fri, 15 Mar 2024 17:00:38 -0400
 
 gnome-control-center (1:46~beta-2) unstable; urgency=medium
 
