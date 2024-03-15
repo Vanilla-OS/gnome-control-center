@@ -528,7 +528,7 @@ is_parental_controls_enabled_for_user (ActUser *user)
     manager = mct_manager_new (system_bus);
     app_filter = mct_manager_get_app_filter (manager,
                                              act_user_get_uid (user),
-                                             MCT_GET_APP_FILTER_FLAGS_NONE,
+                                             MCT_MANAGER_GET_VALUE_FLAGS_NONE,
                                              NULL,
                                              &error);
     if (error) {
@@ -719,6 +719,10 @@ cc_user_page_set_user (CcUserPage  *self,
     self->user = g_object_ref (user);
     g_object_notify (G_OBJECT (self), "is-current-user");
     g_object_notify (G_OBJECT (self), "is-admin");
+
+    if (!is_current_user (user))
+      adw_navigation_page_set_title (ADW_NAVIGATION_PAGE (self), get_real_or_user_name (user));
+    adw_navigation_page_set_tag (ADW_NAVIGATION_PAGE (self), act_user_get_user_name (user));
 
     cc_avatar_chooser_set_user (self->avatar_chooser, self->user);
     setup_avatar_for_user (self->avatar, self->user);

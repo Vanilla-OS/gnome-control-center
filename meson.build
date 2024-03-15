@@ -1,6 +1,6 @@
 project(
   'gnome-control-center', 'c',
-        version : '46.beta',
+        version : '46.rc',
         license : 'GPL2+',
   meson_version : '>= 0.58.0'
 )
@@ -126,7 +126,7 @@ libgvc = subproject(
 )
 libgvc_dep = libgvc.get_variable('libgvc_dep')
 
-goa_req_version = '>= 3.25.3'
+goa_req_version = '>= 3.49.1'
 pulse_req_version = '>= 2.0'
 
 gtk_dep = dependency(
@@ -185,7 +185,7 @@ gnome_bg_dep = dependency('gnome-bg-4')
 gnome_rr_dep = dependency('gnome-rr-4')
 gnome_settings_dep = dependency('gnome-settings-daemon', version: '>= 41.0')
 goa_dep = dependency('goa-1.0', version: goa_req_version)
-gsettings_desktop_dep = dependency('gsettings-desktop-schemas', version: '>= 42.alpha')
+gsettings_desktop_dep = dependency('gsettings-desktop-schemas', version: '>= 46.beta')
 libxml_dep = dependency('libxml-2.0')
 pulse_dep = dependency('libpulse', version: pulse_req_version)
 pulse_mainloop_dep = dependency('libpulse-mainloop-glib', version: pulse_req_version)

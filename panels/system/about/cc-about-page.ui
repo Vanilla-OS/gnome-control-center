@@ -2,7 +2,7 @@
 <interface>
   <template class="CcAboutPage" parent="AdwNavigationPage">
     <property name="title" translatable="yes">About</property>
-    <property name="tag">system-about-page</property>
+    <property name="tag">about</property>
     <property name="child">
       <object class="AdwToolbarView">
         <child type="top">
@@ -95,44 +95,15 @@
 
                 <!-- System Details -->
                 <child>
-                  <object class="AdwActionRow">
-                    <property name="activatable">True</property>
+                  <object class="CcListRow">
                     <property name="title" translatable="yes">_System Details</property>
-                    <property name="use-underline">True</property>
+                    <property name="show-arrow">True</property>
                     <signal name="activated" handler="cc_about_page_open_system_details" swapped="yes"/>
-                    <child type="suffix">
-                      <object class="GtkImage">
-                        <property name="valign">center</property>
-                        <property name="icon-name">go-next-symbolic</property>
-                      </object>
-                    </child>
                   </object>
                 </child>
 
               </object>
             </child>
-
-            <child>
-              <object class="AdwPreferencesGroup" id="software_updates_group">
-                <!-- Software Updates -->
-                <child>
-                  <object class="AdwActionRow">
-                    <property name="activatable">True</property>
-                    <property name="title" translatable="yes">Software _Updates</property>
-                    <property name="use-underline">True</property>
-                    <signal name="activated" handler="cc_about_page_open_software_update" swapped="yes"/>
-                    <child type="suffix">
-                      <object class="GtkImage">
-                        <property name="valign">center</property>
-                        <property name="icon-name">adw-external-link-symbolic</property>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-
-              </object>
-            </child>
-
           </object>
         </property>
       </object>

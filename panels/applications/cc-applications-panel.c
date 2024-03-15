@@ -773,18 +773,14 @@ add_snap_permissions (CcApplicationsPanel *self,
 
 static void
 update_sandbox_banner (CcApplicationsPanel *self,
-                       const gchar         *display_name,
                        gboolean             is_sandboxed)
 {
-  g_autofree gchar *sandbox_banner_message = NULL;
 
   gtk_widget_set_visible (GTK_WIDGET (self->sandbox_banner), !is_sandboxed);
   if (is_sandboxed)
     return;
 
-  /* Translators: %s is an app name. (e.g. "Firefox is not sandboxed") */
-  sandbox_banner_message = g_strdup_printf (_("%s is not sandboxed"), display_name);
-  adw_banner_set_title (self->sandbox_banner, sandbox_banner_message);
+  adw_banner_set_title (self->sandbox_banner, _("App is not sandboxed"));
 }
 
 static gint
@@ -823,7 +819,7 @@ add_static_permissions (CcApplicationsPanel *self,
     keyfile = get_flatpak_metadata (app_id);
 
   is_sandboxed = (keyfile != NULL) || is_snap;
-  update_sandbox_banner (self, g_app_info_get_display_name (info), is_sandboxed);
+  update_sandbox_banner (self, is_sandboxed);
   if (keyfile == NULL)
     return FALSE;
 
@@ -1031,7 +1027,6 @@ add_scheme (CcApplicationsPanel *self,
   gtk_widget_add_css_class (button, "flat");
   gtk_widget_add_css_class (button, "circular");
   adw_action_row_add_suffix (ADW_ACTION_ROW (row), button);
-  adw_action_row_set_activatable_widget (ADW_ACTION_ROW (row), button);
   g_object_set_data_full (G_OBJECT (button), "type", g_strdup (type), g_free);
   g_signal_connect_object (button, "clicked", G_CALLBACK (unset_cb), self, G_CONNECT_SWAPPED);
 
@@ -1063,7 +1058,6 @@ add_file_type (CcApplicationsPanel *self,
   gtk_widget_add_css_class (button, "flat");
   gtk_widget_add_css_class (button, "circular");
   adw_action_row_add_suffix (ADW_ACTION_ROW (row), button);
-  adw_action_row_set_activatable_widget (ADW_ACTION_ROW (row), button);
   g_object_set_data_full (G_OBJECT (button), "type", g_strdup (type), g_free);
   g_signal_connect_object (button, "clicked", G_CALLBACK (unset_cb), self, G_CONNECT_SWAPPED);
 
@@ -1924,7 +1918,7 @@ cc_applications_panel_init (CcApplicationsPanel *self)
   self->manager = mct_manager_new (system_bus);
   self->app_filter = mct_manager_get_app_filter (self->manager,
                                                  getuid (),
-                                                 MCT_GET_APP_FILTER_FLAGS_NONE,
+                                                 MCT_MANAGER_GET_VALUE_FLAGS_NONE,
                                                  self->cancellable,
                                                  &error);
   if (error)
