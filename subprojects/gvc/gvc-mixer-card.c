@@ -179,6 +179,9 @@ gvc_mixer_card_set_profile (GvcMixerCard *card,
         g_return_val_if_fail (GVC_IS_MIXER_CARD (card), FALSE);
         g_return_val_if_fail (card->priv->profiles != NULL, FALSE);
 
+        if (g_strcmp0 (card->priv->profile, profile) == 0)
+                return TRUE;
+
         g_free (card->priv->profile);
         card->priv->profile = g_strdup (profile);
 
@@ -312,6 +315,15 @@ gvc_mixer_card_profile_compare (GvcMixerCardProfile *a,
         return -1;
 }
 
+static void
+free_profile (GvcMixerCardProfile *p)
+{
+        g_free (p->profile);
+        g_free (p->human_profile);
+        g_free (p->status);
+        g_free (p);
+}
+
 /**
  * gvc_mixer_card_set_profiles:
  * @profiles: (transfer full) (element-type GvcMixerCardProfile):
@@ -321,8 +333,8 @@ gvc_mixer_card_set_profiles (GvcMixerCard *card,
                              GList        *profiles)
 {
         g_return_val_if_fail (GVC_IS_MIXER_CARD (card), FALSE);
-        g_return_val_if_fail (card->priv->profiles == NULL, FALSE);
 
+        g_list_free_full (card->priv->profiles, (GDestroyNotify) free_profile);
         card->priv->profiles = g_list_sort (profiles, (GCompareFunc) gvc_mixer_card_profile_compare);
 
         return TRUE;
@@ -371,6 +383,21 @@ gvc_mixer_card_set_ports (GvcMixerCard *card,
         card->priv->ports = ports;
 
         return TRUE;
+}
+
+void
+gvc_mixer_card_add_port (GvcMixerCard     *card,
+                         GvcMixerCardPort *port)
+{
+        card->priv->ports = g_list_prepend (card->priv->ports, port);
+}
+
+void
+gvc_mixer_card_remove_port (GvcMixerCard     *card,
+                            GvcMixerCardPort *port)
+{
+        card->priv->ports = g_list_remove (card->priv->ports, port);
+        free_port (port);
 }
 
 static void
@@ -525,15 +552,6 @@ gvc_mixer_card_new (pa_context *context,
                                "pa-context", context,
                                NULL);
         return GVC_MIXER_CARD (object);
-}
-
-static void
-free_profile (GvcMixerCardProfile *p)
-{
-        g_free (p->profile);
-        g_free (p->human_profile);
-        g_free (p->status);
-        g_free (p);
 }
 
 static void

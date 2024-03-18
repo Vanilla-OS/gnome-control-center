@@ -1,6 +1,6 @@
 project(
   'gnome-control-center', 'c',
-        version : '46.rc',
+        version : '46.0',
         license : 'GPL2+',
   meson_version : '>= 0.58.0'
 )
@@ -297,13 +297,11 @@ if host_is_linux_not_s390
   # gnome-bluetooth
   gnome_bluetooth_dep = dependency('gnome-bluetooth-ui-3.0')
 
-  libwacom_dep = dependency('libwacom', version: '>= 0.7')
+  libwacom_dep = dependency('libwacom', version: '>= 1.4')
 
   wacom_deps = [
     libwacom_dep,
   ]
-  config_h.set('HAVE_WACOM_3D_STYLUS', libwacom_dep.version().version_compare('>= 0.27'),
-               description: 'Define to 1 if libwacom provides definition for 3D styli')
 else
   message('Bluetooth and Wacom panels will not be built (no USB support on this platform)')
   message('Thunderbolt panel will not be built (not supported on this platform)')

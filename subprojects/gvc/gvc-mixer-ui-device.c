@@ -158,14 +158,18 @@ gvc_mixer_ui_device_set_property  (GObject      *object,
                 break;
         case PROP_UI_DEVICE_TYPE:
                 self->priv->type = (GvcMixerUIDeviceDirection) g_value_get_uint (value);
+                g_debug ("gvc-mixer-output-set-property - device type: %s",
+                         self->priv->type == UIDeviceInput ? "input" : "output");
                 break;
         case PROP_PORT_AVAILABLE:
-                self->priv->port_available = g_value_get_boolean (value);
-                g_debug ("gvc-mixer-output-set-property - port available %i, value passed in %i",
+                g_debug ("gvc-mixer-output-set-property - old port available %i, value passed in %i",
                          self->priv->port_available, g_value_get_boolean (value));
+                self->priv->port_available = g_value_get_boolean (value);
                 break;
         case PROP_ICON_NAME:
                 gvc_mixer_ui_device_set_icon_name (self, g_value_get_string (value));
+                g_debug ("gvc-mixer-output-set-property - icon name: %s",
+                         self->priv->icon_name);
                 break;
         default:
                 G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -433,6 +437,9 @@ gvc_mixer_ui_device_set_profiles (GvcMixerUIDevice *device,
         g_return_if_fail (GVC_IS_MIXER_UI_DEVICE (device));
 
         g_debug ("Set profiles for '%s'", gvc_mixer_ui_device_get_description(device));
+
+        g_clear_pointer (&device->priv->supported_profiles, g_list_free);
+        g_clear_pointer (&device->priv->profiles, g_list_free);
 
         if (in_profiles == NULL)
                 return;
