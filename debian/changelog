@@ -1,8 +1,8 @@
-gnome-control-center (1:46.0-0ubuntu1) UNRELEASED; urgency=medium
+gnome-control-center (1:46.0-0ubuntu1) noble; urgency=medium
 
   * New upstream release
 
- -- Jeremy Bícha <jbicha@ubuntu.com>  Mon, 18 Mar 2024 11:40:34 -0400
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Mon, 18 Mar 2024 11:41:55 -0400
 
 gnome-control-center (1:46~rc-0ubuntu1) noble; urgency=medium
 
