@@ -11,7 +11,7 @@ TODO: Launch GNOME Software for Flatpaks since snap-store can't handle those
  1 file changed, 14 insertions(+), 2 deletions(-)
 
 diff --git a/panels/applications/cc-applications-panel.c b/panels/applications/cc-applications-panel.c
-index e50e7b6..5ebd058 100644
+index cc7c43d..ee6a583 100644
 --- a/panels/applications/cc-applications-panel.c
 +++ b/panels/applications/cc-applications-panel.c
 @@ -168,6 +168,13 @@ gnome_software_is_installed (void)

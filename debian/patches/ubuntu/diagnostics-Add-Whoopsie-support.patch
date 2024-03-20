@@ -12,7 +12,7 @@ Subject: diagnostics: Add Whoopsie support
  6 files changed, 245 insertions(+), 1 deletion(-)
 
 diff --git a/meson.build b/meson.build
-index 7d7e943..0b29774 100644
+index 99c4228..c1a99c4 100644
 --- a/meson.build
 +++ b/meson.build
 @@ -274,6 +274,14 @@ endif
@@ -30,7 +30,7 @@ index 7d7e943..0b29774 100644
  if host_is_linux
    # ModemManager
    mm_dep =  dependency('mm-glib', version: '>= 0.7')
-@@ -374,4 +382,5 @@ summary({
+@@ -372,4 +380,5 @@ summary({
    'IBus': enable_ibus,
    'Snap': enable_snap,
    'Malcontent': enable_malcontent,
@@ -324,7 +324,7 @@ index 849ba10..068270d 100644
    if (!os_name)
      os_name = g_strdup ("GNOME");
 diff --git a/panels/privacy/cc-diagnostics-page.ui b/panels/privacy/cc-diagnostics-page.ui
-index 310226c..b40605c 100644
+index c1ac689..709d544 100644
 --- a/panels/privacy/cc-diagnostics-page.ui
 +++ b/panels/privacy/cc-diagnostics-page.ui
 @@ -19,6 +19,14 @@

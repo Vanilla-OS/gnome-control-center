@@ -232,7 +232,7 @@ index 0000000..901d392
 +  </template>
 +</interface>
 diff --git a/panels/privacy/cc-privacy-panel.c b/panels/privacy/cc-privacy-panel.c
-index 1fcb396..8d136f1 100644
+index 1d16a78..31a0ef7 100644
 --- a/panels/privacy/cc-privacy-panel.c
 +++ b/panels/privacy/cc-privacy-panel.c
 @@ -26,6 +26,7 @@
@@ -252,7 +252,7 @@ index 1fcb396..8d136f1 100644
    g_type_ensure (CC_TYPE_FIRMWARE_SECURITY_PAGE);
    g_type_ensure (CC_TYPE_LOCATION_PAGE);
 diff --git a/panels/privacy/cc-privacy-panel.ui b/panels/privacy/cc-privacy-panel.ui
-index 30b1456..06ab864 100644
+index fcf2a2b..f4a3385 100644
 --- a/panels/privacy/cc-privacy-panel.ui
 +++ b/panels/privacy/cc-privacy-panel.ui
 @@ -20,6 +20,18 @@
@@ -352,7 +352,7 @@ index 416b3a1..1b3d6b0 100644
      <file preprocess="xml-stripblanks">icons/scalable/actions/thunderbolt-access-symbolic.svg</file>
      <file preprocess="xml-stripblanks">icons/scalable/actions/trash-file-history-symbolic.svg</file>
 diff --git a/po/POTFILES.in b/po/POTFILES.in
-index 3067c91..092d27a 100644
+index 5193719..fde0155 100644
 --- a/po/POTFILES.in
 +++ b/po/POTFILES.in
 @@ -160,6 +160,7 @@ panels/privacy/cc-bolt-device-entry.c

@@ -26,7 +26,7 @@ inadequate to document these significant limitations.
  1 file changed, 1 insertion(+)
 
 diff --git a/panels/privacy/cc-privacy-panel.ui b/panels/privacy/cc-privacy-panel.ui
-index 06ab864..49081b4 100644
+index f4a3385..18f8878 100644
 --- a/panels/privacy/cc-privacy-panel.ui
 +++ b/panels/privacy/cc-privacy-panel.ui
 @@ -89,6 +89,7 @@

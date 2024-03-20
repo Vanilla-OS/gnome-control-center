@@ -2453,10 +2453,10 @@ index 0000000..a636e9c
 +  </gresource>
 +</gresources>
 diff --git a/po/POTFILES.in b/po/POTFILES.in
-index 5ec4703..34bb05f 100644
+index 0f39cd5..c788b38 100644
 --- a/po/POTFILES.in
 +++ b/po/POTFILES.in
-@@ -249,6 +249,11 @@ panels/system/users/org.gnome.controlcenter.user-accounts.policy.in
+@@ -254,6 +254,11 @@ panels/system/users/org.gnome.controlcenter.user-accounts.policy.in
  panels/system/users/pw-utils.c
  panels/system/users/run-passwd.c
  panels/system/users/user-utils.c
@@ -2469,10 +2469,10 @@ index 5ec4703..34bb05f 100644
  panels/universal-access/cc-ua-hearing-page.c
  panels/universal-access/cc-ua-hearing-page.ui
 diff --git a/shell/cc-panel-list.c b/shell/cc-panel-list.c
-index 9b35a6a..b7a0d5f 100644
+index 14ae7d0..ec89020 100644
 --- a/shell/cc-panel-list.c
 +++ b/shell/cc-panel-list.c
-@@ -362,6 +362,7 @@ static const gchar * const panel_order[] = {
+@@ -373,6 +373,7 @@ static const gchar * const panel_order[] = {
    "power",
    "multitasking",
    "background",
@@ -2481,7 +2481,7 @@ index 9b35a6a..b7a0d5f 100644
    "separator",
  
 diff --git a/shell/cc-panel-loader.c b/shell/cc-panel-loader.c
-index d44e1cb..e050cb9 100644
+index 71b7686..bd50a31 100644
 --- a/shell/cc-panel-loader.c
 +++ b/shell/cc-panel-loader.c
 @@ -56,12 +56,14 @@ extern GType cc_sharing_panel_get_type (void);

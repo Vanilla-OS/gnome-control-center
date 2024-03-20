@@ -15,7 +15,7 @@ Last-Update: 2018-03-09
  1 file changed, 1 insertion(+)
 
 diff --git a/panels/online-accounts/cc-online-accounts-panel.c b/panels/online-accounts/cc-online-accounts-panel.c
-index b58089f..7d137de 100644
+index ed2e8c7..223696f 100644
 --- a/panels/online-accounts/cc-online-accounts-panel.c
 +++ b/panels/online-accounts/cc-online-accounts-panel.c
 @@ -514,6 +514,7 @@ cc_online_accounts_panel_set_property (GObject      *object,

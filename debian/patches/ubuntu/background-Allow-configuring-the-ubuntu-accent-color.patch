@@ -1014,10 +1014,10 @@ index 529be08..d7f73e6 100644
    'cc-ubuntu-dock-dialog.ui',
  )
 diff --git a/po/POTFILES.in b/po/POTFILES.in
-index 34bb05f..3067c91 100644
+index c788b38..5193719 100644
 --- a/po/POTFILES.in
 +++ b/po/POTFILES.in
-@@ -249,6 +249,8 @@ panels/system/users/org.gnome.controlcenter.user-accounts.policy.in
+@@ -254,6 +254,8 @@ panels/system/users/org.gnome.controlcenter.user-accounts.policy.in
  panels/system/users/pw-utils.c
  panels/system/users/run-passwd.c
  panels/system/users/user-utils.c
