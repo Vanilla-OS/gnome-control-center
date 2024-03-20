@@ -40,8 +40,8 @@ Subject: Adapts the region capplet and the language chooser in the user
  panels/common/cc-common-language.c    | 137 ++++++++++++++++++++++++++++------
  panels/common/cc-common-language.h    |   4 +
  panels/system/region/cc-region-page.c | 130 +++++++++++++++++++++++---------
- panels/system/users/cc-user-page.c    |   8 +-
- 4 files changed, 221 insertions(+), 58 deletions(-)
+ panels/system/users/cc-user-page.c    |   9 ++-
+ 4 files changed, 222 insertions(+), 58 deletions(-)
 
 diff --git a/panels/common/cc-common-language.c b/panels/common/cc-common-language.c
 index 9357c3e..c923d82 100644
@@ -493,10 +493,18 @@ index 25a1431..248b255 100644
                  self->system_region = g_strdup (time);
  
 diff --git a/panels/system/users/cc-user-page.c b/panels/system/users/cc-user-page.c
-index a135124..4e5dfa7 100644
+index a135124..2696866 100644
 --- a/panels/system/users/cc-user-page.c
 +++ b/panels/system/users/cc-user-page.c
-@@ -156,6 +156,7 @@ get_user_language (ActUser *user)
+@@ -29,6 +29,7 @@
+ # include "config.h"
+ #endif
+ 
++#include "cc-common-language.h"
+ #include "cc-user-page.h"
+ #include "cc-avatar-chooser.h"
+ #include "cc-fingerprint-dialog.h"
+@@ -156,6 +157,7 @@ get_user_language (ActUser *user)
  
      lang = g_strdup (act_user_get_language (user));
      if (lang && *lang != '\0') {
@@ -504,7 +512,7 @@ index a135124..4e5dfa7 100644
          return gnome_get_language_from_locale (lang, NULL);
      }
  
-@@ -267,6 +268,7 @@ language_chooser_response (CcUserPage        *self,
+@@ -267,6 +269,7 @@ language_chooser_response (CcUserPage        *self,
  {
      g_autofree gchar *language_name = NULL;
      const gchar *selected_language;
@@ -512,7 +520,7 @@ index a135124..4e5dfa7 100644
  
      if (response_id != GTK_RESPONSE_OK) {
          gtk_window_destroy (GTK_WINDOW (chooser));
-@@ -279,7 +281,8 @@ language_chooser_response (CcUserPage        *self,
+@@ -279,7 +282,8 @@ language_chooser_response (CcUserPage        *self,
          return;
      }
  
@@ -522,7 +530,7 @@ index a135124..4e5dfa7 100644
          return;
      }
  
-@@ -296,8 +299,11 @@ change_language (CcUserPage *self)
+@@ -296,8 +300,11 @@ change_language (CcUserPage *self)
  {
      CcLanguageChooser *language_chooser;
      const gchar *current_language;
