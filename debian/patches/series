@@ -16,6 +16,7 @@ ubuntu/Adapts-the-region-capplet-and-the-language-chooser-in-the.patch
 ubuntu/connectivity-add-network-connectivity-checking-toggle.patch
 ubuntu/diagnostics-Add-Whoopsie-support.patch
 ubuntu/online-accounts-Hide-window-after-adding-an-online-accoun.patch
+ubuntu/online-accounts-sort.patch
 ubuntu/display-Support-UI-scaled-logical-monitor-mode.patch
 ubuntu/disable-non-working-camera-panel.patch
 ubuntu/update-manager.patch
