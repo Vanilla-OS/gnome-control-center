@@ -1,10 +1,10 @@
-gnome-control-center (1:46.0-0ubuntu5) UNRELEASED; urgency=medium
+gnome-control-center (1:46.0-0ubuntu5) noble; urgency=medium
 
   * d/p/u/Allow-tweaking-some-settings-for-Ubuntu-Dock.patch:
     - fix the description and the layout of the tiling options,
       thanks Tim Holmes-Mitra
 
- -- Sebastien Bacher <seb128@ubuntu.com>  Mon, 25 Mar 2024 12:15:07 +0100
+ -- Sebastien Bacher <seb128@ubuntu.com>  Mon, 25 Mar 2024 12:37:45 +0100
 
 gnome-control-center (1:46.0-0ubuntu4) noble; urgency=medium
 
