@@ -2291,7 +2291,7 @@ index 0000000..d2f750d
 +                <child>
 +                  <object class="AdwSwitchRow" id="tiling_assistant_popup_switch">
 +                    <property name="title" translatable="yes">_Tiling Popup</property>
-+                    <property name="subtitle" translatable="yes" comments="Tiling Assistant Tiling Popup feature explaination.">It provides a list of open apps and windows to tile to the free screen space. It appears after you tile a window and there is unambiguous screen space available. Unambiguous means that the free space consists of a single rectangle.</property>
++                    <property name="subtitle" translatable="yes" comments="Tiling Assistant Tiling Popup feature explaination.">Show a list of open apps to fill empty screen space after tiling a window.</property>
 +                    <property name="use-underline">True</property>
 +                    <property name="sensitive" bind-source="tiling_assistant_switch" bind-property="active" bind-flags="sync-create" />
 +                  </object>
@@ -2299,7 +2299,7 @@ index 0000000..d2f750d
 +                <child>
 +                  <object class="AdwSwitchRow" id="tiling_assistant_tiling_group">
 +                    <property name="title" translatable="yes">Tile _Groups</property>
-+                    <property name="subtitle" translatable="yes" comments="Tiling Assistant Tile Groups feature explaination">A window is added to a tile group if it doesn't overlap any other windows in the tile group during the moment it was tiled. If a tiled window is raised, the other windows of its tile group are also raised.</property>
++                    <property name="subtitle" translatable="yes" comments="Tiling Assistant Tile Groups feature explaination">Keep windows grouped together when tiled, so that raising one brings up the group.</property>
 +                    <property name="use-underline">True</property>
 +                    <property name="sensitive" bind-source="tiling_assistant_switch" bind-property="active" bind-flags="sync-create" />
 +                  </object>
