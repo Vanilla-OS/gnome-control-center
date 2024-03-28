@@ -30,13 +30,14 @@
   <url type="contact">https://discourse.gnome.org/tag/settings</url>
   <url type="donation">https://www.gnome.org/donate/</url>
   <url type="help">https://discourse.gnome.org/tag/settings</url>
-  <url type="translate">https://wiki.gnome.org/TranslationProject</url>
+  <url type="translate">https://l10n.gnome.org/module/gnome-control-center/</url>
+  <url type="contribute">https://welcome.gnome.org/app/Settings/</url>
   <url type="vcs-browser">https://gitlab.gnome.org/GNOME/gnome-control-center/</url>
   <project_group>GNOME</project_group>
   <launchable type="desktop-id">org.gnome.Settings.desktop</launchable>
   <!-- developer_name tag deprecated with Appstream 1.0 -->
   <developer_name>The GNOME Project</developer_name>
-  <developer id="gnome.org">
+  <developer id="org.gnome">
     <name>The GNOME Project</name>
   </developer>
   <compulsory_for_desktop>GNOME</compulsory_for_desktop>
@@ -49,6 +50,42 @@
   </kudos>
 
   <releases>
+    <release version="46.0.1" date="2024-03-27">
+      <description>
+      <p>GNOME Settings is the second stable release for GNOME 46. This update contains bug fixes for issues discovered in 46.0</p>
+
+      <ul>
+        <li>Fix "Thunderbolt" settings not opening</li>
+        <li>Fix handle of legacy command line arguments</li>
+        <li>Allow launching Accessibility setting subpages directly from the commandline</li>
+        <li>Avoid setting auto time synchronization when it is not needed</li>
+        <li>Improve startup time of the "System" settings</li>
+        <li>Various translation updates</li>
+      </ul>
+    </description>
+    </release>
+    <release version="46.0" date="2024-03-18">
+    <description>
+      <p>GNOME Settings is the first stable release for GNOME 46. This update comprises the work of contributors over the past six months, including enhancements and bug fixes.</p>
+
+      <ul>
+        <li>Add support for Variable Refresh Rate (VRR) modes</li>
+        <li>Introduce "Remote Login" settings for Remote Desktop</li>
+        <li>Rework the Online Accounts functionality for GTK4</li>
+        <li>Improved Mouse and Touchpad testing capabilities</li>
+        <li>Introduce the new "System" settings panel</li>
+        <li>Move SSH settings to the System panel</li>
+        <li>Move "Default Apps" and "Removable Media" settings to "Apps" panel</li>
+        <li>Add "Secondary Click" setting for Touchpads</li>
+        <li>Add "Disable While Typing" setting for Touchpads</li>
+        <li>Modernize the Enterprise Login settings</li>
+        <li>More fine-grained control over stylus pressure in Wacom settings</li>
+        <li>Allow launching subpages of System and Privacy panels directly</li>
+        <li>Create prettier user account avatars</li>
+        <li>Various bugfixes, accessibility and translation improvements</li>
+      </ul>
+    </description>
+    </release>
     <release version="45.0" date="2023-09-15">
     <description>
       <ul>

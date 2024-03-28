@@ -62,7 +62,7 @@ struct _CcApplicationsPanel
   AdwNavigationPage *app_settings_page;
   GtkListBox      *app_listbox;
   GtkEntry        *app_search_entry;
-  GtkWidget       *empty_search_placeholder;
+  GtkWidget       *no_apps_page;
   GtkStack        *app_listbox_stack;
   GAppInfoMonitor *monitor;
   gulong           monitor_id;
@@ -773,18 +773,14 @@ add_snap_permissions (CcApplicationsPanel *self,
 
 static void
 update_sandbox_banner (CcApplicationsPanel *self,
-                       const gchar         *display_name,
                        gboolean             is_sandboxed)
 {
-  g_autofree gchar *sandbox_banner_message = NULL;
 
   gtk_widget_set_visible (GTK_WIDGET (self->sandbox_banner), !is_sandboxed);
   if (is_sandboxed)
     return;
 
-  /* Translators: %s is an app name. (e.g. "Firefox is not sandboxed") */
-  sandbox_banner_message = g_strdup_printf (_("%s is not sandboxed"), display_name);
-  adw_banner_set_title (self->sandbox_banner, sandbox_banner_message);
+  adw_banner_set_title (self->sandbox_banner, _("App is not sandboxed"));
 }
 
 static gint
@@ -823,7 +819,7 @@ add_static_permissions (CcApplicationsPanel *self,
     keyfile = get_flatpak_metadata (app_id);
 
   is_sandboxed = (keyfile != NULL) || is_snap;
-  update_sandbox_banner (self, g_app_info_get_display_name (info), is_sandboxed);
+  update_sandbox_banner (self, is_sandboxed);
   if (keyfile == NULL)
     return FALSE;
 
@@ -1031,7 +1027,6 @@ add_scheme (CcApplicationsPanel *self,
   gtk_widget_add_css_class (button, "flat");
   gtk_widget_add_css_class (button, "circular");
   adw_action_row_add_suffix (ADW_ACTION_ROW (row), button);
-  adw_action_row_set_activatable_widget (ADW_ACTION_ROW (row), button);
   g_object_set_data_full (G_OBJECT (button), "type", g_strdup (type), g_free);
   g_signal_connect_object (button, "clicked", G_CALLBACK (unset_cb), self, G_CONNECT_SWAPPED);
 
@@ -1063,7 +1058,6 @@ add_file_type (CcApplicationsPanel *self,
   gtk_widget_add_css_class (button, "flat");
   gtk_widget_add_css_class (button, "circular");
   adw_action_row_add_suffix (ADW_ACTION_ROW (row), button);
-  adw_action_row_set_activatable_widget (ADW_ACTION_ROW (row), button);
   g_object_set_data_full (G_OBJECT (button), "type", g_strdup (type), g_free);
   g_signal_connect_object (button, "clicked", G_CALLBACK (unset_cb), self, G_CONNECT_SWAPPED);
 
@@ -1246,7 +1240,7 @@ on_items_changed_cb (GListModel *list,
 
   if (g_list_model_get_n_items (list) == 0)
     gtk_stack_set_visible_child (self->app_listbox_stack,
-                                 self->empty_search_placeholder);
+                                 self->no_apps_page);
   else
     gtk_stack_set_visible_child (self->app_listbox_stack,
                                  GTK_WIDGET (self->app_listbox));
@@ -1792,7 +1786,7 @@ cc_applications_panel_class_init (CcApplicationsPanelClass *klass)
   gtk_widget_class_bind_template_child (widget_class, CcApplicationsPanel, clear_cache_button);
   gtk_widget_class_bind_template_child (widget_class, CcApplicationsPanel, data);
   gtk_widget_class_bind_template_child (widget_class, CcApplicationsPanel, default_apps_page);
-  gtk_widget_class_bind_template_child (widget_class, CcApplicationsPanel, empty_search_placeholder);
+  gtk_widget_class_bind_template_child (widget_class, CcApplicationsPanel, no_apps_page);
   gtk_widget_class_bind_template_child (widget_class, CcApplicationsPanel, app_listbox_stack);
   gtk_widget_class_bind_template_child (widget_class, CcApplicationsPanel, handler_dialog);
   gtk_widget_class_bind_template_child (widget_class, CcApplicationsPanel, handler_page);
@@ -1924,7 +1918,7 @@ cc_applications_panel_init (CcApplicationsPanel *self)
   self->manager = mct_manager_new (system_bus);
   self->app_filter = mct_manager_get_app_filter (self->manager,
                                                  getuid (),
-                                                 MCT_GET_APP_FILTER_FLAGS_NONE,
+                                                 MCT_MANAGER_GET_VALUE_FLAGS_NONE,
                                                  self->cancellable,
                                                  &error);
   if (error)

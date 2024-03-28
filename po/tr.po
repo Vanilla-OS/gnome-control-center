@@ -1,18 +1,18 @@
 # Turkish translation of gnome-control-center.
 # Copyright (C) 2000-2003, 2004, 2005, 2008, 2009, 2011 Free Software Foundation, Inc.
-# Copyright (C) 2012-2023 gnome-control-center's COPYRIGHT HOLDER
+# Copyright (C) 2012-2024 gnome-control-center's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-control-center package.
 #
 # Nilgün Belma Bugüner <nilgun@fide.org>, 2001.
-# Fatih Demir <kabalak@gtranslator.org>, 2000.
-# Baris Cicek <baris@teamforce.name.tr>, 2004, 2005, 2008, 2009.
+# Fatih Demir <kabalak@gtranslator.org>, 2000, 2001, 2003
 # Erçin EKER <ercin@linux.org.tr>, 2011.
+# Baris Cicek <baris@teamforce.name.tr>, 2004, 2005, 2008, 2009, 2011.
 # ztugcesirin <ztugcesirin@gmail.com>, 2014.
 # Furkan Tokaç <developmentft@gmail.com>, 2017.
 # Furkan Ahmet Kara <furkanahmetkara.fk@gmail.com>, 2018.
 # Çağatay Yiğit Şahin <cyigitsahin@outlook.com>, 2018.
 # Muhammet Kara <muhammetk@gmail.com>, 2011-2021.
-# Sabri Ünal <libreajans@gmail.com>, 2014, 2019, 2022, 2024.
+# Sabri Ünal <libreajans@gmail.com>, 2014, 2019, 2022-2024.
 # Emin Tufan Çetin <etcetin@gmail.com>, 2013-2024.
 #
 msgid ""
@@ -20,9 +20,9 @@ msgstr ""
 "Project-Id-Version: gnome-control-center\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-control-center/"
 "issues\n"
-"POT-Creation-Date: 2024-02-06 18:38+0000\n"
-"PO-Revision-Date: 2024-02-08 01:14+0300\n"
-"Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
+"POT-Creation-Date: 2024-03-16 03:13+0000\n"
+"PO-Revision-Date: 2024-03-16 08:53+0300\n"
+"Last-Translator: Sabri Ünal <yakushabb@gmail.com>\n"
 "Language-Team: Turkish <takim@gnome.org.tr>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
@@ -31,38 +31,36 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Poedit 3.4.2\n"
 
-#. Translators: %s is an app name. (e.g. "Firefox is not sandboxed")
 #: panels/applications/cc-applications-panel.c:783
-#, c-format
-msgid "%s is not sandboxed"
-msgstr "%s yalıtılmış alanda değil"
+msgid "App is not sandboxed"
+msgstr "Uygulama yalıtılmış alanda değil"
 
-#: panels/applications/cc-applications-panel.c:829
+#: panels/applications/cc-applications-panel.c:828
 msgid "System Bus"
 msgstr "Sistem Veri Yolu"
 
-#: panels/applications/cc-applications-panel.c:829
-#: panels/applications/cc-applications-panel.c:831
-#: panels/applications/cc-applications-panel.c:844
-#: panels/applications/cc-applications-panel.c:849
+#: panels/applications/cc-applications-panel.c:828
+#: panels/applications/cc-applications-panel.c:830
+#: panels/applications/cc-applications-panel.c:843
+#: panels/applications/cc-applications-panel.c:848
 msgid "Full access"
 msgstr "Tam erişim"
 
-#: panels/applications/cc-applications-panel.c:831
+#: panels/applications/cc-applications-panel.c:830
 msgid "Session Bus"
 msgstr "Oturum Veri Yolu"
 
-#: panels/applications/cc-applications-panel.c:835
+#: panels/applications/cc-applications-panel.c:834
 #: panels/privacy/cc-bolt-page.ui:240 panels/privacy/cc-bolt-page.ui:284
 #: panels/privacy/cc-privacy-panel.ui:74
 msgid "Devices"
 msgstr "Aygıtlar"
 
-#: panels/applications/cc-applications-panel.c:835
+#: panels/applications/cc-applications-panel.c:834
 msgid "Full access to /dev"
 msgstr "/dev konumuna tam erişim"
 
-#: panels/applications/cc-applications-panel.c:839
+#: panels/applications/cc-applications-panel.c:838
 #: panels/network/cc-network-panel.ui:8
 #: panels/network/gnome-network-panel.desktop.in:3
 #: panels/network/network-mobile.ui:235 panels/wwan/cc-wwan-device-page.ui:61
@@ -70,38 +68,38 @@ msgstr "/dev konumuna tam erişim"
 msgid "Network"
 msgstr "Ağ"
 
-#: panels/applications/cc-applications-panel.c:839
+#: panels/applications/cc-applications-panel.c:838
 msgid "Has network access"
 msgstr "Ağ erişimi var"
 
-#: panels/applications/cc-applications-panel.c:844
-#: panels/applications/cc-applications-panel.c:846
-#: panels/search/cc-search-locations-dialog.c:384
+#: panels/applications/cc-applications-panel.c:843
+#: panels/applications/cc-applications-panel.c:845
+#: panels/search/cc-search-locations-dialog.c:412
 msgid "Home"
 msgstr "Ev"
 
-#: panels/applications/cc-applications-panel.c:846
-#: panels/applications/cc-applications-panel.c:851
+#: panels/applications/cc-applications-panel.c:845
+#: panels/applications/cc-applications-panel.c:850
 msgid "Read-only"
 msgstr "Salt Okunur"
 
-#: panels/applications/cc-applications-panel.c:849
-#: panels/applications/cc-applications-panel.c:851
+#: panels/applications/cc-applications-panel.c:848
+#: panels/applications/cc-applications-panel.c:850
 msgid "File System"
 msgstr "Dosya Sistemi"
 
-#: panels/applications/cc-applications-panel.c:855
+#: panels/applications/cc-applications-panel.c:854
 #: panels/keyboard/01-launchers.xml.in:6
-#: shell/appdata/org.gnome.Settings.appdata.xml.in:7 shell/cc-window.c:760
+#: shell/appdata/org.gnome.Settings.appdata.xml.in:7 shell/cc-window.c:775
 #: shell/cc-window.ui:20 shell/org.gnome.Settings.desktop.in:3
 msgid "Settings"
 msgstr "Ayarlar"
 
-#: panels/applications/cc-applications-panel.c:855
+#: panels/applications/cc-applications-panel.c:854
 msgid "Can change settings"
 msgstr "Ayarları değiştirebilir"
 
-#: panels/applications/cc-applications-panel.c:857
+#: panels/applications/cc-applications-panel.c:856
 #, c-format
 msgid ""
 "<b>%s</b> requires access to the following system resources. To stop this "
@@ -110,19 +108,19 @@ msgstr ""
 "<b>%s</b>, aşağıdaki sistem kaynaklarına erişime gereksinir. Bu erişimi "
 "durdurmak için uygulama kaldırılmalıdır."
 
-#: panels/applications/cc-applications-panel.c:1191
+#: panels/applications/cc-applications-panel.c:1188
 #, c-format
 msgid "%u file and link type that is opened by the app"
 msgid_plural "%u file and link types that are opened by the app"
 msgstr[0] "Uygulamaca açılan %u dosya ve bağlantı türü"
 
-#: panels/applications/cc-applications-panel.c:1198
+#: panels/applications/cc-applications-panel.c:1195
 #, c-format
 msgid "<b>%s</b> is used to open the following types of files and links."
 msgstr "<b>%s</b>, şu türden dosya ve bağlantıları açmada kullanılmaktadır."
 
 #. Translators: '%s' is the formatted size, e.g. "26.2 MB"
-#: panels/applications/cc-applications-panel.c:1264
+#: panels/applications/cc-applications-panel.c:1261
 #, c-format
 msgid "%s of disk space used"
 msgstr "%s disk alanı kullanıldı"
@@ -136,27 +134,40 @@ msgstr "Uygulamalar"
 msgid "Search apps"
 msgstr "Uygulama ara"
 
-#: panels/applications/cc-applications-panel.ui:44
+#: panels/applications/cc-applications-panel.ui:43
 msgid "_Default Apps"
 msgstr "_Öntanımlı Uygulamalar"
 
-#: panels/applications/cc-applications-panel.ui:88
+#: panels/applications/cc-applications-panel.ui:62
 msgid "No Apps Found"
 msgstr "Uygulama Bulunamadı"
 
-#: panels/applications/cc-applications-panel.ui:100
+#: panels/applications/cc-applications-panel.ui:65
 msgid "_Find in Software"
 msgstr "_Yazılımlarʼda Ara"
 
-#: panels/applications/cc-applications-panel.ui:140
+#: panels/applications/cc-applications-panel.ui:101
+#: panels/applications/cc-default-apps-page.ui:4
 msgid "Default Apps"
 msgstr "Öntanımlı Uygulamalar"
 
-#: panels/applications/cc-applications-panel.ui:169
+#: panels/applications/cc-applications-panel.ui:119
+msgid "Removable Media"
+msgstr "Çıkarılabilir Ortam"
+
+#: panels/applications/cc-applications-panel.ui:122
+msgid "Automat_ically Launch Apps"
+msgstr "Uygulamaları _Kendiliğinden Başlat"
+
+#: panels/applications/cc-applications-panel.ui:123
+msgid "Start apps when media is connected or inserted"
+msgstr "Ortam bağlanınca ya da yerleştirilince uygulamaları başlat"
+
+#: panels/applications/cc-applications-panel.ui:144
 msgid "App Settings"
 msgstr "Uygulama Ayarları"
 
-#: panels/applications/cc-applications-panel.ui:189
+#: panels/applications/cc-applications-panel.ui:164
 msgid ""
 "App settings cannot be fully enforced for apps which are not sandboxed. "
 "These apps may use permissions which are not shown."
@@ -164,27 +175,26 @@ msgstr ""
 "Uygulama ayarları, yalıtılmamış uygulamalara tümüyle uygulanamaz. Bu "
 "uygulamalar gösterilmeyen izinler kullanabilir."
 
-#: panels/applications/cc-applications-panel.ui:232
+#: panels/applications/cc-applications-panel.ui:207
 #: panels/printers/pp-details-dialog.c:267
-#: panels/sharing/cc-sharing-panel.c:297
+#: panels/sharing/cc-sharing-panel.c:240
 msgid "_Open"
 msgstr "_Aç"
 
-#: panels/applications/cc-applications-panel.ui:244
+#: panels/applications/cc-applications-panel.ui:219
 msgid "App _Details"
 msgstr "Uygulama _Ayrıntıları"
 
-#: panels/applications/cc-applications-panel.ui:262
+#: panels/applications/cc-applications-panel.ui:237
 msgid "Permissions"
 msgstr "İzinler"
 
-#: panels/applications/cc-applications-panel.ui:265
-#: panels/applications/cc-applications-panel.ui:273
+#. Translators: This row shows/sets whether the app shown in this page can add results to the GNOME Shell search results. Internally this enables/disables the app's Shell Search Provider
+#: panels/applications/cc-applications-panel.ui:240
 msgid "_Search"
 msgstr "_Ara"
 
-#: panels/applications/cc-applications-panel.ui:266
-#: panels/applications/cc-applications-panel.ui:274
+#: panels/applications/cc-applications-panel.ui:241
 msgid "Receive system searches and send results"
 msgstr "Sistem aramaları al ve sonuçları gönder"
 
@@ -193,246 +203,238 @@ msgstr "Sistem aramaları al ve sonuçları gönder"
 #.
 #. translators:
 #. * The device has been disabled
-#: panels/applications/cc-applications-panel.ui:275
-#: panels/applications/cc-applications-panel.ui:322
-#: panels/applications/cc-applications-panel.ui:344
-#: panels/applications/cc-applications-panel.ui:359
-#: panels/applications/cc-applications-panel.ui:374
+#: panels/applications/cc-applications-panel.ui:250
+#: panels/applications/cc-applications-panel.ui:297
+#: panels/applications/cc-applications-panel.ui:319
+#: panels/applications/cc-applications-panel.ui:334
+#: panels/applications/cc-applications-panel.ui:349
 #: panels/keyboard/cc-keyboard-shortcut-editor.ui:123
 #: panels/keyboard/cc-xkb-modifier-dialog.c:342
 #: panels/keyboard/keyboard-shortcuts.c:367
 #: panels/system/users/cc-user-page.c:379
-#: panels/system/users/cc-user-page.c:745 panels/wwan/cc-wwan-device-page.c:477
-#: subprojects/gvc/gvc-mixer-control.c:1908
+#: panels/system/users/cc-user-page.c:749 panels/wwan/cc-wwan-device-page.c:477
+#: subprojects/gvc/gvc-mixer-control.c:1872
 msgid "Disabled"
 msgstr "Devre dışı"
 
-#: panels/applications/cc-applications-panel.ui:280
+#: panels/applications/cc-applications-panel.ui:255
 msgid "_Notifications"
 msgstr "_Bildirimler"
 
-#: panels/applications/cc-applications-panel.ui:281
+#: panels/applications/cc-applications-panel.ui:256
 msgid "Show system notifications"
 msgstr "Sistem bildirimlerini göster"
 
-#: panels/applications/cc-applications-panel.ui:288
+#: panels/applications/cc-applications-panel.ui:263
 msgid "_Run in Background"
 msgstr "Arka Planda _Çalış"
 
-#: panels/applications/cc-applications-panel.ui:289
+#: panels/applications/cc-applications-panel.ui:264
 msgid "Allow activity when the app is closed"
 msgstr "Uygulama kapanınca etkinliğe izin ver"
 
-#: panels/applications/cc-applications-panel.ui:296
+#: panels/applications/cc-applications-panel.ui:271
 msgid "Scr_eenshots"
 msgstr "_Ekran Görüntüleri"
 
-#: panels/applications/cc-applications-panel.ui:297
+#: panels/applications/cc-applications-panel.ui:272
 msgid "Take pictures of the screen at any time"
 msgstr "Herhangi bir zamanda ekranın resimlerini çek"
 
-#: panels/applications/cc-applications-panel.ui:304
+#: panels/applications/cc-applications-panel.ui:279
 msgid "Change _Wallpaper"
 msgstr "_Duvar Kağıdını Değiştir"
 
-#: panels/applications/cc-applications-panel.ui:305
+#: panels/applications/cc-applications-panel.ui:280
 msgid "Change the desktop wallpaper"
 msgstr "Masaüstü duvar kağıdını değiştir"
 
-#: panels/applications/cc-applications-panel.ui:312
-#: panels/applications/cc-applications-panel.ui:320
+#: panels/applications/cc-applications-panel.ui:287
+#: panels/applications/cc-applications-panel.ui:295
 msgid "So_unds"
 msgstr "_Sesler"
 
-#: panels/applications/cc-applications-panel.ui:313
-#: panels/applications/cc-applications-panel.ui:321
+#: panels/applications/cc-applications-panel.ui:288
+#: panels/applications/cc-applications-panel.ui:296
 msgid "Reproduce sounds"
 msgstr "Sesleri türet"
 
-#: panels/applications/cc-applications-panel.ui:327
+#: panels/applications/cc-applications-panel.ui:302
 msgid "_Inhibit Shortcuts"
 msgstr "_Kısayolları Kısıtla"
 
-#: panels/applications/cc-applications-panel.ui:328
+#: panels/applications/cc-applications-panel.ui:303
 msgid "Block standard keyboard shortcuts"
 msgstr "Standart klavye kısayollarını engelle"
 
-#: panels/applications/cc-applications-panel.ui:335
+#: panels/applications/cc-applications-panel.ui:310
 msgid "Camera"
 msgstr "Kamera"
 
-#: panels/applications/cc-applications-panel.ui:336
-#: panels/applications/cc-applications-panel.ui:343
+#: panels/applications/cc-applications-panel.ui:311
+#: panels/applications/cc-applications-panel.ui:318
 msgid "Take pictures with the camera"
 msgstr "Kamerayla fotoğraf çek"
 
-#: panels/applications/cc-applications-panel.ui:342
+#: panels/applications/cc-applications-panel.ui:317
 msgid "C_amera"
 msgstr "_Kamera"
 
-#: panels/applications/cc-applications-panel.ui:349
-#: panels/applications/cc-applications-panel.ui:357
+#: panels/applications/cc-applications-panel.ui:324
+#: panels/applications/cc-applications-panel.ui:332
 msgid "_Microphone"
 msgstr "_Mikrofon"
 
-#: panels/applications/cc-applications-panel.ui:350
-#: panels/applications/cc-applications-panel.ui:358
+#: panels/applications/cc-applications-panel.ui:325
+#: panels/applications/cc-applications-panel.ui:333
 msgid "Record audio with the microphone"
 msgstr "Mikrofonla ses kaydet"
 
-#: panels/applications/cc-applications-panel.ui:364
-#: panels/applications/cc-applications-panel.ui:372
+#: panels/applications/cc-applications-panel.ui:339
+#: panels/applications/cc-applications-panel.ui:347
 msgid "_Location Services"
 msgstr "_Konum Hizmetleri"
 
-#: panels/applications/cc-applications-panel.ui:365
-#: panels/applications/cc-applications-panel.ui:373
+#: panels/applications/cc-applications-panel.ui:340
+#: panels/applications/cc-applications-panel.ui:348
 msgid "Access device location data"
 msgstr "Aygıt konum bilgisine eriş"
 
-#: panels/applications/cc-applications-panel.ui:384
+#: panels/applications/cc-applications-panel.ui:359
 msgid "Re_quired Access"
 msgstr "_Gerekli Erişim"
 
-#: panels/applications/cc-applications-panel.ui:385
+#: panels/applications/cc-applications-panel.ui:360
 msgid "System access that is required by the app"
 msgstr "Uygulamanın gereksindiği sistem erişimi"
 
-#: panels/applications/cc-applications-panel.ui:396
+#: panels/applications/cc-applications-panel.ui:371
 #: panels/mouse/cc-mouse-panel.ui:66
 #: panels/multitasking/cc-multitasking-panel.ui:15
-#: panels/power/cc-power-panel.ui:185
+#: panels/power/cc-power-panel.ui:171
 msgid "General"
 msgstr "Genel"
 
-#: panels/applications/cc-applications-panel.ui:399
+#: panels/applications/cc-applications-panel.ui:374
 msgid "_File &amp; Link Associations"
 msgstr "_Dosya ve Bağlantı İlişkileri"
 
-#: panels/applications/cc-applications-panel.ui:407
+#: panels/applications/cc-applications-panel.ui:382
 msgid "S_torage"
 msgstr "_Depolama"
 
-#: panels/applications/cc-applications-panel.ui:430
+#: panels/applications/cc-applications-panel.ui:405
 msgid "Required Access"
 msgstr "Gerekli Erişim"
 
-#: panels/applications/cc-applications-panel.ui:476
+#: panels/applications/cc-applications-panel.ui:451
 msgid "File & Link Associations"
 msgstr "Dosya ve Bağlantı İlişkileri"
 
-#: panels/applications/cc-applications-panel.ui:505
+#: panels/applications/cc-applications-panel.ui:480
 msgid "File Types"
 msgstr "Dosya Türleri"
 
-#: panels/applications/cc-applications-panel.ui:511
+#: panels/applications/cc-applications-panel.ui:486
 msgid "Link Types"
 msgstr "Bağlantı Türleri"
 
-#: panels/applications/cc-applications-panel.ui:521
+#: panels/applications/cc-applications-panel.ui:496
 msgid "_Reset"
 msgstr "_Sıfırla"
 
-#: panels/applications/cc-applications-panel.ui:542
+#: panels/applications/cc-applications-panel.ui:517
 msgid "Storage"
 msgstr "Depolama"
 
-#: panels/applications/cc-applications-panel.ui:567
+#: panels/applications/cc-applications-panel.ui:542
 msgid "How much disk space this app is occupying with app data and caches"
 msgstr ""
 "Bu uygulamanın uygulama verisi ve önbelleklerle ne kadar disk alanı kapladığı"
 
-#: panels/applications/cc-applications-panel.ui:572
+#: panels/applications/cc-applications-panel.ui:547
 msgid "App"
 msgstr "Uygulama"
 
-#: panels/applications/cc-applications-panel.ui:578
+#: panels/applications/cc-applications-panel.ui:553
 msgid "Data"
 msgstr "Veri"
 
-#: panels/applications/cc-applications-panel.ui:584
+#: panels/applications/cc-applications-panel.ui:559
 msgid "Cache"
 msgstr "Önbellek"
 
-#: panels/applications/cc-applications-panel.ui:590
+#: panels/applications/cc-applications-panel.ui:565
 msgid "<b>Total</b>"
 msgstr "<b>Toplam</b>"
 
-#: panels/applications/cc-applications-panel.ui:600
+#: panels/applications/cc-applications-panel.ui:575
 msgid "_Clear Cache"
 msgstr "Önbelleği _Temizle"
 
-#: panels/applications/cc-default-apps-page.ui:4
-msgid "Links &amp; Files"
-msgstr "Bağlantılar ve Dosyalar"
-
-#: panels/applications/cc-default-apps-page.ui:5
-msgid "Apps which are used to open common links and files"
-msgstr "Yaygın bağlantıları ve dosyaları açmada kullanılan uygulamalar"
-
-#: panels/applications/cc-default-apps-page.ui:8
+#: panels/applications/cc-default-apps-page.ui:7
 msgid "_Web"
 msgstr "_Web"
 
-#: panels/applications/cc-default-apps-page.ui:17
+#: panels/applications/cc-default-apps-page.ui:16
 msgid "_Mail"
 msgstr "_Posta"
 
-#: panels/applications/cc-default-apps-page.ui:25
+#: panels/applications/cc-default-apps-page.ui:24
 msgid "_Calendar"
 msgstr "_Takvim"
 
-#: panels/applications/cc-default-apps-page.ui:33
+#: panels/applications/cc-default-apps-page.ui:32
 msgid "M_usic"
 msgstr "M_üzik"
 
-#: panels/applications/cc-default-apps-page.ui:42
+#: panels/applications/cc-default-apps-page.ui:41
 msgid "_Video"
 msgstr "_Video"
 
-#: panels/applications/cc-default-apps-page.ui:51
+#: panels/applications/cc-default-apps-page.ui:50
 msgid "_Photos"
 msgstr "_Fotoğraflar"
 
 # Telefonla Arama anlamında.
 #. Translators: This is a telephone call
-#: panels/applications/cc-default-apps-page.ui:61
+#: panels/applications/cc-default-apps-page.ui:60
 msgid "Ca_lls"
 msgstr "_Aramalar"
 
-#: panels/applications/cc-default-apps-page.ui:70
+#: panels/applications/cc-default-apps-page.ui:69
 msgid "_SMS"
 msgstr "_SMS"
 
-#: panels/applications/cc-removable-media-settings.c:289
+#: panels/applications/cc-removable-media-settings.c:287
 msgid "Ask what to do"
 msgstr "Yapılacak şeyi sor"
 
-#: panels/applications/cc-removable-media-settings.c:293
+#: panels/applications/cc-removable-media-settings.c:291
 msgid "Do nothing"
 msgstr "Bir şey yapma"
 
-#: panels/applications/cc-removable-media-settings.c:297
+#: panels/applications/cc-removable-media-settings.c:295
 msgid "Open folder"
 msgstr "Klasör aç"
 
-#: panels/applications/cc-removable-media-settings.c:388
+#: panels/applications/cc-removable-media-settings.c:386
 msgid "Select an app for audio CDs"
 msgstr "Ses CD’leri için uygulama seç"
 
-#: panels/applications/cc-removable-media-settings.c:389
+#: panels/applications/cc-removable-media-settings.c:387
 msgid "Select an app for video DVDs"
 msgstr "Video DVD’leri için uygulama seç"
 
-#: panels/applications/cc-removable-media-settings.c:390
+#: panels/applications/cc-removable-media-settings.c:388
 msgid "Select an app to run when a music player is connected"
 msgstr "Müzik çalar bağlandığında çalıştırılacak uygulamayı seç"
 
-#: panels/applications/cc-removable-media-settings.c:391
+#: panels/applications/cc-removable-media-settings.c:389
 msgid "Select an app to run when a camera is connected"
 msgstr "Kamera bağlandığında çalıştırılacak uygulamayı seç"
 
-#: panels/applications/cc-removable-media-settings.c:392
+#: panels/applications/cc-removable-media-settings.c:390
 msgid "Select an app for software CDs"
 msgstr "Yazılım CD’leri için uygulama seç"
 
@@ -441,107 +443,91 @@ msgstr "Yazılım CD’leri için uygulama seç"
 #. * If the shared-mime-info translation works for your language,
 #. * simply leave these untranslated.
 #.
-#: panels/applications/cc-removable-media-settings.c:404
+#: panels/applications/cc-removable-media-settings.c:402
 msgid "audio DVD"
 msgstr "ses DVD’si"
 
-#: panels/applications/cc-removable-media-settings.c:405
+#: panels/applications/cc-removable-media-settings.c:403
 msgid "blank Blu-ray disc"
 msgstr "boş Blu-ray diski"
 
-#: panels/applications/cc-removable-media-settings.c:406
+#: panels/applications/cc-removable-media-settings.c:404
 msgid "blank CD disc"
 msgstr "boş CD diski"
 
-#: panels/applications/cc-removable-media-settings.c:407
+#: panels/applications/cc-removable-media-settings.c:405
 msgid "blank DVD disc"
 msgstr "boş DVD diski"
 
-#: panels/applications/cc-removable-media-settings.c:408
+#: panels/applications/cc-removable-media-settings.c:406
 msgid "blank HD DVD disc"
 msgstr "boş HD DVD diski"
 
-#: panels/applications/cc-removable-media-settings.c:409
+#: panels/applications/cc-removable-media-settings.c:407
 msgid "Blu-ray video disc"
 msgstr "Blu-ray video diski"
 
-#: panels/applications/cc-removable-media-settings.c:410
+#: panels/applications/cc-removable-media-settings.c:408
 msgid "e-book reader"
 msgstr "e-kitap okuyucu"
 
-#: panels/applications/cc-removable-media-settings.c:411
+#: panels/applications/cc-removable-media-settings.c:409
 msgid "HD DVD video disc"
 msgstr "HD DVD video diski"
 
-#: panels/applications/cc-removable-media-settings.c:412
+#: panels/applications/cc-removable-media-settings.c:410
 msgid "Picture CD"
 msgstr "Resim CD’si"
 
-#: panels/applications/cc-removable-media-settings.c:413
+#: panels/applications/cc-removable-media-settings.c:411
 msgid "Super Video CD"
 msgstr "Süper Video CD"
 
-#: panels/applications/cc-removable-media-settings.c:414
+#: panels/applications/cc-removable-media-settings.c:412
 msgid "Video CD"
 msgstr "Video CD"
 
-#: panels/applications/cc-removable-media-settings.c:415
+#: panels/applications/cc-removable-media-settings.c:413
 msgid "Windows software"
 msgstr "Windows yazılımı"
 
-#: panels/applications/cc-removable-media-settings.ui:5
-msgid "Removable Media"
-msgstr "Çıkarılabilir Ortam"
-
-#: panels/applications/cc-removable-media-settings.ui:6
-msgid "Apps which are launched when media or drives are connected"
-msgstr "Ortam ya da sürücüler bağlandığında başlatılacak uygulamalar"
-
-#: panels/applications/cc-removable-media-settings.ui:9
-msgid "D_isable Autostart"
-msgstr "Kendiliğinden Başlatı _Devre Dışı Bırak"
-
-#: panels/applications/cc-removable-media-settings.ui:10
-msgid "Never prompt or start apps on media insertion"
-msgstr "Ortam takıldığında asla uygulama başlatma ve sorma"
-
-#: panels/applications/cc-removable-media-settings.ui:16
+#: panels/applications/cc-removable-media-settings.ui:7
 msgid "CD _Audio"
 msgstr "CD _Sesi"
 
-#: panels/applications/cc-removable-media-settings.ui:29
+#: panels/applications/cc-removable-media-settings.ui:20
 msgid "_DVD Video"
 msgstr "_DVD Videosu"
 
-#: panels/applications/cc-removable-media-settings.ui:42
+#: panels/applications/cc-removable-media-settings.ui:33
 msgid "Music Pla_yer"
 msgstr "_Müzik Çalar"
 
-#: panels/applications/cc-removable-media-settings.ui:55
+#: panels/applications/cc-removable-media-settings.ui:46
 msgid "P_hotos"
 msgstr "_Fotoğraflar"
 
-#: panels/applications/cc-removable-media-settings.ui:68
+#: panels/applications/cc-removable-media-settings.ui:59
 msgid "Sof_tware"
 msgstr "_Yazılım"
 
-#: panels/applications/cc-removable-media-settings.ui:81
+#: panels/applications/cc-removable-media-settings.ui:72
 msgid "_Other Media"
 msgstr "_Diğer Ortamlar"
 
-#: panels/applications/cc-removable-media-settings.ui:83
+#: panels/applications/cc-removable-media-settings.ui:74
 msgid "Select how other media should be handled"
 msgstr "Diğer ortamların nasıl kullanılacağını seç"
 
-#: panels/applications/cc-removable-media-settings.ui:100
+#: panels/applications/cc-removable-media-settings.ui:91
 msgid "Other Media"
 msgstr "Diğer Ortamlar"
 
-#: panels/applications/cc-removable-media-settings.ui:132
+#: panels/applications/cc-removable-media-settings.ui:123
 msgid "_Type"
 msgstr "_Tür"
 
-#: panels/applications/cc-removable-media-settings.ui:152
+#: panels/applications/cc-removable-media-settings.ui:143
 msgid "_Action"
 msgstr "_Eylem"
 
@@ -783,30 +769,30 @@ msgstr ""
 "kendiliğinden çalıştır;otomatik çalıştır;cd;dvd;usb;ses;video;görüntü;disk;"
 "çıkarılabilir;çıkartılabilir;kaldırılabilir;aygıt;cihaz;sistem;"
 
-#: panels/background/cc-background-chooser.c:157
+#: panels/background/cc-background-chooser.c:160
 msgid "Remove Background"
 msgstr "Arka Planı Kaldır"
 
-#: panels/background/cc-background-chooser.c:339
+#: panels/background/cc-background-chooser.c:345
 msgid "Select a picture"
 msgstr "Resim seç"
 
-#: panels/background/cc-background-item.c:170
+#: panels/background/cc-background-item.c:173
 msgid "multiple sizes"
 msgstr "birden çok boyut"
 
 #. translators: 100 × 100px
 #. * Note that this is not an "x", but U+00D7 MULTIPLICATION SIGN
-#: panels/background/cc-background-item.c:177
+#: panels/background/cc-background-item.c:180
 #, c-format
 msgid "%d × %d"
 msgstr "%d × %d"
 
-#: panels/background/cc-background-item.c:292
+#: panels/background/cc-background-item.c:295
 msgid "No Desktop Background"
 msgstr "Masaüstü Arka Planı Yok"
 
-#: panels/background/cc-background-panel.c:226
+#: panels/background/cc-background-panel.c:212
 msgid "Current background"
 msgstr "Geçerli arka plan"
 
@@ -983,8 +969,8 @@ msgstr "Ekran Kalibrasyonu"
 
 #: panels/color/cc-color-calibrate.ui:22
 #: panels/common/cc-language-chooser.ui:21
-#: panels/display/cc-display-panel.ui:37 panels/display/cc-display-panel.ui:192
-#: panels/display/cc-display-panel.ui:254
+#: panels/display/cc-display-panel.ui:37 panels/display/cc-display-panel.ui:191
+#: panels/display/cc-display-panel.ui:253
 #: panels/keyboard/cc-input-chooser.ui:20
 #: panels/keyboard/cc-keyboard-shortcut-dialog.c:381
 #: panels/keyboard/cc-keyboard-shortcut-editor.ui:15
@@ -995,13 +981,14 @@ msgstr "Ekran Kalibrasyonu"
 #: panels/network/connection-editor/connection-editor.ui:16
 #: panels/printers/new-printer-dialog.ui:54
 #: panels/printers/pp-details-dialog.c:266 panels/privacy/cc-usage-page.c:136
-#: panels/sharing/cc-sharing-panel.c:296
+#: panels/sharing/cc-sharing-panel.c:239
 #: panels/system/region/cc-format-chooser.ui:24
-#: panels/system/users/cc-add-user-dialog.ui:25
+#: panels/system/users/cc-add-user-dialog.ui:34
+#: panels/system/users/cc-enterprise-login-dialog.ui:58
 #: panels/system/users/cc-avatar-chooser.c:92
 #: panels/system/users/cc-fingerprint-dialog.ui:32
 #: panels/system/users/cc-password-dialog.ui:21
-#: panels/system/users/cc-user-page.ui:226
+#: panels/system/users/cc-user-page.ui:222
 #: panels/system/users/data/join-dialog.ui:17
 #: panels/wwan/cc-wwan-mode-dialog.ui:32
 #: panels/wwan/cc-wwan-network-dialog.ui:107
@@ -1305,8 +1292,9 @@ msgstr "Dosyayı _İçe Aktar…"
 #: panels/color/cc-color-panel.ui:390 panels/keyboard/cc-input-chooser.ui:28
 #: panels/keyboard/cc-keyboard-shortcut-editor.ui:33
 #: panels/network/connection-editor/net-connection-editor.c:653
-#: panels/printers/new-printer-dialog.ui:91
-#: panels/system/users/cc-add-user-dialog.ui:39
+#: panels/printers/new-printer-dialog.ui:85
+#: panels/system/users/cc-add-user-dialog.ui:48
+#: panels/system/users/cc-enterprise-login-dialog.ui:66
 msgid "_Add"
 msgstr "_Ekle"
 
@@ -1625,7 +1613,7 @@ msgid_plural "%d hours"
 msgstr[0] "%d saat"
 
 #. Translators: Option for "Blank Screen" in "Power" panel
-#: panels/common/cc-util.c:184 panels/power/cc-power-panel.c:805
+#: panels/common/cc-util.c:184 panels/power/cc-power-panel.c:790
 #, c-format
 msgid "%d minute"
 msgid_plural "%d minutes"
@@ -1684,14 +1672,14 @@ msgid "Hotspot"
 msgstr "Erişim Noktası"
 
 #: panels/display/cc-display-panel.c:510
-#: panels/notifications/cc-notifications-panel.c:212
-#: panels/power/cc-power-panel.c:693 panels/power/cc-power-panel.c:700
+#: panels/notifications/cc-notifications-panel.c:213
+#: panels/power/cc-power-panel.c:679 panels/power/cc-power-panel.c:686
 msgid "On"
 msgstr "Açık"
 
 #: panels/display/cc-display-panel.c:512 panels/network/cc-net-proxy-page.c:182
-#: panels/notifications/cc-notifications-panel.c:212
-#: panels/power/cc-power-panel.c:687 panels/power/cc-power-panel.c:698
+#: panels/notifications/cc-notifications-panel.c:213
+#: panels/power/cc-power-panel.c:673 panels/power/cc-power-panel.c:684
 msgid "Off"
 msgstr "Kapalı"
 
@@ -1712,8 +1700,8 @@ msgstr "Bu donanım kısıtlamalarından kaynaklanabilir."
 msgid "Displays"
 msgstr "Ekranlar"
 
-#: panels/display/cc-display-panel.ui:50 panels/display/cc-display-panel.ui:208
-#: panels/display/cc-display-panel.ui:270
+#: panels/display/cc-display-panel.ui:50 panels/display/cc-display-panel.ui:207
+#: panels/display/cc-display-panel.ui:269
 #: panels/network/connection-editor/connection-editor.ui:23
 msgid "_Apply"
 msgstr "_Uygula"
@@ -1744,39 +1732,55 @@ msgid "_Primary Display"
 msgstr "_Birincil Ekran"
 
 #. This is the redshift functionality where we suppress blue light when the sun has gone down
-#: panels/display/cc-display-panel.ui:159
+#: panels/display/cc-display-panel.ui:158
 #: panels/display/cc-night-light-page.ui:86
 msgid "_Night Light"
 msgstr "_Gece Işığı"
 
-#: panels/display/cc-display-panel.ui:179
+#: panels/display/cc-display-panel.ui:178
 msgid "Night Light"
 msgstr "Gece Işığı"
 
-#: panels/display/cc-display-settings.c:107
+#: panels/display/cc-display-settings.c:111
 msgctxt "Display rotation"
 msgid "Landscape"
 msgstr "Yatay"
 
-#: panels/display/cc-display-settings.c:110
+#: panels/display/cc-display-settings.c:114
 msgctxt "Display rotation"
 msgid "Portrait Right"
 msgstr "Dikey Sağ"
 
-#: panels/display/cc-display-settings.c:113
+#: panels/display/cc-display-settings.c:117
 msgctxt "Display rotation"
 msgid "Portrait Left"
 msgstr "Dikey Sol"
 
-#: panels/display/cc-display-settings.c:116
+#: panels/display/cc-display-settings.c:120
 msgctxt "Display rotation"
 msgid "Landscape (flipped)"
 msgstr "Yatay (ters yüz)"
 
-#: panels/display/cc-display-settings.c:177
+#: panels/display/cc-display-settings.c:181
 #, c-format
 msgid "%.2lf Hz"
 msgstr "%.2lf Hz"
+
+#. Translators:
+#. * 1. "Variable" is an adjective that refers to the refresh rate
+#. * 2. The formatting sequence is a range separated by an en-dash
+#. *    (unicode "\u2013"). For example: "Variable (48–144.97 Hz)"
+#.
+#: panels/display/cc-display-settings.c:198
+#, c-format
+msgid "Variable (%d–%.2lf Hz)"
+msgstr "Değişken (%d–%.2lf Hz)"
+
+#. Translators: "Variable" is an adjective that refers to the refresh rate
+#: panels/display/cc-display-settings.c:205
+#, c-format
+msgid "Variable (up to %.2lf Hz)"
+msgstr "Değişken (azami %.2lf Hz)"
 
 #: panels/display/cc-display-settings.ui:33
 msgctxt "display setting"
@@ -1789,15 +1793,24 @@ msgid "_Resolution"
 msgstr "_Çözünürlük"
 
 #: panels/display/cc-display-settings.ui:49
+#: panels/display/cc-display-settings.ui:57
 msgid "R_efresh Rate"
 msgstr "_Tazeleme Hızı"
 
-#: panels/display/cc-display-settings.ui:57
+#: panels/display/cc-display-settings.ui:66
+msgid "_Variable Refresh Rate"
+msgstr "Değişken _Tazeleme Hızı"
+
+#: panels/display/cc-display-settings.ui:74
+msgid "Re_fresh Rate"
+msgstr "_Tazeleme Hızı"
+
+#: panels/display/cc-display-settings.ui:84
 msgid "Adjust for _TV"
 msgstr "_TV için Uyarla"
 
-#: panels/display/cc-display-settings.ui:65
-#: panels/display/cc-display-settings.ui:81
+#: panels/display/cc-display-settings.ui:92
+#: panels/display/cc-display-settings.ui:108
 msgctxt "display setting"
 msgid "_Scale"
 msgstr "_Ölçekle"
@@ -1827,7 +1840,7 @@ msgstr "Yarına Dek Geçici Olarak Devre Dışı Bırakıldı"
 msgid "Restart Filter"
 msgstr "Süzgeci Yeniden Başlat"
 
-#: panels/display/cc-night-light-page.ui:82
+#: panels/display/cc-night-light-page.ui:80
 msgid ""
 "Night light makes the screen color warmer. This can help to prevent eye "
 "strain and sleeplessness."
@@ -1990,13 +2003,12 @@ msgstr "Web tarayıcısını çalıştır"
 msgid "Home folder"
 msgstr "Ev klasörü"
 
+#. Translators: this is a verb.
+#. Translators: "Search" should be phrased as a verb (in both "Name" and "Keywords" fields).
+#. Translators: this is a verb.
 #: panels/keyboard/01-launchers.xml.in:16
-#: panels/keyboard/cc-input-chooser.ui:50
 #: panels/printers/cc-printers-panel.ui:21
-#: panels/printers/new-printer-dialog.ui:216
-#: panels/search/gnome-search-panel.desktop.in:3
-#: panels/system/region/cc-format-chooser.ui:82 shell/cc-window.ui:28
-#: shell/cc-window.ui:30
+#: panels/search/gnome-search-panel.desktop.in:4 shell/cc-window.ui:28
 msgid "Search"
 msgstr "Arama"
 
@@ -2070,7 +2082,7 @@ msgstr "Diğer"
 msgid "Add Input Source"
 msgstr "Girdi Kaynağı Ekle"
 
-#: panels/keyboard/cc-input-chooser.ui:60
+#: panels/keyboard/cc-input-chooser.ui:57
 msgid "Input methods can’t be used on the login screen"
 msgstr "Girdi yöntemleri oturum açma ekranında kullanılamaz"
 
@@ -2244,16 +2256,16 @@ msgstr "Klavye kullanarak simge ve değişik harfler girmek için yöntemler"
 msgid "A_lternate Characters Key"
 msgstr "Karakterler Tuşunu _Değiştir"
 
-#: panels/keyboard/cc-keyboard-panel.ui:77
+#: panels/keyboard/cc-keyboard-panel.ui:76
 msgid "_Compose Key"
 msgstr "_Birleştirme Tuşu"
 
-#: panels/keyboard/cc-keyboard-panel.ui:87
+#: panels/keyboard/cc-keyboard-panel.ui:85
 #: panels/keyboard/cc-keyboard-shortcut-dialog.ui:9
 msgid "Keyboard Shortcuts"
 msgstr "Klavye Kısayolları"
 
-#: panels/keyboard/cc-keyboard-panel.ui:90
+#: panels/keyboard/cc-keyboard-panel.ui:88
 msgid "_View and Customize Shortcuts"
 msgstr "Kısayolları _Gör ve Özelleştir"
 
@@ -2340,7 +2352,7 @@ msgid "Add Custom Shortcut"
 msgstr "Özel Kısayol Ekle"
 
 #: panels/keyboard/cc-keyboard-shortcut-editor.ui:22
-#: panels/system/users/cc-user-page.ui:227
+#: panels/system/users/cc-user-page.ui:223
 msgid "_Remove"
 msgstr "_Kaldır"
 
@@ -2714,7 +2726,7 @@ msgstr ""
 #: panels/network/connection-editor/ip6-page.ui:37
 #: panels/network/connection-editor/ip6-page.ui:197
 #: panels/network/connection-editor/ip6-page.ui:255
-#: panels/wacom/cc-wacom-page.c:652
+#: panels/wacom/cc-wacom-page.c:611
 msgid "Automatic"
 msgstr "Kendiliğinden"
 
@@ -2849,7 +2861,7 @@ msgid "<b>Password</b>: %s"
 msgstr "<b>Parola</b>: %s"
 
 #: panels/network/cc-qr-code-dialog.ui:9
-#: panels/network/cc-wifi-connection-row.ui:60
+#: panels/network/cc-wifi-connection-row.ui:53
 msgid "Share Network"
 msgstr "Ağ Paylaş"
 
@@ -2894,16 +2906,16 @@ msgid "Signal strength %d%%"
 msgstr "%%%d sinyal gücü"
 
 #. TRANSLATORS: device status
-#: panels/network/cc-wifi-connection-row.ui:41 panels/network/panel-common.c:63
+#: panels/network/cc-wifi-connection-row.ui:35 panels/network/panel-common.c:63
 msgid "Connected"
 msgstr "Bağlı"
 
-#: panels/network/cc-wifi-connection-row.ui:73
+#: panels/network/cc-wifi-connection-row.ui:65
 #: panels/network/network-ethernet.ui:47
 msgid "Network Options"
 msgstr "Ağ Seçenekleri"
 
-#: panels/network/cc-wifi-connection-row.ui:85
+#: panels/network/cc-wifi-connection-row.ui:76
 msgid "Forget Network"
 msgstr "Ağı Unut"
 
@@ -2956,9 +2968,11 @@ msgstr "Ağ Adı"
 
 #. Translators: This is a password needed for printing.
 #: panels/network/cc-wifi-hotspot-dialog.ui:92
-#: panels/printers/new-printer-dialog.ui:302
+#: panels/printers/new-printer-dialog.ui:293
 #: panels/printers/pp-jobs-dialog.ui:54
-#: panels/system/users/cc-add-user-dialog.ui:152
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:110
+#: panels/system/remote-desktop/cc-remote-session-page.ui:108
+#: panels/system/users/cc-add-user-dialog.ui:159
 #: panels/wwan/cc-wwan-apn-dialog.ui:175
 msgid "Password"
 msgstr "Parola"
@@ -3054,8 +3068,8 @@ msgstr "802.1x _Güvenliği"
 #: panels/network/connection-editor/bluetooth-page.ui:16
 #: panels/network/connection-editor/ethernet-page.ui:27
 #: panels/network/connection-editor/vpn-page.ui:23
-#: panels/system/users/cc-add-user-dialog.ui:68
-#: panels/system/users/cc-user-page.ui:88
+#: panels/system/users/cc-add-user-dialog.ui:75
+#: panels/system/users/cc-user-page.ui:84
 msgid "_Name"
 msgstr "_Ad"
 
@@ -3358,7 +3372,7 @@ msgstr "WireGuard"
 #: panels/network/connection-editor/ce-page-wireguard.c:373
 #: panels/privacy/cc-firmware-security-dialog.c:168
 #: panels/sound/cc-alert-chooser-window.c:352
-#: panels/system/about/cc-about-page.c:74
+#: panels/system/about/cc-about-page.c:73
 #: panels/system/about/cc-system-details-window.c:273
 #: panels/system/about/cc-system-details-window.c:325
 #: panels/system/about/cc-system-details-window.c:819
@@ -3402,7 +3416,7 @@ msgstr "Desteklenen Frekanslar"
 #: panels/network/net-device-ethernet.c:162
 #: panels/network/network-mobile.ui:191
 msgid "Default Route"
-msgstr "Öntanımlı Geçit"
+msgstr "Öntanımlı Rota"
 
 #: panels/network/connection-editor/details-page.ui:214
 msgid "Last Used"
@@ -3680,7 +3694,7 @@ msgstr "_MTU"
 
 #: panels/network/connection-editor/wireguard-page.ui:204
 msgid "_Add peer routes"
-msgstr "Eş _Rotaları Ekle"
+msgstr "Eş _rotaları ekle"
 
 #: panels/network/connection-editor/wireguard-page.ui:229
 msgid "_Peers"
@@ -3839,16 +3853,18 @@ msgstr "Ağ silindi"
 msgid "_Undo"
 msgstr "_Geri Al"
 
-#: panels/network/net-device-wifi.c:893
+#. Translators: %d is the number of network connections deleted.
+#: panels/network/net-device-wifi.c:894
 #, c-format
-msgid "%d networks deleted"
-msgstr "%d ağ silindi"
+msgid "%d network deleted"
+msgid_plural "%d networks deleted"
+msgstr[0] "%d ağ silindi"
 
-#: panels/network/net-device-wifi.c:1135
+#: panels/network/net-device-wifi.c:1140
 msgid "System policy prohibits use as a Hotspot"
 msgstr "Sistem ilkeleri Erişim Noktası olarak kullanmayı yasaklıyor"
 
-#: panels/network/net-device-wifi.c:1138
+#: panels/network/net-device-wifi.c:1143
 msgid "Wireless device does not support Hotspot mode"
 msgstr "Kablosuz aygıt Erişim Noktası kipini desteklememektedir"
 
@@ -3900,23 +3916,23 @@ msgstr "Kablosuzu Kapat"
 msgid "Saved Networks"
 msgstr "Kayıtlı Ağlar"
 
-#: panels/network/network-wifi.ui:86
+#: panels/network/network-wifi.ui:85
 msgid "Show Saved Networks"
 msgstr "Kayıtlı Ağları Göster"
 
-#: panels/network/network-wifi.ui:94
+#: panels/network/network-wifi.ui:93
 msgid "_Connect to Hidden Network…"
 msgstr "Gizli Ağa _Bağlan…"
 
-#: panels/network/network-wifi.ui:99
+#: panels/network/network-wifi.ui:97
 msgid "Connect to hidden network"
 msgstr "Gizli ağa bağlan"
 
-#: panels/network/network-wifi.ui:107
+#: panels/network/network-wifi.ui:105
 msgid "_Turn On Wi-Fi Hotspot…"
 msgstr "Kablosuz Erişim Nok_tasını Aç…"
 
-#: panels/network/network-wifi.ui:117
+#: panels/network/network-wifi.ui:114
 msgid "Saved Wi-Fi Networks"
 msgstr "Kayıtlı Kablosuz Ağlar"
 
@@ -4243,61 +4259,47 @@ msgstr "Hangi bildirimlerin gösterileceğini ve ne göstereceklerini ayarlayın
 msgid "Notifications;Banner;Message;Tray;Popup;"
 msgstr "Bildirimler;Pencerecik;İleti;Mesaj;Tepsi;Açılır Pencere;"
 
-#: panels/online-accounts/cc-online-account-provider-row.c:95
+#: panels/online-accounts/cc-online-account-provider-row.c:55
+msgid "Email"
+msgstr "E-posta"
+
+#. IMAP and SMTP
+#: panels/online-accounts/cc-online-account-provider-row.c:56
+msgid "Calendar, Contacts and Files"
+msgstr "Takvim, Kişiler ve Dosyalar"
+
+#. WebDAV
+#. Nextcloud
+#. Google
+#. Microsoft 365
+#. Microsoft Exchange
+#. Microsoft Personal
+#: panels/online-accounts/cc-online-account-provider-row.c:62
+msgid "Enterprise Login"
+msgstr "Kurumsal Giriş"
+
+#: panels/online-accounts/cc-online-account-provider-row.c:136
 msgctxt "Online Account"
 msgid "Other"
 msgstr "Diğer"
 
-#. Translators: The %s is the username (eg., debarshi.ray@gmail.com
-#. * or rishi).
-#.
-#: panels/online-accounts/cc-online-accounts-panel.c:280
-#, c-format
-msgid "%s removed"
-msgstr "%s kaldırıldı"
-
-#: panels/online-accounts/cc-online-accounts-panel.c:696
-msgid "Error removing account"
-msgstr "Hesap kaldırılırken hata oluştu"
-
-#. Translators: This is the button which allows undoing the removal of the printer.
-#: panels/online-accounts/cc-online-accounts-panel.ui:29
-#: panels/printers/cc-printers-panel.ui:81
-msgid "Undo"
-msgstr "Geri Al"
-
-#: panels/online-accounts/cc-online-accounts-panel.ui:37
-msgid "Close the notification"
-msgstr "Bildirimi kapat"
-
-#: panels/online-accounts/cc-online-accounts-panel.ui:61
+#: panels/online-accounts/cc-online-accounts-panel.ui:16
 msgid "Offline — unable to connect accounts"
 msgstr "Çevrim dışı — hesaplara bağlanamadı"
 
-#: panels/online-accounts/cc-online-accounts-panel.ui:67
+#: panels/online-accounts/cc-online-accounts-panel.ui:22
 msgid "Allow apps to access online services by connecting your cloud accounts"
 msgstr ""
 "Bulut hesaplarınızı bağlayarak uygulamaların çevrim içi hizmetlere "
 "erişmesine izin verin"
 
-#: panels/online-accounts/cc-online-accounts-panel.ui:71
+#: panels/online-accounts/cc-online-accounts-panel.ui:26
 msgid "Your Accounts"
 msgstr "Hesaplarınız"
 
-#: panels/online-accounts/cc-online-accounts-panel.ui:91
+#: panels/online-accounts/cc-online-accounts-panel.ui:46
 msgid "Connect an Account"
 msgstr "Hesap Bağla"
-
-#. translators: This is the title of the "Show Account" dialog. The
-#. * %s is the name of the provider. e.g., 'Google'.
-#: panels/online-accounts/gnome-control-center-goa-helper.c:428
-#, c-format
-msgid "%s Account"
-msgstr "%s Hesabı"
-
-#: panels/online-accounts/gnome-control-center-goa-helper.c:431
-msgid "Remove Account"
-msgstr "Hesabı Kaldır"
 
 #: panels/online-accounts/gnome-online-accounts-panel.desktop.in:3
 msgid "Online Accounts"
@@ -4463,65 +4465,61 @@ msgstr "Ek"
 msgid "%d %%"
 msgstr "%%%d"
 
-#: panels/power/cc-power-panel.c:208
+#: panels/power/cc-power-panel.c:201
 msgid "Battery Levels"
 msgstr "Pil Düzeyleri"
 
 #. Translators: UPS is an Uninterruptible Power Supply:
 #. * https://en.wikipedia.org/wiki/Uninterruptible_power_supply
-#: panels/power/cc-power-panel.c:213
+#: panels/power/cc-power-panel.c:206
 msgid "UPS"
 msgstr "Kesintisiz Güç Kaynağı"
 
-#: panels/power/cc-power-panel.c:216
+#: panels/power/cc-power-panel.c:209
 msgid "Battery Level"
 msgstr "Pil Düzeyi"
 
-#: panels/power/cc-power-panel.c:470
+#: panels/power/cc-power-panel.c:463
 msgid "When _Idle"
 msgstr "_Boşta Olduğunda"
 
-#: panels/power/cc-power-panel.c:630
+#: panels/power/cc-power-panel.c:616
 msgid "Suspend"
 msgstr "Askıya al"
 
-#: panels/power/cc-power-panel.c:631
+#: panels/power/cc-power-panel.c:617
 msgid "Power Off"
 msgstr "Kapat"
 
-#: panels/power/cc-power-panel.c:632
+#: panels/power/cc-power-panel.c:618
 msgid "Hibernate"
 msgstr "Hazırda Beklet"
 
-#: panels/power/cc-power-panel.c:633
+#: panels/power/cc-power-panel.c:619
 msgid "Nothing"
 msgstr "Hiçbir şey"
 
-#: panels/power/cc-power-panel.c:689
+#: panels/power/cc-power-panel.c:675
 msgid "When on battery power"
 msgstr "Pille çalışırken"
 
-#: panels/power/cc-power-panel.c:691
+#: panels/power/cc-power-panel.c:677
 msgid "When plugged in"
 msgstr "Fişe takıldığında"
 
-#: panels/power/cc-power-panel.c:812
+#: panels/power/cc-power-panel.c:797
 msgctxt "Idle time"
 msgid "Never"
 msgstr "Asla"
 
-#: panels/power/cc-power-panel.c:897
-msgid "Automatic suspend"
-msgstr "Kendiliğinden askıya al"
-
-#: panels/power/cc-power-panel.c:993
+#: panels/power/cc-power-panel.c:975
 msgid ""
 "Performance mode temporarily disabled due to high operating temperature."
 msgstr ""
 "Yüksek çalışma sıcaklığı nedeniyle başarım kipi geçici olarak devre dışı "
 "bırakıldı."
 
-#: panels/power/cc-power-panel.c:995
+#: panels/power/cc-power-panel.c:977
 msgid ""
 "Lap detected: performance mode temporarily unavailable. Move the device to a "
 "stable surface to restore."
@@ -4529,11 +4527,11 @@ msgstr ""
 "Diz saptandı: başarım kipi geçici olarak kullanılamıyor. Düzeltmek için "
 "aygıtı sabit yüzeye taşıyın."
 
-#: panels/power/cc-power-panel.c:997
+#: panels/power/cc-power-panel.c:979
 msgid "Performance mode temporarily disabled."
 msgstr "Başarım kipi geçici olarak devre dışı bırakıldı."
 
-#: panels/power/cc-power-panel.c:1039
+#: panels/power/cc-power-panel.c:1021
 msgid ""
 "Low battery: power saver enabled. Previous mode will be restored when "
 "battery is sufficiently charged."
@@ -4542,13 +4540,13 @@ msgstr ""
 "dönülecek."
 
 #. translators: "%s" is an application name
-#: panels/power/cc-power-panel.c:1047
+#: panels/power/cc-power-panel.c:1029
 #, c-format
 msgid "Power Saver mode activated by “%s”."
 msgstr "“%s”, Güç Tutum kipini etkinleştirdi."
 
 #. translators: "%s" is an application name
-#: panels/power/cc-power-panel.c:1051
+#: panels/power/cc-power-panel.c:1033
 #, c-format
 msgid "Performance mode activated by “%s”."
 msgstr "“%s”, başarım kipini etkinleştirdi."
@@ -4621,79 +4619,79 @@ msgstr "Bağlı Aygıtlar"
 msgid "Power Mode"
 msgstr "Güç Kipi"
 
-#: panels/power/cc-power-panel.ui:127
+#: panels/power/cc-power-panel.ui:126
 msgid "Power Saving"
 msgstr "Güç Tutumu"
 
-#: panels/power/cc-power-panel.ui:130
+#: panels/power/cc-power-panel.ui:129
 msgid "A_utomatic Screen Brightness"
 msgstr "_Kendiliğinden Ekran Parlaklığı"
 
-#: panels/power/cc-power-panel.ui:131
-msgid "Screen brightness adjusts to the surrounding light"
-msgstr "Ekran parlaklığı çevredeki ışığa uyarlanacak"
+#: panels/power/cc-power-panel.ui:130
+msgid "Adjust screen brightness to the surrounding light"
+msgstr "Ekran parlaklığını çevredeki ışığa uyarla"
 
-#: panels/power/cc-power-panel.ui:138
+#: panels/power/cc-power-panel.ui:137
 msgid "_Dim Screen"
 msgstr "_Ekran Işığını Azalt"
 
-#: panels/power/cc-power-panel.ui:139
-msgid "Reduces the screen brightness when the computer is inactive"
-msgstr "Bilgisayar kullanılmıyorken ekran parlaklığını düşürür"
+#: panels/power/cc-power-panel.ui:138
+msgid "Reduce screen brightness when the computer is inactive"
+msgstr "Bilgisayar kullanılmıyorken ekran parlaklığını düşür"
 
-#: panels/power/cc-power-panel.ui:145
+#: panels/power/cc-power-panel.ui:144
 msgid "Screen _Blank"
 msgstr "Ekranı _Kapat"
 
-#: panels/power/cc-power-panel.ui:146
-msgid "Turns the screen off after a period of inactivity"
-msgstr "Bir süre işlem yapılmadığında ekranı kapatır"
+#: panels/power/cc-power-panel.ui:145
+msgid "Turn the screen off after a period of inactivity"
+msgstr "Bir süre işlem yapılmadığında ekranı kapat"
 
-#: panels/power/cc-power-panel.ui:154
+#: panels/power/cc-power-panel.ui:153
 msgid "Automatic Power _Saver"
 msgstr "Kendiliğinden Güç _Tutumu"
 
-#: panels/power/cc-power-panel.ui:155
-msgid "Enables power saver mode when battery is low"
-msgstr "Pil düşükken güç tutum kipini etkinleştirir"
+#: panels/power/cc-power-panel.ui:154
+msgid "Turn on power saver mode when battery power is low"
+msgstr "Pil düşükken güç tutumu kipini aç"
 
-#: panels/power/cc-power-panel.ui:162
+#: panels/power/cc-power-panel.ui:161
 msgid "_Automatic Suspend"
 msgstr "_Kendiliğinden Askıya Al"
 
-#: panels/power/cc-power-panel.ui:163
-msgid "Pauses the computer after a period of inactivity"
-msgstr "Bir süre işlem yapılmadığında bilgisayarı duraklatır"
+#: panels/power/cc-power-panel.ui:162
+msgid "Pause the computer after a period of inactivity"
+msgstr "Bir süre işlem yapılmadığında bilgisayarı duraklat"
 
-#: panels/power/cc-power-panel.ui:189
+#: panels/power/cc-power-panel.ui:175
 msgid "Po_wer Button Behavior"
 msgstr "_Güç Düğmesi Davranışı"
 
-#: panels/power/cc-power-panel.ui:197
+#: panels/power/cc-power-panel.ui:183
 msgid "Show Battery _Percentage"
 msgstr "Pil _Yüzdesini Göster"
 
-#: panels/power/cc-power-panel.ui:198
+#: panels/power/cc-power-panel.ui:184
 msgid "Show exact charge level in the top bar"
 msgstr "Üst çubukta tam şarj düzeyini göster"
 
-#: panels/power/cc-power-panel.ui:230
+#: panels/power/cc-power-panel.ui:197
 msgid "Automatic Suspend"
 msgstr "Kendiliğinden Askıya Al"
 
-#: panels/power/cc-power-panel.ui:259
+#: panels/power/cc-power-panel.ui:226
 msgid "On _Battery Power"
 msgstr "_Pil ile Çalışırken"
 
-#: panels/power/cc-power-panel.ui:266
+#: panels/power/cc-power-panel.ui:233
 msgid "_Delay"
 msgstr "_Gecikme"
 
-#: panels/power/cc-power-panel.ui:284
+#: panels/power/cc-power-panel.ui:251
 msgid "_Plugged In"
 msgstr "_Fişe Takılıyken"
 
-#: panels/power/cc-power-panel.ui:290
+#: panels/power/cc-power-panel.ui:257
 msgid "D_elay"
 msgstr "G_ecikme"
 
@@ -4752,36 +4750,41 @@ msgstr "“%s” yazıcısı silindi"
 msgid "Failed to add new printer."
 msgstr "Yeni yazıcı eklenemedi."
 
-#: panels/printers/cc-printers-panel.c:1284
+#: panels/printers/cc-printers-panel.c:1293
 msgid "Unlock to add printers and change settings"
 msgstr "Yazıcı eklemek ve ayarları değiştirmek için kilidi aç"
 
-#: panels/printers/cc-printers-panel.ui:30
+#: panels/printers/cc-printers-panel.ui:27
 msgid "All Connected and Network Printers"
 msgstr "Tüm Bağlı ve Ağ Yazıcıları"
 
 #. Translators: This button adds new printer.
 #. Translators: This button adds a new printer.
-#: panels/printers/cc-printers-panel.ui:34
-#: panels/printers/cc-printers-panel.ui:169
+#: panels/printers/cc-printers-panel.ui:31
+#: panels/printers/cc-printers-panel.ui:166
 msgid "_Add Printer…"
 msgstr "Yazıcı _Ekle…"
 
-#: panels/printers/cc-printers-panel.ui:52
+#: panels/printers/cc-printers-panel.ui:49
 msgid "Search printers"
 msgstr "Yazıcı ara"
 
-#: panels/printers/cc-printers-panel.ui:166
+#. Translators: This is the button which allows undoing the removal of the printer.
+#: panels/printers/cc-printers-panel.ui:78
+msgid "Undo"
+msgstr "Geri Al"
+
+#: panels/printers/cc-printers-panel.ui:163
 msgid "No Printers"
 msgstr "Yazıcı Yok"
 
 #. Translators: Title if the CUPS server is not running (we can not connect to it).
-#: panels/printers/cc-printers-panel.ui:191
+#: panels/printers/cc-printers-panel.ui:188
 msgid "No Print Service"
 msgstr "Yazdırma Hizmeti Yok"
 
 #. Translators: Description if the CUPS server is not running (we can not connect to it).
-#: panels/printers/cc-printers-panel.ui:192
+#: panels/printers/cc-printers-panel.ui:189
 msgid "The system printing service doesn’t seem to be available"
 msgstr "Sistem yazdırma hizmeti kullanılamıyor"
 
@@ -4808,44 +4811,46 @@ msgstr "Yazıcı;Kuyruk;Yazdır;Kâğıt;Mürekkep;Toner;"
 msgid "Add Printer"
 msgstr "Yazıcı Ekle"
 
-#: panels/printers/new-printer-dialog.ui:69
+#: panels/printers/new-printer-dialog.ui:67
 #: panels/system/region/cc-format-chooser.ui:37
 #: panels/system/users/cc-fingerprint-dialog.ui:44
-#: panels/wacom/cc-wacom-stylus-page.ui:141
 #: panels/wwan/cc-wwan-apn-dialog.ui:21
 msgid "Back"
 msgstr "Geri"
 
 #. Translators: This button opens authentication dialog for selected server.
 #. Translators: This buttons submits the credentials for the selected server.
-#: panels/printers/new-printer-dialog.ui:108
-#: panels/printers/new-printer-dialog.ui:123
+#: panels/printers/new-printer-dialog.ui:102
+#: panels/printers/new-printer-dialog.ui:117
 #: panels/wwan/cc-wwan-device-page.ui:38
 msgid "_Unlock"
 msgstr "_Kilidi Aç"
 
 #. Translators: No printers were detected
-#: panels/printers/new-printer-dialog.ui:174
+#: panels/printers/new-printer-dialog.ui:168
 msgid "No Printers Found"
 msgstr "Yazıcı Bulunamadı"
 
 #. Translators: The entered text should contain network address of a printer or a text which will filter found devices (their names and locations)
-#: panels/printers/new-printer-dialog.ui:211
+#: panels/printers/new-printer-dialog.ui:205
 msgid "Enter a network address or search for a printer"
 msgstr "Ağ adresi girin ya da yazıcı arayın"
 
-#: panels/printers/new-printer-dialog.ui:256
+#: panels/printers/new-printer-dialog.ui:247
 msgid "Authentication Required"
 msgstr "Kimlik Doğrulaması Gerekli"
 
-#: panels/printers/new-printer-dialog.ui:272
+#: panels/printers/new-printer-dialog.ui:263
 msgid "Enter username and password to view printers on Print Server"
 msgstr ""
 "Yazıcı Sunucusu’ndaki yazıcıları görmek için kullanıcı adı ve parola gir"
 
 #. Translators: This is a username on a print server.
-#: panels/printers/new-printer-dialog.ui:281
-#: panels/printers/pp-jobs-dialog.ui:42 panels/wwan/cc-wwan-apn-dialog.ui:150
+#: panels/printers/new-printer-dialog.ui:272
+#: panels/printers/pp-jobs-dialog.ui:42
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:94
+#: panels/system/remote-desktop/cc-remote-session-page.ui:92
+#: panels/wwan/cc-wwan-apn-dialog.ui:150
 msgid "Username"
 msgstr "Kullanıcı Adı"
 
@@ -5216,9 +5221,7 @@ msgid "Advanced"
 msgstr "Gelişmiş"
 
 #. Translators: Name of job which makes printer to print test page
-#. Translators: This button triggers the printing of a test page.
 #: panels/printers/pp-options-dialog.c:839
-#: panels/printers/pp-options-dialog.ui:17
 msgid "Test Page"
 msgstr "Sınama Sayfası"
 
@@ -5226,6 +5229,11 @@ msgstr "Sınama Sayfası"
 #: panels/printers/pp-options-dialog.c:852
 msgid "Test page"
 msgstr "Sınama sayfası"
+
+#. Translators: This button triggers the printing of a test page.
+#: panels/printers/pp-options-dialog.ui:17
+msgid "_Test Page"
+msgstr "_Sınama Sayfası"
 
 #. Translators: this is an option of "Paper Source"
 #: panels/printers/pp-ppd-option-widget.c:75
@@ -6003,7 +6011,7 @@ msgstr "Geçersiz"
 #. TRANSLATORS: Status of Parental Controls setup
 #: panels/privacy/cc-firmware-security-utils.c:45
 #: panels/system/users/cc-user-page.c:377
-#: panels/system/users/cc-user-page.c:745 panels/wwan/cc-wwan-device-page.c:475
+#: panels/system/users/cc-user-page.c:749 panels/wwan/cc-wwan-device-page.c:475
 msgid "Enabled"
 msgstr "Etkin"
 
@@ -6555,12 +6563,20 @@ msgstr ""
 "Son;Geçmiş;Dosyalar;Geçici;Temizle;Kaldır;Yer Kazan;Tanıla;Çökme;Konum;"
 "Kamera;Fotoğraflar;Video;Kayıt;Güvenlik;Donanım Yazılımı;"
 
-#: panels/search/cc-search-locations-dialog.c:579
-#: panels/sharing/cc-sharing-panel.c:418
+#: panels/search/cc-search-locations-dialog.c:507
+msgid "Location not found"
+msgstr "Konum bulunamadı"
+
+#: panels/search/cc-search-locations-dialog.c:564
+msgid "Subfolders must be manually added for this location"
+msgstr "Bu konum için alt klasörler elle eklenmelidir"
+
+#: panels/search/cc-search-locations-dialog.c:572
+#: panels/sharing/cc-sharing-panel.c:361
 msgid "Remove Folder"
 msgstr "Klasörü Kaldır"
 
-#: panels/search/cc-search-locations-dialog.c:676
+#: panels/search/cc-search-locations-dialog.c:683
 msgid "Select Location"
 msgstr "Konum Seç"
 
@@ -6569,29 +6585,30 @@ msgid "Search Locations"
 msgstr "Arama Konumları"
 
 #: panels/search/cc-search-locations-dialog.ui:19
-msgid ""
-"Folders which are searched by system apps, such as Files, Photos and Videos"
-msgstr ""
-"Dosyalar, Fotoğraflar ve Videolar gibi sistem uygulamalarınca aranan "
-"klasörler"
+msgid "Filesystem locations which are searched by system apps, such as Files"
+msgstr "Dosyalar gibi sistem uygulamalarınca aranan dosya sistemi konumları"
 
 #: panels/search/cc-search-locations-dialog.ui:22
-msgid "Places"
-msgstr "Yerler"
+msgid "Default Locations"
+msgstr "Öntanımlı Konumlar"
 
 #: panels/search/cc-search-locations-dialog.ui:39
-msgid "Bookmarks"
-msgstr "Yer İmleri"
+msgid "Bookmarked Locations"
+msgstr "Yer İmli Konumlar"
 
 #: panels/search/cc-search-locations-dialog.ui:56
-msgid "Others"
-msgstr "Diğerleri"
+msgid "Custom Locations"
+msgstr "Özel Konumlar"
 
 #: panels/search/cc-search-locations-dialog.ui:63
 msgid "_Add Location…"
 msgstr "Konum _Ekle…"
 
-#: panels/search/cc-search-panel.c:166
+#: panels/search/cc-search-locations-dialog.ui:89
+msgid "No custom search locations"
+msgstr "Özel arama konumu yok"
+
+#: panels/search/cc-search-panel.c:173
 msgid "No apps found"
 msgstr "Uygulama bulunamadı"
 
@@ -6603,30 +6620,30 @@ msgstr "_Uygulama Arama"
 msgid "Include app-provided search results"
 msgstr "Uygulamaların sağladığı arama sonuçlarını içer"
 
-#: panels/search/cc-search-panel.ui:29
+#: panels/search/cc-search-panel.ui:23
 msgid "Search _Locations"
 msgstr "Arama _Konumları"
 
-#: panels/search/cc-search-panel.ui:30
-msgid "Folders which are searched by system apps"
-msgstr "Sistem uygulamalarınca aranan klasörler"
+#: panels/search/cc-search-panel.ui:24
+msgid "Filesystem locations which are searched by system apps"
+msgstr "Sistem uygulamalarınca aranan dosya sistemi konumları"
 
-#: panels/search/cc-search-panel.ui:40
+#: panels/search/cc-search-panel.ui:33
 msgid "Search Results"
 msgstr "Arama Sonuçları"
 
-#: panels/search/cc-search-panel.ui:41
+#: panels/search/cc-search-panel.ui:34
 msgid "Results are displayed according to the list order"
 msgstr "Sonuçlar liste sırasına göre görüntülenmektedir"
 
-#: panels/search/gnome-search-panel.desktop.in:4
+#: panels/search/gnome-search-panel.desktop.in:5
 msgid "Control which apps show search results in the Activities Overview"
 msgstr ""
 "Hangi uygulamaların arama sonuçlarını Etkinlikler Genel Görünümünde "
 "göstereceğini belirleyin"
 
 #. Translators: Search terms to find the Search panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
-#: panels/search/gnome-search-panel.desktop.in:15
+#: panels/search/gnome-search-panel.desktop.in:16
 msgid "Search;Find;Index;Hide;Privacy;Results;"
 msgstr "Ara;Bul;Endeks;Gizle;Gizlilik;Sonuçlar;"
 
@@ -6635,41 +6652,31 @@ msgstr "Ara;Bul;Endeks;Gizle;Gizlilik;Sonuçlar;"
 msgid "No networks selected for sharing"
 msgstr "Paylaşımı için ağ seçilmedi"
 
-#: panels/sharing/cc-sharing-networks.ui:13
-#: panels/sharing/cc-sharing-panel.ui:114
-msgid "Networks"
-msgstr "Ağlar"
-
-#: panels/sharing/cc-sharing-panel.c:170
-msgctxt "service is enabled"
-msgid "On"
-msgstr "Açık"
-
-#: panels/sharing/cc-sharing-panel.c:172 panels/sharing/cc-sharing-panel.c:195
+#: panels/sharing/cc-sharing-panel.c:149
 msgctxt "service is disabled"
 msgid "Off"
 msgstr "Kapalı"
 
-#: panels/sharing/cc-sharing-panel.c:198
+#: panels/sharing/cc-sharing-panel.c:152
 msgctxt "service is enabled"
 msgid "Enabled"
 msgstr "Etkin"
 
-#: panels/sharing/cc-sharing-panel.c:201
+#: panels/sharing/cc-sharing-panel.c:155
 msgctxt "service is active"
 msgid "Active"
 msgstr "Etkin"
 
-#: panels/sharing/cc-sharing-panel.c:293
+#: panels/sharing/cc-sharing-panel.c:236
 msgid "Choose a Folder"
 msgstr "Klasör Seç"
 
-#: panels/sharing/cc-sharing-panel.c:441
+#: panels/sharing/cc-sharing-panel.c:384
 msgid "Add Folder"
 msgstr "Klasör Ekle"
 
 #. TRANSLATORS: %s is replaced with a link to a dav://<hostname> URL
-#: panels/sharing/cc-sharing-panel.c:528
+#: panels/sharing/cc-sharing-panel.c:471
 #, c-format
 msgid ""
 "File Sharing allows you to share your Public folder with others on your "
@@ -6677,18 +6684,6 @@ msgid ""
 msgstr ""
 "Dosya Paylaşımı, Genel klasörünüzü ağınızdaki diğer kişilerle şununla "
 "paylaşmanızı sağlar: %s"
-
-#. TRANSLATORS: %s is replaced with a link to a "ssh <hostname>" command to run
-#: panels/sharing/cc-sharing-panel.c:534
-#, c-format
-msgid ""
-"When remote login is enabled, remote users can connect using the Secure "
-"Shell command:\n"
-"%s"
-msgstr ""
-"Uzaktan oturum açma etkinleştirildiğinde, uzak kullanıcılar Güvenli Kabuk "
-"komutunu kullanarak bağlanabilirler:\n"
-"%s"
 
 #: panels/sharing/cc-sharing-panel.ui:16
 #: panels/system/about/cc-about-page.ui:41
@@ -6699,7 +6694,7 @@ msgstr "_Aygıt Adı"
 msgid "Share files with other devices on the current network"
 msgstr "Dosyaları, ağdaki diğer aygıtlarla paylaş"
 
-#: panels/sharing/cc-sharing-panel.ui:29 panels/sharing/cc-sharing-panel.ui:90
+#: panels/sharing/cc-sharing-panel.ui:29 panels/sharing/cc-sharing-panel.ui:80
 msgid "_File Sharing"
 msgstr "Dosya _Paylaşımı"
 
@@ -6707,45 +6702,37 @@ msgstr "Dosya _Paylaşımı"
 msgid "Stream music, photos and videos to devices on the current network"
 msgstr "Müzikleri, fotoğrafları ve videoları ağdaki diğer aygıtlara akıt"
 
-#: panels/sharing/cc-sharing-panel.ui:38 panels/sharing/cc-sharing-panel.ui:212
+#: panels/sharing/cc-sharing-panel.ui:38 panels/sharing/cc-sharing-panel.ui:150
 msgid "_Media Sharing"
 msgstr "_Ortam Paylaşımı"
 
-#: panels/sharing/cc-sharing-panel.ui:46
-msgid "Enable SSH access for this device"
-msgstr "Bu aygıt için SSH erişimini etkinleştir"
-
-#: panels/sharing/cc-sharing-panel.ui:47 panels/sharing/cc-sharing-panel.ui:168
-msgid "_Remote Login"
-msgstr "_Uzaktan Oturum Aç"
-
-#: panels/sharing/cc-sharing-panel.ui:60
+#: panels/sharing/cc-sharing-panel.ui:51
 msgid "File Sharing"
 msgstr "Dosya Paylaşımı"
 
-#: panels/sharing/cc-sharing-panel.ui:100
+#: panels/sharing/cc-sharing-panel.ui:90
 msgid "_Require Password"
 msgstr "Parola _Gerektir"
 
-#: panels/sharing/cc-sharing-panel.ui:106
-#: panels/system/remote-desktop/cc-remote-desktop-page.ui:136
-#: panels/system/users/cc-add-user-dialog.ui:373
+#: panels/sharing/cc-sharing-panel.ui:96
+#: panels/system/users/cc-enterprise-login-dialog.ui:114
 msgid "_Password"
 msgstr "_Parola"
 
-#: panels/sharing/cc-sharing-panel.ui:138
-msgid "Remote Login"
-msgstr "Uzaktan Oturum Aç"
+#: panels/sharing/cc-sharing-panel.ui:104
+#: panels/sharing/cc-sharing-panel.ui:171
+msgid "Networks"
+msgstr "Ağlar"
 
-#: panels/sharing/cc-sharing-panel.ui:181
+#: panels/sharing/cc-sharing-panel.ui:120
 msgid "Media Sharing"
 msgstr "Ortam Paylaşımı"
 
-#: panels/sharing/cc-sharing-panel.ui:207
+#: panels/sharing/cc-sharing-panel.ui:145
 msgid "Share music, photos and videos over the network"
 msgstr "Müzikleri, fotoğrafları ve videoları ağda paylaşın"
 
-#: panels/sharing/cc-sharing-panel.ui:220
+#: panels/sharing/cc-sharing-panel.ui:158
 msgid "Folders"
 msgstr "Klasörler"
 
@@ -6765,16 +6752,6 @@ msgid ""
 msgstr ""
 "paylaş;paylaşım;ssh;makine;host;isim;ad;uzak;masaüstü;ortam;ses;video;"
 "görüntü;resimler;fotoğraflar;filmler;sunucu;renderer;yorumlayıcı;"
-
-#: panels/sharing/org.gnome.controlcenter.remote-login-helper.policy.in.in:11
-msgid "Enable or disable remote login"
-msgstr "Uzaktan oturum açmayı etkinleştir veya devre dışı bırak"
-
-#: panels/sharing/org.gnome.controlcenter.remote-login-helper.policy.in.in:12
-msgid "Authentication is required to enable or disable remote login"
-msgstr ""
-"Uzaktan oturum açmayı etkinleştirmek veya devre dışı bırakmak için kimlik "
-"doğrulaması gerekiyor"
 
 #: panels/sound/cc-alert-chooser-window.c:169
 msgid "Custom"
@@ -6896,9 +6873,16 @@ msgstr "Sesler"
 msgid "Vo_lume Levels"
 msgstr "_Ses Düzeyleri"
 
-#: panels/sound/cc-sound-panel.ui:384
+#: panels/sound/cc-sound-panel.ui:378
 msgid "_Alert Sound"
 msgstr "_Uyarı Sesi"
+
+#. Translators: This is the tooltip for a speaker test button, %s is an already translated
+#. speaker position, like "Front Left" or "Rear Center".
+#: panels/sound/cc-speaker-test-button.c:218
+#, c-format
+msgid "%s Speaker"
+msgstr "%s Hoparlör"
 
 #: panels/sound/cc-subwoofer-slider.ui:8
 msgid "Subwoofer"
@@ -6925,9 +6909,7 @@ msgstr "%100"
 msgid "Volume"
 msgstr "Ses"
 
-#. Translators: This will be presented as the text of a link to the Sound panel
 #: panels/sound/gnome-sound-panel.desktop.in:3
-#: panels/universal-access/cc-ua-hearing-page.c:156
 msgid "Sound"
 msgstr "Ses"
 
@@ -6943,6 +6925,7 @@ msgstr ""
 "Kart;Mikrofon;Ses;Kaybolma;Denge;Bluetooth;Kulaklık Seti;Ses;Çıktı;Girdi;"
 
 #: panels/system/about/cc-about-page.ui:4
+#: panels/system/about/gnome-about-panel.desktop.in:3
 msgid "About"
 msgstr "Hakkında"
 
@@ -6970,7 +6953,7 @@ msgid "Memory"
 msgstr "Bellek"
 
 #: panels/system/about/cc-about-page.ui:91
-#: panels/system/about/cc-system-details-window.ui:102
+#: panels/system/about/cc-system-details-window.ui:103
 msgid "Disk Capacity"
 msgstr "Disk Kapasitesi"
 
@@ -6978,13 +6961,9 @@ msgstr "Disk Kapasitesi"
 msgid "Calculating…"
 msgstr "Hesaplanıyor…"
 
-#: panels/system/about/cc-about-page.ui:100
+#: panels/system/about/cc-about-page.ui:99
 msgid "_System Details"
 msgstr "_Sistem Ayrıntıları"
-
-#: panels/system/about/cc-about-page.ui:121
-msgid "Software _Updates"
-msgstr "Yazılım _Güncellemeleri"
 
 #: panels/system/about/cc-system-details-window.c:299
 msgid "Graphics"
@@ -7109,45 +7088,65 @@ msgstr "_Kopyala"
 msgid "Hardware Information"
 msgstr "Donanım Bilgisi"
 
-#: panels/system/about/cc-system-details-window.ui:122
+#: panels/system/about/cc-system-details-window.ui:123
 msgid "Software Information"
 msgstr "Yazılım Bilgisi"
 
-#: panels/system/about/cc-system-details-window.ui:133
+#: panels/system/about/cc-system-details-window.ui:134
 #: panels/wwan/cc-wwan-details-dialog.ui:210
 msgid "Firmware Version"
 msgstr "Donanım Yazılımı Sürümü"
 
 #. translators: this field contains the distro name and version
-#: panels/system/about/cc-system-details-window.ui:141
+#: panels/system/about/cc-system-details-window.ui:142
 msgid "OS Name"
 msgstr "İşletim Sistemi Adı"
 
 #. translators: this field contains the distro build
-#: panels/system/about/cc-system-details-window.ui:149
+#: panels/system/about/cc-system-details-window.ui:150
 msgid "OS Build"
 msgstr "İşletim Sistemi İnşası"
 
 #. translators: this field contains the distro type
-#: panels/system/about/cc-system-details-window.ui:157
+#: panels/system/about/cc-system-details-window.ui:158
 msgid "OS Type"
 msgstr "İşletim Sistemi Türü"
 
-#: panels/system/about/cc-system-details-window.ui:164
+#: panels/system/about/cc-system-details-window.ui:165
 msgid "GNOME Version"
 msgstr "GNOME Sürümü"
 
-#: panels/system/about/cc-system-details-window.ui:171
+#: panels/system/about/cc-system-details-window.ui:172
 msgid "Windowing System"
 msgstr "Pencere Sistemi"
 
-#: panels/system/about/cc-system-details-window.ui:178
+#: panels/system/about/cc-system-details-window.ui:179
 msgid "Virtualization"
 msgstr "Sanallaştırma"
 
-#: panels/system/about/cc-system-details-window.ui:185
+#: panels/system/about/cc-system-details-window.ui:186
 msgid "Kernel Version"
 msgstr "Çekirdek Sürümü"
+
+#: panels/system/about/gnome-about-panel.desktop.in:4
+msgid "View information about your system"
+msgstr "Sisteminizle ilgili bilgileri görüntüleyin"
+
+#. Translators: Search terms to find the About panel.
+#. Do NOT translate or localize the semicolons!
+#. The list MUST also end with a semicolon!
+#. "Preferred Applications" is the old name for the preference, so make
+#. sure that you use the same "translation" for those keywords
+#: panels/system/about/gnome-about-panel.desktop.in:19
+msgid ""
+"device;system;information;hostname;memory;processor;version;default;"
+"application;preferred;cd;dvd;usb;audio;video;disc;removable;media;autorun;"
+msgstr ""
+"aygıt;sistem;düzen;dizge;bilgi;ana makine adı;ana makina adı;anamakine adı;"
+"anamakina adı;hostname;bellek;hafıza;işlemci;sürüm;versiyon;öntanımlı;"
+"varsayılan;uygulama;yeğlenen;tercih edilen;cd;dvd;usb;ses;video;görüntü;disk;"
+"çıkarılabilir;çıkartılabilir;kaldırılabilir;ortam;medya;kendiliğinden "
+"çalıştır;otomatik çalıştır;autorun;"
 
 #: panels/system/cc-system-panel.ui:23
 msgid "_Region &amp; Language"
@@ -7182,25 +7181,38 @@ msgid "Allow this device to be used remotely"
 msgstr "Bu aygıtın uzaktan kullanılmasına izin ver"
 
 #: panels/system/cc-system-panel.ui:69
+#: panels/system/remote-login/cc-remote-login-page.ui:51
+msgid "Secu_re Shell"
+msgstr "_Güvenli Kabuk"
+
+#: panels/system/cc-system-panel.ui:70
+msgid "SSH network access"
+msgstr "SSH ağ erişimi"
+
+#: panels/system/cc-system-panel.ui:79
 msgid "_About"
 msgstr "_Hakkında"
 
-#: panels/system/cc-system-panel.ui:70
+#: panels/system/cc-system-panel.ui:80
 msgid "Hardware details and software versions"
 msgstr "Donanım ayrıntıları ve yazılım sürümleri"
 
+#: panels/system/cc-system-panel.ui:97
+msgid "Software _Updates"
+msgstr "Yazılım _Güncellemeleri"
+
 #. Translators: This is the full date and time format used in 12-hour mode.
-#: panels/system/datetime/cc-datetime-page.c:232
+#: panels/system/datetime/cc-datetime-page.c:230
 msgid "%e %B %Y, %l:%M %p"
 msgstr "%e %B %Y, %l:%M %p"
 
 #. Translators: This is the full date and time format used in 24-hour mode.
-#: panels/system/datetime/cc-datetime-page.c:237
+#: panels/system/datetime/cc-datetime-page.c:235
 msgid "%e %B %Y, %R"
 msgstr "%e %B %Y, %R"
 
 #. Translators: "city, country"
-#: panels/system/datetime/cc-datetime-page.c:390
+#: panels/system/datetime/cc-datetime-page.c:388
 #, c-format
 msgctxt "timezone loc"
 msgid "%s, %s"
@@ -7208,7 +7220,7 @@ msgstr "%s, %s"
 
 #. Update the timezone on the listbow row
 #. Translators: "timezone (details)"
-#: panels/system/datetime/cc-datetime-page.c:407
+#: panels/system/datetime/cc-datetime-page.c:405
 #, c-format
 msgctxt "timezone desc"
 msgid "%s (%s)"
@@ -7216,6 +7228,7 @@ msgstr "%s (%s)"
 
 #: panels/system/datetime/cc-datetime-page.ui:9
 #: panels/system/datetime/cc-datetime-page.ui:117
+#: panels/system/datetime/gnome-datetime-panel.desktop.in:3
 msgid "Date & Time"
 msgstr "Tarih ve Saat"
 
@@ -7243,103 +7256,103 @@ msgstr "İnternet erişimi gerektirir"
 msgid "Date &amp; _Time"
 msgstr "Tarih ve _Saat"
 
-#: panels/system/datetime/cc-datetime-page.ui:174
+#: panels/system/datetime/cc-datetime-page.ui:161
 msgid "Automatic Time _Zone"
 msgstr "Kendiliğinden Saat _Dilimi"
 
-#: panels/system/datetime/cc-datetime-page.ui:175
+#: panels/system/datetime/cc-datetime-page.ui:162
 msgid "Requires location services enabled and internet access"
 msgstr "Konum hizmetlerinin etkin olmasını ve İnternet erişimi gerektirir"
 
-#: panels/system/datetime/cc-datetime-page.ui:181
+#: panels/system/datetime/cc-datetime-page.ui:168
 msgid "Time Z_one"
 msgstr "Saat _Dilimi"
 
-#: panels/system/datetime/cc-datetime-page.ui:206
+#: panels/system/datetime/cc-datetime-page.ui:179
 msgid "Time _Format"
 msgstr "Saat _Biçimi"
 
-#: panels/system/datetime/cc-datetime-page.ui:217
+#: panels/system/datetime/cc-datetime-page.ui:190
 msgid "_24-hour"
 msgstr "_24 saat"
 
-#: panels/system/datetime/cc-datetime-page.ui:225
+#: panels/system/datetime/cc-datetime-page.ui:198
 msgid "AM / _PM"
 msgstr "ÖÖ / Ö_S"
 
-#: panels/system/datetime/cc-datetime-page.ui:238
+#: panels/system/datetime/cc-datetime-page.ui:211
 msgid "Clock &amp; Calendar"
 msgstr "Saat ve Takvim"
 
-#: panels/system/datetime/cc-datetime-page.ui:239
+#: panels/system/datetime/cc-datetime-page.ui:212
 msgid "Control how the time and date is shown in the top bar"
 msgstr "Saat ve tarihin üst çubukta nasıl gösterildiğini denetle"
 
-#: panels/system/datetime/cc-datetime-page.ui:242
+#: panels/system/datetime/cc-datetime-page.ui:215
 msgid "_Week Day"
 msgstr "_Haftanın Günü"
 
-#: panels/system/datetime/cc-datetime-page.ui:248
+#: panels/system/datetime/cc-datetime-page.ui:221
 msgid "D_ate"
 msgstr "T_arih"
 
-#: panels/system/datetime/cc-datetime-page.ui:254
+#: panels/system/datetime/cc-datetime-page.ui:227
 msgid "_Seconds"
 msgstr "_Saniye"
 
-#: panels/system/datetime/cc-datetime-page.ui:260
+#: panels/system/datetime/cc-datetime-page.ui:233
 msgid "Week _Numbers"
 msgstr "Hafta _Numaraları"
 
-#: panels/system/datetime/cc-datetime-page.ui:261
+#: panels/system/datetime/cc-datetime-page.ui:234
 msgid "Shown in the dropdown calendar"
 msgstr "Açılır takvimde gösterilir"
 
-#: panels/system/datetime/cc-datetime-page.ui:298
+#: panels/system/datetime/cc-datetime-page.ui:271
 msgid "January"
 msgstr "Ocak"
 
-#: panels/system/datetime/cc-datetime-page.ui:299
+#: panels/system/datetime/cc-datetime-page.ui:272
 msgid "February"
 msgstr "Şubat"
 
-#: panels/system/datetime/cc-datetime-page.ui:300
+#: panels/system/datetime/cc-datetime-page.ui:273
 msgid "March"
 msgstr "Mart"
 
-#: panels/system/datetime/cc-datetime-page.ui:301
+#: panels/system/datetime/cc-datetime-page.ui:274
 msgid "April"
 msgstr "Nisan"
 
-#: panels/system/datetime/cc-datetime-page.ui:302
+#: panels/system/datetime/cc-datetime-page.ui:275
 msgid "May"
 msgstr "Mayıs"
 
-#: panels/system/datetime/cc-datetime-page.ui:303
+#: panels/system/datetime/cc-datetime-page.ui:276
 msgid "June"
 msgstr "Haziran"
 
-#: panels/system/datetime/cc-datetime-page.ui:304
+#: panels/system/datetime/cc-datetime-page.ui:277
 msgid "July"
 msgstr "Temmuz"
 
-#: panels/system/datetime/cc-datetime-page.ui:305
+#: panels/system/datetime/cc-datetime-page.ui:278
 msgid "August"
 msgstr "Ağustos"
 
-#: panels/system/datetime/cc-datetime-page.ui:306
+#: panels/system/datetime/cc-datetime-page.ui:279
 msgid "September"
 msgstr "Eylül"
 
-#: panels/system/datetime/cc-datetime-page.ui:307
+#: panels/system/datetime/cc-datetime-page.ui:280
 msgid "October"
 msgstr "Ekim"
 
-#: panels/system/datetime/cc-datetime-page.ui:308
+#: panels/system/datetime/cc-datetime-page.ui:281
 msgid "November"
 msgstr "Kasım"
 
-#: panels/system/datetime/cc-datetime-page.ui:309
+#: panels/system/datetime/cc-datetime-page.ui:282
 msgid "December"
 msgstr "Aralık"
 
@@ -7354,6 +7367,15 @@ msgstr "Şehir ara"
 #: panels/system/datetime/cc-tz-dialog.ui:47
 msgid "No Results"
 msgstr "Sonuç Yok"
+
+#: panels/system/datetime/gnome-datetime-panel.desktop.in:4
+msgid "Change the date and time, including time zone"
+msgstr "Tarih, saat ve saat dilimini değiştir"
+
+#. Translators: Search terms to find the Date and Time panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: panels/system/datetime/gnome-datetime-panel.desktop.in:15
+msgid "Clock;Timezone;Location;"
+msgstr "Saat;Zaman;Saat dilimi;Zaman dilimi;Konum;"
 
 #: panels/system/datetime/org.gnome.controlcenter.system.policy.in:11
 msgid "Change system time and date settings"
@@ -7390,23 +7412,23 @@ msgstr "Biçimler"
 msgid "Search locales"
 msgstr "Yerel ara"
 
-#: panels/system/region/cc-format-chooser.ui:117
+#: panels/system/region/cc-format-chooser.ui:114
 msgid "Common Formats"
 msgstr "Ortak Biçimler"
 
-#: panels/system/region/cc-format-chooser.ui:144
+#: panels/system/region/cc-format-chooser.ui:141
 msgid "All Formats"
 msgstr "Tüm Biçimler"
 
-#: panels/system/region/cc-format-chooser.ui:192
+#: panels/system/region/cc-format-chooser.ui:189
 msgid "No Search Results"
 msgstr "Arama Sonucu Yok"
 
-#: panels/system/region/cc-format-chooser.ui:204
+#: panels/system/region/cc-format-chooser.ui:201
 msgid "Searches can be for countries or languages"
 msgstr "Ülkeler ya da diller aranabilir"
 
-#: panels/system/region/cc-format-chooser.ui:240
+#: panels/system/region/cc-format-chooser.ui:237
 msgid "Preview"
 msgstr "Ön İzleme"
 
@@ -7445,6 +7467,7 @@ msgid "Paper"
 msgstr "Kağıt"
 
 #: panels/system/region/cc-region-page.ui:4
+#: panels/system/region/gnome-region-panel.desktop.in:3
 msgid "Region & Language"
 msgstr "Bölge ve Dil"
 
@@ -7469,128 +7492,157 @@ msgid "Your Account"
 msgstr "Hesabınız"
 
 #: panels/system/region/cc-region-page.ui:34
-#: panels/system/users/cc-user-page.ui:174
+#: panels/system/users/cc-user-page.ui:170
 msgid "_Language"
 msgstr "_Dil"
 
-#: panels/system/region/cc-region-page.ui:43
+#: panels/system/region/cc-region-page.ui:42
 msgid "_Formats"
 msgstr "_Biçimler"
 
-#: panels/system/region/cc-region-page.ui:54
+#: panels/system/region/cc-region-page.ui:52
 msgid "Login Screen"
 msgstr "Oturum Açma Ekranı"
 
-#: panels/system/region/cc-region-page.ui:58
+#: panels/system/region/cc-region-page.ui:56
 msgid "L_anguage"
 msgstr "_Dil"
 
-#: panels/system/region/cc-region-page.ui:67
+#: panels/system/region/cc-region-page.ui:64
 msgid "Fo_rmats"
 msgstr "_Biçimler"
 
-#: panels/system/remote-desktop/cc-remote-desktop-page.c:418
-msgid "Device name copied"
-msgstr "Aygıt adı kopyalandı"
+#: panels/system/region/gnome-region-panel.desktop.in:4
+msgid "Select your display language and formats"
+msgstr "Ekran dilinizi ve biçimlerinizi seçin"
 
-#: panels/system/remote-desktop/cc-remote-desktop-page.c:429
+#. Translators: Search terms to find the Region and Language panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: panels/system/region/gnome-region-panel.desktop.in:15
+msgid "Language;Layout;Keyboard;Input;"
+msgstr "Dil;Düzen;Yerleşim;Klavye;Girdi;Giriş;"
+
+#: panels/system/remote-desktop/cc-desktop-sharing-page.c:364
+#: panels/system/remote-desktop/cc-remote-session-page.c:98
 msgid "Device address copied"
 msgstr "Aygıt adresi kopyalandı"
 
-#: panels/system/remote-desktop/cc-remote-desktop-page.c:440
+#: panels/system/remote-desktop/cc-desktop-sharing-page.c:373
+#: panels/system/remote-desktop/cc-remote-session-page.c:107
+msgid "Port number copied"
+msgstr "Bağlantı noktası numarası kopyalandı"
+
+#: panels/system/remote-desktop/cc-desktop-sharing-page.c:384
+#: panels/system/remote-desktop/cc-remote-session-page.c:118
 msgid "Username copied"
 msgstr "Kullanıcı adı kopyalandı"
 
-#: panels/system/remote-desktop/cc-remote-desktop-page.c:451
+#: panels/system/remote-desktop/cc-desktop-sharing-page.c:395
+#: panels/system/remote-desktop/cc-remote-session-page.c:129
 msgid "Password copied"
 msgstr "Parola kopyalandı"
 
-#. Translators: This will be presented as the text of a link to the documentation
-#: panels/system/remote-desktop/cc-remote-desktop-page.c:670
-msgid "learn how to use it"
-msgstr "nasıl kullanılacağını öğren"
-
-#. Translators: %s is a link to the documentation with the label "learn how to use it"
-#: panels/system/remote-desktop/cc-remote-desktop-page.c:672
-#, c-format
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:13
 msgid ""
-"Remote desktop allows viewing and controlling your desktop from another "
-"computer – %s."
+"Share your existing desktop with other devices. The remote connection uses "
+"the existing screen resolution"
 msgstr ""
-"Uzak masaüstü, başka bilgisayardan masaüstünüzü görmeyi ve denetlemenizi "
-"sağlar – %s."
+"Geçerli masaüstünüzü diğer aygıtlarla paylaşın. Uzak bağlantı, var olan "
+"ekran çözünürlüğünü kullanır"
+
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:28
+msgid "_Desktop Sharing"
+msgstr "_Masaüstü Paylaşımı"
+
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:34
+msgid "Remote _Control"
+msgstr "Uzaktan _Denetim"
+
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:36
+msgid "Allows desktop shares to control the screen"
+msgstr "Masaüstü paylaşımlarının ekranı denetlemesini sağlar"
+
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:43
+#: panels/system/remote-desktop/cc-remote-session-page.ui:41
+msgid "How to Connect"
+msgstr "Nasıl Bağlanılır"
+
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:44
+#: panels/system/remote-desktop/cc-remote-session-page.ui:42
+msgid ""
+"Use a remote desktop app to connect using the RDP protocol. Additional "
+"information about the device’s network location may also be required."
+msgstr ""
+"RDP iletişim kuralıyla bağlanmak için uzak masaüstü uygulaması kullanın. "
+"Aygıtın ağ konumuyla ilgili ek bilgiler de gerekebilir."
+
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:47
+#: panels/system/remote-desktop/cc-remote-session-page.ui:45
+msgid "_Hostname"
+msgstr "_Makine Adı"
+
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:55
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:76
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:97
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:113
+#: panels/system/remote-desktop/cc-remote-session-page.ui:53
+#: panels/system/remote-desktop/cc-remote-session-page.ui:74
+#: panels/system/remote-desktop/cc-remote-session-page.ui:95
+#: panels/system/remote-desktop/cc-remote-session-page.ui:111
+#: panels/system/remote-login/cc-remote-login-page.ui:65
+msgid "Copy"
+msgstr "Kopyala"
+
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:68
+#: panels/system/remote-desktop/cc-remote-session-page.ui:66
+msgid "_Port"
+msgstr "_Bağlantı Noktası"
+
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:91
+#: panels/system/remote-desktop/cc-remote-session-page.ui:89
+msgid "Login Details"
+msgstr "Oturum Açma Ayrıntıları"
+
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:132
+#: panels/system/remote-desktop/cc-remote-session-page.ui:130
+msgid "_Generate New Password"
+msgstr "Yeni Parola _Oluştur"
+
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:143
+#: panels/system/remote-desktop/cc-remote-session-page.ui:141
+msgid "_Verify Encryption"
+msgstr "Şifrelemeyi _Doğrula"
 
 #: panels/system/remote-desktop/cc-remote-desktop-page.ui:4
 msgid "Remote Desktop"
 msgstr "Uzak Masaüstü"
 
-#: panels/system/remote-desktop/cc-remote-desktop-page.ui:22
-msgid "Remote _Desktop"
-msgstr "Uzak _Masaüstü"
+#: panels/system/remote-desktop/cc-remote-desktop-page.ui:39
+msgid "Desktop Sharing"
+msgstr "Masaüstü Paylaşımı"
 
-#: panels/system/remote-desktop/cc-remote-desktop-page.ui:24
-msgid "Enable or disable remote desktop connections to this computer"
-msgstr ""
-"Bu bilgisayara uzak masaüstü bağlantısını etkinleştir veya devre dışı bırak"
+#: panels/system/remote-desktop/cc-remote-desktop-page.ui:48
+#: panels/system/remote-desktop/cc-remote-session-page.ui:33
+msgid "Remote Login"
+msgstr "Uzaktan Giriş"
 
-#: panels/system/remote-desktop/cc-remote-desktop-page.ui:30
-msgid "Remote _Control"
-msgstr "Uzaktan _Denetim"
+#: panels/system/remote-desktop/cc-remote-session-page.c:774
+#: panels/system/users/cc-user-page.c:772
+msgid "Some settings are locked"
+msgstr "Kimi ayarlar kilitli"
 
-#: panels/system/remote-desktop/cc-remote-desktop-page.ui:32
-msgid "Allows remote connections to control the screen"
-msgstr "Uzaktan bağlantıların ekranı denetlemesini sağlar"
-
-#: panels/system/remote-desktop/cc-remote-desktop-page.ui:40
-msgid "How to Connect"
-msgstr "Nasıl Bağlanılır"
-
-#: panels/system/remote-desktop/cc-remote-desktop-page.ui:41
+#: panels/system/remote-desktop/cc-remote-session-page.ui:18
 msgid ""
-"Connect to this computer using the device name or remote desktop address"
+"Remotely connect to your user account when it isn’t being used. The display "
+"resolution can be set from the remote."
 msgstr ""
-"Aygıt adını veya uzak masaüstü adresini kullanarak bu bilgisayara bağlan"
+"Kullanılmadığında, kullanıcı hesabınıza uzaktan bağlanın. Ekran çözünürlüğü "
+"uzaktan ayarlanabilir."
 
-#: panels/system/remote-desktop/cc-remote-desktop-page.ui:45
-msgid "D_evice Name"
-msgstr "A_ygıt Adı"
-
-#: panels/system/remote-desktop/cc-remote-desktop-page.ui:58
-#: panels/system/remote-desktop/cc-remote-desktop-page.ui:63
-#: panels/system/remote-desktop/cc-remote-desktop-page.ui:89
-#: panels/system/remote-desktop/cc-remote-desktop-page.ui:94
-#: panels/system/remote-desktop/cc-remote-desktop-page.ui:119
-#: panels/system/remote-desktop/cc-remote-desktop-page.ui:124
-#: panels/system/remote-desktop/cc-remote-desktop-page.ui:140
-#: panels/system/remote-desktop/cc-remote-desktop-page.ui:145
-msgid "Copy"
-msgstr "Kopyala"
-
-#: panels/system/remote-desktop/cc-remote-desktop-page.ui:76
-msgid "Re_mote Desktop Address"
-msgstr "U_zak Masaüstü Adresi"
-
-#: panels/system/remote-desktop/cc-remote-desktop-page.ui:110
-msgid "Authentication"
-msgstr "Kimlik Doğrulaması"
-
-#: panels/system/remote-desktop/cc-remote-desktop-page.ui:111
-msgid "The user name and password are required to connect to this computer"
-msgstr "Bu bilgisayara bağlanmak için kullanıcı adı ve parola gereklidir"
-
-#: panels/system/remote-desktop/cc-remote-desktop-page.ui:115
-msgid "_User Name"
-msgstr "_Kullanıcı Adı"
-
-#: panels/system/remote-desktop/cc-remote-desktop-page.ui:160
-msgid "_Verify Encryption"
-msgstr "Şifrelemeyi _Doğrula"
-
-#: panels/system/remote-desktop/cc-remote-desktop-page.ui:196
+#: panels/system/remote-desktop/cc-encryption-fingerprint-dialog.ui:28
 msgid "Encryption Fingerprint"
 msgstr "Şifreleme Parmak İzi"
 
-#: panels/system/remote-desktop/cc-remote-desktop-page.ui:197
+#: panels/system/remote-desktop/cc-encryption-fingerprint-dialog.ui:29
 msgid ""
 "The encryption fingerprint can be seen in connecting clients and should be "
 "identical"
@@ -7598,72 +7650,66 @@ msgstr ""
 "Bağlanan istemcilerde şifreleme parmak izi görünmelidir ve birbiriyle aynı "
 "olmalıdır"
 
-#: panels/system/users/cc-add-user-dialog.c:36
-msgid "Should match the web address of your login provider."
-msgstr "Hesap sağlayıcınızın web adresi ile aynı olmalıdır."
+#: panels/system/remote-desktop/org.gnome.controlcenter.remote-session-helper.policy.in.in:11
+msgid "Enable or disable remote sessions"
+msgstr "Uzak oturumları etkinleştir ya da devre dışı bırak"
 
-#: panels/system/users/cc-add-user-dialog.c:217
+#: panels/system/remote-desktop/org.gnome.controlcenter.remote-session-helper.policy.in.in:12
+msgid "Authentication is required to enable or disable remote sessions"
+msgstr ""
+"Uzak oturumları etkinleştirmek ya da devre dışı bırakmak için kimlik "
+"doğrulama gerekli"
+
+#: panels/system/remote-login/cc-remote-login-page.c:53
+msgid "Command copied"
+msgstr "Komut kopyalandı"
+
+#: panels/system/remote-login/cc-remote-login-page.ui:4
+msgid "Secure Shell"
+msgstr "Güvenli Kabuk"
+
+#: panels/system/remote-login/cc-remote-login-page.ui:39
+msgid "Access this device using Secure Shell (SSH)"
+msgstr "Güvenli Kabuk (SSH) kullanarak bu aygıta eriş"
+
+#: panels/system/remote-login/cc-remote-login-page.ui:58
+msgid "SSH Login Command"
+msgstr "SSH Oturum Açma Komutu"
+
+#: panels/system/remote-login/org.gnome.controlcenter.remote-login-helper.policy.in.in:11
+msgid "Enable or disable remote login"
+msgstr "Uzaktan oturum açmayı etkinleştir veya devre dışı bırak"
+
+#: panels/system/remote-login/org.gnome.controlcenter.remote-login-helper.policy.in.in:12
+msgid "Authentication is required to enable or disable remote login"
+msgstr ""
+"Uzaktan oturum açmayı etkinleştirmek veya devre dışı bırakmak için kimlik "
+"doğrulaması gerekiyor"
+
+#: panels/system/users/cc-add-user-dialog.c:159
 msgid "Failed to add account"
 msgstr "Hesap eklenemedi"
 
-#: panels/system/users/cc-add-user-dialog.c:668
+#: panels/system/users/cc-add-user-dialog.c:610
 msgid "The passwords do not match."
 msgstr "Parolalar eşleşmiyor."
-
-#: panels/system/users/cc-add-user-dialog.c:866
-#: panels/system/users/cc-add-user-dialog.c:905
-#: panels/system/users/cc-add-user-dialog.c:923
-msgid "Failed to register account"
-msgstr "Hesap kaydedilemedi"
-
-#: panels/system/users/cc-add-user-dialog.c:1038
-msgid "No supported way to authenticate with this domain"
-msgstr "Bu alan adıyla kimlik doğrulama yapılamaz"
-
-#: panels/system/users/cc-add-user-dialog.c:1102
-msgid "Failed to join domain"
-msgstr "Etki alanına katılamadı"
-
-#: panels/system/users/cc-add-user-dialog.c:1157
-msgid ""
-"That login name didn’t work.\n"
-"Please try again."
-msgstr ""
-"Oturum açma adı işe yaramadı.\n"
-"Lütfen yeniden deneyin."
-
-#: panels/system/users/cc-add-user-dialog.c:1164
-msgid ""
-"That login password didn’t work.\n"
-"Please try again."
-msgstr ""
-"Oturum açma parolası işe yaramadı.\n"
-"Lütfen yeniden deneyin."
-
-#: panels/system/users/cc-add-user-dialog.c:1172
-msgid "Failed to log into domain"
-msgstr "Etki alanına girilemedi"
-
-#: panels/system/users/cc-add-user-dialog.c:1227
-msgid "Unable to find the domain. Maybe you misspelled it?"
-msgstr "Etki alanı bulunamadı. Yanlış yazmış olabilir misiniz?"
 
 #: panels/system/users/cc-add-user-dialog.ui:13
 #: panels/system/users/data/join-dialog.ui:9
 msgid "Add User"
 msgstr "Kullanıcı Ekle"
 
-#: panels/system/users/cc-add-user-dialog.ui:95
-#: panels/system/users/cc-add-user-dialog.ui:351
+#: panels/system/users/cc-add-user-dialog.ui:102
+#: panels/system/users/cc-enterprise-login-dialog.ui:107
 msgid "_Username"
 msgstr "_Kullanıcı Adı"
 
-#: panels/system/users/cc-add-user-dialog.ui:133
+#: panels/system/users/cc-add-user-dialog.ui:140
 msgid "Ad_ministrator"
 msgstr "_Yönetici"
 
-#: panels/system/users/cc-add-user-dialog.ui:138
-#: panels/system/users/cc-user-page.ui:145
+#: panels/system/users/cc-add-user-dialog.ui:145
+#: panels/system/users/cc-user-page.ui:141
 msgid ""
 "Administrators have extra abilities, including adding and removing users, "
 "changing login settings, and removing software. Parental controls cannot be "
@@ -7673,48 +7719,132 @@ msgstr ""
 "yazılım kaldırma gibi ek yetenekleri vardır. Yöneticilere ebeveyn denetimi "
 "uygulanamaz."
 
-#: panels/system/users/cc-add-user-dialog.ui:156
+#: panels/system/users/cc-add-user-dialog.ui:163
 msgid "User sets password on _first login"
 msgstr "Kullanıcı parolasını ilk _girişte belirler"
 
-#: panels/system/users/cc-add-user-dialog.ui:169
+#: panels/system/users/cc-add-user-dialog.ui:176
 msgid "Set password n_ow"
 msgstr "Parolayı şi_mdi belirle"
 
-#: panels/system/users/cc-add-user-dialog.ui:189
+#: panels/system/users/cc-add-user-dialog.ui:196
 msgid "Pass_word"
 msgstr "_Parola"
 
-#: panels/system/users/cc-add-user-dialog.ui:233
+#: panels/system/users/cc-add-user-dialog.ui:240
 msgid "_Confirm"
 msgstr "_Doğrula"
 
-#: panels/system/users/cc-add-user-dialog.ui:288
-msgid "_Enterprise Login"
-msgstr "_Kurumsal Giriş"
+#: panels/system/users/cc-enterprise-login-dialog.c:133
+#: panels/system/users/cc-enterprise-login-dialog.c:171
+#: panels/system/users/cc-enterprise-login-dialog.c:186
+msgid "Failed to register account"
+msgstr "Hesap kaydedilemedi"
 
-#: panels/system/users/cc-add-user-dialog.ui:290
-msgid "User accounts which are managed by a company or organization"
-msgstr "Şirket veya kurumca yönetilen kullanıcı hesapları"
+#: panels/system/users/cc-enterprise-login-dialog.c:240
+#: panels/system/users/cc-enterprise-login-dialog.c:411
+msgid "Failed to join domain"
+msgstr "Etki alanına katılamadı"
 
-#: panels/system/users/cc-add-user-dialog.ui:307
+#: panels/system/users/cc-enterprise-login-dialog.c:275
+msgid "No supported way to authenticate with this domain"
+msgstr "Bu etki alanıyla kimlik doğrulama yapılamaz"
+
+#: panels/system/users/cc-enterprise-login-dialog.c:285
+#: panels/system/users/cc-enterprise-login-dialog.c:476
+msgid "That login name didn’t work"
+msgstr "Bu giriş adı çalışmadı"
+
+#: panels/system/users/cc-enterprise-login-dialog.c:292
+#: panels/system/users/cc-enterprise-login-dialog.c:483
+msgid "That login password didn’t work"
+msgstr "Bu giriş parolası çalışmadı"
+
+#: panels/system/users/cc-enterprise-login-dialog.c:299
+msgid "That hostname didn’t work"
+msgstr "Bu ana makine adı çalışmadı"
+
+#: panels/system/users/cc-enterprise-login-dialog.c:306
+#: panels/system/users/cc-enterprise-login-dialog.c:491
+msgid "Failed to log into domain"
+msgstr "Etki alanına girilemedi"
+
+#. Translators: The "%s" is a domain address (e.g. "demo1.freeipa.org").
+#: panels/system/users/cc-enterprise-login-dialog.c:352
+#, c-format
+msgid ""
+"To add an enterprise login account, this device needs to be enrolled with <b>"
+"%s</b>. To enroll, have your domain administrator enter their name and "
+"password."
+msgstr ""
+"Kurumsal giriş hesabı eklemek için, bu aygıt <b>%s</b> etki alanına kayıtlı "
+"olmalıdır. Kaydolmak için etki adı yöneticinizin adını ve parolasını "
+"girmesini sağlayın."
+
+#: panels/system/users/cc-enterprise-login-dialog.c:538
+msgid "Valid domain"
+msgstr "Geçerli etki alanı"
+
+#: panels/system/users/cc-enterprise-login-dialog.c:542
+msgid "Domain not found"
+msgstr "Etki alanı bulunamadı"
+
+#: panels/system/users/cc-enterprise-login-dialog.c:585
+msgid "Checking domain…"
+msgstr "Etki alanı denetleniyor…"
+
+#: panels/system/users/cc-enterprise-login-dialog.c:629
+msgid "Failed to contact realmd service"
+msgstr "Realmd hizmetiyle bağlantı kurulamadı"
+
+#: panels/system/users/cc-enterprise-login-dialog.ui:28
+#: panels/system/users/cc-enterprise-login-dialog.ui:48
+msgid "Add Enterprise Login"
+msgstr "Kurumsal Giriş Ekle"
+
+#: panels/system/users/cc-enterprise-login-dialog.ui:37
+msgid "Offline"
+msgstr "Çevrim Dışı"
+
+#: panels/system/users/cc-enterprise-login-dialog.ui:38
+msgid "A network connection is needed to add enterprise login accounts."
+msgstr "Kurumsal giriş hesabı eklemek için ağ bağlantısı gereklidir."
+
+#: panels/system/users/cc-enterprise-login-dialog.ui:84
+msgid ""
+"Enterprise login allows an existing centrally managed account to be used on "
+"this device."
+msgstr ""
+"Kurumsal giriş, merkezi yönetimli var olan hesabın bu aygıtta kullanılmasını "
+"sağlar."
+
+#: panels/system/users/cc-enterprise-login-dialog.ui:89
 #: panels/system/users/data/join-dialog.ui:90
 msgid "_Domain"
 msgstr "_Etki Alanı"
 
-#: panels/system/users/cc-add-user-dialog.ui:396
-msgid "You are Offline"
-msgstr "Çevrim Dışısınız"
+#: panels/system/users/cc-enterprise-login-dialog.ui:97
+msgid "Should match the web domain of the account provider"
+msgstr "Hesap sağlayıcısının web etki alanıyla eşleşmelidir"
 
-#: panels/system/users/cc-add-user-dialog.ui:397
-msgid ""
-"Enterprise login allows an existing centrally managed user account to be "
-"used on this device. You can also use this account to access company "
-"resources on the internet."
-msgstr ""
-"Kurumsal giriş, merkezi yönetimli var olan kullanıcı hesabının bu aygıtta "
-"kullanılmasını sağlar. Ayrıca bu hesabı internet üzerindeki şirket "
-"kaynaklarına erişmede de kullanabilirsiniz."
+#: panels/system/users/cc-enterprise-login-dialog.ui:130
+msgid "Enroll Device"
+msgstr "Aygıtı Kaydet"
+
+#. Translators: This button enrolls the computer in the domain in order to use enterprise logins.
+#: panels/system/users/cc-enterprise-login-dialog.ui:140
+#: panels/system/users/data/join-dialog.ui:30
+msgid "_Enroll"
+msgstr "_Kaydet"
+
+#: panels/system/users/cc-enterprise-login-dialog.ui:162
+#: panels/system/users/data/join-dialog.ui:112
+msgid "Administrator _Name"
+msgstr "Yö_netici Adı"
+
+#: panels/system/users/cc-enterprise-login-dialog.ui:169
+msgid "Administrator _Password"
+msgstr "Yönetici _Parolası"
 
 #: panels/system/users/cc-avatar-chooser.c:162
 msgid "Browse for more pictures"
@@ -7995,17 +8125,17 @@ msgstr "Bu türde etki alanına kendiliğinden girilemiyor"
 msgid "No such domain or realm found"
 msgstr "Böylesi etki alanı veya alan (realm) yok"
 
-#: panels/system/users/cc-realm-manager.c:712
-#: panels/system/users/cc-realm-manager.c:726
+#: panels/system/users/cc-realm-manager.c:721
+#: panels/system/users/cc-realm-manager.c:735
 #, c-format
 msgid "Cannot log in as %s at the %s domain"
 msgstr "%2$s etki alanına %1$s olarak giriş yapılamıyor"
 
-#: panels/system/users/cc-realm-manager.c:718
+#: panels/system/users/cc-realm-manager.c:727
 msgid "Invalid password, please try again"
 msgstr "Yanlış parola, lütfen yeniden deneyin"
 
-#: panels/system/users/cc-realm-manager.c:731
+#: panels/system/users/cc-realm-manager.c:740
 #, c-format
 msgid "Couldn’t connect to the %s domain: %s"
 msgstr "%s etki alanına bağlanılamadı: %s"
@@ -8030,82 +8160,78 @@ msgstr "Hiçbiri"
 msgid "Remove %s?"
 msgstr "%s kaldırılsın mı?"
 
-#: panels/system/users/cc-user-page.c:768
-msgid "Some settings are locked"
-msgstr "Kimi ayarlar kilitli"
-
 #: panels/system/users/cc-user-page.ui:24
-#: panels/system/users/cc-user-page.ui:85
-#: panels/system/users/cc-user-page.ui:97
-#: panels/system/users/cc-user-page.ui:109
-#: panels/system/users/cc-user-page.ui:124
-#: panels/system/users/cc-user-page.ui:138
-#: panels/system/users/cc-user-page.ui:173
+#: panels/system/users/cc-user-page.ui:81
+#: panels/system/users/cc-user-page.ui:93
+#: panels/system/users/cc-user-page.ui:105
+#: panels/system/users/cc-user-page.ui:120
+#: panels/system/users/cc-user-page.ui:134
+#: panels/system/users/cc-user-page.ui:169
 msgid "Unlock to Change This Setting"
 msgstr "Bu Ayarı Değiştirmek İçin Kilidi Aç"
 
-#: panels/system/users/cc-user-page.ui:43
-msgid "Edit avatar"
-msgstr "Avatarı düzenle"
+#: panels/system/users/cc-user-page.ui:41
+msgid "Change Avatar"
+msgstr "Profil Resmini Değiştir"
 
-#: panels/system/users/cc-user-page.ui:64
-msgid "Remove avatar"
-msgstr "Avatarı kaldır"
+#: panels/system/users/cc-user-page.ui:59
+msgid "Remove Avatar"
+msgstr "Profil Resmini Kaldır"
 
-#: panels/system/users/cc-user-page.ui:99
+#: panels/system/users/cc-user-page.ui:95
 msgid "Pa_ssword"
 msgstr "_Parola"
 
-#: panels/system/users/cc-user-page.ui:111
+#: panels/system/users/cc-user-page.ui:107
 msgid "_Fingerprint Login"
 msgstr "_Parmak İziyle Giriş"
 
-#: panels/system/users/cc-user-page.ui:120
+#: panels/system/users/cc-user-page.ui:116
 msgid "A_utomatic Login"
 msgstr "K_endiliğinden Giriş"
 
-#: panels/system/users/cc-user-page.ui:139
+#: panels/system/users/cc-user-page.ui:135
 msgid "_Administrator"
 msgstr "_Yönetici"
 
-#: panels/system/users/cc-user-page.ui:160
+#: panels/system/users/cc-user-page.ui:156
 msgid "_Parental Controls"
 msgstr "_Ebeveyn Denetimleri"
 
-#: panels/system/users/cc-user-page.ui:161
+#: panels/system/users/cc-user-page.ui:157
 msgid "Open the Parental Controls app"
 msgstr "Ebeveyn Denetimleri uygulamasını aç"
 
-#: panels/system/users/cc-user-page.ui:195
+#: panels/system/users/cc-user-page.ui:191
 msgid "_Remove User"
 msgstr "Kullanıcıyı _Kaldır"
 
-#: panels/system/users/cc-user-page.ui:221
+#: panels/system/users/cc-user-page.ui:217
 msgid ""
 "The user will not be able to use this device once their account has been "
 "removed"
 msgstr "Kullanıcı, hesabı kaldırıldıktan sonra bu aygıtı kullanamaz"
 
-#: panels/system/users/cc-user-page.ui:233
+#: panels/system/users/cc-user-page.ui:229
 msgid "_Delete Files and Settings"
 msgstr "Dosyaları ve Ayarları _Sil"
 
 #: panels/system/users/cc-users-page.ui:11
+#: panels/system/users/gnome-users-panel.desktop.in:3
 msgid "Users"
 msgstr "Kullanıcılar"
 
-#: panels/system/users/cc-users-page.ui:17
+#: panels/system/users/cc-users-page.ui:16
 msgid "Other Users"
 msgstr "Diğer Kullanıcılar"
 
-#: panels/system/users/cc-users-page.ui:33
+#: panels/system/users/cc-users-page.ui:32
 msgid "_Add User…"
 msgstr "Kullanıcı _Ekle…"
 
-#. Translators: This button enrolls the computer in the domain in order to use enterprise logins.
-#: panels/system/users/data/join-dialog.ui:30
-msgid "_Enroll"
-msgstr "_Kaydet"
+#: panels/system/users/cc-users-page.ui:46
+msgid "Add Enterprise User"
+msgstr "Kurumsal Kullanıcı Ekle"
 
 #: panels/system/users/data/join-dialog.ui:59
 msgid "Domain Administrator Login"
@@ -8121,13 +8247,24 @@ msgstr ""
 "kayıtlı olmalıdır. Lütfen ağ yöneticinizin etki alanı\n"
 "parolasını buraya girmesini sağlayın."
 
-#: panels/system/users/data/join-dialog.ui:112
-msgid "Administrator _Name"
-msgstr "Yö_netici Adı"
-
 #: panels/system/users/data/join-dialog.ui:135
 msgid "Administrator Password"
 msgstr "Yönetici Parolası"
+
+#: panels/system/users/gnome-users-panel.desktop.in:4
+msgid "Add or remove users and change your password"
+msgstr "Kullanıcı ekle ya da kaldır ve parola değiştir"
+
+#. Translators: Search terms to find the Users panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: panels/system/users/gnome-users-panel.desktop.in:15
+msgid ""
+"Login;Name;Fingerprint;Avatar;Logo;Face;Password;Parental Controls;Screen "
+"Time;App Restrictions;Web Restrictions;Usage;Usage Limit;Kid;Child;"
+msgstr ""
+"Giriş yap;Oturum aç;Ad;Parmak izi;Profil resmi;Avatar;Logo;Yüz;Parola;Şifre;"
+"Ebeveyn Denetimleri;Ekran Zamanı;Ekran Saati;Uygulama Kısıtlamaları;Uygulama "
+"Sınırlamaları;Web Kısıtlamaları;Web Sınırlamaları;İnternet Kısıtlamaları;"
+"İnternet Sınırlamaları;Kullanım;Kullanım Kısıtı;Kullanım Sınırı;Çocuk;Yavru;"
 
 #: panels/system/users/org.gnome.controlcenter.user-accounts.policy.in:11
 msgid "Manage user accounts"
@@ -8318,6 +8455,12 @@ msgid ""
 msgstr ""
 "İmleç boyutu, görmeyi kolaylaştırmak için Yakınlaştırma ile birleştirilebilir"
 
+#. Translators: This will be presented as the text of a link to the Sound panel
+#: panels/universal-access/cc-ua-hearing-page.c:156
+msgctxt "Sound panel name"
+msgid "Sound"
+msgstr "Ses"
+
 #. Translators: %s is a link to the Sound panel with the label "Sound"
 #: panels/universal-access/cc-ua-hearing-page.c:158
 #, c-format
@@ -8487,32 +8630,32 @@ msgstr "_Yaklaştırma"
 
 #. translators: the labels will read:
 #. * Cursor Size: Default
-#: panels/universal-access/cc-ua-seeing-page.c:110
+#: panels/universal-access/cc-ua-seeing-page.c:111
 msgctxt "cursor size"
 msgid "Default"
 msgstr "Öntanımlı"
 
-#: panels/universal-access/cc-ua-seeing-page.c:113
+#: panels/universal-access/cc-ua-seeing-page.c:114
 msgctxt "cursor size"
 msgid "Medium"
 msgstr "Orta"
 
-#: panels/universal-access/cc-ua-seeing-page.c:116
+#: panels/universal-access/cc-ua-seeing-page.c:117
 msgctxt "cursor size"
 msgid "Large"
 msgstr "Büyük"
 
-#: panels/universal-access/cc-ua-seeing-page.c:119
+#: panels/universal-access/cc-ua-seeing-page.c:120
 msgctxt "cursor size"
 msgid "Larger"
 msgstr "Çok Büyük"
 
-#: panels/universal-access/cc-ua-seeing-page.c:122
+#: panels/universal-access/cc-ua-seeing-page.c:123
 msgctxt "cursor size"
 msgid "Largest"
 msgstr "En Büyük"
 
-#: panels/universal-access/cc-ua-seeing-page.c:126
+#: panels/universal-access/cc-ua-seeing-page.c:127
 #, c-format
 msgid "%d pixel"
 msgid_plural "%d pixels"
@@ -8531,50 +8674,59 @@ msgid "Increase color contrast of foreground and background interface elements"
 msgstr "Ön plan ve arka plan arayüz ögelerinin renk karşıtlığını artır"
 
 #: panels/universal-access/cc-ua-seeing-page.ui:26
+msgid "_On/Off Shapes"
+msgstr "_Aç/Kapat Biçimleri"
+
+#: panels/universal-access/cc-ua-seeing-page.ui:27
+msgid "Use shapes to indicate state in addition to or instead of color"
+msgstr ""
+"Durumu belirtmek için renklere ek ya da onların yerine biçimleri kullan"
+
+#: panels/universal-access/cc-ua-seeing-page.ui:34
 msgid "Reduce _Animation"
 msgstr "Canlandırmayı _Azalt"
 
-#: panels/universal-access/cc-ua-seeing-page.ui:27
+#: panels/universal-access/cc-ua-seeing-page.ui:35
 msgid "Reduce animations in the user interface to reduce motion"
 msgstr "Devinimi azaltmak için kullanıcı arayüzündeki canlandırmaları azalt"
 
-#: panels/universal-access/cc-ua-seeing-page.ui:34
+#: panels/universal-access/cc-ua-seeing-page.ui:42
 msgid "_Large Text"
 msgstr "_Büyük Metin"
 
-#: panels/universal-access/cc-ua-seeing-page.ui:35
+#: panels/universal-access/cc-ua-seeing-page.ui:43
 msgid "Increase the size of all text in the user interface"
 msgstr "Kullanıcı arüyüzündeki tüm metinin boyutunu artır"
 
-#: panels/universal-access/cc-ua-seeing-page.ui:42
+#: panels/universal-access/cc-ua-seeing-page.ui:50
 msgid "_Cursor Size"
 msgstr "_İmleç Boyutu"
 
-#: panels/universal-access/cc-ua-seeing-page.ui:43
+#: panels/universal-access/cc-ua-seeing-page.ui:51
 msgid "The size of the cursor can be increased to make it easier to see"
 msgstr "İmlecin boyutu, görmeyi kolaylaştırmak için artırılabilir"
 
-#: panels/universal-access/cc-ua-seeing-page.ui:51
+#: panels/universal-access/cc-ua-seeing-page.ui:59
 msgid "_Sound Keys"
 msgstr "Tuş _Sesleri"
 
-#: panels/universal-access/cc-ua-seeing-page.ui:52
+#: panels/universal-access/cc-ua-seeing-page.ui:60
 msgid "Beep when Num Lock or Caps Lock are turned on or off"
 msgstr "Num Lock veya Caps Lock açıldığında veya kapandığında sesle uyar"
 
-#: panels/universal-access/cc-ua-seeing-page.ui:59
+#: panels/universal-access/cc-ua-seeing-page.ui:67
 msgid "Always Show Scroll_bars"
 msgstr "_Kaydırma Çubuklarını Hep Göster"
 
-#: panels/universal-access/cc-ua-seeing-page.ui:60
+#: panels/universal-access/cc-ua-seeing-page.ui:68
 msgid "Make scrollbars always visible"
 msgstr "Kaydırma çubuklarını hep görünür yap"
 
-#: panels/universal-access/cc-ua-seeing-page.ui:72
+#: panels/universal-access/cc-ua-seeing-page.ui:80
 msgid "Screen _Reader"
 msgstr "Ekran _Okuyucu"
 
-#: panels/universal-access/cc-ua-seeing-page.ui:73
+#: panels/universal-access/cc-ua-seeing-page.ui:81
 msgid "The screen reader reads displayed text as you move the focus"
 msgstr "Ekran okuyucu, siz odağı taşıdıkça görüntülenen metni okur"
 
@@ -8934,20 +9086,20 @@ msgctxt "Wacom action-type"
 msgid "Show On-Screen Help"
 msgstr "Ekran Yardımını Görüntüle"
 
-#: panels/wacom/cc-wacom-device.c:431
+#: panels/wacom/cc-wacom-device.c:430
 msgid "Tablet mounted on laptop panel"
 msgstr "Tablet dizüstü paneline takıldı"
 
-#: panels/wacom/cc-wacom-device.c:433
+#: panels/wacom/cc-wacom-device.c:432
 msgid "Tablet mounted on external display"
 msgstr "Tablet dış ekrana takıldı"
 
-#: panels/wacom/cc-wacom-device.c:435
+#: panels/wacom/cc-wacom-device.c:434
 msgid "External tablet device"
 msgstr "Dış tablet aygıtı"
 
 #. All displays item
-#: panels/wacom/cc-wacom-page.c:639
+#: panels/wacom/cc-wacom-page.c:598
 msgid "All Displays"
 msgstr "Tüm Ekranlar"
 
@@ -8985,7 +9137,7 @@ msgid "Only use a portion of the tablet surface to keep monitor aspect ratio"
 msgstr ""
 "Monitör en boy oranını korumak için tabletin yalnızca bir bölümünü kullan"
 
-#: panels/wacom/cc-wacom-page.ui:64
+#: panels/wacom/cc-wacom-page.ui:58
 msgid "_Calibrate"
 msgstr "_Kalibre Et"
 
@@ -8997,12 +9149,44 @@ msgstr "Tablet bulunamadı"
 msgid "Please plug in or turn on your Wacom tablet"
 msgstr "Lütfen Wacom tabletinizi açın veya bağlayın"
 
+#: panels/wacom/cc-wacom-stylus-action-dialog.c:155
+#, c-format
+msgid "Choose an action when button %d on the stylus is pressed"
+msgstr "Kalemdeki %d düğmesine basılıncaki eylemi seç"
+
+#: panels/wacom/cc-wacom-stylus-action-dialog.c:158
+#, c-format
+msgid "Button %d Mapping"
+msgstr "%d Düğmesi Eşlemi"
+
+#: panels/wacom/cc-wacom-stylus-page.c:398
+msgid "_Left Mousebutton Click"
+msgstr "S_ol Fare Düğmesi Tıklaması"
+
+#: panels/wacom/cc-wacom-stylus-page.c:401
+msgid "_Middle Mousebutton Click"
+msgstr "_Orta Fare Düğmesi Tıklaması"
+
+#: panels/wacom/cc-wacom-stylus-page.c:404
+msgid "_Right Mousebutton Click"
+msgstr "_Sağ Fare Düğmesi Tıklaması"
+
+#. Translators: this is the "go back" action of a button
+#: panels/wacom/cc-wacom-stylus-page.c:408
+msgid "_Back"
+msgstr "_Geri"
+
+#. Translators: this is the "go forward" action of a button
+#: panels/wacom/cc-wacom-stylus-page.c:412
+msgid "_Forward"
+msgstr "İ_leri"
+
 #: panels/wacom/cc-wacom-stylus-page.ui:16
 msgid "Tip _Pressure Feel"
 msgstr "Uç _Basınç Hissi"
 
 #: panels/wacom/cc-wacom-stylus-page.ui:22
-#: panels/wacom/cc-wacom-stylus-page.ui:87
+#: panels/wacom/cc-wacom-stylus-page.ui:117
 msgid "Soft"
 msgstr "Yumuşak"
 
@@ -9011,62 +9195,43 @@ msgid "Stylus tip pressure"
 msgstr "Kalem uç basıncı"
 
 #: panels/wacom/cc-wacom-stylus-page.ui:42
-#: panels/wacom/cc-wacom-stylus-page.ui:107
+#: panels/wacom/cc-wacom-stylus-page.ui:137
 msgid "Firm"
 msgstr "Sıkı"
 
-#: panels/wacom/cc-wacom-stylus-page.ui:55
-msgctxt "display setting"
+#: panels/wacom/cc-wacom-stylus-page.ui:54
 msgid "Button _1"
 msgstr "_1. Düğme"
 
-#: panels/wacom/cc-wacom-stylus-page.ui:64
-msgctxt "display setting"
+#: panels/wacom/cc-wacom-stylus-page.ui:73
 msgid "Button _2"
 msgstr "_2. Düğme"
 
-#: panels/wacom/cc-wacom-stylus-page.ui:73
-msgctxt "display setting"
+#: panels/wacom/cc-wacom-stylus-page.ui:92
 msgid "Button _3"
 msgstr "_3. Düğme"
 
-#: panels/wacom/cc-wacom-stylus-page.ui:81
+#: panels/wacom/cc-wacom-stylus-page.ui:111
 msgid "_Eraser Pressure Feel"
 msgstr "_Silgi Basınç Hissi"
 
-#: panels/wacom/cc-wacom-stylus-page.ui:101
+#: panels/wacom/cc-wacom-stylus-page.ui:131
 msgid "Eraser pressure"
 msgstr "Silgi basıncı"
 
-#: panels/wacom/cc-wacom-stylus-page.ui:138
-msgid "Default"
-msgstr "Öntanımlı"
-
-#: panels/wacom/cc-wacom-stylus-page.ui:139
-msgid "Middle Mouse Button Click"
-msgstr "Orta Fare Düğmesi Tıklaması"
-
-#: panels/wacom/cc-wacom-stylus-page.ui:140
-msgid "Right Mouse Button Click"
-msgstr "Sağ Fare Düğmesi Tıklaması"
-
-#: panels/wacom/cc-wacom-stylus-page.ui:142
-msgid "Forward"
-msgstr "İleri"
-
-#: panels/wacom/cc-wacom-tool.c:361
+#: panels/wacom/cc-wacom-tool.c:362
 msgid "Airbrush stylus with pressure, tilt, and integrated slider"
 msgstr "Basınç, eğim ve tümleşik kaydırıcı destekli airbrush kalem"
 
-#: panels/wacom/cc-wacom-tool.c:363
+#: panels/wacom/cc-wacom-tool.c:364
 msgid "Art pen with pressure, tilt, and rotation"
 msgstr "Basınç, eğme ve döndürme özellikli sanat kalemi"
 
-#: panels/wacom/cc-wacom-tool.c:365
+#: panels/wacom/cc-wacom-tool.c:366
 msgid "Stylus with pressure and tilt"
 msgstr "Basınçlı ve eğimli kalem"
 
-#: panels/wacom/cc-wacom-tool.c:367
+#: panels/wacom/cc-wacom-tool.c:368
 msgid "Stylus with pressure"
 msgstr "Basınçlı kalem"
 
@@ -9639,7 +9804,7 @@ msgid "Settings is the primary interface for configuring your system."
 msgstr "Ayarlar, sisteminizi yapılandırmak için birincil arayüzdür."
 
 #. developer_name tag deprecated with Appstream 1.0
-#: shell/appdata/org.gnome.Settings.appdata.xml.in:38
+#: shell/appdata/org.gnome.Settings.appdata.xml.in:39
 msgid "The GNOME Project"
 msgstr "GNOME Projesi"
 
@@ -9688,23 +9853,23 @@ msgstr "Ayar kategorileri"
 msgid "No Results Found"
 msgstr "Sonuç Bulunamadı"
 
-#: shell/cc-panel-loader.c:273
+#: shell/cc-panel-loader.c:310
 msgid "Available panels:"
 msgstr "Kullanılabilir paneller:"
 
-#: shell/cc-window.ui:42 shell/cc-window.ui:44
+#: shell/cc-window.ui:36
 msgid "Main Menu"
 msgstr "Ana Menü"
 
-#: shell/cc-window.ui:59
+#: shell/cc-window.ui:47
 msgid "Search settings"
 msgstr "Ayar ara"
 
-#: shell/cc-window.ui:94
+#: shell/cc-window.ui:82
 msgid "Warning: Development Version"
 msgstr "Uyarı: Geliştirme Sürümü"
 
-#: shell/cc-window.ui:95
+#: shell/cc-window.ui:83
 msgid ""
 "This version of Settings should only be used for development purposes. You "
 "may experience incorrect system behavior, data loss, and other unexpected "
@@ -9714,19 +9879,19 @@ msgstr ""
 "Doğru olmayan sistem davranışları, veri kaybı ve diğer beklenmeyen "
 "sorunlarla karşılaşabilirsiniz. "
 
-#: shell/cc-window.ui:99
+#: shell/cc-window.ui:87
 msgid "_OK"
 msgstr "_Tamam"
 
-#: shell/cc-window.ui:107
+#: shell/cc-window.ui:95
 msgid "_Keyboard Shortcuts"
 msgstr "_Klavye Kısayolları"
 
-#: shell/cc-window.ui:111
+#: shell/cc-window.ui:99
 msgid "_Help"
 msgstr "_Yardım"
 
-#: shell/cc-window.ui:115
+#: shell/cc-window.ui:103
 msgid "_About Settings"
 msgstr "Ayarlar _Hakkında"
 
@@ -9810,7 +9975,7 @@ msgstr ""
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1915
+#: subprojects/gvc/gvc-mixer-control.c:1879
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -9818,48 +9983,69 @@ msgstr[0] "%u Çıktı"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1925
+#: subprojects/gvc/gvc-mixer-control.c:1889
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u Girdi"
 
-#: subprojects/gvc/gvc-mixer-control.c:2882
+#: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "Sistem Sesleri"
 
-#~ msgid "Reproduce sounds."
-#~ msgstr "Sesleri türet."
+#~ msgid ""
+#~ "Use a remote desktop app to connect using the RDP protocol. Additional "
+#~ "information about the device's network location may also be required"
+#~ msgstr ""
+#~ "RDP iletişim kuralıyla bağlanmak için uzak masaüstü uygulaması kullanın. "
+#~ "Aygıtın ağ konumuyla ilgili ek bilgiler de gerekebilir"
 
-#~ msgid "Try a different search."
-#~ msgstr "Başka arama dene."
+#~ msgid "Device name copied"
+#~ msgstr "Aygıt adı kopyalandı"
 
-#~ msgid "Scan the QR code to connect to the network <b>%s</b>."
-#~ msgstr "<b>%s</b> ağına bağlanmak için QR kodunu tarayın."
+#~ msgid "learn how to use it"
+#~ msgstr "nasıl kullanılacağını öğren"
 
-#~ msgid "Network “%s” has been deleted"
-#~ msgstr "“%s” ağı silindi"
+#~ msgid ""
+#~ "Remote desktop allows viewing and controlling your desktop from another "
+#~ "computer – %s."
+#~ msgstr ""
+#~ "Uzak masaüstü, başka bilgisayardan masaüstünüzü görmeyi ve denetlemenizi "
+#~ "sağlar – %s."
 
-#~ msgid "More information"
-#~ msgstr "Daha çok bilgi"
+#~ msgid "Enable or disable remote desktop connections to this computer"
+#~ msgstr ""
+#~ "Bu bilgisayara uzak masaüstü bağlantısını etkinleştir veya devre dışı "
+#~ "bırak"
 
-#~ msgid "Options"
-#~ msgstr "Seçenekler"
+#~ msgid ""
+#~ "Connect to this computer using the device name or remote desktop address"
+#~ msgstr ""
+#~ "Aygıt adını veya uzak masaüstü adresini kullanarak bu bilgisayara bağlan"
 
-#~ msgid "Single Click"
-#~ msgstr "Tek Tık"
+#~ msgid "D_evice Name"
+#~ msgstr "A_ygıt Adı"
 
-#~ msgid "Add connection"
-#~ msgstr "Bağlantı ekle"
+#~ msgid "Re_mote Desktop Address"
+#~ msgstr "U_zak Masaüstü Adresi"
 
-#~ msgid "Add Ethernet connection"
-#~ msgstr "Ethernet bağlantısı ekle"
+#~ msgid "Authentication"
+#~ msgstr "Kimlik Doğrulaması"
 
-#~ msgid "More options…"
-#~ msgstr "Daha çok seçenek…"
+#~ msgid "The user name and password are required to connect to this computer"
+#~ msgstr "Bu bilgisayara bağlanmak için kullanıcı adı ve parola gereklidir"
 
-#~ msgid "Enable media sharing"
-#~ msgstr "Ortam paylaşımını etkinleştir"
+#~ msgid "_User Name"
+#~ msgstr "_Kullanıcı Adı"
 
-#~ msgid "Enable personal media sharing"
-#~ msgstr "Kişisel ortam paylaşımını etkinleştir"
+#~ msgid "Unable to find the domain. Maybe you misspelled it?"
+#~ msgstr "Etki alanı bulunamadı. Yanlış yazmış olabilir misiniz?"
+
+#~ msgid "_Enterprise Login"
+#~ msgstr "_Kurumsal Giriş"
+
+#~ msgid "User accounts which are managed by a company or organization"
+#~ msgstr "Şirket veya kurumca yönetilen kullanıcı hesapları"
+
+#~ msgid "You are Offline"
+#~ msgstr "Çevrim Dışısınız"

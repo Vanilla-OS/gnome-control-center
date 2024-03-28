@@ -1,3 +1,83 @@
+==============
+Version 46.0.1
+==============
+
+- Handle legacy panel arguments
+- Added/updated/fixed translations
+
+Accessibility
+- Allow launching subpages directly
+
+Privacy
+- Fix Thunderbolt panel not launching
+
+System
+- Avoid setting auto time sync when it isn't needed
+- Improve startup time by loading subpages on demand
+
+============
+Version 46.0
+============
+
+- Various translation updates
+- Update links in appdata file
+- Improve sidebar search results
+
+Appearance
+- Add a transition to the selected background check
+
+Color
+- Fix visibility of calibration button
+
+Online Accounts
+- Reorder online account providers list
+
+Privacy & Security
+- Allow launching subpages of the privacy panel directly
+
+Wacom
+- Bump libwacom dependency requirement to >= 1.4
+- Add AES styli as separate stylus SVG
+- Accept eraser types of button when matching stylus IDs
+
+=============
+Version 46.rc
+=============
+
+- Allow launching some subpages from the command line
+- Various ports of custom widgets to libadwaita widgets
+
+Appearance
+- Track current active background better
+
+Display
+- Add support for Variable Refresh Rate (VRR) modes
+- Show the full VRR range for a monitor when possible
+
+System
+- Introduce the "Remote Login" settings
+- Rename the old "Remote Desktop" settings to "Desktop Sharing"
+- Reintroduce some of "System" pages as search results
+
+Users
+- Fix issue with newly created user page showing other user's info
+- Introduce a new "Add Enterprise User" dialog
+
+
+=================
+Version 46.beta.1
+=================
+
+Exceptional release to fix translations
+https://gitlab.gnome.org/GNOME/gnome-control-center/-/issues/2893
+
+=================
+Version 46.beta.1
+=================
+
+Exceptional release to include gnome-online-accounts changes
+(Freeze break exception https://gitlab.gnome.org/Teams/Releng/freeze-breaks/-/issues/164)
+
 ===============
 Version 46.beta
 ===============

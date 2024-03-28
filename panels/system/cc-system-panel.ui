@@ -19,48 +19,43 @@
                       <object class="AdwPreferencesGroup">
 
                         <child>
-                          <object class="CcListRow">
+                          <object class="CcListRow" id="region_row">
                             <property name="title" translatable="yes">_Region &amp;amp; Language</property>
                             <property name="subtitle" translatable="yes">System language and localization</property>
                             <property name="icon-name">org.gnome.Settings-region-symbolic</property>
                             <property name="show-arrow">True</property>
-                            <property name="action-name">navigation.push</property>
-                            <property name="action-target">'system-region-page'</property>
+                            <signal name="activated" handler="on_page_activated"/>
                           </object>
                         </child>
 
                         <child>
-                          <object class="CcListRow">
+                          <object class="CcListRow" id="datetime_row">
                             <property name="title" translatable="yes">_Date &amp;amp; Time</property>
                             <property name="subtitle" translatable="yes">Time zone and clock settings</property>
                             <property name="icon-name">org.gnome.Settings-time-symbolic</property>
                             <property name="show-arrow">True</property>
-                            <property name="action-name">navigation.push</property>
-                            <property name="action-target">'system-date-time-page'</property>
+                            <signal name="activated" handler="on_page_activated"/>
                           </object>
                         </child>
 
                         <child>
-                          <object class="CcListRow">
+                          <object class="CcListRow" id="users_row">
                             <property name="title" translatable="yes">_Users</property>
                             <property name="subtitle" translatable="yes">Add and remove accounts, change password</property>
                             <property name="icon-name">org.gnome.Settings-users-symbolic</property>
                             <property name="use-underline">True</property>
                             <property name="show-arrow">True</property>
-                            <property name="action-name">navigation.push</property>
-                            <property name="action-target">'system-users-page'</property>
+                            <signal name="activated" handler="on_page_activated"/>
                           </object>
                         </child>
 
                         <child>
-                          <object class="CcListRow">
-                            <property name="visible" bind-source="remote_desktop_page" bind-property="visible" bind-flags="sync-create"/>
+                          <object class="CcListRow" id="remote_desktop_row">
                             <property name="title" translatable="yes">R_emote Desktop</property>
                             <property name="subtitle" translatable="yes">Allow this device to be used remotely</property>
                             <property name="icon-name">org.gnome.Settings-remote-desktop-symbolic</property>
                             <property name="show-arrow">True</property>
-                            <property name="action-name">navigation.push</property>
-                            <property name="action-target">'system-remote-desktop-page'</property>
+                            <signal name="activated" handler="on_page_activated"/>
                           </object>
                         </child>
 
@@ -75,16 +70,36 @@
                         </child>
 
                         <child>
-                          <object class="CcListRow">
+                          <object class="CcListRow" id="about_row">
                             <property name="title" translatable="yes">_About</property>
                             <property name="subtitle" translatable="yes">Hardware details and software versions</property>
                             <property name="icon-name">org.gnome.Settings-about-symbolic</property>
                             <property name="show-arrow">True</property>
-                            <property name="action-name">navigation.push</property>
-                            <property name="action-target">'system-about-page'</property>
+                            <signal name="activated" handler="on_page_activated"/>
                           </object>
                         </child>
 
+                      </object>
+                    </child>
+                    <child>
+                      <!-- Software Updates -->
+                      <object class="AdwPreferencesGroup" id="software_updates_group">
+                        <property name="visible">False</property>
+                        <child>
+                          <object class="AdwActionRow">
+                            <property name="activatable">True</property>
+                            <property name="title" translatable="yes">Software _Updates</property>
+                            <property name="icon-name">update-symbolic</property>
+                            <property name="use-underline">True</property>
+                            <signal name="activated" handler="cc_system_page_open_software_update" swapped="yes"/>
+                            <child type="suffix">
+                              <object class="GtkImage">
+                                <property name="valign">center</property>
+                                <property name="icon-name">adw-external-link-symbolic</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
                       </object>
                     </child>
                   </object>
@@ -93,22 +108,6 @@
               </object>
             </property>
           </object>
-        </child>
-
-        <child>
-          <object class="CcRegionPage" id="region_page"/>
-        </child>
-        <child>
-          <object class="CcDateTimePage" id="datetime_page"/>
-        </child>
-        <child>
-          <object class="CcUsersPage" id="users_page"/>
-        </child>
-        <child>
-          <object class="CcRemoteDesktopPage" id="remote_desktop_page"/>
-        </child>
-        <child>
-          <object class="CcAboutPage" id="about_page"/>
         </child>
       </object>
     </child>

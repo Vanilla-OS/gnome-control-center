@@ -283,6 +283,8 @@ set_active_panel_from_id (CcWindow     *self,
   g_autoptr(GIcon) gicon = NULL;
   g_autofree gchar *name = NULL;
   CcPanelVisibility visibility;
+  CcPanelCategory category;
+  g_autoptr(GVariant) system_param_overwrite = NULL;
   GtkTreeIter iter;
   CcPanelListView view;
   gboolean activated;
@@ -318,10 +320,31 @@ set_active_panel_from_id (CcWindow     *self,
                       COL_NAME, &name,
                       COL_GICON, &gicon,
                       COL_VISIBILITY, &visibility,
+                      COL_CATEGORY, &category,
                       -1);
 
+  /* Handle "System" subpages by overwriting the start_id and parameters arguments.
+   * This is needed because they have their own desktop files. */
+  if (category == CC_CATEGORY_SYSTEM)
+    {
+      g_autofree gchar *param_str = NULL;
+
+      param_str = g_strdup_printf ("[<'%s'>]", start_id);
+      system_param_overwrite = g_variant_new_parsed (param_str);
+      g_variant_ref_sink (system_param_overwrite);
+
+      g_warning ("The direct access to `%s` is now deprecated. Please, use `system %s` instead.", start_id, start_id);
+
+      start_id = "system";
+    }
+
   /* Activate the panel */
-  activated = activate_panel (self, start_id, parameters, name, gicon, visibility);
+  activated = activate_panel (self,
+                              start_id,
+                              system_param_overwrite != NULL ? system_param_overwrite : parameters,
+                              name,
+                              gicon,
+                              visibility);
 
   /* Failed to activate the panel for some reason, let's keep the old
    * panel around instead */
@@ -406,12 +429,27 @@ on_split_view_collapsed_changed_cb (CcWindow *self)
 
 static void
 show_panel_cb (CcWindow    *self,
-               const gchar *panel_id)
+               const gchar *panel_id,
+               const gchar *parent_id)
 {
+  GVariant *parameters;
+  GVariantBuilder builder;
+
   if (!panel_id)
     return;
 
-  set_active_panel_from_id (self, panel_id, NULL, TRUE, FALSE, NULL);
+  if (!parent_id)
+    {
+      set_active_panel_from_id (self, panel_id, NULL, TRUE, FALSE, NULL);
+
+      return;
+    }
+
+  g_variant_builder_init (&builder, G_VARIANT_TYPE ("av"));
+  g_variant_builder_add (&builder, "v", g_variant_new_string (panel_id));
+  parameters = g_variant_builder_end (&builder);
+
+  set_active_panel_from_id (self, parent_id, parameters, TRUE, FALSE, NULL);
 }
 
 static void

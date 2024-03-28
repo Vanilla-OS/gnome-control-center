@@ -157,7 +157,8 @@ find_stylus_for_id (WacomDeviceDatabase  *wacom_db,
 	gint i;
 
 	eraser = libwacom_stylus_get_for_id (wacom_db, tool->id);
-	if (!libwacom_stylus_is_eraser (eraser))
+	if (!libwacom_stylus_is_eraser (eraser) ||
+	    libwacom_stylus_get_eraser_type (eraser) == WACOM_ERASER_BUTTON)
 		return eraser;
 
 	all_ids = cc_wacom_device_get_supported_tools (tool->device, &n_supported);
@@ -296,10 +297,10 @@ get_icon_name_from_type (const WacomStylus *wstylus)
 		return "wacom-stylus-art-pen";
 	case WSTYLUS_CLASSIC:
 		return "wacom-stylus-classic";
-#ifdef HAVE_WACOM_3D_STYLUS
 	case WSTYLUS_3D:
 		return "wacom-stylus-3btn-no-eraser";
-#endif
+	case WSTYLUS_MOBILE:
+		return "wacom-stylus-mobile";
 	default:
 		if (!libwacom_stylus_has_eraser (wstylus)) {
 			if (libwacom_stylus_get_num_buttons (wstylus) >= 3)

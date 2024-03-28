@@ -32,7 +32,7 @@ struct _CcSearchPanel
   CcPanel           parent_instance;
 
   GtkWidget        *list_box;
-  GtkSwitch        *main_switch;
+  AdwSwitchRow     *app_search_row;
   GtkWidget        *search_group;
   GtkWidget        *settings_row;
   CcSearchPanelRow *selected_row;
@@ -423,14 +423,19 @@ search_panel_update_enabled_move_actions (CcSearchPanel *self)
        child;
        child = gtk_widget_get_next_sibling (child))
     {
+      GtkWidget *next_child;
       gint row_idx;
 
       if (!CC_IS_SEARCH_PANEL_ROW (child))
         continue;
 
+      next_child = gtk_widget_get_next_sibling (GTK_WIDGET (child));
+      if (!CC_IS_SEARCH_PANEL_ROW (next_child))
+        continue;
+
       row_idx = gtk_list_box_row_get_index (GTK_LIST_BOX_ROW (child));
       gtk_widget_action_set_enabled (GTK_WIDGET (child), "row.move-up", row_idx != 0);
-      gtk_widget_action_set_enabled (GTK_WIDGET (child), "row.move-down", GTK_LIST_BOX_ROW (gtk_widget_get_next_sibling (GTK_WIDGET (child))) != NULL);
+      gtk_widget_action_set_enabled (GTK_WIDGET (child), "row.move-down", GTK_LIST_BOX_ROW (next_child) != NULL);
     }
 }
 
@@ -708,12 +713,12 @@ cc_search_panel_init (CcSearchPanel *self)
   self->search_settings = g_settings_new ("org.gnome.desktop.search-providers");
   g_settings_bind (self->search_settings,
                    "disable-external",
-                   self->main_switch,
+                   self->app_search_row,
                    "active",
                    G_SETTINGS_BIND_DEFAULT |
                    G_SETTINGS_BIND_INVERT_BOOLEAN);
 
-  g_object_bind_property (self->main_switch,
+  g_object_bind_property (self->app_search_row,
                           "active",
                           self->search_group,
                           "sensitive",
@@ -746,7 +751,7 @@ cc_search_panel_class_init (CcSearchPanelClass *klass)
                                                "/org/gnome/control-center/search/cc-search-panel.ui");
 
   gtk_widget_class_bind_template_child (widget_class, CcSearchPanel, list_box);
-  gtk_widget_class_bind_template_child (widget_class, CcSearchPanel, main_switch);
+  gtk_widget_class_bind_template_child (widget_class, CcSearchPanel, app_search_row);
   gtk_widget_class_bind_template_child (widget_class, CcSearchPanel, search_group);
   gtk_widget_class_bind_template_child (widget_class, CcSearchPanel, settings_row);
 

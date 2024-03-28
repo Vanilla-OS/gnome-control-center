@@ -37,7 +37,6 @@
             <child>
               <object class="CcTimeEditor" id="time_editor">
                 <property name="halign">center</property>
-                <signal name="time-changed" handler="time_changed_cb" swapped="yes"/>
               </object>
             </child>
 
@@ -115,7 +114,7 @@
   </object>
   <template class="CcDateTimePage" parent="AdwNavigationPage">
     <property name="title" translatable="yes">Date &amp; Time</property>
-    <property name="tag">system-date-time-page</property>
+    <property name="tag">datetime</property>
     <property name="child">
       <object class="AdwToolbarView">
         <child type="top">
@@ -146,23 +145,10 @@
                   </object>
                 </child>
                 <child>
-                  <object class="AdwActionRow" id="datetime_row">
+                  <object class="CcListRow" id="datetime_row">
                     <property name="title" translatable="yes">Date &amp;amp; _Time</property>
-                    <property name="use_underline">True</property>
-                    <property name="activatable">True</property>
+                    <property name="show-arrow">True</property>
                     <signal name="activated" handler="list_box_row_activated" swapped="yes"/>
-                    <child>
-                      <object class="GtkLabel" id="datetime_label">
-                        <property name="xalign">0</property>
-                        <property name="label">20 June 2012, 6:45 AM</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImage">
-                        <property name="valign">center</property>
-                        <property name="icon-name">go-next-symbolic</property>
-                      </object>
-                    </child>
                   </object>
                 </child>
               </object>
@@ -177,24 +163,10 @@
                   </object>
                 </child>
                 <child>
-                  <object class="AdwActionRow" id="timezone_row">
+                  <object class="CcListRow" id="timezone_row">
                     <property name="title" translatable="yes">Time Z_one</property>
-                    <property name="use_underline">True</property>
-                    <property name="activatable">True</property>
+                    <property name="show-arrow">True</property>
                     <signal name="activated" handler="list_box_row_activated" swapped="yes"/>
-                    <child>
-                      <object class="GtkLabel" id="timezone_label">
-                        <property name="ellipsize">end</property>
-                        <property name="xalign">0</property>
-                        <property name="label">GMT+1 (London, United Kingdom)</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImage">
-                        <property name="valign">center</property>
-                        <property name="icon-name">go-next-symbolic</property>
-                      </object>
-                    </child>
                   </object>
                 </child>
               </object>
@@ -291,7 +263,6 @@
     <property name="model">
       <object class="GtkSingleSelection" id="month_model">
         <property name="autoselect">False</property>
-        <signal name="selection-changed" handler="on_month_selection_changed_cb" swapped="yes"/>
         <property name="model">
           <object class="GtkStringList">
             <items>
