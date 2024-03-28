@@ -1,3 +1,9 @@
+gnome-control-center (1:46.0.1-1) UNRELEASED; urgency=medium
+
+  * New upstream release
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Thu, 28 Mar 2024 08:47:05 -0400
+
 gnome-control-center (1:46~beta-2) unstable; urgency=medium
 
   * Drop patch reverting switch to gcr4
