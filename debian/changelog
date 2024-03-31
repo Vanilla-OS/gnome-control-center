@@ -1,3 +1,9 @@
+gnome-control-center (1:46.0-0ubuntu6) noble; urgency=medium
+
+  * No-change rebuild for CVE-2024-3094
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Sun, 31 Mar 2024 00:07:19 +0000
+
 gnome-control-center (1:46.0-0ubuntu5) noble; urgency=medium
 
   * d/p/u/Allow-tweaking-some-settings-for-Ubuntu-Dock.patch:
