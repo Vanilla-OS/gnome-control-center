@@ -1,0 +1,3378 @@
+From: =?utf-8?q?Jeremy_B=C3=ADcha?= <jeremy.bicha@canonical.com>
+Date: Mon, 1 Apr 2024 08:14:53 -0400
+Subject: Revert adding Remote Login
+
+requires gnome-remote-desktop 46 which requires mutter 46
+
+Upstream is working on a better version of this patch at
+https://gitlab.gnome.org/GNOME/gnome-control-center/-/merge_requests/2372
+but it wasn't working yet
+---
+ panels/system/meson.build                          |   5 -
+ .../remote-desktop/cc-desktop-sharing-page.c       | 650 -----------------
+ .../remote-desktop/cc-desktop-sharing-page.h       |  30 -
+ .../remote-desktop/cc-desktop-sharing-page.ui      | 156 -----
+ .../cc-encryption-fingerprint-dialog.c             | 108 ---
+ .../cc-encryption-fingerprint-dialog.h             |  39 --
+ .../cc-encryption-fingerprint-dialog.ui            |  63 --
+ .../system/remote-desktop/cc-remote-desktop-page.c | 619 +++++++++++++++-
+ .../remote-desktop/cc-remote-desktop-page.ui       | 250 +++++--
+ .../system/remote-desktop/cc-remote-session-page.c | 777 ---------------------
+ .../system/remote-desktop/cc-remote-session-page.h |  30 -
+ .../remote-desktop/cc-remote-session-page.ui       | 157 -----
+ panels/system/remote-desktop/meson.build           |  26 -
+ .../remote-desktop/org.gnome.RemoteDesktop.xml     | 183 -----
+ ...ontrolcenter.remote-session-helper.policy.in.in |  22 -
+ panels/system/remote-desktop/remote-desktop.css    |   2 +-
+ panels/system/system.gresource.xml                 |   3 -
+ po/POTFILES.in                                     |   9 -
+ 18 files changed, 821 insertions(+), 2308 deletions(-)
+ delete mode 100644 panels/system/remote-desktop/cc-desktop-sharing-page.c
+ delete mode 100644 panels/system/remote-desktop/cc-desktop-sharing-page.h
+ delete mode 100644 panels/system/remote-desktop/cc-desktop-sharing-page.ui
+ delete mode 100644 panels/system/remote-desktop/cc-encryption-fingerprint-dialog.c
+ delete mode 100644 panels/system/remote-desktop/cc-encryption-fingerprint-dialog.h
+ delete mode 100644 panels/system/remote-desktop/cc-encryption-fingerprint-dialog.ui
+ delete mode 100644 panels/system/remote-desktop/cc-remote-session-page.c
+ delete mode 100644 panels/system/remote-desktop/cc-remote-session-page.h
+ delete mode 100644 panels/system/remote-desktop/cc-remote-session-page.ui
+ delete mode 100644 panels/system/remote-desktop/org.gnome.RemoteDesktop.xml
+ delete mode 100644 panels/system/remote-desktop/org.gnome.controlcenter.remote-session-helper.policy.in.in
+
+diff --git a/panels/system/meson.build b/panels/system/meson.build
+index 4fee822..5b198ad 100644
+--- a/panels/system/meson.build
++++ b/panels/system/meson.build
+@@ -25,7 +25,6 @@ install_data(
+ )
+ 
+ sources = files(
+-  'cc-password-utils.c',
+   'cc-system-panel.c',
+   'about/cc-about-page.c',
+   'about/cc-system-details-window.c',
+@@ -39,11 +38,8 @@ sources = files(
+   'region/cc-region-page.c',
+   'region/cc-format-chooser.c',
+   'region/cc-format-preview.c',
+-  'remote-desktop/cc-desktop-sharing-page.c',
+-  'remote-desktop/cc-encryption-fingerprint-dialog.c',
+   'remote-desktop/cc-gnome-remote-desktop.c',
+   'remote-desktop/cc-remote-desktop-page.c',
+-  'remote-desktop/cc-remote-session-page.c',
+   'remote-desktop/cc-tls-certificate.c',
+   'remote-desktop/cc-systemd-service.c',
+   'remote-login/cc-remote-login.c',
+@@ -142,7 +138,6 @@ sources += gnome.gdbus_codegen(
+ 
+ cflags += [
+    '-DDATADIR="@0@"'.format(control_center_datadir),
+-   '-DSYSCONFDIR="@0@"'.format(control_center_sysconfdir),
+    '-DLIBEXECDIR="@0@"'.format(control_center_libexecdir),
+   '-DGNOMECC_DATA_DIR="@0@"'.format(control_center_pkgdatadir)
+ ]
+diff --git a/panels/system/remote-desktop/cc-desktop-sharing-page.c b/panels/system/remote-desktop/cc-desktop-sharing-page.c
+deleted file mode 100644
+index b1c910b..0000000
+--- a/panels/system/remote-desktop/cc-desktop-sharing-page.c
++++ /dev/null
+@@ -1,650 +0,0 @@
+-/*
+- * Copyright 2024 Red Hat Inc
+- *
+- * This program is free software: you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation, either version 3 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+- *
+- * SPDX-License-Identifier: GPL-3.0-or-later
+- */
+-
+-#undef G_LOG_DOMAIN
+-#define G_LOG_DOMAIN "cc-desktop-sharing-page"
+-
+-#include "cc-desktop-sharing-page.h"
+-#include "cc-encryption-fingerprint-dialog.h"
+-#include "cc-gnome-remote-desktop.h"
+-#include "cc-hostname.h"
+-#include "cc-password-utils.h"
+-#include "cc-list-row.h"
+-#include "cc-tls-certificate.h"
+-#include "cc-systemd-service.h"
+-
+-#ifdef HAVE_CONFIG_H
+-# include "config.h"
+-#endif
+-
+-#include <errno.h>
+-#include <glib/gi18n.h>
+-#include <gio/gio.h>
+-#include <gtk/gtk.h>
+-#include <locale.h>
+-
+-#ifdef GDK_WINDOWING_WAYLAND
+-#include <gdk/wayland/gdkwayland.h>
+-#endif
+-
+-#include <pwd.h>
+-#include <pwquality.h>
+-#include <unistd.h>
+-
+-#include "org.gnome.RemoteDesktop.h"
+-
+-#define GNOME_REMOTE_DESKTOP_SCHEMA_ID "org.gnome.desktop.remote-desktop"
+-#define GNOME_REMOTE_DESKTOP_RDP_SCHEMA_ID "org.gnome.desktop.remote-desktop.rdp"
+-#define REMOTE_DESKTOP_STORE_CREDENTIALS_TIMEOUT_S 1
+-#define REMOTE_DESKTOP_SERVICE "gnome-remote-desktop.service"
+-#define RDP_SERVER_DBUS_SERVICE "org.gnome.RemoteDesktop.User"
+-#define RDP_SERVER_OBJECT_PATH "/org/gnome/RemoteDesktop/Rdp/Server"
+-
+-struct _CcDesktopSharingPage {
+-  AdwBin parent_instance;
+-
+-  GtkWidget *toast_overlay;
+-
+-  GsdRemoteDesktopRdpServer *rdp_server;
+-
+-  AdwSwitchRow *desktop_sharing_row;
+-  AdwSwitchRow *remote_control_row;
+-  AdwActionRow *hostname_row;
+-  AdwActionRow *port_row;
+-  GtkWidget *username_entry;
+-  GtkWidget *password_entry;
+-  GtkWidget *generate_password_button;
+-  GtkWidget *verify_encryption_button;
+-
+-  CcEncryptionFingerprintDialog *fingerprint_dialog;
+-
+-  guint desktop_sharing_name_watch;
+-  guint store_credentials_id;
+-  GTlsCertificate *certificate;
+-
+-  GSettings *rdp_settings;
+-  GCancellable *cancellable;
+-};
+-
+-G_DEFINE_TYPE (CcDesktopSharingPage, cc_desktop_sharing_page, ADW_TYPE_BIN)
+-
+-static void
+-on_generate_password_button_clicked (CcDesktopSharingPage *self)
+-{
+-  g_autofree char *new_password = cc_generate_password ();
+-
+-  gtk_editable_set_text (GTK_EDITABLE (self->password_entry), new_password);
+-}
+-
+-static void
+-on_verify_encryption_button_clicked (CcDesktopSharingPage *self)
+-{
+-  GtkNative *native;
+-
+-  g_return_if_fail (self->certificate);
+-
+-  if (!self->fingerprint_dialog)
+-    self->fingerprint_dialog = g_object_new (CC_TYPE_ENCRYPTION_FINGERPRINT_DIALOG, NULL);
+-
+-  native = gtk_widget_get_native (GTK_WIDGET (self));
+-  gtk_window_set_transient_for (GTK_WINDOW (self->fingerprint_dialog), GTK_WINDOW (native));
+-  cc_encryption_fingerprint_dialog_set_certificate (self->fingerprint_dialog, self->certificate);
+-  gtk_window_present (GTK_WINDOW (self->fingerprint_dialog));
+-}
+-
+-static char *
+-get_hostname (void)
+-{
+-  return cc_hostname_get_display_hostname (cc_hostname_get_default ());
+-}
+-
+-static gboolean
+-check_schema_available (CcDesktopSharingPage *self,
+-                        const gchar *schema_id)
+-{
+-  GSettingsSchemaSource *source;
+-  g_autoptr(GSettingsSchema) schema = NULL;
+-
+-  source = g_settings_schema_source_get_default ();
+-  if (!source)
+-    return FALSE;
+-
+-  schema = g_settings_schema_source_lookup (source, schema_id, TRUE);
+-  if (!schema)
+-    return FALSE;
+-
+-  return TRUE;
+-}
+-
+-static gboolean
+-store_credentials_timeout (gpointer user_data)
+-{
+-  CcDesktopSharingPage *self = (CcDesktopSharingPage*) user_data;
+-  const char *username, *password;
+-
+-  username = gtk_editable_get_text (GTK_EDITABLE (self->username_entry));
+-  password = gtk_editable_get_text (GTK_EDITABLE (self->password_entry));
+-
+-  if (username && password)
+-    {
+-      cc_grd_store_rdp_credentials (username, password, self->cancellable);
+-    }
+-
+-  self->store_credentials_id = 0;
+-
+-  return G_SOURCE_REMOVE;
+-}
+-
+-static gboolean
+-is_desktop_sharing_enabled (CcDesktopSharingPage *self)
+-{
+-  if (!g_settings_get_boolean (self->rdp_settings, "enable"))
+-    return FALSE;
+-
+-  return cc_is_service_active (REMOTE_DESKTOP_SERVICE, G_BUS_TYPE_SESSION);
+-}
+-
+-static void
+-disable_gnome_desktop_sharing_service (CcDesktopSharingPage *self)
+-{
+-  g_autoptr(GError) error = NULL;
+-
+-  g_settings_set_boolean (self->rdp_settings, "enable", FALSE);
+-
+-  if (!cc_disable_service (REMOTE_DESKTOP_SERVICE,
+-                           G_BUS_TYPE_SESSION,
+-                           &error))
+-    g_warning ("Failed to enable remote desktop service: %s", error->message);
+-}
+-
+-static void
+-enable_gnome_desktop_sharing_service (CcDesktopSharingPage *self)
+-{
+-  g_autoptr(GError) error = NULL;
+-
+-  if (is_desktop_sharing_enabled (self))
+-    return;
+-
+-  if (!cc_enable_service (REMOTE_DESKTOP_SERVICE, G_BUS_TYPE_SESSION, &error))
+-    {
+-      g_warning ("Failed to enable remote desktop service: %s", error->message);
+-      disable_gnome_desktop_sharing_service (self);
+-    }
+-}
+-
+-static void
+-on_credentials_changed (CcDesktopSharingPage *self)
+-{
+-  g_clear_handle_id (&self->store_credentials_id,
+-                     g_source_remove);
+-
+-  self->store_credentials_id =
+-    g_timeout_add_seconds (REMOTE_DESKTOP_STORE_CREDENTIALS_TIMEOUT_S,
+-                           store_credentials_timeout,
+-                           self);
+-}
+-
+-static void
+-calc_default_tls_paths (char **out_dir_path,
+-                        char **out_cert_path,
+-                        char **out_key_path)
+-{
+-  g_autofree char *dir_path = NULL;
+-
+-  dir_path = g_build_filename (g_get_user_data_dir(), "gnome-remote-desktop", "certificates", NULL);
+-
+-  if (out_cert_path)
+-    *out_cert_path = g_build_filename(dir_path, "rdp-tls.crt", NULL);
+-  if (out_key_path)
+-    *out_key_path = g_build_filename(dir_path, "rdp-tls.key", NULL);
+-
+-  if (out_dir_path)
+-    *out_dir_path = g_steal_pointer (&dir_path);
+-}
+-
+-static void
+-set_tls_certificate (CcDesktopSharingPage  *self,
+-                     GTlsCertificate *tls_certificate)
+-{
+-  g_set_object (&self->certificate, tls_certificate);
+-  gtk_widget_set_sensitive (self->verify_encryption_button, TRUE);
+-}
+-
+-static void
+-on_certificate_generated (GObject      *source_object,
+-                          GAsyncResult *res,
+-                          gpointer      user_data)
+-{
+-  CcDesktopSharingPage *self;
+-  g_autoptr(GTlsCertificate) tls_certificate = NULL;
+-  g_autoptr(GError) error = NULL;
+-  g_autofree char *cert_path = NULL;
+-  g_autofree char *key_path = NULL;
+-
+-  tls_certificate = bonsai_tls_certificate_new_generate_finish (res, &error);
+-  if (!tls_certificate)
+-    {
+-      if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+-        return;
+-
+-      g_warning ("Failed to generate TLS certificate: %s", error->message);
+-      return;
+-    }
+-
+-  self = (CcDesktopSharingPage *)user_data;
+-
+-  calc_default_tls_paths (NULL, &cert_path, &key_path);
+-
+-  g_settings_set_string (self->rdp_settings, "tls-cert", cert_path);
+-  g_settings_set_string (self->rdp_settings, "tls-key", key_path);
+-
+-  set_tls_certificate (self, tls_certificate);
+-
+-  enable_gnome_desktop_sharing_service (self);
+-}
+-
+-static void
+-enable_gnome_desktop_sharing (CcDesktopSharingPage *self)
+-{
+-  g_autofree char *dir_path = NULL;
+-  g_autofree char *cert_path = NULL;
+-  g_autofree char *key_path = NULL;
+-  g_autoptr(GFile) dir = NULL;
+-  g_autoptr(GFile) cert_file = NULL;
+-  g_autoptr(GFile) key_file = NULL;
+-  g_autoptr(GError) error = NULL;
+-
+-  g_settings_set_boolean (self->rdp_settings, "enable", TRUE);
+-
+-  cert_path = g_settings_get_string (self->rdp_settings, "tls-cert");
+-  key_path = g_settings_get_string (self->rdp_settings, "tls-key");
+-  if (strlen (cert_path) > 0 &&
+-      strlen (key_path) > 0)
+-    {
+-      g_autoptr(GTlsCertificate) tls_certificate = NULL;
+-
+-      tls_certificate = g_tls_certificate_new_from_file (cert_path, &error);
+-      if (tls_certificate)
+-        {
+-          set_tls_certificate (self, tls_certificate);
+-
+-          enable_gnome_desktop_sharing_service (self);
+-          return;
+-        }
+-
+-      g_warning ("Configured TLS certificate invalid: %s", error->message);
+-      return;
+-    }
+-
+-  calc_default_tls_paths (&dir_path, &cert_path, &key_path);
+-
+-  dir = g_file_new_for_path (dir_path);
+-  if (!g_file_query_exists (dir, NULL))
+-    {
+-      if (!g_file_make_directory_with_parents (dir, NULL, &error))
+-        {
+-          g_warning ("Failed to create remote desktop certificate directory: %s",
+-                     error->message);
+-          return;
+-        }
+-    }
+-
+-  cert_file = g_file_new_for_path (cert_path);
+-  key_file = g_file_new_for_path (key_path);
+-
+-  if (g_file_query_exists (cert_file, NULL) &&
+-      g_file_query_exists (key_file, NULL))
+-    {
+-      g_autoptr(GTlsCertificate) tls_certificate = NULL;
+-
+-      tls_certificate = g_tls_certificate_new_from_file (cert_path, &error);
+-      if (tls_certificate)
+-        {
+-          g_settings_set_string (self->rdp_settings, "tls-cert", cert_path);
+-          g_settings_set_string (self->rdp_settings, "tls-key", key_path);
+-
+-          set_tls_certificate (self, tls_certificate);
+-
+-          enable_gnome_desktop_sharing_service (self);
+-          return;
+-        }
+-
+-      g_warning ("Existing TLS certificate invalid: %s", error->message);
+-      return;
+-    }
+-
+-  bonsai_tls_certificate_new_generate_async (cert_path,
+-                                             key_path,
+-                                             "US",
+-                                             "GNOME",
+-                                             self->cancellable,
+-                                             on_certificate_generated,
+-                                             self);
+-}
+-
+-static void
+-on_desktop_sharing_active_changed (CcDesktopSharingPage *self)
+-{
+-  if (adw_switch_row_get_active (self->desktop_sharing_row))
+-    enable_gnome_desktop_sharing (self);
+-  else
+-    disable_gnome_desktop_sharing_service (self);
+-}
+-
+-static void
+-add_toast (CcDesktopSharingPage *self,
+-           const char          *message)
+-{
+-  adw_toast_overlay_add_toast (ADW_TOAST_OVERLAY (self->toast_overlay),
+-                               adw_toast_new (message));
+-}
+-
+-static void
+-on_address_copy_clicked (CcDesktopSharingPage *self,
+-                         GtkButton           *button)
+-{
+-  gdk_clipboard_set_text (gtk_widget_get_clipboard (GTK_WIDGET (button)),
+-                          adw_action_row_get_subtitle (self->hostname_row));
+-  add_toast (self, _("Device address copied"));
+-}
+-
+-static void
+-on_port_copy_clicked (CcDesktopSharingPage *self,
+-                      GtkButton            *button)
+-{
+-  gdk_clipboard_set_text (gtk_widget_get_clipboard (GTK_WIDGET (button)),
+-                          adw_action_row_get_subtitle (self->port_row));
+-  add_toast (self, _("Port number copied"));
+-}
+-
+-static void
+-on_username_copy_clicked (CcDesktopSharingPage *self,
+-                          GtkButton           *button)
+-{
+-  GtkEditable *editable = GTK_EDITABLE (self->username_entry);
+-
+-  gdk_clipboard_set_text (gtk_widget_get_clipboard (GTK_WIDGET (button)),
+-                          gtk_editable_get_text (editable));
+-  add_toast (self, _("Username copied"));
+-}
+-
+-static void
+-on_password_copy_clicked (CcDesktopSharingPage *self,
+-                          GtkButton           *button)
+-{
+-  GtkEditable *editable = GTK_EDITABLE (self->password_entry);
+-
+-  gdk_clipboard_set_text (gtk_widget_get_clipboard (GTK_WIDGET (button)),
+-                          gtk_editable_get_text (editable));
+-  add_toast (self, _("Password copied"));
+-}
+-
+-static void
+-setup_desktop_sharing_page (CcDesktopSharingPage *self)
+-{
+-  const gchar *username = NULL;
+-  const gchar *password = NULL;
+-  g_autofree char *hostname = NULL;
+-
+-  self->rdp_settings = g_settings_new (GNOME_REMOTE_DESKTOP_RDP_SCHEMA_ID);
+-
+-  hostname = get_hostname ();
+-  adw_action_row_set_subtitle (self->hostname_row, hostname);
+-
+-  username = cc_grd_lookup_rdp_username (self->cancellable);
+-  password = cc_grd_lookup_rdp_password (self->cancellable);
+-  if (username != NULL)
+-    gtk_editable_set_text (GTK_EDITABLE (self->username_entry), username);
+-  if (password != NULL)
+-    gtk_editable_set_text (GTK_EDITABLE (self->password_entry), password);
+-
+-  g_signal_connect_swapped (self->username_entry,
+-                            "notify::text",
+-                            G_CALLBACK (on_credentials_changed),
+-                            self);
+-  g_signal_connect_swapped (self->password_entry,
+-                            "notify::text",
+-                            G_CALLBACK (on_credentials_changed),
+-                            self);
+-  if (username == NULL)
+-    {
+-      struct passwd *pw = getpwuid (getuid ());
+-      if (pw != NULL)
+-        username = g_strdup (pw->pw_name);
+-      else
+-        g_warning ("Failed to get username: %s", g_strerror (errno));
+-    }
+-  gtk_editable_set_text (GTK_EDITABLE (self->username_entry), username);
+-
+-  if (password == NULL)
+-    {
+-      g_autofree gchar *pw = cc_generate_password ();
+-      if (pw != NULL)
+-        gtk_editable_set_text (GTK_EDITABLE (self->password_entry), pw);
+-    }
+-
+-  g_signal_connect_object (self->desktop_sharing_row, "notify::active",
+-                           G_CALLBACK (on_desktop_sharing_active_changed), self,
+-                           G_CONNECT_SWAPPED);
+-
+-  adw_switch_row_set_active (self->desktop_sharing_row, is_desktop_sharing_enabled (self));
+-
+-  g_settings_bind (self->rdp_settings,
+-                   "enable",
+-                   self->desktop_sharing_row,
+-                   "active",
+-                   G_SETTINGS_BIND_DEFAULT);
+-  g_settings_bind (self->rdp_settings,
+-                   "view-only",
+-                   self->remote_control_row,
+-                   "active",
+-                   G_SETTINGS_BIND_DEFAULT | G_SETTINGS_BIND_INVERT_BOOLEAN);
+-  g_object_bind_property (self->desktop_sharing_row, "active",
+-                          self->remote_control_row, "sensitive",
+-                          G_BINDING_SYNC_CREATE);
+-  g_object_bind_property (self->password_entry, "sensitive",
+-		          self->generate_password_button, "sensitive",
+-			  G_BINDING_SYNC_CREATE);
+-}
+-
+-static void
+-desktop_sharing_name_appeared (GDBusConnection *connection,
+-                               const gchar     *name,
+-                               const gchar     *name_owner,
+-                               gpointer         user_data)
+-{
+-  CcDesktopSharingPage *self = (CcDesktopSharingPage *)user_data;
+-
+-  g_clear_handle_id (&self->desktop_sharing_name_watch, g_bus_unwatch_name);
+-
+-  gtk_widget_set_visible (GTK_WIDGET (self), TRUE);
+-
+-  setup_desktop_sharing_page (self);
+-}
+-
+-static void
+-check_desktop_sharing_available (CcDesktopSharingPage *self)
+-{
+-  if (!check_schema_available (self, GNOME_REMOTE_DESKTOP_SCHEMA_ID) ||
+-      !check_schema_available (self, GNOME_REMOTE_DESKTOP_RDP_SCHEMA_ID))
+-    {
+-      gtk_widget_set_visible (GTK_WIDGET (self), FALSE);
+-      return;
+-    }
+-
+-  self->desktop_sharing_name_watch = g_bus_watch_name (G_BUS_TYPE_SESSION,
+-                                                      "org.gnome.Mutter.RemoteDesktop",
+-                                                      G_BUS_NAME_WATCHER_FLAGS_NONE,
+-                                                      desktop_sharing_name_appeared,
+-                                                      NULL,
+-                                                      self,
+-                                                      NULL);
+-}
+-
+-static void
+-cc_desktop_sharing_page_dispose (GObject *object)
+-{
+-  CcDesktopSharingPage *self = (CcDesktopSharingPage *)object;
+-
+-  g_cancellable_cancel (self->cancellable);
+-  g_clear_object (&self->cancellable);
+-
+-  g_clear_pointer ((GtkWindow **) &self->fingerprint_dialog, gtk_window_destroy);
+-  g_clear_handle_id (&self->store_credentials_id, g_source_remove);
+-
+-  g_clear_object (&self->rdp_server);
+-  g_clear_object (&self->rdp_settings);
+-
+-  G_OBJECT_CLASS (cc_desktop_sharing_page_parent_class)->dispose (object);
+-}
+-
+-static void
+-cc_desktop_sharing_page_class_init (CcDesktopSharingPageClass * klass)
+-{
+-  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
+-  GObjectClass   *object_class = G_OBJECT_CLASS (klass);
+-
+-  object_class->dispose = cc_desktop_sharing_page_dispose;
+-
+-  gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/system/remote-desktop/cc-desktop-sharing-page.ui");
+-
+-  gtk_widget_class_bind_template_child (widget_class, CcDesktopSharingPage, toast_overlay);
+-
+-  gtk_widget_class_bind_template_child (widget_class, CcDesktopSharingPage, desktop_sharing_row);
+-  gtk_widget_class_bind_template_child (widget_class, CcDesktopSharingPage, remote_control_row);
+-  gtk_widget_class_bind_template_child (widget_class, CcDesktopSharingPage, hostname_row);
+-  gtk_widget_class_bind_template_child (widget_class, CcDesktopSharingPage, port_row);
+-  gtk_widget_class_bind_template_child (widget_class, CcDesktopSharingPage, username_entry);
+-  gtk_widget_class_bind_template_child (widget_class, CcDesktopSharingPage, password_entry);
+-  gtk_widget_class_bind_template_child (widget_class, CcDesktopSharingPage, generate_password_button);
+-  gtk_widget_class_bind_template_child (widget_class, CcDesktopSharingPage, verify_encryption_button);
+-
+-  gtk_widget_class_bind_template_callback (widget_class, on_address_copy_clicked);
+-  gtk_widget_class_bind_template_callback (widget_class, on_port_copy_clicked);
+-  gtk_widget_class_bind_template_callback (widget_class, on_username_copy_clicked);
+-  gtk_widget_class_bind_template_callback (widget_class, on_password_copy_clicked);
+-  gtk_widget_class_bind_template_callback (widget_class, on_generate_password_button_clicked);
+-  gtk_widget_class_bind_template_callback (widget_class, on_verify_encryption_button_clicked);
+-}
+-
+-static gboolean
+-format_port_for_row (GBinding     *binding,
+-                     const GValue *from_value,
+-                     GValue       *to_value,
+-                     gpointer      user_data)
+-{
+-  int port = g_value_get_int (from_value);
+-
+-  if (port <= 0)
+-    g_value_set_string (to_value, " ");
+-  else
+-    g_value_take_string (to_value, g_strdup_printf ("%u", port));
+-
+-  return TRUE;
+-}
+-
+-static gboolean
+-sensitize_row_from_port (GBinding     *binding,
+-                         const GValue *from_value,
+-                         GValue       *to_value,
+-                         gpointer      user_data)
+-{
+-  int port = g_value_get_int (from_value);
+-
+-  g_value_set_boolean (to_value, port > 0);
+-
+-  return TRUE;
+-}
+-
+-static void
+-on_connected_to_remote_desktop_rdp_server (GObject      *source_object,
+-                                           GAsyncResult *result,
+-                                           gpointer      user_data)
+-{
+-  CcDesktopSharingPage *self = user_data;
+-  g_autoptr (GError) error = NULL;
+-
+-  g_clear_object (&self->rdp_server);
+-  self->rdp_server = gsd_remote_desktop_rdp_server_proxy_new_finish (result, &error);
+-
+-  if (error)
+-    {
+-      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+-        g_warning ("Failed to create remote desktop proxy: %s", error->message);
+-      return;
+-    }
+-
+-  g_object_bind_property_full (self->rdp_server, "port",
+-                               self->port_row, "subtitle",
+-                               G_BINDING_SYNC_CREATE,
+-                               format_port_for_row,
+-                               NULL,
+-                               NULL,
+-                               NULL);
+-  g_object_bind_property_full (self->rdp_server, "port",
+-                               self->port_row, "sensitive",
+-                               G_BINDING_SYNC_CREATE,
+-                               sensitize_row_from_port,
+-                               NULL,
+-                               NULL,
+-                               NULL);
+-}
+-
+-static void
+-connect_to_remote_desktop_rdp_server (CcDesktopSharingPage *self)
+-{
+-  g_autoptr (GError) error = NULL;
+-  g_autoptr (GDBusConnection) connection = NULL;
+-
+-  connection = g_bus_get_sync (G_BUS_TYPE_SESSION, self->cancellable, &error);
+-
+-  if (error)
+-    g_warning ("Could not connect to system message bus: %s", error->message);
+-
+-  if (!connection)
+-    return;
+-
+-  gsd_remote_desktop_rdp_server_proxy_new (connection,
+-                                           G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START_AT_CONSTRUCTION,
+-                                           RDP_SERVER_DBUS_SERVICE,
+-                                           RDP_SERVER_OBJECT_PATH,
+-                                           self->cancellable,
+-                                           (GAsyncReadyCallback)
+-                                           on_connected_to_remote_desktop_rdp_server,
+-                                           self);
+-}
+-
+-static void
+-cc_desktop_sharing_page_init (CcDesktopSharingPage *self)
+-{
+-  g_autoptr(GtkCssProvider) provider = NULL;
+-
+-  gtk_widget_init_template (GTK_WIDGET (self));
+-
+-  self->cancellable = g_cancellable_new ();
+-  check_desktop_sharing_available (self);
+-  connect_to_remote_desktop_rdp_server (self);
+-
+-  provider = gtk_css_provider_new ();
+-  gtk_css_provider_load_from_resource (provider,
+-                                       "/org/gnome/control-center/system/remote-desktop/remote-desktop.css");
+-  gtk_style_context_add_provider_for_display (gdk_display_get_default (),
+-                                              GTK_STYLE_PROVIDER (provider),
+-                                              GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+-}
+diff --git a/panels/system/remote-desktop/cc-desktop-sharing-page.h b/panels/system/remote-desktop/cc-desktop-sharing-page.h
+deleted file mode 100644
+index 58fe06c..0000000
+--- a/panels/system/remote-desktop/cc-desktop-sharing-page.h
++++ /dev/null
+@@ -1,30 +0,0 @@
+-/*
+- * Copyright 2024 Red Hat Inc
+- *
+- * This program is free software: you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation, either version 3 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+- *
+- * SPDX-License-Identifier: GPL-3.0-or-later
+- */
+-
+-#pragma once
+-
+-#include <adwaita.h>
+-
+-G_BEGIN_DECLS
+-
+-#define CC_TYPE_DESKTOP_SHARING_PAGE (cc_desktop_sharing_page_get_type ())
+-
+-G_DECLARE_FINAL_TYPE (CcDesktopSharingPage, cc_desktop_sharing_page, CC, DESKTOP_SHARING_PAGE, AdwBin)
+-
+-G_END_DECLS
+diff --git a/panels/system/remote-desktop/cc-desktop-sharing-page.ui b/panels/system/remote-desktop/cc-desktop-sharing-page.ui
+deleted file mode 100644
+index 2c4feb1..0000000
+--- a/panels/system/remote-desktop/cc-desktop-sharing-page.ui
++++ /dev/null
+@@ -1,156 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<interface>
+-  <template class="CcDesktopSharingPage" parent="AdwBin">
+-    <child>
+-      <object class="AdwToastOverlay" id="toast_overlay">
+-        <property name="child">
+-          <object class="AdwPreferencesPage">
+-            <child>
+-              <object class="AdwPreferencesGroup">
+-                <child>
+-                  <object class="GtkLabel">
+-                    <property name="label" translatable="yes">Share your existing desktop with other devices. The remote connection uses the existing screen resolution</property>
+-                    <property name="hexpand">True</property>
+-                    <property name="wrap">True</property>
+-                    <property name="justify">center</property>
+-                    <style>
+-                      <class name="dim-label"/>
+-                    </style>
+-                  </object>
+-                </child>
+-              </object>
+-            </child>
+-            <child>
+-              <object class="AdwPreferencesGroup">
+-                <child>
+-                  <object class="AdwSwitchRow" id="desktop_sharing_row">
+-                    <property name="title" translatable="yes">_Desktop Sharing</property>
+-                    <property name="use-underline">True</property>
+-                  </object>
+-                </child>
+-                <child>
+-                  <object class="AdwSwitchRow" id="remote_control_row">
+-                    <property name="title" translatable="yes">Remote _Control</property>
+-                    <property name="use-underline">True</property>
+-                    <property name="subtitle" translatable="yes">Allows desktop shares to control the screen</property>
+-                  </object>
+-                </child>
+-              </object>
+-            </child>
+-            <child>
+-              <object class="AdwPreferencesGroup">
+-                <property name="title" translatable="yes">How to Connect</property>
+-                <property name="description" translatable="yes">Use a remote desktop app to connect using the RDP protocol. Additional information about the device’s network location may also be required.</property>
+-                <child>
+-                  <object class="AdwActionRow" id="hostname_row">
+-                    <property name="title" translatable="yes">_Hostname</property>
+-                    <property name="use-underline">True</property>
+-                    <property name="activatable-widget">copy_address_button</property>
+-                    <style>
+-                      <class name="property"/>
+-                    </style>
+-                    <child type="suffix">
+-                      <object class="GtkButton" id="copy_address_button">
+-                        <property name="tooltip-text" translatable="yes">Copy</property>
+-                        <property name="valign">center</property>
+-                        <property name="icon-name">edit-copy-symbolic</property>
+-                        <signal name="clicked" handler="on_address_copy_clicked" swapped="yes"/>
+-                        <style>
+-                          <class name="flat"/>
+-                        </style>
+-                      </object>
+-                    </child>
+-                  </object>
+-                </child>
+-                <child>
+-                  <object class="AdwActionRow" id="port_row">
+-                    <property name="title" translatable="yes">_Port</property>
+-                    <property name="use-underline">True</property>
+-                    <property name="activatable-widget">copy_port_button</property>
+-                    <style>
+-                      <class name="property"/>
+-                    </style>
+-                    <child type="suffix">
+-                      <object class="GtkButton" id="copy_port_button">
+-                        <property name="tooltip-text" translatable="yes">Copy</property>
+-                        <property name="valign">center</property>
+-                        <property name="icon-name">edit-copy-symbolic</property>
+-                        <signal name="clicked" handler="on_port_copy_clicked" swapped="yes"/>
+-                        <style>
+-                          <class name="flat"/>
+-                        </style>
+-                      </object>
+-                    </child>
+-                  </object>
+-                </child>
+-              </object>
+-            </child>
+-            <child>
+-              <object class="AdwPreferencesGroup">
+-                <property name="title" translatable="yes">Login Details</property>
+-                <child>
+-                  <object class="AdwEntryRow" id="username_entry">
+-                    <property name="title" translatable="yes">Username</property>
+-                    <child type="suffix">
+-                      <object class="GtkButton">
+-                        <property name="tooltip-text" translatable="yes">Copy</property>
+-                        <property name="valign">center</property>
+-                        <property name="icon-name">edit-copy-symbolic</property>
+-                        <signal name="clicked" handler="on_username_copy_clicked" swapped="yes"/>
+-                        <style>
+-                          <class name="flat"/>
+-                        </style>
+-                      </object>
+-                    </child>
+-                  </object>
+-                </child>
+-                <child>
+-                  <object class="AdwPasswordEntryRow" id="password_entry">
+-                    <property name="title" translatable="yes">Password</property>
+-                    <child type="suffix">
+-                      <object class="GtkButton">
+-                        <property name="tooltip-text" translatable="yes">Copy</property>
+-                        <property name="valign">center</property>
+-                        <property name="icon-name">edit-copy-symbolic</property>
+-                        <signal name="clicked" handler="on_password_copy_clicked" swapped="yes"/>
+-                        <style>
+-                          <class name="flat"/>
+-                        </style>
+-                      </object>
+-                    </child>
+-                  </object>
+-                </child>
+-                <child>
+-                  <object class="GtkBox">
+-                    <property name="margin-top">24</property>
+-                    <property name="spacing">10</property>
+-                    <child>
+-                      <object class="GtkButton" id="generate_password_button">
+-                        <property name="sensitive">False</property>
+-                        <property name="can-shrink">True</property>
+-                        <property name="label" translatable="yes">_Generate New Password</property>
+-                        <property name="use-underline">True</property>
+-                        <signal name="clicked" handler="on_generate_password_button_clicked" swapped="yes"/>
+-                      </object>
+-                    </child>
+-                    <child>
+-                      <object class="GtkButton" id="verify_encryption_button">
+-                        <property name="sensitive">False</property>
+-                        <property name="hexpand">True</property>
+-                        <property name="halign">end</property>
+-                        <property name="can-shrink">True</property>
+-                        <property name="label" translatable="yes">_Verify Encryption</property>
+-                        <property name="use-underline">True</property>
+-                        <signal name="clicked" handler="on_verify_encryption_button_clicked" swapped="yes"/>
+-                      </object>
+-                    </child>
+-                  </object>
+-                </child>
+-              </object>
+-            </child>
+-          </object>
+-        </property>
+-      </object>
+-    </child>
+-  </template>
+-</interface>
+diff --git a/panels/system/remote-desktop/cc-encryption-fingerprint-dialog.c b/panels/system/remote-desktop/cc-encryption-fingerprint-dialog.c
+deleted file mode 100644
+index fe56bc4..0000000
+--- a/panels/system/remote-desktop/cc-encryption-fingerprint-dialog.c
++++ /dev/null
+@@ -1,108 +0,0 @@
+-/*
+- * Copyright 2024 Red Hat, Inc
+- *
+- * This program is free software: you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation, either version 3 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+- *
+- * SPDX-License-Identifier: GPL-3.0-or-later
+- */
+-
+-#include "cc-encryption-fingerprint-dialog.h"
+-
+-#ifdef HAVE_CONFIG_H
+-# include "config.h"
+-#endif
+-
+-struct _CcEncryptionFingerprintDialog {
+-  AdwWindow parent_instance;
+-
+-  GtkLabel *fingerprint_left_label;
+-  GtkLabel *fingerprint_right_label;
+-};
+-
+-G_DEFINE_TYPE (CcEncryptionFingerprintDialog, cc_encryption_fingerprint_dialog, ADW_TYPE_WINDOW)
+-
+-static void
+-cc_encryption_fingerprint_dialog_class_init (CcEncryptionFingerprintDialogClass *klass)
+-{
+-  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
+-
+-  gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/system/remote-desktop/cc-encryption-fingerprint-dialog.ui");
+-
+-  gtk_widget_class_bind_template_child (widget_class, CcEncryptionFingerprintDialog, fingerprint_left_label);
+-  gtk_widget_class_bind_template_child (widget_class, CcEncryptionFingerprintDialog, fingerprint_right_label);
+-}
+-
+-static void
+-cc_encryption_fingerprint_dialog_init (CcEncryptionFingerprintDialog *self)
+-{
+-  gtk_widget_init_template (GTK_WIDGET (self));
+-}
+-
+-void
+-cc_encryption_fingerprint_dialog_set_fingerprint (CcEncryptionFingerprintDialog *self,
+-                                                  const gchar                   *fingerprint,
+-                                                  const gchar                   *separator)
+-{
+-  g_auto(GStrv) fingerprintv = NULL;
+-  g_autofree char *left_string = NULL;
+-  g_autofree char *right_string = NULL;
+-
+-  fingerprintv = g_strsplit (fingerprint, separator, -1);
+-  g_return_if_fail (g_strv_length (fingerprintv) == 32);
+-
+-  left_string = g_strdup_printf (
+-    "%s:%s:%s:%s\n"
+-    "%s:%s:%s:%s\n"
+-    "%s:%s:%s:%s\n"
+-    "%s:%s:%s:%s\n",
+-    fingerprintv[0], fingerprintv[1], fingerprintv[2], fingerprintv[3],
+-    fingerprintv[8], fingerprintv[9], fingerprintv[10], fingerprintv[11],
+-    fingerprintv[16], fingerprintv[17], fingerprintv[18], fingerprintv[19],
+-    fingerprintv[24], fingerprintv[25], fingerprintv[26], fingerprintv[27]);
+-
+- right_string = g_strdup_printf (
+-   "%s:%s:%s:%s\n"
+-   "%s:%s:%s:%s\n"
+-   "%s:%s:%s:%s\n"
+-   "%s:%s:%s:%s\n",
+-   fingerprintv[4], fingerprintv[5], fingerprintv[6], fingerprintv[7],
+-   fingerprintv[12], fingerprintv[13], fingerprintv[14], fingerprintv[15],
+-   fingerprintv[20], fingerprintv[21], fingerprintv[22], fingerprintv[23],
+-   fingerprintv[28], fingerprintv[29], fingerprintv[30], fingerprintv[31]);
+-
+-  gtk_label_set_label (GTK_LABEL (self->fingerprint_left_label), left_string);
+-  gtk_label_set_label (GTK_LABEL (self->fingerprint_right_label), right_string);
+-}
+-
+-void
+-cc_encryption_fingerprint_dialog_set_certificate (CcEncryptionFingerprintDialog *self,
+-                                                  GTlsCertificate               *certificate)
+-{
+-  g_autofree char *fingerprint = NULL;
+-  g_autoptr(GByteArray) der = NULL;
+-  g_autoptr(GcrCertificate) gcr_cert = NULL;
+-  g_return_if_fail (self);
+-  g_return_if_fail (certificate);
+-
+-  g_object_get (certificate, "certificate", &der, NULL);
+-  gcr_cert = gcr_simple_certificate_new (der->data, der->len);
+-  if (!gcr_cert)
+-    {
+-      g_warning ("Failed to load GCR TLS certificate representation");
+-      return;
+-    }
+-
+-  fingerprint = gcr_certificate_get_fingerprint_hex (gcr_cert, G_CHECKSUM_SHA256);
+-  cc_encryption_fingerprint_dialog_set_fingerprint (self, fingerprint, " ");
+-}
+diff --git a/panels/system/remote-desktop/cc-encryption-fingerprint-dialog.h b/panels/system/remote-desktop/cc-encryption-fingerprint-dialog.h
+deleted file mode 100644
+index caf59de..0000000
+--- a/panels/system/remote-desktop/cc-encryption-fingerprint-dialog.h
++++ /dev/null
+@@ -1,39 +0,0 @@
+-/*
+- * Copyright 2024 Red Hat, Inc
+- *
+- * This program is free software: you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation, either version 3 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+- *
+- * SPDX-License-Identifier: GPL-3.0-or-later
+- */
+-
+-#pragma once
+-
+-#include <adwaita.h>
+-
+-#define GCR_API_SUBJECT_TO_CHANGE
+-#include <gcr/gcr.h>
+-
+-G_BEGIN_DECLS
+-
+-#define CC_TYPE_ENCRYPTION_FINGERPRINT_DIALOG (cc_encryption_fingerprint_dialog_get_type ())
+-
+-G_DECLARE_FINAL_TYPE (CcEncryptionFingerprintDialog, cc_encryption_fingerprint_dialog, CC, ENCRYPTION_FINGERPRINT_DIALOG, AdwWindow)
+-
+-void cc_encryption_fingerprint_dialog_set_certificate (CcEncryptionFingerprintDialog *self,
+-                                                       GTlsCertificate                *certificate);
+-void cc_encryption_fingerprint_dialog_set_fingerprint (CcEncryptionFingerprintDialog *self,
+-                                                       const gchar                   *fingerprint,
+-                                                       const gchar                    *separator);
+-
+-G_END_DECLS
+diff --git a/panels/system/remote-desktop/cc-encryption-fingerprint-dialog.ui b/panels/system/remote-desktop/cc-encryption-fingerprint-dialog.ui
+deleted file mode 100644
+index d003f9b..0000000
+--- a/panels/system/remote-desktop/cc-encryption-fingerprint-dialog.ui
++++ /dev/null
+@@ -1,63 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<interface>
+-  <template class="CcEncryptionFingerprintDialog" parent="AdwWindow">
+-    <property name="width-request">360</property>
+-    <property name="height-request">294</property>
+-    <property name="hide-on-close">True</property>
+-    <property name="modal">True</property>
+-    <child>
+-      <object class="GtkShortcutController">
+-        <property name="scope">managed</property>
+-        <child>
+-          <object class="GtkShortcut">
+-            <property name="trigger">Escape</property>
+-            <property name="action">action(window.close)</property>
+-          </object>
+-        </child>
+-      </object>
+-    </child>
+-    <property name="content">
+-      <object class="AdwToolbarView">
+-        <child type="top">
+-          <object class="AdwHeaderBar">
+-            <property name="show-title">False</property>
+-          </object>
+-        </child>
+-        <property name="content">
+-          <object class="AdwStatusPage">
+-            <property name="title" translatable="yes">Encryption Fingerprint</property>
+-            <property name="description" translatable="yes">The encryption fingerprint can be seen in connecting clients and should be identical</property>
+-            <property name="vexpand">True</property>
+-            <style>
+-              <class name="compact"/>
+-            </style>
+-            <child>
+-              <object class="GtkBox">
+-                <property name="orientation">horizontal</property>
+-                <property name="halign">center</property>
+-                <style>
+-                  <class name="tls-cert-verification" />
+-                </style>
+-                <child>
+-                  <object class="GtkLabel" id="fingerprint_left_label">
+-                    <style>
+-                      <class name="tls-cert-fingerprint" />
+-                    </style>
+-                  </object>
+-                </child>
+-                <child>
+-                  <object class="GtkLabel" id="fingerprint_right_label">
+-                    <style>
+-                      <class name="tls-cert-fingerprint" />
+-                    </style>
+-                  </object>
+-                </child>
+-              </object>
+-            </child>
+-          </object>
+-        </property>
+-      </object>
+-    </property>
+-  </template>
+-
+-</interface>
+diff --git a/panels/system/remote-desktop/cc-remote-desktop-page.c b/panels/system/remote-desktop/cc-remote-desktop-page.c
+index d58d92c..44c8d55 100644
+--- a/panels/system/remote-desktop/cc-remote-desktop-page.c
++++ b/panels/system/remote-desktop/cc-remote-desktop-page.c
+@@ -20,24 +20,591 @@
+ #undef G_LOG_DOMAIN
+ #define G_LOG_DOMAIN "cc-remote-desktop-page"
+ 
++#include "cc-gnome-remote-desktop.h"
++#include "cc-hostname.h"
++#include "cc-list-row.h"
+ #include "cc-remote-desktop-page.h"
+-#include "cc-desktop-sharing-page.h"
+-#include "cc-remote-session-page.h"
++#include "cc-tls-certificate.h"
++#include "cc-systemd-service.h"
+ 
+ #ifdef HAVE_CONFIG_H
+ # include "config.h"
+ #endif
+ 
++#include <errno.h>
++#include <glib/gi18n.h>
++#include <gio/gio.h>
++#include <gtk/gtk.h>
++#include <locale.h>
++
++#ifdef GDK_WINDOWING_WAYLAND
++#include <gdk/wayland/gdkwayland.h>
++#endif
++
++#define GCR_API_SUBJECT_TO_CHANGE
++#include <gcr/gcr.h>
++
++#include "org.gnome.SettingsDaemon.Sharing.h"
++
++#include <pwd.h>
++#include <pwquality.h>
++#include <unistd.h>
++
++#define GNOME_REMOTE_DESKTOP_SCHEMA_ID "org.gnome.desktop.remote-desktop"
++#define GNOME_REMOTE_DESKTOP_RDP_SCHEMA_ID "org.gnome.desktop.remote-desktop.rdp"
++#define REMOTE_DESKTOP_STORE_CREDENTIALS_TIMEOUT_S 1
++#define REMOTE_DESKTOP_SERVICE "gnome-remote-desktop.service"
++
+ struct _CcRemoteDesktopPage {
+   AdwNavigationPage parent_instance;
+ 
+-  CcDesktopSharingPage *desktop_sharing_page;
++  AdwPreferencesPage *remote_desktop_page;
++  AdwSwitchRow *remote_control_row;
++  GtkWidget *remote_desktop_toast_overlay;
++  GtkWidget *remote_desktop_password_entry;
++  GtkWidget *remote_desktop_username_entry;
++  GtkWidget *remote_desktop_device_name_label;
++  GtkWidget *remote_desktop_address_label;
++  AdwSwitchRow *remote_desktop_row;
++  GtkWidget *remote_desktop_verify_encryption;
++  GtkWidget *remote_desktop_fingerprint_dialog;
++  GtkWidget *remote_desktop_fingerprint_left;
++  GtkWidget *remote_desktop_fingerprint_right;
++
++  guint remote_desktop_name_watch;
++  guint remote_desktop_store_credentials_id;
++  GTlsCertificate *remote_desktop_certificate;
+ 
++  GSettings *rdp_settings;
+   GCancellable *cancellable;
+ };
+ 
+ G_DEFINE_TYPE (CcRemoteDesktopPage, cc_remote_desktop_page, ADW_TYPE_NAVIGATION_PAGE)
+ 
++static void
++remote_desktop_show_encryption_fingerprint (CcRemoteDesktopPage *self)
++{
++  g_autoptr(GByteArray) der = NULL;
++  g_autoptr(GcrCertificate) gcr_cert = NULL;
++  g_autofree char *fingerprint = NULL;
++  g_auto(GStrv) fingerprintv = NULL;
++  g_autofree char *left_string = NULL;
++  g_autofree char *right_string = NULL;
++  GtkNative *native;
++
++  g_return_if_fail (self->remote_desktop_certificate);
++
++  g_object_get (self->remote_desktop_certificate,
++                "certificate", &der, NULL);
++  gcr_cert = gcr_simple_certificate_new (der->data, der->len);
++  if (!gcr_cert)
++    {
++      g_warning ("Failed to load GCR TLS certificate representation");
++      return;
++    }
++
++  fingerprint = gcr_certificate_get_fingerprint_hex (gcr_cert, G_CHECKSUM_SHA256);
++
++  fingerprintv = g_strsplit (fingerprint, " ", -1);
++  g_return_if_fail (g_strv_length (fingerprintv) == 32);
++
++  left_string = g_strdup_printf (
++    "%s:%s:%s:%s\n"
++    "%s:%s:%s:%s\n"
++    "%s:%s:%s:%s\n"
++    "%s:%s:%s:%s\n",
++    fingerprintv[0], fingerprintv[1], fingerprintv[2], fingerprintv[3],
++    fingerprintv[8], fingerprintv[9], fingerprintv[10], fingerprintv[11],
++    fingerprintv[16], fingerprintv[17], fingerprintv[18], fingerprintv[19],
++    fingerprintv[24], fingerprintv[25], fingerprintv[26], fingerprintv[27]);
++
++ right_string = g_strdup_printf (
++   "%s:%s:%s:%s\n"
++   "%s:%s:%s:%s\n"
++   "%s:%s:%s:%s\n"
++   "%s:%s:%s:%s\n",
++   fingerprintv[4], fingerprintv[5], fingerprintv[6], fingerprintv[7],
++   fingerprintv[12], fingerprintv[13], fingerprintv[14], fingerprintv[15],
++   fingerprintv[20], fingerprintv[21], fingerprintv[22], fingerprintv[23],
++   fingerprintv[28], fingerprintv[29], fingerprintv[30], fingerprintv[31]);
++
++  gtk_label_set_label (GTK_LABEL (self->remote_desktop_fingerprint_left),
++                       left_string);
++  gtk_label_set_label (GTK_LABEL (self->remote_desktop_fingerprint_right),
++                       right_string);
++
++  native = gtk_widget_get_native (GTK_WIDGET (self));
++  gtk_window_set_transient_for (GTK_WINDOW (self->remote_desktop_fingerprint_dialog),
++                                GTK_WINDOW (native));
++
++  gtk_window_present (GTK_WINDOW (self->remote_desktop_fingerprint_dialog));
++}
++
++static char *
++get_hostname (void)
++{
++  return cc_hostname_get_display_hostname (cc_hostname_get_default ());
++}
++
++static void
++cc_remote_desktop_page_setup_label_with_hostname (CcRemoteDesktopPage *self,
++                                                         GtkWidget      *label)
++{
++  g_autofree gchar *text = NULL;
++  const gchar *hostname;
++
++  hostname = get_hostname ();
++
++  if (label == self->remote_desktop_address_label)
++    {
++      text = g_strdup_printf ("rdp://%s", hostname);
++    }
++  else
++    g_assert_not_reached ();
++
++  gtk_label_set_label (GTK_LABEL (label), text);
++}
++
++static gboolean
++cc_remote_desktop_page_check_schema_available (CcRemoteDesktopPage *self,
++                                                      const gchar *schema_id)
++{
++  GSettingsSchemaSource *source;
++  g_autoptr(GSettingsSchema) schema = NULL;
++
++  source = g_settings_schema_source_get_default ();
++  if (!source)
++    return FALSE;
++
++  schema = g_settings_schema_source_lookup (source, schema_id, TRUE);
++  if (!schema)
++    return FALSE;
++
++  return TRUE;
++}
++
++static gboolean
++store_remote_desktop_credentials_timeout (gpointer user_data)
++{
++  CcRemoteDesktopPage *self = (CcRemoteDesktopPage *)user_data;
++  const char *username, *password;
++
++  username = gtk_editable_get_text (GTK_EDITABLE (self->remote_desktop_username_entry));
++  password = gtk_editable_get_text (GTK_EDITABLE (self->remote_desktop_password_entry));
++
++  if (username && password)
++    {
++      cc_grd_store_rdp_credentials (username, password,
++                                    self->cancellable);
++    }
++
++  self->remote_desktop_store_credentials_id = 0;
++
++  return G_SOURCE_REMOVE;
++}
++
++static gboolean
++is_remote_desktop_enabled (CcRemoteDesktopPage *self)
++{
++  if (!g_settings_get_boolean (self->rdp_settings, "enable"))
++    return FALSE;
++
++  return cc_is_service_active (REMOTE_DESKTOP_SERVICE, G_BUS_TYPE_SESSION);
++}
++
++static void
++enable_gnome_remote_desktop_service (CcRemoteDesktopPage *self)
++{
++  g_autoptr(GError) error = NULL;
++
++  if (is_remote_desktop_enabled (self))
++    return;
++
++  if (!cc_enable_service (REMOTE_DESKTOP_SERVICE,
++                          G_BUS_TYPE_SESSION,
++                          &error))
++    g_warning ("Failed to enable remote desktop service: %s", error->message);
++}
++
++static void
++remote_desktop_credentials_changed (CcRemoteDesktopPage *self)
++{
++  g_clear_handle_id (&self->remote_desktop_store_credentials_id,
++                     g_source_remove);
++
++  self->remote_desktop_store_credentials_id =
++    g_timeout_add_seconds (REMOTE_DESKTOP_STORE_CREDENTIALS_TIMEOUT_S,
++                           store_remote_desktop_credentials_timeout,
++                           self);
++}
++
++static void
++calc_default_tls_paths (char **out_dir_path,
++                        char **out_cert_path,
++                        char **out_key_path)
++{
++  g_autofree char *dir_path = NULL;
++
++  dir_path = g_build_filename(g_get_user_data_dir(), "gnome-remote-desktop", NULL);
++
++  if (out_cert_path)
++    *out_cert_path = g_build_filename(dir_path, "rdp-tls.crt", NULL);
++  if (out_key_path)
++    *out_key_path = g_build_filename(dir_path, "rdp-tls.key", NULL);
++
++  if (out_dir_path)
++    *out_dir_path = g_steal_pointer (&dir_path);
++}
++
++static void
++set_tls_certificate (CcRemoteDesktopPage  *self,
++                     GTlsCertificate *tls_certificate)
++{
++  g_set_object (&self->remote_desktop_certificate,
++                tls_certificate);
++  gtk_widget_set_sensitive (self->remote_desktop_verify_encryption, TRUE);
++}
++
++static void
++on_certificate_generated (GObject      *source_object,
++                          GAsyncResult *res,
++                          gpointer      user_data)
++{
++  CcRemoteDesktopPage *self;
++  g_autoptr(GTlsCertificate) tls_certificate = NULL;
++  g_autoptr(GError) error = NULL;
++  g_autofree char *cert_path = NULL;
++  g_autofree char *key_path = NULL;
++
++  tls_certificate = bonsai_tls_certificate_new_generate_finish (res, &error);
++  if (!tls_certificate)
++    {
++      if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
++        return;
++
++      g_warning ("Failed to generate TLS certificate: %s", error->message);
++      return;
++    }
++
++  self = (CcRemoteDesktopPage *)user_data;
++
++  calc_default_tls_paths (NULL, &cert_path, &key_path);
++
++  g_settings_set_string (self->rdp_settings, "tls-cert", cert_path);
++  g_settings_set_string (self->rdp_settings, "tls-key", key_path);
++
++  set_tls_certificate (self, tls_certificate);
++
++  enable_gnome_remote_desktop_service (self);
++}
++
++static void
++disable_gnome_remote_desktop_service (CcRemoteDesktopPage *self)
++{
++  g_autoptr(GError) error = NULL;
++
++  g_settings_set_boolean (self->rdp_settings, "enable", FALSE);
++
++  if (!cc_disable_service (REMOTE_DESKTOP_SERVICE,
++                           G_BUS_TYPE_SESSION,
++                           &error))
++    g_warning ("Failed to enable remote desktop service: %s", error->message);
++}
++
++static void
++enable_gnome_remote_desktop (CcRemoteDesktopPage *self)
++{
++  g_autofree char *dir_path = NULL;
++  g_autofree char *cert_path = NULL;
++  g_autofree char *key_path = NULL;
++  g_autoptr(GFile) dir = NULL;
++  g_autoptr(GFile) cert_file = NULL;
++  g_autoptr(GFile) key_file = NULL;
++  g_autoptr(GError) error = NULL;
++
++  g_settings_set_boolean (self->rdp_settings, "enable", TRUE);
++
++  cert_path = g_settings_get_string (self->rdp_settings, "tls-cert");
++  key_path = g_settings_get_string (self->rdp_settings, "tls-key");
++  if (strlen (cert_path) > 0 &&
++      strlen (key_path) > 0)
++    {
++      g_autoptr(GTlsCertificate) tls_certificate = NULL;
++
++      tls_certificate = g_tls_certificate_new_from_file (cert_path, &error);
++      if (tls_certificate)
++        {
++          set_tls_certificate (self, tls_certificate);
++
++          enable_gnome_remote_desktop_service (self);
++          return;
++        }
++
++      g_warning ("Configured TLS certificate invalid: %s", error->message);
++      return;
++    }
++
++  calc_default_tls_paths (&dir_path, &cert_path, &key_path);
++
++  dir = g_file_new_for_path (dir_path);
++  if (!g_file_query_exists (dir, NULL))
++    {
++      if (!g_file_make_directory_with_parents (dir, NULL, &error))
++        {
++          g_warning ("Failed to create remote desktop certificate directory: %s",
++                     error->message);
++          return;
++        }
++    }
++
++  cert_file = g_file_new_for_path (cert_path);
++  key_file = g_file_new_for_path (key_path);
++
++  if (g_file_query_exists (cert_file, NULL) &&
++      g_file_query_exists (key_file, NULL))
++    {
++      g_autoptr(GTlsCertificate) tls_certificate = NULL;
++
++      tls_certificate = g_tls_certificate_new_from_file (cert_path, &error);
++      if (tls_certificate)
++        {
++          g_settings_set_string (self->rdp_settings, "tls-cert", cert_path);
++          g_settings_set_string (self->rdp_settings, "tls-key", key_path);
++
++          set_tls_certificate (self, tls_certificate);
++
++          enable_gnome_remote_desktop_service (self);
++          return;
++        }
++
++      g_warning ("Existing TLS certificate invalid: %s", error->message);
++      return;
++    }
++
++  bonsai_tls_certificate_new_generate_async (cert_path,
++                                             key_path,
++                                             "US",
++                                             "GNOME",
++                                             self->cancellable,
++                                             on_certificate_generated,
++                                             self);
++}
++
++static void
++on_remote_desktop_active_changed (CcRemoteDesktopPage *self)
++{
++  if (adw_switch_row_get_active (self->remote_desktop_row))
++    enable_gnome_remote_desktop (self);
++  else
++    disable_gnome_remote_desktop_service (self);
++}
++
++static void
++add_toast (CcRemoteDesktopPage *self,
++           const char                *message)
++{
++  adw_toast_overlay_add_toast (ADW_TOAST_OVERLAY (self->remote_desktop_toast_overlay),
++                               adw_toast_new (message));
++}
++
++static void
++on_device_name_copy_clicked (CcRemoteDesktopPage *self,
++                             GtkButton                 *button)
++{
++  GtkLabel *label = GTK_LABEL (self->remote_desktop_device_name_label);
++
++  gdk_clipboard_set_text (gtk_widget_get_clipboard (GTK_WIDGET (button)),
++                          gtk_label_get_text (label));
++  add_toast (self, _("Device name copied"));
++}
++
++static void
++on_device_address_copy_clicked (CcRemoteDesktopPage *self,
++                                GtkButton                 *button)
++{
++  GtkLabel *label = GTK_LABEL (self->remote_desktop_address_label);
++
++  gdk_clipboard_set_text (gtk_widget_get_clipboard (GTK_WIDGET (button)),
++                          gtk_label_get_text (label));
++  add_toast (self, _("Device address copied"));
++}
++
++static void
++on_username_copy_clicked (CcRemoteDesktopPage *self,
++                          GtkButton                 *button)
++{
++  GtkEditable *editable = GTK_EDITABLE (self->remote_desktop_username_entry);
++
++  gdk_clipboard_set_text (gtk_widget_get_clipboard (GTK_WIDGET (button)),
++                          gtk_editable_get_text (editable));
++  add_toast (self, _("Username copied"));
++}
++
++static void
++on_password_copy_clicked (CcRemoteDesktopPage *self,
++                          GtkButton                 *button)
++{
++  GtkEditable *editable = GTK_EDITABLE (self->remote_desktop_password_entry);
++
++  gdk_clipboard_set_text (gtk_widget_get_clipboard (GTK_WIDGET (button)),
++                          gtk_editable_get_text (editable));
++  add_toast (self, _("Password copied"));
++}
++
++static pwquality_settings_t *
++get_pwq (void)
++{
++  static pwquality_settings_t *settings;
++
++  if (settings == NULL)
++    {
++      gchar *err = NULL;
++      gint rv = 0;
++
++      settings = pwquality_default_settings ();
++      pwquality_set_int_value (settings, PWQ_SETTING_MAX_SEQUENCE, 4);
++
++      rv = pwquality_read_config (settings, NULL, (gpointer)&err);
++      if (rv < 0)
++        {
++          g_warning ("Failed to read pwquality configuration: %s\n",
++                     pwquality_strerror (NULL, 0, rv, err));
++          pwquality_free_settings (settings);
++
++          /* Load just default settings in case of failure. */
++          settings = pwquality_default_settings ();
++          pwquality_set_int_value (settings, PWQ_SETTING_MAX_SEQUENCE, 4);
++        }
++    }
++
++  return settings;
++}
++
++static char *
++pw_generate (void)
++{
++  g_autofree gchar *res = NULL;
++  int rv;
++
++  rv = pwquality_generate (get_pwq (), 0, &res);
++
++  if (rv < 0)
++    {
++      g_warning ("Password generation failed: %s\n",
++                 pwquality_strerror (NULL, 0, rv, NULL));
++      return NULL;
++    }
++
++  return g_steal_pointer (&res);
++}
++
++static void
++cc_remote_desktop_page_setup_remote_desktop_dialog (CcRemoteDesktopPage *self)
++{
++  const gchar *username = NULL;
++  const gchar *password = NULL;
++  g_autofree char *hostname = NULL;
++
++  self->rdp_settings = g_settings_new (GNOME_REMOTE_DESKTOP_RDP_SCHEMA_ID);
++
++  adw_switch_row_set_active (self->remote_desktop_row, is_remote_desktop_enabled (self));
++  g_settings_bind (self->rdp_settings,
++                   "enable",
++                   self->remote_desktop_row,
++                   "active",
++                   G_SETTINGS_BIND_DEFAULT);
++  g_settings_bind (self->rdp_settings,
++                   "view-only",
++                   self->remote_control_row,
++                   "active",
++                   G_SETTINGS_BIND_DEFAULT | G_SETTINGS_BIND_INVERT_BOOLEAN);
++  g_object_bind_property (self->remote_desktop_row, "active",
++                          self->remote_control_row, "sensitive",
++                          G_BINDING_SYNC_CREATE);
++
++  hostname = get_hostname ();
++  gtk_label_set_label (GTK_LABEL (self->remote_desktop_device_name_label),
++                       hostname);
++
++  username = cc_grd_lookup_rdp_username (self->cancellable);
++  password = cc_grd_lookup_rdp_password (self->cancellable);
++  if (username != NULL)
++    gtk_editable_set_text (GTK_EDITABLE (self->remote_desktop_username_entry), username);
++  if (password != NULL)
++    gtk_editable_set_text (GTK_EDITABLE (self->remote_desktop_password_entry), password);
++
++  g_signal_connect_swapped (self->remote_desktop_username_entry,
++                            "notify::text",
++                            G_CALLBACK (remote_desktop_credentials_changed),
++                            self);
++  g_signal_connect_swapped (self->remote_desktop_password_entry,
++                            "notify::text",
++                            G_CALLBACK (remote_desktop_credentials_changed),
++                            self);
++  if (username == NULL)
++    {
++      struct passwd *pw = getpwuid (getuid ());
++      if (pw != NULL)
++        username = g_strdup (pw->pw_name);
++      else
++        g_warning ("Failed to get username: %s", g_strerror (errno));
++    }
++  gtk_editable_set_text (GTK_EDITABLE (self->remote_desktop_username_entry), username);
++
++  if (password == NULL)
++    {
++      g_autofree gchar *pw = pw_generate ();
++      if (pw != NULL)
++        gtk_editable_set_text (GTK_EDITABLE (self->remote_desktop_password_entry),
++                               pw );
++    }
++
++  if (is_remote_desktop_enabled (self))
++    {
++      adw_switch_row_set_active (self->remote_desktop_row,
++                             TRUE);
++    }
++  g_signal_connect_object (self->remote_desktop_row, "notify::active",
++                           G_CALLBACK (on_remote_desktop_active_changed), self,
++                           G_CONNECT_SWAPPED);
++  on_remote_desktop_active_changed (self);
++}
++
++static void
++remote_desktop_name_appeared (GDBusConnection *connection,
++                              const gchar     *name,
++                              const gchar     *name_owner,
++                              gpointer         user_data)
++{
++  CcRemoteDesktopPage *self = (CcRemoteDesktopPage *)user_data;
++
++  g_bus_unwatch_name (self->remote_desktop_name_watch);
++  self->remote_desktop_name_watch = 0;
++
++  gtk_widget_set_visible (GTK_WIDGET (self), TRUE);
++
++  cc_remote_desktop_page_setup_remote_desktop_dialog (self);
++}
++
++static void
++check_remote_desktop_available (CcRemoteDesktopPage *self)
++{
++  if (!cc_remote_desktop_page_check_schema_available (self, GNOME_REMOTE_DESKTOP_SCHEMA_ID) ||
++      !cc_remote_desktop_page_check_schema_available (self, GNOME_REMOTE_DESKTOP_RDP_SCHEMA_ID))
++    {
++      gtk_widget_set_visible (GTK_WIDGET (self), FALSE);
++      return;
++    }
++
++  self->remote_desktop_name_watch = g_bus_watch_name (G_BUS_TYPE_SESSION,
++                                                      "org.gnome.Mutter.RemoteDesktop",
++                                                      G_BUS_NAME_WATCHER_FLAGS_NONE,
++                                                      remote_desktop_name_appeared,
++                                                      NULL,
++                                                      self,
++                                                      NULL);
++}
++
+ static void
+ cc_remote_desktop_page_dispose (GObject *object)
+ {
+@@ -46,6 +613,11 @@ cc_remote_desktop_page_dispose (GObject *object)
+   g_cancellable_cancel (self->cancellable);
+   g_clear_object (&self->cancellable);
+ 
++  g_clear_handle_id (&self->remote_desktop_store_credentials_id, g_source_remove);
++  self->remote_desktop_store_credentials_id = 0;
++
++  g_clear_object (&self->rdp_settings);
++
+   G_OBJECT_CLASS (cc_remote_desktop_page_parent_class)->dispose (object);
+ }
+ 
+@@ -57,20 +629,53 @@ cc_remote_desktop_page_class_init (CcRemoteDesktopPageClass * klass)
+ 
+   object_class->dispose = cc_remote_desktop_page_dispose;
+ 
+-  g_type_ensure (CC_TYPE_DESKTOP_SHARING_PAGE);
+-  g_type_ensure (CC_TYPE_REMOTE_SESSION_PAGE);
+-
+   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/system/remote-desktop/cc-remote-desktop-page.ui");
+ 
+-  gtk_widget_class_bind_template_child (widget_class, CcRemoteDesktopPage, desktop_sharing_page);
++  gtk_widget_class_bind_template_child (widget_class, CcRemoteDesktopPage, remote_desktop_page);
++  gtk_widget_class_bind_template_child (widget_class, CcRemoteDesktopPage, remote_desktop_toast_overlay);
++  gtk_widget_class_bind_template_child (widget_class, CcRemoteDesktopPage, remote_desktop_row);
++  gtk_widget_class_bind_template_child (widget_class, CcRemoteDesktopPage, remote_control_row);
++  gtk_widget_class_bind_template_child (widget_class, CcRemoteDesktopPage, remote_desktop_username_entry);
++  gtk_widget_class_bind_template_child (widget_class, CcRemoteDesktopPage, remote_desktop_password_entry);
++  gtk_widget_class_bind_template_child (widget_class, CcRemoteDesktopPage, remote_desktop_device_name_label);
++  gtk_widget_class_bind_template_child (widget_class, CcRemoteDesktopPage, remote_desktop_address_label);
++  gtk_widget_class_bind_template_child (widget_class, CcRemoteDesktopPage, remote_desktop_verify_encryption);
++  gtk_widget_class_bind_template_child (widget_class, CcRemoteDesktopPage, remote_desktop_fingerprint_dialog);
++  gtk_widget_class_bind_template_child (widget_class, CcRemoteDesktopPage, remote_desktop_fingerprint_left);
++  gtk_widget_class_bind_template_child (widget_class, CcRemoteDesktopPage, remote_desktop_fingerprint_right);
++
++  gtk_widget_class_bind_template_callback (widget_class, on_device_name_copy_clicked);
++  gtk_widget_class_bind_template_callback (widget_class, on_device_address_copy_clicked);
++  gtk_widget_class_bind_template_callback (widget_class, on_username_copy_clicked);
++  gtk_widget_class_bind_template_callback (widget_class, on_password_copy_clicked);
++  gtk_widget_class_bind_template_callback (widget_class, remote_desktop_show_encryption_fingerprint);
+ }
+ 
+ static void
+ cc_remote_desktop_page_init (CcRemoteDesktopPage *self)
+ {
++  g_autofree gchar *learn_more_link = NULL;
++  g_autofree gchar *page_description = NULL;
++
+   g_autoptr(GtkCssProvider) provider = NULL;
+ 
+   gtk_widget_init_template (GTK_WIDGET (self));
+ 
+   self->cancellable = g_cancellable_new ();
++  check_remote_desktop_available (self);
++
++  cc_remote_desktop_page_setup_label_with_hostname (self, self->remote_desktop_address_label);
++
++  /* Translators: This will be presented as the text of a link to the documentation */
++  learn_more_link = g_strdup_printf ("<a href='help:gnome-help/sharing-desktop'>%s</a>", _("learn how to use it"));
++  /* Translators: %s is a link to the documentation with the label "learn how to use it" */
++  page_description = g_strdup_printf (_("Remote desktop allows viewing and controlling your desktop from another computer – %s."), learn_more_link);
++  adw_preferences_page_set_description (self->remote_desktop_page, page_description);
++
++  provider = gtk_css_provider_new ();
++  gtk_css_provider_load_from_resource (provider,
++                                       "/org/gnome/control-center/system/remote-desktop/remote-desktop.css");
++  gtk_style_context_add_provider_for_display (gdk_display_get_default (),
++                                              GTK_STYLE_PROVIDER (provider),
++                                              GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+ }
+diff --git a/panels/system/remote-desktop/cc-remote-desktop-page.ui b/panels/system/remote-desktop/cc-remote-desktop-page.ui
+index 4629787..60af60d 100644
+--- a/panels/system/remote-desktop/cc-remote-desktop-page.ui
++++ b/panels/system/remote-desktop/cc-remote-desktop-page.ui
+@@ -2,61 +2,227 @@
+ <interface>
+   <template class="CcRemoteDesktopPage" parent="AdwNavigationPage">
+     <property name="title" translatable="yes">Remote Desktop</property>
+-    <property name="tag">remote-desktop</property>
+-    <property name="visible" bind-source="desktop_sharing_page" bind-property="visible" bind-flags="sync-create"/>
++    <property name="tag">system-remote-desktop-page</property>
++    <property name="visible">False</property>
++
+     <property name="child">
+-      <object class="AdwBreakpointBin">
+-        <property name="width-request">300</property>
+-        <property name="height-request">200</property>
+-        <child>
+-          <object class="AdwBreakpoint">
+-            <condition>max-width: 450sp</condition>
+-            <setter object="header_bar" property="title-widget"/>
+-            <setter object="view_switcher_bar" property="reveal">True</setter>
+-          </object>
++      <object class="AdwToolbarView">
++        <child type="top">
++          <object class="AdwHeaderBar"/>
+         </child>
+-        <property name="child">
+-          <object class="AdwToolbarView">
+-            <child type="top">
+-              <object class="AdwHeaderBar" id="header_bar">
+-                <property name="title-widget">
+-                  <object class="AdwViewSwitcher">
+-                    <property name="stack">stack</property>
+-                    <property name="policy">wide</property>
++        <property name="content">
++          <object class="AdwToastOverlay" id="remote_desktop_toast_overlay">
++            <child>
++              <object class="AdwPreferencesPage" id="remote_desktop_page">
++                <child>
++                  <object class="AdwPreferencesGroup">
++
++                    <child>
++                      <object class="AdwSwitchRow" id="remote_desktop_row">
++                        <property name="title" translatable="yes">Remote _Desktop</property>
++                        <property name="use-underline">True</property>
++                        <property name="subtitle" translatable="yes">Enable or disable remote desktop connections to this computer</property>
++                      </object>
++                    </child>
++
++                    <child>
++                      <object class="AdwSwitchRow" id="remote_control_row">
++                        <property name="title" translatable="yes">Remote _Control</property>
++                        <property name="use-underline">True</property>
++                        <property name="subtitle" translatable="yes">Allows remote connections to control the screen</property>
++                      </object>
++                    </child>
+                   </object>
+-                </property>
+-              </object>
+-            </child>
+-            <child type="bottom">
+-              <object class="AdwViewSwitcherBar" id="view_switcher_bar">
+-                <property name="stack">stack</property>
+-              </object>
+-            </child>
+-            <property name="content">
+-              <object class="AdwViewStack" id="stack">
++                </child>
++
+                 <child>
+-                  <object class="AdwViewStackPage">
+-                    <property name="title" translatable="yes">Desktop Sharing</property>
+-                    <property name="icon-name">preferences-desktop-remote-desktop-symbolic</property>
+-                    <property name="child">
+-                      <object class="CcDesktopSharingPage" id="desktop_sharing_page"/>
+-                    </property>
++                  <object class="AdwPreferencesGroup">
++                    <property name="title" translatable="yes">How to Connect</property>
++                    <property name="description" translatable="yes">Connect to this computer using the device name or remote desktop address</property>
++
++                    <child>
++                      <object class="AdwActionRow">
++                        <property name="title" translatable="yes">D_evice Name</property>
++                        <property name="use-underline">True</property>
++                        <property name="activatable-widget">copy_device_name_button</property>
++                        <child type="suffix">
++                          <object class="GtkBox">
++                            <property name="spacing">10</property>
++                            <child>
++                              <object class="GtkLabel" id="remote_desktop_device_name_label">
++                                <property name="selectable">True</property>
++                              </object>
++                            </child>
++                            <child>
++                              <object class="GtkButton" id="copy_device_name_button">
++                                <property name="tooltip-text" translatable="yes">Copy</property>
++                                <property name="valign">center</property>
++                                <property name="icon-name">edit-copy-symbolic</property>
++                                <signal name="clicked" handler="on_device_name_copy_clicked" swapped="yes"/>
++                                <accessibility>
++                                  <property name="label" translatable="yes">Copy</property>
++                                </accessibility>
++                                <style>
++                                  <class name="flat"/>
++                                </style>
++                              </object>
++                            </child>
++                         </object>
++                        </child>
++                      </object>
++                    </child>
++                    <child>
++                      <object class="AdwActionRow">
++                        <property name="title" translatable="yes">Re_mote Desktop Address</property>
++                        <property name="use-underline">True</property>
++                        <property name="activatable-widget">copy_device_address_button</property>
++                        <child type="suffix">
++                          <object class="GtkBox">
++                            <property name="spacing">10</property>
++                            <child>
++                              <object class="GtkLabel" id="remote_desktop_address_label">
++                                <property name="selectable">True</property>
++                              </object>
++                            </child>
++                            <child>
++                              <object class="GtkButton" id="copy_device_address_button">
++                                <property name="tooltip-text" translatable="yes">Copy</property>
++                                <property name="valign">center</property>
++                                <property name="icon-name">edit-copy-symbolic</property>
++                                <signal name="clicked" handler="on_device_address_copy_clicked" swapped="yes"/>
++                                <accessibility>
++                                  <property name="label" translatable="yes">Copy</property>
++                                </accessibility>
++                                <style>
++                                  <class name="flat"/>
++                                </style>
++                              </object>
++                            </child>
++                          </object>
++                        </child>
++                      </object>
++                    </child>
+                   </object>
+                 </child>
++
+                 <child>
+-                  <object class="AdwViewStackPage">
+-                    <property name="title" translatable="yes">Remote Login</property>
+-                    <property name="icon-name">preferences-desktop-display-symbolic</property>
+-                    <property name="child">
+-                      <object class="CcRemoteSessionPage" id="remote_session_page"/>
+-                    </property>
++                  <object class="AdwPreferencesGroup">
++                    <property name="title" translatable="yes">Authentication</property>
++                    <property name="description" translatable="yes">The user name and password are required to connect to this computer</property>
++
++                    <child>
++                      <object class="AdwEntryRow" id="remote_desktop_username_entry">
++                        <property name="title" translatable="yes">_User Name</property>
++                        <property name="use-underline">True</property>
++                        <child type="suffix">
++                          <object class="GtkButton">
++                            <property name="tooltip-text" translatable="yes">Copy</property>
++                            <property name="valign">center</property>
++                            <property name="icon-name">edit-copy-symbolic</property>
++                            <signal name="clicked" handler="on_username_copy_clicked" swapped="yes"/>
++                            <accessibility>
++                              <property name="label" translatable="yes">Copy</property>
++                            </accessibility>
++                            <style>
++                              <class name="flat"/>
++                            </style>
++                          </object>
++                        </child>
++                      </object>
++                    </child>
++
++                    <child>
++                      <object class="AdwPasswordEntryRow" id="remote_desktop_password_entry">
++                        <property name="title" translatable="yes">_Password</property>
++                        <property name="use-underline">True</property>
++                        <child type="suffix">
++                          <object class="GtkButton">
++                            <property name="tooltip-text" translatable="yes">Copy</property>
++                            <property name="valign">center</property>
++                            <property name="icon-name">edit-copy-symbolic</property>
++                            <signal name="clicked" handler="on_password_copy_clicked" swapped="yes"/>
++                            <accessibility>
++                              <property name="label" translatable="yes">Copy</property>
++                            </accessibility>
++                            <style>
++                              <class name="flat"/>
++                            </style>
++                          </object>
++                        </child>
++                      </object>
++                    </child>
++
++                    <child>
++                      <object class="GtkButton" id="remote_desktop_verify_encryption">
++                        <property name="sensitive">False</property>
++                        <property name="halign">center</property>
++                        <property name="margin-top">24</property>
++                        <property name="label" translatable="yes">_Verify Encryption</property>
++                        <property name="use-underline">True</property>
++                        <signal name="clicked" handler="remote_desktop_show_encryption_fingerprint" swapped="yes"/>
++                        <style>
++                          <class name="pill"/>
++                        </style>
++                      </object>
++                    </child>
+                   </object>
+                 </child>
++
+               </object>
+-            </property>
++            </child>
+           </object>
+         </property>
+       </object>
+     </property>
+   </template>
++
++  <object class="AdwWindow" id="remote_desktop_fingerprint_dialog">
++    <property name="default-width">360</property>
++    <property name="default-height">360</property>
++    <property name="hide-on-close">True</property>
++    <property name="modal">True</property>
++
++    <child>
++      <object class="GtkBox">
++        <property name="orientation">vertical</property>
++        <child>
++          <object class="GtkWindowControls">
++            <property name="halign">end</property>
++            <property name="side">end</property>
++          </object>
++        </child>
++        <child>
++          <object class="AdwStatusPage">
++            <property name="title" translatable="yes">Encryption Fingerprint</property>
++            <property name="description" translatable="yes">The encryption fingerprint can be seen in connecting clients and should be identical</property>
++            <property name="vexpand">True</property>
++            <child>
++              <object class="GtkBox">
++                <property name="orientation">horizontal</property>
++                <property name="halign">center</property>
++                <style>
++                  <class name="tls-cert-verification" />
++                </style>
++                <child>
++                  <object class="GtkLabel" id="remote_desktop_fingerprint_left">
++                    <style>
++                      <class name="tls-cert-fingerprint" />
++                    </style>
++                  </object>
++                </child>
++                <child>
++                  <object class="GtkLabel" id="remote_desktop_fingerprint_right">
++                    <style>
++                      <class name="tls-cert-fingerprint" />
++                    </style>
++                  </object>
++                </child>
++              </object>
++            </child>
++          </object>
++        </child>
++      </object>
++    </child>
++  </object>
++
+ </interface>
+diff --git a/panels/system/remote-desktop/cc-remote-session-page.c b/panels/system/remote-desktop/cc-remote-session-page.c
+deleted file mode 100644
+index 7f1ae36..0000000
+--- a/panels/system/remote-desktop/cc-remote-session-page.c
++++ /dev/null
+@@ -1,777 +0,0 @@
+-/*
+- * Copyright 2024 Red Hat Inc
+- *
+- * This program is free software: you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation, either version 3 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+- *
+- * SPDX-License-Identifier: GPL-3.0-or-later
+- */
+-
+-#undef G_LOG_DOMAIN
+-#define G_LOG_DOMAIN "cc-remote-session-page"
+-
+-#include <glib/gi18n.h>
+-#include <glib/gstdio.h>
+-#include <polkit/polkit.h>
+-#include <fcntl.h>
+-#include <stdio.h>
+-
+-#include "cc-remote-session-page.h"
+-#include "cc-encryption-fingerprint-dialog.h"
+-#include "cc-hostname.h"
+-#include "cc-password-utils.h"
+-#include "cc-permission-infobar.h"
+-#include "cc-tls-certificate.h"
+-#include "cc-systemd-service.h"
+-
+-#include "org.gnome.RemoteDesktop.h"
+-
+-#ifdef HAVE_CONFIG_H
+-# include "config.h"
+-#endif
+-
+-#define REMOTE_DESKTOP_STORE_CREDENTIALS_TIMEOUT_S 2
+-#define REMOTE_SESSION_SYSTEMD_SERVICE "gnome-remote-desktop.service"
+-#define REMOTE_SESSION_DBUS_SERVICE "org.gnome.RemoteDesktop"
+-#define REMOTE_SESSION_OBJECT_PATH "/org/gnome/RemoteDesktop/Rdp/Server"
+-#define REMOTE_SESSION_PERMISSION "org.gnome.controlcenter.remote-session-helper"
+-
+-struct _CcRemoteSessionPage {
+-  AdwBin parent_instance;
+-
+-  GsdRemoteDesktopRdpServer *rdp_server;
+-
+-  AdwSwitchRow *remote_session_row;
+-  GtkWidget    *toast_overlay;
+-  CcPermissionInfobar *permission_infobar;
+-  AdwActionRow *hostname_row;
+-  AdwActionRow *port_row;
+-  GtkWidget    *credentials_group;
+-  GtkWidget    *username_entry;
+-  GtkWidget    *password_entry;
+-  GtkWidget    *generate_password_button;
+-  GtkWidget    *verify_encryption_button;
+-
+-  GTlsCertificate *certificate;
+-  CcEncryptionFingerprintDialog *fingerprint_dialog;
+-
+-  GCancellable *cancellable;
+-  GPermission *permission;
+-
+-  char *temp_cert_dir;
+-  guint store_credentials_id;
+-
+-  gboolean activating;
+-  gboolean have_credentials;
+-};
+-
+-G_DEFINE_TYPE (CcRemoteSessionPage, cc_remote_session_page, ADW_TYPE_BIN)
+-static void on_remote_session_active_changed (CcRemoteSessionPage *self);
+-static void enable_remote_session_service (CcRemoteSessionPage *self);
+-static void connect_to_remote_desktop_rdp_server (CcRemoteSessionPage *self);
+-static void fetch_credentials (CcRemoteSessionPage *self);
+-
+-static void
+-add_toast (CcRemoteSessionPage *self,
+-           const char          *message)
+-{
+-  adw_toast_overlay_add_toast (ADW_TOAST_OVERLAY (self->toast_overlay),
+-                               adw_toast_new (message));
+-}
+-
+-static void
+-on_address_copy_clicked (CcRemoteSessionPage *self,
+-                         GtkButton           *button)
+-{
+-  gdk_clipboard_set_text (gtk_widget_get_clipboard (GTK_WIDGET (button)),
+-                          adw_action_row_get_subtitle (self->hostname_row));
+-  add_toast (self, _("Device address copied"));
+-}
+-
+-static void
+-on_port_copy_clicked (CcRemoteSessionPage *self,
+-                      GtkButton           *button)
+-{
+-  gdk_clipboard_set_text (gtk_widget_get_clipboard (GTK_WIDGET (button)),
+-                          adw_action_row_get_subtitle (self->port_row));
+-  add_toast (self, _("Port number copied"));
+-}
+-
+-static void
+-on_username_copy_clicked (CcRemoteSessionPage *self,
+-                          GtkButton           *button)
+-{
+-  GtkEditable *editable = GTK_EDITABLE (self->username_entry);
+-
+-  gdk_clipboard_set_text (gtk_widget_get_clipboard (GTK_WIDGET (button)),
+-                          gtk_editable_get_text (editable));
+-  add_toast (self, _("Username copied"));
+-}
+-
+-static void
+-on_password_copy_clicked (CcRemoteSessionPage *self,
+-                          GtkButton           *button)
+-{
+-  GtkEditable *editable = GTK_EDITABLE (self->password_entry);
+-
+-  gdk_clipboard_set_text (gtk_widget_get_clipboard (GTK_WIDGET (button)),
+-                          gtk_editable_get_text (editable));
+-  add_toast (self, _("Password copied"));
+-}
+-
+-static void
+-on_generate_password_button_clicked (CcRemoteSessionPage *self)
+-{
+-  g_autofree char *new_password = cc_generate_password ();
+-
+-  gtk_editable_set_text (GTK_EDITABLE (self->password_entry), new_password);
+-}
+-
+-static void
+-on_verify_encryption_button_clicked (CcRemoteSessionPage *self)
+-{
+-  gtk_window_present (GTK_WINDOW (self->fingerprint_dialog));
+-}
+-
+-static void
+-start_remote_session_row_activation (CcRemoteSessionPage *self)
+-{
+-  gtk_widget_set_sensitive (GTK_WIDGET (self->remote_session_row), FALSE);
+-  self->activating = TRUE;
+-}
+-
+-static void
+-finish_remote_session_row_activation (CcRemoteSessionPage *self)
+-{
+-  if (g_permission_get_allowed (self->permission))
+-    gtk_widget_set_sensitive (GTK_WIDGET (self->remote_session_row), TRUE);
+-  self->activating = FALSE;
+-}
+-
+-static void
+-on_remote_session_enabled (GsdRemoteDesktopRdpServer *rdp_server,
+-                           GAsyncResult              *result,
+-                           gpointer                   user_data)
+-{
+-  CcRemoteSessionPage *self = user_data;
+-  g_autoptr(GError) error = NULL;
+-  gboolean success;
+-
+-  success = gsd_remote_desktop_rdp_server_call_enable_finish (rdp_server,
+-                                                              result,
+-                                                              &error);
+-  if (!success)
+-    {
+-      g_warning ("Failed to enable RDP server: %s", error->message);
+-      g_clear_error (&error);
+-    }
+-
+-  finish_remote_session_row_activation (self);
+-}
+-
+-static void
+-enable_remote_session_service (CcRemoteSessionPage *self)
+-{
+-  g_autofree gchar *cmdline = NULL;
+-  g_autoptr(GError) error = NULL;
+-  gboolean success;
+-
+-  success = cc_enable_service (REMOTE_SESSION_SYSTEMD_SERVICE, G_BUS_TYPE_SYSTEM, &error);
+-
+-  if (!success)
+-    {
+-      g_warning ("Failed to enable gnome-remote-desktop systemd service: %s", error->message);
+-      g_clear_error (&error);
+-    }
+-
+-  gsd_remote_desktop_rdp_server_call_enable (self->rdp_server,
+-                                             self->cancellable,
+-                                             (GAsyncReadyCallback)
+-                                             on_remote_session_enabled,
+-                                             self);
+-}
+-
+-static void
+-on_certificate_imported (GsdRemoteDesktopRdpServer *rdp_server,
+-                         GAsyncResult              *result,
+-                         gpointer                   user_data)
+-{
+-  CcRemoteSessionPage *self = user_data;
+-  g_autoptr(GError) error = NULL;
+-  gboolean success;
+-  g_autofree char *dir = g_steal_pointer (&self->temp_cert_dir);
+-  g_autofree char *certificate_path = g_build_filename (dir, "rdp-tls.crt", NULL);
+-  g_autofree char *key_path = g_build_filename (dir, "rdp-tls.key", NULL);
+-
+-  success = gsd_remote_desktop_rdp_server_call_import_certificate_finish (rdp_server,
+-                                                                          NULL,
+-                                                                          result,
+-                                                                          &error);
+-  if (!success)
+-    {
+-      g_warning ("Failed to import newly generated certificates: %s", error->message);
+-      g_clear_error (&error);
+-    }
+-
+-  if (g_remove (certificate_path) != 0)
+-    g_warning ("Failed to remove generated certificate %s", certificate_path);
+-
+-  if (g_remove (key_path) != 0)
+-    g_warning ("Failed to remove generated private key %s", key_path);
+-
+-  if (g_remove (dir) != 0)
+-    g_warning ("Failed to remove temporary directory %s", dir);
+-
+-  enable_remote_session_service (self);
+-}
+-
+-static void
+-on_tls_certificate_generated (GObject      *source_object,
+-                              GAsyncResult *res,
+-                              gpointer      user_data)
+-{
+-  CcRemoteSessionPage *self = user_data;
+-  g_autofree char *certificate_path = g_build_filename (self->temp_cert_dir, "rdp-tls.crt", NULL);
+-  g_autofree char *key_path = g_build_filename (self->temp_cert_dir, "rdp-tls.key", NULL);
+-  g_autoptr(GTlsCertificate) tls_certificate = NULL;
+-  g_autoptr(GError) error = NULL;
+-  g_autoptr(GUnixFDList) fd_list = NULL;
+-  g_autofd int certificate_fd = -1;
+-  g_autofd int key_fd = -1;
+-  int certificate_fd_index = -1;
+-  int key_fd_index = -1;
+-
+-  tls_certificate = bonsai_tls_certificate_new_generate_finish (res, &error);
+-  if (!tls_certificate)
+-    {
+-      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+-        g_warning ("Failed to generate TLS certificate: %s", error->message);
+-      goto fail;
+-    }
+-
+-  fd_list = g_unix_fd_list_new ();
+-
+-  certificate_fd = open (certificate_path, O_RDONLY);
+-  key_fd = open (key_path, O_RDONLY);
+-
+-  if (certificate_fd != -1 && key_fd != -1)
+-    {
+-      certificate_fd_index = g_unix_fd_list_append (fd_list, certificate_fd, &error);
+-      if (certificate_fd_index == -1)
+-        {
+-          g_warning ("Failed to append certificate fd to list: %s", error->message);
+-          goto fail;
+-        }
+-
+-      key_fd_index = g_unix_fd_list_append (fd_list, key_fd, &error);
+-      if (key_fd_index == -1)
+-       {
+-          g_warning ("Failed to append key fd to list: %s", error->message);
+-          goto fail;
+-       }
+-
+-      gsd_remote_desktop_rdp_server_call_import_certificate (self->rdp_server,
+-                                                             g_variant_new ("(sh)", certificate_path, certificate_fd_index),
+-                                                             g_variant_new ("(sh)", key_path, key_fd_index),
+-                                                             fd_list,
+-                                                             self->cancellable,
+-                                                             (GAsyncReadyCallback)
+-                                                             on_certificate_imported,
+-                                                             self);
+-      return;
+-    }
+-
+-fail:
+-  finish_remote_session_row_activation (self);
+-}
+-
+-static void
+-enable_remote_session (CcRemoteSessionPage *self)
+-{
+-  g_autoptr (GKeyFile) conf_file = NULL;
+-  const gchar *cert_path = NULL;
+-  const gchar *key_path = NULL;
+-
+-  if (gsd_remote_desktop_rdp_server_get_enabled (self->rdp_server))
+-    return;
+-
+-  start_remote_session_row_activation (self);
+-
+-  cert_path = gsd_remote_desktop_rdp_server_get_tls_cert (self->rdp_server) ?: "";
+-  key_path = gsd_remote_desktop_rdp_server_get_tls_key (self->rdp_server) ?: "";
+-
+-  if (*cert_path == '\0' || *key_path == '\0')
+-    {
+-      g_autofree char *temp_dir = g_dir_make_tmp ("gnome-remote-desktop-XXXXXX", NULL);
+-      g_autofree char *cert_path_tmp = NULL;
+-      g_autofree char *key_path_tmp = NULL;
+-
+-      if (!temp_dir)
+-        {
+-          g_warning ("Failed to create temporary directory");
+-          finish_remote_session_row_activation (self);
+-          return;
+-        }
+-
+-      cert_path_tmp = g_build_filename (temp_dir, "rdp-tls.crt", NULL);
+-      key_path_tmp = g_build_filename (temp_dir, "rdp-tls.key", NULL);
+-
+-      g_set_str (&self->temp_cert_dir, temp_dir);
+-
+-      bonsai_tls_certificate_new_generate_async (cert_path_tmp,
+-                                                 key_path_tmp,
+-                                                 "US", "GNOME",
+-                                                 self->cancellable,
+-                                                 on_tls_certificate_generated,
+-                                                 self);
+-
+-      return;
+-    }
+-
+-  enable_remote_session_service (self);
+-}
+-
+-static void
+-on_remote_session_disabled (GsdRemoteDesktopRdpServer *rdp_server,
+-                            GAsyncResult              *result,
+-                            gpointer                   user_data)
+-{
+-  CcRemoteSessionPage *self = user_data;
+-  g_autoptr(GError) error = NULL;
+-  gboolean success;
+-
+-  success = gsd_remote_desktop_rdp_server_call_disable_finish (rdp_server,
+-                                                               result,
+-                                                               &error);
+-  if (!success)
+-    {
+-      g_warning ("Failed to disable RDP server: %s", error->message);
+-      g_clear_error (&error);
+-    }
+-
+-  success = cc_disable_service (REMOTE_SESSION_SYSTEMD_SERVICE, G_BUS_TYPE_SYSTEM, &error);
+-
+-  if (!success)
+-    {
+-      g_warning ("Failed to disable gnome-remote-desktop systemd service: %s", error->message);
+-      g_clear_error (&error);
+-    }
+-
+-  connect_to_remote_desktop_rdp_server (self);
+-}
+-
+-static void
+-disable_remote_session_service (CcRemoteSessionPage *self)
+-{
+-  g_autofree gchar *cmdline = NULL;
+-  g_autoptr(GError) error = NULL;
+-
+-  if (!gsd_remote_desktop_rdp_server_get_enabled (self->rdp_server))
+-    return;
+-
+-  gsd_remote_desktop_rdp_server_call_disable (self->rdp_server,
+-                                              self->cancellable,
+-                                              (GAsyncReadyCallback)
+-                                              on_remote_session_disabled,
+-                                              self);
+-
+-}
+-
+-static void
+-on_remote_session_active_changed (CcRemoteSessionPage *self)
+-{
+-  if (adw_switch_row_get_active (self->remote_session_row))
+-    enable_remote_session (self);
+-  else
+-    disable_remote_session_service (self);
+-}
+-
+-static gboolean
+-format_port_for_row (GBinding     *binding,
+-                     const GValue *from_value,
+-                     GValue       *to_value,
+-                     gpointer      user_data)
+-{
+-  int port = g_value_get_int (from_value);
+-
+-  if (port <= 0)
+-    g_value_set_string (to_value, " ");
+-  else
+-    g_value_take_string (to_value, g_strdup_printf ("%u", port));
+-
+-  return TRUE;
+-}
+-
+-static gboolean
+-sensitize_row_from_port (GBinding     *binding,
+-                         const GValue *from_value,
+-                         GValue       *to_value,
+-                         gpointer      user_data)
+-{
+-  int port = g_value_get_int (from_value);
+-
+-  g_value_set_boolean (to_value, port > 0);
+-
+-  return TRUE;
+-}
+-
+-static void
+-on_set_rdp_credentials (GsdRemoteDesktopRdpServer *rdp_server,
+-                        GAsyncResult              *result,
+-                        gpointer                   user_data)
+-{
+-  CcRemoteSessionPage *self = user_data;
+-  g_autoptr(GVariant) credentials = NULL;
+-  g_autoptr(GError) error = NULL;
+-
+-  gsd_remote_desktop_rdp_server_call_set_credentials_finish (rdp_server,
+-                                                             result,
+-                                                             &error);
+-
+-  self->store_credentials_id = 0;
+-
+-  if (error)
+-    {
+-      g_debug ("Could not set credentials for remote session access: %s", error->message);
+-      return;
+-    }
+-
+-  /* Do a roundtrip to make sure it stuck and also so we repopulate the tls fingerprint */
+-  fetch_credentials (self);
+-}
+-
+-static gboolean
+-store_credentials_timeout (gpointer user_data)
+-{
+-  CcRemoteSessionPage *self = (CcRemoteSessionPage *)user_data;
+-  const char *username, *password;
+-
+-  if (!g_permission_get_allowed (self->permission))
+-    return G_SOURCE_REMOVE;
+-
+-  username = gtk_editable_get_text (GTK_EDITABLE (self->username_entry));
+-  password = gtk_editable_get_text (GTK_EDITABLE (self->password_entry));
+-
+-  if (username && password)
+-    {
+-      GVariantBuilder credentials;
+-
+-      g_variant_builder_init (&credentials, G_VARIANT_TYPE ("a{sv}"));
+-      g_variant_builder_add (&credentials, "{sv}", "username", g_variant_new_string (username));
+-      g_variant_builder_add (&credentials, "{sv}", "password", g_variant_new_string (password));
+-
+-      gsd_remote_desktop_rdp_server_call_set_credentials (self->rdp_server,
+-                                                          g_variant_builder_end (&credentials),
+-                                                          self->cancellable,
+-                                                          (GAsyncReadyCallback)
+-                                                          on_set_rdp_credentials,
+-                                                          self);
+-    }
+-  else
+-    {
+-      self->store_credentials_id = 0;
+-    }
+-
+-  return G_SOURCE_REMOVE;
+-}
+-
+-static void
+-on_credentials_changed (CcRemoteSessionPage *self)
+-{
+-  g_clear_handle_id (&self->store_credentials_id, g_source_remove);
+-
+-  self->store_credentials_id =
+-    g_timeout_add_seconds (REMOTE_DESKTOP_STORE_CREDENTIALS_TIMEOUT_S,
+-                           store_credentials_timeout,
+-                           self);
+-}
+-
+-static void
+-hide_password (CcRemoteSessionPage *self)
+-{
+-  GtkEditable *text = gtk_editable_get_delegate (GTK_EDITABLE (self->password_entry));
+-  gtk_text_set_visibility (GTK_TEXT (text), FALSE);
+-}
+-
+-static void
+-sync_permissions (CcRemoteSessionPage *self)
+-{
+-  if (!g_permission_get_allowed (self->permission))
+-    {
+-      hide_password (self);
+-
+-      g_clear_handle_id (&self->store_credentials_id, g_source_remove);
+-      gtk_widget_set_sensitive (GTK_WIDGET (self->remote_session_row), FALSE);
+-      gtk_widget_set_sensitive (self->credentials_group, FALSE);
+-    }
+-  else
+-    {
+-      if (!self->activating)
+-        gtk_widget_set_sensitive (GTK_WIDGET (self->remote_session_row), TRUE);
+-
+-      if (self->have_credentials)
+-        gtk_widget_set_sensitive (self->credentials_group, TRUE);
+-    }
+-}
+-
+-static void
+-cc_remote_session_page_dispose (GObject *object)
+-{
+-  CcRemoteSessionPage *self = (CcRemoteSessionPage *)object;
+-
+-  g_cancellable_cancel (self->cancellable);
+-  g_clear_object (&self->cancellable);
+-  g_clear_object (&self->permission);
+-
+-  g_clear_pointer ((GtkWindow **) &self->fingerprint_dialog, gtk_window_destroy);
+-  g_clear_object (&self->rdp_server);
+-
+-  G_OBJECT_CLASS (cc_remote_session_page_parent_class)->dispose (object);
+-}
+-
+-static void
+-cc_remote_session_page_class_init (CcRemoteSessionPageClass * klass)
+-{
+-  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
+-  GObjectClass   *object_class = G_OBJECT_CLASS (klass);
+-
+-  object_class->dispose = cc_remote_session_page_dispose;
+-
+-  gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/system/remote-desktop/cc-remote-session-page.ui");
+-
+-  gtk_widget_class_bind_template_child (widget_class, CcRemoteSessionPage, hostname_row);
+-  gtk_widget_class_bind_template_child (widget_class, CcRemoteSessionPage, port_row);
+-  gtk_widget_class_bind_template_child (widget_class, CcRemoteSessionPage, toast_overlay);
+-  gtk_widget_class_bind_template_child (widget_class, CcRemoteSessionPage, permission_infobar);
+-  gtk_widget_class_bind_template_child (widget_class, CcRemoteSessionPage, remote_session_row);
+-  gtk_widget_class_bind_template_child (widget_class, CcRemoteSessionPage, credentials_group);
+-  gtk_widget_class_bind_template_child (widget_class, CcRemoteSessionPage, username_entry);
+-  gtk_widget_class_bind_template_child (widget_class, CcRemoteSessionPage, password_entry);
+-  gtk_widget_class_bind_template_child (widget_class, CcRemoteSessionPage, generate_password_button);
+-  gtk_widget_class_bind_template_child (widget_class, CcRemoteSessionPage, verify_encryption_button);
+-
+-  gtk_widget_class_bind_template_callback (widget_class, on_address_copy_clicked);
+-  gtk_widget_class_bind_template_callback (widget_class, on_port_copy_clicked);
+-  gtk_widget_class_bind_template_callback (widget_class, on_username_copy_clicked);
+-  gtk_widget_class_bind_template_callback (widget_class, on_password_copy_clicked);
+-  gtk_widget_class_bind_template_callback (widget_class, on_generate_password_button_clicked);
+-  gtk_widget_class_bind_template_callback (widget_class, on_verify_encryption_button_clicked);
+-}
+-
+-static void
+-on_got_rdp_credentials (GObject      *source_object,
+-                        GAsyncResult *result,
+-                        gpointer      user_data)
+-{
+-  CcRemoteSessionPage *self = user_data;
+-  gboolean got_credentials, has_fingerprint;
+-  g_autoptr(GVariant) credentials = NULL;
+-  g_autoptr(GError) error = NULL;
+-  const gchar *fingerprint;
+-  GtkNative *native;
+-
+-  got_credentials = gsd_remote_desktop_rdp_server_call_get_credentials_finish (self->rdp_server,
+-                                                                               &credentials,
+-                                                                               result,
+-                                                                               &error);
+-
+-  if (error)
+-    {
+-      g_debug ("Could not get credentials for remote session access: %s", error->message);
+-      return;
+-    }
+-
+-  if (got_credentials)
+-    {
+-      const char *username = NULL;
+-      const char *password = NULL;
+-
+-      self->have_credentials = TRUE;
+-
+-      sync_permissions (self);
+-
+-      g_variant_lookup (credentials, "username", "&s", &username);
+-      if (username)
+-        gtk_editable_set_text (GTK_EDITABLE (self->username_entry), username);
+-
+-      g_variant_lookup (credentials, "password", "&s", &password);
+-      if (password)
+-        gtk_editable_set_text (GTK_EDITABLE (self->password_entry), password);
+-    }
+-
+-  /* Fetch TLS certificate fingerprint */
+-  fingerprint = gsd_remote_desktop_rdp_server_get_tls_fingerprint (self->rdp_server);
+-
+-  if (fingerprint && strlen (fingerprint) > 0)
+-     has_fingerprint = TRUE;
+-  else
+-     has_fingerprint = FALSE;
+-
+-  if (has_fingerprint)
+-    {
+-      self->fingerprint_dialog = g_object_new (CC_TYPE_ENCRYPTION_FINGERPRINT_DIALOG, NULL);
+-
+-      native = gtk_widget_get_native (GTK_WIDGET (self));
+-      gtk_window_set_transient_for (GTK_WINDOW (self->fingerprint_dialog), GTK_WINDOW (native));
+-      cc_encryption_fingerprint_dialog_set_fingerprint (self->fingerprint_dialog, fingerprint, ":");
+-    }
+-
+-  gtk_widget_set_sensitive (self->verify_encryption_button, has_fingerprint);
+-}
+-
+-static void
+-fetch_credentials (CcRemoteSessionPage *self)
+-{
+-  g_autoptr(GError) error = NULL;
+-  g_autofree gchar *username = NULL;
+-  g_autofree gchar *password = NULL;
+-
+-  if (!g_permission_get_allowed (self->permission))
+-    return;
+-
+-  gsd_remote_desktop_rdp_server_call_get_credentials (self->rdp_server,
+-                                                      self->cancellable,
+-                                                      (GAsyncReadyCallback)
+-                                                      on_got_rdp_credentials,
+-                                                      self);
+-}
+-
+-static void
+-on_remote_desktop_rdp_server_owner_changed (CcRemoteSessionPage *self)
+-{
+-  const char *name_owner = g_dbus_proxy_get_name_owner (G_DBUS_PROXY (self->rdp_server));
+-
+-  gtk_widget_set_sensitive (GTK_WIDGET (self->toast_overlay), name_owner != NULL);
+-}
+-
+-static void
+-on_connected_to_remote_desktop_rdp_server (GObject      *source_object,
+-                                           GAsyncResult *result,
+-                                           gpointer      user_data)
+-{
+-  CcRemoteSessionPage *self = user_data;
+-  g_autoptr (GError) error = NULL;
+-
+-  g_clear_object (&self->rdp_server);
+-  self->rdp_server = gsd_remote_desktop_rdp_server_proxy_new_finish (result, &error);
+-
+-  g_signal_connect_object (self->rdp_server,
+-                           "notify::g-name-owner",
+-                           G_CALLBACK (on_remote_desktop_rdp_server_owner_changed),
+-                           self, G_CONNECT_SWAPPED);
+-
+-  if (error)
+-    {
+-      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+-        g_warning ("Failed to create remote desktop proxy: %s", error->message);
+-      return;
+-    }
+-
+-  g_signal_handlers_block_by_func (self->remote_session_row, on_remote_session_active_changed, self);
+-  g_object_bind_property (self->rdp_server, "enabled", self->remote_session_row, "active", G_BINDING_SYNC_CREATE);
+-  g_signal_handlers_unblock_by_func (self->remote_session_row, on_remote_session_active_changed, self);
+-
+-  g_object_bind_property_full (self->rdp_server, "port",
+-                               self->port_row, "subtitle",
+-                               G_BINDING_SYNC_CREATE,
+-                               format_port_for_row,
+-                               NULL,
+-                               NULL,
+-                               NULL);
+-  g_object_bind_property_full (self->rdp_server, "port",
+-                               self->port_row, "sensitive",
+-                               G_BINDING_SYNC_CREATE,
+-                               sensitize_row_from_port,
+-                               NULL,
+-                               NULL,
+-                               NULL);
+-
+-  if (g_permission_get_allowed (self->permission))
+-    fetch_credentials (self);
+-
+-  g_signal_connect_object (self->permission, "notify::allowed",
+-                           G_CALLBACK (fetch_credentials),
+-                           self, G_CONNECT_SWAPPED);
+-}
+-
+-static void
+-connect_to_remote_desktop_rdp_server (CcRemoteSessionPage *self)
+-{
+-  g_autoptr (GError) error = NULL;
+-  g_autoptr (GDBusConnection) connection = NULL;
+-
+-  connection = g_bus_get_sync (G_BUS_TYPE_SYSTEM, self->cancellable, &error);
+-
+-  if (error)
+-    g_warning ("Could not connect to system message bus: %s", error->message);
+-
+-  if (!connection)
+-    return;
+-
+-  gsd_remote_desktop_rdp_server_proxy_new (connection,
+-                                           G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START_AT_CONSTRUCTION,
+-                                           REMOTE_SESSION_DBUS_SERVICE,
+-                                           REMOTE_SESSION_OBJECT_PATH,
+-                                           self->cancellable,
+-                                           (GAsyncReadyCallback)
+-                                           on_connected_to_remote_desktop_rdp_server,
+-                                           self);
+-}
+-
+-static void
+-cc_remote_session_page_init (CcRemoteSessionPage *self)
+-{
+-  g_autoptr(GtkCssProvider) provider = NULL;
+-  g_autoptr(GVariant) credentials = NULL;
+-  g_autoptr(GError) error = NULL;
+-  g_autofree gchar *hostname = NULL;
+-
+-  gtk_widget_init_template (GTK_WIDGET (self));
+-
+-  self->cancellable = g_cancellable_new ();
+-
+-  hostname = cc_hostname_get_display_hostname (cc_hostname_get_default ());
+-  adw_action_row_set_subtitle (self->hostname_row, hostname);
+-
+-  g_signal_connect_swapped (self->username_entry, "notify::text",
+-                            G_CALLBACK (on_credentials_changed),
+-                            self);
+-  g_signal_connect_swapped (self->password_entry, "notify::text",
+-                            G_CALLBACK (on_credentials_changed),
+-                            self);
+-
+-  g_signal_connect_object (self->remote_session_row, "notify::active",
+-                           G_CALLBACK (on_remote_session_active_changed), self,
+-                           G_CONNECT_SWAPPED);
+-
+-  self->permission = (GPermission*) polkit_permission_new_sync (REMOTE_SESSION_PERMISSION, NULL, self->cancellable, &error);
+-
+-  if (error != NULL)
+-    {
+-      g_warning ("Cannot create '%s' permission: %s", REMOTE_SESSION_PERMISSION, error->message);
+-      g_clear_error (&error);
+-    }
+-
+-  sync_permissions (self);
+-  g_signal_connect_swapped (self->permission, "notify::allowed",
+-                            G_CALLBACK (sync_permissions),
+-                            self);
+-
+-  g_object_bind_property (self->password_entry, "sensitive",
+-                          self->generate_password_button, "sensitive",
+-                          G_BINDING_SYNC_CREATE);
+-  cc_permission_infobar_set_permission (self->permission_infobar, self->permission);
+-  cc_permission_infobar_set_title (self->permission_infobar, _("Some settings are locked"));
+-
+-  connect_to_remote_desktop_rdp_server (self);
+-}
+diff --git a/panels/system/remote-desktop/cc-remote-session-page.h b/panels/system/remote-desktop/cc-remote-session-page.h
+deleted file mode 100644
+index 71719dd..0000000
+--- a/panels/system/remote-desktop/cc-remote-session-page.h
++++ /dev/null
+@@ -1,30 +0,0 @@
+-/*
+- * Copyright 2024 Red Hat Inc
+- *
+- * This program is free software: you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation, either version 3 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+- *
+- * SPDX-License-Identifier: GPL-3.0-or-later
+- */
+-
+-#pragma once
+-
+-#include <adwaita.h>
+-
+-G_BEGIN_DECLS
+-
+-#define CC_TYPE_REMOTE_SESSION_PAGE (cc_remote_session_page_get_type ())
+-
+-G_DECLARE_FINAL_TYPE (CcRemoteSessionPage, cc_remote_session_page, CC, REMOTE_SESSION_PAGE, AdwNavigationPage)
+-
+-G_END_DECLS
+diff --git a/panels/system/remote-desktop/cc-remote-session-page.ui b/panels/system/remote-desktop/cc-remote-session-page.ui
+deleted file mode 100644
+index 7e0c648..0000000
+--- a/panels/system/remote-desktop/cc-remote-session-page.ui
++++ /dev/null
+@@ -1,157 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<interface>
+-  <template class="CcRemoteSessionPage" parent="AdwBin">
+-    <child>
+-      <object class="AdwToastOverlay" id="toast_overlay">
+-        <property name="child">
+-          <object class="GtkBox">
+-            <property name="orientation">vertical</property>
+-            <child>
+-              <object class="CcPermissionInfobar" id="permission_infobar"/>
+-            </child>
+-            <child>
+-              <object class="AdwPreferencesPage">
+-                <child>
+-                  <object class="AdwPreferencesGroup">
+-                    <child>
+-                      <object class="GtkLabel">
+-                        <property name="label" translatable="yes">Remotely connect to your user account when it isn’t being used. The display resolution can be set from the remote.</property>
+-                        <property name="hexpand">True</property>
+-                        <property name="justify">center</property>
+-                        <property name="wrap">True</property>
+-                        <style>
+-                          <class name="dim-label"/>
+-                        </style>
+-                      </object>
+-                    </child>
+-                  </object>
+-                </child>
+-                <child>
+-                  <object class="AdwPreferencesGroup">
+-                    <child>
+-                      <object class="AdwSwitchRow" id="remote_session_row">
+-                        <property name="title" translatable="yes">Remote Login</property>
+-                        <property name="use-underline">True</property>
+-                      </object>
+-                    </child>
+-                  </object>
+-                </child>
+-                <child>
+-                  <object class="AdwPreferencesGroup">
+-                    <property name="title" translatable="yes">How to Connect</property>
+-                    <property name="description" translatable="yes">Use a remote desktop app to connect using the RDP protocol. Additional information about the device’s network location may also be required.</property>
+-                    <child>
+-                      <object class="AdwActionRow" id="hostname_row">
+-                        <property name="title" translatable="yes">_Hostname</property>
+-                        <property name="use-underline">True</property>
+-                        <property name="activatable-widget">copy_address_button</property>
+-                        <style>
+-                          <class name="property"/>
+-                        </style>
+-                        <child type="suffix">
+-                          <object class="GtkButton" id="copy_address_button">
+-                            <property name="tooltip-text" translatable="yes">Copy</property>
+-                            <property name="valign">center</property>
+-                            <property name="icon-name">edit-copy-symbolic</property>
+-                            <signal name="clicked" handler="on_address_copy_clicked" swapped="yes"/>
+-                            <style>
+-                              <class name="flat"/>
+-                            </style>
+-                          </object>
+-                        </child>
+-                      </object>
+-                    </child>
+-                    <child>
+-                      <object class="AdwActionRow" id="port_row">
+-                        <property name="title" translatable="yes">_Port</property>
+-                        <property name="use-underline">True</property>
+-                        <property name="activatable-widget">copy_port_button</property>
+-                        <style>
+-                          <class name="property"/>
+-                        </style>
+-                        <child type="suffix">
+-                          <object class="GtkButton" id="copy_port_button">
+-                            <property name="tooltip-text" translatable="yes">Copy</property>
+-                            <property name="valign">center</property>
+-                            <property name="icon-name">edit-copy-symbolic</property>
+-                            <signal name="clicked" handler="on_port_copy_clicked" swapped="yes"/>
+-                            <style>
+-                              <class name="flat"/>
+-                            </style>
+-                          </object>
+-                        </child>
+-                      </object>
+-                    </child>
+-                  </object>
+-                </child>
+-                <child>
+-                  <object class="AdwPreferencesGroup" id="credentials_group">
+-                    <property name="title" translatable="yes">Login Details</property>
+-                    <child>
+-                      <object class="AdwEntryRow" id="username_entry">
+-                        <property name="title" translatable="yes">Username</property>
+-                        <child type="suffix">
+-                          <object class="GtkButton">
+-                            <property name="tooltip-text" translatable="yes">Copy</property>
+-                            <property name="valign">center</property>
+-                            <property name="icon-name">edit-copy-symbolic</property>
+-                            <signal name="clicked" handler="on_username_copy_clicked" swapped="yes"/>
+-                            <style>
+-                              <class name="flat"/>
+-                            </style>
+-                          </object>
+-                        </child>
+-                      </object>
+-                    </child>
+-                    <child>
+-                      <object class="AdwPasswordEntryRow" id="password_entry">
+-                        <property name="title" translatable="yes">Password</property>
+-                        <child type="suffix">
+-                          <object class="GtkButton">
+-                            <property name="tooltip-text" translatable="yes">Copy</property>
+-                            <property name="valign">center</property>
+-                            <property name="icon-name">edit-copy-symbolic</property>
+-                            <signal name="clicked" handler="on_password_copy_clicked" swapped="yes"/>
+-                            <style>
+-                              <class name="flat"/>
+-                            </style>
+-                          </object>
+-                        </child>
+-                      </object>
+-                    </child>
+-                    <child>
+-                      <object class="GtkBox">
+-                        <property name="margin-top">24</property>
+-                        <property name="spacing">10</property>
+-                        <child>
+-                          <object class="GtkButton" id="generate_password_button">
+-                            <property name="sensitive">False</property>
+-                            <property name="can-shrink">True</property>
+-                            <property name="label" translatable="yes">_Generate New Password</property>
+-                            <property name="use-underline">True</property>
+-                            <signal name="clicked" handler="on_generate_password_button_clicked" swapped="yes"/>
+-                          </object>
+-                        </child>
+-                        <child>
+-                          <object class="GtkButton" id="verify_encryption_button">
+-                            <property name="sensitive">False</property>
+-                            <property name="hexpand">True</property>
+-                            <property name="halign">end</property>
+-                            <property name="can-shrink">True</property>
+-                            <property name="label" translatable="yes">_Verify Encryption</property>
+-                            <property name="use-underline">True</property>
+-                            <signal name="clicked" handler="on_verify_encryption_button_clicked" swapped="yes"/>
+-                          </object>
+-                        </child>
+-                      </object>
+-                    </child>
+-                  </object>
+-                </child>
+-              </object>
+-            </child>
+-          </object>
+-        </property>
+-      </object>
+-    </child>
+-  </template>
+-</interface>
+diff --git a/panels/system/remote-desktop/meson.build b/panels/system/remote-desktop/meson.build
+index b4a1b37..ae7ca0d 100644
+--- a/panels/system/remote-desktop/meson.build
++++ b/panels/system/remote-desktop/meson.build
+@@ -2,29 +2,3 @@ install_data(
+   'org.gnome.Settings-remote-desktop-symbolic.svg',
+   install_dir: join_paths(control_center_icondir, 'hicolor', 'scalable', 'apps')
+ )
+-
+-gnome_remote_desktop = 'org.gnome.RemoteDesktop'
+-sources += gnome.gdbus_codegen(
+-  gnome_remote_desktop,
+-  gnome_remote_desktop + '.xml',
+-  interface_prefix: 'org.gnome.',
+-  namespace: 'Gsd'
+-)
+-
+-polkit_conf = configuration_data()
+-polkit_conf.set('libexecdir', control_center_libexecdir)
+-polkit = 'org.gnome.controlcenter.remote-session-helper.policy'
+-
+-polkit_in = configure_file(
+-  input: polkit + '.in.in',
+-  output: polkit + '.in',
+-  configuration: polkit_conf
+-)
+-
+-i18n.merge_file(
+-  input: polkit_in,
+-  output: polkit,
+-  po_dir: po_dir,
+-  install: true,
+-  install_dir: join_paths(control_center_datadir, 'polkit-1', 'actions')
+-)
+diff --git a/panels/system/remote-desktop/org.gnome.RemoteDesktop.xml b/panels/system/remote-desktop/org.gnome.RemoteDesktop.xml
+deleted file mode 100644
+index 8203c97..0000000
+--- a/panels/system/remote-desktop/org.gnome.RemoteDesktop.xml
++++ /dev/null
+@@ -1,183 +0,0 @@
+-<!DOCTYPE node PUBLIC
+-'-//freedesktop//DTD D-BUS Object Introspection 1.0//EN'
+-'http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd'>
+-<node>
+-
+-  <!--
+-      org.gnome.RemoteDesktop:
+-      @short_description: Remote desktop interface
+-
+-      This API is intended to report the status of the
+-      remote desktop daemon.
+-      No compatibility between versions is promised.
+-  -->
+-  <interface name="org.gnome.RemoteDesktop">
+-
+-    <property name="RuntimeMode" type="s" access="read" />
+-
+-  </interface>
+-
+-  <!--
+-      org.gnome.RemoteDesktop.Rdp.Server:
+-      @short_description: RDP server interface
+-
+-      This API is intended to report status about the RDP server.
+-      No compatibility between versions is promised.
+-  -->
+-  <interface name="org.gnome.RemoteDesktop.Rdp.Server">
+-
+-    <property name="Enabled" type="b" access="read" />
+-    <property name="Port" type="i" access="read" />
+-    <property name="NegotiatePort" type="b" access="read" />
+-    <property name="TlsCert" type="s" access="read" />
+-    <property name="TlsFingerprint" type="s" access="read" />
+-    <property name="TlsKey" type="s" access="read" />
+-    <property name="ViewOnly" type="b" access="read" />
+-
+-    <method name="Enable" />
+-
+-    <method name="Disable" />
+-
+-    <method name="GetCredentials">
+-      <arg name="credentials" direction="out" type="a{sv}" />
+-    </method>
+-
+-    <method name="SetCredentials">
+-      <arg name="credentials" direction="in" type="a{sv}" />
+-    </method>
+-
+-    <method name="ExportCertificate">
+-      <annotation name="org.gtk.GDBus.C.UnixFD" value="true" />
+-      <arg name="Certificate" type="(sh)" direction="out" />
+-      <arg name="PrivateKey" type="(sh)" direction="out" />
+-    </method>
+-
+-    <method name="ImportCertificate">
+-      <annotation name="org.gtk.GDBus.C.UnixFD" value="true" />
+-      <arg name="Certificate" type="(sh)" direction="in" />
+-      <arg name="PrivateKey" type="(sh)" direction="in" />
+-    </method>
+-
+-    <!--
+-        Binding:
+-
+-        Signal to inform that the RDP server is currently attempting to bind
+-        the port passed as an argument.
+-    -->
+-    <signal name="Binding">
+-      <arg name="port" type="i" />
+-    </signal>
+-
+-  </interface>
+-
+-  <!--
+-      org.gnome.RemoteDesktop.Vnc.Server:
+-      @short_description: VNC server interface
+-
+-      This API is intended to report status about the VNC server.
+-      No compatibility between versions is promised.
+-  -->
+-  <interface name="org.gnome.RemoteDesktop.Vnc.Server">
+-
+-    <property name="Enabled" type="b" access="read" />
+-    <property name="Port" type="i" access="read" />
+-    <property name="NegotiatePort" type="b" access="read" />
+-    <property name="AuthMethod" type="s" access="read" />
+-    <property name="ViewOnly" type="b" access="read" />
+-
+-  </interface>
+-
+-  <!--
+-      org.gnome.RemoteDesktop.Rdp.Dispatcher:
+-      @short_description: Dispatcher interface
+-
+-      This API is intended to be used to dispatch remote
+-      desktop client connections from the system to a specific
+-      session.
+-      No compatibility between versions is promised.
+-  -->
+-  <interface name="org.gnome.RemoteDesktop.Rdp.Dispatcher">
+-
+-    <!--
+-        RequestHandover:
+-
+-        Looks if there is an active client waiting to be handed over to
+-        the session.
+-    -->
+-    <method name="RequestHandover">
+-      <arg name="handover" direction="out" type="o" />
+-    </method>
+-
+-  </interface>
+-
+-  <!--
+-      org.gnome.RemoteDesktop.Rdp.Handover:
+-      @short_description: Handover interface
+-
+-      This API is intended to be used to process a Handover of an RDP client 
+-      between two grd-daemons.
+-      No compatibility between versions is promised.
+-  -->
+-  <interface name="org.gnome.RemoteDesktop.Rdp.Handover">
+-
+-    <!--
+-        StartHandover:
+-
+-        The dst server is ready and starts the handover process, sending its
+-        one time username/password and getting the certificate and key used
+-        by the system server.
+-    -->
+-    <method name="StartHandover">
+-      <arg name="username" direction="in" type="s" />
+-      <arg name="password" direction="in" type="s" />
+-      <arg name="certificate" direction="out" type="s" />
+-      <arg name="key" direction="out" type="s" />
+-    </method>
+-
+-    <!--
+-        RedirectClient:
+-
+-        Signal to make the src server send the Server Redirection PDU with the
+-        routing token and one time username/password to the client.
+-    -->
+-    <signal name="RedirectClient">
+-      <arg name="routing_token" type="s" />
+-      <arg name="username" type="s" />
+-      <arg name="password" type="s" />
+-    </signal>
+-
+-    <!--
+-        TakeClientReady:
+-
+-        Signal to make the dst server aware that the client was redirected
+-        successfully and is ready to be taken.
+-    -->
+-    <signal name="TakeClientReady">
+-      <arg name="use_system_credentials" type="b" />
+-    </signal>
+-
+-    <!--
+-        TakeClient:
+-
+-        The dst server takes the file descriptor which has the active
+-        connection of the redirected client.
+-    -->
+-    <method name="TakeClient">
+-      <annotation name="org.gtk.GDBus.C.UnixFD" value="true" />
+-      <arg name="fd" direction="out" type="h" />
+-    </method>
+-
+-    <!--
+-        GetSystemCredentials:
+-
+-        Get the system credentials to be used instead of the one-time
+-        generated to authenticate the redirected client.
+-    -->
+-    <method name="GetSystemCredentials">
+-      <arg name="username" direction="out" type="s" />
+-      <arg name="password" direction="out" type="s" />
+-    </method>
+-
+-  </interface>
+-
+-</node>
+diff --git a/panels/system/remote-desktop/org.gnome.controlcenter.remote-session-helper.policy.in.in b/panels/system/remote-desktop/org.gnome.controlcenter.remote-session-helper.policy.in.in
+deleted file mode 100644
+index 28beba3..0000000
+--- a/panels/system/remote-desktop/org.gnome.controlcenter.remote-session-helper.policy.in.in
++++ /dev/null
+@@ -1,22 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<!DOCTYPE policyconfig PUBLIC
+- "-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN"
+- "http://www.freedesktop.org/standards/PolicyKit/1.0/policyconfig.dtd">
+-<policyconfig>
+-
+-  <vendor>The GNOME Project</vendor>
+-  <vendor_url>http://www.gnome.org/</vendor_url>
+-
+-  <action id="org.gnome.controlcenter.remote-session-helper">
+-  <description>Enable or disable remote sessions</description>
+-    <message>Authentication is required to enable or disable remote sessions</message>
+-    <defaults>
+-      <allow_any>no</allow_any>
+-      <allow_inactive>no</allow_inactive>
+-      <allow_active>auth_admin_keep</allow_active>
+-    </defaults>
+-    <annotate key="org.freedesktop.policykit.imply">org.freedesktop.systemd1.manage-units org.freedesktop.systemd1.manage-unit-files org.gnome.remotedesktop.configure-system-daemon</annotate>
+-  </action>
+-
+-</policyconfig>
+-
+diff --git a/panels/system/remote-desktop/remote-desktop.css b/panels/system/remote-desktop/remote-desktop.css
+index 694269c..cf18ab3 100644
+--- a/panels/system/remote-desktop/remote-desktop.css
++++ b/panels/system/remote-desktop/remote-desktop.css
+@@ -1,4 +1,4 @@
+ .tls-cert-fingerprint {
+   font-family: monospace;
+-  margin: 0px 25px;
++  margin: 10px;
+ }
+diff --git a/panels/system/system.gresource.xml b/panels/system/system.gresource.xml
+index bb12d11..f1710b9 100644
+--- a/panels/system/system.gresource.xml
++++ b/panels/system/system.gresource.xml
+@@ -13,10 +13,7 @@
+     <file preprocess="xml-stripblanks">region/cc-region-page.ui</file>
+     <file preprocess="xml-stripblanks">region/cc-format-chooser.ui</file>
+     <file preprocess="xml-stripblanks">region/cc-format-preview.ui</file>
+-    <file preprocess="xml-stripblanks">remote-desktop/cc-encryption-fingerprint-dialog.ui</file>
+     <file preprocess="xml-stripblanks">remote-desktop/cc-remote-desktop-page.ui</file>
+-    <file preprocess="xml-stripblanks">remote-desktop/cc-remote-session-page.ui</file>
+-    <file preprocess="xml-stripblanks">remote-desktop/cc-desktop-sharing-page.ui</file>
+     <file>remote-desktop/remote-desktop.css</file>
+     <file preprocess="xml-stripblanks">remote-login/cc-remote-login-page.ui</file>
+     <file preprocess="xml-stripblanks">users/cc-add-user-dialog.ui</file>
+diff --git a/po/POTFILES.in b/po/POTFILES.in
+index 0f39cd5..9d49afa 100644
+--- a/po/POTFILES.in
++++ b/po/POTFILES.in
+@@ -222,17 +222,8 @@ panels/system/region/cc-format-preview.ui
+ panels/system/region/cc-region-page.c
+ panels/system/region/cc-region-page.ui
+ panels/system/region/gnome-region-panel.desktop.in
+-panels/system/remote-desktop/cc-desktop-sharing-page.c
+-panels/system/remote-desktop/cc-desktop-sharing-page.ui
+ panels/system/remote-desktop/cc-remote-desktop-page.c
+ panels/system/remote-desktop/cc-remote-desktop-page.ui
+-panels/system/remote-desktop/cc-remote-session-page.c
+-panels/system/remote-desktop/cc-remote-session-page.ui
+-panels/system/remote-desktop/cc-encryption-fingerprint-dialog.ui
+-panels/system/remote-desktop/org.gnome.controlcenter.remote-session-helper.policy.in.in
+-panels/system/remote-login/cc-remote-login-page.c
+-panels/system/remote-login/cc-remote-login-page.ui
+-panels/system/remote-login/org.gnome.controlcenter.remote-login-helper.policy.in.in
+ panels/system/users/cc-add-user-dialog.c
+ panels/system/users/cc-add-user-dialog.ui
+ panels/system/users/cc-enterprise-login-dialog.c
