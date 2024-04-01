@@ -2291,7 +2291,7 @@ index 0000000..d2f750d
 +                <child>
 +                  <object class="AdwSwitchRow" id="tiling_assistant_popup_switch">
 +                    <property name="title" translatable="yes">_Tiling Popup</property>
-+                    <property name="subtitle" translatable="yes" comments="Tiling Assistant Tiling Popup feature explaination.">Show a list of open apps to fill empty screen space after tiling a window.</property>
++                    <property name="subtitle" translatable="yes" comments="Tiling Assistant Tiling Popup feature explanation.">Show a list of open apps to fill empty screen space after tiling a window</property>
 +                    <property name="use-underline">True</property>
 +                    <property name="sensitive" bind-source="tiling_assistant_switch" bind-property="active" bind-flags="sync-create" />
 +                  </object>
@@ -2299,7 +2299,7 @@ index 0000000..d2f750d
 +                <child>
 +                  <object class="AdwSwitchRow" id="tiling_assistant_tiling_group">
 +                    <property name="title" translatable="yes">Tile _Groups</property>
-+                    <property name="subtitle" translatable="yes" comments="Tiling Assistant Tile Groups feature explaination">Keep windows grouped together when tiled, so that raising one brings up the group.</property>
++                    <property name="subtitle" translatable="yes" comments="Tiling Assistant Tile Groups feature explanation">Keep windows grouped together when tiled, so that raising one brings up the group</property>
 +                    <property name="use-underline">True</property>
 +                    <property name="sensitive" bind-source="tiling_assistant_switch" bind-property="active" bind-flags="sync-create" />
 +                  </object>
