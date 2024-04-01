@@ -1,8 +1,12 @@
-gnome-control-center (1:46.0.1-1) UNRELEASED; urgency=medium
+gnome-control-center (1:46.0.1-1) unstable; urgency=medium
 
   * New upstream release
+  * Bump minimum gnome-online-accounts
+  * Drop 6 patches applied in new release
+  * Add patch to revert adding Remote Login page since it requires
+    gnome-remote-desktop 46
 
- -- Jeremy Bícha <jbicha@ubuntu.com>  Thu, 28 Mar 2024 08:47:05 -0400
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Mon, 01 Apr 2024 09:30:57 -0400
 
 gnome-control-center (1:46~beta-2) unstable; urgency=medium
 
