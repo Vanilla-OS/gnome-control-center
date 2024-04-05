@@ -1,3 +1,11 @@
+gnome-control-center (1:46.0.1-1ubuntu2) noble; urgency=medium
+
+  * Cherry-pick proposed patch to fix Remote Desktop Generate Passwords
+  * Cherry-pick patch to support stable-ssid mode for NetworkManager 1.46
+  * Add Build-Depends: network-manager (>= 1.46.0) for that change
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Fri, 05 Apr 2024 19:18:22 -0400
+
 gnome-control-center (1:46.0.1-1ubuntu1) noble; urgency=medium
 
   * Merge with Debian. Remaining changes:
