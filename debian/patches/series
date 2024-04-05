@@ -25,4 +25,5 @@ ubuntu/applications-Launch-snap-store-if-it-is-installed.patch
 ubuntu/display-Allow-fractional-scaling-to-be-enabled.patch
 #ubuntu/mouse-Add-animations-following-the-accent-colors.patch
 #ubuntu/CVE-2023-5616.patch
+network-Add-stable-ssid-support-for-cloned-mac.patch
 system-Try-to-find-word-list-harder.patch
