@@ -1,10 +1,10 @@
-gnome-control-center (1:46.0.1-1ubuntu3) UNRELEASED; urgency=medium
+gnome-control-center (1:46.0.1-1ubuntu3) noble; urgency=medium
 
   [ Alex Murray ]
   * debian/patches/ubuntu/CVE-2023-5616.patch:
     - update the patch for the new serie and re-enable it
 
- -- Sebastien Bacher <seb128@ubuntu.com>  Tue, 09 Apr 2024 16:44:13 +0200
+ -- Sebastien Bacher <seb128@ubuntu.com>  Tue, 09 Apr 2024 16:47:10 +0200
 
 gnome-control-center (1:46.0.1-1ubuntu2) noble; urgency=medium
 
