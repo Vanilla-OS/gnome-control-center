@@ -39,7 +39,7 @@ jobs:
           libcolord-dev \
           libcolord-gtk4-dev \
           libcups2-dev \
-          libgcr-3-dev \
+          libgcr-4-dev \
           libgdk-pixbuf-2.0-dev \
           libgirepository1.0-dev \
           libglib2.0-dev \
@@ -67,7 +67,6 @@ jobs:
           libpwquality-dev \
           libsecret-1-dev \
           libsmbclient-dev \
-          libsnapd-glib-dev \
           libsoup-3.0-dev \
           libudisks2-dev \
           libupower-glib-dev \
