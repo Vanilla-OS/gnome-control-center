@@ -69,7 +69,7 @@ index c2eb37d412..6db4579f9e 100644
      }
    else
      g_clear_object (&self->up_client);
-+  
++
 +  if (!does_prime_utility_exist ())
 +    gtk_widget_set_visible (GTK_WIDGET (self->prime_utility_row), false);
  
