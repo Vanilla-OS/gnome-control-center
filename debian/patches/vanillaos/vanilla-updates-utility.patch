@@ -1,13 +1,94 @@
-diff --git a/panels/system/about/cc-about-page.c b/panels/system/about/cc-about-page.c
-index 80969f0bfa..1a58f6260f 100644
---- a/panels/system/about/cc-about-page.c
-+++ b/panels/system/about/cc-about-page.c
-@@ -83,38 +83,9 @@ about_page_setup_overview (CcAboutPage *self)
- }
+diff --git a/debian/patches/vanillaos/vanilla-updates-utility.patch b/debian/patches/vanillaos/vanilla-updates-utility.patch
+index 51c2418b8..e69de29bb 100644
+--- a/debian/patches/vanillaos/vanilla-updates-utility.patch
++++ b/debian/patches/vanillaos/vanilla-updates-utility.patch
+@@ -1,76 +0,0 @@
+-diff --git a/panels/system/about/cc-about-page.c b/panels/system/about/cc-about-page.c
+-index 80969f0bfa..1a58f6260f 100644
+---- a/panels/system/about/cc-about-page.c
+-+++ b/panels/system/about/cc-about-page.c
+-@@ -83,38 +83,9 @@ about_page_setup_overview (CcAboutPage *self)
+- }
+- 
+- static gboolean
+--does_gnome_software_allow_updates (void)
+-+does_vos_update_utility_exist (void)
+- {
+--  const gchar *schema_id  = "org.gnome.software";
+--  GSettingsSchemaSource *source;
+--  g_autoptr(GSettingsSchema) schema = NULL;
+--  g_autoptr(GSettings) settings = NULL;
+--
+--  source = g_settings_schema_source_get_default ();
+--
+--  if (source == NULL)
+--    return FALSE;
+--
+--  schema = g_settings_schema_source_lookup (source, schema_id, FALSE);
+--
+--  if (schema == NULL)
+--    return FALSE;
+--
+--  settings = g_settings_new (schema_id);
+--  return g_settings_get_boolean (settings, "allow-updates");
+--}
+--
+--static gboolean
+--does_gnome_software_exist (void)
+--{
+--  g_autofree gchar *path = g_find_program_in_path ("gnome-software");
+--  return path != NULL;
+--}
+--
+--static gboolean
+--does_gpk_update_viewer_exist (void)
+--{
+--  g_autofree gchar *path = g_find_program_in_path ("gpk-update-viewer");
+-+  g_autofree gchar *path = g_find_program_in_path("vanilla-updates-utility");
+-   return path != NULL;
+- }
+- 
+-@@ -135,16 +106,16 @@ cc_about_page_open_software_update (CcAboutPage *self)
+-   gboolean ret;
+-   char *argv[3];
+- 
+--  if (does_gnome_software_exist ())
+-+  if (does_vos_update_utility_exist ())
+-     {
+--      argv[0] = "gnome-software";
+--      argv[1] = "--mode=updates";
+-+      argv[0] = "vanilla-updates-utility";
+-+      argv[1] = "--embedded";
+-       argv[2] = NULL;
+-     }
+-   else
+-     {
+--      argv[0] = "gpk-update-viewer";
+--      argv[1] = NULL;
+-+      g_warning("Vanilla update utility not found!");
+-+      return;
+-     }
+-   ret = g_spawn_async (NULL, argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, &error);
+-   if (!ret)
+-@@ -235,7 +206,7 @@ cc_about_page_init (CcAboutPage *self)
+- 
+-   gtk_widget_init_template (GTK_WIDGET (self));
+- 
+--  if ((!does_gnome_software_exist () || !does_gnome_software_allow_updates ()) && !does_gpk_update_viewer_exist ())
+-+  if (!does_vos_update_utility_exist ())
+-     gtk_widget_set_visible (GTK_WIDGET (self->software_updates_group), FALSE);
+- 
+-   about_page_setup_overview (self);
+diff --git a/panels/system/cc-system-panel.c b/panels/system/cc-system-panel.c
+index 36f1b8190..005e4d60e 100644
+--- a/panels/system/cc-system-panel.c
++++ b/panels/system/cc-system-panel.c
+@@ -53,46 +53,16 @@ struct _CcSystemPanel
+ CC_PANEL_REGISTER (CcSystemPanel, cc_system_panel)
  
  static gboolean
--does_gnome_software_allow_updates (void)
-+does_vos_update_utility_exist (void)
+-gnome_software_allows_updates (void)
++vos_update_utility_exists (void)
  {
 -  const gchar *schema_id  = "org.gnome.software";
 -  GSettingsSchemaSource *source;
@@ -29,48 +110,47 @@ index 80969f0bfa..1a58f6260f 100644
 -}
 -
 -static gboolean
--does_gnome_software_exist (void)
+-gnome_software_exists (void)
 -{
 -  g_autofree gchar *path = g_find_program_in_path ("gnome-software");
 -  return path != NULL;
 -}
 -
 -static gboolean
--does_gpk_update_viewer_exist (void)
+-gpk_update_viewer_exists (void)
 -{
 -  g_autofree gchar *path = g_find_program_in_path ("gpk-update-viewer");
-+  g_autofree gchar *path = g_find_program_in_path("vanilla-updates-utility");
++  g_autofree gchar *path = g_find_program_in_path ("vanilla-updates-utility");
    return path != NULL;
  }
  
-@@ -135,16 +106,16 @@ cc_about_page_open_software_update (CcAboutPage *self)
+ static gboolean
+ show_software_updates_group (CcSystemPanel *self)
+ {
+-  return (gnome_software_exists () && gnome_software_allows_updates ()) ||
+-         gpk_update_viewer_exists ();
++  return vos_update_utility_exists ();
+ }
+ 
+ static void
+@@ -102,17 +72,9 @@ cc_system_page_open_software_update (CcSystemPanel *self)
    gboolean ret;
    char *argv[3];
  
--  if (does_gnome_software_exist ())
-+  if (does_vos_update_utility_exist ())
-     {
+-  if (gnome_software_exists ())
+-    {
 -      argv[0] = "gnome-software";
 -      argv[1] = "--mode=updates";
-+      argv[0] = "vanilla-updates-utility";
-+      argv[1] = "--embedded";
-       argv[2] = NULL;
-     }
-   else
-     {
+-      argv[2] = NULL;
+-    }
+-  else
+-    {
 -      argv[0] = "gpk-update-viewer";
 -      argv[1] = NULL;
-+      g_warning("Vanilla update utility not found!");
-+      return;
-     }
+-    }
++  argv[0] = "vanilla-updates-utility";
++  argv[1] = "--embedded";
++  argv[2] = NULL;
+ 
    ret = g_spawn_async (NULL, argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, &error);
    if (!ret)
-@@ -235,7 +206,7 @@ cc_about_page_init (CcAboutPage *self)
- 
-   gtk_widget_init_template (GTK_WIDGET (self));
- 
--  if ((!does_gnome_software_exist () || !does_gnome_software_allow_updates ()) && !does_gpk_update_viewer_exist ())
-+  if (!does_vos_update_utility_exist ())
-     gtk_widget_set_visible (GTK_WIDGET (self->software_updates_group), FALSE);
- 
-   about_page_setup_overview (self);
