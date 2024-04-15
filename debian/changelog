@@ -1,3 +1,9 @@
+gnome-control-center (1:46~99-orchid-beta) unstable; urgency=medium
+
+ * Set to highest version for orchid
+
+-- Xenia <axtlos@getcryst.al> Mon, 15 Apr 2024 18:13:00 +0200
+
 gnome-control-center (1:46.1-1) unstable; urgency=medium
 
   * New upstream release
