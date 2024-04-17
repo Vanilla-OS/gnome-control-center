@@ -1,10 +1,10 @@
-gnome-control-center (1:46.0.1-1ubuntu4) UNRELEASED; urgency=medium
+gnome-control-center (1:46.0.1-1ubuntu4) noble; urgency=medium
 
   * d/p/ubuntu/mouse-Add-animations-following-the-accent-colors.patch:
     Regenerate the ubuntu-accented assets using the same source blender file
     as in GNOME and include the missing animations (LP: #2062078)
 
- -- Marco Trevisan (Treviño) <marco@ubuntu.com>  Thu, 18 Apr 2024 00:32:24 +0200
+ -- Marco Trevisan (Treviño) <marco@ubuntu.com>  Thu, 18 Apr 2024 00:50:26 +0200
 
 gnome-control-center (1:46.0.1-1ubuntu3) noble; urgency=medium
 
