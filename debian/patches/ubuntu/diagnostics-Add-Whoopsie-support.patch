@@ -12,7 +12,7 @@ Subject: diagnostics: Add Whoopsie support
  6 files changed, 245 insertions(+), 1 deletion(-)
 
 diff --git a/meson.build b/meson.build
-index 99c4228..c1a99c4 100644
+index 547b42b..d9fa918 100644
 --- a/meson.build
 +++ b/meson.build
 @@ -274,6 +274,14 @@ endif

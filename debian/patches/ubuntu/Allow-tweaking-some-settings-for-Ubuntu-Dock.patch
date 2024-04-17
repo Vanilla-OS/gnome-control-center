@@ -2095,7 +2095,7 @@ index 0000000..b13f611
 +#endif /* _CC_EDIT_DIALOG_H_ */
 diff --git a/panels/ubuntu/cc-ubuntu-panel.ui b/panels/ubuntu/cc-ubuntu-panel.ui
 new file mode 100644
-index 0000000..d2f750d
+index 0000000..cb4a44b
 --- /dev/null
 +++ b/panels/ubuntu/cc-ubuntu-panel.ui
 @@ -0,0 +1,219 @@
@@ -2469,7 +2469,7 @@ index 0f39cd5..c788b38 100644
  panels/universal-access/cc-ua-hearing-page.c
  panels/universal-access/cc-ua-hearing-page.ui
 diff --git a/shell/cc-panel-list.c b/shell/cc-panel-list.c
-index 14ae7d0..ec89020 100644
+index 1b3b8f9..f715131 100644
 --- a/shell/cc-panel-list.c
 +++ b/shell/cc-panel-list.c
 @@ -373,6 +373,7 @@ static const gchar * const panel_order[] = {

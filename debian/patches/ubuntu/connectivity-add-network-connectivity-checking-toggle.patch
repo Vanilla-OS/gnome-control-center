@@ -252,7 +252,7 @@ index 1d16a78..31a0ef7 100644
    g_type_ensure (CC_TYPE_FIRMWARE_SECURITY_PAGE);
    g_type_ensure (CC_TYPE_LOCATION_PAGE);
 diff --git a/panels/privacy/cc-privacy-panel.ui b/panels/privacy/cc-privacy-panel.ui
-index fcf2a2b..f4a3385 100644
+index 8ba3c2c..1a0657f 100644
 --- a/panels/privacy/cc-privacy-panel.ui
 +++ b/panels/privacy/cc-privacy-panel.ui
 @@ -20,6 +20,18 @@
