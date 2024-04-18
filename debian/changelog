@@ -1,3 +1,9 @@
+gnome-control-center (1:46.0.1-1ubuntu6) noble; urgency=medium
+
+  * Add Depends: heif-gdk-pixbuf, heif-thumbnailer (LP: #2061090)
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Thu, 18 Apr 2024 09:02:06 -0400
+
 gnome-control-center (1:46.0.1-1ubuntu5) noble; urgency=medium
 
   * Cherry-pick 2 patches to disable Location Services because Mozilla has
