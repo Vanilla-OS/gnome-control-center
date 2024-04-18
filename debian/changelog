@@ -1,3 +1,9 @@
+gnome-control-center (1:46.0.1-1ubuntu7) noble; urgency=medium
+
+  * Re-enable Location Services for now after more conversation
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Thu, 18 Apr 2024 12:54:43 -0400
+
 gnome-control-center (1:46.0.1-1ubuntu6) noble; urgency=medium
 
   * Add Depends: heif-gdk-pixbuf, heif-thumbnailer (LP: #2061090)
