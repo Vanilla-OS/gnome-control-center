@@ -12,12 +12,12 @@ Subject: diagnostics: Add Whoopsie support
  6 files changed, 245 insertions(+), 1 deletion(-)
 
 diff --git a/meson.build b/meson.build
-index 547b42b..d9fa918 100644
+index 2e10348..e7c3525 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -274,6 +274,14 @@ endif
- config_h.set('HAVE_MALCONTENT', enable_malcontent,
-              description: 'Define to 1 if malcontent support is enabled')
+@@ -279,6 +279,14 @@ location_services = get_option('location-services')
+ config_h.set('HAVE_LOCATION_SERVICES', location_services.enabled(),
+              description: 'Whether location services is enabled')
  
 +# Whoopsie (Ubuntu error reporting service)
 +enable_whoopsie = get_option('whoopsie')
@@ -30,17 +30,17 @@ index 547b42b..d9fa918 100644
  if host_is_linux
    # ModemManager
    mm_dep =  dependency('mm-glib', version: '>= 0.7')
-@@ -372,4 +380,5 @@ summary({
+@@ -377,4 +385,5 @@ summary({
    'IBus': enable_ibus,
    'Snap': enable_snap,
    'Malcontent': enable_malcontent,
 +  'Whoopsie': enable_whoopsie,
  }, section: 'Optional Dependencies')
 diff --git a/meson_options.txt b/meson_options.txt
-index e53d6e3..d09ba43 100644
+index f415a7e..91905e9 100644
 --- a/meson_options.txt
 +++ b/meson_options.txt
-@@ -9,3 +9,4 @@ option('profile', type: 'combo', choices: ['default','development'], value: 'def
+@@ -10,3 +10,4 @@ option('profile', type: 'combo', choices: ['default','development'], value: 'def
  option('malcontent', type: 'boolean', value: false, description: 'build with malcontent support')
  option('distributor_logo', type: 'string', description: 'absolute path to distributor logo for the About panel')
  option('dark_mode_distributor_logo', type: 'string', description: 'absolute path to distributor logo dark mode variant')

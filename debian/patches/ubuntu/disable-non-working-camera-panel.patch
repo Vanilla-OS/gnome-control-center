@@ -26,10 +26,10 @@ inadequate to document these significant limitations.
  1 file changed, 1 insertion(+)
 
 diff --git a/panels/privacy/cc-privacy-panel.ui b/panels/privacy/cc-privacy-panel.ui
-index 1a0657f..a1a466c 100644
+index 581f497..dbb4d27 100644
 --- a/panels/privacy/cc-privacy-panel.ui
 +++ b/panels/privacy/cc-privacy-panel.ui
-@@ -89,6 +89,7 @@
+@@ -90,6 +90,7 @@
                            <object class="CcListRow">
                              <property name="title" translatable="yes">_Cameras</property>
                              <property name="subtitle" translatable="yes">Control camera access</property>

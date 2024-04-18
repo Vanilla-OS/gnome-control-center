@@ -1,0 +1,101 @@
+From: Felipe Borges <felipeborges@gnome.org>
+Date: Tue, 19 Mar 2024 15:45:19 +0100
+Subject: datetime: Don't show Auto Timezone setting without location services
+
+If built with location-services disabled (default), we keep the auto
+timezone toggle hidden and we forcibly disable the auto-timezone
+setting. org.gnome.desktop.datetime automatic-timezone
+
+If built with the location-services option enabled, we show the
+auto-timezone toggle.
+
+See #2959
+
+(cherry picked from commit 021fce8c91fd21714aaab351e40c178355d94f12)
+
+Origin: future 46.1
+---
+ panels/system/datetime/cc-datetime-page.c  | 18 +++++++++++++++---
+ panels/system/datetime/cc-datetime-page.ui |  1 +
+ 2 files changed, 16 insertions(+), 3 deletions(-)
+
+diff --git a/panels/system/datetime/cc-datetime-page.c b/panels/system/datetime/cc-datetime-page.c
+index cef9591..ea0f047 100644
+--- a/panels/system/datetime/cc-datetime-page.c
++++ b/panels/system/datetime/cc-datetime-page.c
+@@ -111,6 +111,7 @@ struct _CcDateTimePage
+   Timedate1 *dtm;
+   GCancellable *cancellable;
+ 
++  gboolean auto_timezone_supported;
+   gboolean pending_ntp_state;
+ 
+   GPermission *permission;
+@@ -528,10 +529,10 @@ on_permission_changed (CcDateTimePage *self)
+   gboolean allowed, location_allowed, tz_allowed, auto_timezone, using_ntp;
+ 
+   allowed = (self->permission != NULL && g_permission_get_allowed (self->permission));
+-  location_allowed = g_settings_get_boolean (self->location_settings, LOCATION_ENABLED);
++  location_allowed = g_settings_get_boolean (self->location_settings, LOCATION_ENABLED) && self->auto_timezone_supported;
+   tz_allowed = (self->tz_permission != NULL && g_permission_get_allowed (self->tz_permission));
+   using_ntp = gtk_switch_get_active (self->network_time_switch);
+-  auto_timezone = adw_switch_row_get_active (self->auto_timezone_row);
++  auto_timezone = adw_switch_row_get_active (self->auto_timezone_row) && self->auto_timezone_supported;
+ 
+   /* All the widgets but the lock button and the 24h setting */
+   gtk_widget_set_sensitive (GTK_WIDGET (self->auto_datetime_row), allowed);
+@@ -607,6 +608,7 @@ present_window (CcDateTimePage *self,
+   gtk_window_present (window);
+ }
+ 
++#ifdef HAVE_LOCATION_SERVICES
+ static gboolean
+ tz_switch_to_row_transform_func (GBinding       *binding,
+                                  const GValue   *source_value,
+@@ -626,6 +628,7 @@ tz_switch_to_row_transform_func (GBinding       *binding,
+ 
+   return TRUE;
+ }
++#endif
+ 
+ static gboolean
+ switch_to_row_transform_func (GBinding       *binding,
+@@ -909,16 +912,25 @@ cc_date_time_page_init (CcDateTimePage *self)
+   gtk_widget_set_visible (GTK_WIDGET (self->auto_datetime_row), is_ntp_available (self));
+ 
+   /* Timezone settings */
++  self->auto_timezone_supported = FALSE;
++
++  self->datetime_settings = g_settings_new (DATETIME_SCHEMA);
++  // Let's disable location services for gnome-46
++  g_settings_set_boolean (self->datetime_settings, AUTO_TIMEZONE_KEY, FALSE);
++#ifdef HAVE_LOCATION_SERVICES
++  self->auto_timezone_supported = TRUE;
++  gtk_widget_set_visible (GTK_WIDGET (self->auto_timezone_row), TRUE);
++
+   g_object_bind_property_full (self->auto_timezone_row, "active",
+                                self->timezone_row, "sensitive",
+                                G_BINDING_SYNC_CREATE,
+                                (GBindingTransformFunc) tz_switch_to_row_transform_func,
+                                NULL, self, NULL);
+ 
+-  self->datetime_settings = g_settings_new (DATETIME_SCHEMA);
+   g_settings_bind (self->datetime_settings, AUTO_TIMEZONE_KEY,
+                    self->auto_timezone_row, "active",
+                    G_SETTINGS_BIND_DEFAULT);
++#endif
+ 
+   /* Clock settings */
+   self->clock_settings = g_settings_new (CLOCK_SCHEMA);
+diff --git a/panels/system/datetime/cc-datetime-page.ui b/panels/system/datetime/cc-datetime-page.ui
+index 82226a5..f0c557b 100644
+--- a/panels/system/datetime/cc-datetime-page.ui
++++ b/panels/system/datetime/cc-datetime-page.ui
+@@ -157,6 +157,7 @@
+               <object class="AdwPreferencesGroup">
+                 <child>
+                   <object class="AdwSwitchRow" id="auto_timezone_row">
++                    <property name="visible">False</property>
+                     <property name="title" translatable="yes">Automatic Time _Zone</property>
+                     <property name="subtitle" translatable="yes">Requires location services enabled and internet access</property>
+                     <property name="use_underline">True</property>

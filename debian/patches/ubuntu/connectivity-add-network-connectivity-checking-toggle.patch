@@ -232,7 +232,7 @@ index 0000000..901d392
 +  </template>
 +</interface>
 diff --git a/panels/privacy/cc-privacy-panel.c b/panels/privacy/cc-privacy-panel.c
-index 1d16a78..31a0ef7 100644
+index d7cfd9c..07b152d 100644
 --- a/panels/privacy/cc-privacy-panel.c
 +++ b/panels/privacy/cc-privacy-panel.c
 @@ -26,6 +26,7 @@
@@ -243,8 +243,8 @@ index 1d16a78..31a0ef7 100644
  #include "cc-diagnostics-page.h"
  #include "cc-firmware-security-page.h"
  #include "cc-list-row.h"
-@@ -75,6 +76,7 @@ cc_privacy_panel_class_init (CcPrivacyPanelClass *klass)
-   gtk_widget_class_bind_template_child (widget_class, CcPrivacyPanel, bolt_row);
+@@ -77,6 +78,7 @@ cc_privacy_panel_class_init (CcPrivacyPanelClass *klass)
+   gtk_widget_class_bind_template_child (widget_class, CcPrivacyPanel, location_row);
  
    g_type_ensure (CC_TYPE_CAMERA_PAGE);
 +  g_type_ensure (CC_TYPE_CONNECTIVITY_PAGE);
@@ -252,7 +252,7 @@ index 1d16a78..31a0ef7 100644
    g_type_ensure (CC_TYPE_FIRMWARE_SECURITY_PAGE);
    g_type_ensure (CC_TYPE_LOCATION_PAGE);
 diff --git a/panels/privacy/cc-privacy-panel.ui b/panels/privacy/cc-privacy-panel.ui
-index 8ba3c2c..1a0657f 100644
+index 5b216bf..581f497 100644
 --- a/panels/privacy/cc-privacy-panel.ui
 +++ b/panels/privacy/cc-privacy-panel.ui
 @@ -20,6 +20,18 @@
@@ -274,7 +274,7 @@ index 8ba3c2c..1a0657f 100644
                          <child>
                            <object class="CcListRow">
                              <property name="title" translatable="yes">_Screen Lock</property>
-@@ -132,6 +144,10 @@
+@@ -133,6 +145,10 @@
            </object>
          </child>
  
