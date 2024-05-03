@@ -1,3 +1,10 @@
+gnome-control-center (1:46.1-1) unstable; urgency=medium
+
+  * New upstream release
+  * Keep location services features available for now
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Fri, 03 May 2024 14:52:20 -0400
+
 gnome-control-center (1:46.0.1-1ubuntu7) noble; urgency=medium
 
   * Re-enable Location Services for now after more conversation
