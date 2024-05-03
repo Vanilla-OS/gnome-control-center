@@ -41,6 +41,7 @@ struct _CcCameraPage
   GVariant     *camera_apps_perms;
   GVariant     *camera_apps_data;
   GHashTable   *camera_app_switches;
+  GHashTable   *camera_app_rows;
 
   GtkSizeGroup *camera_icon_size_group;
 };
@@ -227,6 +228,10 @@ add_camera_app (CcCameraPage *self,
                        g_strdup (app_id),
                        g_object_ref (w));
 
+  g_hash_table_insert (self->camera_app_rows,
+                       g_strdup (app_id),
+                       g_object_ref (row));
+
   data = g_slice_new (CameraAppStateData);
   data->self = self;
   data->app_id = g_strdup (app_id);
@@ -249,11 +254,26 @@ update_perm_store (CcCameraPage *self,
   GVariantIter iter;
   const gchar *key;
   gchar **value;
+  GHashTableIter row_iter;
+  GtkWidget *row;
 
   g_clear_pointer (&self->camera_apps_perms, g_variant_unref);
   self->camera_apps_perms = permissions;
   g_clear_pointer (&self->camera_apps_data, g_variant_unref);
   self->camera_apps_data = permissions_data;
+
+  /* We iterate over all rows, if the permissions do not contain the app id of
+     the row, we remove it. */
+  g_hash_table_iter_init (&row_iter, self->camera_app_rows);
+  while (g_hash_table_iter_next (&row_iter, (gpointer *) &key, (gpointer *) &row))
+    {
+      if (!g_variant_lookup_value (permissions, key, NULL))
+        {
+          gtk_list_box_remove (self->camera_apps_list_box, row);
+          g_hash_table_remove (self->camera_app_switches, key);
+          g_hash_table_iter_remove (&row_iter);
+        }
+    }
 
   g_variant_iter_init (&iter, permissions);
   while (g_variant_iter_loop (&iter, "{&s^a&s}", &key, &value))
@@ -280,12 +300,22 @@ on_perm_store_signal (GDBusProxy *proxy,
                       gpointer    user_data)
 {
   GVariant *permissions, *permissions_data;
+  g_autoptr(GVariant) boxed_permission_data = NULL;
+  g_autoptr(GVariant) table = NULL;
+  g_autoptr(GVariant) id = NULL;
 
   if (g_strcmp0 (signal_name, "Changed") != 0)
     return;
 
+  table = g_variant_get_child_value (parameters, 0);
+  id = g_variant_get_child_value (parameters, 1);
+
+  if (g_strcmp0 (g_variant_get_string (table, NULL), "devices") != 0 || g_strcmp0 (g_variant_get_string (id, NULL), "camera") != 0)
+    return;
+
   permissions = g_variant_get_child_value (parameters, 4);
-  permissions_data = g_variant_get_child_value (parameters, 3);
+  boxed_permission_data = g_variant_get_child_value (parameters, 3);
+  permissions_data = g_variant_get_variant (boxed_permission_data);
   update_perm_store (user_data, permissions, permissions_data);
 }
 
@@ -296,6 +326,7 @@ on_perm_store_lookup_done (GObject      *source_object,
 {
   CcCameraPage *self = user_data;
   GVariant *ret, *permissions, *permissions_data;
+  g_autoptr(GVariant) boxed_permission_data = NULL;
   g_autoptr(GError) error = NULL;
 
   ret = g_dbus_proxy_call_finish (G_DBUS_PROXY (source_object),
@@ -309,7 +340,8 @@ on_perm_store_lookup_done (GObject      *source_object,
     }
 
   permissions = g_variant_get_child_value (ret, 0);
-  permissions_data = g_variant_get_child_value (ret, 1);
+  boxed_permission_data = g_variant_get_child_value (ret, 1);
+  permissions_data = g_variant_get_variant (boxed_permission_data);
   update_perm_store (user_data, permissions, permissions_data);
 
   g_signal_connect_object (source_object,
@@ -366,6 +398,7 @@ cc_camera_page_finalize (GObject *object)
   g_clear_pointer (&self->camera_apps_perms, g_variant_unref);
   g_clear_pointer (&self->camera_apps_data, g_variant_unref);
   g_clear_pointer (&self->camera_app_switches, g_hash_table_unref);
+  g_clear_pointer (&self->camera_app_rows, g_hash_table_unref);
 
   G_OBJECT_CLASS (cc_camera_page_parent_class)->finalize (object);
 }
@@ -403,6 +436,10 @@ cc_camera_page_init (CcCameraPage *self)
                                                      g_str_equal,
                                                      g_free,
                                                      g_object_unref);
+  self->camera_app_rows = g_hash_table_new_full (g_str_hash,
+                                                 g_str_equal,
+                                                 g_free,
+                                                 g_object_unref);
 
   g_dbus_proxy_new_for_bus (G_BUS_TYPE_SESSION,
                             G_DBUS_PROXY_FLAGS_NONE,

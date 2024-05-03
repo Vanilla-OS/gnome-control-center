@@ -41,6 +41,7 @@ struct _CcPrivacyPanel
 
   AdwNavigationView *navigation;
   CcListRow         *bolt_row;
+  CcListRow         *location_row;
 };
 
 CC_PANEL_REGISTER (CcPrivacyPanel, cc_privacy_panel)
@@ -51,14 +52,12 @@ cc_privacy_panel_get_help_uri (CcPanel *panel)
   AdwNavigationPage *page = adw_navigation_view_get_visible_page (CC_PRIVACY_PANEL (panel)->navigation);
   const char *page_tag = adw_navigation_page_get_tag (page);
 
-  if (g_strcmp0 (page_tag, "camera-page") == 0)
-    return "help:gnome-help/camera";
-  else if (g_strcmp0 (page_tag, "location-page") == 0)
-    return "help:gnome-help/location";
-  else if (g_strcmp0 (page_tag, "microphone-page") == 0)
-    return "help:gnome-help/microphone";
+  if (g_strcmp0 (page_tag, "location") == 0)
+    return "help:gnome-help/privacy-location";
+  else if (g_strcmp0 (page_tag, "screenlock") == 0)
+    return "help:gnome-help/privacy-screen-lock";
   else
-    return NULL;
+    return "help:gnome-help/privacy";
 }
 
 static void
@@ -73,6 +72,7 @@ cc_privacy_panel_class_init (CcPrivacyPanelClass *klass)
 
   gtk_widget_class_bind_template_child (widget_class, CcPrivacyPanel, navigation);
   gtk_widget_class_bind_template_child (widget_class, CcPrivacyPanel, bolt_row);
+  gtk_widget_class_bind_template_child (widget_class, CcPrivacyPanel, location_row);
 
   g_type_ensure (CC_TYPE_CAMERA_PAGE);
   g_type_ensure (CC_TYPE_DIAGNOSTICS_PAGE);
@@ -112,6 +112,15 @@ cc_privacy_panel_init (CcPrivacyPanel *self)
 
   g_object_bind_property (bolt_page, "visible",
                           self->bolt_row, "visible", G_BINDING_SYNC_CREATE);
+#endif
+
+#ifdef HAVE_LOCATION_SERVICES
+  CcLocationPage *location_page = g_object_new (CC_TYPE_LOCATION_PAGE, NULL);
+
+  adw_navigation_view_add (self->navigation, ADW_NAVIGATION_PAGE (location_page));
+
+  g_object_bind_property (location_page, "visible",
+                          self->location_row, "visible", G_BINDING_SYNC_CREATE);
 #endif
 
   g_signal_connect_object (self, "notify::subpage", G_CALLBACK (on_subpage_set), self, G_CONNECT_SWAPPED);

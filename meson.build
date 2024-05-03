@@ -1,6 +1,6 @@
 project(
   'gnome-control-center', 'c',
-        version : '46.0.1',
+        version : '46.1',
         license : 'GPL2+',
   meson_version : '>= 0.58.0'
 )
@@ -273,6 +273,11 @@ if enable_malcontent
 endif
 config_h.set('HAVE_MALCONTENT', enable_malcontent,
              description: 'Define to 1 if malcontent support is enabled')
+
+# location services support
+location_services = get_option('location-services')
+config_h.set('HAVE_LOCATION_SERVICES', location_services.enabled(),
+             description: 'Whether location services is enabled')
 
 if host_is_linux
   # ModemManager

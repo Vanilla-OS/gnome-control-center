@@ -111,6 +111,7 @@ struct _CcDateTimePage
   Timedate1 *dtm;
   GCancellable *cancellable;
 
+  gboolean auto_timezone_supported;
   gboolean pending_ntp_state;
 
   GPermission *permission;
@@ -206,6 +207,10 @@ clock_settings_changed_cb (CcDateTimePage *self,
   g_signal_handlers_unblock_by_func (self->ampm_format_button, change_clock_settings, self);
 }
 
+static void on_month_selection_changed_cb (CcDateTimePage *self);
+
+static void time_changed_cb (CcDateTimePage *self,
+                             CcTimeEditor   *editor);
 
 /* Update the widgets based on the system time */
 static void
@@ -219,9 +224,11 @@ update_time (CcDateTimePage *self)
   else
     use_ampm = FALSE;
 
+  g_signal_handlers_block_by_func (self->time_editor, time_changed_cb, self);
   cc_time_editor_set_time (self->time_editor,
                            g_date_time_get_hour (self->date),
                            g_date_time_get_minute (self->date));
+  g_signal_handlers_unblock_by_func (self->time_editor, time_changed_cb, self);
 
   /* Update the time on the listbow row */
   if (use_ampm)
@@ -236,7 +243,9 @@ update_time (CcDateTimePage *self)
     }
 
   self->month = g_date_time_get_month (self->date);
+  g_signal_handlers_block_by_func (self->month_model, on_month_selection_changed_cb, self);
   gtk_single_selection_set_selected (self->month_model, self->month - 1);
+  g_signal_handlers_unblock_by_func (self->month_model, on_month_selection_changed_cb, self);
   cc_list_row_set_secondary_label (self->datetime_row, label);
 }
 
@@ -362,9 +371,11 @@ change_date (CcDateTimePage *self)
                                       g_date_time_get_hour (old_date),
                                       g_date_time_get_minute (old_date),
                                       g_date_time_get_second (old_date));
+  g_signal_handlers_block_by_func (self->time_editor, time_changed_cb, self);
   cc_time_editor_set_time (self->time_editor,
                            g_date_time_get_hour (self->date),
                            g_date_time_get_minute (self->date));
+  g_signal_handlers_unblock_by_func (self->time_editor, time_changed_cb, self);
 
   queue_set_datetime (self);
 }
@@ -528,10 +539,10 @@ on_permission_changed (CcDateTimePage *self)
   gboolean allowed, location_allowed, tz_allowed, auto_timezone, using_ntp;
 
   allowed = (self->permission != NULL && g_permission_get_allowed (self->permission));
-  location_allowed = g_settings_get_boolean (self->location_settings, LOCATION_ENABLED);
+  location_allowed = g_settings_get_boolean (self->location_settings, LOCATION_ENABLED) && self->auto_timezone_supported;
   tz_allowed = (self->tz_permission != NULL && g_permission_get_allowed (self->tz_permission));
   using_ntp = gtk_switch_get_active (self->network_time_switch);
-  auto_timezone = adw_switch_row_get_active (self->auto_timezone_row);
+  auto_timezone = adw_switch_row_get_active (self->auto_timezone_row) && self->auto_timezone_supported;
 
   /* All the widgets but the lock button and the 24h setting */
   gtk_widget_set_sensitive (GTK_WIDGET (self->auto_datetime_row), allowed);
@@ -607,6 +618,7 @@ present_window (CcDateTimePage *self,
   gtk_window_present (window);
 }
 
+#ifdef HAVE_LOCATION_SERVICES
 static gboolean
 tz_switch_to_row_transform_func (GBinding       *binding,
                                  const GValue   *source_value,
@@ -626,6 +638,7 @@ tz_switch_to_row_transform_func (GBinding       *binding,
 
   return TRUE;
 }
+#endif
 
 static gboolean
 switch_to_row_transform_func (GBinding       *binding,
@@ -746,7 +759,9 @@ setup_datetime_dialog (CcDateTimePage *self)
 
   /* Month */
   self->month = g_date_time_get_month (self->date);
+  g_signal_handlers_block_by_func (self->month_model, on_month_selection_changed_cb, self);
   gtk_single_selection_set_selected (self->month_model, self->month - 1);
+  g_signal_handlers_unblock_by_func (self->month_model, on_month_selection_changed_cb, self);
 }
 
 static int
@@ -909,16 +924,25 @@ cc_date_time_page_init (CcDateTimePage *self)
   gtk_widget_set_visible (GTK_WIDGET (self->auto_datetime_row), is_ntp_available (self));
 
   /* Timezone settings */
+  self->auto_timezone_supported = FALSE;
+
+  self->datetime_settings = g_settings_new (DATETIME_SCHEMA);
+  // Let's disable location services for gnome-46
+  g_settings_set_boolean (self->datetime_settings, AUTO_TIMEZONE_KEY, FALSE);
+#ifdef HAVE_LOCATION_SERVICES
+  self->auto_timezone_supported = TRUE;
+  gtk_widget_set_visible (GTK_WIDGET (self->auto_timezone_row), TRUE);
+
   g_object_bind_property_full (self->auto_timezone_row, "active",
                                self->timezone_row, "sensitive",
                                G_BINDING_SYNC_CREATE,
                                (GBindingTransformFunc) tz_switch_to_row_transform_func,
                                NULL, self, NULL);
 
-  self->datetime_settings = g_settings_new (DATETIME_SCHEMA);
   g_settings_bind (self->datetime_settings, AUTO_TIMEZONE_KEY,
                    self->auto_timezone_row, "active",
                    G_SETTINGS_BIND_DEFAULT);
+#endif
 
   /* Clock settings */
   self->clock_settings = g_settings_new (CLOCK_SCHEMA);
