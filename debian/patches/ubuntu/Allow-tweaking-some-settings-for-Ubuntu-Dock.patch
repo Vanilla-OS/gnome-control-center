@@ -2500,7 +2500,7 @@ index 71b7686..bd50a31 100644
  /* Static init functions */
  #ifdef BUILD_NETWORK
 @@ -107,6 +109,7 @@ static CcPanelLoaderVtable default_panels[] =
-   PANEL_TYPE("sharing",          cc_sharing_panel_get_type,              NULL),
+   PANEL_TYPE("sharing",          cc_sharing_panel_get_type,              cc_sharing_panel_static_init_func),
    PANEL_TYPE("sound",            cc_sound_panel_get_type,                NULL),
    PANEL_TYPE("system",           cc_system_panel_get_type,               NULL),
 +  PANEL_TYPE("ubuntu",           cc_ubuntu_panel_get_type,               cc_ubuntu_panel_static_init_func),
