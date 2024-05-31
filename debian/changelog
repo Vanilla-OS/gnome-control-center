@@ -1,4 +1,4 @@
-gnome-control-center (1:46.1-1ubuntu3) UNRELEASED; urgency=medium
+gnome-control-center (1:46.1-1ubuntu3) oracular; urgency=medium
 
   * debian/rules: explicitly enable malcontent for Ubuntu
 
