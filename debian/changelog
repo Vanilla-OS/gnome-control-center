@@ -1,3 +1,9 @@
+gnome-control-center (1:46.1-2) unstable; urgency=medium
+
+  * Add Depends: libjxl-gdk-pixbuf: The default GNOME 46 wallpaper uses JPEG XL
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Wed, 26 Jun 2024 09:56:57 -0400
+
 gnome-control-center (1:46.1-1) unstable; urgency=medium
 
   * New upstream release
