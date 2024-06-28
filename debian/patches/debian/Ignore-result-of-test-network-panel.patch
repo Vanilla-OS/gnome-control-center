@@ -15,17 +15,17 @@ Forwarded: not-needed, Debian-specific workaround
  2 files changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/tests/network/meson.build b/tests/network/meson.build
-index d7e8ded..27bcc20 100644
+index c6205f4..94f8543 100644
 --- a/tests/network/meson.build
 +++ b/tests/network/meson.build
-@@ -30,6 +30,7 @@ test(
-   'test-network-panel',
-   find_program('test-network-panel.py'),
-       env : envs,
-+  verbose : true,
-   timeout : 60
- )
- 
+@@ -31,6 +31,7 @@ if Xvfb.found()
+     'test-network-panel',
+     find_program('test-network-panel.py'),
+         env : envs,
++    verbose : true,
+     timeout : 60
+   )
+ endif
 diff --git a/tests/network/test-network-panel.py b/tests/network/test-network-panel.py
 index 1098bab..dac0894 100644
 --- a/tests/network/test-network-panel.py
