@@ -257,7 +257,7 @@ set_time_cb (GObject      *source,
   CcDateTimePage *self = user_data;
   g_autoptr(GError) error = NULL;
 
-  if (!timedate1_call_set_time_finish (self->dtm,
+  if (!timedate1_call_set_time_finish (TIMEDATE1 (source),
                                        res,
                                        &error))
     {
@@ -275,10 +275,9 @@ set_timezone_cb (GObject      *source,
                  GAsyncResult *res,
                  gpointer      user_data)
 {
-  CcDateTimePage *self = user_data;
   g_autoptr(GError) error = NULL;
 
-  if (!timedate1_call_set_timezone_finish (self->dtm,
+  if (!timedate1_call_set_timezone_finish (TIMEDATE1 (source),
                                            res,
                                            &error))
     {
@@ -295,7 +294,7 @@ set_using_ntp_cb (GObject      *source,
   CcDateTimePage *self = user_data;
   g_autoptr(GError) error = NULL;
 
-  if (!timedate1_call_set_ntp_finish (self->dtm,
+  if (!timedate1_call_set_ntp_finish (TIMEDATE1 (source),
                                       res,
                                       &error))
     {
@@ -353,7 +352,7 @@ queue_set_timezone (CcDateTimePage *self)
                                    TRUE,
                                    self->cancellable,
                                    set_timezone_cb,
-                                   self);
+                                   NULL);
     }
 }
 
