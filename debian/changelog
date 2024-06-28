@@ -1,4 +1,4 @@
-gnome-control-center (1:46.3-1) UNRELEASED; urgency=medium
+gnome-control-center (1:46.3-0ubuntu1) oracular; urgency=medium
 
   * Merge with Debian (LP: #2064762). Remaining changes:
     + Add gnome-control-center-faces package to share with unity-control-center
@@ -54,10 +54,11 @@ gnome-control-center (1:46.3-1) UNRELEASED; urgency=medium
       - CVE-2023-5616.patch: Use sshd socket
       - Temporarily disable CVE-2023-5616 (sshd socket) patch until it can be
         rewritten
-  * Suggest instead of depend on libjxl-gdk-pixbuf
   * New upstream release
+  * Suggest instead of depend on libjxl-gdk-pixbuf
+  * Refresh patch
 
- -- Jeremy Bícha <jbicha@ubuntu.com>  Fri, 28 Jun 2024 16:07:24 -0400
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Fri, 28 Jun 2024 16:14:59 -0400
 
 gnome-control-center (1:46.1-2) unstable; urgency=medium
 
