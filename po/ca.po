@@ -9,7 +9,7 @@
 # Joan Duran <jodufi@gmail.com>, 2008-2013.
 # Jordi Serratosa <jordis@softcatala.cat>, 2012, 2017.
 # Josep Sànchez <papapep@gmx.com>, 2013.
-# Jordi Mas i Hernàndez <jmas@softcatala.org>, 2015-2023
+# Jordi Mas i Hernàndez <jmas@softcatala.org>, 2015-2024
 # Gil Forcada <gilforcada@guifi.net>, 2013-2020.
 # Carles Ferrando Garcia <carles.ferrando@gmail.com>, 2018.
 #
@@ -34,8 +34,8 @@ msgstr ""
 "Project-Id-Version: gnome-control-center\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-control-center/"
 "issues\n"
-"POT-Creation-Date: 2024-04-06 14:20+0000\n"
-"PO-Revision-Date: 2024-04-07 12:55+0200\n"
+"POT-Creation-Date: 2024-05-24 11:43+0000\n"
+"PO-Revision-Date: 2024-05-24 12:55+0200\n"
 "Last-Translator: Jordi Mas i Hernàndez <jmas@softcatala.org>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
 "Language: ca\n"
@@ -47,7 +47,7 @@ msgstr ""
 
 #: panels/applications/cc-applications-panel.c:783
 msgid "App is not sandboxed"
-msgstr ""
+msgstr "L'aplicació no està en un espai aïllat"
 
 #: panels/applications/cc-applications-panel.c:828
 msgid "System Bus"
@@ -190,10 +190,13 @@ msgid ""
 "App settings cannot be fully enforced for apps which are not sandboxed. "
 "These apps may use permissions which are not shown."
 msgstr ""
+"La configuració de l'aplicació no es pot aplicar completament per a les "
+"aplicacions que no estan en un espai aïllat. Aquestes aplicacions poden "
+"utilitzar permisos que no es mostren."
 
 #: panels/applications/cc-applications-panel.ui:207
 #: panels/printers/pp-details-dialog.c:267
-#: panels/sharing/cc-sharing-panel.c:240
+#: panels/sharing/cc-sharing-panel.c:242
 msgid "_Open"
 msgstr "_Obre"
 
@@ -228,7 +231,7 @@ msgstr "Rebre cerques del sistema i enviar resultats"
 #: panels/keyboard/cc-xkb-modifier-dialog.c:342
 #: panels/keyboard/keyboard-shortcuts.c:367
 #: panels/system/users/cc-user-page.c:379
-#: panels/system/users/cc-user-page.c:749 panels/wwan/cc-wwan-device-page.c:477
+#: panels/system/users/cc-user-page.c:752 panels/wwan/cc-wwan-device-page.c:477
 #: subprojects/gvc/gvc-mixer-control.c:1872
 msgid "Disabled"
 msgstr "Inhabilitat"
@@ -333,7 +336,7 @@ msgstr "General"
 
 #: panels/applications/cc-applications-panel.ui:374
 msgid "_File &amp; Link Associations"
-msgstr "Associacions de fitxers i enllaços"
+msgstr "As_sociacions de fitxers i enllaços"
 
 #: panels/applications/cc-applications-panel.ui:382
 msgid "S_torage"
@@ -593,7 +596,7 @@ msgstr "Permet connectar-se al servei Docker"
 
 #: panels/applications/cc-snap-row.c:275
 msgid "Configure network firewall"
-msgstr "Configura el tallafocs de xarxa"
+msgstr "Configura el tallafoc de xarxa"
 
 #: panels/applications/cc-snap-row.c:277
 msgid "Setup and use privileged FUSE filesystems"
@@ -645,7 +648,7 @@ msgstr "Accedeix al servei LXC"
 
 #: panels/applications/cc-snap-row.c:301
 msgid "Use and configure modems"
-msgstr "Usa i configura els módems"
+msgstr "Usa i configura els mòdems"
 
 #: panels/applications/cc-snap-row.c:303
 msgid "Read system mount information and disk quotas"
@@ -734,9 +737,8 @@ msgid "Install, remove and configure software"
 msgstr "Instal·la, elimina i configura programari"
 
 #: panels/applications/cc-snap-row.c:343
-#, fuzzy
 msgid "Access Storage Framework service"
-msgstr "Sense servei de xarxa"
+msgstr "Accés al servei d'emmagatzematge"
 
 #: panels/applications/cc-snap-row.c:345
 msgid "Read process and system information"
@@ -988,8 +990,8 @@ msgstr "Calibratge de la pantalla"
 
 #: panels/color/cc-color-calibrate.ui:22
 #: panels/common/cc-language-chooser.ui:21
-#: panels/display/cc-display-panel.ui:37 panels/display/cc-display-panel.ui:191
-#: panels/display/cc-display-panel.ui:253
+#: panels/display/cc-display-panel.ui:36 panels/display/cc-display-panel.ui:190
+#: panels/display/cc-display-panel.ui:252
 #: panels/keyboard/cc-input-chooser.ui:20
 #: panels/keyboard/cc-keyboard-shortcut-dialog.c:381
 #: panels/keyboard/cc-keyboard-shortcut-editor.ui:15
@@ -1000,7 +1002,7 @@ msgstr "Calibratge de la pantalla"
 #: panels/network/connection-editor/connection-editor.ui:16
 #: panels/printers/new-printer-dialog.ui:54
 #: panels/printers/pp-details-dialog.c:266 panels/privacy/cc-usage-page.c:136
-#: panels/sharing/cc-sharing-panel.c:239
+#: panels/sharing/cc-sharing-panel.c:241
 #: panels/system/region/cc-format-chooser.ui:24
 #: panels/system/users/cc-add-user-dialog.ui:34
 #: panels/system/users/cc-enterprise-login-dialog.ui:58
@@ -1287,13 +1289,13 @@ msgstr "Requereix un suport al qual es pugui escriure"
 
 #: panels/color/cc-color-panel.ui:313
 msgid ""
-"You may find these instructions on how to use the profile on <a href=\"linux"
-"\">GNU/Linux</a>, <a href=\"osx\">Apple OS X</a> and <a href=\"windows"
-"\">Microsoft Windows</a> systems useful."
+"You may find these instructions on how to use the profile on <a "
+"href=\"linux\">GNU/Linux</a>, <a href=\"osx\">Apple OS X</a> and <a "
+"href=\"windows\">Microsoft Windows</a> systems useful."
 msgstr ""
 "Podeu trobar les instruccions de com utilitzar el perfil als sistemes <a "
-"href=\"linux\">GNU/Linux</a>, <a href=\"osx\">Apple OS X</a> i <a href="
-"\"windows\">Microsoft Windows</a>."
+"href=\"linux\">GNU/Linux</a>, <a href=\"osx\">Apple OS X</a> i <a "
+"href=\"windows\">Microsoft Windows</a>."
 
 #: panels/color/cc-color-panel.ui:335
 msgid "Add Profile"
@@ -1304,8 +1306,8 @@ msgid ""
 "Problems detected. The profile may not work correctly. <a href=\"\">Show "
 "details.</a>"
 msgstr ""
-"S'han detectat problemes. Aquest perfil no funcionarà correctament. <a href="
-"\"\">Mostra els detalls.</a>"
+"S'han detectat problemes. Aquest perfil no funcionarà correctament. <a "
+"href=\"\">Mostra els detalls.</a>"
 
 #: panels/color/cc-color-panel.ui:384
 msgid "_Import File…"
@@ -1699,73 +1701,73 @@ msgctxt "hotspot"
 msgid "Hotspot"
 msgstr "Punt d'accés Wi-Fi"
 
-#: panels/display/cc-display-panel.c:510
+#: panels/display/cc-display-panel.c:507
 #: panels/notifications/cc-notifications-panel.c:213
 #: panels/power/cc-power-panel.c:679 panels/power/cc-power-panel.c:686
 msgid "On"
 msgstr "Activat"
 
-#: panels/display/cc-display-panel.c:512 panels/network/cc-net-proxy-page.c:182
+#: panels/display/cc-display-panel.c:509 panels/network/cc-net-proxy-page.c:182
 #: panels/notifications/cc-notifications-panel.c:213
 #: panels/power/cc-power-panel.c:673 panels/power/cc-power-panel.c:684
 msgid "Off"
 msgstr "Desactivat"
 
-#: panels/display/cc-display-panel.c:931
+#: panels/display/cc-display-panel.c:927
 msgid "Apply Changes?"
 msgstr "Voleu aplicar els canvis?"
 
-#: panels/display/cc-display-panel.c:937
+#: panels/display/cc-display-panel.c:933
 msgid "Changes Cannot be Applied"
 msgstr "No s'han aplicat els canvis"
 
-#: panels/display/cc-display-panel.c:939
+#: panels/display/cc-display-panel.c:935
 msgid "This could be due to hardware limitations."
 msgstr "Això pot ser degut a limitacions del maquinari."
 
-#: panels/display/cc-display-panel.ui:24
+#: panels/display/cc-display-panel.ui:23
 #: panels/display/gnome-display-panel.desktop.in:3
 msgid "Displays"
 msgstr "Pantalles"
 
-#: panels/display/cc-display-panel.ui:50 panels/display/cc-display-panel.ui:207
-#: panels/display/cc-display-panel.ui:269
+#: panels/display/cc-display-panel.ui:49 panels/display/cc-display-panel.ui:206
+#: panels/display/cc-display-panel.ui:268
 #: panels/network/connection-editor/connection-editor.ui:23
 msgid "_Apply"
 msgstr "_Aplica"
 
-#: panels/display/cc-display-panel.ui:79
+#: panels/display/cc-display-panel.ui:78
 msgid "Display Settings Disabled"
 msgstr "S'ha inhabilitat la configuració de la pantalla"
 
-#: panels/display/cc-display-panel.ui:90
+#: panels/display/cc-display-panel.ui:89
 msgid "Multiple Displays"
 msgstr "Múltiples pantalles"
 
 #. 'Join' as in 'Join displays'
-#: panels/display/cc-display-panel.ui:99
+#: panels/display/cc-display-panel.ui:98
 msgid "_Join"
 msgstr "_Unir-se"
 
-#: panels/display/cc-display-panel.ui:107
+#: panels/display/cc-display-panel.ui:106
 msgid "_Mirror"
 msgstr "_Mirall"
 
-#: panels/display/cc-display-panel.ui:136
+#: panels/display/cc-display-panel.ui:135
 msgid "Contains top bar and Activities"
 msgstr "Conté la barra superior i les Activitats"
 
-#: panels/display/cc-display-panel.ui:137
+#: panels/display/cc-display-panel.ui:136
 msgid "_Primary Display"
 msgstr "_Pantalla principal"
 
 #. This is the redshift functionality where we suppress blue light when the sun has gone down
-#: panels/display/cc-display-panel.ui:158
+#: panels/display/cc-display-panel.ui:157
 #: panels/display/cc-night-light-page.ui:86
 msgid "_Night Light"
 msgstr "Llum _nocturna"
 
-#: panels/display/cc-display-panel.ui:178
+#: panels/display/cc-display-panel.ui:177
 msgid "Night Light"
 msgstr "Llum nocturna"
 
@@ -1835,7 +1837,7 @@ msgstr "_Freqüència de refresc"
 
 #: panels/display/cc-display-settings.ui:84
 msgid "Adjust for _TV"
-msgstr "Ajusta per a televisió"
+msgstr "A_justa per a televisió"
 
 #: panels/display/cc-display-settings.ui:92
 #: panels/display/cc-display-settings.ui:108
@@ -2127,7 +2129,7 @@ msgstr "_Afegeix una font d'entrada…"
 #: panels/keyboard/cc-input-row.ui:16 panels/printers/printer-entry.ui:49
 #: panels/search/cc-search-panel-row.ui:35
 msgid "View More"
-msgstr ""
+msgstr "Mostra'n més"
 
 #: panels/keyboard/cc-input-row.ui:29 panels/search/cc-search-panel-row.ui:50
 msgid "Move Up"
@@ -2244,7 +2246,7 @@ msgstr "Impr Pant"
 #: panels/keyboard/cc-keyboard-panel.c:93
 msgctxt "keyboard key"
 msgid "Insert"
-msgstr ""
+msgstr "Insereix"
 
 #: panels/keyboard/cc-keyboard-panel.c:216
 #, c-format
@@ -2277,7 +2279,7 @@ msgstr "Commuta les fonts d'entrada de cada finestra _individualment"
 
 #: panels/keyboard/cc-keyboard-panel.ui:64
 msgid "Special Character Entry"
-msgstr "Estrada de caràcters especials"
+msgstr "Entrada de caràcters especials"
 
 #: panels/keyboard/cc-keyboard-panel.ui:65
 msgid "Methods for entering symbols and letter variants using the keyboard"
@@ -2313,37 +2315,37 @@ msgstr "Tots els canvis a les dreceres de teclat es perdran."
 msgid "_Reset All"
 msgstr "_Restableix-ho tot"
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:34
+#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:35
 msgid "Search shortcuts"
 msgstr "Cerca dreceres"
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:38
+#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:39
 msgid "Search Shortcuts"
 msgstr "Cerca les dreceres"
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:71
+#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:72
 msgid "_Reset All…"
 msgstr "_Restableix-ho tot…"
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:93
+#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:94
 msgid "No keyboard shortcut found"
 msgstr "No s'ha trobat la tecla de drecera"
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:94 shell/cc-panel-list.ui:45
+#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:95 shell/cc-panel-list.ui:45
 msgid "Try a different search"
 msgstr "Proveu amb una cerca diferent"
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:126
+#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:127
 msgid "Add Custom Shortcuts"
 msgstr "Afegeix dreceres personalitzades"
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:127
+#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:128
 msgid "Set up custom shortcuts for launching apps, running scripts, and more"
 msgstr ""
 "Configureu dreceres personalitzades per a iniciar aplicacions, executar "
 "scripts i més"
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:132
+#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:133
 msgid "_Add Shortcut…"
 msgstr "_Afegeix una drecera…"
 
@@ -2467,7 +2469,7 @@ msgid ""
 "Hotkey;Compose;Character;"
 msgstr ""
 "Drecera;Espai de treball;Finestra;Canvia la mida;Amplia;Contrast;Entrada;"
-"Font;Bloqueig;Volum;Tecla d'accés;Composa;Caràcter;"
+"Font;Bloqueig;Volum;Tecla d'accés;Compon;Caràcter;"
 
 #: panels/mouse/cc-mouse-panel.ui:58
 msgid "_Mouse"
@@ -2495,35 +2497,31 @@ msgstr "D_ret"
 msgid "Mouse"
 msgstr "Ratolí"
 
-#: panels/mouse/cc-mouse-panel.ui:110 panels/mouse/cc-mouse-panel.ui:212
+#: panels/mouse/cc-mouse-panel.ui:110 panels/mouse/cc-mouse-panel.ui:209
 msgid "Po_inter Speed"
 msgstr "Veloc_itat del punter"
 
-#: panels/mouse/cc-mouse-panel.ui:116
-msgid "Pointer Speed"
-msgstr "Velocitat del punter"
-
-#: panels/mouse/cc-mouse-panel.ui:119 panels/mouse/cc-mouse-panel.ui:222
+#: panels/mouse/cc-mouse-panel.ui:117 panels/mouse/cc-mouse-panel.ui:217
 #: panels/universal-access/cc-ua-typing-page.ui:58
-#: panels/universal-access/cc-ua-typing-page.ui:110
+#: panels/universal-access/cc-ua-typing-page.ui:111
 msgid "Slow"
 msgstr "Lenta"
 
-#: panels/mouse/cc-mouse-panel.ui:121 panels/mouse/cc-mouse-panel.ui:224
+#: panels/mouse/cc-mouse-panel.ui:119 panels/mouse/cc-mouse-panel.ui:219
 #: panels/universal-access/cc-ua-typing-page.ui:55
-#: panels/universal-access/cc-ua-typing-page.ui:107
+#: panels/universal-access/cc-ua-typing-page.ui:108
 msgid "Fast"
 msgstr "Ràpida"
 
-#: panels/mouse/cc-mouse-panel.ui:137
+#: panels/mouse/cc-mouse-panel.ui:135
 msgid "Mouse _Acceleration"
 msgstr "_Acceleració del ratolí"
 
-#: panels/mouse/cc-mouse-panel.ui:138
+#: panels/mouse/cc-mouse-panel.ui:136
 msgid "Recommended for most users and applications"
 msgstr "Recomanat per a la majoria d'usuaris i aplicacions"
 
-#: panels/mouse/cc-mouse-panel.ui:144
+#: panels/mouse/cc-mouse-panel.ui:142
 msgid ""
 "Turning mouse acceleration off can allow faster and more precise movements, "
 "but can also make the mouse more difficult to use."
@@ -2531,110 +2529,100 @@ msgstr ""
 "Desactivar l'acceleració del ratolí pot permetre moviments més ràpids i "
 "precisos, però també pot fer que el ratolí sigui més difícil d'utilitzar."
 
-#: panels/mouse/cc-mouse-panel.ui:156 panels/mouse/cc-mouse-panel.ui:296
+#: panels/mouse/cc-mouse-panel.ui:154 panels/mouse/cc-mouse-panel.ui:291
 msgid "Scroll Direction"
 msgstr "Direcció del desplaçament"
 
-#: panels/mouse/cc-mouse-panel.ui:157
+#: panels/mouse/cc-mouse-panel.ui:155
 msgid "Tra_ditional"
 msgstr "Tra_dicional"
 
-#: panels/mouse/cc-mouse-panel.ui:158 panels/mouse/cc-mouse-panel.ui:298
+#: panels/mouse/cc-mouse-panel.ui:156 panels/mouse/cc-mouse-panel.ui:293
 msgid "Scrolling moves the view"
 msgstr "El desplaçament mou la vista"
 
-#: panels/mouse/cc-mouse-panel.ui:159 panels/mouse/cc-mouse-panel.ui:299
+#: panels/mouse/cc-mouse-panel.ui:157 panels/mouse/cc-mouse-panel.ui:294
 msgid "_Natural"
 msgstr "_Natural"
 
-#: panels/mouse/cc-mouse-panel.ui:160 panels/mouse/cc-mouse-panel.ui:301
+#: panels/mouse/cc-mouse-panel.ui:158 panels/mouse/cc-mouse-panel.ui:296
 msgid "Scrolling moves the content"
 msgstr "El desplaçament mou el contingut"
 
-#: panels/mouse/cc-mouse-panel.ui:173 panels/mouse/cc-mouse-panel.ui:314
+#: panels/mouse/cc-mouse-panel.ui:171 panels/mouse/cc-mouse-panel.ui:309
 #: panels/wacom/cc-wacom-panel.ui:11
 msgid "Test _Settings"
 msgstr "_Comprova els paràmetres"
 
-#: panels/mouse/cc-mouse-panel.ui:174 panels/mouse/cc-mouse-panel.ui:315
-msgid "Test Mouse and Touchpad Settings"
-msgstr "Prova la configuració del ratolí i del ratolí tàctil"
-
-#: panels/mouse/cc-mouse-panel.ui:192
+#: panels/mouse/cc-mouse-panel.ui:189
 msgid "_Touchpad"
 msgstr "Ratolí _tàctil"
 
-#: panels/mouse/cc-mouse-panel.ui:200
+#: panels/mouse/cc-mouse-panel.ui:197
 msgid "T_ouchpad"
 msgstr "Rat_olí tàctil"
 
-#: panels/mouse/cc-mouse-panel.ui:206
+#: panels/mouse/cc-mouse-panel.ui:203
 msgid "_Disable Touchpad While Typing"
 msgstr "_Desactiva el touchpad mentre s'està teclejant"
 
-#: panels/mouse/cc-mouse-panel.ui:219
-msgid "Pointer speed"
-msgstr "Velocitat del punter"
-
-#: panels/mouse/cc-mouse-panel.ui:243 panels/mouse/cc-mouse-test.ui:32
+#: panels/mouse/cc-mouse-panel.ui:238 panels/mouse/cc-mouse-test.ui:32
 msgid "Clicking"
 msgstr "Fent clic"
 
-#: panels/mouse/cc-mouse-panel.ui:246 panels/mouse/cc-mouse-test.ui:111
+#: panels/mouse/cc-mouse-panel.ui:241 panels/mouse/cc-mouse-test.ui:111
 msgid "Secondary Click"
 msgstr "Clic secundari"
 
-#: panels/mouse/cc-mouse-panel.ui:247
-#, fuzzy
-#| msgid "Two Finger"
+#: panels/mouse/cc-mouse-panel.ui:242
 msgid "Two Finger Push"
-msgstr "Dos dits"
+msgstr "Pulsació amb dos dits"
 
-#: panels/mouse/cc-mouse-panel.ui:248
+#: panels/mouse/cc-mouse-panel.ui:243
 msgid "Push anywhere with 2 fingers"
 msgstr "Piqueu a qualsevol lloc amb dos dits"
 
-#: panels/mouse/cc-mouse-panel.ui:249
+#: panels/mouse/cc-mouse-panel.ui:244
 msgid "Corner Push"
 msgstr "Picar al racó"
 
-#: panels/mouse/cc-mouse-panel.ui:250
+#: panels/mouse/cc-mouse-panel.ui:245
 msgid "Push with a single finger in the corner"
 msgstr "Picar amb un sol dit al racó"
 
-#: panels/mouse/cc-mouse-panel.ui:261
+#: panels/mouse/cc-mouse-panel.ui:256
 msgid "T_ap to Click"
 msgstr "Fes un toc per _a fer un clic"
 
-#: panels/mouse/cc-mouse-panel.ui:263
+#: panels/mouse/cc-mouse-panel.ui:258
 msgid "Quickly touch the touchpad to click"
 msgstr "Toqueu ràpidament el ratolí tàctil per a fer clic"
 
-#: panels/mouse/cc-mouse-panel.ui:278 panels/mouse/cc-mouse-test.ui:153
+#: panels/mouse/cc-mouse-panel.ui:273 panels/mouse/cc-mouse-test.ui:153
 msgid "Scrolling"
 msgstr "Desplaçament"
 
-#: panels/mouse/cc-mouse-panel.ui:281
+#: panels/mouse/cc-mouse-panel.ui:276
 msgid "Scroll Method"
 msgstr "Mètode de desplaçament"
 
-#: panels/mouse/cc-mouse-panel.ui:282
+#: panels/mouse/cc-mouse-panel.ui:277
 msgid "T_wo Finger"
 msgstr "_Dos dits"
 
-#: panels/mouse/cc-mouse-panel.ui:283
+#: panels/mouse/cc-mouse-panel.ui:278
 msgid "Drag two fingers on the touchpad"
 msgstr "Arrossegueu dos dits al ratolí tàctil"
 
-#: panels/mouse/cc-mouse-panel.ui:284
+#: panels/mouse/cc-mouse-panel.ui:279
 msgid "_Edge"
 msgstr "_Vora"
 
-#: panels/mouse/cc-mouse-panel.ui:285
+#: panels/mouse/cc-mouse-panel.ui:280
 msgid "Drag one finger on the edge"
 msgstr "Arrossega un dit a la vora"
 
-#: panels/mouse/cc-mouse-panel.ui:297
+#: panels/mouse/cc-mouse-panel.ui:292
 msgid "T_raditional"
 msgstr "T_radicional"
 
@@ -2853,11 +2841,11 @@ msgstr "Port de l'amfitrió SOCKS"
 msgid "Ignored Hosts"
 msgstr "Ignora els amfitrions"
 
-#: panels/network/cc-network-panel.c:665
+#: panels/network/cc-network-panel.c:680
 msgid "Network Unavailable"
 msgstr "Xarxa inaccessible"
 
-#: panels/network/cc-network-panel.c:667
+#: panels/network/cc-network-panel.c:682
 msgid ""
 "An error has occurred and network cannot be used.\n"
 " Error details: NetworkManager not running."
@@ -3008,8 +2996,8 @@ msgstr "Nom de la xarxa"
 #: panels/network/cc-wifi-hotspot-dialog.ui:92
 #: panels/printers/new-printer-dialog.ui:293
 #: panels/printers/pp-jobs-dialog.ui:54
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:109
-#: panels/system/remote-desktop/cc-remote-session-page.ui:108
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:107
+#: panels/system/remote-desktop/cc-remote-session-page.ui:106
 #: panels/system/users/cc-add-user-dialog.ui:159
 #: panels/wwan/cc-wwan-apn-dialog.ui:175
 msgid "Password"
@@ -3146,7 +3134,7 @@ msgstr "Estable"
 
 #: panels/network/connection-editor/ce-page.c:243
 msgid "Stable per SSID"
-msgstr ""
+msgstr "Estable per SSID"
 
 #: panels/network/connection-editor/ce-page.c:251
 msgid ""
@@ -3747,9 +3735,8 @@ msgid "_Peers"
 msgstr "_Parells"
 
 #: panels/network/connection-editor/wireguard-page.ui:242
-#, fuzzy
 msgid "Add WireGuard peer"
-msgstr "WireGuard"
+msgstr "Afegeix un parell WireGuard"
 
 #: panels/network/connection-editor/wireguard-page.ui:264
 msgid "No peers set up"
@@ -3813,7 +3800,7 @@ msgstr ""
 
 #: panels/network/connection-editor/wireguard-peer.ui:194
 msgid "_Persistent keepalive"
-msgstr ""
+msgstr "«_Keepalive» persistent"
 
 #: panels/network/connection-editor/wireguard-peer.ui:208
 msgid ""
@@ -3822,7 +3809,7 @@ msgid ""
 "not recommended outside of specific setups."
 msgstr ""
 "Amb quina freqüència s'envia un paquet buit autenticat a l'altre costat amb "
-"el propòsit de mantenir vàlida la correspondència en un NAT o un tallafocs "
+"el propòsit de mantenir vàlida la correspondència en un NAT o un tallafoc "
 "d'estat. Això és opcional i no es recomana fora de casos específics."
 
 #: panels/network/connection-editor/wireguard-peer.ui:217
@@ -3966,7 +3953,7 @@ msgstr "Xarxes desades"
 
 #: panels/network/network-wifi.ui:85
 msgid "Show Saved Networks"
-msgstr "Mostre les xarxes desades"
+msgstr "Mostra les xarxes desades"
 
 #: panels/network/network-wifi.ui:93
 msgid "_Connect to Hidden Network…"
@@ -4805,7 +4792,7 @@ msgstr "No s'ha pogut afegir una impressora nova."
 
 #: panels/printers/cc-printers-panel.c:1293
 msgid "Unlock to add printers and change settings"
-msgstr "Desbloqueja per a afegir usuaris i modificar els paràmetres"
+msgstr "Desbloqueja per a afegir impressores i modificar els paràmetres"
 
 #: panels/printers/cc-printers-panel.ui:27
 msgid "All Connected and Network Printers"
@@ -4902,8 +4889,8 @@ msgstr ""
 #. Translators: This is a username on a print server.
 #: panels/printers/new-printer-dialog.ui:272
 #: panels/printers/pp-jobs-dialog.ui:42
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:93
-#: panels/system/remote-desktop/cc-remote-session-page.ui:92
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:91
+#: panels/system/remote-desktop/cc-remote-session-page.ui:90
 #: panels/wwan/cc-wwan-apn-dialog.ui:150
 msgid "Username"
 msgstr "Nom d'usuari"
@@ -5492,7 +5479,7 @@ msgstr "Detalls de la impressora"
 #. Set this printer as default
 #: panels/printers/printer-entry.ui:250
 msgid "Use Printer by Default"
-msgstr "Utilitza la impressora per defecte"
+msgstr "Utilitza com a impressora per defecte"
 
 #. Translators: This button executes command which cleans print heads of the printer.
 #: panels/printers/printer-entry.ui:254
@@ -5845,7 +5832,7 @@ msgstr ""
 "\n"
 "És possible resoldre problemes de seguretat del maquinari actualitzant el "
 "microprogramari o canviant les opcions de configuració del dispositiu. No "
-"obstant això, els errors poden provenir del propi maquinari físic, i poden "
+"obstant això, els errors poden provenir del mateix maquinari físic, i poden "
 "no ser reversibles."
 
 #. TRANSLATORS: in reference to firmware protection: 1/4 stars
@@ -5929,18 +5916,18 @@ msgid ""
 "overall security status of the system and applications."
 msgstr ""
 "La seguretat del dispositiu proporciona informació sobre com està protegit "
-"el dispositiu contra problemes de seguretat que afecten el propi maquinari.\n"
+"el dispositiu contra problemes de seguretat que afecten el mateix maquinari.\n"
 "\n"
 "Els aspectes del maquinari que afecten la seguretat inclouen:\n"
 "\n"
-"• funcions de seguretat que estan integrades en el propi maquinari;\n"
+"• funcions de seguretat que estan integrades en el mateix maquinari;\n"
 "• com es configura el maquinari per a protegir-se contra problemes de "
 "seguretat;\n"
 "• la seguretat del programari s'executa directament al maquinari.\n"
 "\n"
 "Les amenaces de seguretat que afecten el maquinari inclouen el programari "
 "maliciós i els virus que ataquen al programari que s'executa directament al "
-"maquinari. També inclou la manipulació física, com la connexió física al el "
+"maquinari. També inclou la manipulació física, com la connexió física al "
 "maquinari per a llegir dades i implantar programari maliciós.\n"
 "\n"
 "La seguretat del dispositiu és només un aspecte de la seguretat, i no "
@@ -6076,7 +6063,7 @@ msgstr "No vàlid"
 #. TRANSLATORS: Status of Parental Controls setup
 #: panels/privacy/cc-firmware-security-utils.c:45
 #: panels/system/users/cc-user-page.c:377
-#: panels/system/users/cc-user-page.c:749 panels/wwan/cc-wwan-device-page.c:475
+#: panels/system/users/cc-user-page.c:752 panels/wwan/cc-wwan-device-page.c:475
 msgid "Enabled"
 msgstr "Habilitat"
 
@@ -6165,7 +6152,7 @@ msgid "No sandboxed apps have asked for location access"
 msgstr "Cap aplicació en un espai aïllat ha demanat accés a la ubicació"
 
 #. Translators: This will be presented as the text of a link to the privacy policy
-#: panels/privacy/cc-location-page.c:414
+#: panels/privacy/cc-location-page.c:446
 msgid "Learn about what data is collected, and how it is used."
 msgstr "Conegueu quines dades són recopilades i quin ús se'n fa."
 
@@ -6624,11 +6611,6 @@ msgstr "Control de l'accés al vostre maquinari, serveis i dades"
 
 #. Translators: Search terms to find the Privacy panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
 #: panels/privacy/gnome-privacy-panel.desktop.in:15
-#, fuzzy
-#| msgid ""
-#| "Privacy;Screen;Lock;Private;Usage;Recent;History;Files;Temporary;Tmp;"
-#| "Trash;Purge;Retain;Diagnostics;Crash;Location;Gps;Camera;Photos;Video;"
-#| "Webcam;Microphone;Recording;Security;Firmware;Thunderbolt;"
 msgid ""
 "Privacy;Screen;Lock;Private;Usage;Recent;History;Files;Temporary;Tmp;Trash;"
 "Purge;Retain;Diagnostics;Crash;Location;Gps;Camera;Photos;Video;Webcam;"
@@ -6648,7 +6630,7 @@ msgid "Subfolders must be manually added for this location"
 msgstr "Per a aquesta ubicació, les subcarpetes s'han d'afegir manualment"
 
 #: panels/search/cc-search-locations-dialog.c:572
-#: panels/sharing/cc-sharing-panel.c:361
+#: panels/sharing/cc-sharing-panel.c:363
 msgid "Remove Folder"
 msgstr "Suprimeix la carpeta"
 
@@ -6661,24 +6643,18 @@ msgid "Search Locations"
 msgstr "Ubicacions de cerca"
 
 #: panels/search/cc-search-locations-dialog.ui:19
-#, fuzzy
-#| msgid ""
-#| "Folders which are searched by system apps, such as Files, Photos and "
-#| "Videos."
 msgid "Filesystem locations which are searched by system apps, such as Files"
 msgstr ""
-"Carpetes que se cerquen per les aplicacions del sistema, com Fitxers, Fotos "
-"i Vídeos."
+"Localitzacions del sistema de fitxers que se cerquen per aplicacions del "
+"sistema, com ara Fitxers"
 
 #: panels/search/cc-search-locations-dialog.ui:22
 msgid "Default Locations"
 msgstr "Ubicacions predeterminades"
 
 #: panels/search/cc-search-locations-dialog.ui:39
-#, fuzzy
-#| msgid "Search Locations"
 msgid "Bookmarked Locations"
-msgstr "Ubicacions de cerca"
+msgstr "Ubicacions a les adreces d'interès"
 
 #: panels/search/cc-search-locations-dialog.ui:56
 msgid "Custom Locations"
@@ -6709,10 +6685,10 @@ msgid "Search _Locations"
 msgstr "_Ubicacions de cerca"
 
 #: panels/search/cc-search-panel.ui:24
-#, fuzzy
-#| msgid "Folders which are searched by system apps."
 msgid "Filesystem locations which are searched by system apps"
-msgstr "Carpetes on cerquen les aplicacions del sistema."
+msgstr ""
+"Localitzacions del sistema de fitxers que se cerquen per les aplicacions del "
+"sistema"
 
 #: panels/search/cc-search-panel.ui:33
 msgid "Search Results"
@@ -6738,31 +6714,31 @@ msgstr "Cerca;Troba;Índex;Oculta;Privacitat;Resultats;"
 msgid "No networks selected for sharing"
 msgstr "No hi ha cap xarxa seleccionada per a compartir"
 
-#: panels/sharing/cc-sharing-panel.c:149
+#: panels/sharing/cc-sharing-panel.c:151
 msgctxt "service is disabled"
 msgid "Off"
 msgstr "Desactivat"
 
-#: panels/sharing/cc-sharing-panel.c:152
+#: panels/sharing/cc-sharing-panel.c:154
 msgctxt "service is enabled"
 msgid "Enabled"
 msgstr "Habilitat"
 
-#: panels/sharing/cc-sharing-panel.c:155
+#: panels/sharing/cc-sharing-panel.c:157
 msgctxt "service is active"
 msgid "Active"
 msgstr "Actiu"
 
-#: panels/sharing/cc-sharing-panel.c:236
+#: panels/sharing/cc-sharing-panel.c:238
 msgid "Choose a Folder"
 msgstr "Trieu una carpeta"
 
-#: panels/sharing/cc-sharing-panel.c:384
+#: panels/sharing/cc-sharing-panel.c:386
 msgid "Add Folder"
 msgstr "Afegeix una carpeta"
 
 #. TRANSLATORS: %s is replaced with a link to a dav://<hostname> URL
-#: panels/sharing/cc-sharing-panel.c:471
+#: panels/sharing/cc-sharing-panel.c:474
 #, c-format
 msgid ""
 "File Sharing allows you to share your Public folder with others on your "
@@ -6895,7 +6871,7 @@ msgstr "Disp_ositiu de sortida"
 
 #: panels/sound/cc-sound-panel.ui:59
 msgid "_Test…"
-msgstr "Prova…"
+msgstr "Pr_ova…"
 
 #: panels/sound/cc-sound-panel.ui:84
 msgid "_Configuration"
@@ -6915,7 +6891,7 @@ msgstr "_Balanç"
 
 #: panels/sound/cc-sound-panel.ui:176
 msgid "Fad_e"
-msgstr ""
+msgstr "E_svaeix"
 
 #: panels/sound/cc-sound-panel.ui:203
 msgid "_Subwoofer"
@@ -6965,13 +6941,6 @@ msgstr "Nivells de vo_lum"
 msgid "_Alert Sound"
 msgstr "So d'_alerta"
 
-#. Translators: This is the tooltip for a speaker test button, %s is an already translated
-#. speaker position, like "Front Left" or "Rear Center".
-#: panels/sound/cc-speaker-test-button.c:218
-#, c-format
-msgid "%s Speaker"
-msgstr "Altaveu %s"
-
 #: panels/sound/cc-subwoofer-slider.ui:8
 msgid "Subwoofer"
 msgstr "Altaveu de greus"
@@ -6982,7 +6951,7 @@ msgstr "Nivells de volum"
 
 #: panels/sound/cc-volume-slider.c:52
 msgid "Unmute"
-msgstr ""
+msgstr "No silenciïs"
 
 #: panels/sound/cc-volume-slider.c:52 panels/sound/cc-volume-slider.ui:8
 msgid "Mute"
@@ -7228,16 +7197,13 @@ msgstr "Visualitzeu informació sobre el sistema"
 #. "Preferred Applications" is the old name for the preference, so make
 #. sure that you use the same "translation" for those keywords
 #: panels/system/about/gnome-about-panel.desktop.in:19
-#, fuzzy
-#| msgid ""
-#| "application;flatpak;permission;setting;default;preferred;media;autorun;cd;"
-#| "dvd;usb;audio;video;disc;removable;device;system;"
 msgid ""
 "device;system;information;hostname;memory;processor;version;default;"
 "application;preferred;cd;dvd;usb;audio;video;disc;removable;media;autorun;"
 msgstr ""
-"aplicació;flatpak;permisos;paràmetre;predeterminat;preferit;mitjans;execució "
-"automàtica;cd;dvd;usb;àudio;vídeo;disc;extraïble;dispositiu;sistema;"
+"dispositiu;sistema;informació;amfitrió;memòria;processador;versió;per "
+"defecte;aplicació;preferit;cd;dvd;usb;àudio;vídeo;disc;extraïble;medis;"
+"autorun;"
 
 #: panels/system/cc-system-panel.ui:23
 msgid "_Region &amp; Language"
@@ -7293,17 +7259,17 @@ msgid "Software _Updates"
 msgstr "Act_ualitzacions de programari"
 
 #. Translators: This is the full date and time format used in 12-hour mode.
-#: panels/system/datetime/cc-datetime-page.c:231
+#: panels/system/datetime/cc-datetime-page.c:237
 msgid "%e %B %Y, %l:%M %p"
 msgstr "%e %B de %Y a les %l:%M %p"
 
 #. Translators: This is the full date and time format used in 24-hour mode.
-#: panels/system/datetime/cc-datetime-page.c:236
+#: panels/system/datetime/cc-datetime-page.c:242
 msgid "%e %B %Y, %R"
 msgstr "%e %B de %Y a les %R"
 
 #. Translators: "city, country"
-#: panels/system/datetime/cc-datetime-page.c:393
+#: panels/system/datetime/cc-datetime-page.c:402
 #, c-format
 msgctxt "timezone loc"
 msgid "%s, %s"
@@ -7311,7 +7277,7 @@ msgstr "%s, %s"
 
 #. Update the timezone on the listbow row
 #. Translators: "timezone (details)"
-#: panels/system/datetime/cc-datetime-page.c:410
+#: panels/system/datetime/cc-datetime-page.c:419
 #, c-format
 msgctxt "timezone desc"
 msgid "%s (%s)"
@@ -7482,18 +7448,14 @@ msgstr "Paràmetres d'idioma i hora, informació del sistema"
 
 #. Translators: Search terms to find the System panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
 #: panels/system/gnome-system-panel.desktop.in:15
-#, fuzzy
-#| msgid ""
-#| "device;system;information;hostname;memory;processor;version;default;"
-#| "application;preferred;cd;dvd;usb;audio;video;disc;removable;media;autorun;"
 msgid ""
 "device;system;information;details;hostname;memory;processor;version;software;"
 "operating;os;model;language;region;country;formats;numbers;units;clock;"
 "timezone;date;location;remote;desktop;rdp;vnc;"
 msgstr ""
-"dispositiu;sistema;informació;amfitrió;memòria;processador;versió;per "
-"defecte;aplicació;preferit;cd;dvd;usb;àudio;vídeo;disc;extraïble;multimèdia;"
-"execució automàtica;"
+"dispositiu;sistema;informació;detalls;amfitrió;memòria;processador;versió;"
+"programari;operatiu;so;model;idioma;regió;país;formats;nombres;unitats;"
+"rellotge;fus horari;data;ubicació;remot;escriptori;rdp;vnc;"
 
 #: panels/system/region/cc-format-chooser.c:160
 #: panels/system/region/cc-format-chooser.c:208
@@ -7582,7 +7544,7 @@ msgstr ""
 
 #: panels/system/region/cc-region-page.ui:30
 msgid "Your Account"
-msgstr "El teu compte"
+msgstr "El vostre compte"
 
 #: panels/system/region/cc-region-page.ui:34
 #: panels/system/users/cc-user-page.ui:170
@@ -7614,22 +7576,22 @@ msgstr "Seleccioneu l'idioma a mostrar i els formats"
 msgid "Language;Layout;Keyboard;Input;"
 msgstr "Idioma;Disposició;Teclat;Entrada;"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.c:364
+#: panels/system/remote-desktop/cc-desktop-sharing-page.c:362
 #: panels/system/remote-desktop/cc-remote-session-page.c:98
 msgid "Device address copied"
 msgstr "S'ha copiat l'adreça del dispositiu"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.c:373
+#: panels/system/remote-desktop/cc-desktop-sharing-page.c:371
 #: panels/system/remote-desktop/cc-remote-session-page.c:107
 msgid "Port number copied"
 msgstr "S'ha copiat el número de port"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.c:384
+#: panels/system/remote-desktop/cc-desktop-sharing-page.c:382
 #: panels/system/remote-desktop/cc-remote-session-page.c:118
 msgid "Username copied"
 msgstr "S'ha copiat el nom d'usuari"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.c:395
+#: panels/system/remote-desktop/cc-desktop-sharing-page.c:393
 #: panels/system/remote-desktop/cc-remote-session-page.c:129
 msgid "Password copied"
 msgstr "S'ha copiat la contrasenya"
@@ -7674,35 +7636,35 @@ msgstr ""
 msgid "_Hostname"
 msgstr "Nom de _màquina"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:54
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:75
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:96
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:112
-#: panels/system/remote-desktop/cc-remote-session-page.ui:53
-#: panels/system/remote-desktop/cc-remote-session-page.ui:74
-#: panels/system/remote-desktop/cc-remote-session-page.ui:95
-#: panels/system/remote-desktop/cc-remote-session-page.ui:111
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:53
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:73
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:94
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:110
+#: panels/system/remote-desktop/cc-remote-session-page.ui:52
+#: panels/system/remote-desktop/cc-remote-session-page.ui:72
+#: panels/system/remote-desktop/cc-remote-session-page.ui:93
+#: panels/system/remote-desktop/cc-remote-session-page.ui:109
 #: panels/system/remote-login/cc-remote-login-page.ui:65
 msgid "Copy"
 msgstr "Copia"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:67
-#: panels/system/remote-desktop/cc-remote-session-page.ui:66
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:66
+#: panels/system/remote-desktop/cc-remote-session-page.ui:65
 msgid "_Port"
 msgstr "_Port"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:90
-#: panels/system/remote-desktop/cc-remote-session-page.ui:89
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:88
+#: panels/system/remote-desktop/cc-remote-session-page.ui:87
 msgid "Login Details"
 msgstr "Detalls d'inici de sessió"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:131
-#: panels/system/remote-desktop/cc-remote-session-page.ui:130
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:129
+#: panels/system/remote-desktop/cc-remote-session-page.ui:128
 msgid "_Generate New Password"
-msgstr "Genera una contrasenya nova"
+msgstr "G_enera una contrasenya nova"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:142
-#: panels/system/remote-desktop/cc-remote-session-page.ui:141
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:140
+#: panels/system/remote-desktop/cc-remote-session-page.ui:139
 msgid "_Verify Encryption"
 msgstr "_Verifica el xifrat"
 
@@ -7719,8 +7681,8 @@ msgstr "Compartició de l'escriptori"
 msgid "Remote Login"
 msgstr "Inici de sessió remot"
 
-#: panels/system/remote-desktop/cc-remote-session-page.c:774
-#: panels/system/users/cc-user-page.c:772
+#: panels/system/remote-desktop/cc-remote-session-page.c:768
+#: panels/system/users/cc-user-page.c:775
 msgid "Some settings are locked"
 msgstr "Alguns paràmetres estan desbloquejats"
 
@@ -7825,69 +7787,65 @@ msgstr "_Contrasenya"
 msgid "_Confirm"
 msgstr "_Confirma"
 
-#: panels/system/users/cc-enterprise-login-dialog.c:133
-#: panels/system/users/cc-enterprise-login-dialog.c:171
+#: panels/system/users/cc-enterprise-login-dialog.c:148
 #: panels/system/users/cc-enterprise-login-dialog.c:186
+#: panels/system/users/cc-enterprise-login-dialog.c:201
 msgid "Failed to register account"
 msgstr "No s'ha pogut registrar el compte"
 
-#: panels/system/users/cc-enterprise-login-dialog.c:240
-#: panels/system/users/cc-enterprise-login-dialog.c:411
+#: panels/system/users/cc-enterprise-login-dialog.c:255
+#: panels/system/users/cc-enterprise-login-dialog.c:424
 msgid "Failed to join domain"
 msgstr "No s'ha pogut unir al domini"
 
-#: panels/system/users/cc-enterprise-login-dialog.c:275
+#: panels/system/users/cc-enterprise-login-dialog.c:290
 msgid "No supported way to authenticate with this domain"
 msgstr "No hi ha cap manera compatible per a autenticar-se amb aquest domini"
 
-#: panels/system/users/cc-enterprise-login-dialog.c:285
-#: panels/system/users/cc-enterprise-login-dialog.c:476
+#: panels/system/users/cc-enterprise-login-dialog.c:300
+#: panels/system/users/cc-enterprise-login-dialog.c:489
 msgid "That login name didn’t work"
 msgstr "El nom d'usuari no és correcte"
 
-#: panels/system/users/cc-enterprise-login-dialog.c:292
-#: panels/system/users/cc-enterprise-login-dialog.c:483
+#: panels/system/users/cc-enterprise-login-dialog.c:307
+#: panels/system/users/cc-enterprise-login-dialog.c:496
 msgid "That login password didn’t work"
 msgstr "La contrasenya no és vàlida"
 
-#: panels/system/users/cc-enterprise-login-dialog.c:299
+#: panels/system/users/cc-enterprise-login-dialog.c:314
 msgid "That hostname didn’t work"
-msgstr "El nom d'ordinador no és correcte."
+msgstr "El nom d'ordinador no és correcte"
 
-#: panels/system/users/cc-enterprise-login-dialog.c:306
-#: panels/system/users/cc-enterprise-login-dialog.c:491
+#: panels/system/users/cc-enterprise-login-dialog.c:321
+#: panels/system/users/cc-enterprise-login-dialog.c:504
 msgid "Failed to log into domain"
 msgstr "No s'ha pogut entrar al domini"
 
 #. Translators: The "%s" is a domain address (e.g. "demo1.freeipa.org").
-#: panels/system/users/cc-enterprise-login-dialog.c:352
-#, fuzzy, c-format
-#| msgid ""
-#| "In order to use enterprise logins, this computer needs to be\n"
-#| "enrolled in the domain. Please have your network administrator\n"
-#| "type their domain password here."
+#: panels/system/users/cc-enterprise-login-dialog.c:365
+#, c-format
 msgid ""
-"To add an enterprise login account, this device needs to be enrolled with <b>"
-"%s</b>. To enroll, have your domain administrator enter their name and "
+"To add an enterprise login account, this device needs to be enrolled with "
+"<b>%s</b>. To enroll, have your domain administrator enter their name and "
 "password."
 msgstr ""
-"Per a poder utilitzar inicis de sessió corporatius, aquest ordinador\n"
-"necessita formar part del domini. Demaneu a l'administrador que\n"
-"introdueixi aquí la seva contrasenya."
+"Per afegir un compte d'inici de sessió empresarial, aquest dispositiu ha "
+"d'estar inscrit amb <b>%s</b>. Per inscriure'l, feu que l'administrador del "
+"domini introdueixi el seu nom i contrasenya."
 
-#: panels/system/users/cc-enterprise-login-dialog.c:538
+#: panels/system/users/cc-enterprise-login-dialog.c:548
 msgid "Valid domain"
 msgstr "Domini vàlid"
 
-#: panels/system/users/cc-enterprise-login-dialog.c:542
+#: panels/system/users/cc-enterprise-login-dialog.c:552
 msgid "Domain not found"
 msgstr "No s'ha trobat el domini"
 
-#: panels/system/users/cc-enterprise-login-dialog.c:585
+#: panels/system/users/cc-enterprise-login-dialog.c:595
 msgid "Checking domain…"
 msgstr "S'està comprovant el domini…"
 
-#: panels/system/users/cc-enterprise-login-dialog.c:629
+#: panels/system/users/cc-enterprise-login-dialog.c:639
 msgid "Failed to contact realmd service"
 msgstr "No s'ha pogut contactar amb el servei de realmd"
 
@@ -8289,11 +8247,11 @@ msgstr "Inici de sessió a_utomàtic"
 msgid "_Administrator"
 msgstr "_Administrador"
 
-#: panels/system/users/cc-user-page.ui:156
+#: panels/system/users/cc-user-page.ui:155
 msgid "_Parental Controls"
 msgstr "_Controls parentals"
 
-#: panels/system/users/cc-user-page.ui:157
+#: panels/system/users/cc-user-page.ui:156
 msgid "Open the Parental Controls app"
 msgstr "Obre l'aplicació de control parental"
 
@@ -8561,7 +8519,7 @@ msgstr "So"
 #: panels/universal-access/cc-ua-hearing-page.c:158
 #, c-format
 msgid "System volume can be adjusted in %s settings"
-msgstr "El volum del sistema es pot ajustar als paràmetres de %s."
+msgstr "El volum del sistema es pot ajustar als paràmetres de %s"
 
 #: panels/universal-access/cc-ua-hearing-page.ui:4
 msgid "Hearing"
@@ -8635,9 +8593,9 @@ msgstr "_Retard del doble clic"
 #: panels/universal-access/cc-ua-mouse-page.ui:40
 #: panels/universal-access/cc-ua-mouse-page.ui:78
 #: panels/universal-access/cc-ua-mouse-page.ui:111
-#: panels/universal-access/cc-ua-typing-page.ui:131
-#: panels/universal-access/cc-ua-typing-page.ui:183
-#: panels/universal-access/cc-ua-typing-page.ui:230
+#: panels/universal-access/cc-ua-typing-page.ui:133
+#: panels/universal-access/cc-ua-typing-page.ui:186
+#: panels/universal-access/cc-ua-typing-page.ui:233
 #: panels/universal-access/cc-ua-zoom-page.ui:179
 msgid "Short"
 msgstr "Curt"
@@ -8646,9 +8604,9 @@ msgstr "Curt"
 #: panels/universal-access/cc-ua-mouse-page.ui:43
 #: panels/universal-access/cc-ua-mouse-page.ui:81
 #: panels/universal-access/cc-ua-mouse-page.ui:114
-#: panels/universal-access/cc-ua-typing-page.ui:134
-#: panels/universal-access/cc-ua-typing-page.ui:186
-#: panels/universal-access/cc-ua-typing-page.ui:233
+#: panels/universal-access/cc-ua-typing-page.ui:136
+#: panels/universal-access/cc-ua-typing-page.ui:189
+#: panels/universal-access/cc-ua-typing-page.ui:236
 #: panels/universal-access/cc-ua-zoom-page.ui:183
 msgid "Long"
 msgstr "Llarg"
@@ -8666,8 +8624,8 @@ msgid "Secondary click by holding down the primary mouse button"
 msgstr "Fes un clic secundari en mantenir premut el botó primari del ratolí"
 
 #: panels/universal-access/cc-ua-mouse-page.ui:73
-#: panels/universal-access/cc-ua-typing-page.ui:178
-#: panels/universal-access/cc-ua-typing-page.ui:225
+#: panels/universal-access/cc-ua-typing-page.ui:180
+#: panels/universal-access/cc-ua-typing-page.ui:228
 msgid "Acceptance Delay"
 msgstr "Retard d'acceptació"
 
@@ -8680,7 +8638,7 @@ msgid "Trigger a click when the pointer hovers"
 msgstr "Fes un clic en passar el punter per sobre"
 
 #: panels/universal-access/cc-ua-mouse-page.ui:106
-#: panels/universal-access/cc-ua-typing-page.ui:126
+#: panels/universal-access/cc-ua-typing-page.ui:127
 msgid "Delay"
 msgstr "Retard"
 
@@ -8698,7 +8656,7 @@ msgstr "Gran"
 
 #: panels/universal-access/cc-ua-panel.ui:22
 msgid "_Always Show Accessibility Menu"
-msgstr "Mostre sempre el menú d'_accessibilitat"
+msgstr "Mostra sempre el menú d'_accessibilitat"
 
 #: panels/universal-access/cc-ua-panel.ui:23
 msgid "Display the accessibility menu in the top bar"
@@ -8774,7 +8732,7 @@ msgstr ""
 
 #: panels/universal-access/cc-ua-seeing-page.ui:26
 msgid "_On/Off Shapes"
-msgstr ""
+msgstr "_Formes activades/desactivades"
 
 #: panels/universal-access/cc-ua-seeing-page.ui:27
 msgid "Use shapes to indicate state in addition to or instead of color"
@@ -8888,49 +8846,49 @@ msgstr "Es repeteix la tecla quan es manté premuda"
 msgid "Speed"
 msgstr "Velocitat"
 
-#: panels/universal-access/cc-ua-typing-page.ui:153
+#: panels/universal-access/cc-ua-typing-page.ui:155
 msgid "_Sticky Keys"
 msgstr "Tecles _enganxoses"
 
-#: panels/universal-access/cc-ua-typing-page.ui:154
+#: panels/universal-access/cc-ua-typing-page.ui:156
 msgid "Sequences of modifier keys act as a key combination"
 msgstr ""
 "Tracta una seqüència de tecles modificadores com una combinació de tecles"
 
-#: panels/universal-access/cc-ua-typing-page.ui:159
+#: panels/universal-access/cc-ua-typing-page.ui:161
 msgid "Disable if two keys are pressed together"
 msgstr "Inhabilita si es premen dues tecles alhora"
 
-#: panels/universal-access/cc-ua-typing-page.ui:164
+#: panels/universal-access/cc-ua-typing-page.ui:166
 msgid "Beep when modifier key is pressed"
 msgstr "Fes un avís sonor quan es premi una tecla modificadora"
 
-#: panels/universal-access/cc-ua-typing-page.ui:172
+#: panels/universal-access/cc-ua-typing-page.ui:174
 msgid "S_low Keys"
 msgstr "Tecles _lentes"
 
-#: panels/universal-access/cc-ua-typing-page.ui:173
+#: panels/universal-access/cc-ua-typing-page.ui:175
 msgid "Delay between when a key is pressed and when it is accepted"
 msgstr "Introdueix un retard entre que es prem una tecla i s'accepta"
 
-#: panels/universal-access/cc-ua-typing-page.ui:201
+#: panels/universal-access/cc-ua-typing-page.ui:204
 msgid "Beep when a key is pressed"
 msgstr "Fes un avís sonor quan es premi una tecla"
 
-#: panels/universal-access/cc-ua-typing-page.ui:206
+#: panels/universal-access/cc-ua-typing-page.ui:209
 msgid "Beep when a key is accepted"
 msgstr "Fes un avís sonor quan s'accepti una tecla"
 
-#: panels/universal-access/cc-ua-typing-page.ui:211
-#: panels/universal-access/cc-ua-typing-page.ui:248
+#: panels/universal-access/cc-ua-typing-page.ui:214
+#: panels/universal-access/cc-ua-typing-page.ui:251
 msgid "Beep when a key is rejected"
 msgstr "Fes un avís sonor quan es rebutgi una tecla"
 
-#: panels/universal-access/cc-ua-typing-page.ui:219
+#: panels/universal-access/cc-ua-typing-page.ui:222
 msgid "B_ounce Keys"
 msgstr "_Repetició de tecles"
 
-#: panels/universal-access/cc-ua-typing-page.ui:220
+#: panels/universal-access/cc-ua-typing-page.ui:223
 msgid "Ignore fast duplicate keypresses"
 msgstr "Ignora les pulsacions duplicades ràpides"
 
@@ -9002,10 +8960,8 @@ msgid "Right Half"
 msgstr "Meitat dreta"
 
 #: panels/universal-access/cc-ua-zoom-page.ui:91
-#, fuzzy
-#| msgid "Follow Behavior"
 msgid "_Follow Behavior"
-msgstr "Comportament del seguiment"
+msgstr "_Comportament del seguiment"
 
 #. Translators: This is an option of the zoom Magnifier behavior
 #: panels/universal-access/cc-ua-zoom-page.ui:97
@@ -9027,26 +8983,21 @@ msgid "Crosshairs"
 msgstr "Creus"
 
 #: panels/universal-access/cc-ua-zoom-page.ui:115
-#, fuzzy
-#| msgid "Crosshairs"
 msgid "_Crosshair Lines"
-msgstr "Creus"
+msgstr "_Línies de creu"
 
 #: panels/universal-access/cc-ua-zoom-page.ui:116
-#, fuzzy
-#| msgid "Invert colors in the magnifier region"
 msgid "Mark the cursor location in the magnifier region using lines"
-msgstr "Inverteix els colors a la regió de lupa"
+msgstr ""
+"Marca la ubicació del cursor a la regió de l'ampliació utilitzant línies"
 
 #: panels/universal-access/cc-ua-zoom-page.ui:123
 msgid "_Overlap Mouse Cursor"
 msgstr "_Sobreposa el cursor del ratolí"
 
 #: panels/universal-access/cc-ua-zoom-page.ui:131
-#, fuzzy
-#| msgid "Thickness"
 msgid "_Thickness"
-msgstr "Gruix"
+msgstr "_Gruix"
 
 #. Translators: This is a mark in the Thickness scale
 #: panels/universal-access/cc-ua-zoom-page.ui:137
@@ -9150,11 +9101,6 @@ msgid "Map buttons to functions"
 msgstr "Mapa els botons a les funcions"
 
 #: panels/wacom/button-mapping.ui:51
-#, fuzzy
-#| msgid ""
-#| "To edit a shortcut, choose the “Send Keystroke” action, press the "
-#| "keyboard shortcut button and hold down the new keys or press Backspace to "
-#| "clear."
 msgid ""
 "To edit a shortcut, choose the “Send Keystroke” action, press the keyboard "
 "shortcut button and hold down the new keys or press Backspace to clear"
@@ -9164,10 +9110,6 @@ msgstr ""
 "premeu la tecla de retrocés per a netejar-la."
 
 #: panels/wacom/calibrator/calibrator.ui:51
-#, fuzzy
-#| msgid ""
-#| "Please tap the target markers as they appear on screen to calibrate the "
-#| "tablet."
 msgid ""
 "Please tap the target markers as they appear on screen to calibrate the "
 "tablet"
@@ -9204,15 +9146,15 @@ msgctxt "Wacom action-type"
 msgid "Show On-Screen Help"
 msgstr "Mostra l'ajuda en pantalla"
 
-#: panels/wacom/cc-wacom-device.c:430
+#: panels/wacom/cc-wacom-device.c:437
 msgid "Tablet mounted on laptop panel"
 msgstr "Tauleta muntada en portàtil"
 
-#: panels/wacom/cc-wacom-device.c:432
+#: panels/wacom/cc-wacom-device.c:439
 msgid "Tablet mounted on external display"
 msgstr "Tauleta muntada en pantalla externa"
 
-#: panels/wacom/cc-wacom-device.c:434
+#: panels/wacom/cc-wacom-device.c:441
 msgid "External tablet device"
 msgstr "Tauleta externa"
 
@@ -9222,10 +9164,8 @@ msgid "All Displays"
 msgstr "Totes les pantalles"
 
 #: panels/wacom/cc-wacom-page.ui:16
-#, fuzzy
-#| msgid "Tablet Mode"
 msgid "_Tablet Mode"
-msgstr "Mode tauleta"
+msgstr "_Mode tauleta"
 
 #: panels/wacom/cc-wacom-page.ui:17
 msgid "Use absolute positioning for the pen"
@@ -9240,10 +9180,8 @@ msgid "Tablet and Express Keys™ are rotated for left hand use"
 msgstr "La tauleta i les Express Keys™ es giren per a l'ús de la mà esquerra"
 
 #: panels/wacom/cc-wacom-page.ui:30
-#, fuzzy
-#| msgid "Map Buttons"
 msgid "Map _Buttons"
-msgstr "Mapa els botons"
+msgstr "_Mapa els botons"
 
 #: panels/wacom/cc-wacom-page.ui:44
 msgctxt "display setting"
@@ -9269,21 +9207,18 @@ msgid "No tablet detected"
 msgstr "No s'ha detectat cap tauleta"
 
 #: panels/wacom/cc-wacom-panel.ui:58
-#, fuzzy
-#| msgid "Please plug in or turn on your Wacom tablet."
 msgid "Please plug in or turn on your Wacom tablet"
-msgstr "Connecteu o activeu la tauleta Wacom."
+msgstr "Connecteu o activeu la tauleta Wacom"
 
 #: panels/wacom/cc-wacom-stylus-action-dialog.c:155
 #, c-format
 msgid "Choose an action when button %d on the stylus is pressed"
-msgstr "Tria una acció per quan es prem el botó %d del llapis"
+msgstr "Tria una acció per a quan es prem el botó %d del llapis"
 
 #: panels/wacom/cc-wacom-stylus-action-dialog.c:158
-#, fuzzy, c-format
-#| msgid "Button %d"
+#, c-format
 msgid "Button %d Mapping"
-msgstr "Botó %d"
+msgstr "Assignació del botó %d"
 
 #: panels/wacom/cc-wacom-stylus-page.c:398
 msgid "_Left Mousebutton Click"
@@ -9308,10 +9243,8 @@ msgid "_Forward"
 msgstr "_Endavant"
 
 #: panels/wacom/cc-wacom-stylus-page.ui:16
-#, fuzzy
-#| msgid "Tip Pressure Feel"
 msgid "Tip _Pressure Feel"
-msgstr "Sensibilitat de pressió del llapis"
+msgstr "S_ensació de la pressió de la punta"
 
 #: panels/wacom/cc-wacom-stylus-page.ui:22
 #: panels/wacom/cc-wacom-stylus-page.ui:117
@@ -9340,10 +9273,8 @@ msgid "Button _3"
 msgstr "Botó _3"
 
 #: panels/wacom/cc-wacom-stylus-page.ui:111
-#, fuzzy
-#| msgid "Eraser Pressure Feel"
 msgid "_Eraser Pressure Feel"
-msgstr "Sensibilitat de pressió de l'esborrador"
+msgstr "_Sensibilitat de pressió de l'esborrador"
 
 #: panels/wacom/cc-wacom-stylus-page.ui:131
 msgid "Eraser pressure"
@@ -9354,22 +9285,16 @@ msgid "Airbrush stylus with pressure, tilt, and integrated slider"
 msgstr "Llapis d'aerògraf amb pressió, inclinació i control lliscant integrat"
 
 #: panels/wacom/cc-wacom-tool.c:364
-#, fuzzy
-#| msgid "Airbrush stylus with pressure, tilt, and rotation"
 msgid "Art pen with pressure, tilt, and rotation"
-msgstr "Llapis d'aerògraf amb pressió, inclinació i rotació"
+msgstr "Llapis amb pressió, inclinació i rotació"
 
 #: panels/wacom/cc-wacom-tool.c:366
-#, fuzzy
-#| msgid "Standard stylus with pressure and tilt"
 msgid "Stylus with pressure and tilt"
 msgstr "Estilogràfica estàndard amb pressió i inclinació"
 
 #: panels/wacom/cc-wacom-tool.c:368
-#, fuzzy
-#| msgid "Stylus tip pressure"
 msgid "Stylus with pressure"
-msgstr "Pressió del llapis"
+msgstr "Pressió de l'estilogràfica"
 
 #: panels/wacom/gnome-wacom-panel.desktop.in:3
 msgid "Wacom Tablet"
@@ -9974,7 +9899,7 @@ msgstr "[QUADRE] [ARGUMENT…]"
 #. Translators should localize the following string which will be displayed in the About dialog giving credit to the translator(s).
 #: shell/cc-application.c:117
 msgid "translator-credits"
-msgstr ""
+msgstr "Jordi Mas i Hernàndez <jmas@softcatala.org>"
 
 #: shell/cc-application.c:118
 #, c-format
@@ -9989,7 +9914,7 @@ msgstr "Categories de configuració"
 msgid "No Results Found"
 msgstr "No s'ha trobat cap resultat"
 
-#: shell/cc-panel-loader.c:310
+#: shell/cc-panel-loader.c:311
 msgid "Available panels:"
 msgstr "Quadres disponibles:"
 
@@ -10028,10 +9953,8 @@ msgid "_Help"
 msgstr "_Ajuda"
 
 #: shell/cc-window.ui:103
-#, fuzzy
-#| msgid "App Settings"
 msgid "_About Settings"
-msgstr "Paràmetres de les aplicacions"
+msgstr "_Quant als Paràmetres"
 
 #: shell/help-overlay.ui:13
 msgctxt "shortcut window"
@@ -10137,339 +10060,5 @@ msgstr[1] "%u entrades"
 msgid "System Sounds"
 msgstr "Sons del sistema"
 
-#~ msgid "Automatic suspend"
-#~ msgstr "Suspèn automàticament"
-
-#~ msgid "Device name copied"
-#~ msgstr "S'ha copiat el nom del dispositiu"
-
-#, fuzzy
-#~| msgid "Turn off to use Wi-Fi"
-#~ msgid "learn how to use it"
-#~ msgstr "Desactiveu-lo per a utilitzar la Wi-Fi"
-
-#, fuzzy, c-format
-#~| msgid ""
-#~| "Remote desktop allows viewing and controlling your desktop from another "
-#~| "computer."
-#~ msgid ""
-#~ "Remote desktop allows viewing and controlling your desktop from another "
-#~ "computer – %s."
-#~ msgstr ""
-#~ "L'escriptori remot permet veure i controlar l'escriptori des d'un altre "
-#~ "ordinador."
-
-#~ msgid "Remote _Desktop"
-#~ msgstr "_Escriptori remot"
-
-#, fuzzy
-#~| msgid "Enable or disable remote desktop connections to this computer."
-#~ msgid "Enable or disable remote desktop connections to this computer"
-#~ msgstr ""
-#~ "Habilita o inhabilita les connexions d'escriptori remot en aquest "
-#~ "ordinador."
-
-#, fuzzy
-#~| msgid ""
-#~| "Connect to this computer using the device name or remote desktop address."
-#~ msgid ""
-#~ "Connect to this computer using the device name or remote desktop address"
-#~ msgstr ""
-#~ "Connecta a aquest ordinador amb el nom del dispositiu o l'adreça "
-#~ "d'escriptori remota."
-
-#, fuzzy
-#~| msgid "Device Name"
-#~ msgid "D_evice Name"
-#~ msgstr "Nom del dispositiu"
-
-#, fuzzy
-#~| msgid "Remote Desktop Address"
-#~ msgid "Re_mote Desktop Address"
-#~ msgstr "Adreça remota de l'escriptori"
-
-#~ msgid "Authentication"
-#~ msgstr "Autenticació"
-
-#, fuzzy
-#~| msgid ""
-#~| "The user name and password are required to connect to this computer."
-#~ msgid "The user name and password are required to connect to this computer"
-#~ msgstr ""
-#~ "Es requereix el nom d'usuari i la contrasenya per a connectar-se a aquest "
-#~ "ordinador."
-
-#, fuzzy
-#~| msgid "User Name"
-#~ msgid "_User Name"
-#~ msgstr "Nom d'usuari"
-
-#~ msgid "Unable to find the domain. Maybe you misspelled it?"
-#~ msgstr "No s'ha trobat el domini. Potser l'heu escrit malament?"
-
-#, fuzzy
-#~| msgid "Enterprise Login"
-#~ msgid "_Enterprise Login"
-#~ msgstr "Inici de sessió corporatiu"
-
-#, fuzzy
-#~| msgid "User accounts which are managed by a company or organization."
-#~ msgid "User accounts which are managed by a company or organization"
-#~ msgstr "Comptes d'usuari gestionats per una empresa o organització."
-
-#~ msgid "You are Offline"
-#~ msgstr "Esteu fora de línia"
-
-#~ msgid "Reproduce sounds."
-#~ msgstr "Reprodueix sons."
-
-#~ msgid "Links &amp; Files"
-#~ msgstr "Enllaços i fitxers"
-
-#~ msgid "Apps which are used to open common links and files"
-#~ msgstr "Aplicacions que s'utilitzen per a obrir enllaços i fitxers comuns"
-
-#~ msgid "Apps which are launched when media or drives are connected"
-#~ msgstr "Aplicacions que s'iniciaran quan es connectin dispositius"
-
-#~ msgid "D_isable Autostart"
-#~ msgstr "D_esactiva l'engegada automàtica"
-
-#~ msgid "Never prompt or start apps on media insertion"
-#~ msgstr "No preguntis mai ni iniciïs programes quan s'insereixin suports"
-
-#~ msgid "Try a different search."
-#~ msgstr "Proveu amb una cerca diferent."
-
-#, c-format
-#~ msgid "Scan the QR code to connect to the network <b>%s</b>."
-#~ msgstr "Escanegeu el codi QR per a connectar-vos a la xarxa <b>%s</b>."
-
-#, c-format
-#~ msgid "Network “%s” has been deleted"
-#~ msgstr "S'ha suprimit la xarxa «%s»"
-
-#, c-format
-#~ msgid "%s removed"
-#~ msgstr "s'ha suprimit %s"
-
-#~ msgid "Error removing account"
-#~ msgstr "S'ha produït un error en suprimir el compte"
-
-#~ msgid "Close the notification"
-#~ msgstr "Tanca la notificació"
-
-#, c-format
-#~ msgid "%s Account"
-#~ msgstr "Compte de %s"
-
-#~ msgid "Remove Account"
-#~ msgstr "Suprimeix el compte"
-
-#~ msgid "Places"
-#~ msgstr "Llocs"
-
-#~ msgid "Bookmarks"
-#~ msgstr "Adreces d'interès"
-
-#~ msgid "Others"
-#~ msgstr "Altres"
-
-#~ msgctxt "service is enabled"
-#~ msgid "On"
-#~ msgstr "Activat"
-
-#, c-format
-#~ msgid ""
-#~ "When remote login is enabled, remote users can connect using the Secure "
-#~ "Shell command:\n"
-#~ "%s"
-#~ msgstr ""
-#~ "Quan l'inici de sessió remot està habilitat, els usuaris remots poden "
-#~ "connectar-se utilitzant l'ordre del Secure Shell:\n"
-#~ "%s"
-
-#~ msgid "Enable SSH access for this device"
-#~ msgstr "Activa l'accés SSH en aquest dispositiu"
-
-#~ msgid "_Remote Login"
-#~ msgstr "_Inici de sessió remot"
-
-#~ msgid "Edit avatar"
-#~ msgstr "Edita l'avatar"
-
-#~ msgid "Default"
-#~ msgstr "Per defecte"
-
-#~ msgid "_Install Some…"
-#~ msgstr "_Instal·la algunes…"
-
-#~ msgid "Microphone"
-#~ msgstr "Micròfon"
-
-#~ msgid "Location Services"
-#~ msgstr "Serveis d'ubicació"
-
-#~ msgid "_Calls"
-#~ msgstr "_Trucades"
-
-#~ msgid "Dark"
-#~ msgstr "Fosc"
-
-#~ msgid "Day"
-#~ msgstr "Dia"
-
-#~ msgid "Date"
-#~ msgstr "Dates"
-
-#~ msgid "Not Available"
-#~ msgstr "No disponible"
-
-#~ msgid "Options"
-#~ msgstr "Opcions"
-
-#~ msgid ""
-#~ "Resetting the shortcuts may affect your custom shortcuts. This cannot be "
-#~ "undone."
-#~ msgstr ""
-#~ "Restablir les dreceres pot afectar les vostres dreceres personalitzades. "
-#~ "Aquesta acció no es pot desfer."
-
-#~ msgid "Reset all shortcuts to their default keybindings"
-#~ msgstr "Restableix totes les dreceres als seus valors per omissió"
-
-#~ msgid "Single Click"
-#~ msgstr "Clic simple"
-
-#~ msgid "Add connection"
-#~ msgstr "Afegeix una connexió"
-
-#~ msgid "Save"
-#~ msgstr "Desa"
-
-#~ msgid "Show QR Code"
-#~ msgstr "Mostra el codi QR"
-
-#~ msgid "Allow permitted apps to access location data"
-#~ msgstr ""
-#~ "Deixa que les aplicacions permeses accedeixin a les dades d'ubicació"
-
-#~ msgid "Privacy"
-#~ msgstr "Privacitat"
-
-#~ msgid "More options…"
-#~ msgstr "Més opcions…"
-
-#~ msgid "Enable media sharing"
-#~ msgstr "Habilita la compartició de mitjans"
-
-#~ msgid "Enable personal media sharing"
-#~ msgstr "Habilita la compartició de mitjans personals"
-
-#~ msgid "View and control the desktop from another device"
-#~ msgstr "Veieu i controleu l'escriptori des d'un altre ordinador"
-
-#~ msgid "Use scrollbars that overlay the content and automatically hide"
-#~ msgstr ""
-#~ "Utilitza barres de desplaçament que superposen el contingut i oculta-les "
-#~ "automàticament"
-
-#~ msgid "Type to test"
-#~ msgstr "Teclegeu per a provar"
-
-#~ msgid "Length"
-#~ msgstr "Longitud"
-
-#, c-format
-#~ msgid "Failed to delete user: %s"
-#~ msgstr "No s'ha pogut suprimir l'usuari: %s"
-
-#, c-format
-#~ msgid "Failed to revoke remotely managed user: %s"
-#~ msgstr "No s'ha pogut revocar l'usuari gestionat remotament: %s"
-
-#, c-format
-#~ msgid "Are you sure you want to revoke remotely managed %s’s account?"
-#~ msgstr ""
-#~ "Segur que voleu revocar el compte %s de l'usuari gestionat remotament?"
-
-#~ msgid "Delete the selected user account"
-#~ msgstr "Suprimeix el compte d'usuari seleccionat"
-
-#~ msgid ""
-#~ "To delete the selected user account,\n"
-#~ "click the * icon first"
-#~ msgstr ""
-#~ "Per a suprimir el compte d'usuari seleccionat,\n"
-#~ "primer feu clic a la icona *"
-
-#~ msgid "Unlock to add users and change settings"
-#~ msgstr "Desbloqueja per a afegir usuaris i modificar els paràmetres"
-
-#~ msgid ""
-#~ "Automatic login opens the user account when the device starts, without "
-#~ "requiring authentication. Authentication is still required at other "
-#~ "times, such as when unlocking the screen."
-#~ msgstr ""
-#~ "L'inici de sessió automàtic obre un compte d'usuari quan el dispositiu "
-#~ "s'inicia, i sense requerir autenticació. L'autenticació és, però, "
-#~ "requerida en altres moments, com ara a l'hora de desbloquejar la pantalla."
-
-#~ msgid "Users cannot be removed while logged in"
-#~ msgstr "Els usuaris no es poden suprimir mentre tenen una sessió iniciada"
-
-#~ msgid "Error: Unable to Show User Settings"
-#~ msgstr "Error: No s'ha pogut mostrar els paràmetres de l'usuari"
-
-#~ msgid "The system component `AccountsService` cannot be found"
-#~ msgstr "No s'ha pogut trobar el component del sistema «AccountsService»"
-
-#~ msgid "_Delete"
-#~ msgstr "_Suprimeix"
-
-#~ msgid "External pad device"
-#~ msgstr "Tauleta externa"
-
-#~ msgid "Standard stylus with pressure"
-#~ msgstr "Estilogràfica estàndard amb pressió"
-
-#~ msgid "No Apps"
-#~ msgstr "Sense aplicacions"
-
-#~ msgid "application;flatpak;permission;setting;"
-#~ msgstr "aplicació;flatpak;permís;paràmetre;"
-
-#~ msgid "Configure Default Apps"
-#~ msgstr "Configura les aplicacions per defecte"
-
-#~ msgid "default;application;preferred;media;"
-#~ msgstr "per defecte; aplicació; preferida;multimèdia;"
-
-#~ msgid ""
-#~ "Network details for the selected networks, including passwords and any "
-#~ "custom configuration will be lost."
-#~ msgstr ""
-#~ "Es perdran les dades de xarxa de les xarxes seleccionades, incloent-hi "
-#~ "les contrasenyes i la configuració personalitzada."
-
-#~ msgid "_Forget"
-#~ msgstr "_Oblida"
-
-#~ msgid "Affects system performance and power usage."
-#~ msgstr "Afecta el rendiment del sistema i a l'ús de l'energia."
-
-#~ msgid "Power Saving Options"
-#~ msgstr "Opcions d'estalvi d'energia"
-
-#~ msgid "Select how media should be handled"
-#~ msgstr "Seleccioneu com s'han de gestionar els suports"
-
-#~ msgid "_Other Media…"
-#~ msgstr "_Altres suports…"
-
-#~ msgid "Configure Removable Media settings"
-#~ msgstr "Configura els paràmetres del suport extraïble"
-
-#~ msgid "This panel must be unlocked to change this setting"
-#~ msgstr ""
-#~ "Aquest quadre s'ha de desbloquejar per a canviar aquesta configuració"
+#~ msgid "Test Mouse and Touchpad Settings"
+#~ msgstr "Prova la configuració del ratolí i del ratolí tàctil"

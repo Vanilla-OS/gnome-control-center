@@ -109,12 +109,10 @@
                               <object class="AdwActionRow" id="mouse_row">
                                 <property name="title" translatable="yes">Po_inter Speed</property>
                                 <property name="use-underline">True</property>
+                                <property name="activatable-widget">mouse_speed_scale</property>
                                 <child type="suffix">
                                   <object class="GtkScale" id="mouse_speed_scale">
                                     <property name="hexpand">True</property>
-                                    <accessibility>
-                                      <property name="label" translatable="yes">Pointer Speed</property>
-                                    </accessibility>
                                     <marks>
                                       <mark value="-1" translatable="yes">Slow</mark>
                                       <mark value="0"/>
@@ -171,7 +169,6 @@
                                 <property name="valign">end</property>
                                 <property name="halign">center</property>
                                 <property name="label" translatable="yes">Test _Settings</property>
-                                <property name="tooltip-text" translatable="yes">Test Mouse and Touchpad Settings</property>
                                 <signal name="clicked" handler="test_button_clicked_cb" object="CcMousePanel" swapped="yes"/>
                                 <style>
                                   <class name="pill"/>
@@ -212,12 +209,10 @@
                                 <property name="title" translatable="yes">Po_inter Speed</property>
                                 <property name="use-underline">True</property>
                                 <property name="sensitive" bind-source="touchpad_toggle_row" bind-property="active" bind-flags="default|sync-create" />
+                                <property name="activatable-widget">touchpad_speed_scale</property>
                                 <child type="suffix">
                                   <object class="GtkScale" id="touchpad_speed_scale">
                                     <property name="hexpand">True</property>
-                                    <accessibility>
-                                      <property name="label" translatable="yes">Pointer speed</property>
-                                    </accessibility>
                                     <marks>
                                       <mark value="-1" translatable="yes">Slow</mark>
                                       <mark value="0"/>
@@ -312,7 +307,6 @@
                                   <property name="valign">end</property>
                                   <property name="halign">center</property>
                                   <property name="label" translatable="yes">Test _Settings</property>
-                                  <property name="tooltip-text" translatable="yes">Test Mouse and Touchpad Settings</property>
                                   <signal name="clicked" handler="test_button_clicked_cb" object="CcMousePanel" swapped="yes"/>
                                   <style>
                                     <class name="pill"/>
