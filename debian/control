@@ -113,6 +113,7 @@ Recommends: cracklib-runtime,
 Suggests: gnome-software | gnome-packagekit,
           gnome-user-share,
           gstreamer1.0-pulseaudio,
+          libjxl-gdk-pixbuf,
           realmd,
           x11-xserver-utils
 Breaks: gnome-remote-desktop (<< 42),
