@@ -1,9 +1,11 @@
-gnome-control-center (1:46.3-1) UNRELEASED; urgency=medium
+gnome-control-center (1:46.3-1) unstable; urgency=medium
 
   * New upstream release
+  * Drop revert Remote Login patch since gnome-remote-desktop 46 is in Unstable
+  * Depend instead of Recommend gnome-remote-desktop 46. See upstream #2977
   * Add Depends: heif-gdk-pixbuf, heif-thumbnailer (Closes: #981757)
 
- -- Jeremy Bícha <jbicha@ubuntu.com>  Wed, 10 Jul 2024 19:22:45 -0400
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Sat, 13 Jul 2024 08:03:59 -0400
 
 gnome-control-center (1:46.1-2) unstable; urgency=medium
 
