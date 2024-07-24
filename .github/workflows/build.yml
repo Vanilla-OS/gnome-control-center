@@ -100,6 +100,13 @@ jobs:
       run: |
         sha256sum /__w/gnome-control-center/gnome-control-center.tar.xz >> checksums.txt
 
+    - uses: actions/upload-artifact@v4
+      with:
+        name: gnome-control-center
+        path: |
+            checksums.txt
+            /__w/gnome-control-center/gnome-control-center.tar.xz
+
     - uses: softprops/action-gh-release@v2
       if: github.ref == 'refs/heads/main'
       with:
