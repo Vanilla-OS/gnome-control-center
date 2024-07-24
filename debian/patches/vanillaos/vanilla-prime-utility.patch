@@ -80,7 +80,7 @@ index ba7e91407..1d5c4ff45 100644
 +                        <child>
 +                          <object class="AdwActionRow">
 +                            <property name="activatable">True</property>
-+                            <property name="title" translatable="yes">Prime Utility</property>
++                            <property name="title" translatable="yes">GPU Profile Management (PRIME)</property>
 +                            <property name="use-underline">True</property>
 +                            <signal name="activated" handler="cc_display_panel_prime" swapped="yes"/>
 +                            <child type="suffix">
