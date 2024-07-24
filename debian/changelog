@@ -1,6 +1,6 @@
-gnome-control-center (1:46~99-orchid-beta) unstable; urgency=medium
+gnome-control-center (1:46~99-orchid-stable) unstable; urgency=medium
 
- * Set to highest version for orchid
+ * Set to the highest version for Orchid
 
 -- Xenia <axtlos@getcryst.al> Mon, 15 Apr 2024 18:13:00 +0200
 
