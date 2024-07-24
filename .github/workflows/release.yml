@@ -1,18 +1,21 @@
-name: build
+name: Release
 
 on:
   push:
-    branches: [ "main" ]
+    tags:
+      - '*'
 
 jobs:
-  build:
-    runs-on: ubuntu-22.04
+  build-artifacts:
+    runs-on: ubuntu-latest
     container:
       image: ghcr.io/vanilla-os/pico:main
       volumes:
         - /proc:/proc
         - /:/run/host
       options: --privileged -it
+    permissions:
+      contents: read
 
     steps:
     - uses: actions/checkout@v4
@@ -87,20 +90,51 @@ jobs:
           xvfb \
           wget \
           git
+  
     - name: Build debian package
       run: |
         wget https://github.com/vanilla-os/gnome-control-center/tarball/main
-        mv main ../gnome-control-center_46~99-orchid-alpha.orig.tar.gz
+        mv main ../gnome-control-center_46~99-orchid-stable.orig.tar.gz
         dpkg-buildpackage -b -uc -us
         tar cvf ../gnome-control-center.tar.xz ../*.deb
+    
+    - name: Calculate and Save Checksums
+      run: |
+        sha256sum /__w/gnome-control-center/gnome-control-center.tar.xz >> checksums.txt
 
-    - uses: softprops/action-gh-release@v1
+    - uses: actions/upload-artifact@v4
       with:
-        token: "${{ secrets.GITHUB_TOKEN }}"
-        tag_name: "continuous"
-        prerelease: true
-        name: "Continuous Build"
-        files: |
-          /__w/gnome-control-center/gnome-control-center-data_46~99-orchid-alpha-2_all.deb
-          /__w/gnome-control-center/gnome-control-center_46~99-orchid-alpha-2_amd64.deb
-          /__w/gnome-control-center/gnome-control-center.tar.xz
+        name: gnome-control-center
+        path: |
+            checksums.txt
+            /__w/gnome-control-center/gnome-control-center.tar.xz
+
+  release:
+    runs-on: ubuntu-latest
+    needs: build-artifacts
+    permissions:
+      contents: write # to create and upload assets to releases
+      attestations: write # to upload assets attestation for build provenance
+      id-token: write # grant additional permission to attestation action to mint the OIDC token permission
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: gnome-control-center
+
+      - name: Create Release
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release create "${{ github.ref_name }}" --generate-notes *.tar.xz gnome-control-center/checksums.txt
+      
+      - name: Attest Release Files
+        id: attest
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-path: '*.tar.xz, gnome-control-center/*.txt'
