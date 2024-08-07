@@ -1,8 +1,9 @@
-gnome-control-center (1:46.4-1) UNRELEASED; urgency=medium
+gnome-control-center (1:46.4-1) unstable; urgency=medium
 
   * New upstream release
+  * Bump Standards Version to 4.7.0
 
- -- Jeremy Bícha <jbicha@ubuntu.com>  Wed, 07 Aug 2024 15:19:26 -0400
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Wed, 07 Aug 2024 15:40:09 -0400
 
 gnome-control-center (1:46.3-1) unstable; urgency=medium
 
