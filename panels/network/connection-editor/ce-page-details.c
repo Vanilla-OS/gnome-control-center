@@ -74,40 +74,29 @@ G_DEFINE_TYPE_WITH_CODE (CEPageDetails, ce_page_details, ADW_TYPE_BIN,
                          G_IMPLEMENT_INTERFACE (ce_page_get_type (), ce_page_iface_init))
 
 static void
-on_forget_cb (CEPageDetails *self,
-              gchar         *response)
-{
-        if (g_strcmp0 (response, "forget") == 0)
-                net_connection_editor_forget (self->editor);
-}
-
-static void
 forget_cb (CEPageDetails *self)
 {
-        GtkWidget *dialog;
-        GtkNative *native;
+        AdwDialog *dialog;
         g_autofree gchar *message = NULL;
 
-        native = gtk_widget_get_native (GTK_WIDGET (self));
         /* Translators: "%s" is the user visible name of the network */
         message = g_strdup_printf (_("Saved details for “%s” will be permanently lost. This includes passwords and any network changes."),
                                    nm_connection_get_id (self->connection));
-        dialog = adw_message_dialog_new (GTK_WINDOW (native),
-                                        _("Forget Connection?"),
-                                        message);
+        dialog = adw_alert_dialog_new (_("Forget Connection?"),
+                                       message);
 
-        adw_message_dialog_add_responses (ADW_MESSAGE_DIALOG (dialog),
-                                          "cancel",  _("_Cancel"),
-                                          "forget", _("Forget"),
-                                          NULL);
-        adw_message_dialog_set_response_appearance (ADW_MESSAGE_DIALOG (dialog),
-                                                    "forget",
-                                                    ADW_RESPONSE_DESTRUCTIVE);
-        adw_message_dialog_set_default_response (ADW_MESSAGE_DIALOG (dialog), "cancel");
-        adw_message_dialog_set_close_response (ADW_MESSAGE_DIALOG (dialog), "cancel");
+        adw_alert_dialog_add_responses (ADW_ALERT_DIALOG (dialog),
+                                        "cancel",  _("_Cancel"),
+                                        "forget", _("_Forget"),
+                                        NULL);
+        adw_alert_dialog_set_response_appearance (ADW_ALERT_DIALOG (dialog),
+                                                  "forget",
+                                                  ADW_RESPONSE_DESTRUCTIVE);
+        adw_alert_dialog_set_default_response (ADW_ALERT_DIALOG (dialog), "cancel");
+        adw_alert_dialog_set_close_response (ADW_ALERT_DIALOG (dialog), "cancel");
 
-        g_signal_connect_swapped (dialog, "response", G_CALLBACK (on_forget_cb), self);
-        gtk_window_present (GTK_WINDOW (dialog));
+        g_signal_connect_swapped (dialog, "response::forget", G_CALLBACK (net_connection_editor_forget), self->editor);
+        adw_dialog_present (dialog, GTK_WIDGET (self));
 }
 
 static gchar *
@@ -281,7 +270,7 @@ connect_details_page (CEPageDetails *self)
         const gchar *type;
         const gchar *hw_address = NULL;
         g_autofree gchar *security_string = NULL;
-        g_autofree gchar *freq_string = NULL;
+        const gchar *freq_string = NULL;
         const gchar *strength_label;
         gboolean device_is_active;
         NMIPConfig *ipv4_config = NULL, *ipv6_config = NULL;
@@ -342,13 +331,24 @@ connect_details_page (CEPageDetails *self)
         gtk_widget_set_visible (GTK_WIDGET (self->mac_label), hw_address != NULL);
 
         if (wifi_caps & NM_WIFI_DEVICE_CAP_FREQ_VALID) {
+/* Check 6 GHz support in Network Manager */
+#if NM_CHECK_VERSION (1, 45, 4)
+                if (wifi_caps & NM_WIFI_DEVICE_CAP_FREQ_2GHZ &&
+                    wifi_caps & NM_WIFI_DEVICE_CAP_FREQ_5GHZ &&
+                    wifi_caps & NM_WIFI_DEVICE_CAP_FREQ_6GHZ)
+                        freq_string = _("2.4 GHz / 5 GHz / 6 GHz");
+                else if (wifi_caps & NM_WIFI_DEVICE_CAP_FREQ_5GHZ &&
+                         wifi_caps & NM_WIFI_DEVICE_CAP_FREQ_6GHZ)
+                        freq_string = _("5 GHz / 6 GHz");
+                else
+#endif
                 if (wifi_caps & NM_WIFI_DEVICE_CAP_FREQ_2GHZ &&
                     wifi_caps & NM_WIFI_DEVICE_CAP_FREQ_5GHZ)
-                        freq_string = g_strdup (_("2.4 GHz / 5 GHz"));
+                        freq_string = _("2.4 GHz / 5 GHz");
                 else if (wifi_caps & NM_WIFI_DEVICE_CAP_FREQ_2GHZ)
-                        freq_string = g_strdup (_("2.4 GHz"));
+                        freq_string = _("2.4 GHz");
                 else if (wifi_caps & NM_WIFI_DEVICE_CAP_FREQ_5GHZ)
-                        freq_string = g_strdup (_("5 GHz"));
+                        freq_string = _("5 GHz");
         }
 
         gtk_label_set_label (self->freq_label, freq_string);

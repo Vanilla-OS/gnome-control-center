@@ -49,7 +49,7 @@
 
 struct _CcEnterpriseLoginDialog
 {
-  AdwWindow            parent_instance;
+  AdwDialog           parent_instance;
 
   AdwNavigationView   *navigation;
   AdwNavigationPage   *offline_page;
@@ -60,7 +60,7 @@ struct _CcEnterpriseLoginDialog
   AdwToastOverlay     *toast_overlay;
 
   GtkButton           *add_button;
-  GtkSpinner          *main_page_spinner;
+  AdwSpinner          *main_page_spinner;
   AdwEntryRow         *domain_row;
   CcEntryFeedback     *domain_feedback;
   gint                 domain_timeout_id;
@@ -68,7 +68,7 @@ struct _CcEnterpriseLoginDialog
   AdwPasswordEntryRow *password_row;
 
   GtkButton           *enroll_button;
-  GtkSpinner          *enroll_page_spinner;
+  AdwSpinner          *enroll_page_spinner;
   AdwEntryRow         *admin_name_row;
   AdwPasswordEntryRow *admin_password_row;
 
@@ -79,7 +79,7 @@ struct _CcEnterpriseLoginDialog
   GCancellable        *cancellable;
 };
 
-G_DEFINE_TYPE (CcEnterpriseLoginDialog, cc_enterprise_login_dialog, ADW_TYPE_WINDOW)
+G_DEFINE_TYPE (CcEnterpriseLoginDialog, cc_enterprise_login_dialog, ADW_TYPE_DIALOG)
 
 static gboolean
 add_button_is_valid (CcEnterpriseLoginDialog *self)
@@ -139,7 +139,7 @@ cache_user_cb (GObject      *source,
     {
       g_debug ("Successfully cached remote user: %s", act_user_get_user_name (user));
 
-      gtk_window_close (GTK_WINDOW (self));
+      adw_dialog_close (ADW_DIALOG (self));
     }
   else
     {
@@ -592,7 +592,7 @@ on_domain_entry_changed_cb (CcEnterpriseLoginDialog *self)
       return;
     }
 
-  cc_entry_feedback_update (self->domain_feedback, "process-working-symbolic", _("Checking domain…"));
+  cc_entry_feedback_update (self->domain_feedback, CC_ENTRY_LOADING, _("Checking domain…"));
   self->domain_timeout_id = g_timeout_add (DOMAIN_CHECK_TIMEOUT, (GSourceFunc)domain_validate, self);
 }
 

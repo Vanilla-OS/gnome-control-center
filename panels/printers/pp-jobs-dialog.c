@@ -44,8 +44,9 @@
 #define CLOCK_FORMAT_KEY "clock-format"
 
 struct _PpJobsDialog {
-  AdwWindow          parent_instance;
+  AdwDialog          parent_instance;
 
+  AdwWindowTitle    *title_widget;
   GtkButton         *authenticate_button;
   GtkMenuButton     *authenticate_jobs_button;
   GtkLabel          *authenticate_jobs_label;
@@ -55,8 +56,6 @@ struct _PpJobsDialog {
   GtkLabel          *domain_label;
   GtkButton         *jobs_clear_all_button;
   GtkListBox        *jobs_listbox;
-  GtkScrolledWindow *list_jobs_page;
-  GtkBox            *no_jobs_page;
   GtkEntry          *password_entry;
   GtkLabel          *password_label;
   GtkStack          *stack;
@@ -74,7 +73,7 @@ struct _PpJobsDialog {
   GCancellable *get_jobs_cancellable;
 };
 
-G_DEFINE_TYPE (PpJobsDialog, pp_jobs_dialog, ADW_TYPE_WINDOW)
+G_DEFINE_TYPE (PpJobsDialog, pp_jobs_dialog, ADW_TYPE_DIALOG)
 
 static gboolean
 is_info_required (PpJobsDialog *self,
@@ -266,12 +265,12 @@ update_jobs_list_cb (GObject      *source_object,
   if (jobs->len > 0)
     {
       gtk_widget_set_sensitive (GTK_WIDGET (self->jobs_clear_all_button), TRUE);
-      gtk_stack_set_visible_child (self->stack, GTK_WIDGET (self->list_jobs_page));
+      gtk_stack_set_visible_child_name (self->stack, "jobs-page");
     }
   else
     {
       gtk_widget_set_sensitive (GTK_WIDGET (self->jobs_clear_all_button), FALSE);
-      gtk_stack_set_visible_child (self->stack, GTK_WIDGET (self->no_jobs_page));
+      gtk_stack_set_visible_child_name (self->stack, "no-jobs-page");
     }
 
   for (i = 0; i < jobs->len; i++)
@@ -442,7 +441,6 @@ pp_jobs_dialog_new (const gchar *printer_name)
 {
   PpJobsDialog *self;
   g_autofree gchar *text = NULL;
-  g_autofree gchar *title = NULL;
 
   self = g_object_new (PP_TYPE_JOBS_DIALOG, NULL);
 
@@ -451,9 +449,7 @@ pp_jobs_dialog_new (const gchar *printer_name)
   self->jobs_filled = FALSE;
   self->pop_up_authentication_popup = FALSE;
 
-  /* Translators: This is the printer name for which we are showing the active jobs */
-  title = g_strdup_printf (C_("Printer jobs dialog title", "%s — Active Jobs"), printer_name);
-  gtk_window_set_title (GTK_WINDOW (self), title);
+  adw_window_title_set_subtitle (self->title_widget, printer_name);
 
   /* Translators: The printer needs authentication info to print. */
   text = g_strdup_printf (_("Enter credentials to print from %s"), printer_name);
@@ -510,6 +506,7 @@ pp_jobs_dialog_class_init (PpJobsDialogClass *klass)
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/printers/pp-jobs-dialog.ui");
 
+  gtk_widget_class_bind_template_child (widget_class, PpJobsDialog, title_widget);
   gtk_widget_class_bind_template_child (widget_class, PpJobsDialog, authenticate_button);
   gtk_widget_class_bind_template_child (widget_class, PpJobsDialog, authenticate_jobs_button);
   gtk_widget_class_bind_template_child (widget_class, PpJobsDialog, authenticate_jobs_label);
@@ -519,8 +516,6 @@ pp_jobs_dialog_class_init (PpJobsDialogClass *klass)
   gtk_widget_class_bind_template_child (widget_class, PpJobsDialog, domain_label);
   gtk_widget_class_bind_template_child (widget_class, PpJobsDialog, jobs_clear_all_button);
   gtk_widget_class_bind_template_child (widget_class, PpJobsDialog, jobs_listbox);
-  gtk_widget_class_bind_template_child (widget_class, PpJobsDialog, list_jobs_page);
-  gtk_widget_class_bind_template_child (widget_class, PpJobsDialog, no_jobs_page);
   gtk_widget_class_bind_template_child (widget_class, PpJobsDialog, password_entry);
   gtk_widget_class_bind_template_child (widget_class, PpJobsDialog, password_label);
   gtk_widget_class_bind_template_child (widget_class, PpJobsDialog, stack);
@@ -533,6 +528,4 @@ pp_jobs_dialog_class_init (PpJobsDialogClass *klass)
   gtk_widget_class_bind_template_callback (widget_class, auth_entries_changed);
 
   object_class->dispose = pp_jobs_dialog_dispose;
-
-  gtk_widget_class_add_binding_action (widget_class, GDK_KEY_Escape, 0, "window.close", NULL);
 }

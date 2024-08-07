@@ -40,7 +40,7 @@
 
 struct _CcPasswordDialog
 {
-        AdwWindow parent_instance;
+        AdwDialog parent_instance;
 
         GtkCheckButton    *action_login_radio;
         GtkCheckButton    *action_now_radio;
@@ -66,9 +66,9 @@ struct _CcPasswordDialog
         PasswdHandler      *passwd_handler;
 };
 
-G_DEFINE_TYPE (CcPasswordDialog, cc_password_dialog, ADW_TYPE_WINDOW)
+G_DEFINE_TYPE (CcPasswordDialog, cc_password_dialog, ADW_TYPE_DIALOG)
 
-static gint
+static gboolean
 update_password_strength (CcPasswordDialog *self)
 {
         const gchar *password;
@@ -77,13 +77,14 @@ update_password_strength (CcPasswordDialog *self)
         gint strength_level;
         const gchar *hint;
         const gchar *verify;
+        gboolean enforcing, accept;
 
         password = gtk_editable_get_text (GTK_EDITABLE (self->password_entry));
         old_password = gtk_editable_get_text (GTK_EDITABLE (self->old_password_entry));
         username = act_user_get_user_name (self->user);
 
         pw_strength (password, old_password, username,
-                     &hint, &strength_level);
+                     &hint, &strength_level, &enforcing);
 
         gtk_level_bar_set_value (self->strength_indicator, strength_level);
         gtk_label_set_label (self->password_hint_label, hint);
@@ -97,12 +98,14 @@ update_password_strength (CcPasswordDialog *self)
                 gtk_widget_add_css_class (GTK_WIDGET (self->password_entry), "error");
         }
 
+        accept = strength_level > 1 || !enforcing;
+
         verify = gtk_editable_get_text (GTK_EDITABLE (self->verify_entry));
         if (strlen (verify) == 0) {
-                gtk_widget_set_sensitive (GTK_WIDGET (self->verify_entry), strength_level > 1);
+                gtk_widget_set_sensitive (GTK_WIDGET (self->verify_entry), accept);
         }
 
-        return strength_level;
+        return accept;
 }
 
 static void
@@ -110,14 +113,14 @@ password_changed_cb (PasswdHandler    *handler,
                      GError           *error,
                      CcPasswordDialog *self)
 {
-        GtkWidget *dialog;
+        AdwDialog *dialog;
         const gchar *primary_text;
         const gchar *secondary_text;
 
         gtk_widget_set_sensitive (GTK_WIDGET (self), TRUE);
 
         if (!error) {
-                gtk_window_close (GTK_WINDOW (self));
+                adw_dialog_close (ADW_DIALOG (self));
                 return;
         }
 
@@ -142,14 +145,15 @@ password_changed_cb (PasswdHandler    *handler,
                 secondary_text = error->message;
         }
 
-        dialog = gtk_message_dialog_new (GTK_WINDOW (self),
-                                         GTK_DIALOG_MODAL,
-                                         GTK_MESSAGE_ERROR,
-                                         GTK_BUTTONS_CLOSE,
-                                         "%s", primary_text);
-        gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog),
-                                                  "%s", secondary_text);
-        gtk_window_present (GTK_WINDOW (dialog));
+        dialog = adw_alert_dialog_new (primary_text, secondary_text);
+        adw_alert_dialog_add_responses (ADW_ALERT_DIALOG (dialog),
+                                        "ok",  _("_OK"),
+                                        NULL);
+
+        adw_alert_dialog_set_default_response (ADW_ALERT_DIALOG (dialog),
+                                               "ok");
+
+        adw_dialog_present (dialog, GTK_WIDGET (self));
 }
 
 static void
@@ -185,7 +189,7 @@ ok_button_clicked_cb (CcPasswordDialog *self)
                         g_assert_not_reached ();
         }
 
-        gtk_window_close (GTK_WINDOW (self));
+        adw_dialog_close (ADW_DIALOG (self));
 }
 
 static void
@@ -193,14 +197,14 @@ update_sensitivity (CcPasswordDialog *self)
 {
         const gchar *password, *verify;
         gboolean can_change;
-        int strength;
+        gboolean accept;
 
         password = gtk_editable_get_text (GTK_EDITABLE (self->password_entry));
         verify = gtk_editable_get_text (GTK_EDITABLE (self->verify_entry));
 
         if (self->password_mode == ACT_USER_PASSWORD_MODE_REGULAR) {
-                strength = update_password_strength (self);
-                can_change = strength > 1 && strcmp (password, verify) == 0 &&
+                accept = update_password_strength (self);
+                can_change = accept && strcmp (password, verify) == 0 &&
                              (self->old_password_ok || !gtk_widget_get_visible (GTK_WIDGET (self->old_password_entry)));
         }
         else {
@@ -430,8 +434,6 @@ cc_password_dialog_class_init (CcPasswordDialogClass *klass)
 
         object_class->dispose = cc_password_dialog_dispose;
 
-        gtk_widget_class_add_binding_action (widget_class, GDK_KEY_Escape, 0, "window.close", NULL);
-
         gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/system/users/cc-password-dialog.ui");
 
         gtk_widget_class_bind_template_child (widget_class, CcPasswordDialog, action_login_radio);
@@ -468,7 +470,6 @@ CcPasswordDialog *
 cc_password_dialog_new (ActUser *user)
 {
         CcPasswordDialog *self;
-        GtkWindow *window;
 
         g_return_val_if_fail (ACT_IS_USER (user), NULL);
 
@@ -502,8 +503,7 @@ cc_password_dialog_new (ActUser *user)
         else
                 gtk_widget_grab_focus (GTK_WIDGET (self->password_entry));
 
-        window = (GtkWindow *) gtk_widget_get_native (GTK_WIDGET (self));
-        gtk_window_set_default_widget (window, GTK_WIDGET (self->ok_button));
+        adw_dialog_set_default_widget (ADW_DIALOG (self), GTK_WIDGET (self->ok_button));
 
         return self;
 }

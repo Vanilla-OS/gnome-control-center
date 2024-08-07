@@ -21,7 +21,7 @@
 #include "cc-list-row.h"
 #include "cc-search-panel.h"
 #include "cc-search-panel-row.h"
-#include "cc-search-locations-dialog.h"
+#include "cc-search-locations-page.h"
 #include "cc-search-resources.h"
 
 #include <gio/gdesktopappinfo.h>
@@ -40,19 +40,13 @@ struct _CcSearchPanel
   GSettings        *search_settings;
   GHashTable       *sort_order;
 
-  CcSearchLocationsDialog  *locations_dialog;
+  CcSearchLocationsPage *locations_page;
 };
 
 CC_PANEL_REGISTER (CcSearchPanel, cc_search_panel)
 
-enum
-{
-  PROP_0,
-  PROP_PARAMETERS
-};
-
 #define SHELL_PROVIDER_GROUP "Shell Search Provider"
-#define SEARCH_LOCATIONS_DIALOG_PARAM "locations"
+#define SEARCH_LOCATIONS_PAGE_PARAM "locations"
 
 static gboolean
 keynav_failed_cb (CcSearchPanel *self, GtkDirectionType direction, GtkWidget *list)
@@ -161,16 +155,6 @@ search_panel_propagate_sort_order (CcSearchPanel *self)
   g_ptr_array_add (sort_order, NULL);
   g_settings_set_strv (self->search_settings, "sort-order",
                        (const gchar **) sort_order->pdata);
-}
-
-static void
-search_panel_set_no_providers (CcSearchPanel *self)
-{
-  /* center the list box in the scrolled window */
-  gtk_widget_set_valign (self->list_box, GTK_ALIGN_CENTER);
-
-  gtk_list_box_append (GTK_LIST_BOX (self->list_box),
-                       gtk_label_new (_("No apps found")));
 }
 
 static void
@@ -288,26 +272,6 @@ row_moved_cb (CcSearchPanel    *self,
   down = (source_idx - dest_idx) < 0;
   for (int i = 0; i < ABS (source_idx - dest_idx); i++)
     search_panel_move_selected (self, down);
-}
-
-static void
-show_search_locations_dialog (CcSearchPanel *self)
-{
-  CcShell *shell;
-  GtkWidget *toplevel;
-
-  if (self->locations_dialog == NULL)
-    {
-      self->locations_dialog = cc_search_locations_dialog_new ();
-      g_object_add_weak_pointer (G_OBJECT (self->locations_dialog),
-                                 (gpointer *) &self->locations_dialog);
-
-      shell = cc_panel_get_shell (CC_PANEL (self));
-      toplevel = cc_shell_get_toplevel (shell);
-      gtk_window_set_transient_for (GTK_WINDOW (self->locations_dialog), GTK_WINDOW (toplevel));
-    }
-
-  gtk_window_present (GTK_WINDOW (self->locations_dialog));
 }
 
 static GVariant *
@@ -543,12 +507,6 @@ search_providers_discover_ready (GObject *source,
   if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
     return;
 
-  if (providers == NULL)
-    {
-      search_panel_set_no_providers (self);
-      return;
-    }
-
   for (l = providers; l != NULL; l = l->next)
     {
       g_autoptr(GFile) provider = l->data;
@@ -645,44 +603,6 @@ populate_search_providers (CcSearchPanel *self)
   g_task_run_in_thread (task, search_providers_discover_thread);
 }
 
-static void
-cc_search_panel_set_property (GObject      *object,
-                              guint         property_id,
-                              const GValue *value,
-                              GParamSpec   *pspec)
-{
-  switch (property_id)
-    {
-      case PROP_PARAMETERS:
-        {
-          GVariant *parameters = g_value_get_variant (value);
-          g_autoptr (GVariant) v = NULL;
-          const gchar *parameter = NULL;
-
-          if (parameters == NULL || g_variant_n_children (parameters) <= 0)
-            return;
-
-          g_variant_get_child (parameters, 0, "v", &v);
-          if (!g_variant_is_of_type (v, G_VARIANT_TYPE_STRING))
-            {
-              g_warning ("Wrong type for the second argument GVariant, expected 's' but got '%s'",
-                         (gchar *)g_variant_get_type (v));
-              return;
-            }
-
-          parameter = g_variant_get_string (v, NULL);
-
-          if (g_str_equal (parameter, SEARCH_LOCATIONS_DIALOG_PARAM))
-            show_search_locations_dialog (CC_SEARCH_PANEL (object));
-          else
-            g_warning ("Ignoring unknown parameter %s", parameter);
-
-          return;
-        }
-      default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-    }
-}
 
 static void
 cc_search_panel_finalize (GObject *object)
@@ -692,9 +612,6 @@ cc_search_panel_finalize (GObject *object)
   g_clear_object (&self->search_settings);
   g_hash_table_destroy (self->sort_order);
 
-  if (self->locations_dialog)
-    gtk_window_destroy (GTK_WINDOW (self->locations_dialog));
-
   G_OBJECT_CLASS (cc_search_panel_parent_class)->finalize (object);
 }
 
@@ -702,13 +619,17 @@ static void
 cc_search_panel_init (CcSearchPanel *self)
 {
   g_resources_register (cc_search_get_resource ());
+  gboolean search_locations_available = FALSE;
 
   gtk_widget_init_template (GTK_WIDGET (self));
 
   gtk_list_box_set_sort_func (GTK_LIST_BOX (self->list_box),
                               (GtkListBoxSortFunc)list_sort_func, self, NULL);
 
-  gtk_widget_set_sensitive (self->settings_row, cc_search_locations_dialog_is_available ());
+  search_locations_available = cc_search_locations_page_is_available ();
+  gtk_widget_set_sensitive (self->settings_row, search_locations_available);
+  if (search_locations_available)
+    cc_panel_add_static_subpage (CC_PANEL (self), SEARCH_LOCATIONS_PAGE_PARAM, CC_TYPE_SEARCH_LOCATIONS_PAGE);
 
   self->search_settings = g_settings_new ("org.gnome.desktop.search-providers");
   g_settings_bind (self->search_settings,
@@ -741,11 +662,8 @@ cc_search_panel_class_init (CcSearchPanelClass *klass)
   GObjectClass *oclass = G_OBJECT_CLASS (klass);
 
   oclass->finalize = cc_search_panel_finalize;
-  oclass->set_property = cc_search_panel_set_property;
 
   g_type_ensure (CC_TYPE_LIST_ROW);
-
-  g_object_class_override_property (oclass, PROP_PARAMETERS, "parameters");
 
   gtk_widget_class_set_template_from_resource (widget_class,
                                                "/org/gnome/control-center/search/cc-search-panel.ui");
@@ -755,6 +673,5 @@ cc_search_panel_class_init (CcSearchPanelClass *klass)
   gtk_widget_class_bind_template_child (widget_class, CcSearchPanel, search_group);
   gtk_widget_class_bind_template_child (widget_class, CcSearchPanel, settings_row);
 
-  gtk_widget_class_bind_template_callback (widget_class, show_search_locations_dialog);
   gtk_widget_class_bind_template_callback (widget_class, keynav_failed_cb);
 }

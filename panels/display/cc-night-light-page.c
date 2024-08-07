@@ -34,14 +34,14 @@
 struct _CcNightLightPage {
   AdwBin               parent;
 
+  AdwViewStack        *main_stack;
   GtkWidget           *night_light_settings;
   GtkWidget           *box_manual;
   GtkButton           *button_from_am;
   GtkButton           *button_from_pm;
   GtkButton           *button_to_am;
   GtkButton           *button_to_pm;
-  GtkWidget           *infobar_unsupported;
-  GtkWidget           *infobar_unsupported_description;
+  AdwStatusPage       *night_light_unsupported_page;
   GtkWidget           *infobar_disabled;
   GtkWidget           *scale_color_temperature;
   AdwSwitchRow        *night_light_toggle_row;
@@ -62,6 +62,7 @@ struct _CcNightLightPage {
   GtkAdjustment       *adjustment_color_temperature;
 
   GSettings           *settings_display;
+  GSettings           *settings_location;
   GSettings           *settings_clock;
   GDBusProxy          *proxy_color;
   GDBusProxy          *proxy_color_props;
@@ -77,6 +78,7 @@ G_DEFINE_TYPE (CcNightLightPage, cc_night_light_page, ADW_TYPE_BIN);
 
 #define CLOCK_SCHEMA     "org.gnome.desktop.interface"
 #define DISPLAY_SCHEMA   "org.gnome.settings-daemon.plugins.color"
+#define LOCATION_SCHEMA  "org.gnome.system.location"
 #define CLOCK_FORMAT_KEY "clock-format"
 #define NIGHT_LIGHT_PREVIEW_TIMEOUT_SECONDS 5
 
@@ -133,7 +135,7 @@ dialog_update_state (CcNightLightPage *self)
     {
       gboolean automatic;
       gboolean disabled_until_tomorrow = FALSE;
-      gboolean enabled;
+      gboolean enabled, location_enabled;
       gdouble value = 0.f;
 
       /* only show the infobar if we are disabled */
@@ -151,8 +153,13 @@ dialog_update_state (CcNightLightPage *self)
       enabled = g_settings_get_boolean (self->settings_display, "night-light-enabled");
       automatic = g_settings_get_boolean (self->settings_display, "night-light-schedule-automatic");
 
+      /* only allow automatic if location is enabled */
+      location_enabled = g_settings_get_boolean (self->settings_location, "enabled");
+      automatic = automatic && location_enabled;
+
       gtk_widget_set_sensitive (self->box_manual, enabled && !automatic);
 
+      gtk_widget_set_sensitive (GTK_WIDGET (self->schedule_type_row), enabled);
       adw_combo_row_set_selected (self->schedule_type_row, automatic ? 0 : 1);
 
       /* set from */
@@ -213,38 +220,17 @@ dialog_update_state (CcNightLightPage *self)
       value = (gdouble) g_settings_get_uint (self->settings_display, "night-light-temperature");
       gtk_adjustment_set_value (self->adjustment_color_temperature, value);
       self->ignore_value_changed = FALSE;
+
+      adw_view_stack_set_visible_child_name (self->main_stack, "night-light-page");
     }
   else
     {
-      gtk_widget_set_visible (self->infobar_unsupported, TRUE);
-      gtk_widget_set_visible (self->infobar_disabled, FALSE);
-      gtk_widget_set_sensitive (self->night_light_settings, FALSE);
-
-      if (cc_hostname_is_vm_chassis (cc_hostname_get_default ()))
-        {
-          gtk_label_set_text (GTK_LABEL (self->infobar_unsupported_description),
-                              _("Night Light cannot be used from a virtual machine."));
-        }
+      adw_status_page_set_description (self->night_light_unsupported_page,
+                                       cc_hostname_is_vm_chassis (cc_hostname_get_default ()) ?
+                                       _("Night Light cannot be used from a virtual machine") :
+                                       _("This could be the result of the graphics driver being used, or the desktop being used remotely."));
+      adw_view_stack_set_visible_child_name (self->main_stack, "night-light-unsupported-page");
     }
-}
-
-static void
-build_schedule_combo_row (CcNightLightPage *self)
-{
-  gboolean automatic;
-  gboolean enabled;
-
-  self->ignore_value_changed = TRUE;
-
-
-  enabled = g_settings_get_boolean (self->settings_display, "night-light-enabled");
-  automatic = g_settings_get_boolean (self->settings_display, "night-light-schedule-automatic");
-
-  gtk_widget_set_sensitive (self->box_manual, enabled && !automatic);
-
-  adw_combo_row_set_selected (self->schedule_type_row, automatic ? 0 : 1);
-
-  self->ignore_value_changed = FALSE;
 }
 
 static void
@@ -257,7 +243,7 @@ on_schedule_type_row_selected_changed_cb (CcNightLightPage *self)
     return;
 
   selected = adw_combo_row_get_selected (self->schedule_type_row);
-  automatic = selected == 0;;
+  automatic = selected == 0;
 
   g_settings_set_boolean (self->settings_display, "night-light-schedule-automatic", automatic);
 }
@@ -606,6 +592,7 @@ cc_night_light_page_finalize (GObject *object)
   g_clear_object (&self->proxy_color);
   g_clear_object (&self->proxy_color_props);
   g_clear_object (&self->settings_display);
+  g_clear_object (&self->settings_location);
   g_clear_object (&self->settings_clock);
   g_clear_handle_id (&self->timer_id, g_source_remove);
 
@@ -622,6 +609,7 @@ cc_night_light_page_class_init (CcNightLightPageClass *klass)
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/display/cc-night-light-page.ui");
 
+  gtk_widget_class_bind_template_child (widget_class, CcNightLightPage, main_stack);
   gtk_widget_class_bind_template_child (widget_class, CcNightLightPage, adjustment_from_hours);
   gtk_widget_class_bind_template_child (widget_class, CcNightLightPage, adjustment_from_minutes);
   gtk_widget_class_bind_template_child (widget_class, CcNightLightPage, adjustment_to_hours);
@@ -633,8 +621,7 @@ cc_night_light_page_class_init (CcNightLightPageClass *klass)
   gtk_widget_class_bind_template_child (widget_class, CcNightLightPage, button_from_pm);
   gtk_widget_class_bind_template_child (widget_class, CcNightLightPage, button_to_am);
   gtk_widget_class_bind_template_child (widget_class, CcNightLightPage, button_to_pm);
-  gtk_widget_class_bind_template_child (widget_class, CcNightLightPage, infobar_unsupported);
-  gtk_widget_class_bind_template_child (widget_class, CcNightLightPage, infobar_unsupported_description);
+  gtk_widget_class_bind_template_child (widget_class, CcNightLightPage, night_light_unsupported_page);
   gtk_widget_class_bind_template_child (widget_class, CcNightLightPage, infobar_disabled);
   gtk_widget_class_bind_template_child (widget_class, CcNightLightPage, night_light_toggle_row);
   gtk_widget_class_bind_template_child (widget_class, CcNightLightPage, schedule_type_row);
@@ -691,7 +678,11 @@ cc_night_light_page_init (CcNightLightPage *self)
 
   g_signal_connect_object (self->settings_display, "changed", G_CALLBACK (dialog_settings_changed_cb), self, G_CONNECT_SWAPPED);
 
-  build_schedule_combo_row (self);
+  self->settings_location = g_settings_new (LOCATION_SCHEMA);
+  g_settings_bind (self->settings_location, "enabled",
+                   self->schedule_type_row, "visible",
+                   G_SETTINGS_BIND_DEFAULT);
+  g_signal_connect_object (self->settings_location, "changed::enabled", G_CALLBACK (dialog_update_state), self, G_CONNECT_SWAPPED);
 
   g_settings_bind (self->settings_display, "night-light-enabled",
                    self->night_light_toggle_row, "active",

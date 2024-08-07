@@ -51,7 +51,7 @@ struct _CcUaZoomPage
   AdwComboRow        *zoom_screen_area_row;
   AdwComboRow        *zoom_follow_behaviour_row;
 
-  AdwSwitchRow       *crosshair_row;
+  AdwExpanderRow     *crosshair_row;
   AdwSwitchRow       *crosshair_overlap_mouse_row;
   GtkScale           *crosshair_thickness_scale;
   GtkScale           *crosshair_length_scale;
@@ -373,11 +373,11 @@ cc_ua_zoom_page_init (CcUaZoomPage *self)
 
   /* Cross hairs */
   g_settings_bind (self->magnifier_settings, "show-cross-hairs",
-                   self->crosshair_row, "active",
+                   self->crosshair_row, "enable-expansion",
                    G_SETTINGS_BIND_DEFAULT);
   g_settings_bind (self->magnifier_settings, "cross-hairs-clip",
                    self->crosshair_overlap_mouse_row, "active",
-                   G_SETTINGS_BIND_INVERT_BOOLEAN | G_SETTINGS_BIND_NO_SENSITIVITY);
+                   G_SETTINGS_BIND_INVERT_BOOLEAN);
 
   g_settings_bind (self->magnifier_settings, "cross-hairs-thickness",
                    gtk_range_get_adjustment (GTK_RANGE (self->crosshair_thickness_scale)), "value",

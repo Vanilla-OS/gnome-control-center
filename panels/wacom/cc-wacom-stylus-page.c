@@ -139,7 +139,7 @@ set_feel_from_gsettings (GtkAdjustment *adjustment, GSettings *settings, const g
 	 * what points that value would produce and if they match - hooray!
 	 */
 	for (i = 0; i < 4; i++) {
-		double val;
+		double val = -1;
 
 		switch (i) {
 		case 0:
@@ -199,16 +199,13 @@ present_action_dialog (CcWacomStylusPage *page,
 		       guint		 button,
 		       const char        *key)
 {
-	GtkWindow *window;
 	GtkWidget *action_dialog;
 
-	window = GTK_WINDOW (cc_shell_get_toplevel (cc_panel_get_shell (CC_PANEL (page->panel))));
 	action_dialog = cc_wacom_stylus_action_dialog_new (page->stylus_settings,
 							   cc_wacom_tool_get_name (page->stylus),
 							   button, key);
 
-	gtk_window_set_transient_for (GTK_WINDOW (action_dialog), window);
-	gtk_window_present (GTK_WINDOW (action_dialog));
+	adw_dialog_present (ADW_DIALOG (action_dialog), GTK_WIDGET (page));;
 }
 
 static void
@@ -410,6 +407,12 @@ cc_wacom_panel_get_stylus_button_action_label (GDesktopStylusButtonAction action
 		case G_DESKTOP_STYLUS_BUTTON_ACTION_FORWARD:
 			/* Translators: this is the "go forward" action of a button  */
 			text = _("_Forward");
+			break;
+		case G_DESKTOP_STYLUS_BUTTON_ACTION_KEYBINDING:
+			text = _("_Assign Keystroke");
+			break;
+		case G_DESKTOP_STYLUS_BUTTON_ACTION_SWITCH_MONITOR:
+			text = _("_Switch Monitor");
 			break;
 	}
 

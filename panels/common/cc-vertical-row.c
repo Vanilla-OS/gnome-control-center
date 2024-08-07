@@ -189,7 +189,6 @@ cc_vertical_row_dispose (GObject *object)
   }
 
   cc_vertical_row_set_activatable_widget (self, NULL);
-  g_clear_pointer ((GtkWidget**)&priv->header, gtk_widget_unparent);
 
   G_OBJECT_CLASS (cc_vertical_row_parent_class)->dispose (object);
 }

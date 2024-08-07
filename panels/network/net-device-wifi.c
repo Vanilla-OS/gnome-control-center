@@ -61,14 +61,14 @@ struct _NetDeviceWifi
         GtkBox                  *header_box;
         GtkPopover              *header_button_popover;
         GtkBox                  *hotspot_box;
-        CcListRow               *hotspot_name_row;
-        CcListRow               *hotspot_security_row;
-        CcListRow               *hotspot_password_row;
+        AdwActionRow            *hotspot_name_row;
+        AdwActionRow            *hotspot_security_row;
+        AdwActionRow            *hotspot_password_row;
         GtkBox                  *listbox_box;
         GtkStack                *stack;
         AdwPreferencesGroup     *saved_networks_box;
         CcWifiConnectionList    *saved_networks_list;
-        GtkWindow               *saved_networks_dialog;
+        AdwDialog               *saved_networks_dialog;
         AdwToastOverlay         *saved_networks_toast_overlay;
         AdwToast                *saved_networks_undo_toast;
         GPtrArray               *saved_networks_forgotten_rows;
@@ -281,13 +281,13 @@ nm_device_wifi_refresh_hotspot (NetDeviceWifi *self)
         g_debug ("Refreshing hotspot labels to name: '%s', security key: '%s', security: '%s'",
                  hotspot_ssid, hotspot_secret, hotspot_security);
 
-        cc_list_row_set_secondary_label (self->hotspot_name_row, hotspot_ssid);
+        adw_action_row_set_subtitle (self->hotspot_name_row, hotspot_ssid);
         gtk_widget_set_visible (GTK_WIDGET (self->hotspot_name_row), hotspot_ssid != NULL);
 
-        cc_list_row_set_secondary_label (self->hotspot_password_row, hotspot_secret);
+        adw_action_row_set_subtitle (self->hotspot_password_row, hotspot_secret);
         gtk_widget_set_visible (GTK_WIDGET (self->hotspot_password_row), hotspot_secret != NULL);
 
-        cc_list_row_set_secondary_label (self->hotspot_security_row, hotspot_security);
+        adw_action_row_set_subtitle (self->hotspot_security_row, hotspot_security);
         gtk_widget_set_visible (GTK_WIDGET (self->hotspot_security_row), hotspot_security != NULL);
 }
 
@@ -752,8 +752,6 @@ net_device_wifi_dispose (GObject *object)
                 self->hotspot_dialog = NULL;
         }
 
-        g_clear_pointer (&self->saved_networks_dialog, gtk_window_destroy);
-
         G_OBJECT_CLASS (net_device_wifi_parent_class)->dispose (object);
 }
 
@@ -810,7 +808,7 @@ really_forgotten (GObject              *source_object,
                            error->message);
 
         if (cc_wifi_connection_list_is_empty (self->saved_networks_list)) {
-            gtk_window_close (self->saved_networks_dialog);
+            adw_dialog_close (self->saved_networks_dialog);
             gtk_widget_set_visible (GTK_WIDGET (self->saved_network_row), FALSE);
         }
 }
@@ -1003,7 +1001,6 @@ static void
 show_qr_code_for_row (NetDeviceWifi *self, CcWifiConnectionRow *row, CcWifiConnectionList *list)
 {
         NMConnection *connection;
-        GtkNative *native;
         GtkWidget *dialog;
 
         connection = cc_wifi_connection_row_get_connection (row);
@@ -1012,17 +1009,7 @@ show_qr_code_for_row (NetDeviceWifi *self, CcWifiConnectionRow *row, CcWifiConne
         connection = NM_CONNECTION (nm_client_get_connection_by_id (self->client, nm_connection_get_id (connection)));
 
         dialog = cc_qr_code_dialog_new (connection);
-        native = gtk_widget_get_native (GTK_WIDGET (self));
-        gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (native));
-        gtk_window_present (GTK_WINDOW (dialog));
-}
-
-static void
-on_show_saved_network (NetDeviceWifi *self)
-{
-        gtk_window_set_transient_for (self->saved_networks_dialog,
-                                      GTK_WINDOW (gtk_widget_get_native (GTK_WIDGET (self))));
-        gtk_window_present (self->saved_networks_dialog);
+        adw_dialog_present (ADW_DIALOG (dialog), GTK_WIDGET (self));
 }
 
 static void
@@ -1108,7 +1095,6 @@ net_device_wifi_class_init (NetDeviceWifiClass *klass)
         gtk_widget_class_bind_template_child (widget_class, NetDeviceWifi, saved_networks_box);
 
         gtk_widget_class_bind_template_callback (widget_class, device_off_switch_changed_cb);
-        gtk_widget_class_bind_template_callback (widget_class, on_show_saved_network);
         gtk_widget_class_bind_template_callback (widget_class, on_connect_hidden_network);
         gtk_widget_class_bind_template_callback (widget_class, on_wifi_hotspot_network);
 }
@@ -1166,6 +1152,7 @@ net_device_wifi_new (CcPanel *panel, NMClient *client, NMDevice *device)
 
         /* Set up the main Visible Networks list */
         list = cc_wifi_connection_list_new (client, NM_DEVICE_WIFI (device), TRUE, TRUE, FALSE, FALSE);
+        cc_wifi_connection_list_set_placeholder_text (list, _("Searching for networks…"));
         gtk_box_append (self->listbox_box, GTK_WIDGET (list));
 
         listbox = cc_wifi_connection_list_get_list_box (list);
@@ -1182,6 +1169,7 @@ net_device_wifi_new (CcPanel *panel, NMClient *client, NMDevice *device)
 
         /* Set up the Saved Networks list */
         list = cc_wifi_connection_list_new (self->client, NM_DEVICE_WIFI (device), FALSE, FALSE, FALSE, TRUE);
+        cc_wifi_connection_list_set_placeholder_text (list, _("No saved networks"));
         self->saved_networks_list = g_object_ref_sink (list);
         adw_preferences_group_add (self->saved_networks_box, GTK_WIDGET (list));
 

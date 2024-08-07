@@ -39,17 +39,18 @@
 #include "pp-utils.h"
 
 struct _PpDetailsDialog {
-  AdwWindow     parent_instance;
+  AdwDialog     parent_instance;
 
-  GtkBox       *driver_buttons;
-  GtkBox       *loading_box;
-  GtkLabel     *printer_address_label;
-  GtkRevealer  *print_name_hint_revealer;
-  GtkEntry     *printer_location_entry;
-  GtkLabel     *printer_model_label;
-  GtkStack     *printer_model_stack;
-  GtkEntry     *printer_name_entry;
-  GtkButton    *search_for_drivers_button;
+  GtkWindow    *toplevel;
+  AdwPreferencesGroup *driver_button_rows_group;
+  AdwSpinner   *spinner_driver_search;
+  AdwActionRow *printer_address_row;
+  GtkRevealer  *printer_name_hint_revealer;
+  AdwEntryRow  *printer_location_entry;
+  AdwActionRow *printer_model_label;
+  AdwEntryRow  *printer_name_entry;
+  AdwButtonRow *search_for_drivers_button_row;
+  AdwWindowTitle *title_widget;
 
   gchar        *printer_name;
   gchar        *ppd_file_name;
@@ -60,7 +61,7 @@ struct _PpDetailsDialog {
   PpPPDSelectionDialog *pp_ppd_selection_dialog;
 };
 
-G_DEFINE_TYPE (PpDetailsDialog, pp_details_dialog, ADW_TYPE_WINDOW)
+G_DEFINE_TYPE (PpDetailsDialog, pp_details_dialog, ADW_TYPE_DIALOG)
 
 static void
 printer_name_changed (PpDetailsDialog *self)
@@ -71,12 +72,12 @@ printer_name_changed (PpDetailsDialog *self)
   name = pp_details_dialog_get_printer_name (self);
 
   if (printer_name_is_valid (name)){
-    /* Translators: This is the title of the dialog. %s is the printer name. */
-    title = g_strdup_printf (_("%s Details"), name);
-    gtk_revealer_set_reveal_child (self->print_name_hint_revealer, FALSE);
-    gtk_window_set_title (GTK_WINDOW (self), title);
+    adw_window_title_set_subtitle (self->title_widget, name);
+    gtk_revealer_set_reveal_child (self->printer_name_hint_revealer, FALSE);
+    gtk_widget_remove_css_class (GTK_WIDGET (self->printer_name_entry), "error");
   } else {
-    gtk_revealer_set_reveal_child (self->print_name_hint_revealer, TRUE);
+    gtk_revealer_set_reveal_child (self->printer_name_hint_revealer, TRUE);
+    gtk_widget_add_css_class (GTK_WIDGET (self->printer_name_entry), "error");
   }
 }
 
@@ -94,7 +95,7 @@ get_ppd_names_cb (PPDName     **names,
     {
       if (names != NULL)
         {
-          gtk_label_set_text (self->printer_model_label, names[0]->ppd_display_name);
+          adw_action_row_set_subtitle (self->printer_model_label, names[0]->ppd_display_name);
           printer_set_ppd_async (printer_name,
                                  names[0]->ppd_name,
                                  self->cancellable,
@@ -103,18 +104,18 @@ get_ppd_names_cb (PPDName     **names,
         }
       else
         {
-          gtk_label_set_text (self->printer_model_label, _("No suitable driver found"));
+          adw_action_row_set_subtitle (self->printer_model_label, _("No suitable driver found"));
+          gtk_widget_set_visible (GTK_WIDGET (self->spinner_driver_search), FALSE);
         }
-
-      gtk_stack_set_visible_child (self->printer_model_stack, GTK_WIDGET (self->printer_model_label));
     }
 }
 
 static void
 search_for_drivers (PpDetailsDialog *self)
 {
-  gtk_stack_set_visible_child (self->printer_model_stack, GTK_WIDGET (self->loading_box));
-  gtk_widget_set_sensitive (GTK_WIDGET (self->search_for_drivers_button), FALSE);
+  gtk_widget_set_visible (GTK_WIDGET (self->spinner_driver_search), TRUE);
+  gtk_widget_set_sensitive (GTK_WIDGET (self->search_for_drivers_button_row), FALSE);
+  adw_action_row_set_subtitle (self->printer_model_label, _("Searching for preferred drivers…"));
 
   get_ppd_names_async (self->printer_name,
                        1,
@@ -130,7 +131,7 @@ set_ppd_cb (const gchar *printer_name,
 {
   PpDetailsDialog *self = (PpDetailsDialog*) user_data;
 
-  gtk_label_set_text (GTK_LABEL (self->printer_model_label), self->ppd_file_name);
+  adw_action_row_set_subtitle (self->printer_model_label, self->ppd_file_name);
 }
 
 static void
@@ -222,7 +223,7 @@ select_ppd_in_dialog (PpDetailsDialog *self)
           self);
 
         gtk_window_set_transient_for (GTK_WINDOW (self->pp_ppd_selection_dialog),
-                                      GTK_WINDOW (self));
+                                      self->toplevel);
 
         gtk_widget_set_visible (GTK_WIDGET (self->pp_ppd_selection_dialog), TRUE);
     }
@@ -261,7 +262,7 @@ select_ppd_manually (PpDetailsDialog *self)
   GtkWidget     *dialog;
 
   dialog = gtk_file_chooser_dialog_new (_("Select PPD File"),
-                                        GTK_WINDOW (self),
+                                        self->toplevel,
                                         GTK_FILE_CHOOSER_ACTION_OPEN,
                                         _("_Cancel"), GTK_RESPONSE_CANCEL,
                                         _("_Open"), GTK_RESPONSE_ACCEPT,
@@ -289,13 +290,29 @@ update_sensitivity (PpDetailsDialog *self,
 {
   gtk_widget_set_sensitive (GTK_WIDGET (self->printer_name_entry), sensitive);
   gtk_widget_set_sensitive (GTK_WIDGET (self->printer_location_entry), sensitive);
-  gtk_widget_set_sensitive (GTK_WIDGET (self->driver_buttons), sensitive);
+  gtk_widget_set_sensitive (GTK_WIDGET (self->driver_button_rows_group), sensitive);
+}
+
+static void
+on_open_address_button_clicked (PpDetailsDialog *self)
+{
+  g_autoptr(GFile) file = NULL;
+  g_autoptr(GtkFileLauncher) launcher = NULL;
+  g_autofree gchar *printer_url;
+
+  printer_url = g_strdup_printf ("http://%s", adw_action_row_get_subtitle (self->printer_address_row));
+  file = g_file_new_for_uri (printer_url);
+  launcher = gtk_file_launcher_new (file);
+
+  gtk_file_launcher_launch (launcher, self->toplevel, NULL, NULL, NULL);
 }
 
 static void
 pp_details_dialog_init (PpDetailsDialog *self)
 {
   gtk_widget_init_template (GTK_WIDGET (self));
+
+  self->toplevel = GTK_WINDOW (gtk_widget_get_root (GTK_WIDGET (self)));
 
   self->cancellable = g_cancellable_new ();
 }
@@ -330,22 +347,21 @@ pp_details_dialog_class_init (PpDetailsDialogClass *klass)
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/printers/pp-details-dialog.ui");
 
-  gtk_widget_class_bind_template_child (widget_class, PpDetailsDialog, print_name_hint_revealer);
-  gtk_widget_class_bind_template_child (widget_class, PpDetailsDialog, driver_buttons);
-  gtk_widget_class_bind_template_child (widget_class, PpDetailsDialog, loading_box);
-  gtk_widget_class_bind_template_child (widget_class, PpDetailsDialog, printer_address_label);
+  gtk_widget_class_bind_template_child (widget_class, PpDetailsDialog, printer_name_hint_revealer);
+  gtk_widget_class_bind_template_child (widget_class, PpDetailsDialog, driver_button_rows_group);
+  gtk_widget_class_bind_template_child (widget_class, PpDetailsDialog, spinner_driver_search);
+  gtk_widget_class_bind_template_child (widget_class, PpDetailsDialog, printer_address_row);
   gtk_widget_class_bind_template_child (widget_class, PpDetailsDialog, printer_location_entry);
   gtk_widget_class_bind_template_child (widget_class, PpDetailsDialog, printer_model_label);
-  gtk_widget_class_bind_template_child (widget_class, PpDetailsDialog, printer_model_stack);
   gtk_widget_class_bind_template_child (widget_class, PpDetailsDialog, printer_name_entry);
-  gtk_widget_class_bind_template_child (widget_class, PpDetailsDialog, search_for_drivers_button);
+  gtk_widget_class_bind_template_child (widget_class, PpDetailsDialog, search_for_drivers_button_row);
+  gtk_widget_class_bind_template_child (widget_class, PpDetailsDialog, title_widget);
 
+  gtk_widget_class_bind_template_callback (widget_class, on_open_address_button_clicked);
   gtk_widget_class_bind_template_callback (widget_class, printer_name_changed);
   gtk_widget_class_bind_template_callback (widget_class, search_for_drivers);
   gtk_widget_class_bind_template_callback (widget_class, select_ppd_in_dialog);
   gtk_widget_class_bind_template_callback (widget_class, select_ppd_manually);
-
-  gtk_widget_class_add_binding_action (widget_class, GDK_KEY_Escape, 0, "window.close", NULL);
 }
 
 PpDetailsDialog *
@@ -356,7 +372,6 @@ pp_details_dialog_new (gchar   *printer_name,
                        gboolean sensitive)
 {
   PpDetailsDialog *self;
-  g_autofree gchar *title = NULL;
   g_autofree gchar *printer_url = NULL;
 
   self = g_object_new (PP_DETAILS_DIALOG_TYPE, NULL);
@@ -364,16 +379,14 @@ pp_details_dialog_new (gchar   *printer_name,
   self->printer_name = g_strdup (printer_name);
   self->ppd_file_name = NULL;
 
-  /* Translators: This is the title of the dialog. %s is the printer name. */
-  title = g_strdup_printf (_("%s Details"), printer_name);
-  gtk_window_set_title (GTK_WINDOW (self), title);
+  adw_window_title_set_subtitle (self->title_widget, printer_name);
 
-  printer_url = g_strdup_printf ("<a href=\"http://%s:%d\">%s</a>", printer_address, ippPort (), printer_address);
-  gtk_label_set_markup (GTK_LABEL (self->printer_address_label), printer_url);
+  printer_url = g_strdup_printf ("%s:%d", printer_address, ippPort ());
+  adw_action_row_set_subtitle (self->printer_address_row, printer_url);
 
   gtk_editable_set_text (GTK_EDITABLE (self->printer_name_entry), printer_name);
   gtk_editable_set_text (GTK_EDITABLE (self->printer_location_entry), printer_location);
-  gtk_label_set_text (GTK_LABEL (self->printer_model_label), printer_make_and_model);
+  adw_action_row_set_subtitle (self->printer_model_label, printer_make_and_model);
 
   update_sensitivity (self, sensitive);
 
