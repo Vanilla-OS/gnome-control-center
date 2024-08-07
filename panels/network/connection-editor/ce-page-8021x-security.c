@@ -77,8 +77,6 @@ finish_setup (CEPage8021xSecurity *self, gpointer unused, GError *error, gpointe
 	}
 
 	g_signal_connect_object (NMA_WS (self->security), "ws-changed", G_CALLBACK (security_item_changed_cb), self, G_CONNECT_SWAPPED);
-	if (gtk_widget_get_parent (GTK_WIDGET (self->security)))
-		gtk_box_remove (self->box, GTK_WIDGET (self->security));
 
 	gtk_switch_set_active (self->enable_8021x_switch, self->initial_have_8021x);
 	g_signal_connect_object (self->enable_8021x_switch, "notify::active", G_CALLBACK (enable_toggled), self, G_CONNECT_SWAPPED);
@@ -154,7 +152,6 @@ ce_page_8021x_security_dispose (GObject *object)
 	CEPage8021xSecurity *self = CE_PAGE_8021X_SECURITY (object);
 
         g_clear_object (&self->connection);
-        g_clear_pointer ((GtkWidget **) &self->security, gtk_widget_unparent);
         g_clear_object (&self->group);
 
 	G_OBJECT_CLASS (ce_page_8021x_security_parent_class)->dispose (object);

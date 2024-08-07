@@ -12,6 +12,17 @@
           <object class="AdwPreferencesPage">
             <child>
               <object class="AdwPreferencesGroup">
+                <child>
+                  <object class="AdwSwitchRow" id="screen_reader_row">
+                    <property name="title" translatable="yes">Screen _Reader</property>
+                    <property name="subtitle" translatable="yes">The screen reader reads displayed text as you move the focus</property>
+                    <property name="use-underline">True</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="AdwPreferencesGroup">
 
                 <child>
                   <object class="AdwSwitchRow" id="high_contrast_row">
@@ -30,10 +41,22 @@
                 </child>
 
                 <child>
-                  <object class="AdwSwitchRow" id="animations_row">
-                    <property name="title" translatable="yes">Reduce _Animation</property>
-                    <property name="subtitle" translatable="yes">Reduce animations in the user interface to reduce motion</property>
+                  <object class="AdwActionRow">
+                    <property name="title" translatable="yes">_Animation Effects</property>
+                    <property name="subtitle" translatable="yes">Toggle animation effects throughout the user interface</property>
                     <property name="use-underline">True</property>
+                    <property name="activatable-widget">animation_effects_switch</property>
+                    <child type="suffix">
+                      <object class="CcListRowInfoButton">
+                        <property name="text" translatable="yes">Turning off animation effects will result in more sudden transitions and no motion in the user interface at all. This may introduce unwanted effects that may have a negative impact on some visual sensitivities.</property>
+                        <property name="valign">center</property>
+                      </object>
+                    </child>
+                    <child type="suffix">
+                      <object class="GtkSwitch" id="animation_effects_switch">
+                        <property name="valign">center</property>
+                      </object>
+                    </child>
                   </object>
                 </child>
 
@@ -70,18 +93,6 @@
                   </object>
                 </child>
 
-              </object>
-            </child>
-
-            <child>
-              <object class="AdwPreferencesGroup">
-                <child>
-                  <object class="AdwSwitchRow" id="screen_reader_row">
-                    <property name="title" translatable="yes">Screen _Reader</property>
-                    <property name="subtitle" translatable="yes">The screen reader reads displayed text as you move the focus</property>
-                    <property name="use-underline">True</property>
-                  </object>
-                </child>
               </object>
             </child>
           </object>

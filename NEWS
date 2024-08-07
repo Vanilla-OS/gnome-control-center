@@ -1,154 +1,187 @@
-============
-Version 46.4
-============
+===============
+Version 47.beta
+===============
+
+- Various translation updates
+- Various CI fixes
+- Various ports to modern libadwaita widgets
+- Various mnemonics additions
+- Use GtkWindow.set_default_icon_name for legacy sessions
 
 Accessibility
-- Fix enum value for follow centered
+- Rename "Reduce Animation" setting to "Animation Effects"
 
 Apps
-- Fix memory leak for MMManager object in default apps page
+- Rename "File and Link Associations" page to "Files and Links"
+- Show status page when Parental Controls aren't available
+- Don't show "App is not sandboxed" banner for system components
+
+Display
+- Adapt rotation labels to the screen ratio
+- Don't set automatic Night Light when Location Services are unavailable
+
+Keyboard
+- Load input choice locales asynchronously
+- Fix "Move" buttons in input rows
+
+Location
+- Remove reference to now retired Mozilla Location Services
+
+Mouse
+- Use monochrome assets to support different accent colors
+- Separate "Touchpad" row into its own preferences row group
 
 Network
 - Don't set empty ignored hosts
 
-Privacy
-- Fix visibility issue of Bolt settings when Bolt isn't available
-
-Users
-- Avoid accidental mnemonics for user name rows
-- Show correctly the remaining list of fingerprints to enroll
-
-WWAN
-- Fix crash on Unlock SIM dialog
-
-============
-Version 46.3
-============
-
-- Various translation updates
-- CI fixes
-
-Mouse
-- Make Mouse test click indicator not respond for middle clicks
-
-Network
-- Reference icon-name proper for wifi panel
-
-Tests
-- Don't require Xvfb or setxkbmap for tests
-
-Sharing
-- Make Orca read the "Add Folder" row in Media Sharing settings
-
-============
-Version 46.2
-============
-
-- Enable the "Location" settings panel by default (build-optional)
-- Various translation updates
-- Improve accessibility of some secondary-labels in settings rows
-- Increase default log verbosity level
-
-Accessibility
-- Fix icon name of accessibility panel desktop file
-- Fix flash area settings selection shown incorrectly
-
-Display
-- Fix crash when closing laptop lid
-
-Keyboard
-- Fix keyboard navigation of keyboard shortcuts dialog categories
-
-Mouse and Touchpad
-- Remove unnecessary a11y label
-
-Network
-- Fix crash when removing bluetooth network adapter row
-- Sort VPN connections list alphabetically
-- Remove incorrect assertion that breaks proxy settings page 
-
-Sound
-- Make sliders more accessible by keyboard
-- Remove need for translating speaker test button tooltip
-
-System
-- Improve accessibility of "Copy" buttons in Remote Desktop
-- Fix crash in Date And Time settings closing before async calls finish
-- Fix reuse of remote-desktop verify encryption fingerprint dialog
-
-Users
-- Fix visibility issue in parental controls row
-
-============
-Version 46.1
-============
-
-Accessibility
-- Improve accessibility of "Typing" settings sliders
-
-Display
-- Fix crash when pressing Escape in the display settings
-
-Network
-- Add stable-ssid support for cloned-mac
-
-Privacy
-- Add build option to enable Location services
-- Fix opening of Help pages while viewing Privacy settings
-
-Sharing
-- Auto hide Sharing panel when Rygel AND gnome-user-share are not available
-
-System
-- Don't show auto-timezone setting when Location services unavailable
-- Avoid unnecessary time-change requests
-- Fix issue with sensitivity of "Add" and "Enroll" Enterprise Login buttons
-- Improve generated passwords capacity in Remote Desktop settings
-
-Wacom
-- Check for the right output connector name
-
-==============
-Version 46.0.1
-==============
-
-- Handle legacy panel arguments
-- Added/updated/fixed translations
-
-Accessibility
-- Allow launching subpages directly
-
-Privacy
-- Fix Thunderbolt panel not launching
-
-System
-- Avoid setting auto time sync when it isn't needed
-- Improve startup time by loading subpages on demand
-
-============
-Version 46.0
-============
-
-- Various translation updates
-- Update links in appdata file
-- Improve sidebar search results
-
-Appearance
-- Add a transition to the selected background check
-
-Color
-- Fix visibility of calibration button
+Notifications
+- Turn "App Notifications" dialog into a subpage
 
 Online Accounts
-- Reorder online account providers list
+- Add a toast overlay for panel notifications/error messages
 
-Privacy & Security
-- Allow launching subpages of the privacy panel directly
+Users
+- Modernize the "Add User" dialog
+- Respect password "enforcing" based on /etc/security/pwquality.conf
+- Avoid user names with underscores being interpreted as mnemonics
+- Show correctly the remaining list of fingerprints to enroll
+- Reverse sorting of finger names list to prioritize most used ones
+
+Printers
+- Various tweaks for the PPD Selection dialog
+- Add button instead of link to open printer cups web page
+
+Privacy
+- Don't leak Bolt and Location subpages
+- Fix visibility of Bolt settings when Bolt isn't available
+
+Remote Desktop
+- Fix loop resetting credentials
+- Use new gnome-remote-desktop server configuration DBUs interface
+
+Sound
+- Add an empty state page for when no sound device is available
 
 Wacom
-- Bump libwacom dependency requirement to >= 1.4
-- Add AES styli as separate stylus SVG
-- Accept eraser types of button when matching stylus IDs
+- Set up Wacom stylus keyboard shortcuts and switch monitor
+
+WWAN
+- Fix crash preventing the load of the SIM Unlock dialog
+
+================
+Version 47.alpha
+================
+
+- Various translation updates
+- Various CI fixes
+- Various dialogs have been ported to subpages
+- Add CcNumberRow to ease the mapping of settings to combo rows
+- Skip tests if we don't have Xvfb or setxkbmap
+- Various ports of rows to AdwButtonRow
+- Various ports of dialogs to AdwDialog
+- Various ports to AdwAlertDialog
+- Various row changes to use the "property" style
+- Improve padding of some search entries
+- Fix Flatpak Development build manifest
+- Reorganize various icon assets
+
+Accessibility
+- Add "Activate Windows on Hover" setting
+- Move "Screen Reader" settings to the top
+- Use same size for cursors settings interface
+- Port Cursor Size dialog to AdwDialog
+- Various icon artwork updates
+
+Apps
+- Improve description of "Default Apps" settings
+- Turn app settings dialogs into subpages
+- Fix "No Search Results" page
+- Don't show "Open" button for Settings itself
+- Show the number of static permissions in the "Required Access" row
+- Indicate when no apps are available for a mime type in "Default Apps"
+
+Background
+- Implement accent colors
+- Improve window preview style
+- Improve a11y of the accent color toggles
+
+Color
+- Modernize looks of the Color settings
+- Capitalize "Built-In Webcam"
+- Rename "Laptop Screen" to "Built-In Screen"
+
+Displays
+- Fix panel crash when closing laptop lid
+- Add icon to the Night Light settings
+
+Keyboard
+- Allow previewing keyboard layouts in Input Sources dialog
+- Turn CcXkbModifierDialog into a subpage
+
+Mouse
+- Remove primary indicator delay for Mouse Test dialog
+- Make Mouse Test not respond to middle click
+
+Network
+- Make the QR Code dialog contents readable by screen readers
+- Use property rows to show Wi-Fi hotspot information
+- Add 6GHz to "Supported Frequencies"
+- Sort VPNs list
+- Fix row removal when Bluetooth wifi is removed
+- Add stable-ssid support for cloned-mac
+
+Online Accounts
+- Rename Windows Live provider to "Microsoft"
+- Rename MS365 provider
+- Close new account dialog when account creation is complete
+
+Printers
+- Modernize Printer Jobs dialog
+- Modernize Printer Details dialog
+- Fix spelling inconsistency for the word "Cancelled"
+- Close "Add Printer" dialog when pressing "Escape" key
+- Port "Undo" feature to AdwToast
+
+Power
+- Add suspend time options for mobile devices
+
+Privacy
+- Port to CcNumberRow
+
+Search
+- Port "Search Locations" page to a subpage
+
+Sharing
+- Improve text description of the Sharing features
+- Add DAV address in the File Sharing dialog
+- Add notice about shared files not being encrypted
+- Hide panel when none of the Sharing features are available in the system
+
+Sound
+- Use AppInfo to get app icons and fallback to icon-theme
+- Try to use AppInfo icon for stream icons
+- Turn volume levels dialog into a subpage
+- Adjust sound of the "Click" effect closer to the freedesktop.org bell sound
+- Make sound setting sliders more accessible with keyboard
+
+System
+- Load subpages on demand to speed up panel load
+- Avoid re-setting Remote Desktop credentials when they haven't changed
+
+Users
+- Don't show unwanted system accounts
+- Fix parental controls settings visibility
+- Rename "Add Enterprise User" to "Add Enterprise Login"
+
+Wacom
+- Always allow calibration for display tablets
+- Enforce a Z-shape sequence of calibration points
+- Fix wrong alignment detection in the calibrator
+- Reset the clock after any click on the calibrator
+- Up the calibrator threshold to 50 pixels
+- Simplify the calibrator code
+- Fall back to the generic tablet provided by libwacom
+- If we have two identical monitors, suffix the connector name
 
 =============
 Version 46.rc

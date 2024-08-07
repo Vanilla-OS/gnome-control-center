@@ -52,7 +52,6 @@ struct _CcColorPanel
   GtkWidget     *box_calib_summary;
   GtkWidget     *box_calib_temp;
   GtkWidget     *box_calib_title;
-  GtkWidget     *box_devices;
   GtkWidget     *button_assign_import;
   GtkWidget     *button_assign_ok;
   GtkWidget     *button_calib_export;
@@ -60,11 +59,11 @@ struct _CcColorPanel
   GtkWidget     *entry_calib_title;
   GtkWidget     *label_assign_warning;
   GtkWidget     *label_calib_summary_message;
-  GtkWidget     *label_no_devices;
   GtkTreeModel  *liststore_assign;
   GtkTreeModel  *liststore_calib_kind;
   GtkTreeModel  *liststore_calib_sensor;
-  AdwPreferencesGroup *pref_group_devices;
+  AdwViewStack  *stack;
+  AdwPreferencesPage *color_page;
   GtkWidget     *toolbar_devices;
   GtkWidget     *toolbutton_device_calibrate;
   GtkWidget     *toolbutton_device_default;
@@ -1609,8 +1608,11 @@ gcm_prefs_update_device_list_extra_entry (CcColorPanel *self)
 
   /* any devices to show? */
   first_row = gtk_list_box_get_row_at_index (self->list_box, 0);
-  gtk_widget_set_visible (self->label_no_devices, first_row == NULL);
-  gtk_widget_set_visible (self->box_devices, first_row != NULL);
+
+  if (first_row == NULL)
+    adw_view_stack_set_visible_child_name (self->stack, "no-devices-page");
+  else
+    adw_view_stack_set_visible_child_name (self->stack, "color-page");
 
   /* if we have only one device expand it by default */
   if (first_row != NULL &&
@@ -1846,7 +1848,11 @@ cc_color_panel_dispose (GObject *object)
   g_clear_object (&self->list_box_size);
   g_clear_pointer (&self->sensors, g_ptr_array_unref);
   g_clear_pointer (&self->list_box_filter, g_free);
-  g_clear_pointer ((GtkWindow **)&self->dialog_assign, gtk_window_destroy);
+
+  if (self->dialog_assign != NULL) {
+    gtk_window_destroy (GTK_WINDOW (self->dialog_assign));
+    self->dialog_assign = NULL;
+  }
 
   G_OBJECT_CLASS (cc_color_panel_parent_class)->dispose (object);
 }
@@ -1881,7 +1887,6 @@ cc_color_panel_class_init (CcColorPanelClass *klass)
   gtk_widget_class_bind_template_child (widget_class, CcColorPanel, box_calib_summary);
   gtk_widget_class_bind_template_child (widget_class, CcColorPanel, box_calib_temp);
   gtk_widget_class_bind_template_child (widget_class, CcColorPanel, box_calib_title);
-  gtk_widget_class_bind_template_child (widget_class, CcColorPanel, box_devices);
   gtk_widget_class_bind_template_child (widget_class, CcColorPanel, button_assign_import);
   gtk_widget_class_bind_template_child (widget_class, CcColorPanel, button_assign_ok);
   gtk_widget_class_bind_template_child (widget_class, CcColorPanel, button_calib_export);
@@ -1889,12 +1894,12 @@ cc_color_panel_class_init (CcColorPanelClass *klass)
   gtk_widget_class_bind_template_child (widget_class, CcColorPanel, entry_calib_title);
   gtk_widget_class_bind_template_child (widget_class, CcColorPanel, label_assign_warning);
   gtk_widget_class_bind_template_child (widget_class, CcColorPanel, label_calib_summary_message);
-  gtk_widget_class_bind_template_child (widget_class, CcColorPanel, label_no_devices);
   gtk_widget_class_bind_template_child (widget_class, CcColorPanel, list_box);
   gtk_widget_class_bind_template_child (widget_class, CcColorPanel, liststore_assign);
   gtk_widget_class_bind_template_child (widget_class, CcColorPanel, liststore_calib_kind);
   gtk_widget_class_bind_template_child (widget_class, CcColorPanel, liststore_calib_sensor);
-  gtk_widget_class_bind_template_child (widget_class, CcColorPanel, pref_group_devices);
+  gtk_widget_class_bind_template_child (widget_class, CcColorPanel, stack);
+  gtk_widget_class_bind_template_child (widget_class, CcColorPanel, color_page);
   gtk_widget_class_bind_template_child (widget_class, CcColorPanel, toolbar_devices);
   gtk_widget_class_bind_template_child (widget_class, CcColorPanel, toolbutton_device_calibrate);
   gtk_widget_class_bind_template_child (widget_class, CcColorPanel, toolbutton_device_default);
@@ -1988,10 +1993,10 @@ cc_color_panel_init (CcColorPanel *self)
   self->settings_colord = g_settings_new (COLORD_SETTINGS_SCHEMA);
 
   /* Translators: This will be presented as the text of a link to the documentation */
-  learn_more_link = g_strdup_printf ("<a href='help:gnome-help/color-whyimportant'>%s</a>", _("Learn more"));
-  /* Translators: %s is a link to the documentation with the label "Learn more" */
-  panel_description = g_strdup_printf (_("Each device needs an up to date color profile to be color managed. %s"), learn_more_link);
-  adw_preferences_group_set_description (self->pref_group_devices, panel_description);
+  learn_more_link = g_strdup_printf ("<a href='help:gnome-help/color-whyimportant'>%s</a>", _("learn more"));
+  /* Translators: %s is a link to the documentation with the label "learn more" */
+  panel_description = g_strdup_printf (_("Each device needs an up to date color profile to be color managed — %s."), learn_more_link);
+  adw_preferences_page_set_description (self->color_page, panel_description);
 
   /* assign buttons */
   g_signal_connect_object (self->toolbutton_profile_add, "clicked",

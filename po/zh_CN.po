@@ -35,16 +35,16 @@ msgstr ""
 "Project-Id-Version: gnome-control-center master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-control-center/"
 "issues\n"
-"POT-Creation-Date: 2024-04-06 14:20+0000\n"
-"PO-Revision-Date: 2024-04-07 16:02+0800\n"
+"POT-Creation-Date: 2024-03-04 05:06+0000\n"
+"PO-Revision-Date: 2024-03-04 19:37+0800\n"
 "Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese - China <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.4.2\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"X-Generator: Gtranslator 45.3\n"
 
 #: panels/applications/cc-applications-panel.c:783
 msgid "App is not sandboxed"
@@ -67,7 +67,7 @@ msgstr "会话总线"
 
 #: panels/applications/cc-applications-panel.c:834
 #: panels/privacy/cc-bolt-page.ui:240 panels/privacy/cc-bolt-page.ui:284
-#: panels/privacy/cc-privacy-panel.ui:75
+#: panels/privacy/cc-privacy-panel.ui:74
 msgid "Devices"
 msgstr "设备"
 
@@ -105,7 +105,7 @@ msgstr "文件系统"
 
 #: panels/applications/cc-applications-panel.c:854
 #: panels/keyboard/01-launchers.xml.in:6
-#: shell/appdata/org.gnome.Settings.appdata.xml.in:7 shell/cc-window.c:798
+#: shell/appdata/org.gnome.Settings.appdata.xml.in:7 shell/cc-window.c:775
 #: shell/cc-window.ui:20 shell/org.gnome.Settings.desktop.in:3
 msgid "Settings"
 msgstr "设置"
@@ -151,62 +151,62 @@ msgstr "搜索应用"
 msgid "_Default Apps"
 msgstr "默认应用(_D)"
 
-#: panels/applications/cc-applications-panel.ui:62
+#: panels/applications/cc-applications-panel.ui:87
 msgid "No Apps Found"
 msgstr "未找到应用"
 
-#: panels/applications/cc-applications-panel.ui:65
+#: panels/applications/cc-applications-panel.ui:99
 msgid "_Find in Software"
 msgstr "在“软件”中查找(_F)"
 
-#: panels/applications/cc-applications-panel.ui:101
+#: panels/applications/cc-applications-panel.ui:139
 #: panels/applications/cc-default-apps-page.ui:4
 msgid "Default Apps"
 msgstr "默认应用"
 
-#: panels/applications/cc-applications-panel.ui:119
+#: panels/applications/cc-applications-panel.ui:157
 msgid "Removable Media"
 msgstr "可移动介质"
 
-#: panels/applications/cc-applications-panel.ui:122
+#: panels/applications/cc-applications-panel.ui:160
 msgid "Automat_ically Launch Apps"
 msgstr "自动启动应用(_I)"
 
-#: panels/applications/cc-applications-panel.ui:123
+#: panels/applications/cc-applications-panel.ui:161
 msgid "Start apps when media is connected or inserted"
 msgstr "连接或插入媒体时启动应用"
 
-#: panels/applications/cc-applications-panel.ui:144
+#: panels/applications/cc-applications-panel.ui:182
 msgid "App Settings"
 msgstr "应用设置"
 
-#: panels/applications/cc-applications-panel.ui:164
+#: panels/applications/cc-applications-panel.ui:202
 msgid ""
 "App settings cannot be fully enforced for apps which are not sandboxed. "
 "These apps may use permissions which are not shown."
 msgstr ""
 "对于未沙盒化的应用，无法完全执行应用设置。这些应用可能会使用未显示的权限。"
 
-#: panels/applications/cc-applications-panel.ui:207
+#: panels/applications/cc-applications-panel.ui:245
 #: panels/printers/pp-details-dialog.c:267
 #: panels/sharing/cc-sharing-panel.c:240
 msgid "_Open"
 msgstr "打开(_O)"
 
-#: panels/applications/cc-applications-panel.ui:219
+#: panels/applications/cc-applications-panel.ui:257
 msgid "App _Details"
 msgstr "应用详情(_D)"
 
-#: panels/applications/cc-applications-panel.ui:237
+#: panels/applications/cc-applications-panel.ui:275
 msgid "Permissions"
 msgstr "权限"
 
 #. Translators: This row shows/sets whether the app shown in this page can add results to the GNOME Shell search results. Internally this enables/disables the app's Shell Search Provider
-#: panels/applications/cc-applications-panel.ui:240
+#: panels/applications/cc-applications-panel.ui:278
 msgid "_Search"
 msgstr "搜索(_S)"
 
-#: panels/applications/cc-applications-panel.ui:241
+#: panels/applications/cc-applications-panel.ui:279
 msgid "Receive system searches and send results"
 msgstr "接收系统搜索并发送结果"
 
@@ -215,172 +215,172 @@ msgstr "接收系统搜索并发送结果"
 #.
 #. translators:
 #. * The device has been disabled
-#: panels/applications/cc-applications-panel.ui:250
-#: panels/applications/cc-applications-panel.ui:297
-#: panels/applications/cc-applications-panel.ui:319
-#: panels/applications/cc-applications-panel.ui:334
-#: panels/applications/cc-applications-panel.ui:349
+#: panels/applications/cc-applications-panel.ui:288
+#: panels/applications/cc-applications-panel.ui:335
+#: panels/applications/cc-applications-panel.ui:357
+#: panels/applications/cc-applications-panel.ui:372
+#: panels/applications/cc-applications-panel.ui:387
 #: panels/keyboard/cc-keyboard-shortcut-editor.ui:123
 #: panels/keyboard/cc-xkb-modifier-dialog.c:342
 #: panels/keyboard/keyboard-shortcuts.c:367
 #: panels/system/users/cc-user-page.c:379
 #: panels/system/users/cc-user-page.c:749 panels/wwan/cc-wwan-device-page.c:477
-#: subprojects/gvc/gvc-mixer-control.c:1872
+#: subprojects/gvc/gvc-mixer-control.c:1908
 msgid "Disabled"
 msgstr "已禁用"
 
-#: panels/applications/cc-applications-panel.ui:255
+#: panels/applications/cc-applications-panel.ui:293
 msgid "_Notifications"
 msgstr "通知(_N)"
 
-#: panels/applications/cc-applications-panel.ui:256
+#: panels/applications/cc-applications-panel.ui:294
 msgid "Show system notifications"
 msgstr "显示系统通知"
 
-#: panels/applications/cc-applications-panel.ui:263
+#: panels/applications/cc-applications-panel.ui:301
 msgid "_Run in Background"
 msgstr "后台运行(_R)"
 
-#: panels/applications/cc-applications-panel.ui:264
+#: panels/applications/cc-applications-panel.ui:302
 msgid "Allow activity when the app is closed"
 msgstr "允许应用关闭后活动"
 
-#: panels/applications/cc-applications-panel.ui:271
+#: panels/applications/cc-applications-panel.ui:309
 msgid "Scr_eenshots"
 msgstr "截图(_E)"
 
-#: panels/applications/cc-applications-panel.ui:272
+#: panels/applications/cc-applications-panel.ui:310
 msgid "Take pictures of the screen at any time"
 msgstr "在任何时候都能获取屏幕截图"
 
-#: panels/applications/cc-applications-panel.ui:279
+#: panels/applications/cc-applications-panel.ui:317
 msgid "Change _Wallpaper"
 msgstr "更改壁纸(_W)"
 
 # 图标条目，保留无需翻译。
-#: panels/applications/cc-applications-panel.ui:280
+#: panels/applications/cc-applications-panel.ui:318
 msgid "Change the desktop wallpaper"
 msgstr "更换桌面壁纸"
 
-#: panels/applications/cc-applications-panel.ui:287
-#: panels/applications/cc-applications-panel.ui:295
+#: panels/applications/cc-applications-panel.ui:325
+#: panels/applications/cc-applications-panel.ui:333
 msgid "So_unds"
 msgstr "声音(_U)"
 
-#: panels/applications/cc-applications-panel.ui:288
-#: panels/applications/cc-applications-panel.ui:296
+#: panels/applications/cc-applications-panel.ui:326
+#: panels/applications/cc-applications-panel.ui:334
 msgid "Reproduce sounds"
 msgstr "再现声音"
 
-#: panels/applications/cc-applications-panel.ui:302
+#: panels/applications/cc-applications-panel.ui:340
 msgid "_Inhibit Shortcuts"
 msgstr "禁止快捷键(_I)"
 
-#: panels/applications/cc-applications-panel.ui:303
+#: panels/applications/cc-applications-panel.ui:341
 msgid "Block standard keyboard shortcuts"
 msgstr "封锁标准的键盘快捷键"
 
-#: panels/applications/cc-applications-panel.ui:310
+#: panels/applications/cc-applications-panel.ui:348
 msgid "Camera"
 msgstr "摄像头"
 
-#: panels/applications/cc-applications-panel.ui:311
-#: panels/applications/cc-applications-panel.ui:318
+#: panels/applications/cc-applications-panel.ui:349
+#: panels/applications/cc-applications-panel.ui:356
 msgid "Take pictures with the camera"
 msgstr "使用摄像头拍照"
 
-#: panels/applications/cc-applications-panel.ui:317
+#: panels/applications/cc-applications-panel.ui:355
 msgid "C_amera"
 msgstr "摄像头(_A)"
 
-#: panels/applications/cc-applications-panel.ui:324
-#: panels/applications/cc-applications-panel.ui:332
+#: panels/applications/cc-applications-panel.ui:362
+#: panels/applications/cc-applications-panel.ui:370
 msgid "_Microphone"
 msgstr "麦克风(_M)"
 
-#: panels/applications/cc-applications-panel.ui:325
-#: panels/applications/cc-applications-panel.ui:333
+#: panels/applications/cc-applications-panel.ui:363
+#: panels/applications/cc-applications-panel.ui:371
 msgid "Record audio with the microphone"
 msgstr "使用麦克风录音"
 
-#: panels/applications/cc-applications-panel.ui:339
-#: panels/applications/cc-applications-panel.ui:347
+#: panels/applications/cc-applications-panel.ui:377
+#: panels/applications/cc-applications-panel.ui:385
 msgid "_Location Services"
 msgstr "定位服务(_L)"
 
-#: panels/applications/cc-applications-panel.ui:340
-#: panels/applications/cc-applications-panel.ui:348
+#: panels/applications/cc-applications-panel.ui:378
+#: panels/applications/cc-applications-panel.ui:386
 msgid "Access device location data"
 msgstr "访问设备的位置数据"
 
-#: panels/applications/cc-applications-panel.ui:359
+#: panels/applications/cc-applications-panel.ui:397
 msgid "Re_quired Access"
 msgstr "所需的访问(_Q)"
 
-#: panels/applications/cc-applications-panel.ui:360
+#: panels/applications/cc-applications-panel.ui:398
 msgid "System access that is required by the app"
 msgstr "该应用需要的系统访问权限"
 
-#: panels/applications/cc-applications-panel.ui:371
+#: panels/applications/cc-applications-panel.ui:409
 #: panels/mouse/cc-mouse-panel.ui:66
 #: panels/multitasking/cc-multitasking-panel.ui:15
 #: panels/power/cc-power-panel.ui:171
 msgid "General"
 msgstr "常规"
 
-#: panels/applications/cc-applications-panel.ui:374
+#: panels/applications/cc-applications-panel.ui:412
 msgid "_File &amp; Link Associations"
 msgstr "文件与链接关联(_F)"
 
-#: panels/applications/cc-applications-panel.ui:382
+#: panels/applications/cc-applications-panel.ui:420
 msgid "S_torage"
 msgstr "存储(_T)"
 
-#: panels/applications/cc-applications-panel.ui:405
+#: panels/applications/cc-applications-panel.ui:443
 msgid "Required Access"
 msgstr "所需的访问"
 
-#: panels/applications/cc-applications-panel.ui:451
+#: panels/applications/cc-applications-panel.ui:489
 msgid "File & Link Associations"
 msgstr "文件与链接关联"
 
-#: panels/applications/cc-applications-panel.ui:480
+#: panels/applications/cc-applications-panel.ui:518
 msgid "File Types"
 msgstr "文件类型"
 
-#: panels/applications/cc-applications-panel.ui:486
+#: panels/applications/cc-applications-panel.ui:524
 msgid "Link Types"
 msgstr "链接类型"
 
-#: panels/applications/cc-applications-panel.ui:496
+#: panels/applications/cc-applications-panel.ui:534
 msgid "_Reset"
 msgstr "重置(_R)"
 
-#: panels/applications/cc-applications-panel.ui:517
+#: panels/applications/cc-applications-panel.ui:555
 msgid "Storage"
 msgstr "存储"
 
-#: panels/applications/cc-applications-panel.ui:542
+#: panels/applications/cc-applications-panel.ui:580
 msgid "How much disk space this app is occupying with app data and caches"
 msgstr "此应用（包括数据和缓存）占用了多少硬盘空间"
 
-#: panels/applications/cc-applications-panel.ui:547
+#: panels/applications/cc-applications-panel.ui:585
 msgid "App"
 msgstr "应用"
 
-#: panels/applications/cc-applications-panel.ui:553
+#: panels/applications/cc-applications-panel.ui:591
 msgid "Data"
 msgstr "数据"
 
-#: panels/applications/cc-applications-panel.ui:559
+#: panels/applications/cc-applications-panel.ui:597
 msgid "Cache"
 msgstr "缓存"
 
-#: panels/applications/cc-applications-panel.ui:565
+#: panels/applications/cc-applications-panel.ui:603
 msgid "<b>Total</b>"
 msgstr "<b>全部</b>"
 
-#: panels/applications/cc-applications-panel.ui:575
+#: panels/applications/cc-applications-panel.ui:613
 msgid "_Clear Cache"
 msgstr "清空缓存(_C)"
 
@@ -987,7 +987,7 @@ msgstr "显示校准"
 #: panels/printers/pp-details-dialog.c:266 panels/privacy/cc-usage-page.c:136
 #: panels/sharing/cc-sharing-panel.c:239
 #: panels/system/region/cc-format-chooser.ui:24
-#: panels/system/users/cc-add-user-dialog.ui:34
+#: panels/system/users/cc-add-user-dialog.ui:25
 #: panels/system/users/cc-enterprise-login-dialog.ui:58
 #: panels/system/users/cc-avatar-chooser.c:92
 #: panels/system/users/cc-fingerprint-dialog.ui:32
@@ -1284,7 +1284,7 @@ msgstr "导入文件(_I)…"
 #: panels/keyboard/cc-keyboard-shortcut-editor.ui:33
 #: panels/network/connection-editor/net-connection-editor.c:653
 #: panels/printers/new-printer-dialog.ui:85
-#: panels/system/users/cc-add-user-dialog.ui:48
+#: panels/system/users/cc-add-user-dialog.ui:39
 #: panels/system/users/cc-enterprise-login-dialog.ui:66
 msgid "_Add"
 msgstr "添加(_A)"
@@ -1568,91 +1568,91 @@ msgstr "减少小时"
 msgid "Decrement Minute"
 msgstr "减少分钟"
 
-#: panels/common/cc-util.c:130
+#: panels/common/cc-util.c:127
 #: panels/network/connection-editor/ce-page-details.c:199
 msgid "Today"
 msgstr "今天"
 
-#: panels/common/cc-util.c:134
+#: panels/common/cc-util.c:131
 #: panels/network/connection-editor/ce-page-details.c:201
 msgid "Yesterday"
 msgstr "昨天"
 
 #. Translators: This is a date format string in the style of "Feb 24".
-#: panels/common/cc-util.c:142
+#: panels/common/cc-util.c:139
 #, no-c-format
 msgid "%b %e"
 msgstr "%-m月%-d日"
 
 #. Translators: This is a date format string in the style of "Feb 24, 2013".
-#: panels/common/cc-util.c:147
+#: panels/common/cc-util.c:144
 msgid "%b %e, %Y"
 msgstr "%Y年%-m月%-d日"
 
 #. TRANSLATORS: This is the datetime format in the style of
 #. "Aug 1, 10:10:10 PM", "Feb 24, 2013, 10:10:10 PM", "Today, 10:10:10 AM",
 #. and "Yesterday, 10:10:10 AM"
-#: panels/common/cc-util.c:166
+#: panels/common/cc-util.c:163
 #, c-format
 msgid "%1$s, %2$s"
 msgstr "%1$s，%2$s"
 
-#: panels/common/cc-util.c:186
+#: panels/common/cc-util.c:183
 #, c-format
 msgid "%d hour"
 msgid_plural "%d hours"
 msgstr[0] "%d 小时"
 
 #. Translators: Option for "Blank Screen" in "Power" panel
-#: panels/common/cc-util.c:187 panels/power/cc-power-panel.c:790
+#: panels/common/cc-util.c:184 panels/power/cc-power-panel.c:790
 #, c-format
 msgid "%d minute"
 msgid_plural "%d minutes"
 msgstr[0] "%d 分钟"
 
-#: panels/common/cc-util.c:188
+#: panels/common/cc-util.c:185
 #, c-format
 msgid "%d second"
 msgid_plural "%d seconds"
 msgstr[0] "%d 秒"
 
 #. 5 hours 2 minutes 12 seconds
-#: panels/common/cc-util.c:195
+#: panels/common/cc-util.c:192
 #, c-format
 msgctxt "hours minutes seconds"
 msgid "%s %s %s"
 msgstr "%s %s %s"
 
 #. 5 hours 2 minutes
-#: panels/common/cc-util.c:200
+#: panels/common/cc-util.c:197
 #, c-format
 msgctxt "hours minutes"
 msgid "%s %s"
 msgstr "%s %s"
 
 #. 5 hours
-#: panels/common/cc-util.c:205
+#: panels/common/cc-util.c:202
 #, c-format
 msgctxt "hours"
 msgid "%s"
 msgstr "%s"
 
 #. 2 minutes 12 seconds
-#: panels/common/cc-util.c:213
+#: panels/common/cc-util.c:210
 #, c-format
 msgctxt "minutes seconds"
 msgid "%s %s"
 msgstr "%s %s"
 
 #. 2 minutes
-#: panels/common/cc-util.c:218
+#: panels/common/cc-util.c:215
 #, c-format
 msgctxt "minutes"
 msgid "%s"
 msgstr "%s"
 
 #. 0 seconds
-#: panels/common/cc-util.c:229
+#: panels/common/cc-util.c:226
 msgid "0 seconds"
 msgstr "0 秒"
 
@@ -1726,7 +1726,7 @@ msgstr "主显示器(_P)"
 #: panels/display/cc-display-panel.ui:158
 #: panels/display/cc-night-light-page.ui:86
 msgid "_Night Light"
-msgstr "夜灯(_N)"
+msgstr "夜光(_N)"
 
 #: panels/display/cc-display-panel.ui:178
 msgid "Night Light"
@@ -2939,9 +2939,9 @@ msgstr "网络名称"
 #: panels/network/cc-wifi-hotspot-dialog.ui:92
 #: panels/printers/new-printer-dialog.ui:293
 #: panels/printers/pp-jobs-dialog.ui:54
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:109
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:110
 #: panels/system/remote-desktop/cc-remote-session-page.ui:108
-#: panels/system/users/cc-add-user-dialog.ui:159
+#: panels/system/users/cc-add-user-dialog.ui:150
 #: panels/wwan/cc-wwan-apn-dialog.ui:175
 msgid "Password"
 msgstr "密码"
@@ -3035,7 +3035,7 @@ msgstr "802.1X 安全性(_S)"
 #: panels/network/connection-editor/bluetooth-page.ui:16
 #: panels/network/connection-editor/ethernet-page.ui:27
 #: panels/network/connection-editor/vpn-page.ui:23
-#: panels/system/users/cc-add-user-dialog.ui:75
+#: panels/system/users/cc-add-user-dialog.ui:66
 #: panels/system/users/cc-user-page.ui:84
 msgid "_Name"
 msgstr "名称(_N)"
@@ -3054,30 +3054,22 @@ msgid "Identity"
 msgstr "身份"
 
 #: panels/network/connection-editor/ce-page.c:234
-#: panels/network/connection-editor/ce-page.c:238
 msgid "Preserve"
 msgstr "预留"
 
 #: panels/network/connection-editor/ce-page.c:235
-#: panels/network/connection-editor/ce-page.c:239
 msgid "Permanent"
 msgstr "永久"
 
 #: panels/network/connection-editor/ce-page.c:236
-#: panels/network/connection-editor/ce-page.c:240
 msgid "Random"
 msgstr "随机"
 
 #: panels/network/connection-editor/ce-page.c:237
-#: panels/network/connection-editor/ce-page.c:241
 msgid "Stable"
 msgstr "固定"
 
-#: panels/network/connection-editor/ce-page.c:243
-msgid "Stable per SSID"
-msgstr "每个 SSID 固定"
-
-#: panels/network/connection-editor/ce-page.c:251
+#: panels/network/connection-editor/ce-page.c:241
 msgid ""
 "The MAC address entered here will be used as hardware address for the "
 "network device this connection is activated on. This feature is known as MAC "
@@ -3086,7 +3078,7 @@ msgstr ""
 "此处输入的 MAC 地址将用作此连接激活所在的网络设备的硬件地址。该特性被称为 "
 "MAC 克隆或欺骗。例如：00:11:22:33:44:55"
 
-#: panels/network/connection-editor/ce-page.c:409
+#: panels/network/connection-editor/ce-page.c:399
 #, c-format
 msgid "Profile %d"
 msgstr "配置 %d"
@@ -4794,7 +4786,7 @@ msgstr "输入用户名和密码以查看打印服务器上的打印机"
 #. Translators: This is a username on a print server.
 #: panels/printers/new-printer-dialog.ui:272
 #: panels/printers/pp-jobs-dialog.ui:42
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:93
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:94
 #: panels/system/remote-desktop/cc-remote-session-page.ui:92
 #: panels/wwan/cc-wwan-apn-dialog.ui:150
 msgid "Username"
@@ -6048,59 +6040,59 @@ msgstr "锁屏(_S)"
 msgid "Automatic screen lock"
 msgstr "自动锁屏"
 
-#: panels/privacy/cc-privacy-panel.ui:37
+#: panels/privacy/cc-privacy-panel.ui:36
 msgid "_Location"
 msgstr "位置(_L)"
 
-#: panels/privacy/cc-privacy-panel.ui:38
+#: panels/privacy/cc-privacy-panel.ui:37
 msgid "Control access to your location"
 msgstr "控制您的位置信息的访问"
 
-#: panels/privacy/cc-privacy-panel.ui:48
+#: panels/privacy/cc-privacy-panel.ui:47
 msgid "_File History &amp; Trash"
 msgstr "文件历史与回收站(_F)"
 
-#: panels/privacy/cc-privacy-panel.ui:49
+#: panels/privacy/cc-privacy-panel.ui:48
 msgid "Remove saved data and files"
 msgstr "移除保存的数据和文件"
 
-#: panels/privacy/cc-privacy-panel.ui:59
+#: panels/privacy/cc-privacy-panel.ui:58
 msgid "_Diagnostics"
 msgstr "诊断(_D)"
 
-#: panels/privacy/cc-privacy-panel.ui:60
+#: panels/privacy/cc-privacy-panel.ui:59
 msgid "Automatic problem reporting"
 msgstr "自动报告问题"
 
-#: panels/privacy/cc-privacy-panel.ui:79
+#: panels/privacy/cc-privacy-panel.ui:78
 msgid "_Cameras"
 msgstr "摄像头(_C)"
 
-#: panels/privacy/cc-privacy-panel.ui:80
+#: panels/privacy/cc-privacy-panel.ui:79
 msgid "Control camera access"
 msgstr "控制摄像头访问"
 
-#: panels/privacy/cc-privacy-panel.ui:90
+#: panels/privacy/cc-privacy-panel.ui:89
 msgid "_Microphones"
 msgstr "麦克风(_M)"
 
-#: panels/privacy/cc-privacy-panel.ui:91
+#: panels/privacy/cc-privacy-panel.ui:90
 msgid "Control microphone access"
 msgstr "控制麦克风访问"
 
-#: panels/privacy/cc-privacy-panel.ui:103
+#: panels/privacy/cc-privacy-panel.ui:102
 msgid "_Thunderbolt"
 msgstr "雷电接口(_T)"
 
-#: panels/privacy/cc-privacy-panel.ui:104
+#: panels/privacy/cc-privacy-panel.ui:103
 msgid "Manage device access"
 msgstr "管理设备访问"
 
-#: panels/privacy/cc-privacy-panel.ui:114
+#: panels/privacy/cc-privacy-panel.ui:113
 msgid "Device _Security"
 msgstr "设备安全(_S)"
 
-#: panels/privacy/cc-privacy-panel.ui:115
+#: panels/privacy/cc-privacy-panel.ui:114
 msgid "Hardware security status and information"
 msgstr "硬件安全状态和信息"
 
@@ -6828,7 +6820,6 @@ msgstr ""
 "卡;麦克风;话筒;音量;淡入淡出;均衡;蓝牙;耳机;耳麦;音频;输出;输入;"
 
 #: panels/system/about/cc-about-page.ui:4
-#: panels/system/about/gnome-about-panel.desktop.in:3
 msgid "About"
 msgstr "关于"
 
@@ -7031,25 +7022,6 @@ msgstr "虚拟化"
 msgid "Kernel Version"
 msgstr "内核版本"
 
-#: panels/system/about/gnome-about-panel.desktop.in:4
-msgid "View information about your system"
-msgstr "查看系统信息"
-
-#. Translators: Search terms to find the About panel.
-#. Do NOT translate or localize the semicolons!
-#. The list MUST also end with a semicolon!
-#. "Preferred Applications" is the old name for the preference, so make
-#. sure that you use the same "translation" for those keywords
-#: panels/system/about/gnome-about-panel.desktop.in:19
-msgid ""
-"device;system;information;hostname;memory;processor;version;default;"
-"application;preferred;cd;dvd;usb;audio;video;disc;removable;media;autorun;"
-msgstr ""
-"device;system;information;hostname;memory;processor;version;default;"
-"application;preferred;cd;dvd;usb;audio;video;disc;removable;media;autorun;设"
-"备;系统;信息;主机名;内存;处理器;版本;默认;应用程序;首选项;音频;视频;光盘;光"
-"碟;盘片;可移除;媒体;自动运行;"
-
 #: panels/system/cc-system-panel.ui:23
 msgid "_Region &amp; Language"
 msgstr "区域与语言(_R)"
@@ -7058,63 +7030,63 @@ msgstr "区域与语言(_R)"
 msgid "System language and localization"
 msgstr "系统语言和本地化"
 
-#: panels/system/cc-system-panel.ui:33
+#: panels/system/cc-system-panel.ui:34
 msgid "_Date &amp; Time"
 msgstr "日期与时间(_D)"
 
-#: panels/system/cc-system-panel.ui:34
+#: panels/system/cc-system-panel.ui:35
 msgid "Time zone and clock settings"
 msgstr "时区和时钟设置"
 
-#: panels/system/cc-system-panel.ui:43
+#: panels/system/cc-system-panel.ui:45
 msgid "_Users"
 msgstr "用户(_U)"
 
-#: panels/system/cc-system-panel.ui:44
+#: panels/system/cc-system-panel.ui:46
 msgid "Add and remove accounts, change password"
 msgstr "添加和删除用户及更改密码"
 
-#: panels/system/cc-system-panel.ui:54
+#: panels/system/cc-system-panel.ui:58
 msgid "R_emote Desktop"
 msgstr "远程桌面(_E)"
 
-#: panels/system/cc-system-panel.ui:55
+#: panels/system/cc-system-panel.ui:59
 msgid "Allow this device to be used remotely"
 msgstr "允许远程使用此设备"
 
-#: panels/system/cc-system-panel.ui:64
+#: panels/system/cc-system-panel.ui:69
 #: panels/system/remote-login/cc-remote-login-page.ui:51
 msgid "Secu_re Shell"
 msgstr "SSH(_R)"
 
-#: panels/system/cc-system-panel.ui:65
+#: panels/system/cc-system-panel.ui:70
 msgid "SSH network access"
 msgstr "SSH 网络访问"
 
-#: panels/system/cc-system-panel.ui:74
+#: panels/system/cc-system-panel.ui:79
 msgid "_About"
 msgstr "关于(_A)"
 
-#: panels/system/cc-system-panel.ui:75
+#: panels/system/cc-system-panel.ui:80
 msgid "Hardware details and software versions"
 msgstr "硬件详情和软件版本"
 
-#: panels/system/cc-system-panel.ui:91
+#: panels/system/cc-system-panel.ui:97
 msgid "Software _Updates"
 msgstr "软件更新(_U)"
 
 #. Translators: This is the full date and time format used in 12-hour mode.
-#: panels/system/datetime/cc-datetime-page.c:231
+#: panels/system/datetime/cc-datetime-page.c:230
 msgid "%e %B %Y, %l:%M %p"
 msgstr "%Y年%m月%d日，%p %-l:%M"
 
 #. Translators: This is the full date and time format used in 24-hour mode.
-#: panels/system/datetime/cc-datetime-page.c:236
+#: panels/system/datetime/cc-datetime-page.c:235
 msgid "%e %B %Y, %R"
 msgstr "%Y年%m月%d日，%R"
 
 #. Translators: "city, country"
-#: panels/system/datetime/cc-datetime-page.c:393
+#: panels/system/datetime/cc-datetime-page.c:388
 #, c-format
 msgctxt "timezone loc"
 msgid "%s, %s"
@@ -7122,39 +7094,38 @@ msgstr "%s，%s"
 
 #. Update the timezone on the listbow row
 #. Translators: "timezone (details)"
-#: panels/system/datetime/cc-datetime-page.c:410
+#: panels/system/datetime/cc-datetime-page.c:405
 #, c-format
 msgctxt "timezone desc"
 msgid "%s (%s)"
 msgstr "%s（%s）"
 
 #: panels/system/datetime/cc-datetime-page.ui:9
-#: panels/system/datetime/cc-datetime-page.ui:116
-#: panels/system/datetime/gnome-datetime-panel.desktop.in:3
+#: panels/system/datetime/cc-datetime-page.ui:117
 msgid "Date & Time"
 msgstr "日期和时间"
 
-#: panels/system/datetime/cc-datetime-page.ui:59
+#: panels/system/datetime/cc-datetime-page.ui:60
 msgid "_Year"
 msgstr "年(_Y)"
 
-#: panels/system/datetime/cc-datetime-page.ui:70
+#: panels/system/datetime/cc-datetime-page.ui:71
 msgid "_Month"
 msgstr "月(_M)"
 
-#: panels/system/datetime/cc-datetime-page.ui:97
+#: panels/system/datetime/cc-datetime-page.ui:98
 msgid "_Day"
 msgstr "日(_D)"
 
-#: panels/system/datetime/cc-datetime-page.ui:136
+#: panels/system/datetime/cc-datetime-page.ui:137
 msgid "Automatic _Date &amp; Time"
 msgstr "自动设置日期和时间(_D)"
 
-#: panels/system/datetime/cc-datetime-page.ui:137
+#: panels/system/datetime/cc-datetime-page.ui:138
 msgid "Requires internet access"
 msgstr "需要互联网连接"
 
-#: panels/system/datetime/cc-datetime-page.ui:149
+#: panels/system/datetime/cc-datetime-page.ui:150
 msgid "Date &amp; _Time"
 msgstr "日期和时间(_T)"
 
@@ -7210,51 +7181,51 @@ msgstr "周数(_N)"
 msgid "Shown in the dropdown calendar"
 msgstr "显示在下拉日历中"
 
-#: panels/system/datetime/cc-datetime-page.ui:270
+#: panels/system/datetime/cc-datetime-page.ui:271
 msgid "January"
 msgstr "一月"
 
-#: panels/system/datetime/cc-datetime-page.ui:271
+#: panels/system/datetime/cc-datetime-page.ui:272
 msgid "February"
 msgstr "二月"
 
-#: panels/system/datetime/cc-datetime-page.ui:272
+#: panels/system/datetime/cc-datetime-page.ui:273
 msgid "March"
 msgstr "三月"
 
-#: panels/system/datetime/cc-datetime-page.ui:273
+#: panels/system/datetime/cc-datetime-page.ui:274
 msgid "April"
 msgstr "四月"
 
-#: panels/system/datetime/cc-datetime-page.ui:274
+#: panels/system/datetime/cc-datetime-page.ui:275
 msgid "May"
 msgstr "五月"
 
-#: panels/system/datetime/cc-datetime-page.ui:275
+#: panels/system/datetime/cc-datetime-page.ui:276
 msgid "June"
 msgstr "六月"
 
-#: panels/system/datetime/cc-datetime-page.ui:276
+#: panels/system/datetime/cc-datetime-page.ui:277
 msgid "July"
 msgstr "七月"
 
-#: panels/system/datetime/cc-datetime-page.ui:277
+#: panels/system/datetime/cc-datetime-page.ui:278
 msgid "August"
 msgstr "八月"
 
-#: panels/system/datetime/cc-datetime-page.ui:278
+#: panels/system/datetime/cc-datetime-page.ui:279
 msgid "September"
 msgstr "九月"
 
-#: panels/system/datetime/cc-datetime-page.ui:279
+#: panels/system/datetime/cc-datetime-page.ui:280
 msgid "October"
 msgstr "十月"
 
-#: panels/system/datetime/cc-datetime-page.ui:280
+#: panels/system/datetime/cc-datetime-page.ui:281
 msgid "November"
 msgstr "十一月"
 
-#: panels/system/datetime/cc-datetime-page.ui:281
+#: panels/system/datetime/cc-datetime-page.ui:282
 msgid "December"
 msgstr "十二月"
 
@@ -7269,15 +7240,6 @@ msgstr "搜索城市"
 #: panels/system/datetime/cc-tz-dialog.ui:47
 msgid "No Results"
 msgstr "无结果"
-
-#: panels/system/datetime/gnome-datetime-panel.desktop.in:4
-msgid "Change the date and time, including time zone"
-msgstr "改变日期、时间和时区"
-
-#. Translators: Search terms to find the Date and Time panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
-#: panels/system/datetime/gnome-datetime-panel.desktop.in:15
-msgid "Clock;Timezone;Location;"
-msgstr "Clock;Timezone;Location;时钟;时区;位置;"
 
 #: panels/system/datetime/org.gnome.controlcenter.system.policy.in:11
 msgid "Change system time and date settings"
@@ -7369,7 +7331,6 @@ msgid "Paper"
 msgstr "纸张"
 
 #: panels/system/region/cc-region-page.ui:4
-#: panels/system/region/gnome-region-panel.desktop.in:3
 msgid "Region & Language"
 msgstr "区域与语言"
 
@@ -7412,15 +7373,6 @@ msgstr "语言(_A)"
 msgid "Fo_rmats"
 msgstr "格式(_R)"
 
-#: panels/system/region/gnome-region-panel.desktop.in:4
-msgid "Select your display language and formats"
-msgstr "选择您的显示语言和格式"
-
-#. Translators: Search terms to find the Region and Language panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
-#: panels/system/region/gnome-region-panel.desktop.in:15
-msgid "Language;Layout;Keyboard;Input;"
-msgstr "Language;Layout;Keyboard;Input;语言;布局;键盘;输入;"
-
 #: panels/system/remote-desktop/cc-desktop-sharing-page.c:364
 #: panels/system/remote-desktop/cc-remote-session-page.c:98
 msgid "Device address copied"
@@ -7441,46 +7393,45 @@ msgstr "用户名已复制"
 msgid "Password copied"
 msgstr "密码已复制"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:12
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:13
 msgid ""
 "Share your existing desktop with other devices. The remote connection uses "
 "the existing screen resolution"
 msgstr "与其它设备共享您的现有桌面。远程连接使用现有的屏幕分辨率"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:27
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:28
 msgid "_Desktop Sharing"
 msgstr "桌面共享(_D)"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:33
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:34
 msgid "Remote _Control"
 msgstr "远程控制(_C)"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:35
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:36
 msgid "Allows desktop shares to control the screen"
 msgstr "允许桌面共享来控制屏幕"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:42
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:43
 #: panels/system/remote-desktop/cc-remote-session-page.ui:41
 msgid "How to Connect"
 msgstr "如何连接"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:43
-#: panels/system/remote-desktop/cc-remote-session-page.ui:42
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:44
 msgid ""
 "Use a remote desktop app to connect using the RDP protocol. Additional "
 "information about the device’s network location may also be required."
 msgstr ""
 "使用远程桌面应用通过 RDP 协议连接。可能还需要关于设备网络位置的额外信息。"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:46
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:47
 #: panels/system/remote-desktop/cc-remote-session-page.ui:45
 msgid "_Hostname"
 msgstr "主机名(_H)"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:54
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:75
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:96
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:112
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:55
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:76
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:97
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:113
 #: panels/system/remote-desktop/cc-remote-session-page.ui:53
 #: panels/system/remote-desktop/cc-remote-session-page.ui:74
 #: panels/system/remote-desktop/cc-remote-session-page.ui:95
@@ -7489,22 +7440,22 @@ msgstr "主机名(_H)"
 msgid "Copy"
 msgstr "复制"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:67
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:68
 #: panels/system/remote-desktop/cc-remote-session-page.ui:66
 msgid "_Port"
 msgstr "端口(_P)"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:90
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:91
 #: panels/system/remote-desktop/cc-remote-session-page.ui:89
 msgid "Login Details"
 msgstr "登录详情"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:131
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:132
 #: panels/system/remote-desktop/cc-remote-session-page.ui:130
 msgid "_Generate New Password"
 msgstr "生成新密码(_G)"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:142
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:143
 #: panels/system/remote-desktop/cc-remote-session-page.ui:141
 msgid "_Verify Encryption"
 msgstr "验证加密(_V)"
@@ -7533,11 +7484,18 @@ msgid ""
 "resolution can be set from the remote."
 msgstr "远程连接至您未被使用的用户账号。显示分辨率可以从远程设置。"
 
-#: panels/system/remote-desktop/cc-encryption-fingerprint-dialog.ui:28
+#: panels/system/remote-desktop/cc-remote-session-page.ui:42
+msgid ""
+"Use a remote desktop app to connect using the RDP protocol. Additional "
+"information about the device's network location may also be required."
+msgstr ""
+"使用远程桌面应用通过 RDP 协议连接。可能还需要关于设备网络位置的额外信息。"
+
+#: panels/system/remote-desktop/cc-encryption-fingerprint-dialog.ui:20
 msgid "Encryption Fingerprint"
 msgstr "加密指纹"
 
-#: panels/system/remote-desktop/cc-encryption-fingerprint-dialog.ui:29
+#: panels/system/remote-desktop/cc-encryption-fingerprint-dialog.ui:21
 msgid ""
 "The encryption fingerprint can be seen in connecting clients and should be "
 "identical"
@@ -7588,16 +7546,16 @@ msgstr "密码不匹配。"
 msgid "Add User"
 msgstr "添加用户"
 
-#: panels/system/users/cc-add-user-dialog.ui:102
+#: panels/system/users/cc-add-user-dialog.ui:93
 #: panels/system/users/cc-enterprise-login-dialog.ui:107
 msgid "_Username"
 msgstr "用户名(_U)"
 
-#: panels/system/users/cc-add-user-dialog.ui:140
+#: panels/system/users/cc-add-user-dialog.ui:131
 msgid "Ad_ministrator"
 msgstr "管理员(_M)"
 
-#: panels/system/users/cc-add-user-dialog.ui:145
+#: panels/system/users/cc-add-user-dialog.ui:136
 #: panels/system/users/cc-user-page.ui:141
 msgid ""
 "Administrators have extra abilities, including adding and removing users, "
@@ -7607,19 +7565,19 @@ msgstr ""
 "管理员具有额外的能力，包括添加和删除用户、更改登录设置以及删除软件。家长控制"
 "不能应用于管理员。"
 
-#: panels/system/users/cc-add-user-dialog.ui:163
+#: panels/system/users/cc-add-user-dialog.ui:154
 msgid "User sets password on _first login"
 msgstr "用户在首次登录时设置密码(_F)"
 
-#: panels/system/users/cc-add-user-dialog.ui:176
+#: panels/system/users/cc-add-user-dialog.ui:167
 msgid "Set password n_ow"
 msgstr "现在设置密码(_O)"
 
-#: panels/system/users/cc-add-user-dialog.ui:196
+#: panels/system/users/cc-add-user-dialog.ui:187
 msgid "Pass_word"
 msgstr "密码(_W)"
 
-#: panels/system/users/cc-add-user-dialog.ui:240
+#: panels/system/users/cc-add-user-dialog.ui:231
 msgid "_Confirm"
 msgstr "确认(_C)"
 
@@ -8097,7 +8055,6 @@ msgid "_Delete Files and Settings"
 msgstr "删除文件和设置(_D)"
 
 #: panels/system/users/cc-users-page.ui:11
-#: panels/system/users/gnome-users-panel.desktop.in:3
 msgid "Users"
 msgstr "用户"
 
@@ -8129,21 +8086,6 @@ msgstr ""
 #: panels/system/users/data/join-dialog.ui:135
 msgid "Administrator Password"
 msgstr "管理员密码"
-
-#: panels/system/users/gnome-users-panel.desktop.in:4
-msgid "Add or remove users and change your password"
-msgstr "添加或删除用户及更改密码"
-
-#. Translators: Search terms to find the Users panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
-#: panels/system/users/gnome-users-panel.desktop.in:15
-msgid ""
-"Login;Name;Fingerprint;Avatar;Logo;Face;Password;Parental Controls;Screen "
-"Time;App Restrictions;Web Restrictions;Usage;Usage Limit;Kid;Child;"
-msgstr ""
-"Login;Name;Fingerprint;Avatar;Logo;Face;Password;Parental Controls;Screen "
-"Time;App Restrictions;Web Restrictions;Usage;Usage Limit;Kid;Child;登录;名字;"
-"名称;指纹;头像;标志;脸部;密码;家长控制;亮屏时间;应用限制;网络限制;占用;占用限"
-"制;孩子;儿童;"
 
 #: panels/system/users/org.gnome.controlcenter.user-accounts.policy.in:11
 msgid "Manage user accounts"
@@ -9086,19 +9028,19 @@ msgstr "擦除压感(_E)"
 msgid "Eraser pressure"
 msgstr "擦除压力"
 
-#: panels/wacom/cc-wacom-tool.c:362
+#: panels/wacom/cc-wacom-tool.c:361
 msgid "Airbrush stylus with pressure, tilt, and integrated slider"
 msgstr "具有压感、倾斜和集成滑块的喷枪笔"
 
-#: panels/wacom/cc-wacom-tool.c:364
+#: panels/wacom/cc-wacom-tool.c:363
 msgid "Art pen with pressure, tilt, and rotation"
 msgstr "具有压感、倾斜和旋转的艺术笔"
 
-#: panels/wacom/cc-wacom-tool.c:366
+#: panels/wacom/cc-wacom-tool.c:365
 msgid "Stylus with pressure and tilt"
 msgstr "具有压感和倾斜的手写笔"
 
-#: panels/wacom/cc-wacom-tool.c:368
+#: panels/wacom/cc-wacom-tool.c:367
 msgid "Stylus with pressure"
 msgstr "具有压感的手写笔"
 
@@ -9671,7 +9613,7 @@ msgid "Settings is the primary interface for configuring your system."
 msgstr "“设置”是配置您的系统的主要界面。"
 
 #. developer_name tag deprecated with Appstream 1.0
-#: shell/appdata/org.gnome.Settings.appdata.xml.in:39
+#: shell/appdata/org.gnome.Settings.appdata.xml.in:38
 msgid "The GNOME Project"
 msgstr "GNOME 项目"
 
@@ -9746,7 +9688,7 @@ msgstr "设置分类"
 msgid "No Results Found"
 msgstr "未找到结果"
 
-#: shell/cc-panel-loader.c:310
+#: shell/cc-panel-loader.c:308
 msgid "Available panels:"
 msgstr "可用面板："
 
@@ -9863,7 +9805,7 @@ msgstr "包含应用窗口初始宽度、高度和最大化状态的元组。"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1879
+#: subprojects/gvc/gvc-mixer-control.c:1915
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -9871,21 +9813,15 @@ msgstr[0] "%u 路输出"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1889
+#: subprojects/gvc/gvc-mixer-control.c:1925
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u 路输入"
 
-#: subprojects/gvc/gvc-mixer-control.c:2872
+#: subprojects/gvc/gvc-mixer-control.c:2882
 msgid "System Sounds"
 msgstr "系统声音"
-
-#~ msgid ""
-#~ "Use a remote desktop app to connect using the RDP protocol. Additional "
-#~ "information about the device's network location may also be required."
-#~ msgstr ""
-#~ "使用远程桌面应用通过 RDP 协议连接。可能还需要关于设备网络位置的额外信息。"
 
 #~ msgid "Device name copied"
 #~ msgstr "设备名称已复制"
@@ -10125,6 +10061,18 @@ msgstr "系统声音"
 #~ msgid "_Delete"
 #~ msgstr "删除(_D)"
 
+#~ msgid "Add or remove users and change your password"
+#~ msgstr "添加或删除用户及更改密码"
+
+#~ msgid ""
+#~ "Login;Name;Fingerprint;Avatar;Logo;Face;Password;Parental Controls;Screen "
+#~ "Time;App Restrictions;Web Restrictions;Usage;Usage Limit;Kid;Child;"
+#~ msgstr ""
+#~ "Login;Name;Fingerprint;Avatar;Logo;Face;Password;Parental Controls;Screen "
+#~ "Time;App Restrictions;Web Restrictions;Usage;Usage Limit;Kid;Child;登录;名"
+#~ "字;名称;指纹;头像;标志;脸部;密码;家长控制;亮屏时间;应用限制;网络限制;占用;"
+#~ "占用限制;孩子;儿童;"
+
 #~ msgid "Standard stylus with pressure"
 #~ msgstr "具有压感的标准笔"
 
@@ -10166,6 +10114,12 @@ msgstr "系统声音"
 #~ msgid "Date"
 #~ msgstr "日期"
 
+#~ msgid "Change the date and time, including time zone"
+#~ msgstr "改变日期、时间和时区"
+
+#~ msgid "Clock;Timezone;Location;"
+#~ msgstr "Clock;Timezone;Location;时钟;时区;位置;"
+
 #~ msgid "_Calls"
 #~ msgstr "通话(_C)"
 
@@ -10175,6 +10129,9 @@ msgstr "系统声音"
 #~ msgid "default;application;preferred;media;"
 #~ msgstr ""
 #~ "default;application;preferred;media;默认;应用程序;首选;偏好;媒体;介质;"
+
+#~ msgid "View information about your system"
+#~ msgstr "查看系统信息"
 
 #~ msgid "Left"
 #~ msgstr "左"
@@ -10204,6 +10161,12 @@ msgstr "系统声音"
 
 #~ msgid "Privacy"
 #~ msgstr "隐私"
+
+#~ msgid "Select your display language and formats"
+#~ msgstr "选择您的显示语言和格式"
+
+#~ msgid "Language;Layout;Keyboard;Input;"
+#~ msgstr "Language;Layout;Keyboard;Input;语言;布局;键盘;输入;"
 
 #~ msgid "Select how media should be handled"
 #~ msgstr "选择如何处理介质"

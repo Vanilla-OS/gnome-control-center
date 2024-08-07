@@ -44,6 +44,7 @@
 #ifdef GDK_WINDOWING_X11
 #include <gdk/x11/gdkx.h>
 #endif
+#include <locale.h>
 
 #include "cc-system-details-window.h"
 #include "cc-hostname.h"
@@ -51,7 +52,7 @@
 
 struct _CcSystemDetailsWindow
 {
-  AdwWindow parent;
+  AdwDialog parent;
 
   AdwToastOverlay   *toast_overlay;
 
@@ -73,7 +74,7 @@ struct _CcSystemDetailsWindow
   CcInfoEntry       *kernel_row;
 };
 
-G_DEFINE_TYPE (CcSystemDetailsWindow, cc_system_details_window, ADW_TYPE_WINDOW)
+G_DEFINE_TYPE (CcSystemDetailsWindow, cc_system_details_window, ADW_TYPE_DIALOG)
 
 static char *
 get_renderer_from_session (void)
@@ -676,32 +677,36 @@ on_copy_button_clicked_cb (GtkWidget              *widget,
   g_autofree char *kernel_version_text = NULL;
   g_autofree GSList *graphics_hardware_list, *l;
   g_autofree gchar *disk_capacity_string = NULL;
-  
   g_autoptr (GString) result_str;
+  locale_t untranslated_locale;
+
+  /* Don't use translations for the copied content */
+  untranslated_locale = newlocale (LC_ALL_MASK, "C", (locale_t) 0);
+  uselocale (untranslated_locale);
 
   result_str = g_string_new (NULL);
 
-  g_string_append (result_str, _("# System Details Report\n"));
+  g_string_append (result_str, "# System Details Report\n");
   g_string_append (result_str, "---\n\n");
 
-  g_string_append (result_str, _("## Report details\n"));
+  g_string_append (result_str, "## Report details\n");
 
   g_string_append (result_str, "- ");
-  system_details_window_title_print_padding (_("**Date generated:**"), result_str, 0);
+  system_details_window_title_print_padding ("**Date generated:**", result_str, 0);
   date = g_date_time_new_now_local ();
   date_string = g_date_time_format (date, "%Y-%m-%d %H:%M:%S");
 
   g_string_append_printf (result_str, "%s\n\n", date_string);
 
-  g_string_append (result_str, _("## Hardware Information:\n"));
+  g_string_append (result_str, "## Hardware Information:\n");
 
   g_string_append (result_str, "- ");
-  system_details_window_title_print_padding (_("**Hardware Model:**"), result_str, 0);
+  system_details_window_title_print_padding ("**Hardware Model:**", result_str, 0);
   hardware_model_text = get_hardware_model_string ();
   g_string_append_printf (result_str, "%s\n", hardware_model_text);
 
   g_string_append (result_str, "- ");
-  system_details_window_title_print_padding (_("**Memory:**"), result_str, 0);
+  system_details_window_title_print_padding ("**Memory:**", result_str, 0);
   ram_size = get_ram_size_dmi ();
   if (ram_size == 0)
     ram_size = get_ram_size_libgtop ();
@@ -709,7 +714,7 @@ on_copy_button_clicked_cb (GtkWidget              *widget,
   g_string_append_printf (result_str, "%s\n", memory_text);
 
   g_string_append (result_str, "- ");
-  system_details_window_title_print_padding (_("**Processor:**"), result_str, 0);
+  system_details_window_title_print_padding ("**Processor:**", result_str, 0);
   cpu_text = get_cpu_info ();
   g_string_append_printf (result_str, "%s\n", cpu_text);
 
@@ -723,45 +728,45 @@ on_copy_button_clicked_cb (GtkWidget              *widget,
       g_autofree char *label = NULL;
 
       if (data->is_default)
-        label = g_strdup (_("**Graphics:**"));
+        label = g_strdup ("**Graphics:**");
       else
-        label = g_strdup_printf (_("**Graphics %d:**"), ++i);
+        label = g_strdup_printf ("**Graphics %d:**", ++i);
       g_string_append (result_str, "- ");
       system_details_window_title_print_padding (label, result_str, 0);
       g_string_append_printf (result_str, "%s\n", name);
     }
 
   g_string_append (result_str, "- ");
-  system_details_window_title_print_padding (_("**Disk Capacity:**"), result_str, 0);
+  system_details_window_title_print_padding ("**Disk Capacity:**", result_str, 0);
   disk_capacity_string = get_primary_disk_info ();
   g_string_append_printf (result_str, "%s\n", disk_capacity_string);
 
   g_string_append (result_str, "\n");
 
-  g_string_append (result_str, _("## Software Information:\n"));
+  g_string_append (result_str, "## Software Information:\n");
   
   g_string_append (result_str, "- ");
-  system_details_window_title_print_padding (_("**Firmware Version:**"), result_str, 0);
+  system_details_window_title_print_padding ("**Firmware Version:**", result_str, 0);
   firmware_version_text = get_firmware_version_string ();
   g_string_append_printf (result_str, "%s\n", firmware_version_text);
   
   g_string_append (result_str, "- ");
-  system_details_window_title_print_padding (_("**OS Name:**"), result_str, 0);
+  system_details_window_title_print_padding ("**OS Name:**", result_str, 0);
   os_name_text = get_os_name ();
   g_string_append_printf (result_str, "%s\n", os_name_text);
 
   g_string_append (result_str, "- ");
-  system_details_window_title_print_padding (_("**OS Build:**"), result_str, 0);
+  system_details_window_title_print_padding ("**OS Build:**", result_str, 0);
   os_build_text = get_os_build_id ();
   g_string_append_printf (result_str, "%s\n", os_build_text);
 
   g_string_append (result_str, "- ");
-  system_details_window_title_print_padding (_("**OS Type:**"), result_str, 0);
+  system_details_window_title_print_padding ("**OS Type:**", result_str, 0);
   os_type_text = get_os_type ();
   g_string_append_printf (result_str, "%s\n", os_type_text);
 
   g_string_append (result_str, "- ");
-  system_details_window_title_print_padding (_("**GNOME Version:**"), result_str, 0);
+  system_details_window_title_print_padding ("**GNOME Version:**", result_str, 0);
   g_string_append_printf (result_str, "%s\n", MAJOR_VERSION);
 
   g_string_append (result_str, "- ");
@@ -769,13 +774,18 @@ on_copy_button_clicked_cb (GtkWidget              *widget,
   g_string_append_printf (result_str, "%s\n", get_windowing_system ());
 
   g_string_append (result_str, "- ");
-  system_details_window_title_print_padding (_("**Kernel Version:**"), result_str, 0);
+  system_details_window_title_print_padding ("**Kernel Version:**", result_str, 0);
   kernel_version_text = get_kernel_version_string ();
   g_string_append_printf (result_str, "%s\n", kernel_version_text);
 
   display = gdk_display_get_default ();
   clip_board = gdk_display_get_clipboard (display);
   gdk_clipboard_set_text (clip_board, result_str->str);
+
+  /* Reset to the user's original locale. */
+  uselocale (LC_GLOBAL_LOCALE);
+  freelocale (untranslated_locale);
+
   adw_toast_overlay_add_toast (self->toast_overlay, adw_toast_new (_("Details copied to clipboard")));
 }
 
@@ -843,10 +853,10 @@ unset_focus (CcSystemDetailsWindow *self)
 {
   GtkWidget *focus;
 
-  focus = gtk_window_get_focus (GTK_WINDOW (self));
+  focus = adw_dialog_get_focus (ADW_DIALOG (self));
   if (GTK_IS_LABEL (focus))
     gtk_label_select_region (GTK_LABEL (focus), 0, 0);
-  gtk_window_set_focus (GTK_WINDOW (self), NULL);
+  adw_dialog_set_focus (ADW_DIALOG (self), NULL);
 }
 
 static void
@@ -872,8 +882,6 @@ cc_system_details_window_class_init (CcSystemDetailsWindowClass *klass)
   gtk_widget_class_bind_template_child (widget_class, CcSystemDetailsWindow, windowing_system_row);
 
   gtk_widget_class_bind_template_callback (widget_class, on_copy_button_clicked_cb);
-
-  gtk_widget_class_add_binding_action (widget_class, GDK_KEY_Escape, 0, "window.close", NULL);
 
   g_type_ensure (CC_TYPE_INFO_ENTRY);
 }

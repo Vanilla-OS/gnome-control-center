@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: gnome-control-center\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-control-center/"
 "issues\n"
-"POT-Creation-Date: 2024-04-04 16:06+0000\n"
-"PO-Revision-Date: 2024-04-04 20:44+0200\n"
+"POT-Creation-Date: 2024-03-03 17:04+0000\n"
+"PO-Revision-Date: 2024-03-03 20:39+0100\n"
 "Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
 "Language-Team: Georgian <(nothing)>\n"
 "Language: ka\n"
@@ -45,7 +45,7 @@ msgstr "სესიების მატარებელი"
 
 #: panels/applications/cc-applications-panel.c:834
 #: panels/privacy/cc-bolt-page.ui:240 panels/privacy/cc-bolt-page.ui:284
-#: panels/privacy/cc-privacy-panel.ui:75
+#: panels/privacy/cc-privacy-panel.ui:74
 msgid "Devices"
 msgstr "მოწყობილობა"
 
@@ -83,7 +83,7 @@ msgstr "ფაილური სისტემა"
 
 #: panels/applications/cc-applications-panel.c:854
 #: panels/keyboard/01-launchers.xml.in:6
-#: shell/appdata/org.gnome.Settings.appdata.xml.in:7 shell/cc-window.c:798
+#: shell/appdata/org.gnome.Settings.appdata.xml.in:7 shell/cc-window.c:775
 #: shell/cc-window.ui:20 shell/org.gnome.Settings.desktop.in:3
 msgid "Settings"
 msgstr "მორგება"
@@ -131,36 +131,36 @@ msgstr "აპების ძებნა"
 msgid "_Default Apps"
 msgstr "_ნაგულისხმები აპები"
 
-#: panels/applications/cc-applications-panel.ui:62
+#: panels/applications/cc-applications-panel.ui:87
 msgid "No Apps Found"
 msgstr "აპები ვერ ვიპოვე"
 
-#: panels/applications/cc-applications-panel.ui:65
+#: panels/applications/cc-applications-panel.ui:99
 msgid "_Find in Software"
 msgstr "_პროგრამებში ძებნა"
 
-#: panels/applications/cc-applications-panel.ui:101
+#: panels/applications/cc-applications-panel.ui:139
 #: panels/applications/cc-default-apps-page.ui:4
 msgid "Default Apps"
 msgstr "ნაგულისხმები აპები"
 
-#: panels/applications/cc-applications-panel.ui:119
+#: panels/applications/cc-applications-panel.ui:157
 msgid "Removable Media"
 msgstr "გამოერთებადი მედია"
 
-#: panels/applications/cc-applications-panel.ui:122
+#: panels/applications/cc-applications-panel.ui:160
 msgid "Automat_ically Launch Apps"
 msgstr "აპების ავტომატურ_ი გაშვება"
 
-#: panels/applications/cc-applications-panel.ui:123
+#: panels/applications/cc-applications-panel.ui:161
 msgid "Start apps when media is connected or inserted"
 msgstr "აპის გაშვება, როცა მედია მიერთებული ან ჩადებულია"
 
-#: panels/applications/cc-applications-panel.ui:144
+#: panels/applications/cc-applications-panel.ui:182
 msgid "App Settings"
 msgstr "აპის მორგება"
 
-#: panels/applications/cc-applications-panel.ui:164
+#: panels/applications/cc-applications-panel.ui:202
 msgid ""
 "App settings cannot be fully enforced for apps which are not sandboxed. "
 "These apps may use permissions which are not shown."
@@ -168,26 +168,26 @@ msgstr ""
 "აპის პარამეტრების სრულად გამოყენება შეუძლებელია, როცა აპი სენდბოქსში არაა. "
 "ეს აპები, შეიძლება, იყენებდნენ წვდომებს, რომლებიც ნაჩვენები არაა."
 
-#: panels/applications/cc-applications-panel.ui:207
+#: panels/applications/cc-applications-panel.ui:245
 #: panels/printers/pp-details-dialog.c:267
 #: panels/sharing/cc-sharing-panel.c:240
 msgid "_Open"
 msgstr "_გახსნა"
 
-#: panels/applications/cc-applications-panel.ui:219
+#: panels/applications/cc-applications-panel.ui:257
 msgid "App _Details"
 msgstr "აპის _დეტალები"
 
-#: panels/applications/cc-applications-panel.ui:237
+#: panels/applications/cc-applications-panel.ui:275
 msgid "Permissions"
 msgstr "წვდომები"
 
 #. Translators: This row shows/sets whether the app shown in this page can add results to the GNOME Shell search results. Internally this enables/disables the app's Shell Search Provider
-#: panels/applications/cc-applications-panel.ui:240
+#: panels/applications/cc-applications-panel.ui:278
 msgid "_Search"
 msgstr "_ძებნა"
 
-#: panels/applications/cc-applications-panel.ui:241
+#: panels/applications/cc-applications-panel.ui:279
 msgid "Receive system searches and send results"
 msgstr "სისტემის ძებნის მიღება და პასუხების გაგზავნა"
 
@@ -196,171 +196,171 @@ msgstr "სისტემის ძებნის მიღება და �
 #.
 #. translators:
 #. * The device has been disabled
-#: panels/applications/cc-applications-panel.ui:250
-#: panels/applications/cc-applications-panel.ui:297
-#: panels/applications/cc-applications-panel.ui:319
-#: panels/applications/cc-applications-panel.ui:334
-#: panels/applications/cc-applications-panel.ui:349
+#: panels/applications/cc-applications-panel.ui:288
+#: panels/applications/cc-applications-panel.ui:335
+#: panels/applications/cc-applications-panel.ui:357
+#: panels/applications/cc-applications-panel.ui:372
+#: panels/applications/cc-applications-panel.ui:387
 #: panels/keyboard/cc-keyboard-shortcut-editor.ui:123
 #: panels/keyboard/cc-xkb-modifier-dialog.c:342
 #: panels/keyboard/keyboard-shortcuts.c:367
 #: panels/system/users/cc-user-page.c:379
 #: panels/system/users/cc-user-page.c:749 panels/wwan/cc-wwan-device-page.c:477
-#: subprojects/gvc/gvc-mixer-control.c:1872
+#: subprojects/gvc/gvc-mixer-control.c:1908
 msgid "Disabled"
 msgstr "გამორთული"
 
-#: panels/applications/cc-applications-panel.ui:255
+#: panels/applications/cc-applications-panel.ui:293
 msgid "_Notifications"
 msgstr "შეტყობი_ნებები"
 
-#: panels/applications/cc-applications-panel.ui:256
+#: panels/applications/cc-applications-panel.ui:294
 msgid "Show system notifications"
 msgstr "სისტემური შეტყობინებების ჩვენება"
 
-#: panels/applications/cc-applications-panel.ui:263
+#: panels/applications/cc-applications-panel.ui:301
 msgid "_Run in Background"
 msgstr "ფონუ_რად გაშვება"
 
-#: panels/applications/cc-applications-panel.ui:264
+#: panels/applications/cc-applications-panel.ui:302
 msgid "Allow activity when the app is closed"
 msgstr "აქტივობების დაშვება მაშინაც კი, როცა აპლიკაცია დახურულია"
 
-#: panels/applications/cc-applications-panel.ui:271
+#: panels/applications/cc-applications-panel.ui:309
 msgid "Scr_eenshots"
 msgstr "ე_კრანის ანაბეჭდები"
 
-#: panels/applications/cc-applications-panel.ui:272
+#: panels/applications/cc-applications-panel.ui:310
 msgid "Take pictures of the screen at any time"
 msgstr "გადაიღეთ ეკრანის ანაბეჭდები ნებისმიერ დროს"
 
-#: panels/applications/cc-applications-panel.ui:279
+#: panels/applications/cc-applications-panel.ui:317
 msgid "Change _Wallpaper"
 msgstr "_ფონის სურათის შეცვლა"
 
-#: panels/applications/cc-applications-panel.ui:280
+#: panels/applications/cc-applications-panel.ui:318
 msgid "Change the desktop wallpaper"
 msgstr "ფონის სურათის შეცვლა"
 
-#: panels/applications/cc-applications-panel.ui:287
-#: panels/applications/cc-applications-panel.ui:295
+#: panels/applications/cc-applications-panel.ui:325
+#: panels/applications/cc-applications-panel.ui:333
 msgid "So_unds"
 msgstr "ხმ_ები"
 
-#: panels/applications/cc-applications-panel.ui:288
-#: panels/applications/cc-applications-panel.ui:296
+#: panels/applications/cc-applications-panel.ui:326
+#: panels/applications/cc-applications-panel.ui:334
 msgid "Reproduce sounds"
 msgstr "ხმების გამოცემა"
 
-#: panels/applications/cc-applications-panel.ui:302
+#: panels/applications/cc-applications-panel.ui:340
 msgid "_Inhibit Shortcuts"
 msgstr "მალსახმობების გათ_იშვა"
 
-#: panels/applications/cc-applications-panel.ui:303
+#: panels/applications/cc-applications-panel.ui:341
 msgid "Block standard keyboard shortcuts"
 msgstr "კლავიატურის სტანდართული მალსახმობების დაბლოკვა"
 
-#: panels/applications/cc-applications-panel.ui:310
+#: panels/applications/cc-applications-panel.ui:348
 msgid "Camera"
 msgstr "კამერა"
 
-#: panels/applications/cc-applications-panel.ui:311
-#: panels/applications/cc-applications-panel.ui:318
+#: panels/applications/cc-applications-panel.ui:349
+#: panels/applications/cc-applications-panel.ui:356
 msgid "Take pictures with the camera"
 msgstr "გადაიღეთ სურათები კამერით"
 
-#: panels/applications/cc-applications-panel.ui:317
+#: panels/applications/cc-applications-panel.ui:355
 msgid "C_amera"
 msgstr "კ_ამერა"
 
-#: panels/applications/cc-applications-panel.ui:324
-#: panels/applications/cc-applications-panel.ui:332
+#: panels/applications/cc-applications-panel.ui:362
+#: panels/applications/cc-applications-panel.ui:370
 msgid "_Microphone"
 msgstr "_მიკროფონი"
 
-#: panels/applications/cc-applications-panel.ui:325
-#: panels/applications/cc-applications-panel.ui:333
+#: panels/applications/cc-applications-panel.ui:363
+#: panels/applications/cc-applications-panel.ui:371
 msgid "Record audio with the microphone"
 msgstr "ჩაიწერეთ ხმა მიკროფონით"
 
-#: panels/applications/cc-applications-panel.ui:339
-#: panels/applications/cc-applications-panel.ui:347
+#: panels/applications/cc-applications-panel.ui:377
+#: panels/applications/cc-applications-panel.ui:385
 msgid "_Location Services"
 msgstr "_მდებარეობის სერვისები"
 
-#: panels/applications/cc-applications-panel.ui:340
-#: panels/applications/cc-applications-panel.ui:348
+#: panels/applications/cc-applications-panel.ui:378
+#: panels/applications/cc-applications-panel.ui:386
 msgid "Access device location data"
 msgstr "მოწყობილობის მდებარეობის მონაცემებთან წვდომა"
 
-#: panels/applications/cc-applications-panel.ui:359
+#: panels/applications/cc-applications-panel.ui:397
 msgid "Re_quired Access"
 msgstr "_აუცილებელი წვდომა"
 
-#: panels/applications/cc-applications-panel.ui:360
+#: panels/applications/cc-applications-panel.ui:398
 msgid "System access that is required by the app"
 msgstr "აპლიკაციისთვის საჭირო სისტემური წვდომები"
 
-#: panels/applications/cc-applications-panel.ui:371
+#: panels/applications/cc-applications-panel.ui:409
 #: panels/mouse/cc-mouse-panel.ui:66
 #: panels/multitasking/cc-multitasking-panel.ui:15
 #: panels/power/cc-power-panel.ui:171
 msgid "General"
 msgstr "საერთო"
 
-#: panels/applications/cc-applications-panel.ui:374
+#: panels/applications/cc-applications-panel.ui:412
 msgid "_File &amp; Link Associations"
 msgstr "ფაილების &amp; ბმულის მიბმები"
 
-#: panels/applications/cc-applications-panel.ui:382
+#: panels/applications/cc-applications-panel.ui:420
 msgid "S_torage"
 msgstr "_საცავი"
 
-#: panels/applications/cc-applications-panel.ui:405
+#: panels/applications/cc-applications-panel.ui:443
 msgid "Required Access"
 msgstr "აუცილებელი წვდომა"
 
-#: panels/applications/cc-applications-panel.ui:451
+#: panels/applications/cc-applications-panel.ui:489
 msgid "File & Link Associations"
 msgstr "ფაილების & ბმულების მიბმები"
 
-#: panels/applications/cc-applications-panel.ui:480
+#: panels/applications/cc-applications-panel.ui:518
 msgid "File Types"
 msgstr "ფაილის ტიპები"
 
-#: panels/applications/cc-applications-panel.ui:486
+#: panels/applications/cc-applications-panel.ui:524
 msgid "Link Types"
 msgstr "ბმულის ტიპები"
 
-#: panels/applications/cc-applications-panel.ui:496
+#: panels/applications/cc-applications-panel.ui:534
 msgid "_Reset"
 msgstr "ჩამოყ_რა"
 
-#: panels/applications/cc-applications-panel.ui:517
+#: panels/applications/cc-applications-panel.ui:555
 msgid "Storage"
 msgstr "საცავი"
 
-#: panels/applications/cc-applications-panel.ui:542
+#: panels/applications/cc-applications-panel.ui:580
 msgid "How much disk space this app is occupying with app data and caches"
 msgstr "რამდენი ადგილი მიაქვს აპლიკაციას, მონაცემების და ქეშის ჩათვლით"
 
-#: panels/applications/cc-applications-panel.ui:547
+#: panels/applications/cc-applications-panel.ui:585
 msgid "App"
 msgstr "აპი"
 
-#: panels/applications/cc-applications-panel.ui:553
+#: panels/applications/cc-applications-panel.ui:591
 msgid "Data"
 msgstr "მონაცემები"
 
-#: panels/applications/cc-applications-panel.ui:559
+#: panels/applications/cc-applications-panel.ui:597
 msgid "Cache"
 msgstr "კეში"
 
-#: panels/applications/cc-applications-panel.ui:565
+#: panels/applications/cc-applications-panel.ui:603
 msgid "<b>Total</b>"
 msgstr "<b>ჯამში</b>"
 
-#: panels/applications/cc-applications-panel.ui:575
+#: panels/applications/cc-applications-panel.ui:613
 msgid "_Clear Cache"
 msgstr "კეშის _გასუფთავება"
 
@@ -975,7 +975,7 @@ msgstr "ეკრანის კალიბრაცია"
 #: panels/printers/pp-details-dialog.c:266 panels/privacy/cc-usage-page.c:136
 #: panels/sharing/cc-sharing-panel.c:239
 #: panels/system/region/cc-format-chooser.ui:24
-#: panels/system/users/cc-add-user-dialog.ui:34
+#: panels/system/users/cc-add-user-dialog.ui:25
 #: panels/system/users/cc-enterprise-login-dialog.ui:58
 #: panels/system/users/cc-avatar-chooser.c:92
 #: panels/system/users/cc-fingerprint-dialog.ui:32
@@ -1289,7 +1289,7 @@ msgstr "_ფაილის შემოტანა…"
 #: panels/keyboard/cc-keyboard-shortcut-editor.ui:33
 #: panels/network/connection-editor/net-connection-editor.c:653
 #: panels/printers/new-printer-dialog.ui:85
-#: panels/system/users/cc-add-user-dialog.ui:48
+#: panels/system/users/cc-add-user-dialog.ui:39
 #: panels/system/users/cc-enterprise-login-dialog.ui:66
 msgid "_Add"
 msgstr "დ_ამატება"
@@ -1574,91 +1574,91 @@ msgstr "საათის შემცირება"
 msgid "Decrement Minute"
 msgstr "წუთის შემცირება"
 
-#: panels/common/cc-util.c:130
+#: panels/common/cc-util.c:127
 #: panels/network/connection-editor/ce-page-details.c:199
 msgid "Today"
 msgstr "დღეს"
 
-#: panels/common/cc-util.c:134
+#: panels/common/cc-util.c:131
 #: panels/network/connection-editor/ce-page-details.c:201
 msgid "Yesterday"
 msgstr "გუშინ"
 
 #. Translators: This is a date format string in the style of "Feb 24".
-#: panels/common/cc-util.c:142
+#: panels/common/cc-util.c:139
 #, no-c-format
 msgid "%b %e"
 msgstr "%b %e"
 
 #. Translators: This is a date format string in the style of "Feb 24, 2013".
-#: panels/common/cc-util.c:147
+#: panels/common/cc-util.c:144
 msgid "%b %e, %Y"
 msgstr "%b %e, %Y"
 
 #. TRANSLATORS: This is the datetime format in the style of
 #. "Aug 1, 10:10:10 PM", "Feb 24, 2013, 10:10:10 PM", "Today, 10:10:10 AM",
 #. and "Yesterday, 10:10:10 AM"
-#: panels/common/cc-util.c:166
+#: panels/common/cc-util.c:163
 #, c-format
 msgid "%1$s, %2$s"
 msgstr "%1$s, %2$s"
 
-#: panels/common/cc-util.c:186
+#: panels/common/cc-util.c:183
 #, c-format
 msgid "%d hour"
 msgid_plural "%d hours"
 msgstr[0] "%d საათი"
 
 #. Translators: Option for "Blank Screen" in "Power" panel
-#: panels/common/cc-util.c:187 panels/power/cc-power-panel.c:790
+#: panels/common/cc-util.c:184 panels/power/cc-power-panel.c:790
 #, c-format
 msgid "%d minute"
 msgid_plural "%d minutes"
 msgstr[0] "%d წუთი"
 
-#: panels/common/cc-util.c:188
+#: panels/common/cc-util.c:185
 #, c-format
 msgid "%d second"
 msgid_plural "%d seconds"
 msgstr[0] "%d წამი"
 
 #. 5 hours 2 minutes 12 seconds
-#: panels/common/cc-util.c:195
+#: panels/common/cc-util.c:192
 #, c-format
 msgctxt "hours minutes seconds"
 msgid "%s %s %s"
 msgstr "%s %s %s"
 
 #. 5 hours 2 minutes
-#: panels/common/cc-util.c:200
+#: panels/common/cc-util.c:197
 #, c-format
 msgctxt "hours minutes"
 msgid "%s %s"
 msgstr "%s %s"
 
 #. 5 hours
-#: panels/common/cc-util.c:205
+#: panels/common/cc-util.c:202
 #, c-format
 msgctxt "hours"
 msgid "%s"
 msgstr "%s"
 
 #. 2 minutes 12 seconds
-#: panels/common/cc-util.c:213
+#: panels/common/cc-util.c:210
 #, c-format
 msgctxt "minutes seconds"
 msgid "%s %s"
 msgstr "%s %s"
 
 #. 2 minutes
-#: panels/common/cc-util.c:218
+#: panels/common/cc-util.c:215
 #, c-format
 msgctxt "minutes"
 msgid "%s"
 msgstr "%s"
 
 #. 0 seconds
-#: panels/common/cc-util.c:229
+#: panels/common/cc-util.c:226
 msgid "0 seconds"
 msgstr "0 წამი"
 
@@ -2966,9 +2966,9 @@ msgstr "ქსელის სახელი"
 #: panels/network/cc-wifi-hotspot-dialog.ui:92
 #: panels/printers/new-printer-dialog.ui:293
 #: panels/printers/pp-jobs-dialog.ui:54
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:109
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:110
 #: panels/system/remote-desktop/cc-remote-session-page.ui:108
-#: panels/system/users/cc-add-user-dialog.ui:159
+#: panels/system/users/cc-add-user-dialog.ui:150
 #: panels/wwan/cc-wwan-apn-dialog.ui:175
 msgid "Password"
 msgstr "პაროლი"
@@ -3062,7 +3062,7 @@ msgstr "802.1x _უსაფრთხოება"
 #: panels/network/connection-editor/bluetooth-page.ui:16
 #: panels/network/connection-editor/ethernet-page.ui:27
 #: panels/network/connection-editor/vpn-page.ui:23
-#: panels/system/users/cc-add-user-dialog.ui:75
+#: panels/system/users/cc-add-user-dialog.ui:66
 #: panels/system/users/cc-user-page.ui:84
 msgid "_Name"
 msgstr "_სახელი"
@@ -3081,30 +3081,22 @@ msgid "Identity"
 msgstr "იდენტიფიკაცია"
 
 #: panels/network/connection-editor/ce-page.c:234
-#: panels/network/connection-editor/ce-page.c:238
 msgid "Preserve"
 msgstr "შენარჩუნება"
 
 #: panels/network/connection-editor/ce-page.c:235
-#: panels/network/connection-editor/ce-page.c:239
 msgid "Permanent"
 msgstr "სამუდამო"
 
 #: panels/network/connection-editor/ce-page.c:236
-#: panels/network/connection-editor/ce-page.c:240
 msgid "Random"
 msgstr "შემთხვევითი"
 
 #: panels/network/connection-editor/ce-page.c:237
-#: panels/network/connection-editor/ce-page.c:241
 msgid "Stable"
 msgstr "სტაბილური"
 
-#: panels/network/connection-editor/ce-page.c:243
-msgid "Stable per SSID"
-msgstr "სტაბილური თითოეული SSID-სთვის"
-
-#: panels/network/connection-editor/ce-page.c:251
+#: panels/network/connection-editor/ce-page.c:241
 msgid ""
 "The MAC address entered here will be used as hardware address for the "
 "network device this connection is activated on. This feature is known as MAC "
@@ -3114,7 +3106,7 @@ msgstr ""
 "ქსელური მოწყობილობისა, რომელზეც ეს მიერთება აქტიურდება. ფუნქციას Mac cloning/"
 "spoofing ეწოდება. მაგ: 11:22:33:44:55"
 
-#: panels/network/connection-editor/ce-page.c:409
+#: panels/network/connection-editor/ce-page.c:399
 #, c-format
 msgid "Profile %d"
 msgstr "პროფილი %d"
@@ -4850,7 +4842,7 @@ msgstr ""
 #. Translators: This is a username on a print server.
 #: panels/printers/new-printer-dialog.ui:272
 #: panels/printers/pp-jobs-dialog.ui:42
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:93
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:94
 #: panels/system/remote-desktop/cc-remote-session-page.ui:92
 #: panels/wwan/cc-wwan-apn-dialog.ui:150
 msgid "Username"
@@ -6147,59 +6139,59 @@ msgstr "ეკრანის _დაბლოკვა"
 msgid "Automatic screen lock"
 msgstr "ავტომატური ეკრანის დაბლოკვა"
 
-#: panels/privacy/cc-privacy-panel.ui:37
+#: panels/privacy/cc-privacy-panel.ui:36
 msgid "_Location"
 msgstr "_მდებარეობა"
 
-#: panels/privacy/cc-privacy-panel.ui:38
+#: panels/privacy/cc-privacy-panel.ui:37
 msgid "Control access to your location"
 msgstr "თქვენ მდებარეობაზე წვდომის კონტროლი"
 
-#: panels/privacy/cc-privacy-panel.ui:48
+#: panels/privacy/cc-privacy-panel.ui:47
 msgid "_File History &amp; Trash"
 msgstr "_ფაილის ისტორია & ნაგავი"
 
-#: panels/privacy/cc-privacy-panel.ui:49
+#: panels/privacy/cc-privacy-panel.ui:48
 msgid "Remove saved data and files"
 msgstr "შენახული ფაილებისა და მონაცემების წაშლა"
 
-#: panels/privacy/cc-privacy-panel.ui:59
+#: panels/privacy/cc-privacy-panel.ui:58
 msgid "_Diagnostics"
 msgstr "_დიაგნოსტიკა"
 
-#: panels/privacy/cc-privacy-panel.ui:60
+#: panels/privacy/cc-privacy-panel.ui:59
 msgid "Automatic problem reporting"
 msgstr "პრობლემის ავტომატური ანგარიში"
 
-#: panels/privacy/cc-privacy-panel.ui:79
+#: panels/privacy/cc-privacy-panel.ui:78
 msgid "_Cameras"
 msgstr "_კამერები"
 
-#: panels/privacy/cc-privacy-panel.ui:80
+#: panels/privacy/cc-privacy-panel.ui:79
 msgid "Control camera access"
 msgstr "კამერასთან წვდომის კონტროლი"
 
-#: panels/privacy/cc-privacy-panel.ui:90
+#: panels/privacy/cc-privacy-panel.ui:89
 msgid "_Microphones"
 msgstr "_მიკროფონები"
 
-#: panels/privacy/cc-privacy-panel.ui:91
+#: panels/privacy/cc-privacy-panel.ui:90
 msgid "Control microphone access"
 msgstr "მიკროფონთან წვდომის კონტროლი"
 
-#: panels/privacy/cc-privacy-panel.ui:103
+#: panels/privacy/cc-privacy-panel.ui:102
 msgid "_Thunderbolt"
 msgstr "_თანდერბოლტი"
 
-#: panels/privacy/cc-privacy-panel.ui:104
+#: panels/privacy/cc-privacy-panel.ui:103
 msgid "Manage device access"
 msgstr "მოწყობილობებთან წვდომის მართვა"
 
-#: panels/privacy/cc-privacy-panel.ui:114
+#: panels/privacy/cc-privacy-panel.ui:113
 msgid "Device _Security"
 msgstr "მოწყობილობის _უსაფრთხოება"
 
-#: panels/privacy/cc-privacy-panel.ui:115
+#: panels/privacy/cc-privacy-panel.ui:114
 msgid "Hardware security status and information"
 msgstr "აპარატურის სტატუსი და ინფორმაცია"
 
@@ -6940,7 +6932,6 @@ msgstr ""
 "ბარათი;დინამიკები;მიკროფონი;ხმა;ყურსაცვამები;"
 
 #: panels/system/about/cc-about-page.ui:4
-#: panels/system/about/gnome-about-panel.desktop.in:3
 msgid "About"
 msgstr "შესახებ"
 
@@ -7143,23 +7134,6 @@ msgstr "ვირტუალიზაცია"
 msgid "Kernel Version"
 msgstr "ბირთვის ვერსია"
 
-#: panels/system/about/gnome-about-panel.desktop.in:4
-msgid "View information about your system"
-msgstr "ინფორმაცია ამ სისტემის შესახებ"
-
-#. Translators: Search terms to find the About panel.
-#. Do NOT translate or localize the semicolons!
-#. The list MUST also end with a semicolon!
-#. "Preferred Applications" is the old name for the preference, so make
-#. sure that you use the same "translation" for those keywords
-#: panels/system/about/gnome-about-panel.desktop.in:19
-msgid ""
-"device;system;information;hostname;memory;processor;version;default;"
-"application;preferred;cd;dvd;usb;audio;video;disc;removable;media;autorun;"
-msgstr ""
-"device;system;default;application;preferred;cd;dvd;usb;audio;video;disc;"
-"removable;media;autorun;მოწყობილობა;სისტემა;ნაგულისხმევი;აუდიო;მედია;"
-
 #: panels/system/cc-system-panel.ui:23
 msgid "_Region &amp; Language"
 msgstr "_რეგიონი &amp; ენა"
@@ -7168,63 +7142,63 @@ msgstr "_რეგიონი &amp; ენა"
 msgid "System language and localization"
 msgstr "სისტემის ენა და ლოკალიზაცია"
 
-#: panels/system/cc-system-panel.ui:33
+#: panels/system/cc-system-panel.ui:34
 msgid "_Date &amp; Time"
 msgstr "თ_არიღი &amp; დრო"
 
-#: panels/system/cc-system-panel.ui:34
+#: panels/system/cc-system-panel.ui:35
 msgid "Time zone and clock settings"
 msgstr "დროის სარტყლისა და საათის მორგება"
 
-#: panels/system/cc-system-panel.ui:43
+#: panels/system/cc-system-panel.ui:45
 msgid "_Users"
 msgstr "_მომხმარებლები"
 
-#: panels/system/cc-system-panel.ui:44
+#: panels/system/cc-system-panel.ui:46
 msgid "Add and remove accounts, change password"
 msgstr "დაამატეთ ან წაშალეთ მომხმარებლები, შეცვალეთ პაროლი"
 
-#: panels/system/cc-system-panel.ui:54
+#: panels/system/cc-system-panel.ui:58
 msgid "R_emote Desktop"
 msgstr "დაშო_რებული სამუშაო მაგიდა"
 
-#: panels/system/cc-system-panel.ui:55
+#: panels/system/cc-system-panel.ui:59
 msgid "Allow this device to be used remotely"
 msgstr "ამ მოწყობილობის დაშორებული მართვის დაშვება"
 
-#: panels/system/cc-system-panel.ui:64
+#: panels/system/cc-system-panel.ui:69
 #: panels/system/remote-login/cc-remote-login-page.ui:51
 msgid "Secu_re Shell"
 msgstr "დაცული გა_რსი"
 
-#: panels/system/cc-system-panel.ui:65
+#: panels/system/cc-system-panel.ui:70
 msgid "SSH network access"
 msgstr "SSH ქსელთან წვდომა"
 
-#: panels/system/cc-system-panel.ui:74
+#: panels/system/cc-system-panel.ui:79
 msgid "_About"
 msgstr "შეს_ახებ"
 
-#: panels/system/cc-system-panel.ui:75
+#: panels/system/cc-system-panel.ui:80
 msgid "Hardware details and software versions"
 msgstr "აპარატურის დეტალები და პროგრამის ვერსიები"
 
-#: panels/system/cc-system-panel.ui:91
+#: panels/system/cc-system-panel.ui:97
 msgid "Software _Updates"
 msgstr "პროგრამ_ული განახლებები"
 
 #. Translators: This is the full date and time format used in 12-hour mode.
-#: panels/system/datetime/cc-datetime-page.c:231
+#: panels/system/datetime/cc-datetime-page.c:230
 msgid "%e %B %Y, %l:%M %p"
 msgstr "%e %B %Y, %l:%M %p"
 
 #. Translators: This is the full date and time format used in 24-hour mode.
-#: panels/system/datetime/cc-datetime-page.c:236
+#: panels/system/datetime/cc-datetime-page.c:235
 msgid "%e %B %Y, %R"
 msgstr "%e %B %Y, %R"
 
 #. Translators: "city, country"
-#: panels/system/datetime/cc-datetime-page.c:393
+#: panels/system/datetime/cc-datetime-page.c:388
 #, c-format
 msgctxt "timezone loc"
 msgid "%s, %s"
@@ -7232,39 +7206,38 @@ msgstr "%s, %s"
 
 #. Update the timezone on the listbow row
 #. Translators: "timezone (details)"
-#: panels/system/datetime/cc-datetime-page.c:410
+#: panels/system/datetime/cc-datetime-page.c:405
 #, c-format
 msgctxt "timezone desc"
 msgid "%s (%s)"
 msgstr "%s (%s)"
 
 #: panels/system/datetime/cc-datetime-page.ui:9
-#: panels/system/datetime/cc-datetime-page.ui:116
-#: panels/system/datetime/gnome-datetime-panel.desktop.in:3
+#: panels/system/datetime/cc-datetime-page.ui:117
 msgid "Date & Time"
 msgstr "თარიღი & დრო"
 
-#: panels/system/datetime/cc-datetime-page.ui:59
+#: panels/system/datetime/cc-datetime-page.ui:60
 msgid "_Year"
 msgstr "_წელი"
 
-#: panels/system/datetime/cc-datetime-page.ui:70
+#: panels/system/datetime/cc-datetime-page.ui:71
 msgid "_Month"
 msgstr "თ_ვე"
 
-#: panels/system/datetime/cc-datetime-page.ui:97
+#: panels/system/datetime/cc-datetime-page.ui:98
 msgid "_Day"
 msgstr "_დღე"
 
-#: panels/system/datetime/cc-datetime-page.ui:136
+#: panels/system/datetime/cc-datetime-page.ui:137
 msgid "Automatic _Date &amp; Time"
 msgstr "ავტომატური _თარიღი და დრო"
 
-#: panels/system/datetime/cc-datetime-page.ui:137
+#: panels/system/datetime/cc-datetime-page.ui:138
 msgid "Requires internet access"
 msgstr "ინტერნეტთან წვდომა აუცილებელია"
 
-#: panels/system/datetime/cc-datetime-page.ui:149
+#: panels/system/datetime/cc-datetime-page.ui:150
 msgid "Date &amp; _Time"
 msgstr "თარიღი და დრო"
 
@@ -7320,51 +7293,51 @@ msgstr "კვირის _რიცხვები"
 msgid "Shown in the dropdown calendar"
 msgstr "ნაჩვენებია ჩამოსაშლელ კალენდარში"
 
-#: panels/system/datetime/cc-datetime-page.ui:270
+#: panels/system/datetime/cc-datetime-page.ui:271
 msgid "January"
 msgstr "იანვარი"
 
-#: panels/system/datetime/cc-datetime-page.ui:271
+#: panels/system/datetime/cc-datetime-page.ui:272
 msgid "February"
 msgstr "თებერვალი"
 
-#: panels/system/datetime/cc-datetime-page.ui:272
+#: panels/system/datetime/cc-datetime-page.ui:273
 msgid "March"
 msgstr "მარტი"
 
-#: panels/system/datetime/cc-datetime-page.ui:273
+#: panels/system/datetime/cc-datetime-page.ui:274
 msgid "April"
 msgstr "აპრილი"
 
-#: panels/system/datetime/cc-datetime-page.ui:274
+#: panels/system/datetime/cc-datetime-page.ui:275
 msgid "May"
 msgstr "მაისი"
 
-#: panels/system/datetime/cc-datetime-page.ui:275
+#: panels/system/datetime/cc-datetime-page.ui:276
 msgid "June"
 msgstr "ივნისი"
 
-#: panels/system/datetime/cc-datetime-page.ui:276
+#: panels/system/datetime/cc-datetime-page.ui:277
 msgid "July"
 msgstr "ივლისი"
 
-#: panels/system/datetime/cc-datetime-page.ui:277
+#: panels/system/datetime/cc-datetime-page.ui:278
 msgid "August"
 msgstr "აგვისტო"
 
-#: panels/system/datetime/cc-datetime-page.ui:278
+#: panels/system/datetime/cc-datetime-page.ui:279
 msgid "September"
 msgstr "სექტემბერი"
 
-#: panels/system/datetime/cc-datetime-page.ui:279
+#: panels/system/datetime/cc-datetime-page.ui:280
 msgid "October"
 msgstr "ოქტომბერი"
 
-#: panels/system/datetime/cc-datetime-page.ui:280
+#: panels/system/datetime/cc-datetime-page.ui:281
 msgid "November"
 msgstr "ნოემბერი"
 
-#: panels/system/datetime/cc-datetime-page.ui:281
+#: panels/system/datetime/cc-datetime-page.ui:282
 msgid "December"
 msgstr "დეკემბერი"
 
@@ -7379,15 +7352,6 @@ msgstr "ქალაქების ძებნა"
 #: panels/system/datetime/cc-tz-dialog.ui:47
 msgid "No Results"
 msgstr "შედეგების გარეშე"
-
-#: panels/system/datetime/gnome-datetime-panel.desktop.in:4
-msgid "Change the date and time, including time zone"
-msgstr "დროისა და თარიღის ცვლილება, დროის სარტყლის ჩათვლით"
-
-#. Translators: Search terms to find the Date and Time panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
-#: panels/system/datetime/gnome-datetime-panel.desktop.in:15
-msgid "Clock;Timezone;Location;"
-msgstr "საათი;დროის სარტყელი;მდებარეობა;"
 
 #: panels/system/datetime/org.gnome.controlcenter.system.policy.in:11
 msgid "Change system time and date settings"
@@ -7477,7 +7441,6 @@ msgid "Paper"
 msgstr "ქაღალდი"
 
 #: panels/system/region/cc-region-page.ui:4
-#: panels/system/region/gnome-region-panel.desktop.in:3
 msgid "Region & Language"
 msgstr "რეგიონი და ენა"
 
@@ -7522,15 +7485,6 @@ msgstr "ენ_ა"
 msgid "Fo_rmats"
 msgstr "ფო_რმატები"
 
-#: panels/system/region/gnome-region-panel.desktop.in:4
-msgid "Select your display language and formats"
-msgstr "აირჩიეთ ინტერფეისის სასურველი ენა და ფორმატები"
-
-#. Translators: Search terms to find the Region and Language panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
-#: panels/system/region/gnome-region-panel.desktop.in:15
-msgid "Language;Layout;Keyboard;Input;"
-msgstr "Language;Layout;Keyboard;Input;შეყვანა;ენა;განლაგება;კლავიატურა;"
-
 #: panels/system/remote-desktop/cc-desktop-sharing-page.c:364
 #: panels/system/remote-desktop/cc-remote-session-page.c:98
 msgid "Device address copied"
@@ -7551,7 +7505,7 @@ msgstr "მომხმარებლის სახელი კოპირ�
 msgid "Password copied"
 msgstr "პაროლი დაკოპირდა"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:12
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:13
 msgid ""
 "Share your existing desktop with other devices. The remote connection uses "
 "the existing screen resolution"
@@ -7559,25 +7513,24 @@ msgstr ""
 "გაუზიარეთ თქვენი არსებული სამუშაო მაგიდა სხვა მოწყობილობებს. დაშორებული "
 "მიერთება არსებული ეკრანის გაფართოებას იყენებს"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:27
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:28
 msgid "_Desktop Sharing"
 msgstr "სამუშაო მაგი_დის გაზიარება"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:33
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:34
 msgid "Remote _Control"
 msgstr "დაშორებული _მართვა"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:35
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:36
 msgid "Allows desktop shares to control the screen"
 msgstr "დაშორებული მიერთებებისთვის ეკრანის კონტროლის უფლების მიცემა"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:42
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:43
 #: panels/system/remote-desktop/cc-remote-session-page.ui:41
 msgid "How to Connect"
 msgstr "როგორ დავუკავშირდე"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:43
-#: panels/system/remote-desktop/cc-remote-session-page.ui:42
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:44
 msgid ""
 "Use a remote desktop app to connect using the RDP protocol. Additional "
 "information about the device’s network location may also be required."
@@ -7585,15 +7538,15 @@ msgstr ""
 "გამოიყენეთ დაშორებული სამუშაო მაგიდის აპი, რომ მიუერთდეთ RDP პროტოკოლით. "
 "ასევე დაგჭირდებათ დამატებითი ინფორმაცია მოწყობილობის მდებარეობის შესახებ."
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:46
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:47
 #: panels/system/remote-desktop/cc-remote-session-page.ui:45
 msgid "_Hostname"
 msgstr "_ჰოსტის სახელი"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:54
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:75
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:96
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:112
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:55
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:76
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:97
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:113
 #: panels/system/remote-desktop/cc-remote-session-page.ui:53
 #: panels/system/remote-desktop/cc-remote-session-page.ui:74
 #: panels/system/remote-desktop/cc-remote-session-page.ui:95
@@ -7602,22 +7555,22 @@ msgstr "_ჰოსტის სახელი"
 msgid "Copy"
 msgstr "კოპირება"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:67
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:68
 #: panels/system/remote-desktop/cc-remote-session-page.ui:66
 msgid "_Port"
 msgstr "_პორტი"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:90
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:91
 #: panels/system/remote-desktop/cc-remote-session-page.ui:89
 msgid "Login Details"
 msgstr "შესვლის დეტალები"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:131
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:132
 #: panels/system/remote-desktop/cc-remote-session-page.ui:130
 msgid "_Generate New Password"
 msgstr "ახალი პაროლის _გენერაცია"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:142
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:143
 #: panels/system/remote-desktop/cc-remote-session-page.ui:141
 msgid "_Verify Encryption"
 msgstr "დაშიფ_ვრის შემოწმება"
@@ -7648,11 +7601,19 @@ msgstr ""
 "დაუკავშირდით თქვენს მომხმარებელს, როცა ის არ გამოიყენება. ეკრანის გაფართოება "
 "დაშორებული კომპიუტერის მიერ მიეთითება."
 
-#: panels/system/remote-desktop/cc-encryption-fingerprint-dialog.ui:28
+#: panels/system/remote-desktop/cc-remote-session-page.ui:42
+msgid ""
+"Use a remote desktop app to connect using the RDP protocol. Additional "
+"information about the device's network location may also be required"
+msgstr ""
+"გამოიყენეთ დაშორებული სამუშაო მაგიდის აპი, რომ მიუერთდეთ RDP პროტოკოლით. "
+"ასევე დაგჭირდებათ დამატებითი ინფორმაცია მოწყობილობის მდებარეობის შესახებ"
+
+#: panels/system/remote-desktop/cc-encryption-fingerprint-dialog.ui:20
 msgid "Encryption Fingerprint"
 msgstr "შიფრაციის ანაბეჭდი"
 
-#: panels/system/remote-desktop/cc-encryption-fingerprint-dialog.ui:29
+#: panels/system/remote-desktop/cc-encryption-fingerprint-dialog.ui:21
 msgid ""
 "The encryption fingerprint can be seen in connecting clients and should be "
 "identical"
@@ -7705,16 +7666,16 @@ msgstr "პაროლები არ ემთხვევა."
 msgid "Add User"
 msgstr "მომხმარებლის დამატება"
 
-#: panels/system/users/cc-add-user-dialog.ui:102
+#: panels/system/users/cc-add-user-dialog.ui:93
 #: panels/system/users/cc-enterprise-login-dialog.ui:107
 msgid "_Username"
 msgstr "_მომხმარებელი"
 
-#: panels/system/users/cc-add-user-dialog.ui:140
+#: panels/system/users/cc-add-user-dialog.ui:131
 msgid "Ad_ministrator"
 msgstr "ად_მინისტრატორი"
 
-#: panels/system/users/cc-add-user-dialog.ui:145
+#: panels/system/users/cc-add-user-dialog.ui:136
 #: panels/system/users/cc-user-page.ui:141
 msgid ""
 "Administrators have extra abilities, including adding and removing users, "
@@ -7725,19 +7686,19 @@ msgstr ""
 "მომხმარებლების დამატება და წაშლა, შესვლის პარამეტრების შეცვლა და პროგრამების "
 "წაშლა. მშობლის კონტროლს ადმინისტრატორებზე ვერ გამოიყენებთ."
 
-#: panels/system/users/cc-add-user-dialog.ui:163
+#: panels/system/users/cc-add-user-dialog.ui:154
 msgid "User sets password on _first login"
 msgstr "მომხმარებელი პაროლს _პირველი შესვლისას აყენებს"
 
-#: panels/system/users/cc-add-user-dialog.ui:176
+#: panels/system/users/cc-add-user-dialog.ui:167
 msgid "Set password n_ow"
 msgstr "დააყენეთ პარ_ოლი ახლა"
 
-#: panels/system/users/cc-add-user-dialog.ui:196
+#: panels/system/users/cc-add-user-dialog.ui:187
 msgid "Pass_word"
 msgstr "პა_როლი"
 
-#: panels/system/users/cc-add-user-dialog.ui:240
+#: panels/system/users/cc-add-user-dialog.ui:231
 msgid "_Confirm"
 msgstr "_დადასტურება"
 
@@ -8223,7 +8184,6 @@ msgid "_Delete Files and Settings"
 msgstr "_ფაილებისა და პარამეტრების წაშლა"
 
 #: panels/system/users/cc-users-page.ui:11
-#: panels/system/users/gnome-users-panel.desktop.in:3
 msgid "Users"
 msgstr "მომხმარებლები"
 
@@ -8256,20 +8216,6 @@ msgstr ""
 #: panels/system/users/data/join-dialog.ui:135
 msgid "Administrator Password"
 msgstr "ადმინისტრატორის პაროლი"
-
-#: panels/system/users/gnome-users-panel.desktop.in:4
-msgid "Add or remove users and change your password"
-msgstr "დაამატეთ ან წაშალეთ მომხმარებლები და შეცვალეთ თქვენი პაროლი"
-
-#. Translators: Search terms to find the Users panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
-#: panels/system/users/gnome-users-panel.desktop.in:15
-msgid ""
-"Login;Name;Fingerprint;Avatar;Logo;Face;Password;Parental Controls;Screen "
-"Time;App Restrictions;Web Restrictions;Usage;Usage Limit;Kid;Child;"
-msgstr ""
-"Login;Name;Fingerprint;Avatar;Logo;Face;Password;Parental Controls;Screen "
-"Time;App Restrictions;Web Restrictions;Usage;Usage Limit;Kid;Child;ბავშვი;"
-"ლიმიტი;მშობლის კონტროლი;ავატარი;მომხმარებელი;"
 
 #: panels/system/users/org.gnome.controlcenter.user-accounts.policy.in:11
 msgid "Manage user accounts"
@@ -9231,19 +9177,19 @@ msgstr "საშლ_ელის დაწოლის გრძნობა"
 msgid "Eraser pressure"
 msgstr "საშლელის დაწოლა"
 
-#: panels/wacom/cc-wacom-tool.c:362
+#: panels/wacom/cc-wacom-tool.c:361
 msgid "Airbrush stylus with pressure, tilt, and integrated slider"
 msgstr "აეროგრაფის სტილუსი დაჭერის, მობრუნების და დახრის ფუნქციებით"
 
-#: panels/wacom/cc-wacom-tool.c:364
+#: panels/wacom/cc-wacom-tool.c:363
 msgid "Art pen with pressure, tilt, and rotation"
 msgstr "სტილუსი დაჭერის, მობრუნების და დახრის ფუნქციებით"
 
-#: panels/wacom/cc-wacom-tool.c:366
+#: panels/wacom/cc-wacom-tool.c:365
 msgid "Stylus with pressure and tilt"
 msgstr "სტილუსი დაჭერისა და დახრის ფუნქციებით"
 
-#: panels/wacom/cc-wacom-tool.c:368
+#: panels/wacom/cc-wacom-tool.c:367
 msgid "Stylus with pressure"
 msgstr "სტილუსი დაწოლის ფუნქციით"
 
@@ -9817,7 +9763,7 @@ msgid "Settings is the primary interface for configuring your system."
 msgstr "მორგება - თქვენი სისტემის პარამეტრების გამართვის მთავარი ადგილი."
 
 #. developer_name tag deprecated with Appstream 1.0
-#: shell/appdata/org.gnome.Settings.appdata.xml.in:39
+#: shell/appdata/org.gnome.Settings.appdata.xml.in:38
 msgid "The GNOME Project"
 msgstr "პროექტი \"GNOME\""
 
@@ -9863,7 +9809,7 @@ msgstr "პარამეტრების კატეგორიები"
 msgid "No Results Found"
 msgstr "შედეგების გარეშე"
 
-#: shell/cc-panel-loader.c:310
+#: shell/cc-panel-loader.c:308
 msgid "Available panels:"
 msgstr "ხელმისაწვდომი პანელები:"
 
@@ -9985,7 +9931,7 @@ msgstr ""
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1879
+#: subprojects/gvc/gvc-mixer-control.c:1915
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -9993,22 +9939,15 @@ msgstr[0] "%u გამოტანა"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1889
+#: subprojects/gvc/gvc-mixer-control.c:1925
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u შეტანა"
 
-#: subprojects/gvc/gvc-mixer-control.c:2872
+#: subprojects/gvc/gvc-mixer-control.c:2882
 msgid "System Sounds"
 msgstr "სისტემური ხმები"
-
-#~ msgid ""
-#~ "Use a remote desktop app to connect using the RDP protocol. Additional "
-#~ "information about the device's network location may also be required"
-#~ msgstr ""
-#~ "გამოიყენეთ დაშორებული სამუშაო მაგიდის აპი, რომ მიუერთდეთ RDP პროტოკოლით. "
-#~ "ასევე დაგჭირდებათ დამატებითი ინფორმაცია მოწყობილობის მდებარეობის შესახებ"
 
 #~ msgid "Device name copied"
 #~ msgstr "მოწყობილობის სახელი კოპირებული"
@@ -10121,6 +10060,9 @@ msgstr "სისტემური ხმები"
 #~ msgid "Date"
 #~ msgstr "თარიღი"
 
+#~ msgid "Clock;Timezone;Location;"
+#~ msgstr "საათი;დროის სარტყელი;მდებარეობა;"
+
 #~ msgid "Links &amp; Files"
 #~ msgstr "ბმულები &amp; ფაილები"
 
@@ -10135,6 +10077,9 @@ msgstr "სისტემური ხმები"
 
 #~ msgid "Not Available"
 #~ msgstr "მიუწვდომელია"
+
+#~ msgid "View information about your system"
+#~ msgstr "ინფორმაცია ამ სისტემის შესახებ"
 
 #~ msgid "Options"
 #~ msgstr "პარამეტრები"
@@ -10171,6 +10116,12 @@ msgstr "სისტემური ხმები"
 
 #~ msgid "Privacy"
 #~ msgstr "პირადი ინფორმაცია"
+
+#~ msgid "Select your display language and formats"
+#~ msgstr "აირჩიეთ ინტერფეისის სასურველი ენა და ფორმატები"
+
+#~ msgid "Language;Layout;Keyboard;Input;"
+#~ msgstr "Language;Layout;Keyboard;Input;შეყვანა;ენა;განლაგება;კლავიატურა;"
 
 #~ msgid "Select how media should be handled"
 #~ msgstr "აირჩიეთ, როგორ დამუშავდება მედია"
@@ -10249,6 +10200,14 @@ msgstr "სისტემური ხმები"
 
 #~ msgid "_Delete"
 #~ msgstr "_წაშლა"
+
+#~ msgid ""
+#~ "Login;Name;Fingerprint;Avatar;Logo;Face;Password;Parental Controls;Screen "
+#~ "Time;App Restrictions;Web Restrictions;Usage;Usage Limit;Kid;Child;"
+#~ msgstr ""
+#~ "Login;Name;Fingerprint;Avatar;Logo;Face;Password;Parental Controls;Screen "
+#~ "Time;App Restrictions;Web Restrictions;Usage;Usage Limit;Kid;Child;ბავშვი;"
+#~ "ლიმიტი;მშობლის კონტროლი;ავატარი;მომხმარებელი;"
 
 #~ msgid "External pad device"
 #~ msgstr "გარე პადის მოწყობლობა"

@@ -61,7 +61,7 @@
                                 <signal name="clicked" handler="remove_avatar" object="CcUserPage" swapped="yes"/>
                                 <style>
                                   <class name="circular"/>
-                                  <class name="destructive-image-button"/>
+                                  <class name="destructive-action"/>
                                 </style>
                               </object>
                             </child>
@@ -112,13 +112,25 @@
                       </object>
                     </child>
                     <child>
-                      <object class="AdwSwitchRow" id="auto_login_row">
+                      <object class="AdwActionRow" id="auto_login_row">
                         <property name="title" translatable="yes">A_utomatic Login</property>
                         <property name="use-underline">True</property>
+                        <property name="activatable-widget">auto_login_switch</property>
                         <property name="sensitive" bind-source="CcUserPage" bind-property="locked" bind-flags="invert-boolean"/>
                         <property name="has-tooltip" bind-source="CcUserPage" bind-property="locked" bind-flags="sync-create"/>
                         <property name="tooltip-text" translatable="yes">Unlock to Change This Setting</property>
-                        <signal name="notify::active" handler="autologin_changed" object="CcUserPage" swapped="yes"/>
+                        <child type="suffix">
+                          <object class="CcListRowInfoButton">
+                            <property name="valign">center</property>
+                            <property name="text" translatable="yes">Automatic login opens the user account when the device starts, without requiring authentication. Authentication is still required at other times, such as when unlocking the screen.</property>
+                          </object>
+                        </child>
+                        <child type="suffix">
+                          <object class="GtkSwitch" id="auto_login_switch">
+                            <property name="valign">center</property>
+                            <signal name="notify::active" handler="autologin_changed" object="CcUserPage" swapped="yes"/>
+                          </object>
+                        </child>
                       </object>
                     </child>
 
@@ -188,7 +200,7 @@
                           <object class="GtkButton" id="remove_user_button">
                             <property name="visible" bind-source="CcUserPage" bind-property="is-current-user" bind-flags="invert-boolean"/>
                             <property name="sensitive" bind-source="CcUserPage" bind-property="editable" bind-flags="sync-create"/>
-                            <property name="label" translatable="yes">_Remove User</property>
+                            <property name="label" translatable="yes">_Remove User…</property>
                             <property name="use-underline">True</property>
                             <property name="halign">center</property>
                             <signal name="clicked" handler="remove_user" object="CcUserPage" swapped="yes"/>
@@ -210,14 +222,11 @@
     </property>
   </template>
 
-  <object class="AdwMessageDialog" id="remove_local_user_dialog">
-    <property name="modal">True</property>
-    <property name="hide-on-close">True</property>
-    <property name="destroy_with_parent">True</property>
+  <object class="AdwAlertDialog" id="remove_local_user_dialog">
     <property name="body" translatable="yes">The user will not be able to use this device once their account has been removed</property>
     <property name="default-response">cancel</property>
     <property name="close-response">cancel</property>
-    <signal name="response" handler="remove_local_user_response" object="CcUserPage" swapped="yes"/>
+    <signal name="response::remove" handler="remove_local_user_response" object="CcUserPage" swapped="yes"/>
     <responses>
       <response id="cancel" translatable="yes">_Cancel</response>
       <response id="remove" translatable="yes" appearance="destructive">_Remove</response>

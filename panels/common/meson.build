@@ -2,27 +2,12 @@ common_inc = include_directories('.')
 
 common_sources = []
 
-enums = 'gsd-common-enums'
-enums_header = files('gsd-device-manager.h')
-
-common_sources += gnome.mkenums(
-  enums + '.h',
-  sources: enums_header,
-  fhead: '#pragma once\n\n#include <glib-object.h>\n\nG_BEGIN_DECLS\n',
-  fprod: '/* enumerations from "@filename@" */\n',
-  vhead: 'GType @enum_name@_get_type (void) G_GNUC_CONST;\n#define GSD_TYPE_@ENUMSHORT@ (@enum_name@_get_type())\n',
-  ftail: 'G_END_DECLS\n'
+common_sources += gnome.mkenums_simple(
+  'gsd-common-enums',
+  sources: files('gsd-device-manager.h')
 )
 
-common_sources += gnome.mkenums(
-  enums + '.c',
-  sources: enums_header,
-  fhead: '#include "gsd-device-manager.h"\n#include "gsd-common-enums.h"\n',
-  fprod: '\n/* enumerations from "@filename@" */',
-  vhead: 'GType\n@enum_name@_get_type (void)\n{\n  static GType etype = 0;\n  if (etype == 0) {\n    static const G@Type@Value values[] = {',
-  vprod: '      { @VALUENAME@, "@VALUENAME@", "@valuenick@" },',
-  vtail: '      { 0, NULL, NULL }\n    };\n    etype = g_@type@_register_static ("@EnumName@", values);\n  }\n  return etype;\n}\n'
-)
+common_sources += gnome.mkenums_simple('cc-number-row-enums', sources: files('cc-number-row.h'))
 
 common_sources += gnome.compile_resources(
   'cc-common-resources',
@@ -37,8 +22,10 @@ generates_sources_dep = declare_dependency(
 
 sources = files(
   'cc-hostname-entry.c',
+  'cc-number-row.c',
   'cc-time-entry.c',
-  'hostname-helper.c',
+  'cc-util.c',
+  'hostname-helper.c'
 )
 
 libwidgets = static_library(
@@ -60,6 +47,7 @@ sources = common_sources + files(
   'cc-language-row.c',
   'cc-list-row.c',
   'cc-list-row-info-button.c',
+  'cc-mask-paintable.c',
   'cc-time-editor.c',
   'cc-permission-infobar.c',
   'cc-split-row.c',

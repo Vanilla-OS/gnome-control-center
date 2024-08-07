@@ -9,7 +9,7 @@
               <object class="AdwPreferencesGroup">
                 <child>
                   <object class="GtkLabel">
-                    <property name="label" translatable="yes">Share your existing desktop with other devices. The remote connection uses the existing screen resolution</property>
+                    <property name="label" translatable="yes">Share your existing desktop with other devices. The remote connection uses the existing screen resolution.</property>
                     <property name="hexpand">True</property>
                     <property name="wrap">True</property>
                     <property name="justify">center</property>
@@ -88,7 +88,8 @@
                 <property name="title" translatable="yes">Login Details</property>
                 <child>
                   <object class="AdwEntryRow" id="username_entry">
-                    <property name="title" translatable="yes">Username</property>
+                    <property name="title" translatable="yes">_Username</property>
+                    <property name="use-underline">True</property>
                     <child type="suffix">
                       <object class="GtkButton">
                         <property name="tooltip-text" translatable="yes">Copy</property>
@@ -104,7 +105,8 @@
                 </child>
                 <child>
                   <object class="AdwPasswordEntryRow" id="password_entry">
-                    <property name="title" translatable="yes">Password</property>
+                    <property name="title" translatable="yes">P_assword</property>
+                    <property name="use-underline">True</property>
                     <child type="suffix">
                       <object class="GtkButton">
                         <property name="tooltip-text" translatable="yes">Copy</property>
@@ -118,30 +120,25 @@
                     </child>
                   </object>
                 </child>
+              </object>
+            </child>
+            <child>
+              <object class="AdwPreferencesGroup">
+                <property name="separate-rows">True</property>
                 <child>
-                  <object class="GtkBox">
-                    <property name="margin-top">24</property>
-                    <property name="spacing">10</property>
-                    <child>
-                      <object class="GtkButton" id="generate_password_button">
-                        <property name="sensitive">False</property>
-                        <property name="can-shrink">True</property>
-                        <property name="label" translatable="yes">_Generate New Password</property>
-                        <property name="use-underline">True</property>
-                        <signal name="clicked" handler="on_generate_password_button_clicked" swapped="yes"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkButton" id="verify_encryption_button">
-                        <property name="sensitive">False</property>
-                        <property name="hexpand">True</property>
-                        <property name="halign">end</property>
-                        <property name="can-shrink">True</property>
-                        <property name="label" translatable="yes">_Verify Encryption</property>
-                        <property name="use-underline">True</property>
-                        <signal name="clicked" handler="on_verify_encryption_button_clicked" swapped="yes"/>
-                      </object>
-                    </child>
+                  <object class="AdwButtonRow" id="generate_password_button_row">
+                    <property name="sensitive">False</property>
+                    <property name="title" translatable="yes">_Generate New Password</property>
+                    <property name="use-underline">True</property>
+                    <signal name="activated" handler="on_generate_password_button_row_activated" swapped="yes"/>
+                  </object>
+                </child>
+                <child>
+                  <object class="AdwButtonRow" id="verify_encryption_button_row">
+                    <property name="sensitive">False</property>
+                    <property name="title" translatable="yes">_Verify Encryption</property>
+                    <property name="use-underline">True</property>
+                    <signal name="activated" handler="on_verify_encryption_button_row_activated" swapped="yes"/>
                   </object>
                 </child>
               </object>

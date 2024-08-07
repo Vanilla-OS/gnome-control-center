@@ -1,5 +1,5 @@
 include:
- - remote: 'https://gitlab.freedesktop.org/freedesktop/ci-templates/-/raw/34f4ade99434043f88e164933f570301fd18b125/templates/fedora.yml'
+ - remote: 'https://gitlab.freedesktop.org/freedesktop/ci-templates/-/raw/145b1bc7ef1702d2bd71584010d7113c6786a506/templates/fedora.yml'
 
 variables:
   FDO_UPSTREAM_REPO: gnome/gnome-control-center
@@ -11,49 +11,46 @@ stages:
   - manual
   - deploy
 
-.Log files: &log_files  [./*.log, _build/meson-logs/]
+.Build Logs: &build_logs
+  name: build_logs
+  when: always
+  paths:
+    - ./*.log
+    - _build/meson-logs/
 
-.Build logs: &save_build_logs
+.Build Output: &build_output
   artifacts:
-    name: log
+    name: build_output
     when: always
-    paths: *log_files
-
-.Git Untracked files: &save_untracked_files
-  artifacts:
-    name: untracked
-    paths: [$(pwd)]
+    paths:
+      - ./*.log
+      - _build/
     expire_in: 3h30min
 
 .Show Info: &environment_information
   build-aux/ci/ci-helper.sh "INFO" &&
   build-aux/ci/ci-helper.sh "GIT_INFO"
 
-.Build procedure: &build_procedure
+.Build Procedure: &build_procedure
   echo "== Building ==" &&
-  dnf install -y dnf5-plugins &&
-  meson . _build ${BUILD_OPTS} -Dprofile=development &&
-  ninja -C _build 2>&1 | tee compilation.log
+  meson setup _build ${BUILD_OPTS} -Dprofile=development -Dwarning_level=2 &&
+  meson compile -C _build 2>&1 | tee compilation.log
 
 .Run Tests: &run_tests
+  export GSK_RENDERER=ngl &&
   echo "== Testing ==" &&
-  meson test -C _build --verbose --no-stdsplit
+  meson test -C _build --verbose --no-stdsplit --no-rebuild
 
 .fedora.container.common:
-  # As of 2022-03-07 runners not tagged with "crun" have broken seccomp rules
-  # affecting the close_range syscall and breaking g_spawn
-  # Note that "asan" tests are disabled for the same reason, see below.
-  # https://gitlab.gnome.org/Infrastructure/GitLab/-/issues/545
-  tags: [ crun ]
   variables:
     # When branching a stable release, change 'main' to the
     # release branch name to ensure that a new image will
     # be created, tailored for the stable branch.
     # Should probably also switch away from 'rawhide',
     # to stable fedora branch as well.
-    BRANCH_NAME: 'gnome-46'
-    CONTAINER_TAG: '2024-05-21.0'
-    FEDORA_VERSION: 40
+    BRANCH_NAME: 'main'
+    CONTAINER_TAG: '2024-07-16.0'
+    FEDORA_VERSION: rawhide
     # Derive FDO variables from this automatically.
     # DO NOT edit, instead change the variables above
     FDO_REPO_SUFFIX: '${BRANCH_NAME}'
@@ -76,113 +73,55 @@ build.container.fedora@x86_64:
     # Expiry sets fdo.expires on the image
     FDO_EXPIRES_AFTER: 8w
     # NOTES:
-    # - gobject-introspection-devel is needed for gsettings-desktop-schemas
+    # - most packages are needed for testing
+    # - glibc-langpack-en is needed for sorting in run-style-check-diff.sh
+    # - libsass-devel, sassc are often needed for building libadwaita, gtk, etc.
     FDO_DISTRIBUTION_PACKAGES: >-
-      @c-development @development-tools
+      dnf5-plugins
       git
-      llvm clang libasan libtsan libubsan gcovr
+      llvm clang libasan libtsan libubsan compiler-rt gcovr
       meson
-      accountsservice-devel
-      cheese-libs-devel
-      chrpath
       clang-tools-extra
-      colord-devel colord-gtk-devel
-      cups-devel
-      desktop-file-utils
-      docbook-style-xsl
-      flatpak-devel
-      gdk-pixbuf2-devel
-      gettext
-      glib2-devel
-      gobject-introspection-devel
-      gnome-bluetooth-libs-devel
-      gnome-desktop3-devel
-      gnome-online-accounts-devel
-      grilo-devel
-      gsettings-desktop-schemas-devel
-      gsound-devel
-      gtk3-devel ibus-devel
-      gtk4-devel
-      gtk-doc
-      intltool
-      appstream-devel
-      sassc
-      libadwaita-devel
-      libcanberra-devel
-      libgtop2-devel
-      libgudev-devel
-      libnma-devel
-      libnotify-devel
-      libpwquality-devel
-      libsmbclient-devel
-      libsoup3-devel
-      libudisks2-devel
-      libwacom-devel
-      libX11-devel
-      libXi-devel
-      libxml2-devel
-      libxslt
-      ModemManager-glib-devel
-      NetworkManager-libnm-devel
-      polkit-devel
-      pulseaudio-libs-devel
-      upower-devel
+      glibc-langpack-en
       python3-dbusmock
       xorg-x11-server-Xvfb
       mesa-dri-drivers
-      libsecret-devel
-      geocode-glib2-devel
-      libgweather4-devel
-      lcms2-devel
-      geoclue2-devel
-      libnotify-devel
-      alsa-lib-devel
-      nss-devel
-      gcr-devel
-      setxkbmap
-      appstream-devel
+      libsass-devel sassc
     FDO_DISTRIBUTION_EXEC: |-
-      git clone https://gitlab.gnome.org/GNOME/gsettings-desktop-schemas.git && \
+      dnf builddep -y gnome-control-center && \
+      dnf builddep -y gsettings-desktop-schemas && \
+      git clone --depth 1 https://gitlab.gnome.org/GNOME/gsettings-desktop-schemas.git && \
         cd gsettings-desktop-schemas && \
-        meson . _build --prefix=/usr && \
-        ninja -C _build && \
-        ninja -C _build install && \
+        meson setup _build --prefix=/usr && \
+        meson compile -C _build && \
+        meson install -C _build && \
         cd .. && \
-      git clone https://gitlab.gnome.org/GNOME/gnome-desktop.git && \
-        cd gnome-desktop && \
-        meson . _build --prefix=/usr -Ddesktop_docs=false && \
-        ninja -C _build && \
-        ninja -C _build install && \
-        cd .. && \
-      git clone https://gitlab.gnome.org/GNOME/gnome-bluetooth.git && \
-        cd gnome-bluetooth && \
-        meson . _build --prefix=/usr -Dsendto=false && \
-        ninja -C _build && \
-        ninja -C _build install && \
-        cd .. && \
-      git clone https://gitlab.gnome.org/GNOME/libnma.git && \
-        cd libnma && \
-        meson . _build --prefix=/usr -Dlibnma_gtk4=true -Dmobile_broadband_provider_info=false -Dgcr=false -Dgtk_doc=false && \
-        ninja -C _build && \
-        ninja -C _build install && \
-        cd .. && \
-      git clone https://github.com/hughsie/colord-gtk.git && \
-        cd colord-gtk && \
-        meson . _build --prefix=/usr -Dgtk4=true -Ddocs=false -Dtests=false -Dman=false && \
-        ninja -C _build && \
-        ninja -C _build install && \
-        cd .. && \
-      git clone https://gitlab.gnome.org/GNOME/libgweather.git && \
-        cd libgweather && \
-        meson . _build --prefix=/usr -Denable_vala=false -Dgtk_doc=false -Dintrospection=false && \
-        ninja -C _build && \
-        ninja -C _build install && \
-        cd .. && \
-      git clone https://gitlab.gnome.org/GNOME/gnome-settings-daemon.git && \
+      dnf builddep -y gnome-settings-daemon && \
+      git clone --depth 1 https://gitlab.gnome.org/GNOME/gnome-settings-daemon.git && \
         cd gnome-settings-daemon && \
-        meson . _build --prefix=/usr && \
-        ninja -C _build && \
-        ninja -C _build install && \
+        meson setup _build --prefix=/usr && \
+        meson compile -C _build && \
+        meson install -C _build && \
+        cd .. && \
+      dnf builddep -y gtk4 && \
+      git clone --depth 1 https://gitlab.gnome.org/GNOME/gtk.git && \
+        cd gtk && \
+        meson setup _build --prefix=/usr && \
+        meson compile -C _build && \
+        meson install -C _build && \
+        cd .. && \
+      dnf builddep -y libadwaita && \
+      git clone --depth 1 https://gitlab.gnome.org/GNOME/libadwaita.git && \
+        cd libadwaita && \
+        meson setup _build --prefix=/usr -Dtests=false -Dexamples=false && \
+        meson compile -C _build && \
+        meson install -C _build && \
+        cd .. && \
+      git clone --depth 1 https://gitlab.gnome.org/GNOME/gnome-online-accounts.git && \
+        cd gnome-online-accounts && \
+        meson setup _build --prefix=/usr -Dfedora=true  && \
+        meson compile -C _build && \
+        meson install -C _build && \
         cd .. && \
       dnf remove -y systemtap-runtime
 
@@ -197,8 +136,6 @@ build:
   extends:
     - '.fdo.suffixed-image@fedora'
     - '.fedora.container.common'
-
-  <<: *save_untracked_files
   stage: build
 
   script:
@@ -206,17 +143,28 @@ build:
     - *build_procedure
 
     - echo "== Installing =="
-    - ninja -C _build install
+    - meson install -C _build
 
     - echo "== Report =="
     - build-aux/ci/ci-helper.sh "WARNINGS"
 
-    # Save all but git-related files
-    - rm -rf .git .gitignore .gitmodules
+  <<: *build_output
 
   except:
     variables:
       - $CI_PIPELINE_SOURCE == "schedule"
+
+# Same as build but with various off-by-default options enabled
+conditional builds:
+  extends:
+    - build
+  artifacts:
+    # Only save build logs for these
+    <<: *build_logs
+  parallel:
+    matrix:
+      - BUILD_OPTS: '-Dmalcontent=true'
+      - BUILD_OPTS: '-Ddocumentation=true'
 
 ##
 # Stage: Test
@@ -236,30 +184,42 @@ style-check-diff:
   script:
     - .gitlab-ci/run-style-check-diff.sh
 
+check-potfiles:
+  extends:
+  - '.fdo.suffixed-image@fedora'
+  - '.fedora.container.common'
+  needs:
+  - build.container.fedora@x86_64
+  stage: test
+  when: always
+  variables:
+    GIT_SUBMODULE_STRATEGY: normal
+  script:
+    - .gitlab-ci/check-potfiles.sh
+
 test:
   extends:
     - '.fdo.suffixed-image@fedora'
     - '.fedora.container.common'
-  <<: *save_build_logs
   stage: test
 
-  dependencies:
+  needs:
     - build
 
   script:
     - *environment_information
-    - *build_procedure
     - *run_tests
 
     - |
       if [[ -n "${CI_COMMIT_TAG}" ]]; then
         echo "== Distro Test =="
-        ninja dist -C _build
+        meson dist -C _build
       fi
 
   artifacts:
+    <<: *build_logs
     reports:
-        junit: "_build/meson-logs/testlog.junit.xml"
+        junit: '_build/meson-logs/testlog.junit.xml'
 
   except:
     variables:
@@ -271,7 +231,8 @@ coverage:
   extends:
     - '.fdo.suffixed-image@fedora'
     - '.fedora.container.common'
-  <<: *save_build_logs
+  dependencies:
+    - build.container.fedora@x86_64
   stage: test
   variables:
     BUILD_OPTS: "-Db_coverage=true"
@@ -291,13 +252,13 @@ coverage:
       echo == Coverage ==
       sed -e 's/<[^>]*>//g' _build/meson-logs/coveragereport/index.html | tr -d ' \t' | grep -A3 -P '^Lines:$'  | tr '\n' ' '; echo
 
+  artifacts:
+    <<: *build_logs
+
   except:
     variables:
       - $CI_PIPELINE_SOURCE == "schedule"
       - $CI_COMMIT_TITLE =~ /^Update.*translation$/
-
-# Runs the address sanitizer.
-# - below, at the "sanitizers section"
 
 ##
 # Stage: Deploy
@@ -340,9 +301,9 @@ flatpak:
 
   variables:
     OLD_APPID: "org.gnome.Settings"
-    APPID: "org.gnome.SettingsDevel"
-    BUNDLE: "org.gnome.SettingsDevel.flatpak"
-    MANIFEST_PATH: "build-aux/flatpak/org.gnome.Settings.json"
+    APPID: "org.gnome.Settings.Devel"
+    BUNDLE: "org.gnome.Settings.Devel.flatpak"
+    MANIFEST_PATH: "build-aux/flatpak/org.gnome.Settings.Devel.json"
     PROJECT_ID: "org.gnome.Settings"
     PROJECT_NAME: "gnome-control-center.git"
     RUNTIME_REPO: "https://sdk.gnome.org/gnome-nightly.flatpakrepo"
@@ -379,13 +340,13 @@ flatpak:
     - gnome-3-.*
     - main@GNOME/gnome-control-center
 
-
 # Runs the sanitizers [address, thread, undefined, and memory].
 .sanitizer: &sanitizer
   extends:
     - '.fdo.suffixed-image@fedora'
     - '.fedora.container.common'
-  <<: *save_build_logs
+  dependencies:
+    - build.container.fedora@x86_64
   stage: manual
   when: manual
   script:
@@ -393,45 +354,33 @@ flatpak:
     - *build_procedure
     - *run_tests
 
+  artifacts:
+    <<: *build_logs
+
   except:
     variables:
       - $CI_PIPELINE_SOURCE == "schedule"
       - $CI_COMMIT_TITLE =~ /^Update.*translation$/
 
-# Disabled because we currently need "crun" tagged runners, see above
-#asan:
-#  extends:
-#    - '.fdo.distribution-image@fedora'
-#    - '.fedora.container.common'
-#  <<: *sanitizer
-#  # ASAN requires debugging capabilities
-#  tags: [ asan ]
-#  stage: manual
-#  when: manual
-#  variables:
-#    BUILD_OPTS: "-Db_sanitize=address"
-#    LSAN_OPTIONS: "suppressions=${CI_PROJECT_DIR}/build-aux/ci/lsan.supp"
+asan:
+ <<: *sanitizer
+ # ASAN requires debugging capabilities
+ tags: [ asan ]
+ variables:
+   BUILD_OPTS: "-Db_sanitize=address"
+   LSAN_OPTIONS: "suppressions=${CI_PROJECT_DIR}/build-aux/ci/lsan.supp"
 
 tsan:
-  extends:
-    - '.fdo.suffixed-image@fedora'
-    - '.fedora.container.common'
   <<: *sanitizer
   variables:
     BUILD_OPTS: "-Db_sanitize=thread"
 
 ubsan:
-  extends:
-    - '.fdo.suffixed-image@fedora'
-    - '.fedora.container.common'
   <<: *sanitizer
   variables:
     BUILD_OPTS: "-Db_sanitize=undefined"
 
 msan:
-  extends:
-    - '.fdo.suffixed-image@fedora'
-    - '.fedora.container.common'
   <<: *sanitizer
   variables:
     BUILD_OPTS: "-Db_sanitize=memory"

@@ -59,6 +59,7 @@ struct _CcWifiPanel
   GtkStack           *main_stack;
   GtkWidget          *spinner;
   GtkStack           *stack;
+  AdwDialog          *stop_hotspot_dialog;
   GtkPicture         *wifi_qr_image;
   CcQrCode           *qr_code;
 
@@ -221,7 +222,7 @@ wifi_panel_update_qr_image_cb (CcWifiPanel *self)
 
   gtk_widget_set_visible (GTK_WIDGET (self->hotspot_box), hotspot != NULL);
   gtk_widget_set_opacity (GTK_WIDGET (self->list_label), hotspot == NULL);
-  gtk_widget_set_opacity (GTK_WIDGET (self->spinner), hotspot == NULL);
+  gtk_widget_set_visible (GTK_WIDGET (self->spinner), hotspot == NULL);
 }
 
 static void
@@ -299,9 +300,11 @@ check_main_stack_page (CcWifiPanel *self)
 {
   const gchar *nm_version;
   gboolean airplane_mode_active;
+  gboolean wireless_hw_enabled;
   gboolean wireless_enabled;
 
   nm_version = nm_client_get_version (self->client);
+  wireless_hw_enabled = nm_client_wireless_hardware_get_enabled (self->client);
   wireless_enabled = nm_client_wireless_get_enabled (self->client);
   airplane_mode_active = adw_switch_row_get_active (self->rfkill_row);
 
@@ -309,8 +312,10 @@ check_main_stack_page (CcWifiPanel *self)
     gtk_stack_set_visible_child_name (self->main_stack, "nm-not-running");
   else if (!wireless_enabled && airplane_mode_active)
     gtk_stack_set_visible_child_name (self->main_stack, "airplane-mode");
-  else if (!wireless_enabled || self->devices->len == 0)
+  else if (!wireless_hw_enabled || self->devices->len == 0)
     gtk_stack_set_visible_child_name (self->main_stack, "no-wifi-devices");
+  else if (!wireless_enabled)
+    gtk_stack_set_visible_child_name (self->main_stack, "wifi-off");
   else
     gtk_stack_set_visible_child_name (self->main_stack, "wifi-connections");
 }
@@ -536,6 +541,7 @@ verify_argv (CcWifiPanel  *self,
           g_warning ("Operation %s requires an object path", args[0]);
           return FALSE;
         }
+      G_GNUC_FALLTHROUGH;
     default:
       return TRUE;
     }
@@ -695,7 +701,7 @@ on_stack_visible_child_changed_cb (CcWifiPanel *self)
           self->spinner_binding = g_object_bind_property (net_device,
                                                           "scanning",
                                                           self->spinner,
-                                                          "spinning",
+                                                          "visible",
                                                           G_BINDING_DEFAULT | G_BINDING_SYNC_CREATE);
           break;
         }
@@ -703,48 +709,12 @@ on_stack_visible_child_changed_cb (CcWifiPanel *self)
 }
 
 static void
-on_stop_hotspot_dialog_response_cb (CcWifiPanel        *self,
-                                    gchar              *response,
-                                    AdwMessageDialog   *dialog)
+on_stop_hotspot_dialog_response_cb (CcWifiPanel        *self)
 {
-  if (g_strcmp0 (response, "turn-off") == 0)
-    {
-      NetDeviceWifi *child;
+  NetDeviceWifi *child;
 
-      child = NET_DEVICE_WIFI (gtk_stack_get_visible_child (self->stack));
-      net_device_wifi_turn_off_hotspot (child);
-    }
-
-  gtk_window_destroy (GTK_WINDOW (dialog));
-}
-
-static void
-hotspot_stop_clicked_cb (CcWifiPanel *self)
-{
-  GtkWidget *dialog;
-  GtkNative *native;
-
-  g_assert (CC_IS_WIFI_PANEL (self));
-
-  native = gtk_widget_get_native (GTK_WIDGET (self));
-
-  dialog = adw_message_dialog_new (GTK_WINDOW (native),
-                                   NULL,
-                                   _("Turning off will disconnect any devices that are using the hotspot."));
-
-  adw_message_dialog_format_heading (ADW_MESSAGE_DIALOG (dialog), _("Turn Off Hotspot?"));
-  adw_message_dialog_add_responses (ADW_MESSAGE_DIALOG (dialog),
-                                    "cancel",  _("_Cancel"),
-                                    "turn-off", _("_Turn Off"),
-                                    NULL);
-  adw_message_dialog_set_response_appearance (ADW_MESSAGE_DIALOG (dialog),
-                                              "turn-off",
-                                              ADW_RESPONSE_DESTRUCTIVE);
-  adw_message_dialog_set_default_response (ADW_MESSAGE_DIALOG (dialog), "cancel");
-  adw_message_dialog_set_close_response (ADW_MESSAGE_DIALOG (dialog), "cancel");
-
-  g_signal_connect_swapped (dialog, "response", G_CALLBACK (on_stop_hotspot_dialog_response_cb), self);
-  gtk_window_present (GTK_WINDOW (dialog));
+  child = NET_DEVICE_WIFI (gtk_stack_get_visible_child (self->stack));
+  net_device_wifi_turn_off_hotspot (child);
 }
 
 /* Overrides */
@@ -861,11 +831,12 @@ cc_wifi_panel_class_init (CcWifiPanelClass *klass)
   gtk_widget_class_bind_template_child (widget_class, CcWifiPanel, rfkill_widget);
   gtk_widget_class_bind_template_child (widget_class, CcWifiPanel, spinner);
   gtk_widget_class_bind_template_child (widget_class, CcWifiPanel, stack);
+  gtk_widget_class_bind_template_child (widget_class, CcWifiPanel, stop_hotspot_dialog);
   gtk_widget_class_bind_template_child (widget_class, CcWifiPanel, wifi_qr_image);
 
   gtk_widget_class_bind_template_callback (widget_class, rfkill_switch_notify_activate_cb);
   gtk_widget_class_bind_template_callback (widget_class, on_stack_visible_child_changed_cb);
-  gtk_widget_class_bind_template_callback (widget_class, hotspot_stop_clicked_cb);
+  gtk_widget_class_bind_template_callback (widget_class, on_stop_hotspot_dialog_response_cb);
 
   g_object_class_override_property (object_class, PROP_PARAMETERS, "parameters");
 }

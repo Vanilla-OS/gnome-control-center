@@ -1,5 +1,6 @@
 panels_list += cappletname
 desktop = 'gnome-@0@-panel.desktop'.format(cappletname)
+keyboard_inc = include_directories('.')
 
 i18n.merge_file(
   type: 'desktop',
@@ -46,8 +47,20 @@ foreach file: xml_files
   )
 endforeach
 
+libkeyboard_shortcuts = static_library(
+  'keyboard-shortcuts',
+  sources: 'keyboard-shortcuts.c',
+  include_directories: [top_inc],
+  dependencies: deps,
+)
+
+keyboard_shortcuts_dep = declare_dependency(
+  include_directories: [top_inc, keyboard_inc],
+  link_with: libkeyboard_shortcuts,
+)
+
 sources = files(
-  'cc-xkb-modifier-dialog.c',
+  'cc-xkb-modifier-page.c',
   'cc-keyboard-shortcut-row.c',
   'cc-keyboard-shortcut-group.c',
   'cc-keyboard-shortcut-dialog.c',
@@ -55,7 +68,6 @@ sources = files(
   'cc-keyboard-item.c',
   'cc-keyboard-manager.c',
   'cc-keyboard-shortcut-editor.c',
-  'keyboard-shortcuts.c',
   'cc-ibus-utils.c',
   'cc-input-chooser.c',
   'cc-input-row.c',
@@ -73,6 +85,7 @@ sources += gnome.compile_resources(
 )
 
 deps = common_deps + [
+  keyboard_shortcuts_dep,
   gnome_desktop_dep,
   x11_dep
 ]

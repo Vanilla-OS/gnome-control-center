@@ -39,9 +39,7 @@
       </object>
     </child>
     <child type="suffix">
-      <object class="GtkSpinner" id="connecting_spinner">
-        <property name="name">connecting_spinner</property>
-        <property name="valign">center</property>
+      <object class="AdwSpinner" id="connecting_spinner">
         <property name="margin_end">6</property>
       </object>
     </child>

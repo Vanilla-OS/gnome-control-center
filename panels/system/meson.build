@@ -19,11 +19,6 @@ i18n.merge_file(
   install_dir: join_paths(control_center_datadir, 'polkit-1', 'actions')
 )
 
-install_data(
-  'org.gnome.Settings-system-symbolic.svg',
-  install_dir: join_paths(control_center_icondir, 'hicolor', 'scalable', 'apps')
-)
-
 sources = files(
   'cc-password-utils.c',
   'cc-system-panel.c',
@@ -43,12 +38,12 @@ sources = files(
   'remote-desktop/cc-encryption-fingerprint-dialog.c',
   'remote-desktop/cc-gnome-remote-desktop.c',
   'remote-desktop/cc-remote-desktop-page.c',
-  'remote-desktop/cc-remote-session-page.c',
+  'remote-desktop/cc-remote-login-page.c',
   'remote-desktop/cc-tls-certificate.c',
   'remote-desktop/cc-systemd-service.c',
-  'remote-login/cc-remote-login.c',
-  'remote-login/cc-remote-login-page.c',
-  'remote-login/cc-systemd-service.c',
+  'secure-shell/cc-secure-shell.c',
+  'secure-shell/cc-secure-shell-page.c',
+  'secure-shell/cc-systemd-service.c',
   'users/cc-add-user-dialog.c',
   'users/cc-avatar-chooser.c',
   'users/cc-crop-area.c',
@@ -72,29 +67,15 @@ sources += gnome.compile_resources(
   export : true
 )
 
-enums_header = files(
-  gsettings_desktop_dep.get_variable(pkgconfig: 'prefix') + '/include/gsettings-desktop-schemas/gdesktop-enums.h',
-  'datetime/cc-datetime-page.h'
+gdesktop_enums_header = files(
+  gsettings_desktop_dep.get_variable(pkgconfig: 'prefix') + '/include/gsettings-desktop-schemas/gdesktop-enums.h'
 )
 
-enums = 'gdesktop-enums-types'
-sources += gnome.mkenums(
-  enums + '.h',
-  sources: enums_header,
-  fhead: '#pragma once\n\n#include <glib-object.h>\n\nG_BEGIN_DECLS\n',
-  fprod: '/* enumerations from "@filename@" */\n',
-  vhead: 'GType @enum_name@_get_type (void) G_GNUC_CONST;\n#define G_DESKTOP_TYPE_@ENUMSHORT@ (@enum_name@_get_type())\n',
-  ftail: 'G_END_DECLS\n'
-)
-
-sources += gnome.mkenums(
-  enums + '.c',
-  sources: enums_header,
-  fhead: '#include <gdesktop-enums.h>\n#include "gdesktop-enums-types.h"\n#include "datetime/cc-datetime-page.h"',
-  fprod: '\n/* enumerations from "@filename@" */',
-  vhead: 'GType\n@enum_name@_get_type (void)\n{\n  static GType etype = 0;\n  if (etype == 0) {\n    static const G@Type@Value values[] = {',
-  vprod: '      { @VALUENAME@, "@VALUENAME@", "@valuenick@" },',
-  vtail: '      { 0, NULL, NULL }\n    };\n    etype = g_@type@_register_static ("@EnumName@", values);\n  }\n  return etype;\n}\n'
+sources += gnome.mkenums_simple(
+  'gdesktop-enums-types',
+  sources: gdesktop_enums_header,
+  identifier_prefix: 'GDesktop',
+  symbol_prefix: 'g_desktop'
 )
 
 libsecret_dep = dependency('libsecret-1')
@@ -149,9 +130,10 @@ cflags += [
 
 subdir('about')
 subdir('datetime')
+subdir('icons')
 subdir('region')
 subdir('remote-desktop')
-subdir('remote-login')
+subdir('secure-shell')
 subdir('users')
 
 panels_libs += static_library(

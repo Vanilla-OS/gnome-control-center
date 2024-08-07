@@ -58,6 +58,20 @@
                     <property name="vhomogeneous">False</property>
                     <property name="transition_type">crossfade</property>
 
+                    <!-- "Wi-Fi Off" page -->
+                    <child>
+                      <object class="GtkStackPage">
+                        <property name="name">wifi-off</property>
+                        <property name="child">
+                          <object class="AdwStatusPage">
+                            <property name="icon-name">network-wireless-disabled-symbolic</property>
+                            <property name="title" translatable="yes">Wi-Fi Off</property>
+                            <property name="description" translatable="yes">Turn on to use Wi-Fi</property>
+                         </object>
+                        </property>
+                      </object>
+                    </child>
+
                     <!-- "No Wi-Fi Adapter" page -->
                     <child>
                       <object class="GtkStackPage">
@@ -97,16 +111,20 @@
                             <child>
                               <object class="GtkBox" id="hotspot_box">
                                 <property name="orientation">vertical</property>
+                                <property name="margin_start">12</property>
+                                <property name="margin_end">12</property>
+                                <property name="margin_top">36</property>
+                                <property name="margin_bottom">24</property>
 
                                 <!-- Hotspot QR code -->
                                 <child>
                                   <object class="GtkPicture" id="wifi_qr_image">
                                     <property name="halign">center</property>
-                                    <property name="valign">center</property>
                                     <property name="width-request">180</property>
                                     <property name="height-request">180</property>
+                                    <property name="margin-bottom">36</property>
                                     <style>
-                                      <class name="frame"/>
+                                      <class name="card"/>
                                       <class name="qr-image"/>
                                     </style>
                                   </object>
@@ -114,29 +132,33 @@
 
                                 <child>
                                   <object class="GtkLabel">
-                                    <property name="margin-top">12</property>
                                     <property name="label" translatable="yes">Wi-Fi Hotspot Active</property>
-                                    <attributes>
-                                      <attribute name="weight" value="bold" />
-                                      <attribute name="scale" value="1.8" />
-                                    </attributes>
+                                    <property name="margin-bottom">12</property>
+                                    <style>
+                                      <class name="title"/>
+                                      <class name="title-1"/>
+                                    </style>
                                   </object>
                                 </child>
 
                                 <child>
                                   <object class="GtkLabel">
-                                    <property name="label" translatable="yes">Mobile devices can scan the QR code to connect.</property>
+                                    <property name="label" translatable="yes">Scan with another device to connect to the hotspot.
+Turn off the hotspot to use Wi-Fi with this device.</property>
+                                    <property name="justify">center</property>
+                                    <property name="margin-bottom">36</property>
                                   </object>
                                 </child>
 
                                 <child>
                                   <object class="GtkButton">
                                     <property name="halign">center</property>
-                                    <property name="margin-top">12</property>
-                                    <property name="label" translatable="yes">Turn Off Hotspot…</property>
-                                    <signal name="clicked" handler="hotspot_stop_clicked_cb" swapped="yes"/>
+                                    <property name="label" translatable="yes">T_urn Off Hotspot…</property>
+                                    <property name="use-underline">True</property>
+                                    <signal name="clicked" handler="adw_dialog_present" object="stop_hotspot_dialog"/>
                                     <style>
                                       <class name="destructive-action"/>
+                                      <class name="pill"/>
                                     </style>
                                   </object>
                                 </child>
@@ -161,9 +183,7 @@
                                   </object>
                                 </child>
                                 <child>
-                                  <object class="GtkSpinner" id="spinner">
-                                    <property name="hexpand">True</property>
-                                  </object>
+                                  <object class="AdwSpinner" id="spinner"/>
                                 </child>
                               </object>
                             </child>
@@ -192,7 +212,7 @@
                             <property name="icon-name">network-wireless-disabled</property>
                             <property name="title" translatable="yes">Wi-Fi Unavailable</property>
                             <property name="description" translatable="yes">An error has occurred and Wi-Fi cannot be used.
-    Error details: NetworkManager not running.</property>
+Error details: NetworkManager not running.</property>
                            </object>
                         </property>
                       </object>
@@ -206,4 +226,15 @@
       </object>
     </property>
   </template>
+  <object class="AdwAlertDialog" id="stop_hotspot_dialog">
+    <property name="heading" translatable="yes">Turn Off Hotspot?</property>
+    <property name="body" translatable="yes">Turning off will disconnect any devices that are using the hotspot.</property>
+    <property name="default-response">cancel</property>
+    <property name="close-response">cancel</property>
+    <signal name="response::turn-off" handler="on_stop_hotspot_dialog_response_cb" object="CcWifiPanel" swapped="yes"/>
+    <responses>
+      <response id="cancel" translatable="yes">_Cancel</response>
+      <response id="turn-off" translatable="yes" appearance="destructive">_Turn Off</response>
+    </responses>
+  </object>
 </interface>

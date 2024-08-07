@@ -29,8 +29,9 @@
           <object class="AdwViewStack" id="stack">
             <child>
               <object class="AdwViewStackPage" id="click_page">
-                <property name="title" translatable="yes">Clicking</property>
-                <property name="icon-name">input-mouse-symbolic</property>
+                <property name="title" translatable="yes">_Clicking</property>
+                <property name="icon-name">mouse-test-click-symbolic</property>
+                <property name="use-underline">True</property>
                 <property name="child">
                   <object class="GtkBox">
                     <property name="orientation">vertical</property>
@@ -150,8 +151,9 @@
 
             <child>
               <object class="AdwViewStackPage" id="scroll_page">
-                <property name="title" translatable="yes">Scrolling</property>
-                <property name="icon-name">mail-send-receive-symbolic</property>
+                <property name="title" translatable="yes">_Scrolling</property>
+                <property name="icon-name">mouse-test-scroll-symbolic</property>
+                <property name="use-underline">True</property>
                 <property name="child">
                   <object class="GtkBox">
                     <property name="orientation">vertical</property>
@@ -160,22 +162,24 @@
                         <child type="overlay">
                           <object class="GtkImage" id="arrow_up">
                             <property name="icon-name">go-up-symbolic</property>
-                            <property name="pixel-size">72</property>
+                            <property name="pixel-size">64</property>
                             <property name="valign">start</property>
                             <property name="can-target">False</property>
                             <style>
                               <class name="mouse-test-arrow"/>
+                              <class name="top-arrow"/>
                             </style>
                           </object>
                         </child>
                         <child type="overlay">
                           <object class="GtkImage" id="arrow_down">
                             <property name="icon-name">go-down-symbolic</property>
-                            <property name="pixel-size">72</property>
+                            <property name="pixel-size">64</property>
                             <property name="valign">end</property>
                             <property name="can-target">False</property>
                             <style>
                               <class name="mouse-test-arrow"/>
+                              <class name="bottom-arrow"/>
                             </style>
                           </object>
                         </child>

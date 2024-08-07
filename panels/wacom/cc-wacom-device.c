@@ -40,6 +40,8 @@ struct _CcWacomDevice {
 
 	GsdDevice *device;
 	WacomDevice *wdevice;
+	gboolean is_fallback;
+	char *description;
 };
 
 static void cc_wacom_device_initable_iface_init (GInitableIface *iface);
@@ -107,6 +109,7 @@ cc_wacom_device_finalize (GObject *object)
 {
 	CcWacomDevice *device = CC_WACOM_DEVICE (object);
 
+	g_clear_pointer (&device->description, g_free);
 	g_clear_pointer (&device->wdevice, libwacom_destroy);
 
 	G_OBJECT_CLASS (cc_wacom_device_parent_class)->finalize (object);
@@ -145,6 +148,10 @@ cc_wacom_device_initable_init (GInitable     *initable,
 	node_path = gsd_device_get_device_file (device->device);
 	wacom_error = libwacom_error_new ();
 	device->wdevice = libwacom_new_from_path (wacom_db, node_path, WFALLBACK_NONE, wacom_error);
+	if (!device->wdevice) {
+		device->wdevice = libwacom_new_from_path (wacom_db, node_path, WFALLBACK_GENERIC, wacom_error);
+		device->is_fallback = TRUE;
+	}
 
 	if (!device->wdevice) {
 		g_debug ("libwacom_new_from_path() failed: %s", libwacom_error_get_message (wacom_error));
@@ -153,6 +160,15 @@ cc_wacom_device_initable_init (GInitable     *initable,
 		return FALSE;
 	}
 	libwacom_error_free (&wacom_error);
+
+	if (device->is_fallback) {
+		g_autofree gchar *learn_more_link = NULL;
+
+		/* Translators: This will be presented as the text of a link to the documentation */
+		learn_more_link = g_strdup_printf ("<a href='help:gnome-help/wacom-tablet-unknown'>%s</a>", _("learn more"));
+		/* Translators: %s is a link to the documentation with the label "learn more" */
+		device->description = g_strdup_printf (_("This device is unknown and may present wrong capabilities — %s."), learn_more_link);
+	}
 
 	return TRUE;
 }
@@ -265,31 +281,25 @@ cc_wacom_device_get_supported_tools (CcWacomDevice *device,
 	return libwacom_get_supported_styli (device->wdevice, n_tools);
 }
 
-static GnomeRROutput *
-find_output_by_edid (GnomeRRScreen *rr_screen,
-		     const gchar   *vendor,
-		     const gchar   *product,
-		     const gchar   *serial,
-		     const gchar   *name)
+static CcDisplayMonitor *
+find_output_by_edid (CcDisplayConfig *config,
+		     const gchar     *vendor,
+		     const gchar     *product,
+		     const gchar     *serial,
+		     const gchar     *name)
 {
-	GnomeRROutput **rr_outputs;
-	GnomeRROutput *retval = NULL;
-	guint i;
+	CcDisplayMonitor *retval = NULL;
+	GList *monitors;
+	GList *l;
 
-	rr_outputs = gnome_rr_screen_list_outputs (rr_screen);
-
-	for (i = 0; rr_outputs[i] != NULL; i++) {
-		g_autofree gchar *o_vendor = NULL;
-		g_autofree gchar *o_product = NULL;
-		g_autofree gchar *o_serial = NULL;
-		const gchar *o_name;
+	monitors = config ? cc_display_config_get_monitors (config) : NULL;
+	for (l = monitors; l; l = l->next) {
+		CcDisplayMonitor *monitor = CC_DISPLAY_MONITOR (l->data);
+		const char *o_vendor = cc_display_monitor_get_vendor_name (monitor);
+		const char *o_product = cc_display_monitor_get_product_name (monitor);
+		const char *o_serial = cc_display_monitor_get_product_serial (monitor);
+		const char *o_name = cc_display_monitor_get_connector_name (monitor);
 		gboolean match;
-
-		o_name = gnome_rr_output_get_name (rr_outputs[i]);
-		gnome_rr_output_get_ids_from_edid (rr_outputs[i],
-						   &o_vendor,
-						   &o_product,
-						   &o_serial);
 
 		g_debug ("Checking for match between '%s','%s','%s', '%s' and '%s','%s','%s', '%s'", \
 		         vendor, product, serial, name, o_vendor, o_product, o_serial, o_name);
@@ -300,7 +310,7 @@ find_output_by_edid (GnomeRRScreen *rr_screen,
 		        (g_strcmp0 (name,    o_name)    == 0);
 
 		if (match) {
-			retval = rr_outputs[i];
+			retval = monitor;
 			break;
 		}
 	}
@@ -312,9 +322,9 @@ find_output_by_edid (GnomeRRScreen *rr_screen,
 	return retval;
 }
 
-static GnomeRROutput *
-find_output (GnomeRRScreen *rr_screen,
-	     CcWacomDevice *device)
+static CcDisplayMonitor *
+find_output (CcDisplayConfig *config,
+	     CcWacomDevice   *device)
 {
 	g_autoptr(GSettings) settings = NULL;
 	g_autoptr(GVariant) variant = NULL;
@@ -336,57 +346,51 @@ find_output (GnomeRRScreen *rr_screen,
 	if (strlen (edid[0]) == 0 || strlen (edid[1]) == 0 || strlen (edid[2]) == 0)
 		return NULL;
 
-	return find_output_by_edid (rr_screen, edid[0], edid[1], edid[2], connector_name);
+	return find_output_by_edid (config, edid[0], edid[1], edid[2], connector_name);
 }
 
-GnomeRROutput *
-cc_wacom_device_get_output (CcWacomDevice *device,
-			    GnomeRRScreen *rr_screen)
+CcDisplayMonitor *
+cc_wacom_device_get_output (CcWacomDevice   *device,
+			    CcDisplayConfig *config)
 {
-	GnomeRROutput *rr_output;
-	GnomeRRCrtc *crtc;
+	CcDisplayMonitor *monitor;
 
-        g_return_val_if_fail (CC_IS_WACOM_DEVICE (device), NULL);
-        g_return_val_if_fail (GNOME_RR_IS_SCREEN (rr_screen), NULL);
+	g_return_val_if_fail (CC_IS_WACOM_DEVICE (device), NULL);
+	g_return_val_if_fail (CC_IS_DISPLAY_CONFIG (config), NULL);
 
-	rr_output = find_output (rr_screen, device);
-	if (rr_output == NULL) {
+	monitor = find_output (config, device);
+	if (monitor == NULL) {
 		return NULL;
 	}
 
-	crtc = gnome_rr_output_get_crtc (rr_output);
-
-	if (!crtc || gnome_rr_crtc_get_current_mode (crtc) == NULL) {
+	if (!cc_display_monitor_is_active (monitor)) {
 		g_debug ("Output is not active.");
 		return NULL;
 	}
 
-	return rr_output;
+	return monitor;
 }
 
 void
-cc_wacom_device_set_output (CcWacomDevice *device,
-			    GnomeRROutput *output)
+cc_wacom_device_set_output (CcWacomDevice    *device,
+			    CcDisplayMonitor *monitor)
 {
 	g_autoptr(GSettings) settings = NULL;
 	g_autofree gchar *vendor = NULL;
 	g_autofree gchar *product = NULL;
 	g_autofree gchar *serial = NULL;
-	const gchar *values[] = { "", "", "", NULL };
+	const gchar *values[] = { "", "", "", "", NULL };
 
-        g_return_if_fail (CC_IS_WACOM_DEVICE (device));
+	g_return_if_fail (CC_IS_WACOM_DEVICE (device));
 
 	vendor = product = serial = NULL;
 	settings = cc_wacom_device_get_settings (device);
 
-	if (output != NULL) {
-		gnome_rr_output_get_ids_from_edid (output,
-						   &vendor,
-						   &product,
-						   &serial);
-		values[0] = vendor;
-		values[1] = product;
-		values[2] = serial;
+	if (monitor != NULL) {
+		values[0] = cc_display_monitor_get_vendor_name (monitor);
+		values[1] = cc_display_monitor_get_product_name (monitor);
+		values[2] = cc_display_monitor_get_product_serial (monitor);
+		values[3] = cc_display_monitor_get_connector_name (monitor);
 	}
 
 	g_settings_set_strv (settings, "output", values);
@@ -430,6 +434,9 @@ cc_wacom_device_get_description (CcWacomDevice *device)
 	WacomIntegrationFlags integration_flags;
 
 	g_return_val_if_fail (CC_IS_WACOM_DEVICE (device), NULL);
+
+	if (device->is_fallback)
+		return device->description;
 
 	integration_flags = libwacom_get_integration_flags (device->wdevice);
 

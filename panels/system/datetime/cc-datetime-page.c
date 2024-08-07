@@ -86,7 +86,7 @@ struct _CcDateTimePage
   AdwActionRow *auto_datetime_row;
   AdwSwitchRow *auto_timezone_row;
   CcListRow *datetime_row;
-  GtkWindow *datetime_dialog;
+  AdwDialog *datetime_dialog;
   AdwSpinRow *day_spin_row;
   GtkToggleButton *twentyfour_format_button;
   GtkToggleButton *ampm_format_button;
@@ -111,7 +111,6 @@ struct _CcDateTimePage
   Timedate1 *dtm;
   GCancellable *cancellable;
 
-  gboolean auto_timezone_supported;
   gboolean pending_ntp_state;
 
   GPermission *permission;
@@ -138,7 +137,7 @@ cc_date_time_page_dispose (GObject *object)
 
   if (self->toplevels)
     {
-      g_list_free_full (self->toplevels, (GDestroyNotify) gtk_window_destroy);
+      g_list_free_full (self->toplevels, (GDestroyNotify) adw_dialog_force_close);
       self->toplevels = NULL;
     }
 
@@ -538,10 +537,10 @@ on_permission_changed (CcDateTimePage *self)
   gboolean allowed, location_allowed, tz_allowed, auto_timezone, using_ntp;
 
   allowed = (self->permission != NULL && g_permission_get_allowed (self->permission));
-  location_allowed = g_settings_get_boolean (self->location_settings, LOCATION_ENABLED) && self->auto_timezone_supported;
+  location_allowed = g_settings_get_boolean (self->location_settings, LOCATION_ENABLED);
   tz_allowed = (self->tz_permission != NULL && g_permission_get_allowed (self->tz_permission));
   using_ntp = gtk_switch_get_active (self->network_time_switch);
-  auto_timezone = adw_switch_row_get_active (self->auto_timezone_row) && self->auto_timezone_supported;
+  auto_timezone = adw_switch_row_get_active (self->auto_timezone_row);
 
   /* All the widgets but the lock button and the 24h setting */
   gtk_widget_set_sensitive (GTK_WIDGET (self->auto_datetime_row), allowed);
@@ -607,17 +606,11 @@ on_timedated_properties_changed (CcDateTimePage  *self,
 
 static void
 present_window (CcDateTimePage *self,
-                GtkWindow      *window)
+                AdwDialog      *window)
 {
-  GtkNative *native;
-
-  native = gtk_widget_get_native (GTK_WIDGET (self));
-
-  gtk_window_set_transient_for (window, GTK_WINDOW (native));
-  gtk_window_present (window);
+  adw_dialog_present (window, GTK_WIDGET (self));
 }
 
-#ifdef HAVE_LOCATION_SERVICES
 static gboolean
 tz_switch_to_row_transform_func (GBinding       *binding,
                                  const GValue   *source_value,
@@ -637,7 +630,6 @@ tz_switch_to_row_transform_func (GBinding       *binding,
 
   return TRUE;
 }
-#endif
 
 static gboolean
 switch_to_row_transform_func (GBinding       *binding,
@@ -688,7 +680,7 @@ list_box_row_activated (CcDateTimePage *self,
     }
   else if (row == GTK_LIST_BOX_ROW (self->timezone_row))
     {
-      present_window (self, GTK_WINDOW (self->timezone_dialog));
+      present_window (self, ADW_DIALOG (self->timezone_dialog));
     }
 }
 
@@ -777,33 +769,34 @@ sort_date_box (GtkListBoxRow  *a,
   year_row = GTK_LIST_BOX_ROW (self->year_spin_row);
 
   switch (date_endian_get_default (FALSE)) {
-  case DATE_ENDIANESS_BIG:
+  case DATE_ENDIANESS_YMD:
     /* year, month, day */
     if (a == year_row || b == day_row)
       return -1;
     if (a == day_row || b == year_row)
       return 1;
-
-  case DATE_ENDIANESS_LITTLE:
+    break;
+  case DATE_ENDIANESS_DMY:
     /* day, month, year */
     if (a == day_row || b == year_row)
       return -1;
     if (a == year_row || b == day_row)
       return 1;
-
-  case DATE_ENDIANESS_MIDDLE:
+    break;
+  case DATE_ENDIANESS_MDY:
     /* month, day, year */
     if (a == month_row || b == year_row)
       return -1;
     if (a == year_row || b == month_row)
       return 1;
-
+    break;
   case DATE_ENDIANESS_YDM:
     /* year, day, month */
     if (a == year_row || b == month_row)
       return -1;
     if (a == month_row || b == year_row)
       return 1;
+    break;
   }
 
   return 0;
@@ -820,7 +813,7 @@ cc_date_time_page_class_init (CcDateTimePageClass *klass)
   g_type_ensure (CC_TYPE_LIST_ROW);
   g_type_ensure (CC_TYPE_TIME_EDITOR);
   g_type_ensure (CC_TYPE_TZ_DIALOG);
-  g_type_ensure (G_DESKTOP_TYPE_DESKTOP_CLOCK_FORMAT);
+  g_type_ensure (G_DESKTOP_TYPE_CLOCK_FORMAT);
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/system/datetime/cc-datetime-page.ui");
 
@@ -923,25 +916,16 @@ cc_date_time_page_init (CcDateTimePage *self)
   gtk_widget_set_visible (GTK_WIDGET (self->auto_datetime_row), is_ntp_available (self));
 
   /* Timezone settings */
-  self->auto_timezone_supported = FALSE;
-
-  self->datetime_settings = g_settings_new (DATETIME_SCHEMA);
-  // Let's disable location services for gnome-46
-  g_settings_set_boolean (self->datetime_settings, AUTO_TIMEZONE_KEY, FALSE);
-#ifdef HAVE_LOCATION_SERVICES
-  self->auto_timezone_supported = TRUE;
-  gtk_widget_set_visible (GTK_WIDGET (self->auto_timezone_row), TRUE);
-
   g_object_bind_property_full (self->auto_timezone_row, "active",
                                self->timezone_row, "sensitive",
                                G_BINDING_SYNC_CREATE,
                                (GBindingTransformFunc) tz_switch_to_row_transform_func,
                                NULL, self, NULL);
 
+  self->datetime_settings = g_settings_new (DATETIME_SCHEMA);
   g_settings_bind (self->datetime_settings, AUTO_TIMEZONE_KEY,
                    self->auto_timezone_row, "active",
                    G_SETTINGS_BIND_DEFAULT);
-#endif
 
   /* Clock settings */
   self->clock_settings = g_settings_new (CLOCK_SCHEMA);
