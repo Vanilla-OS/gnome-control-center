@@ -18,7 +18,7 @@ Bug-GNOME: https://gitlab.gnome.org/GNOME/gnome-control-center/issues/918
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/panels/keyboard/cc-keyboard-panel.c b/panels/keyboard/cc-keyboard-panel.c
-index 47a383c..6ebcd0c 100644
+index 6b6234e..0d48670 100644
 --- a/panels/keyboard/cc-keyboard-panel.c
 +++ b/panels/keyboard/cc-keyboard-panel.c
 @@ -71,7 +71,7 @@ static const CcXkbModifier LV3_MODIFIER = {
