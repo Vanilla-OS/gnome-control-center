@@ -214,7 +214,7 @@ index 8e7e826..44a429b 100644
 +      /* Trigger the service to start again, as it has just been stopped by a timeout
 +       * don't bother on waiting for the call results.
 +       */
-+      whoopsie_preferences_call_get_identifier (proxy, NULL, NULL, NULL);
++      whoopsie_preferences_call_get_identifier (WHOOPSIE_PREFERENCES (proxy), NULL, NULL, NULL);
 +    }
  }
  
