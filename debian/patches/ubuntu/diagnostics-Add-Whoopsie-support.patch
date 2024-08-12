@@ -3,19 +3,19 @@ Date: Sat, 4 Jun 2022 14:57:01 +0200
 Subject: diagnostics: Add Whoopsie support
 
 ---
- meson.build                                   |   9 +
- meson_options.txt                             |   1 +
- panels/privacy/cc-diagnostics-page.c          | 247 ++++++++++++++++++++++++++
- panels/privacy/cc-diagnostics-page.ui         |   8 +
- panels/privacy/gnome-privacy-panel.desktop.in |   2 +-
- panels/privacy/meson.build                    |   4 +
+ meson.build                                       |   9 +
+ meson_options.txt                                 |   1 +
+ panels/privacy/diagnostics/cc-diagnostics-page.c  | 247 ++++++++++++++++++++++
+ panels/privacy/diagnostics/cc-diagnostics-page.ui |   8 +
+ panels/privacy/gnome-privacy-panel.desktop.in     |   2 +-
+ panels/privacy/meson.build                        |   4 +
  6 files changed, 270 insertions(+), 1 deletion(-)
 
 diff --git a/meson.build b/meson.build
-index 9348c58..95e20f0 100644
+index b385e86..4a3b259 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -279,6 +279,14 @@ location_services = get_option('location-services')
+@@ -281,6 +281,14 @@ location_services = get_option('location-services')
  config_h.set('HAVE_LOCATION_SERVICES', location_services.enabled(),
               description: 'Whether location services is enabled')
  
@@ -30,7 +30,7 @@ index 9348c58..95e20f0 100644
  if host_is_linux
    # ModemManager
    mm_dep =  dependency('mm-glib', version: '>= 0.7')
-@@ -377,4 +385,5 @@ summary({
+@@ -379,4 +387,5 @@ summary({
    'IBus': enable_ibus,
    'Snap': enable_snap,
    'Malcontent': enable_malcontent,
@@ -45,10 +45,10 @@ index b2302bf..08f3c65 100644
  option('distributor_logo', type: 'string', description: 'absolute path to distributor logo for the About panel')
  option('dark_mode_distributor_logo', type: 'string', description: 'absolute path to distributor logo dark mode variant')
 +option('whoopsie', type: 'boolean', value: false, description: 'build with Whoopsie support')
-diff --git a/panels/privacy/cc-diagnostics-page.c b/panels/privacy/cc-diagnostics-page.c
-index 849ba10..83e8ed6 100644
---- a/panels/privacy/cc-diagnostics-page.c
-+++ b/panels/privacy/cc-diagnostics-page.c
+diff --git a/panels/privacy/diagnostics/cc-diagnostics-page.c b/panels/privacy/diagnostics/cc-diagnostics-page.c
+index 8e7e826..44a429b 100644
+--- a/panels/privacy/diagnostics/cc-diagnostics-page.c
++++ b/panels/privacy/diagnostics/cc-diagnostics-page.c
 @@ -18,6 +18,8 @@
   * Author: Matthias Clasen <mclasen@redhat.com>
   */
@@ -348,10 +348,10 @@ index 849ba10..83e8ed6 100644
    os_name = g_get_os_info (G_OS_INFO_KEY_NAME);
    if (!os_name)
      os_name = g_strdup ("GNOME");
-diff --git a/panels/privacy/cc-diagnostics-page.ui b/panels/privacy/cc-diagnostics-page.ui
+diff --git a/panels/privacy/diagnostics/cc-diagnostics-page.ui b/panels/privacy/diagnostics/cc-diagnostics-page.ui
 index c1ac689..709d544 100644
---- a/panels/privacy/cc-diagnostics-page.ui
-+++ b/panels/privacy/cc-diagnostics-page.ui
+--- a/panels/privacy/diagnostics/cc-diagnostics-page.ui
++++ b/panels/privacy/diagnostics/cc-diagnostics-page.ui
 @@ -19,6 +19,14 @@
                      <property name="use-underline">True</property>
                    </object>
@@ -378,10 +378,10 @@ index f88fd44..3704b2b 100644
 -Keywords=Privacy;Screen;Lock;Private;Usage;Recent;History;Files;Temporary;Tmp;Trash;Purge;Retain;Diagnostics;Crash;Location;Gps;Camera;Photos;Video;Webcam;Recording;Security;Firmware;Thunderbolt;Network;
 +Keywords=Privacy;Screen;Lock;Private;Usage;Recent;History;Files;Temporary;Tmp;Trash;Purge;Retain;Diagnostics;Crash;Location;Gps;Camera;Photos;Video;Webcam;Recording;Security;Firmware;Thunderbolt;Network;error;bug;whoopsie;launchpad;issue;
 diff --git a/panels/privacy/meson.build b/panels/privacy/meson.build
-index c5ed21a..7c6b711 100644
+index 5e21f47..ad5def6 100644
 --- a/panels/privacy/meson.build
 +++ b/panels/privacy/meson.build
-@@ -87,6 +87,10 @@ if host_is_linux
+@@ -75,6 +75,10 @@ if host_is_linux
    deps += network_manager_deps
  endif
  

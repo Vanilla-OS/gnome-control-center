@@ -25,7 +25,7 @@ Forwarded: not-needed
  panels/ubuntu/cc-ubuntu-dock-dialog.h       |   31 +
  panels/ubuntu/cc-ubuntu-dock-dialog.ui      |   79 ++
  panels/ubuntu/cc-ubuntu-panel.c             | 1729 +++++++++++++++++++++++++++
- panels/ubuntu/cc-ubuntu-panel.h             |   35 +
+ panels/ubuntu/cc-ubuntu-panel.h             |   33 +
  panels/ubuntu/cc-ubuntu-panel.ui            |  219 ++++
  panels/ubuntu/gnome-ubuntu-panel.desktop.in |   13 +
  panels/ubuntu/meson.build                   |   97 ++
@@ -33,7 +33,7 @@ Forwarded: not-needed
  po/POTFILES.in                              |    5 +
  shell/cc-panel-list.c                       |    1 +
  shell/cc-panel-loader.c                     |    3 +
- 16 files changed, 2329 insertions(+)
+ 16 files changed, 2327 insertions(+)
  create mode 100644 panels/ubuntu/assets/colors/color.svg.in
  create mode 100644 panels/ubuntu/assets/theme-dark.svg
  create mode 100644 panels/ubuntu/assets/theme-light.svg
@@ -2054,10 +2054,10 @@ index 0000000..8c964af
 +}
 diff --git a/panels/ubuntu/cc-ubuntu-panel.h b/panels/ubuntu/cc-ubuntu-panel.h
 new file mode 100644
-index 0000000..b13f611
+index 0000000..df67a97
 --- /dev/null
 +++ b/panels/ubuntu/cc-ubuntu-panel.h
-@@ -0,0 +1,35 @@
+@@ -0,0 +1,33 @@
 +/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 +/*
 + * Copyright (C) 2017 Canonical Ltd
@@ -2077,11 +2077,11 @@ index 0000000..b13f611
 + *
 + */
 +
-+#ifndef _CC_UBUNTU_PANEL_H_
-+#define _CC_UBUNTU_PANEL_H_
++#pragma once
++
++#include <shell/cc-panel.h>
 +
 +#include <gio/gio.h>
-+#include <shell/cc-panel.h>
 +
 +G_BEGIN_DECLS
 +
@@ -2091,8 +2091,6 @@ index 0000000..b13f611
 +void cc_ubuntu_panel_static_init_func (void);
 +
 +G_END_DECLS
-+
-+#endif /* _CC_EDIT_DIALOG_H_ */
 diff --git a/panels/ubuntu/cc-ubuntu-panel.ui b/panels/ubuntu/cc-ubuntu-panel.ui
 new file mode 100644
 index 0000000..cb4a44b
@@ -2453,10 +2451,10 @@ index 0000000..a636e9c
 +  </gresource>
 +</gresources>
 diff --git a/po/POTFILES.in b/po/POTFILES.in
-index 0f39cd5..c788b38 100644
+index b11782e..a9450ee 100644
 --- a/po/POTFILES.in
 +++ b/po/POTFILES.in
-@@ -254,6 +254,11 @@ panels/system/users/org.gnome.controlcenter.user-accounts.policy.in
+@@ -237,6 +237,11 @@ panels/system/users/org.gnome.controlcenter.user-accounts.policy.in
  panels/system/users/pw-utils.c
  panels/system/users/run-passwd.c
  panels/system/users/user-utils.c
@@ -2481,7 +2479,7 @@ index 1b3b8f9..f715131 100644
    "separator",
  
 diff --git a/shell/cc-panel-loader.c b/shell/cc-panel-loader.c
-index 71b7686..bd50a31 100644
+index 980faec..e765227 100644
 --- a/shell/cc-panel-loader.c
 +++ b/shell/cc-panel-loader.c
 @@ -56,12 +56,14 @@ extern GType cc_sharing_panel_get_type (void);
@@ -2495,11 +2493,11 @@ index 71b7686..bd50a31 100644
  #ifdef BUILD_WWAN
  extern GType cc_wwan_panel_get_type (void);
  #endif /* BUILD_WWAN */
-+extern GType cc_ubuntu_panel_static_init_func (void);
++extern void cc_ubuntu_panel_static_init_func (void);
  
  /* Static init functions */
  #ifdef BUILD_NETWORK
-@@ -107,6 +109,7 @@ static CcPanelLoaderVtable default_panels[] =
+@@ -108,6 +110,7 @@ static CcPanelLoaderVtable default_panels[] =
    PANEL_TYPE("sharing",          cc_sharing_panel_get_type,              cc_sharing_panel_static_init_func),
    PANEL_TYPE("sound",            cc_sound_panel_get_type,                NULL),
    PANEL_TYPE("system",           cc_system_panel_get_type,               NULL),

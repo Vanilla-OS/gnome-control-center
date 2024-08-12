@@ -269,7 +269,7 @@ index 1f578b7..2e5a446 100644
 +
  G_END_DECLS
 diff --git a/panels/system/region/cc-region-page.c b/panels/system/region/cc-region-page.c
-index 25a1431..248b255 100644
+index 91b2a49..a5a6ded 100644
 --- a/panels/system/region/cc-region-page.c
 +++ b/panels/system/region/cc-region-page.c
 @@ -245,27 +245,26 @@ set_localed_locale (CcRegionPage *self)
@@ -421,7 +421,7 @@ index 25a1431..248b255 100644
          update_user_region_row (self);
  }
  
-@@ -642,6 +684,16 @@ set_login_button_visibility (CcRegionPage *self)
+@@ -641,6 +683,16 @@ set_login_button_visibility (CcRegionPage *self)
  
  /* Callbacks */
  
@@ -438,7 +438,7 @@ index 25a1431..248b255 100644
  static void
  on_localed_properties_changed (GDBusProxy    *localed_proxy,
                                 GVariant      *changed_properties,
-@@ -650,33 +702,43 @@ on_localed_properties_changed (GDBusProxy    *localed_proxy,
+@@ -649,33 +701,43 @@ on_localed_properties_changed (GDBusProxy    *localed_proxy,
  {
          g_autoptr(GVariant) v = NULL;
  
@@ -493,7 +493,7 @@ index 25a1431..248b255 100644
                  self->system_region = g_strdup (time);
  
 diff --git a/panels/system/users/cc-user-page.c b/panels/system/users/cc-user-page.c
-index a135124..2696866 100644
+index f0a1888..cc44e2a 100644
 --- a/panels/system/users/cc-user-page.c
 +++ b/panels/system/users/cc-user-page.c
 @@ -29,6 +29,7 @@
@@ -504,7 +504,7 @@ index a135124..2696866 100644
  #include "cc-user-page.h"
  #include "cc-avatar-chooser.h"
  #include "cc-fingerprint-dialog.h"
-@@ -156,6 +157,7 @@ get_user_language (ActUser *user)
+@@ -157,6 +158,7 @@ get_user_language (ActUser *user)
  
      lang = g_strdup (act_user_get_language (user));
      if (lang && *lang != '\0') {
@@ -512,7 +512,7 @@ index a135124..2696866 100644
          return gnome_get_language_from_locale (lang, NULL);
      }
  
-@@ -267,6 +269,7 @@ language_chooser_response (CcUserPage        *self,
+@@ -268,6 +270,7 @@ language_chooser_response (CcUserPage        *self,
  {
      g_autofree gchar *language_name = NULL;
      const gchar *selected_language;
@@ -520,7 +520,7 @@ index a135124..2696866 100644
  
      if (response_id != GTK_RESPONSE_OK) {
          gtk_window_destroy (GTK_WINDOW (chooser));
-@@ -279,7 +282,8 @@ language_chooser_response (CcUserPage        *self,
+@@ -280,7 +283,8 @@ language_chooser_response (CcUserPage        *self,
          return;
      }
  
@@ -530,7 +530,7 @@ index a135124..2696866 100644
          return;
      }
  
-@@ -296,8 +300,11 @@ change_language (CcUserPage *self)
+@@ -297,8 +301,11 @@ change_language (CcUserPage *self)
  {
      CcLanguageChooser *language_chooser;
      const gchar *current_language;

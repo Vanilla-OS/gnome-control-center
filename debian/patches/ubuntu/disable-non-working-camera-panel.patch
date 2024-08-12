@@ -26,14 +26,14 @@ inadequate to document these significant limitations.
  1 file changed, 1 insertion(+)
 
 diff --git a/panels/privacy/cc-privacy-panel.ui b/panels/privacy/cc-privacy-panel.ui
-index 581f497..dbb4d27 100644
+index 9a3cbf0..bcd89bd 100644
 --- a/panels/privacy/cc-privacy-panel.ui
 +++ b/panels/privacy/cc-privacy-panel.ui
-@@ -90,6 +90,7 @@
-                           <object class="CcListRow">
-                             <property name="title" translatable="yes">_Cameras</property>
-                             <property name="subtitle" translatable="yes">Control camera access</property>
-+                            <property name="visible">False</property>
-                             <property name="icon-name">camera-access-symbolic</property>
-                             <property name="show-arrow">True</property>
-                             <property name="action-name">navigation.push</property>
+@@ -87,6 +87,7 @@
+                         <property name="title" translatable="yes">_Cameras</property>
+                         <property name="subtitle" translatable="yes">Control camera access</property>
+                         <property name="icon-name">org.gnome.Settings-camera-access-symbolic</property>
++                        <property name="visible">False</property>
+                         <property name="show-arrow">True</property>
+                         <property name="action-name">navigation.push</property>
+                         <property name="action-target">'camera'</property>

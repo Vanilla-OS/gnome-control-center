@@ -266,8 +266,8 @@ index fa4815f..b1eba4d 100644
  }
 diff --git a/panels/keyboard/cc-xkb-modifier-dialog.h b/panels/keyboard/cc-xkb-modifier-dialog.h
 index 285fd46..f184c6a 100644
---- a/panels/keyboard/cc-xkb-modifier-dialog.h
-+++ b/panels/keyboard/cc-xkb-modifier-dialog.h
+--- a/panels/keyboard/cc-xkb-modifier-page.h
++++ b/panels/keyboard/cc-xkb-modifier-page.h
 @@ -38,6 +38,7 @@ typedef struct
    gchar *description;
    CcXkbOption *options;
@@ -275,7 +275,7 @@ index 285fd46..f184c6a 100644
 +  gchar *nodefault_option;
  } CcXkbModifier;
  
- #define CC_TYPE_XKB_MODIFIER_DIALOG (cc_xkb_modifier_dialog_get_type())
+ #define CC_TYPE_XKB_MODIFIER_PAGE (cc_xkb_modifier_page_get_type())
 diff --git a/panels/keyboard/cc-xkb-modifier-dialog.ui b/panels/keyboard/cc-xkb-modifier-dialog.ui
 index 5b94d34..85e4943 100644
 --- a/panels/keyboard/cc-xkb-modifier-dialog.ui

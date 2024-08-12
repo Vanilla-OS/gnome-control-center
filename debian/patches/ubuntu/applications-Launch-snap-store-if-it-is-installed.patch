@@ -11,10 +11,10 @@ TODO: Launch GNOME Software for Flatpaks since snap-store can't handle those
  1 file changed, 14 insertions(+), 2 deletions(-)
 
 diff --git a/panels/applications/cc-applications-panel.c b/panels/applications/cc-applications-panel.c
-index cc7c43d..ee6a583 100644
+index 6663ab5..dfc7150 100644
 --- a/panels/applications/cc-applications-panel.c
 +++ b/panels/applications/cc-applications-panel.c
-@@ -168,6 +168,13 @@ gnome_software_is_installed (void)
+@@ -165,6 +165,13 @@ gnome_software_is_installed (void)
    return path != NULL;
  }
  
@@ -28,7 +28,7 @@ index cc7c43d..ee6a583 100644
  /* Callbacks */
  
  static gboolean
-@@ -187,6 +194,9 @@ open_software_cb (CcApplicationsPanel *self)
+@@ -184,6 +191,9 @@ open_software_cb (CcApplicationsPanel *self)
  {
    const gchar *argv[] = { "gnome-software", "--details", "appid", NULL };
  
@@ -38,17 +38,17 @@ index cc7c43d..ee6a583 100644
    if (self->current_app_id == NULL)
      argv[1] = NULL;
    else
-@@ -1432,7 +1442,8 @@ update_panel (CcApplicationsPanel *self,
+@@ -1453,7 +1463,8 @@ update_panel (CcApplicationsPanel *self,
    adw_navigation_page_set_title (self->app_settings_page,
                                   g_app_info_get_display_name (info));
-   adw_navigation_view_push_by_tag(self->navigation_view, "settings-box");
+   cc_panel_push_subpage (CC_PANEL (self), self->app_settings_page);
 -  gtk_widget_set_visible (GTK_WIDGET (self->view_details_button), gnome_software_is_installed ());
 +  gtk_widget_set_visible (GTK_WIDGET (self->view_details_button),
-+                          gnome_software_is_installed () || snap_store_is_installed ());
++                          gnome_software_is_installed () || snap_store_is_installed());
  
    g_clear_pointer (&self->current_app_id, g_free);
    g_clear_pointer (&self->current_portal_app_id, g_free);
-@@ -1868,7 +1879,8 @@ cc_applications_panel_init (CcApplicationsPanel *self)
+@@ -1878,7 +1889,8 @@ cc_applications_panel_init (CcApplicationsPanel *self)
  
    gtk_widget_init_template (GTK_WIDGET (self));
  

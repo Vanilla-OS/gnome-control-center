@@ -4,15 +4,15 @@ Subject: lock: Add "Lock Screen on Suspend" option
 
 https://launchpad.net/bugs/938076
 ---
- panels/privacy/cc-screen-page.c  | 19 +++++++++++++++++++
- panels/privacy/cc-screen-page.ui |  8 ++++++++
- 2 files changed, 27 insertions(+)
+ panels/privacy/screen/cc-screen-page.c  | 20 ++++++++++++++++++++
+ panels/privacy/screen/cc-screen-page.ui |  8 ++++++++
+ 2 files changed, 28 insertions(+)
 
-diff --git a/panels/privacy/cc-screen-page.c b/panels/privacy/cc-screen-page.c
-index 2dd8682..2527da8 100644
---- a/panels/privacy/cc-screen-page.c
-+++ b/panels/privacy/cc-screen-page.c
-@@ -47,6 +47,7 @@ struct _CcScreenPage
+diff --git a/panels/privacy/screen/cc-screen-page.c b/panels/privacy/screen/cc-screen-page.c
+index ddb0a88..2b6882e 100644
+--- a/panels/privacy/screen/cc-screen-page.c
++++ b/panels/privacy/screen/cc-screen-page.c
+@@ -45,6 +45,7 @@ struct _CcScreenPage
    AdwPreferencesGroup *screen_privacy_group;
    GDBusProxy          *usb_proxy;
    AdwSwitchRow        *automatic_screen_lock_row;
@@ -20,7 +20,7 @@ index 2dd8682..2527da8 100644
    AdwSwitchRow        *privacy_screen_row;
    AdwSwitchRow        *show_notifications_row;
    AdwSwitchRow        *usb_protection_row;
-@@ -270,6 +271,7 @@ cc_screen_page_class_init (CcScreenPageClass *klass)
+@@ -136,6 +137,7 @@ cc_screen_page_class_init (CcScreenPageClass *klass)
    gtk_widget_class_bind_template_child (widget_class, CcScreenPage, automatic_screen_lock_row);
    gtk_widget_class_bind_template_child (widget_class, CcScreenPage, blank_screen_row);
    gtk_widget_class_bind_template_child (widget_class, CcScreenPage, lock_after_row);
@@ -28,15 +28,16 @@ index 2dd8682..2527da8 100644
    gtk_widget_class_bind_template_child (widget_class, CcScreenPage, privacy_screen_row);
    gtk_widget_class_bind_template_child (widget_class, CcScreenPage, screen_privacy_group);
    gtk_widget_class_bind_template_child (widget_class, CcScreenPage, show_notifications_row);
-@@ -316,6 +318,7 @@ update_display_config (CcScreenPage *self)
+@@ -177,6 +179,8 @@ update_display_config (CcScreenPage *self)
  static void
  cc_screen_page_init (CcScreenPage *self)
  {
 +  g_autoptr(GSettingsSchema) schema = NULL;
-   guint value;
- 
++
    gtk_widget_init_template (GTK_WIDGET (self));
-@@ -327,6 +330,8 @@ cc_screen_page_init (CcScreenPage *self)
+ 
+   self->cancellable = g_cancellable_new ();
+@@ -186,6 +190,8 @@ cc_screen_page_init (CcScreenPage *self)
    self->notification_settings = g_settings_new ("org.gnome.desktop.notifications");
    self->session_settings = g_settings_new ("org.gnome.desktop.session");
  
@@ -45,7 +46,7 @@ index 2dd8682..2527da8 100644
    g_settings_bind (self->lock_settings,
                     "lock-enabled",
                     self->automatic_screen_lock_row,
-@@ -347,6 +352,20 @@ cc_screen_page_init (CcScreenPage *self)
+@@ -230,6 +236,20 @@ cc_screen_page_init (CcScreenPage *self)
                     "active",
                     G_SETTINGS_BIND_DEFAULT);
  
@@ -63,14 +64,14 @@ index 2dd8682..2527da8 100644
 +      gtk_widget_set_visible (GTK_WIDGET (self->lock_on_suspend_row), FALSE);
 +    }
 +
-   value = g_settings_get_uint (self->session_settings, "idle-delay");
-   set_blank_screen_delay_value (self, value);
- 
-diff --git a/panels/privacy/cc-screen-page.ui b/panels/privacy/cc-screen-page.ui
-index bdb29c5..9bcb94c 100644
---- a/panels/privacy/cc-screen-page.ui
-+++ b/panels/privacy/cc-screen-page.ui
-@@ -69,6 +69,14 @@
+   g_dbus_proxy_new_for_bus (G_BUS_TYPE_SESSION,
+                             G_DBUS_PROXY_FLAGS_NONE,
+                             NULL,
+diff --git a/panels/privacy/screen/cc-screen-page.ui b/panels/privacy/screen/cc-screen-page.ui
+index 25c9be7..bca206f 100644
+--- a/panels/privacy/screen/cc-screen-page.ui
++++ b/panels/privacy/screen/cc-screen-page.ui
+@@ -68,6 +68,14 @@
                    </object>
                  </child>
  
