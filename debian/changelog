@@ -1,3 +1,14 @@
+gnome-control-center (1:46.4-0ubuntu1) oracular; urgency=medium
+
+  * New upstream version
+    - Show correct unenrolled fingerprint list (lp: #2076164)
+
+  [ Alessandro Astone ]
+  * d/p/u/diagnostics-Add-Whoopsie-support.patch: 
+    Better handle dbus callback from WhoopsiePreferences (LP: #2065294)
+
+ -- Sebastien Bacher <seb128@ubuntu.com>  Tue, 13 Aug 2024 17:56:03 +0200
+
 gnome-control-center (1:46.3-0ubuntu1) oracular; urgency=medium
 
   * Merge with Debian (LP: #2064762). Remaining changes:
