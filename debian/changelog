@@ -1,4 +1,4 @@
-gnome-control-center (1:47~beta-2ubuntu1) UNRELEASED; urgency=medium
+gnome-control-center (1:47~beta-2ubuntu1) oracular; urgency=medium
 
   * Merge with Debian (LP: #2064762). Remaining changes:
     + Add gnome-control-center-faces package to share with unity-control-center
@@ -53,8 +53,12 @@ gnome-control-center (1:47~beta-2ubuntu1) UNRELEASED; urgency=medium
       - u/mouse-Add-animations-following-the-accent-colors.patch
       - panels-mouse-Do-not-bind-sensitivity-to-touch-pad-setting.patch
       - CVE-2023-5616.patch: Use sshd socket
+  * Refresh patches
+  * Remove the obsolete accent color patches
+  * Temporarily disable 2 keyboard patches
+  * Update Whoopsie patch to fix build with gcc-14
 
- -- Jeremy Bícha <jbicha@ubuntu.com>  Wed, 14 Aug 2024 07:13:03 -0400
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Wed, 14 Aug 2024 07:17:09 -0400
 
 gnome-control-center (1:47~beta-2) experimental; urgency=medium
 
