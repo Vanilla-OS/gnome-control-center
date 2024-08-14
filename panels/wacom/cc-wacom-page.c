@@ -43,12 +43,13 @@
 #include "gsd-enums.h"
 #include "calibrator-gui.h"
 #include "gsd-input-helper.h"
+#include "panels/display/cc-display-config-manager-dbus.h"
 
 #include <string.h>
 
 #define MWID(x) (GtkWidget *) gtk_builder_get_object (page->mapping_builder, x)
 
-#define THRESHOLD_MISCLICK	15
+#define THRESHOLD_MISCLICK	50
 #define THRESHOLD_DOUBLECLICK	7
 
 struct _CcWacomPage
@@ -71,7 +72,7 @@ struct _CcWacomPage
 	AdwSwitchRow   *tablet_aspect_ratio_row;
 	GtkWidget      *display_section;
 
-	GnomeRRScreen  *rr_screen;
+	CcDisplayConfigManager *display_config_manager;
 
 	/* Button mapping */
 	GtkBuilder     *mapping_builder;
@@ -183,8 +184,8 @@ run_calibration (CcWacomPage *page,
 					cc_wacom_device_get_device (page->stylus),
 					finish_calibration,
 					page,
-					THRESHOLD_MISCLICK,
-					THRESHOLD_DOUBLECLICK);
+					THRESHOLD_DOUBLECLICK,
+					THRESHOLD_MISCLICK);
 
 	g_object_set_data_full (G_OBJECT (page),
 				"old-calibration",
@@ -226,24 +227,24 @@ calibrate (CcWacomPage *page)
 	gsize ncal;
 	GdkDisplay *display;
 	g_autoptr(GdkMonitor) monitor = NULL;
-	g_autoptr(GnomeRRScreen) rr_screen = NULL;
-	GnomeRROutput *output;
+	g_autoptr (CcDisplayConfig) config = NULL;
+	CcDisplayMonitor *output;
 	g_autoptr(GError) error = NULL;
 	GDBusProxy *input_mapping_proxy;
-	gint x, y;
+	gint x, y, width, height;
 
 	display = gdk_display_get_default ();
-	rr_screen = gnome_rr_screen_new (display, &error);
-	if (error) {
-		g_warning ("Could not connect to display manager: %s", error->message);
+	config = cc_display_config_manager_get_current (page->display_config_manager);
+	if (!config) {
+		g_warning ("Could not find to display config");
 		return;
 	}
 
-	output = cc_wacom_device_get_output (page->stylus, rr_screen);
+	output = cc_wacom_device_get_output (page->stylus, config);
 	input_mapping_proxy = cc_wacom_panel_get_input_mapping_bus_proxy (page->panel);
 
 	if (output) {
-		gnome_rr_output_get_position (output, &x, &y);
+		cc_display_monitor_get_geometry (output, &x, &y, &width, &height);
 		monitor = find_monitor_at_point (display, x, y);
 	} else if (input_mapping_proxy) {
 		GsdDevice *gsd_device;
@@ -445,6 +446,17 @@ set_osd_visibility (CcWacomPage *page)
 			   page);
 }
 
+static gboolean
+has_monitor (CcWacomPage *page)
+{
+	WacomIntegrationFlags integration_flags;
+
+	integration_flags = cc_wacom_device_get_integration_flags (page->stylus);
+
+	return ((integration_flags &
+		 (WACOM_DEVICE_INTEGRATED_DISPLAY | WACOM_DEVICE_INTEGRATED_SYSTEM)) != 0);
+}
+
 static void
 on_map_buttons_activated (CcWacomPage *self)
 {
@@ -470,7 +482,7 @@ on_display_selected (CcWacomPage *page)
 	else
 		g_settings_reset (page->wacom_settings, "output");
 
-	gtk_widget_set_sensitive (page->tablet_calibrate, variant == NULL);
+	gtk_widget_set_sensitive (page->tablet_calibrate, has_monitor (page));
 }
 
 /* Boilerplate code goes below */
@@ -511,7 +523,7 @@ cc_wacom_page_dispose (GObject *object)
 	g_clear_pointer (&self->area, cc_calib_area_free);
 	g_clear_pointer (&self->button_map, gtk_window_destroy);
 	g_clear_object (&self->pad);
-	g_clear_object (&self->rr_screen);
+	g_clear_object (&self->display_config_manager);
 
 	self->panel = NULL;
 
@@ -551,43 +563,62 @@ static void
 update_displays_model (CcWacomPage *page)
 {
 	g_autoptr (GtkStringList) list = NULL;
-	GnomeRROutput **outputs, *cur_output;
-	int i, idx = 0, cur = -1, automatic_item = -1;
+	g_autoptr (CcDisplayConfig) config = NULL;
+	CcDisplayMonitor *cur_output;
+	GList *monitors;
+	GList *l, *k;
+	int idx = 0, cur = -1;
 	g_autoptr (GObject) obj = NULL;
 	GVariant *variant;
+	gboolean need_connector_name = false;
 
-	outputs = gnome_rr_screen_list_outputs (page->rr_screen);
+	config = cc_display_config_manager_get_current (page->display_config_manager);
+	if (!config)
+		return;
+
+	monitors = config ? cc_display_config_get_monitors (config) : NULL;
 	list = gtk_string_list_new (NULL);
-	cur_output = cc_wacom_device_get_output (page->stylus,
-						 page->rr_screen);
+	cur_output = cc_wacom_device_get_output (page->stylus, config);
 
-	for (i = 0; outputs[i] != NULL; i++) {
-		GnomeRROutput *output = outputs[i];
-		GnomeRRCrtc *crtc = gnome_rr_output_get_crtc (output);
-		g_autofree gchar *text = NULL;
-		g_autofree gchar *vendor = NULL;
-		g_autofree gchar *product = NULL;
-		g_autofree gchar *serial = NULL;
-		const gchar *name, *disp_name;
+	for (l = monitors; l; l = l->next) {
+		const char *l_name = cc_display_monitor_get_ui_name (l->data);
+		for (k = monitors; k; k = k->next) {
+			const char *k_name = cc_display_monitor_get_ui_name (k->data);
+			if (k != l && g_strcmp0 (l_name, k_name) == 0) {
+				need_connector_name = true;
+				break;
+			}
+		}
+		if (need_connector_name)
+			break;
+	}
 
-		/* Output is turned on? */
-		if (!crtc || gnome_rr_crtc_get_current_mode (crtc) == NULL)
+	for (l = monitors; l; l = l->next) {
+		CcDisplayMonitor *monitor = CC_DISPLAY_MONITOR (l->data);
+		const char *vendor, *product, *serial;
+		const gchar *disp_name, *connector;
+		g_autofree gchar *name = NULL;
+
+		if (!cc_display_monitor_is_active (monitor))
 			continue;
 
-		if (output == cur_output)
+		if (monitor == cur_output)
 			cur = idx;
 
-		name = gnome_rr_output_get_name (output);
-		disp_name = gnome_rr_output_get_display_name (output);
-		text = g_strdup_printf ("%s (%s)", name, disp_name);
+		vendor = cc_display_monitor_get_vendor_name (monitor),
+		product = cc_display_monitor_get_product_name (monitor),
+		serial = cc_display_monitor_get_product_serial (monitor);
+		connector = cc_display_monitor_get_connector_name (monitor);
+		disp_name = cc_display_monitor_get_ui_name (monitor);
 
-		gnome_rr_output_get_ids_from_edid (output,
-						   &vendor,
-						   &product,
-						   &serial);
-		variant = g_variant_new_strv ((const gchar *[]) { vendor, product, serial, name }, 4);
+		variant = g_variant_new_strv ((const gchar *[]) { vendor, product, serial, connector }, 4);
 
-		gtk_string_list_append (list, text);
+		name = g_strdup_printf ("%s%s%s%s", disp_name,
+					need_connector_name ? " (" : "",
+					need_connector_name ? connector : "",
+					need_connector_name ? ")" : "");
+
+		gtk_string_list_append (list, name);
 		obj = g_list_model_get_item (G_LIST_MODEL (list), idx);
 		g_object_set_data_full (G_OBJECT (obj), "value-output",
 					variant, (GDestroyNotify) g_variant_unref);
@@ -609,7 +640,6 @@ update_displays_model (CcWacomPage *page)
 
 		idx++;
 		gtk_string_list_append (list, _("Automatic"));
-		automatic_item = idx;
 
 		user_value = g_settings_get_user_value (page->wacom_settings, "output");
 		if (!user_value)
@@ -621,7 +651,7 @@ update_displays_model (CcWacomPage *page)
 	adw_combo_row_set_selected (ADW_COMBO_ROW (page->tablet_display), cur);
 	g_signal_handlers_unblock_by_func (page->tablet_display, on_display_selected, page);
 
-	gtk_widget_set_sensitive (page->tablet_calibrate, cur == automatic_item);
+	gtk_widget_set_sensitive (page->tablet_calibrate, has_monitor (page));
 }
 
 static void
@@ -630,14 +660,10 @@ cc_wacom_page_init (CcWacomPage *page)
 	g_autoptr (GError) error = NULL;
 
 	gtk_widget_init_template (GTK_WIDGET (page));
-	page->rr_screen = gnome_rr_screen_new (gdk_display_get_default (), &error);
-
-	if (error)
-		g_warning ("Could not get RR screen: %s", error->message);
-
-	g_signal_connect_object (page->rr_screen, "changed",
-				 G_CALLBACK (update_displays_model),
-				 page, G_CONNECT_SWAPPED);
+	page->display_config_manager = cc_display_config_manager_dbus_new ();
+	g_signal_connect_object (page->display_config_manager, "changed",
+				 G_CALLBACK (update_displays_model), page,
+				 G_CONNECT_SWAPPED);
 }
 
 static void
@@ -649,17 +675,6 @@ set_icon_name (CcWacomPage *page,
 
 	resource = g_strdup_printf ("/org/gnome/control-center/wacom/%s.svg", icon_name);
 	gtk_picture_set_resource (GTK_PICTURE (widget), resource);
-}
-
-static gboolean
-has_monitor (CcWacomPage *page)
-{
-	WacomIntegrationFlags integration_flags;
-
-	integration_flags = cc_wacom_device_get_integration_flags (page->stylus);
-
-	return ((integration_flags &
-		 (WACOM_DEVICE_INTEGRATED_DISPLAY | WACOM_DEVICE_INTEGRATED_SYSTEM)) != 0);
 }
 
 static void

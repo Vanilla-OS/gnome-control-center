@@ -46,7 +46,8 @@ struct _CcKeyboardShortcutDialog
 
   AdwNavigationView    *navigation_view;
   AdwNavigationPage    *main_page;
-  GtkButton            *reset_all_button;
+  AdwButtonRow         *reset_all_button_row;
+  AdwDialog            *reset_all_dialog;
   GtkSearchEntry       *search_entry;
   GtkStack             *section_stack;
   AdwPreferencesPage   *section_list_page;
@@ -300,12 +301,12 @@ shortcut_dialog_row_new (gpointer item,
 
   group = g_object_get_data (item, "search-group");
   title = g_object_get_data (item, "title");
-  row = g_object_new (CC_TYPE_LIST_ROW, NULL);
+  row = g_object_new (CC_TYPE_LIST_ROW,
+                      "title", _(title),
+                      "show-arrow", TRUE,
+                      NULL);
 
   g_object_set_data (G_OBJECT (row), "section", item);
-  cc_list_row_set_show_arrow (CC_LIST_ROW (row), TRUE);
-  gtk_list_box_row_set_activatable (GTK_LIST_BOX_ROW (row), TRUE);
-  adw_preferences_row_set_title (ADW_PREFERENCES_ROW (row), _(title));
 
   g_object_bind_property (group, "modified-text",
                           row, "secondary-label",
@@ -328,16 +329,9 @@ add_custom_shortcut_clicked_cb (CcKeyboardShortcutDialog *self)
 }
 
 static void
-on_reset_all_dialog_response_cb (CcKeyboardShortcutDialog *self,
-                                 gchar                    *response,
-                                 AdwMessageDialog         *dialog)
+on_reset_all_dialog_response_cb (CcKeyboardShortcutDialog *self)
 {
   guint n_items, j_items;
-
-  gtk_window_destroy (GTK_WINDOW (dialog));
-
-  if (g_strcmp0 (response, "cancel") == 0)
-    return;
 
   n_items = g_list_model_get_n_items (G_LIST_MODEL (self->sections));
 
@@ -363,41 +357,6 @@ on_reset_all_dialog_response_cb (CcKeyboardShortcutDialog *self,
           cc_keyboard_manager_reset_shortcut (self->manager, item);
         }
     }
-}
-
-static void
-reset_all_clicked_cb (CcKeyboardShortcutDialog *self)
-{
-  GtkWidget *dialog;
-
-  dialog = adw_message_dialog_new (GTK_WINDOW (self),
-                                   _("Reset All Shortcuts?"),
-                                   NULL);
-
-  adw_message_dialog_format_body (ADW_MESSAGE_DIALOG (dialog),
-                                  _("All changes to keyboard shortcuts will be lost."));
-
-  adw_message_dialog_add_responses (ADW_MESSAGE_DIALOG (dialog),
-                                    "cancel",    _("_Cancel"),
-                                    "reset_all", _("_Reset All"),
-                                    NULL);
-
-  adw_message_dialog_set_response_appearance (ADW_MESSAGE_DIALOG (dialog),
-                                              "reset_all",
-                                              ADW_RESPONSE_DESTRUCTIVE);
-
-  adw_message_dialog_set_default_response (ADW_MESSAGE_DIALOG (dialog),
-                                           "cancel");
-
-  adw_message_dialog_set_close_response (ADW_MESSAGE_DIALOG (dialog),
-                                         "cancel");
-
-  g_signal_connect_swapped (dialog,
-                            "response",
-                            G_CALLBACK (on_reset_all_dialog_response_cb),
-                            self);
-
-  gtk_window_present (GTK_WINDOW (dialog));
 }
 
 static void
@@ -446,8 +405,8 @@ shortcut_search_entry_changed_cb (CcKeyboardShortcutDialog *self)
   if (search && *search && *search != ' ')
     self->search_terms = g_strsplit (search, " ", -1);
 
-  /* "Reset all..." button should be sensitive only if the search is not active */
-  gtk_widget_set_sensitive (GTK_WIDGET (self->reset_all_button), !self->search_terms);
+  /* "Reset all..." button row should be sensitive only if the search is not active */
+  gtk_widget_set_sensitive (GTK_WIDGET (self->reset_all_button_row), !self->search_terms);
 
   for (guint i = 0; i < n_items; i++)
     {
@@ -515,7 +474,11 @@ cc_keyboard_shortcut_dialog_finalize (GObject *object)
   g_clear_pointer (&self->search_terms, g_strfreev);
   g_clear_object (&self->sections);
   g_clear_object (&self->filtered_shortcuts);
-  g_clear_pointer ((GtkWindow**)&self->shortcut_editor, gtk_window_destroy);
+
+  if (self->shortcut_editor != NULL) {
+    gtk_window_destroy (GTK_WINDOW (self->shortcut_editor));
+    self->shortcut_editor = NULL;
+  }
 
   G_OBJECT_CLASS (cc_keyboard_shortcut_dialog_parent_class)->finalize (object);
 }
@@ -537,7 +500,8 @@ cc_keyboard_shortcut_dialog_class_init (CcKeyboardShortcutDialogClass *klass)
 
   gtk_widget_class_bind_template_child (widget_class, CcKeyboardShortcutDialog, navigation_view);
   gtk_widget_class_bind_template_child (widget_class, CcKeyboardShortcutDialog, main_page);
-  gtk_widget_class_bind_template_child (widget_class, CcKeyboardShortcutDialog, reset_all_button);
+  gtk_widget_class_bind_template_child (widget_class, CcKeyboardShortcutDialog, reset_all_button_row);
+  gtk_widget_class_bind_template_child (widget_class, CcKeyboardShortcutDialog, reset_all_dialog);
   gtk_widget_class_bind_template_child (widget_class, CcKeyboardShortcutDialog, search_entry);
   gtk_widget_class_bind_template_child (widget_class, CcKeyboardShortcutDialog, section_stack);
   gtk_widget_class_bind_template_child (widget_class, CcKeyboardShortcutDialog, section_list_page);
@@ -552,7 +516,7 @@ cc_keyboard_shortcut_dialog_class_init (CcKeyboardShortcutDialogClass *klass)
   gtk_widget_class_bind_template_child (widget_class, CcKeyboardShortcutDialog, accelerator_size_group);
 
   gtk_widget_class_bind_template_callback (widget_class, add_custom_shortcut_clicked_cb);
-  gtk_widget_class_bind_template_callback (widget_class, reset_all_clicked_cb);
+  gtk_widget_class_bind_template_callback (widget_class, on_reset_all_dialog_response_cb);
   gtk_widget_class_bind_template_callback (widget_class, shortcut_dialog_visible_page_changed_cb);
   gtk_widget_class_bind_template_callback (widget_class, shortcut_search_entry_changed_cb);
   gtk_widget_class_bind_template_callback (widget_class, shortcut_search_entry_stopped_cb);

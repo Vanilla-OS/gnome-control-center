@@ -67,7 +67,7 @@ struct _CcRegionPage {
         CcListRow       *login_formats_row;
         GtkWidget       *login_group;
         CcListRow       *login_language_row;
-        GtkListBoxRow   *language_row;
+        CcListRow       *language_row;
 
         gboolean         login_auto_apply;
         GPermission     *permission;
@@ -511,7 +511,7 @@ update_user_region_row (CcRegionPage *self)
         if (!name)
                 name = gnome_get_country_from_locale (DEFAULT_LOCALE, DEFAULT_LOCALE);
 
-        adw_action_row_set_subtitle (ADW_ACTION_ROW (self->formats_row), name);
+        cc_list_row_set_secondary_label (self->formats_row, name);
 }
 
 static void
@@ -525,7 +525,7 @@ update_user_language_row (CcRegionPage *self)
         if (!name)
                 name = gnome_get_language_from_locale (DEFAULT_LOCALE, DEFAULT_LOCALE);
 
-        adw_action_row_set_subtitle (ADW_ACTION_ROW (self->language_row), name);
+        cc_list_row_set_secondary_label (self->language_row, name);
 
         /* Formats will change too if not explicitly set. */
         update_user_region_row (self);
@@ -575,17 +575,16 @@ setup_language_section (CcRegionPage *self)
 static void
 update_login_region (CcRegionPage *self)
 {
+        const gchar *region = get_effective_region (self, SYSTEM);
         g_autofree gchar *name = NULL;
 
-        if (self->system_region)
-                name = gnome_get_country_from_locale (self->system_region, self->system_region);
-        else if (self->system_language)
-                name = gnome_get_country_from_locale (self->system_language, self->system_language);
+        if (region)
+                name = gnome_get_country_from_locale (region, region);
 
         if (!name)
                 name = gnome_get_country_from_locale (DEFAULT_LOCALE, DEFAULT_LOCALE);
 
-        adw_action_row_set_subtitle (ADW_ACTION_ROW (self->login_formats_row), name);
+        cc_list_row_set_secondary_label (self->login_formats_row, name);
 }
 
 static void
@@ -599,7 +598,7 @@ update_login_language (CcRegionPage *self)
         if (!name)
                 name = gnome_get_language_from_locale (DEFAULT_LOCALE, DEFAULT_LOCALE);
 
-        adw_action_row_set_subtitle (ADW_ACTION_ROW (self->login_language_row), name);
+        cc_list_row_set_secondary_label (self->login_language_row, name);
         update_login_region (self);
 }
 
@@ -796,7 +795,6 @@ static void
 cc_region_page_finalize (GObject *object)
 {
         CcRegionPage *self = CC_REGION_PAGE (object);
-        GtkWidget *chooser;
 
         if (self->user_manager) {
                 g_signal_handlers_disconnect_by_data (self->user_manager, self);
@@ -816,10 +814,6 @@ cc_region_page_finalize (GObject *object)
         g_free (self->region);
         g_free (self->system_language);
         g_free (self->system_region);
-
-        chooser = g_object_get_data (G_OBJECT (self), "input-chooser");
-        if (chooser)
-                gtk_window_destroy (GTK_WINDOW (chooser));
 
         g_cancellable_cancel (self->cancellable);
         g_clear_object (&self->cancellable);

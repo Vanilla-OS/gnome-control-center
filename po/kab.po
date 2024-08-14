@@ -9,16 +9,16 @@ msgstr ""
 "Project-Id-Version: unnamed project\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-control-center/"
 "issues\n"
-"POT-Creation-Date: 2024-04-26 09:57+0000\n"
-"PO-Revision-Date: 2024-04-30 22:26+0200\n"
-"Last-Translator: sa\n"
+"POT-Creation-Date: 2024-03-28 10:47+0000\n"
+"PO-Revision-Date: 2024-03-29 23:52+0100\n"
+"Last-Translator: ButterflyOfFire <ButterflyOfFire@protonmail.com>\n"
 "Language-Team: Kabyle <>\n"
 "Language: kab\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n>1;\n"
-"X-Generator: Poedit 3.4.2\n"
+"Plural-Forms: nplurals=2; plural=n>1\n"
+"X-Generator: Gtranslator 41.0\n"
 "X-DL-Team: kab\n"
 "X-DL-Module: gnome-control-center\n"
 "X-DL-Branch: gnome-46\n"
@@ -46,7 +46,7 @@ msgstr ""
 
 #: panels/applications/cc-applications-panel.c:834
 #: panels/privacy/cc-bolt-page.ui:240 panels/privacy/cc-bolt-page.ui:284
-#: panels/privacy/cc-privacy-panel.ui:75
+#: panels/privacy/cc-privacy-panel.ui:74
 msgid "Devices"
 msgstr "Ibenkan"
 
@@ -64,7 +64,7 @@ msgstr "Aẓeṭṭa"
 
 #: panels/applications/cc-applications-panel.c:838
 msgid "Has network access"
-msgstr "Γur-s anekcum ɣer uzeṭṭa"
+msgstr ""
 
 #: panels/applications/cc-applications-panel.c:843
 #: panels/applications/cc-applications-panel.c:845
@@ -129,7 +129,7 @@ msgstr "Nadi isnasen"
 
 #: panels/applications/cc-applications-panel.ui:43
 msgid "_Default Apps"
-msgstr "Isnasen imezwura (_D)"
+msgstr "Isnasen imezwura (_D):"
 
 #: panels/applications/cc-applications-panel.ui:62
 msgid "No Apps Found"
@@ -168,7 +168,7 @@ msgstr ""
 
 #: panels/applications/cc-applications-panel.ui:207
 #: panels/printers/pp-details-dialog.c:267
-#: panels/sharing/cc-sharing-panel.c:242
+#: panels/sharing/cc-sharing-panel.c:240
 msgid "_Open"
 msgstr "_Ldi"
 
@@ -203,7 +203,7 @@ msgstr ""
 #: panels/keyboard/cc-xkb-modifier-dialog.c:342
 #: panels/keyboard/keyboard-shortcuts.c:367
 #: panels/system/users/cc-user-page.c:379
-#: panels/system/users/cc-user-page.c:752 panels/wwan/cc-wwan-device-page.c:477
+#: panels/system/users/cc-user-page.c:749 panels/wwan/cc-wwan-device-page.c:477
 #: subprojects/gvc/gvc-mixer-control.c:1872
 msgid "Disabled"
 msgstr "Yensa"
@@ -435,7 +435,7 @@ msgstr "Fren asnas i yisidiyen CDs n yiseɣẓanen"
 #.
 #: panels/applications/cc-removable-media-settings.c:402
 msgid "audio DVD"
-msgstr "asfeldan DVD"
+msgstr "DVD asfeldan"
 
 #: panels/applications/cc-removable-media-settings.c:403
 msgid "blank Blu-ray disc"
@@ -455,7 +455,7 @@ msgstr "aḍebsi HD DVD d ilem"
 
 #: panels/applications/cc-removable-media-settings.c:407
 msgid "Blu-ray video disc"
-msgstr "Aḍebsi Blu-ray uvidyu"
+msgstr "aḍebsi Blu-ray uvidyu"
 
 #: panels/applications/cc-removable-media-settings.c:408
 msgid "e-book reader"
@@ -519,7 +519,7 @@ msgstr "Anaw (_T)"
 
 #: panels/applications/cc-removable-media-settings.ui:143
 msgid "_Action"
-msgstr "Tigawt (_A)"
+msgstr "Tig_awt:"
 
 #: panels/applications/cc-snap-row.c:253
 msgid "Add user accounts and change passwords"
@@ -615,7 +615,7 @@ msgstr ""
 
 #: panels/applications/cc-snap-row.c:299
 msgid "Access LXD service"
-msgstr "Ameẓlu n unekcum LXD"
+msgstr ""
 
 #: panels/applications/cc-snap-row.c:301
 msgid "Use and configure modems"
@@ -777,7 +777,7 @@ msgstr ""
 
 #: panels/background/cc-background-panel.ui:15
 msgid "Style"
-msgstr "Aɣanib"
+msgstr ""
 
 #: panels/background/cc-background-panel.ui:55
 msgid "_Default"
@@ -958,7 +958,7 @@ msgstr ""
 #: panels/network/connection-editor/connection-editor.ui:16
 #: panels/printers/new-printer-dialog.ui:54
 #: panels/printers/pp-details-dialog.c:266 panels/privacy/cc-usage-page.c:136
-#: panels/sharing/cc-sharing-panel.c:241
+#: panels/sharing/cc-sharing-panel.c:239
 #: panels/system/region/cc-format-chooser.ui:24
 #: panels/system/users/cc-add-user-dialog.ui:34
 #: panels/system/users/cc-enterprise-login-dialog.ui:58
@@ -1062,12 +1062,12 @@ msgstr "Tallunt n yiniten: "
 #. * profile is a test profile
 #: panels/color/cc-color-panel.c:177
 msgid "Test profile: "
-msgstr "Asenqed n umaɣnu "
+msgstr ""
 
 #. TRANSLATORS: an ICC profile is a file containing colorspace data
 #: panels/color/cc-color-panel.c:268
 msgid "Select ICC Profile File"
-msgstr "Fren afaylu n umaɣnu ICC"
+msgstr ""
 
 #: panels/color/cc-color-panel.c:271
 msgid "Import"
@@ -1076,7 +1076,7 @@ msgstr "Kter"
 #. TRANSLATORS: filter name on the file->open dialog
 #: panels/color/cc-color-panel.c:283
 msgid "Supported ICC profiles"
-msgstr "Imaɣnuten ICC i yettεeddin"
+msgstr ""
 
 #. TRANSLATORS: filter name on the file->open dialog
 #: panels/color/cc-color-panel.c:290
@@ -1095,7 +1095,7 @@ msgstr "Sekles Amaɣnu"
 #. TRANSLATORS: this is when the button is sensitive
 #: panels/color/cc-color-panel.c:1142
 msgid "Create a color profile for the selected device"
-msgstr "Asnulfu n imaɣnuten yeɣman i i ibenken yettufernen"
+msgstr ""
 
 #. TRANSLATORS: this is when the button is insensitive
 #: panels/color/cc-color-panel.c:1157 panels/color/cc-color-panel.c:1181
@@ -1103,17 +1103,16 @@ msgid ""
 "The measuring instrument is not detected. Please check it is turned on and "
 "correctly connected."
 msgstr ""
-"Allal n wektil ur yettwaεqel ara. Selken ma yecεel yerna yeqqen akken iwata."
 
 #. TRANSLATORS: this is when the button is insensitive
 #: panels/color/cc-color-panel.c:1191
 msgid "The measuring instrument does not support printer profiling."
-msgstr "Allal n wesket ur yettaṭṭaf ara asmeɣni n tsaggazt."
+msgstr ""
 
 #. TRANSLATORS: this is when the button is insensitive
 #: panels/color/cc-color-panel.c:1202
 msgid "The device type is not currently supported."
-msgstr "Tasekka n yibenk-a ur εad tettεeddi."
+msgstr ""
 
 #. Translators: This will be presented as the text of a link to the documentation
 #. translators: Text used in link to privacy policy
@@ -1222,6 +1221,7 @@ msgid "Profile successfully created!"
 msgstr ""
 
 #: panels/color/cc-color-panel.ui:290
+#| msgid "Copy Profile"
 msgid "Copy profile"
 msgstr "Nɣel amaɣnu"
 
@@ -1266,7 +1266,7 @@ msgstr ""
 #: panels/color/cc-color-panel.ui:459 panels/color/cc-color-panel.ui:468
 #: panels/color/cc-color-panel.ui:469
 msgid "Set this profile for all users on this computer"
-msgstr "Sbadu alegdis-agi i iseqdacen merra n uselkim-agi"
+msgstr ""
 
 #: panels/color/cc-color-panel.ui:466
 msgid "_Enable"
@@ -1282,13 +1282,15 @@ msgstr ""
 
 #: panels/color/cc-color-panel.ui:492
 msgid "Calibrate the device"
-msgstr "Sizeɣ ibenk"
+msgstr ""
 
 #: panels/color/cc-color-panel.ui:499
+#| msgid "_Remove Profile"
 msgid "_Remove profile"
 msgstr "Kess amaɣnu (_R)"
 
 #: panels/color/cc-color-panel.ui:506
+#| msgid "_System Details"
 msgid "_View details"
 msgstr "Wali talqayt (_V)"
 
@@ -1431,21 +1433,21 @@ msgstr ""
 #: panels/color/cc-color-profile.c:151
 msgctxt "Colorspace fallback"
 msgid "Default RGB"
-msgstr "RGB amezwer"
+msgstr ""
 
 #. TRANSLATORS: this default CMYK space is used for printers that
 #. * do not have additional printer profiles specified in the PPD
 #: panels/color/cc-color-profile.c:158
 msgctxt "Colorspace fallback"
 msgid "Default CMYK"
-msgstr "CMYK amezwer"
+msgstr ""
 
 #. TRANSLATORS: this default gray space is used for printers that
 #. * do not have additional printer profiles specified in the PPD
 #: panels/color/cc-color-profile.c:165
 msgctxt "Colorspace fallback"
 msgid "Default Gray"
-msgstr "Amelliɣdi amezwer"
+msgstr ""
 
 #: panels/color/cc-color-profile.c:188
 msgid "Vendor supplied factory calibration data"
@@ -1475,7 +1477,7 @@ msgstr ""
 
 #: panels/common/cc-common-language.c:300
 msgid "Other…"
-msgstr "Wayeḍ…"
+msgstr "Wayeḍ..."
 
 #: panels/common/cc-language-chooser.ui:5
 msgid "Select Language"
@@ -1632,29 +1634,29 @@ msgstr "0 n tasint"
 #: panels/common/hostname-helper.c:177
 msgctxt "hotspot"
 msgid "Hotspot"
-msgstr "Hotspot"
+msgstr ""
 
-#: panels/display/cc-display-panel.c:507
+#: panels/display/cc-display-panel.c:510
 #: panels/notifications/cc-notifications-panel.c:213
 #: panels/power/cc-power-panel.c:679 panels/power/cc-power-panel.c:686
 msgid "On"
 msgstr "Yermed"
 
-#: panels/display/cc-display-panel.c:509 panels/network/cc-net-proxy-page.c:182
+#: panels/display/cc-display-panel.c:512 panels/network/cc-net-proxy-page.c:182
 #: panels/notifications/cc-notifications-panel.c:213
 #: panels/power/cc-power-panel.c:673 panels/power/cc-power-panel.c:684
 msgid "Off"
 msgstr "Ur irmid ara"
 
-#: panels/display/cc-display-panel.c:927
+#: panels/display/cc-display-panel.c:931
 msgid "Apply Changes?"
 msgstr "Ad sneseḍ ibeddilen ?"
 
-#: panels/display/cc-display-panel.c:933
+#: panels/display/cc-display-panel.c:937
 msgid "Changes Cannot be Applied"
 msgstr ""
 
-#: panels/display/cc-display-panel.c:935
+#: panels/display/cc-display-panel.c:939
 msgid "This could be due to hardware limitations."
 msgstr ""
 
@@ -1702,7 +1704,7 @@ msgstr ""
 
 #: panels/display/cc-display-panel.ui:178
 msgid "Night Light"
-msgstr "Tafat n yiḍ"
+msgstr ""
 
 #: panels/display/cc-display-settings.c:111
 msgctxt "Display rotation"
@@ -1784,7 +1786,7 @@ msgstr ""
 
 #: panels/display/cc-night-light-page.ui:25
 msgid "Night Light Unavailable"
-msgstr "Ulac tiziri"
+msgstr ""
 
 #: panels/display/cc-night-light-page.ui:33
 msgid ""
@@ -1818,7 +1820,7 @@ msgstr ""
 
 #: panels/display/cc-night-light-page.ui:102
 msgid "Manual Schedule"
-msgstr "Aswel s ufus"
+msgstr ""
 
 #: panels/display/cc-night-light-page.ui:112
 msgid "_Times"
@@ -2053,7 +2055,7 @@ msgstr ""
 #: panels/keyboard/cc-input-row.ui:16 panels/printers/printer-entry.ui:49
 #: panels/search/cc-search-panel-row.ui:35
 msgid "View More"
-msgstr "Sken ugar"
+msgstr ""
 
 #: panels/keyboard/cc-input-row.ui:29 panels/search/cc-search-panel-row.ui:50
 msgid "Move Up"
@@ -2163,7 +2165,7 @@ msgstr ""
 #: panels/keyboard/cc-keyboard-panel.c:93
 msgctxt "keyboard key"
 msgid "Insert"
-msgstr "Ger"
+msgstr ""
 
 #: panels/keyboard/cc-keyboard-panel.c:216
 #, c-format
@@ -2174,7 +2176,7 @@ msgstr ""
 
 #: panels/keyboard/cc-keyboard-panel.ui:22
 msgid "Input Sources"
-msgstr "Iɣbula n unekcum"
+msgstr ""
 
 #: panels/keyboard/cc-keyboard-panel.ui:23
 msgid "Includes keyboard layouts and input methods"
@@ -2229,35 +2231,35 @@ msgstr ""
 msgid "_Reset All"
 msgstr "E_rr-iten-id akk"
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:35
+#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:34
 msgid "Search shortcuts"
 msgstr "Inegzumen n unadi"
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:39
+#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:38
 msgid "Search Shortcuts"
 msgstr "Inegzumen n unadi"
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:72
+#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:71
 msgid "_Reset All…"
-msgstr "_Wennez akk…"
+msgstr "E_rr-iten-id akk"
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:94
+#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:93
 msgid "No keyboard shortcut found"
 msgstr "Ulac anegzum n unasiw yettwafen"
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:95 shell/cc-panel-list.ui:45
+#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:94 shell/cc-panel-list.ui:45
 msgid "Try a different search"
 msgstr "Ɛreḍ inadi yemgaraden"
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:127
+#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:126
 msgid "Add Custom Shortcuts"
-msgstr "Rnu inegzumen udmawanen"
+msgstr ""
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:128
+#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:127
 msgid "Set up custom shortcuts for launching apps, running scripts, and more"
 msgstr ""
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:133
+#: panels/keyboard/cc-keyboard-shortcut-dialog.ui:132
 msgid "_Add Shortcut…"
 msgstr "Rnu _anegzum…"
 
@@ -2293,7 +2295,7 @@ msgstr ""
 
 #: panels/keyboard/cc-keyboard-shortcut-editor.c:937
 msgid "Add Custom Shortcut"
-msgstr "Rnu anegzum udmawan"
+msgstr ""
 
 #: panels/keyboard/cc-keyboard-shortcut-editor.ui:22
 #: panels/system/users/cc-user-page.ui:223
@@ -2404,134 +2406,142 @@ msgstr "Ayeffus (_R)"
 msgid "Mouse"
 msgstr "Taɣerdayt"
 
-#: panels/mouse/cc-mouse-panel.ui:110 panels/mouse/cc-mouse-panel.ui:210
+#: panels/mouse/cc-mouse-panel.ui:110 panels/mouse/cc-mouse-panel.ui:212
 msgid "Po_inter Speed"
 msgstr ""
 
-#: panels/mouse/cc-mouse-panel.ui:117 panels/mouse/cc-mouse-panel.ui:218
+#: panels/mouse/cc-mouse-panel.ui:116
+msgid "Pointer Speed"
+msgstr ""
+
+#: panels/mouse/cc-mouse-panel.ui:119 panels/mouse/cc-mouse-panel.ui:222
 #: panels/universal-access/cc-ua-typing-page.ui:58
-#: panels/universal-access/cc-ua-typing-page.ui:111
+#: panels/universal-access/cc-ua-typing-page.ui:110
 msgid "Slow"
 msgstr "S ttawil"
 
-#: panels/mouse/cc-mouse-panel.ui:119 panels/mouse/cc-mouse-panel.ui:220
+#: panels/mouse/cc-mouse-panel.ui:121 panels/mouse/cc-mouse-panel.ui:224
 #: panels/universal-access/cc-ua-typing-page.ui:55
-#: panels/universal-access/cc-ua-typing-page.ui:108
+#: panels/universal-access/cc-ua-typing-page.ui:107
 msgid "Fast"
 msgstr "Yettɣawal"
 
-#: panels/mouse/cc-mouse-panel.ui:135
+#: panels/mouse/cc-mouse-panel.ui:137
 msgid "Mouse _Acceleration"
 msgstr ""
 
-#: panels/mouse/cc-mouse-panel.ui:136
+#: panels/mouse/cc-mouse-panel.ui:138
 msgid "Recommended for most users and applications"
 msgstr ""
 
-#: panels/mouse/cc-mouse-panel.ui:142
+#: panels/mouse/cc-mouse-panel.ui:144
 msgid ""
 "Turning mouse acceleration off can allow faster and more precise movements, "
 "but can also make the mouse more difficult to use."
 msgstr ""
 
-#: panels/mouse/cc-mouse-panel.ui:154 panels/mouse/cc-mouse-panel.ui:292
+#: panels/mouse/cc-mouse-panel.ui:156 panels/mouse/cc-mouse-panel.ui:296
 msgid "Scroll Direction"
 msgstr ""
 
-#: panels/mouse/cc-mouse-panel.ui:155
+#: panels/mouse/cc-mouse-panel.ui:157
 msgid "Tra_ditional"
 msgstr ""
 
-#: panels/mouse/cc-mouse-panel.ui:156 panels/mouse/cc-mouse-panel.ui:294
+#: panels/mouse/cc-mouse-panel.ui:158 panels/mouse/cc-mouse-panel.ui:298
 msgid "Scrolling moves the view"
 msgstr ""
 
-#: panels/mouse/cc-mouse-panel.ui:157 panels/mouse/cc-mouse-panel.ui:295
+#: panels/mouse/cc-mouse-panel.ui:159 panels/mouse/cc-mouse-panel.ui:299
 msgid "_Natural"
 msgstr ""
 
-#: panels/mouse/cc-mouse-panel.ui:158 panels/mouse/cc-mouse-panel.ui:297
+#: panels/mouse/cc-mouse-panel.ui:160 panels/mouse/cc-mouse-panel.ui:301
 msgid "Scrolling moves the content"
 msgstr ""
 
-#: panels/mouse/cc-mouse-panel.ui:171 panels/mouse/cc-mouse-panel.ui:310
+#: panels/mouse/cc-mouse-panel.ui:173 panels/mouse/cc-mouse-panel.ui:314
 #: panels/wacom/cc-wacom-panel.ui:11
 msgid "Test _Settings"
 msgstr "Ɛreḍ iɣewwaṛen (_S)"
 
-#: panels/mouse/cc-mouse-panel.ui:172 panels/mouse/cc-mouse-panel.ui:311
+#: panels/mouse/cc-mouse-panel.ui:174 panels/mouse/cc-mouse-panel.ui:315
 msgid "Test Mouse and Touchpad Settings"
 msgstr ""
 
-#: panels/mouse/cc-mouse-panel.ui:190
+#: panels/mouse/cc-mouse-panel.ui:192
 msgid "_Touchpad"
 msgstr "_Talwiḥt tawallsant"
 
-#: panels/mouse/cc-mouse-panel.ui:198
+#: panels/mouse/cc-mouse-panel.ui:200
 msgid "T_ouchpad"
 msgstr "Talwiḥt tawallsant (_O)"
 
-#: panels/mouse/cc-mouse-panel.ui:204
+#: panels/mouse/cc-mouse-panel.ui:206
 msgid "_Disable Touchpad While Typing"
 msgstr ""
 
-#: panels/mouse/cc-mouse-panel.ui:239 panels/mouse/cc-mouse-test.ui:32
+#: panels/mouse/cc-mouse-panel.ui:219
+msgid "Pointer speed"
+msgstr ""
+
+#: panels/mouse/cc-mouse-panel.ui:243 panels/mouse/cc-mouse-test.ui:32
 msgid "Clicking"
 msgstr ""
 
-#: panels/mouse/cc-mouse-panel.ui:242 panels/mouse/cc-mouse-test.ui:111
+#: panels/mouse/cc-mouse-panel.ui:246 panels/mouse/cc-mouse-test.ui:111
 msgid "Secondary Click"
-msgstr "Asiti wis sin"
+msgstr ""
 
-#: panels/mouse/cc-mouse-panel.ui:243
+#: panels/mouse/cc-mouse-panel.ui:247
 msgid "Two Finger Push"
 msgstr ""
 
-#: panels/mouse/cc-mouse-panel.ui:244
+#: panels/mouse/cc-mouse-panel.ui:248
 msgid "Push anywhere with 2 fingers"
 msgstr ""
 
-#: panels/mouse/cc-mouse-panel.ui:245
+#: panels/mouse/cc-mouse-panel.ui:249
 msgid "Corner Push"
 msgstr ""
 
-#: panels/mouse/cc-mouse-panel.ui:246
+#: panels/mouse/cc-mouse-panel.ui:250
 msgid "Push with a single finger in the corner"
 msgstr ""
 
-#: panels/mouse/cc-mouse-panel.ui:257
+#: panels/mouse/cc-mouse-panel.ui:261
 msgid "T_ap to Click"
 msgstr ""
 
-#: panels/mouse/cc-mouse-panel.ui:259
+#: panels/mouse/cc-mouse-panel.ui:263
 msgid "Quickly touch the touchpad to click"
 msgstr ""
 
-#: panels/mouse/cc-mouse-panel.ui:274 panels/mouse/cc-mouse-test.ui:153
+#: panels/mouse/cc-mouse-panel.ui:278 panels/mouse/cc-mouse-test.ui:153
 msgid "Scrolling"
 msgstr ""
 
-#: panels/mouse/cc-mouse-panel.ui:277
+#: panels/mouse/cc-mouse-panel.ui:281
 msgid "Scroll Method"
 msgstr ""
 
-#: panels/mouse/cc-mouse-panel.ui:278
+#: panels/mouse/cc-mouse-panel.ui:282
 msgid "T_wo Finger"
 msgstr ""
 
-#: panels/mouse/cc-mouse-panel.ui:279
+#: panels/mouse/cc-mouse-panel.ui:283
 msgid "Drag two fingers on the touchpad"
 msgstr ""
 
-#: panels/mouse/cc-mouse-panel.ui:280
+#: panels/mouse/cc-mouse-panel.ui:284
 msgid "_Edge"
 msgstr ""
 
-#: panels/mouse/cc-mouse-panel.ui:281
+#: panels/mouse/cc-mouse-panel.ui:285
 msgid "Drag one finger on the edge"
 msgstr ""
 
-#: panels/mouse/cc-mouse-panel.ui:293
+#: panels/mouse/cc-mouse-panel.ui:297
 msgid "T_raditional"
 msgstr ""
 
@@ -2549,7 +2559,7 @@ msgstr ""
 
 #: panels/mouse/cc-mouse-test.ui:135
 msgid "Double Click"
-msgstr "Asiti uslig"
+msgstr ""
 
 #: panels/mouse/gnome-mouse-panel.desktop.in:3
 msgid "Mouse & Touchpad"
@@ -2665,7 +2675,7 @@ msgstr "S ufus"
 #. xxx: Added to avoid confusion with the preceding VPN row
 #: panels/network/cc-net-proxy-page.ui:4 panels/network/cc-network-panel.ui:93
 msgid "Proxy"
-msgstr "Aproxi"
+msgstr ""
 
 #: panels/network/cc-net-proxy-page.ui:24 panels/wwan/cc-wwan-apn-dialog.ui:43
 msgid "_Save"
@@ -2725,7 +2735,7 @@ msgstr "Apṛuksi FTP"
 
 #: panels/network/cc-net-proxy-page.ui:186
 msgid "FTP proxy port"
-msgstr "Tawwurt n upṛuksi FTP"
+msgstr ""
 
 #: panels/network/cc-net-proxy-page.ui:196
 msgid "SOCKS Host"
@@ -2855,7 +2865,7 @@ msgstr ""
 #. SSID length needs to be in the 1-32 byte range
 #: panels/network/cc-wifi-hotspot-dialog.c:256
 msgid "Network name is too long"
-msgstr "Isem n uzeṭṭa ɣezzif aṭas"
+msgstr "Isem n uzeṭṭa ɣezzif aṭas."
 
 #: panels/network/cc-wifi-hotspot-dialog.c:277
 msgid "Must have a minimum of 8 characters"
@@ -2904,7 +2914,7 @@ msgstr ""
 
 #: panels/network/cc-wifi-hotspot-dialog.ui:148
 msgid "_Turn On"
-msgstr "_Sermed"
+msgstr ""
 
 #: panels/network/cc-wifi-panel.c:403
 #: panels/network/gnome-wifi-panel.desktop.in:3
@@ -2976,7 +2986,7 @@ msgstr ""
 
 #: panels/network/connection-editor/8021x-security-page.ui:22
 msgid "802.1x _Security"
-msgstr "Ta_ɣellist 802.1x"
+msgstr ""
 
 #: panels/network/connection-editor/bluetooth-page.ui:16
 #: panels/network/connection-editor/ethernet-page.ui:27
@@ -3000,37 +3010,29 @@ msgid "Identity"
 msgstr "Tamagit"
 
 #: panels/network/connection-editor/ce-page.c:234
-#: panels/network/connection-editor/ce-page.c:238
 msgid "Preserve"
 msgstr ""
 
 #: panels/network/connection-editor/ce-page.c:235
-#: panels/network/connection-editor/ce-page.c:239
 msgid "Permanent"
 msgstr "Ameɣlal"
 
 #: panels/network/connection-editor/ce-page.c:236
-#: panels/network/connection-editor/ce-page.c:240
 msgid "Random"
 msgstr "Agacuran"
 
 #: panels/network/connection-editor/ce-page.c:237
-#: panels/network/connection-editor/ce-page.c:241
 msgid "Stable"
 msgstr ""
 
-#: panels/network/connection-editor/ce-page.c:243
-msgid "Stable per SSID"
-msgstr ""
-
-#: panels/network/connection-editor/ce-page.c:251
+#: panels/network/connection-editor/ce-page.c:241
 msgid ""
 "The MAC address entered here will be used as hardware address for the "
 "network device this connection is activated on. This feature is known as MAC "
 "cloning or spoofing. Example: 00:11:22:33:44:55"
 msgstr ""
 
-#: panels/network/connection-editor/ce-page.c:409
+#: panels/network/connection-editor/ce-page.c:399
 #, c-format
 msgid "Profile %d"
 msgstr "Amaɣnu %d"
@@ -3204,11 +3206,11 @@ msgstr "Ttu tuqqna…"
 
 #: panels/network/connection-editor/ce-page-details.c:514
 msgid "Remove Connection Profile…"
-msgstr "Kkes amaɣun n tuqqna…"
+msgstr ""
 
 #: panels/network/connection-editor/ce-page-details.c:516
 msgid "Remove Connection…"
-msgstr "Kkes tuqqna…"
+msgstr ""
 
 #: panels/network/connection-editor/ce-page-details.c:519
 msgid "Remove VPN…"
@@ -3220,7 +3222,7 @@ msgstr "Talqayt"
 
 #: panels/network/connection-editor/ce-page-ethernet.c:69
 msgid "automatic"
-msgstr "awurman"
+msgstr "Awurman"
 
 #: panels/network/connection-editor/ce-page-ip4.c:100
 #: panels/network/connection-editor/ce-page-ip6.c:102
@@ -3235,7 +3237,7 @@ msgstr "Kkes tansa"
 #: panels/network/connection-editor/ce-page-ip4.c:462
 #: panels/network/connection-editor/ce-page-ip6.c:434
 msgid "Delete Route"
-msgstr "Kkes abrid"
+msgstr ""
 
 #: panels/network/connection-editor/ce-page-ip4.c:799
 msgid "IPv4"
@@ -3302,7 +3304,7 @@ msgstr ""
 #: panels/network/connection-editor/details-page.ui:20
 #: panels/wwan/cc-wwan-details-dialog.ui:73
 msgid "Signal Strength"
-msgstr "Lǧehd n tmuli"
+msgstr ""
 
 #: panels/network/connection-editor/details-page.ui:37
 msgid "Weak"
@@ -3310,7 +3312,7 @@ msgstr "D uḍɛif"
 
 #: panels/network/connection-editor/details-page.ui:52
 msgid "Link speed"
-msgstr "Arured n tuqqna"
+msgstr ""
 
 #: panels/network/connection-editor/details-page.ui:68
 msgid "1Mb/sec"
@@ -3319,7 +3321,7 @@ msgstr ""
 #: panels/network/connection-editor/details-page.ui:132
 #: panels/network/net-device-ethernet.c:154
 msgid "Hardware Address"
-msgstr "Tansa n Warrum"
+msgstr ""
 
 #: panels/network/connection-editor/details-page.ui:148
 msgid "Supported Frequencies"
@@ -3331,7 +3333,7 @@ msgstr ""
 #: panels/network/net-device-ethernet.c:162
 #: panels/network/network-mobile.ui:191
 msgid "Default Route"
-msgstr "Abrid amezwer"
+msgstr ""
 
 #: panels/network/connection-editor/details-page.ui:214
 msgid "Last Used"
@@ -3343,7 +3345,7 @@ msgstr "Qqen s wudem _awurman"
 
 #: panels/network/connection-editor/details-page.ui:389
 msgid "Make available to _other users"
-msgstr "Err-it yella i yise_qdacen-nniḍen"
+msgstr ""
 
 #: panels/network/connection-editor/details-page.ui:416
 msgid "_Metered connection: has data limits or can incur charges"
@@ -3366,12 +3368,12 @@ msgstr "M_TU"
 #: panels/network/connection-editor/ethernet-page.ui:99
 #: panels/network/connection-editor/wifi-page.ui:83
 msgid "_Cloned Address"
-msgstr "Ta_nsiwin yemtan"
+msgstr ""
 
 #: panels/network/connection-editor/ethernet-page.ui:110
 #: panels/network/connection-editor/wireguard-page.ui:194
 msgid "bytes"
-msgstr "ibiten"
+msgstr ""
 
 #: panels/network/connection-editor/ip4-page.ui:22
 msgid "IPv_4 Method"
@@ -3379,7 +3381,7 @@ msgstr ""
 
 #: panels/network/connection-editor/ip4-page.ui:37
 msgid "Automatic (DHCP)"
-msgstr "Awurman (DHCP)"
+msgstr ""
 
 #: panels/network/connection-editor/ip4-page.ui:48
 #: panels/network/connection-editor/ip6-page.ui:59
@@ -3419,7 +3421,7 @@ msgstr ""
 #: panels/network/connection-editor/ip6-page.ui:154
 #: panels/network/connection-editor/ip6-page.ui:302
 msgid "Gateway"
-msgstr "Tanezgart"
+msgstr ""
 
 #: panels/network/connection-editor/ip4-page.ui:194
 #: panels/network/connection-editor/ip6-page.ui:205
@@ -3444,7 +3446,7 @@ msgstr "Iberdan"
 #: panels/network/connection-editor/ip4-page.ui:252
 #: panels/network/connection-editor/ip6-page.ui:263
 msgid "Automatic Routes"
-msgstr "Iberdan iwurmanen"
+msgstr ""
 
 #. Translators: Please see https://en.wikipedia.org/wiki/Metrics_(networking)
 #: panels/network/connection-editor/ip4-page.ui:303
@@ -3456,7 +3458,7 @@ msgstr ""
 #: panels/network/connection-editor/ip4-page.ui:326
 #: panels/network/connection-editor/ip6-page.ui:337
 msgid "Use this connection _only for resources on its network"
-msgstr "Seqdec tuqqna-agi ḥaca i teɣbula deg uẓeḍḍa-agi"
+msgstr ""
 
 #: panels/network/connection-editor/ip6-page.ui:22
 msgid "IPv_6 Method"
@@ -3464,7 +3466,7 @@ msgstr ""
 
 #: panels/network/connection-editor/ip6-page.ui:48
 msgid "Automatic, DHCP only"
-msgstr "Amurman, DHCP kan"
+msgstr ""
 
 #: panels/network/connection-editor/ip6-page.ui:142
 #: panels/network/connection-editor/ip6-page.ui:290
@@ -3534,19 +3536,19 @@ msgstr ""
 
 #: panels/network/connection-editor/vpn-page.ui:40
 msgid "(Error: unable to load VPN connection editor)"
-msgstr "(Tuccḍa: ur yezmir ara ad yessali amaẓrag n tuqqniwin VPN)"
+msgstr ""
 
 #: panels/network/connection-editor/wifi-page.ui:22
 msgid "_SSID"
-msgstr "_SSID"
+msgstr ""
 
 #: panels/network/connection-editor/wifi-page.ui:34
 msgid "_BSSID"
-msgstr "_BSSID"
+msgstr ""
 
 #: panels/network/connection-editor/wireguard-page.ui:23
 msgid "_Connection Name"
-msgstr "Isem n tuqqna (_C)"
+msgstr ""
 
 #: panels/network/connection-editor/wireguard-page.ui:46
 msgid "_Interface Name"
@@ -3617,7 +3619,7 @@ msgstr ""
 #: panels/network/network-bluetooth.ui:19 panels/network/network-mobile.ui:329
 #: panels/network/network-vpn.ui:21
 msgid "Options…"
-msgstr "Tixtiṛiyin…"
+msgstr ""
 
 #: panels/network/connection-editor/wireguard-peer.ui:94
 msgid "_Endpoint"
@@ -3676,7 +3678,7 @@ msgstr "tasinin"
 
 #: panels/network/connection-editor/wireguard-peer.ui:233
 msgid "Apply"
-msgstr "Snes"
+msgstr ""
 
 #: panels/network/gnome-network-panel.desktop.in:4
 msgid "Control how you connect to the Internet"
@@ -3706,7 +3708,7 @@ msgstr "ass-a"
 
 #: panels/network/net-device-ethernet.c:103
 msgid "yesterday"
-msgstr "iḍelli"
+msgstr "Iḍelli"
 
 #: panels/network/net-device-ethernet.c:177
 msgid "Last used"
@@ -3731,7 +3733,7 @@ msgstr "S ugatu"
 
 #: panels/network/net-device-mobile.c:208
 msgid "Add new connection"
-msgstr "Rnu tuqqna tamaynutt"
+msgstr ""
 
 #: panels/network/net-device-wifi.c:879
 msgid "Network deleted"
@@ -3751,11 +3753,11 @@ msgstr[1] ""
 
 #: panels/network/net-device-wifi.c:1140
 msgid "System policy prohibits use as a Hotspot"
-msgstr "Tasertit n unagraw tegdel aseqdec n Hotspot"
+msgstr ""
 
 #: panels/network/net-device-wifi.c:1143
 msgid "Wireless device does not support Hotspot mode"
-msgstr "Allal war tinelli  ur iteddu ara degs Hotspot"
+msgstr ""
 
 #: panels/network/network-ethernet.ui:8
 msgid "Add Ethernet Connection"
@@ -3780,7 +3782,7 @@ msgstr "Yermed"
 
 #: panels/network/network-vpn.ui:11
 msgid "Turn VPN connection off"
-msgstr "Sexsi tuqqna VPN"
+msgstr ""
 
 #: panels/network/network-wifi.ui:34
 msgctxt "Wi-Fi Hotspot"
@@ -3799,7 +3801,7 @@ msgstr "Awal n uɛeddi"
 
 #: panels/network/network-wifi.ui:73
 msgid "Turn Wi-Fi off"
-msgstr "Sexsi Wi-Fi"
+msgstr ""
 
 #: panels/network/network-wifi.ui:81
 msgid "Saved Networks"
@@ -3811,7 +3813,7 @@ msgstr "Tilɣa n yesnasen"
 
 #: panels/network/network-wifi.ui:93
 msgid "_Connect to Hidden Network…"
-msgstr "_Qqen ɣer uẓeḍḍa yeffren…"
+msgstr ""
 
 #: panels/network/network-wifi.ui:97
 msgid "Connect to hidden network"
@@ -3833,7 +3835,7 @@ msgstr "Addad arusin"
 #. TRANSLATORS: device status
 #: panels/network/panel-common.c:41
 msgid "Unmanaged"
-msgstr "Ur yettwasefrek ara"
+msgstr ""
 
 #. TRANSLATORS: device status
 #: panels/network/panel-common.c:45
@@ -3863,37 +3865,37 @@ msgstr "Tuqna ur teddi yara"
 #. TRANSLATORS: device status
 #: panels/network/panel-common.c:75
 msgid "Status unknown (missing)"
-msgstr "Aẓayer arusin (ixuṣ)"
+msgstr ""
 
 #. TRANSLATORS: device status reason
 #: panels/network/panel-common.c:96
 msgid "Configuration failed"
-msgstr "Tawila ur teddi ara"
+msgstr ""
 
 #. TRANSLATORS: device status reason
 #: panels/network/panel-common.c:100
 msgid "IP configuration failed"
-msgstr "Tawila n IP ur teddi ara"
+msgstr ""
 
 #. TRANSLATORS: device status reason
 #: panels/network/panel-common.c:104
 msgid "IP configuration expired"
-msgstr "Tawila IP iɛedda-tt wakud"
+msgstr ""
 
 #. TRANSLATORS: device status reason
 #: panels/network/panel-common.c:108
 msgid "Secrets were required, but not provided"
-msgstr "Iferdisen ibaḍniyen ttwasran, maca ur d-ttunefken ara"
+msgstr ""
 
 #. TRANSLATORS: device status reason
 #: panels/network/panel-common.c:112
 msgid "802.1x supplicant disconnected"
-msgstr "Amsaɣ 802.1x yesenser"
+msgstr ""
 
 #. TRANSLATORS: device status reason
 #: panels/network/panel-common.c:116
 msgid "802.1x supplicant configuration failed"
-msgstr "Tawila n umsaɣ 802.1x  ur teddi ara"
+msgstr ""
 
 #. TRANSLATORS: device status reason
 #: panels/network/panel-common.c:120
@@ -3938,42 +3940,42 @@ msgstr "Amsaɣ DHCP yecceḍ"
 #. TRANSLATORS: device status reason
 #: panels/network/panel-common.c:152
 msgid "Shared connection service failed to start"
-msgstr "Ameẓlu n tuqqna yettwabḍan yegguma ad yekker"
+msgstr ""
 
 #. TRANSLATORS: device status reason
 #: panels/network/panel-common.c:156
 msgid "Shared connection service failed"
-msgstr "Ameẓlu n tuqqna yettwabḍn yecceḍ"
+msgstr ""
 
 #. TRANSLATORS: device status reason
 #: panels/network/panel-common.c:160
 msgid "AutoIP service failed to start"
-msgstr "Ameẓlu AutoIP yegguma ad yekker"
+msgstr ""
 
 #. TRANSLATORS: device status reason
 #: panels/network/panel-common.c:164
 msgid "AutoIP service error"
-msgstr "Tuccḍa n umeẓlu AutoIP"
+msgstr ""
 
 #. TRANSLATORS: device status reason
 #: panels/network/panel-common.c:168
 msgid "AutoIP service failed"
-msgstr "Ameẓlu AutoIP yecceḍ"
+msgstr ""
 
 #. TRANSLATORS: device status reason
 #: panels/network/panel-common.c:172
 msgid "Line busy"
-msgstr "Izirig ur yestufa ara"
+msgstr ""
 
 #. TRANSLATORS: device status reason
 #: panels/network/panel-common.c:176
 msgid "No dial tone"
-msgstr "Ulac imesli n usekcem n wuḍḍunen"
+msgstr ""
 
 #. TRANSLATORS: device status reason
 #: panels/network/panel-common.c:180
 msgid "No carrier could be established"
-msgstr "Ulac tamawayt i yezemren ad tettwaɣser"
+msgstr ""
 
 #. TRANSLATORS: device status reason
 #: panels/network/panel-common.c:184
@@ -4003,17 +4005,17 @@ msgstr "Ulac anadi n iẓeḍwan"
 #. TRANSLATORS: device status reason
 #: panels/network/panel-common.c:204
 msgid "Network registration denied"
-msgstr "Asekles ɣer uẓeḍḍa ur yettwaqbel ara"
+msgstr ""
 
 #. TRANSLATORS: device status reason
 #: panels/network/panel-common.c:208
 msgid "Network registration timed out"
-msgstr "Asekles ɣer uẓeḍḍa iɛedda-t wakud"
+msgstr ""
 
 #. TRANSLATORS: device status reason
 #: panels/network/panel-common.c:212
 msgid "Failed to register with the requested network"
-msgstr "Ulamek asekles ɣer uẓeḍḍa d-ittunefken"
+msgstr ""
 
 #. TRANSLATORS: device status reason
 #: panels/network/panel-common.c:216
@@ -4023,7 +4025,7 @@ msgstr "Asenqed PIN yecceḍ"
 #. TRANSLATORS: device status reason
 #: panels/network/panel-common.c:220
 msgid "Firmware for the device may be missing"
-msgstr "Ahat ixuṣṣ Firmware i wallal"
+msgstr ""
 
 #. TRANSLATORS: device status reason
 #: panels/network/panel-common.c:224
@@ -4033,7 +4035,7 @@ msgstr "Tuqqna truḥ"
 #. TRANSLATORS: device status reason
 #: panels/network/panel-common.c:228
 msgid "Existing connection was assumed"
-msgstr "Nɣil tella tuqqna"
+msgstr ""
 
 #. TRANSLATORS: device status reason
 #: panels/network/panel-common.c:232
@@ -4073,7 +4075,7 @@ msgstr "Tagelt n tuqqna tecceḍ"
 #. TRANSLATORS: device status
 #: panels/network/panel-common.c:327
 msgid "Firmware missing"
-msgstr "Firmware ixuṣṣ"
+msgstr ""
 
 #. TRANSLATORS: device status
 #: panels/network/panel-common.c:331
@@ -4282,7 +4284,7 @@ msgstr "La d-yettali"
 #. TRANSLATORS: primary battery
 #: panels/power/cc-battery-row.c:160
 msgid "Discharging"
-msgstr "Tabatrit ala tettfaka"
+msgstr ""
 
 #. TRANSLATORS: secondary battery
 #: panels/power/cc-battery-row.c:191
@@ -4352,13 +4354,13 @@ msgstr "%d %%"
 
 #: panels/power/cc-power-panel.c:201
 msgid "Battery Levels"
-msgstr "Iswiren n weẓru"
+msgstr ""
 
 #. Translators: UPS is an Uninterruptible Power Supply:
 #. * https://en.wikipedia.org/wiki/Uninterruptible_power_supply
 #: panels/power/cc-power-panel.c:206
 msgid "UPS"
-msgstr "Amdeswal"
+msgstr ""
 
 #: panels/power/cc-power-panel.c:209
 msgid "Battery Level"
@@ -4492,7 +4494,7 @@ msgstr "2 n yisragen"
 
 #: panels/power/cc-power-panel.ui:80
 msgid "Connected Devices"
-msgstr "Ibenk yettwaqqnen"
+msgstr ""
 
 #: panels/power/cc-power-panel.ui:98
 msgid "Power Mode"
@@ -4640,7 +4642,7 @@ msgstr ""
 #: panels/printers/cc-printers-panel.ui:31
 #: panels/printers/cc-printers-panel.ui:166
 msgid "_Add Printer…"
-msgstr "Rnu tasaggazt… (_A)"
+msgstr "Rnu tasaggazt"
 
 #: panels/printers/cc-printers-panel.ui:49
 msgid "Search printers"
@@ -4699,7 +4701,7 @@ msgstr "Uɣal"
 #: panels/printers/new-printer-dialog.ui:117
 #: panels/wwan/cc-wwan-device-page.ui:38
 msgid "_Unlock"
-msgstr "Serreḥ (_U)"
+msgstr ""
 
 #. Translators: No printers were detected
 #: panels/printers/new-printer-dialog.ui:168
@@ -4713,7 +4715,7 @@ msgstr ""
 
 #: panels/printers/new-printer-dialog.ui:247
 msgid "Authentication Required"
-msgstr "Asesteb yettwasra"
+msgstr ""
 
 #: panels/printers/new-printer-dialog.ui:263
 msgid "Enter username and password to view printers on Print Server"
@@ -4844,7 +4846,7 @@ msgstr ""
 #. Translators: this is an option of "Orientation"
 #: panels/printers/pp-ipp-option-widget.c:76
 msgid "Reverse portrait"
-msgstr "Tti asunaɣ"
+msgstr ""
 
 #: panels/printers/pp-job-row.c:55
 msgid "Resume"
@@ -5038,7 +5040,7 @@ msgstr ""
 #. Translators: This option sets whether to print on both sides of paper
 #: panels/printers/pp-options-dialog.c:524
 msgid "Two-sided"
-msgstr "I sin n wudmawen"
+msgstr ""
 
 #. Translators: This option sets orientation of print (portrait, landscape...)
 #: panels/printers/pp-options-dialog.c:536
@@ -5073,7 +5075,7 @@ msgstr "Tawiri"
 #: panels/printers/pp-options-dialog.c:645
 msgctxt "Printer Option Group"
 msgid "Image Quality"
-msgstr "Taɣara n tugna"
+msgstr ""
 
 #. Translators: "Color" tab contains color settings (e.g. color printing)
 #: panels/printers/pp-options-dialog.c:648
@@ -5085,7 +5087,7 @@ msgstr "Ini"
 #: panels/printers/pp-options-dialog.c:651
 msgctxt "Printer Option Group"
 msgid "Finishing"
-msgstr "Keffu"
+msgstr ""
 
 #. Translators: "Advanced" tab contains all others settings
 #: panels/printers/pp-options-dialog.c:654
@@ -5122,7 +5124,7 @@ msgstr ""
 #: panels/printers/pp-ppd-option-widget.c:83
 #: panels/printers/pp-ppd-option-widget.c:87
 msgid "Printer Default"
-msgstr "Tasiggezt tamezwert"
+msgstr ""
 
 #. Translators: this is an option of "GhostScript"
 #: panels/printers/pp-ppd-option-widget.c:89
@@ -5148,7 +5150,7 @@ msgstr "Ulac asizdeg yezwaren"
 #: panels/printers/pp-ppd-selection-dialog.c:220
 #: panels/wwan/cc-wwan-details-dialog.ui:160
 msgid "Manufacturer"
-msgstr "Ameɣraf"
+msgstr ""
 
 #. Translators: This is the label of the button that opens the Jobs Dialog.
 #: panels/printers/pp-printer-entry.c:535 panels/printers/printer-entry.ui:41
@@ -5198,7 +5200,7 @@ msgstr ""
 #. Translators: "marker" is one color bin of the printer
 #: panels/printers/pp-printer-entry.c:736
 msgid "Out of a marker supply"
-msgstr "Ssmex ifuk deg yiwet n tkarṭuct"
+msgstr ""
 
 #. Translators: One or more covers on the printer are open
 #: panels/printers/pp-printer-entry.c:738
@@ -5402,7 +5404,7 @@ msgstr ""
 
 #: panels/privacy/cc-bolt-device-dialog.ui:30
 msgid "UUID"
-msgstr "UUID"
+msgstr ""
 
 #: panels/privacy/cc-bolt-device-dialog.ui:35
 msgid "Timestamp"
@@ -5532,7 +5534,7 @@ msgstr ""
 
 #: panels/privacy/cc-diagnostics-page.ui:4
 msgid "Diagnostics"
-msgstr "Tasleḍt"
+msgstr ""
 
 #: panels/privacy/cc-diagnostics-page.ui:15
 msgid "Problem Reporting"
@@ -5613,7 +5615,7 @@ msgstr ""
 #: panels/privacy/cc-firmware-security-dialog.c:106
 #: panels/privacy/cc-firmware-security-page.c:541
 msgid "Checks Failed"
-msgstr "Ccḍen isenqaden"
+msgstr ""
 
 #. TRANSLATORS: This is the description to describe the failure on
 #. checking the security items.
@@ -5659,7 +5661,7 @@ msgstr ""
 #: panels/privacy/cc-firmware-security-dialog.c:145
 #: panels/privacy/cc-firmware-security-page.c:564
 msgid "Checks Unavailable"
-msgstr "Ulac isenqaden"
+msgstr ""
 
 #. TRANSLATORS: When the security result is unavailable, this description is shown.
 #: panels/privacy/cc-firmware-security-dialog.c:147
@@ -5805,12 +5807,12 @@ msgstr ""
 
 #: panels/privacy/cc-firmware-security-page.ui:233
 msgid "No Events"
-msgstr "Ulac ineḍruyen"
+msgstr ""
 
 #. TRANSLATORS: if the stauts is valid. For example security check is valid and key is valid.
 #: panels/privacy/cc-firmware-security-utils.c:35
 msgid "Valid"
-msgstr "D ameɣtu"
+msgstr ""
 
 #. TRANSLATORS: if the status or key is not valid.
 #: panels/privacy/cc-firmware-security-utils.c:40
@@ -5821,14 +5823,14 @@ msgstr ""
 #. TRANSLATORS: Status of Parental Controls setup
 #: panels/privacy/cc-firmware-security-utils.c:45
 #: panels/system/users/cc-user-page.c:377
-#: panels/system/users/cc-user-page.c:752 panels/wwan/cc-wwan-device-page.c:475
+#: panels/system/users/cc-user-page.c:749 panels/wwan/cc-wwan-device-page.c:475
 msgid "Enabled"
 msgstr "Yermed"
 
 #. TRANSLATORS: if the function is not enabled through BIOS or OS settings.
 #: panels/privacy/cc-firmware-security-utils.c:50
 msgid "Not Enabled"
-msgstr "Ur yermed ara"
+msgstr ""
 
 #. TRANSLATORS: the memory space or system mode is locked to prevent from malicious modification.
 #: panels/privacy/cc-firmware-security-utils.c:55
@@ -5838,7 +5840,7 @@ msgstr "Isekkeṛ"
 #. TRANSLATORS: the memory space or system mode is not locked.
 #: panels/privacy/cc-firmware-security-utils.c:60
 msgid "Not Locked"
-msgstr "Ur yettwasekker ara"
+msgstr ""
 
 #. TRANSLATORS: The data is encrypted to prevent from malicious reading.
 #: panels/privacy/cc-firmware-security-utils.c:65
@@ -5903,7 +5905,7 @@ msgid "No sandboxed apps have asked for location access"
 msgstr ""
 
 #. Translators: This will be presented as the text of a link to the privacy policy
-#: panels/privacy/cc-location-page.c:446
+#: panels/privacy/cc-location-page.c:414
 msgid "Learn about what data is collected, and how it is used."
 msgstr ""
 
@@ -5943,59 +5945,59 @@ msgstr ""
 msgid "Automatic screen lock"
 msgstr ""
 
-#: panels/privacy/cc-privacy-panel.ui:37
+#: panels/privacy/cc-privacy-panel.ui:36
 msgid "_Location"
 msgstr "Adig (_L)"
 
-#: panels/privacy/cc-privacy-panel.ui:38
+#: panels/privacy/cc-privacy-panel.ui:37
 msgid "Control access to your location"
 msgstr ""
 
-#: panels/privacy/cc-privacy-panel.ui:48
+#: panels/privacy/cc-privacy-panel.ui:47
 msgid "_File History &amp; Trash"
 msgstr ""
 
-#: panels/privacy/cc-privacy-panel.ui:49
+#: panels/privacy/cc-privacy-panel.ui:48
 msgid "Remove saved data and files"
 msgstr ""
 
-#: panels/privacy/cc-privacy-panel.ui:59
+#: panels/privacy/cc-privacy-panel.ui:58
 msgid "_Diagnostics"
 msgstr ""
 
-#: panels/privacy/cc-privacy-panel.ui:60
+#: panels/privacy/cc-privacy-panel.ui:59
 msgid "Automatic problem reporting"
 msgstr ""
 
-#: panels/privacy/cc-privacy-panel.ui:79
+#: panels/privacy/cc-privacy-panel.ui:78
 msgid "_Cameras"
 msgstr "Tikamiṛatin (_C)"
 
-#: panels/privacy/cc-privacy-panel.ui:80
+#: panels/privacy/cc-privacy-panel.ui:79
 msgid "Control camera access"
 msgstr ""
 
-#: panels/privacy/cc-privacy-panel.ui:90
+#: panels/privacy/cc-privacy-panel.ui:89
 msgid "_Microphones"
 msgstr ""
 
-#: panels/privacy/cc-privacy-panel.ui:91
+#: panels/privacy/cc-privacy-panel.ui:90
 msgid "Control microphone access"
 msgstr ""
 
-#: panels/privacy/cc-privacy-panel.ui:103
+#: panels/privacy/cc-privacy-panel.ui:102
 msgid "_Thunderbolt"
 msgstr ""
 
-#: panels/privacy/cc-privacy-panel.ui:104
+#: panels/privacy/cc-privacy-panel.ui:103
 msgid "Manage device access"
 msgstr ""
 
-#: panels/privacy/cc-privacy-panel.ui:114
+#: panels/privacy/cc-privacy-panel.ui:113
 msgid "Device _Security"
 msgstr ""
 
-#: panels/privacy/cc-privacy-panel.ui:115
+#: panels/privacy/cc-privacy-panel.ui:114
 msgid "Hardware security status and information"
 msgstr ""
 
@@ -6335,7 +6337,7 @@ msgstr ""
 
 #: panels/privacy/cc-usage-page.ui:103
 msgid "_Empty Trash…"
-msgstr "Silem taqecwalt (_E)"
+msgstr ""
 
 #: panels/privacy/cc-usage-page.ui:115
 msgid "_Delete Temporary Files…"
@@ -6355,14 +6357,14 @@ msgstr ""
 
 #: panels/search/cc-search-locations-dialog.c:507
 msgid "Location not found"
-msgstr "Adig ur yettwaf ara"
+msgstr ""
 
 #: panels/search/cc-search-locations-dialog.c:564
 msgid "Subfolders must be manually added for this location"
 msgstr ""
 
 #: panels/search/cc-search-locations-dialog.c:572
-#: panels/sharing/cc-sharing-panel.c:363
+#: panels/sharing/cc-sharing-panel.c:361
 msgid "Remove Folder"
 msgstr "Kkes akaram"
 
@@ -6380,7 +6382,7 @@ msgstr ""
 
 #: panels/search/cc-search-locations-dialog.ui:22
 msgid "Default Locations"
-msgstr "Idgan s wudem amezwer"
+msgstr ""
 
 #: panels/search/cc-search-locations-dialog.ui:39
 msgid "Bookmarked Locations"
@@ -6399,6 +6401,7 @@ msgid "No custom search locations"
 msgstr ""
 
 #: panels/search/cc-search-panel.c:173
+#| msgid "Not found"
 msgid "No apps found"
 msgstr "Ulac isnasen yettwafen"
 
@@ -6412,7 +6415,7 @@ msgstr ""
 
 #: panels/search/cc-search-panel.ui:23
 msgid "Search _Locations"
-msgstr "Nadi idgan (_L)"
+msgstr ""
 
 #: panels/search/cc-search-panel.ui:24
 msgid "Filesystem locations which are searched by system apps"
@@ -6440,31 +6443,31 @@ msgstr ""
 msgid "No networks selected for sharing"
 msgstr ""
 
-#: panels/sharing/cc-sharing-panel.c:151
+#: panels/sharing/cc-sharing-panel.c:149
 msgctxt "service is disabled"
 msgid "Off"
 msgstr "Ur irmid ara"
 
-#: panels/sharing/cc-sharing-panel.c:154
+#: panels/sharing/cc-sharing-panel.c:152
 msgctxt "service is enabled"
 msgid "Enabled"
 msgstr "Yermed"
 
-#: panels/sharing/cc-sharing-panel.c:157
+#: panels/sharing/cc-sharing-panel.c:155
 msgctxt "service is active"
 msgid "Active"
 msgstr "Irmed"
 
-#: panels/sharing/cc-sharing-panel.c:238
+#: panels/sharing/cc-sharing-panel.c:236
 msgid "Choose a Folder"
 msgstr "Fren akaram"
 
-#: panels/sharing/cc-sharing-panel.c:386
+#: panels/sharing/cc-sharing-panel.c:384
 msgid "Add Folder"
 msgstr "Rnu akaram"
 
 #. TRANSLATORS: %s is replaced with a link to a dav://<hostname> URL
-#: panels/sharing/cc-sharing-panel.c:474
+#: panels/sharing/cc-sharing-panel.c:471
 #, c-format
 msgid ""
 "File Sharing allows you to share your Public folder with others on your "
@@ -6603,7 +6606,7 @@ msgstr ""
 
 #: panels/sound/cc-sound-panel.ui:122
 msgid "O_utput Volume"
-msgstr "Ableɣ n unekcum (_u)"
+msgstr ""
 
 #: panels/sound/cc-sound-panel.ui:149
 msgid "_Balance"
@@ -6639,7 +6642,7 @@ msgstr ""
 
 #: panels/sound/cc-sound-panel.ui:333
 msgid "I_nput Volume"
-msgstr "Ableɣ n tuffɣa (_n)"
+msgstr ""
 
 #: panels/sound/cc-sound-panel.ui:353
 msgid "Input Device"
@@ -6659,6 +6662,13 @@ msgstr ""
 
 #: panels/sound/cc-sound-panel.ui:378
 msgid "_Alert Sound"
+msgstr ""
+
+#. Translators: This is the tooltip for a speaker test button, %s is an already translated
+#. speaker position, like "Front Left" or "Rear Center".
+#: panels/sound/cc-speaker-test-button.c:218
+#, c-format
+msgid "%s Speaker"
 msgstr ""
 
 #: panels/sound/cc-subwoofer-slider.ui:8
@@ -6969,21 +6979,22 @@ msgid "Hardware details and software versions"
 msgstr ""
 
 #: panels/system/cc-system-panel.ui:91
+#| msgid "S_oftware Updates"
 msgid "Software _Updates"
 msgstr "Ileqqman n yiseɣẓan (_U)"
 
 #. Translators: This is the full date and time format used in 12-hour mode.
-#: panels/system/datetime/cc-datetime-page.c:237
+#: panels/system/datetime/cc-datetime-page.c:230
 msgid "%e %B %Y, %l:%M %p"
 msgstr "%e %B %Y, %l:%M %p"
 
 #. Translators: This is the full date and time format used in 24-hour mode.
-#: panels/system/datetime/cc-datetime-page.c:242
+#: panels/system/datetime/cc-datetime-page.c:235
 msgid "%e %B %Y, %R"
 msgstr ""
 
 #. Translators: "city, country"
-#: panels/system/datetime/cc-datetime-page.c:403
+#: panels/system/datetime/cc-datetime-page.c:392
 #, c-format
 msgctxt "timezone loc"
 msgid "%s, %s"
@@ -6991,7 +7002,7 @@ msgstr "%s, %s"
 
 #. Update the timezone on the listbow row
 #. Translators: "timezone (details)"
-#: panels/system/datetime/cc-datetime-page.c:420
+#: panels/system/datetime/cc-datetime-page.c:409
 #, c-format
 msgctxt "timezone desc"
 msgid "%s (%s)"
@@ -7017,7 +7028,7 @@ msgstr "Ass (_D)"
 
 #: panels/system/datetime/cc-datetime-page.ui:136
 msgid "Automatic _Date &amp; Time"
-msgstr "Azemz akked wakud d iwurmanen"
+msgstr ""
 
 #: panels/system/datetime/cc-datetime-page.ui:137
 msgid "Requires internet access"
@@ -7027,103 +7038,103 @@ msgstr ""
 msgid "Date &amp; _Time"
 msgstr "Azemz &amp; wakkud (T)"
 
-#: panels/system/datetime/cc-datetime-page.ui:161
+#: panels/system/datetime/cc-datetime-page.ui:160
 msgid "Automatic Time _Zone"
 msgstr ""
 
-#: panels/system/datetime/cc-datetime-page.ui:162
+#: panels/system/datetime/cc-datetime-page.ui:161
 msgid "Requires location services enabled and internet access"
 msgstr ""
 
-#: panels/system/datetime/cc-datetime-page.ui:168
+#: panels/system/datetime/cc-datetime-page.ui:167
 msgid "Time Z_one"
 msgstr "Tamennaḍt tasragant (_O)"
 
-#: panels/system/datetime/cc-datetime-page.ui:179
+#: panels/system/datetime/cc-datetime-page.ui:178
 msgid "Time _Format"
 msgstr ""
 
-#: panels/system/datetime/cc-datetime-page.ui:190
+#: panels/system/datetime/cc-datetime-page.ui:189
 msgid "_24-hour"
 msgstr "_24 n yesragen"
 
-#: panels/system/datetime/cc-datetime-page.ui:198
+#: panels/system/datetime/cc-datetime-page.ui:197
 msgid "AM / _PM"
 msgstr ""
 
-#: panels/system/datetime/cc-datetime-page.ui:211
+#: panels/system/datetime/cc-datetime-page.ui:210
 msgid "Clock &amp; Calendar"
 msgstr ""
 
-#: panels/system/datetime/cc-datetime-page.ui:212
+#: panels/system/datetime/cc-datetime-page.ui:211
 msgid "Control how the time and date is shown in the top bar"
 msgstr ""
 
-#: panels/system/datetime/cc-datetime-page.ui:215
+#: panels/system/datetime/cc-datetime-page.ui:214
 msgid "_Week Day"
 msgstr ""
 
-#: panels/system/datetime/cc-datetime-page.ui:221
+#: panels/system/datetime/cc-datetime-page.ui:220
 msgid "D_ate"
 msgstr ""
 
-#: panels/system/datetime/cc-datetime-page.ui:227
+#: panels/system/datetime/cc-datetime-page.ui:226
 msgid "_Seconds"
 msgstr "Ta_sinin"
 
-#: panels/system/datetime/cc-datetime-page.ui:233
+#: panels/system/datetime/cc-datetime-page.ui:232
 msgid "Week _Numbers"
 msgstr ""
 
-#: panels/system/datetime/cc-datetime-page.ui:234
+#: panels/system/datetime/cc-datetime-page.ui:233
 msgid "Shown in the dropdown calendar"
 msgstr ""
 
-#: panels/system/datetime/cc-datetime-page.ui:270
+#: panels/system/datetime/cc-datetime-page.ui:269
 msgid "January"
-msgstr "Yennayer"
+msgstr "yennayer"
 
-#: panels/system/datetime/cc-datetime-page.ui:271
+#: panels/system/datetime/cc-datetime-page.ui:270
 msgid "February"
 msgstr "Fuṛar"
 
-#: panels/system/datetime/cc-datetime-page.ui:272
+#: panels/system/datetime/cc-datetime-page.ui:271
 msgid "March"
 msgstr "Meɣres"
 
-#: panels/system/datetime/cc-datetime-page.ui:273
+#: panels/system/datetime/cc-datetime-page.ui:272
 msgid "April"
 msgstr "Yebrir"
 
-#: panels/system/datetime/cc-datetime-page.ui:274
+#: panels/system/datetime/cc-datetime-page.ui:273
 msgid "May"
 msgstr "Mayyu"
 
-#: panels/system/datetime/cc-datetime-page.ui:275
+#: panels/system/datetime/cc-datetime-page.ui:274
 msgid "June"
 msgstr "Yunyu"
 
-#: panels/system/datetime/cc-datetime-page.ui:276
+#: panels/system/datetime/cc-datetime-page.ui:275
 msgid "July"
 msgstr "Yulyu"
 
-#: panels/system/datetime/cc-datetime-page.ui:277
+#: panels/system/datetime/cc-datetime-page.ui:276
 msgid "August"
 msgstr "Ɣuct"
 
-#: panels/system/datetime/cc-datetime-page.ui:278
+#: panels/system/datetime/cc-datetime-page.ui:277
 msgid "September"
 msgstr "Ctamber"
 
-#: panels/system/datetime/cc-datetime-page.ui:279
+#: panels/system/datetime/cc-datetime-page.ui:278
 msgid "October"
 msgstr "Tuber"
 
-#: panels/system/datetime/cc-datetime-page.ui:280
+#: panels/system/datetime/cc-datetime-page.ui:279
 msgid "November"
 msgstr "Wamber"
 
-#: panels/system/datetime/cc-datetime-page.ui:281
+#: panels/system/datetime/cc-datetime-page.ui:280
 msgid "December"
 msgstr "Dujamber"
 
@@ -7374,7 +7385,7 @@ msgstr ""
 
 #: panels/system/remote-desktop/cc-remote-desktop-page.ui:4
 msgid "Remote Desktop"
-msgstr "Tanarit tanmeggagt"
+msgstr ""
 
 #: panels/system/remote-desktop/cc-remote-desktop-page.ui:39
 msgid "Desktop Sharing"
@@ -7383,10 +7394,10 @@ msgstr "Beṭṭu n tnarit"
 #: panels/system/remote-desktop/cc-remote-desktop-page.ui:48
 #: panels/system/remote-desktop/cc-remote-session-page.ui:33
 msgid "Remote Login"
-msgstr "Tuqqna tanmeggagt"
+msgstr ""
 
 #: panels/system/remote-desktop/cc-remote-session-page.c:774
-#: panels/system/users/cc-user-page.c:775
+#: panels/system/users/cc-user-page.c:772
 msgid "Some settings are locked"
 msgstr ""
 
@@ -7398,7 +7409,7 @@ msgstr ""
 
 #: panels/system/remote-desktop/cc-encryption-fingerprint-dialog.ui:28
 msgid "Encryption Fingerprint"
-msgstr "Adsil umpdin n uwgelhen"
+msgstr ""
 
 #: panels/system/remote-desktop/cc-encryption-fingerprint-dialog.ui:29
 msgid ""
@@ -7415,6 +7426,7 @@ msgid "Authentication is required to enable or disable remote sessions"
 msgstr ""
 
 #: panels/system/remote-login/cc-remote-login-page.c:53
+#| msgid "Command"
 msgid "Command copied"
 msgstr ""
 
@@ -7482,44 +7494,44 @@ msgstr "A_wal n uɛeddi"
 
 #: panels/system/users/cc-add-user-dialog.ui:240
 msgid "_Confirm"
-msgstr "Sentem (_C)"
+msgstr ""
 
-#: panels/system/users/cc-enterprise-login-dialog.c:148
+#: panels/system/users/cc-enterprise-login-dialog.c:133
+#: panels/system/users/cc-enterprise-login-dialog.c:171
 #: panels/system/users/cc-enterprise-login-dialog.c:186
-#: panels/system/users/cc-enterprise-login-dialog.c:201
 msgid "Failed to register account"
 msgstr "Asekles n umiḍan ur yeddi ara"
 
-#: panels/system/users/cc-enterprise-login-dialog.c:255
-#: panels/system/users/cc-enterprise-login-dialog.c:424
+#: panels/system/users/cc-enterprise-login-dialog.c:240
+#: panels/system/users/cc-enterprise-login-dialog.c:411
 msgid "Failed to join domain"
 msgstr "Timerna ɣer taɣult ur teddi ara"
 
-#: panels/system/users/cc-enterprise-login-dialog.c:290
+#: panels/system/users/cc-enterprise-login-dialog.c:275
 msgid "No supported way to authenticate with this domain"
 msgstr "Ulac abrid n usefrek i usesteb d taɣult-a"
 
-#: panels/system/users/cc-enterprise-login-dialog.c:300
-#: panels/system/users/cc-enterprise-login-dialog.c:489
+#: panels/system/users/cc-enterprise-login-dialog.c:285
+#: panels/system/users/cc-enterprise-login-dialog.c:476
 msgid "That login name didn’t work"
 msgstr ""
 
-#: panels/system/users/cc-enterprise-login-dialog.c:307
-#: panels/system/users/cc-enterprise-login-dialog.c:496
+#: panels/system/users/cc-enterprise-login-dialog.c:292
+#: panels/system/users/cc-enterprise-login-dialog.c:483
 msgid "That login password didn’t work"
 msgstr ""
 
-#: panels/system/users/cc-enterprise-login-dialog.c:314
+#: panels/system/users/cc-enterprise-login-dialog.c:299
 msgid "That hostname didn’t work"
 msgstr ""
 
-#: panels/system/users/cc-enterprise-login-dialog.c:321
-#: panels/system/users/cc-enterprise-login-dialog.c:504
+#: panels/system/users/cc-enterprise-login-dialog.c:306
+#: panels/system/users/cc-enterprise-login-dialog.c:491
 msgid "Failed to log into domain"
 msgstr "Anekcum ɣer taɣult ur yeddi ara"
 
 #. Translators: The "%s" is a domain address (e.g. "demo1.freeipa.org").
-#: panels/system/users/cc-enterprise-login-dialog.c:365
+#: panels/system/users/cc-enterprise-login-dialog.c:352
 #, c-format
 msgid ""
 "To add an enterprise login account, this device needs to be enrolled with "
@@ -7527,19 +7539,19 @@ msgid ""
 "password."
 msgstr ""
 
-#: panels/system/users/cc-enterprise-login-dialog.c:548
+#: panels/system/users/cc-enterprise-login-dialog.c:538
 msgid "Valid domain"
-msgstr "Taɣult tameɣtut"
+msgstr ""
 
-#: panels/system/users/cc-enterprise-login-dialog.c:552
+#: panels/system/users/cc-enterprise-login-dialog.c:542
 msgid "Domain not found"
-msgstr "Ur tettwaf ara taɣult"
+msgstr ""
 
-#: panels/system/users/cc-enterprise-login-dialog.c:595
+#: panels/system/users/cc-enterprise-login-dialog.c:585
 msgid "Checking domain…"
 msgstr ""
 
-#: panels/system/users/cc-enterprise-login-dialog.c:639
+#: panels/system/users/cc-enterprise-login-dialog.c:629
 msgid "Failed to contact realmd service"
 msgstr ""
 
@@ -7584,7 +7596,7 @@ msgstr ""
 #: panels/system/users/cc-enterprise-login-dialog.ui:162
 #: panels/system/users/data/join-dialog.ui:112
 msgid "Administrator _Name"
-msgstr "Isem n u_nedbal"
+msgstr ""
 
 #: panels/system/users/cc-enterprise-login-dialog.ui:169
 msgid "Administrator _Password"
@@ -7596,7 +7608,7 @@ msgstr "Inig i wugar n tugniwin"
 
 #: panels/system/users/cc-avatar-chooser.ui:24
 msgid "Select a File…"
-msgstr "Fren afaylu…"
+msgstr "Fren afaylu..."
 
 #: panels/system/users/cc-fingerprint-dialog.c:235
 msgid "the device needs to be claimed to perform this action"
@@ -7695,7 +7707,7 @@ msgstr ""
 
 #: panels/system/users/cc-fingerprint-dialog.c:780
 msgid "Fingerprint is duplicate"
-msgstr "Adsil umḍin yettusleg"
+msgstr ""
 
 #: panels/system/users/cc-fingerprint-dialog.c:784
 msgid "Failed to enroll new fingerprint"
@@ -7872,7 +7884,7 @@ msgstr "Ur tezmireḍ ara ad tkecmeḍ d %s ɣer taɣult %s"
 
 #: panels/system/users/cc-realm-manager.c:727
 msgid "Invalid password, please try again"
-msgstr "Awal n uεeddi d arameɣtu, εreḍ tikkelt niḍen"
+msgstr ""
 
 #: panels/system/users/cc-realm-manager.c:740
 #, c-format
@@ -7911,11 +7923,11 @@ msgstr ""
 
 #: panels/system/users/cc-user-page.ui:41
 msgid "Change Avatar"
-msgstr "Beddel avatar"
+msgstr ""
 
 #: panels/system/users/cc-user-page.ui:59
 msgid "Remove Avatar"
-msgstr "Kkes avatar"
+msgstr ""
 
 #: panels/system/users/cc-user-page.ui:95
 msgid "Pa_ssword"
@@ -7927,17 +7939,17 @@ msgstr ""
 
 #: panels/system/users/cc-user-page.ui:116
 msgid "A_utomatic Login"
-msgstr "Tuqqna tawurmant"
+msgstr ""
 
 #: panels/system/users/cc-user-page.ui:135
 msgid "_Administrator"
 msgstr "_Anedbal"
 
-#: panels/system/users/cc-user-page.ui:155
+#: panels/system/users/cc-user-page.ui:156
 msgid "_Parental Controls"
 msgstr ""
 
-#: panels/system/users/cc-user-page.ui:156
+#: panels/system/users/cc-user-page.ui:157
 msgid "Open the Parental Controls app"
 msgstr ""
 
@@ -7969,6 +7981,7 @@ msgid "_Add User…"
 msgstr "Rnu _aseqdac…"
 
 #: panels/system/users/cc-users-page.ui:46
+#| msgid "Enterprise"
 msgid "Add Enterprise User"
 msgstr "Rnu aseqdac n takebbanit"
 
@@ -8014,67 +8027,67 @@ msgstr "Awal uffi amaynut yewwi-d ad yemgarad ɣef winna yellan d aqbur."
 #: panels/system/users/pw-utils.c:96
 msgctxt "Password hint"
 msgid "Try changing some letters and numbers."
-msgstr "Ԑreḍ beddel kra n yisekkilen d yimḍanen."
+msgstr ""
 
 #: panels/system/users/pw-utils.c:98 panels/system/users/pw-utils.c:106
 msgctxt "Password hint"
 msgid "Try changing the password a bit more."
-msgstr "Rnu beddel-as cwiṭ i wawal n uεeddi."
+msgstr ""
 
 #: panels/system/users/pw-utils.c:100
 msgctxt "Password hint"
 msgid "A password without your user name would be stronger."
-msgstr "Awal n uεeddi war isem-ik n useqdac ad yiǧhid aṭas."
+msgstr ""
 
 #: panels/system/users/pw-utils.c:102
 msgctxt "Password hint"
 msgid "Try to avoid using your name in the password."
-msgstr "Ԑreḍ ur sseqdac ara isem-ik deg wawal n uεeddi."
+msgstr ""
 
 #: panels/system/users/pw-utils.c:104
 msgctxt "Password hint"
 msgid "Try to avoid some of the words included in the password."
-msgstr "Ԑreḍ ur sseqdac ara awalen i yellan deg wawal n uεeddi."
+msgstr ""
 
 #: panels/system/users/pw-utils.c:108
 msgctxt "Password hint"
 msgid "Try to avoid common words."
-msgstr "Ԑreḍ ur sseqdac ara awalen yuzzlen."
+msgstr ""
 
 #: panels/system/users/pw-utils.c:110
 msgctxt "Password hint"
 msgid "Try to avoid reordering existing words."
-msgstr "Ԑreḍ ur ttales ara aṣeggem n wawalen yellan."
+msgstr ""
 
 #: panels/system/users/pw-utils.c:112
 msgctxt "Password hint"
 msgid "Try to use more numbers."
-msgstr "Ԑreḍ ad tesqedceḍ ugar n yimḍanen."
+msgstr ""
 
 #: panels/system/users/pw-utils.c:114
 msgctxt "Password hint"
 msgid "Try to use more uppercase letters."
-msgstr "Ԑreḍ seqdec ugar n yisekkilen imeqqranen."
+msgstr ""
 
 #: panels/system/users/pw-utils.c:116
 msgctxt "Password hint"
 msgid "Try to use more lowercase letters."
-msgstr "Ԑreḍ seqdec ugar n yisekkilen imecṭaḥ."
+msgstr ""
 
 #: panels/system/users/pw-utils.c:118
 msgctxt "Password hint"
 msgid "Try to use more special characters, like punctuation."
-msgstr "Ԑreḍ seqdec ugar n yisekkilen uzzigen, am usigez."
+msgstr ""
 
 #: panels/system/users/pw-utils.c:120
 msgctxt "Password hint"
 msgid "Try to use a mixture of letters, numbers and punctuation."
-msgstr "Ԑreḍ sexleḍ gar yisekkilen, imḍanen d usigez."
+msgstr ""
 
 #: panels/system/users/pw-utils.c:122
 msgctxt "Password hint"
 msgid "Try to avoid repeating the same character."
-msgstr "Ԑreḍ ur ttales ara i yiwen n usekkil."
+msgstr ""
 
 #: panels/system/users/pw-utils.c:124
 msgctxt "Password hint"
@@ -8082,13 +8095,11 @@ msgid ""
 "Try to avoid repeating the same type of character: you need to mix up "
 "letters, numbers and punctuation."
 msgstr ""
-"Ԑreḍ ur ttales ara i yisekkilen-nni kan. tesriḍ ad tesxelḍeḍ gar yisekkilen, "
-"izwilen d usigez."
 
 #: panels/system/users/pw-utils.c:126
 msgctxt "Password hint"
 msgid "Try to avoid sequences like 1234 or abcd."
-msgstr "Ԑreḍ ur ttqadar ara asemyizwer akken yella am 1234 neɣ abcd."
+msgstr ""
 
 #: panels/system/users/pw-utils.c:128
 msgctxt "Password hint"
@@ -8096,7 +8107,6 @@ msgid ""
 "Password needs to be longer. Try to add more letters, numbers and "
 "punctuation."
 msgstr ""
-"Awal n uεeddi ilaq ad yiɣzif. Ԑreḍ ad ternuḍ isekkilen, imḍanen d usigez."
 
 #: panels/system/users/pw-utils.c:130
 msgctxt "Password hint"
@@ -8178,7 +8188,7 @@ msgstr "Isem n useqdac ɣezzif aṭas."
 
 #: panels/universal-access/cc-cursor-size-dialog.ui:4
 msgid "Cursor Size"
-msgstr "Tiddi n teḥnacaḍt"
+msgstr ""
 
 #: panels/universal-access/cc-cursor-size-dialog.ui:19
 msgid ""
@@ -8269,9 +8279,9 @@ msgstr ""
 #: panels/universal-access/cc-ua-mouse-page.ui:40
 #: panels/universal-access/cc-ua-mouse-page.ui:78
 #: panels/universal-access/cc-ua-mouse-page.ui:111
-#: panels/universal-access/cc-ua-typing-page.ui:133
-#: panels/universal-access/cc-ua-typing-page.ui:186
-#: panels/universal-access/cc-ua-typing-page.ui:233
+#: panels/universal-access/cc-ua-typing-page.ui:131
+#: panels/universal-access/cc-ua-typing-page.ui:183
+#: panels/universal-access/cc-ua-typing-page.ui:230
 #: panels/universal-access/cc-ua-zoom-page.ui:179
 msgid "Short"
 msgstr "Wezzil"
@@ -8280,9 +8290,9 @@ msgstr "Wezzil"
 #: panels/universal-access/cc-ua-mouse-page.ui:43
 #: panels/universal-access/cc-ua-mouse-page.ui:81
 #: panels/universal-access/cc-ua-mouse-page.ui:114
-#: panels/universal-access/cc-ua-typing-page.ui:136
-#: panels/universal-access/cc-ua-typing-page.ui:189
-#: panels/universal-access/cc-ua-typing-page.ui:236
+#: panels/universal-access/cc-ua-typing-page.ui:134
+#: panels/universal-access/cc-ua-typing-page.ui:186
+#: panels/universal-access/cc-ua-typing-page.ui:233
 #: panels/universal-access/cc-ua-zoom-page.ui:183
 msgid "Long"
 msgstr "Ɣezzif"
@@ -8300,8 +8310,8 @@ msgid "Secondary click by holding down the primary mouse button"
 msgstr ""
 
 #: panels/universal-access/cc-ua-mouse-page.ui:73
-#: panels/universal-access/cc-ua-typing-page.ui:180
-#: panels/universal-access/cc-ua-typing-page.ui:228
+#: panels/universal-access/cc-ua-typing-page.ui:178
+#: panels/universal-access/cc-ua-typing-page.ui:225
 msgid "Acceptance Delay"
 msgstr ""
 
@@ -8314,7 +8324,7 @@ msgid "Trigger a click when the pointer hovers"
 msgstr "Ssker-d anqab s tqeffalt tagejdant ara teǧǧeḍ tṣubb"
 
 #: panels/universal-access/cc-ua-mouse-page.ui:106
-#: panels/universal-access/cc-ua-typing-page.ui:127
+#: panels/universal-access/cc-ua-typing-page.ui:126
 msgid "Delay"
 msgstr "Amenḍaṛ"
 
@@ -8398,7 +8408,7 @@ msgstr ""
 
 #: panels/universal-access/cc-ua-seeing-page.ui:18
 msgid "_High Contrast"
-msgstr "A_myeẓli afellay"
+msgstr ""
 
 #: panels/universal-access/cc-ua-seeing-page.ui:19
 msgid "Increase color contrast of foreground and background interface elements"
@@ -8516,48 +8526,48 @@ msgstr ""
 msgid "Speed"
 msgstr "Arured"
 
-#: panels/universal-access/cc-ua-typing-page.ui:155
+#: panels/universal-access/cc-ua-typing-page.ui:153
 msgid "_Sticky Keys"
 msgstr ""
 
-#: panels/universal-access/cc-ua-typing-page.ui:156
+#: panels/universal-access/cc-ua-typing-page.ui:154
 msgid "Sequences of modifier keys act as a key combination"
 msgstr ""
 
-#: panels/universal-access/cc-ua-typing-page.ui:161
+#: panels/universal-access/cc-ua-typing-page.ui:159
 msgid "Disable if two keys are pressed together"
 msgstr ""
 
-#: panels/universal-access/cc-ua-typing-page.ui:166
+#: panels/universal-access/cc-ua-typing-page.ui:164
 msgid "Beep when modifier key is pressed"
 msgstr ""
 
-#: panels/universal-access/cc-ua-typing-page.ui:174
+#: panels/universal-access/cc-ua-typing-page.ui:172
 msgid "S_low Keys"
 msgstr ""
 
-#: panels/universal-access/cc-ua-typing-page.ui:175
+#: panels/universal-access/cc-ua-typing-page.ui:173
 msgid "Delay between when a key is pressed and when it is accepted"
 msgstr ""
 
-#: panels/universal-access/cc-ua-typing-page.ui:204
+#: panels/universal-access/cc-ua-typing-page.ui:201
 msgid "Beep when a key is pressed"
 msgstr ""
 
-#: panels/universal-access/cc-ua-typing-page.ui:209
+#: panels/universal-access/cc-ua-typing-page.ui:206
 msgid "Beep when a key is accepted"
 msgstr ""
 
-#: panels/universal-access/cc-ua-typing-page.ui:214
-#: panels/universal-access/cc-ua-typing-page.ui:251
+#: panels/universal-access/cc-ua-typing-page.ui:211
+#: panels/universal-access/cc-ua-typing-page.ui:248
 msgid "Beep when a key is rejected"
 msgstr ""
 
-#: panels/universal-access/cc-ua-typing-page.ui:222
+#: panels/universal-access/cc-ua-typing-page.ui:219
 msgid "B_ounce Keys"
 msgstr ""
 
-#: panels/universal-access/cc-ua-typing-page.ui:223
+#: panels/universal-access/cc-ua-typing-page.ui:220
 msgid "Ignore fast duplicate keypresses"
 msgstr ""
 
@@ -8665,7 +8675,7 @@ msgstr ""
 
 #: panels/universal-access/cc-ua-zoom-page.ui:131
 msgid "_Thickness"
-msgstr "_Tuzert"
+msgstr ""
 
 #. Translators: This is a mark in the Thickness scale
 #: panels/universal-access/cc-ua-zoom-page.ui:137
@@ -8684,7 +8694,7 @@ msgstr ""
 #. Translators: This is a mark in the Crosshair Length scale
 #: panels/universal-access/cc-ua-zoom-page.ui:180
 msgid "1/4 screen"
-msgstr "1/4 n wegdil"
+msgstr ""
 
 #. Translators: This is a mark in the Crosshair Length scale
 #: panels/universal-access/cc-ua-zoom-page.ui:181
@@ -8714,7 +8724,7 @@ msgstr ""
 
 #: panels/universal-access/cc-ua-zoom-page.ui:233
 msgid "_Brightness"
-msgstr "Tifawit (_B)"
+msgstr ""
 
 #. Translators: This is a mark in the Brightness scale
 #. Translators: This is a mark in the Contrast scale
@@ -8728,11 +8738,11 @@ msgstr "Yuder"
 #: panels/universal-access/cc-ua-zoom-page.ui:240
 #: panels/universal-access/cc-ua-zoom-page.ui:265
 msgid "High"
-msgstr "Ɛlay"
+msgstr ""
 
 #: panels/universal-access/cc-ua-zoom-page.ui:259
 msgid "Co_ntrast"
-msgstr "Agnil (_N)"
+msgstr ""
 
 #: panels/universal-access/cc-ua-zoom-page.ui:284
 msgid "Co_lor"
@@ -8758,11 +8768,11 @@ msgstr ""
 
 #: panels/wacom/button-mapping.ui:7 panels/wacom/cc-wacom-ekr-page.ui:18
 msgid "Map Buttons"
-msgstr "Seddukel tiqeffalin"
+msgstr ""
 
 #: panels/wacom/button-mapping.ui:26
 msgid "Map buttons to functions"
-msgstr "Seddukel tiqeffalin ɣer twuriwin"
+msgstr ""
 
 #: panels/wacom/button-mapping.ui:51
 msgid ""
@@ -8793,27 +8803,27 @@ msgstr ""
 #: panels/wacom/cc-wacom-button-row.h:35
 msgctxt "Wacom action-type"
 msgid "Send Keystroke"
-msgstr "Azen isitiyen ɣef tanasin"
+msgstr ""
 
 #: panels/wacom/cc-wacom-button-row.h:36
 msgctxt "Wacom action-type"
 msgid "Switch Monitor"
-msgstr "Senfel agdil"
+msgstr ""
 
 #: panels/wacom/cc-wacom-button-row.h:37
 msgctxt "Wacom action-type"
 msgid "Show On-Screen Help"
-msgstr "Beqqeḍ tallalt ɣef ugdil"
+msgstr ""
 
-#: panels/wacom/cc-wacom-device.c:437
+#: panels/wacom/cc-wacom-device.c:430
 msgid "Tablet mounted on laptop panel"
 msgstr ""
 
-#: panels/wacom/cc-wacom-device.c:439
+#: panels/wacom/cc-wacom-device.c:432
 msgid "Tablet mounted on external display"
 msgstr ""
 
-#: panels/wacom/cc-wacom-device.c:441
+#: panels/wacom/cc-wacom-device.c:434
 msgid "External tablet device"
 msgstr ""
 
@@ -8861,7 +8871,7 @@ msgstr ""
 
 #: panels/wacom/cc-wacom-panel.ui:57
 msgid "No tablet detected"
-msgstr "Ulac tafelwit yettwafen"
+msgstr ""
 
 #: panels/wacom/cc-wacom-panel.ui:58
 msgid "Please plug in or turn on your Wacom tablet"
@@ -8906,7 +8916,7 @@ msgstr ""
 #: panels/wacom/cc-wacom-stylus-page.ui:22
 #: panels/wacom/cc-wacom-stylus-page.ui:117
 msgid "Soft"
-msgstr "Lewwaɣ"
+msgstr "lewwaɣ"
 
 #: panels/wacom/cc-wacom-stylus-page.ui:36
 msgid "Stylus tip pressure"
@@ -8915,7 +8925,7 @@ msgstr ""
 #: panels/wacom/cc-wacom-stylus-page.ui:42
 #: panels/wacom/cc-wacom-stylus-page.ui:137
 msgid "Firm"
-msgstr "Usbiḍ"
+msgstr ""
 
 #: panels/wacom/cc-wacom-stylus-page.ui:54
 msgid "Button _1"
@@ -8960,8 +8970,6 @@ msgstr ""
 #: panels/wacom/gnome-wacom-panel.desktop.in:4
 msgid "Set button mappings and adjust stylus sensitivity for graphics tablets"
 msgstr ""
-"Sbadu amṣada n tqeffalin, tsemsawiḍ amḥulfu n stylus i tfelwiyin n uselken "
-"tudlifin"
 
 #. Translators: Search terms to find the Wacom Tablet panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
 #: panels/wacom/gnome-wacom-panel.desktop.in:15
@@ -9046,7 +9054,7 @@ msgstr ""
 
 #: panels/wwan/cc-wwan-details-dialog.ui:151
 msgid "Device Details"
-msgstr "Talqayt n yibenk"
+msgstr ""
 
 #: panels/wwan/cc-wwan-device.c:988
 msgid "2G Only"
@@ -9066,19 +9074,19 @@ msgstr "5G kan"
 
 #: panels/wwan/cc-wwan-device.c:1007
 msgid "2G, 3G, 4G, 5G (Preferred)"
-msgstr "2G, 3G, 4G, 5G (yettwasemter-d)"
+msgstr ""
 
 #: panels/wwan/cc-wwan-device.c:1009
 msgid "2G, 3G, 4G (Preferred), 5G"
-msgstr "2G, 3G, 4G (yettwasmeter), 5G"
+msgstr ""
 
 #: panels/wwan/cc-wwan-device.c:1011
 msgid "2G, 3G (Preferred), 4G, 5G"
-msgstr "2G, 3G (yettwasemter), 4G, 5G"
+msgstr ""
 
 #: panels/wwan/cc-wwan-device.c:1013
 msgid "2G (Preferred), 3G, 4G, 5G"
-msgstr "2G (yettwasemter), 3G, 4G, 5G"
+msgstr ""
 
 #: panels/wwan/cc-wwan-device.c:1015
 msgid "2G, 3G, 4G, 5G"
@@ -9086,15 +9094,15 @@ msgstr "2G, 3G, 4G, 5G"
 
 #: panels/wwan/cc-wwan-device.c:1022
 msgid "2G, 3G, 4G (Preferred)"
-msgstr "2G, 3G, 4G (yettwasemter)"
+msgstr ""
 
 #: panels/wwan/cc-wwan-device.c:1024
 msgid "2G, 3G (Preferred), 4G"
-msgstr "2G, 3G (yettwasemter), 4G"
+msgstr ""
 
 #: panels/wwan/cc-wwan-device.c:1026
 msgid "2G (Preferred), 3G, 4G"
-msgstr "2G (yettwasemter), 3G, 4G"
+msgstr ""
 
 #: panels/wwan/cc-wwan-device.c:1028
 msgid "2G, 3G, 4G"
@@ -9102,15 +9110,15 @@ msgstr "2G, 3G, 4G"
 
 #: panels/wwan/cc-wwan-device.c:1035
 msgid "3G, 4G, 5G (Preferred)"
-msgstr "3G, 4G, 5G (yettwasemter)"
+msgstr ""
 
 #: panels/wwan/cc-wwan-device.c:1037
 msgid "3G, 4G (Preferred), 5G"
-msgstr "3G, 4G (yettwasemter), 5G"
+msgstr ""
 
 #: panels/wwan/cc-wwan-device.c:1039
 msgid "3G (Preferred), 4G, 5G"
-msgstr "3G (yettwasemter), 4G, 5G"
+msgstr ""
 
 #: panels/wwan/cc-wwan-device.c:1041
 msgid "3G, 4G, 5G"
@@ -9118,15 +9126,15 @@ msgstr "3G, 4G, 5G"
 
 #: panels/wwan/cc-wwan-device.c:1048
 msgid "2G, 4G, 5G (Preferred)"
-msgstr "2G, 4G, 5G (yettwasemter)"
+msgstr ""
 
 #: panels/wwan/cc-wwan-device.c:1050
 msgid "2G, 4G (Preferred), 5G"
-msgstr "2G, 4G (yettwasemter), 5G"
+msgstr ""
 
 #: panels/wwan/cc-wwan-device.c:1052
 msgid "2G (Preferred), 4G, 5G"
-msgstr "2G (yettwasemter), 4G, 5G"
+msgstr ""
 
 #: panels/wwan/cc-wwan-device.c:1054
 msgid "2G, 4G, 5G"
@@ -9134,15 +9142,15 @@ msgstr "2G, 4G, 5G"
 
 #: panels/wwan/cc-wwan-device.c:1061
 msgid "2G, 3G, 5G (Preferred)"
-msgstr "2G, 3G, 5G (yettwasemter)"
+msgstr ""
 
 #: panels/wwan/cc-wwan-device.c:1063
 msgid "2G, 3G (Preferred), 5G"
-msgstr "2G, 3G (yettwasemter), 5G"
+msgstr ""
 
 #: panels/wwan/cc-wwan-device.c:1065
 msgid "2G (Preferred), 3G, 5G"
-msgstr "2G (yettwasemter), 3G, 5G"
+msgstr ""
 
 #: panels/wwan/cc-wwan-device.c:1067
 msgid "2G, 3G, 5G"
@@ -9150,11 +9158,11 @@ msgstr "2G, 3G, 5G"
 
 #: panels/wwan/cc-wwan-device.c:1073
 msgid "3G, 4G (Preferred)"
-msgstr "3G, 4G (yettwasemter)"
+msgstr ""
 
 #: panels/wwan/cc-wwan-device.c:1075
 msgid "3G (Preferred), 4G"
-msgstr "3G (yettwasemter), 4G"
+msgstr ""
 
 #: panels/wwan/cc-wwan-device.c:1077
 msgid "3G, 4G"
@@ -9162,11 +9170,11 @@ msgstr "3G, 4G"
 
 #: panels/wwan/cc-wwan-device.c:1083
 msgid "2G, 4G (Preferred)"
-msgstr "2G, 4G (yettwasemter)"
+msgstr ""
 
 #: panels/wwan/cc-wwan-device.c:1085
 msgid "2G (Preferred), 4G"
-msgstr "2G (yettwasemter), 4G"
+msgstr ""
 
 #: panels/wwan/cc-wwan-device.c:1087
 msgid "2G, 4G"
@@ -9174,11 +9182,11 @@ msgstr "2G, 4G"
 
 #: panels/wwan/cc-wwan-device.c:1093
 msgid "2G, 3G (Preferred)"
-msgstr "2G, 3G (yettwasemter)"
+msgstr ""
 
 #: panels/wwan/cc-wwan-device.c:1095
 msgid "2G (Preferred), 3G"
-msgstr "2G (yettwasemter), 3G"
+msgstr ""
 
 #: panels/wwan/cc-wwan-device.c:1097
 msgid "2G, 3G"
@@ -9186,11 +9194,11 @@ msgstr "2G, 3G"
 
 #: panels/wwan/cc-wwan-device.c:1103
 msgid "2G, 5G (Preferred)"
-msgstr "2G, 5G (yettwasemter)"
+msgstr ""
 
 #: panels/wwan/cc-wwan-device.c:1105
 msgid "2G (Preferred), 5G"
-msgstr "2G (yettwasemter), 5G"
+msgstr ""
 
 #: panels/wwan/cc-wwan-device.c:1107
 msgid "2G, 5G"
@@ -9198,11 +9206,11 @@ msgstr "2G, 5G"
 
 #: panels/wwan/cc-wwan-device.c:1113
 msgid "3G, 5G (Preferred)"
-msgstr "3G, 5G (yettwasemter)"
+msgstr ""
 
 #: panels/wwan/cc-wwan-device.c:1115
 msgid "3G (Preferred), 5G"
-msgstr "3G (yettwasemter), 5G"
+msgstr ""
 
 #: panels/wwan/cc-wwan-device.c:1117
 msgid "3G, 5G"
@@ -9210,11 +9218,11 @@ msgstr "3G, 5G"
 
 #: panels/wwan/cc-wwan-device.c:1123
 msgid "4G, 5G (Preferred)"
-msgstr "4G, 5G (yettwasemter)"
+msgstr ""
 
 #: panels/wwan/cc-wwan-device.c:1125
 msgid "4G (Preferred), 5G"
-msgstr "4G (yettwasemter), 5G"
+msgstr ""
 
 #: panels/wwan/cc-wwan-device.c:1127
 msgid "4G, 5G"
@@ -9227,7 +9235,7 @@ msgstr "Arussin"
 
 #: panels/wwan/cc-wwan-device-page.c:186
 msgid "Unlock SIM card"
-msgstr "Kkes asekkeṛ i tkarḍa SIM"
+msgstr ""
 
 #: panels/wwan/cc-wwan-device-page.c:187 panels/wwan/cc-wwan-device-page.c:235
 msgid "Unlock"
@@ -9275,7 +9283,7 @@ msgstr ""
 
 #: panels/wwan/cc-wwan-device-page.c:293
 msgid "Enter New PIN"
-msgstr "Sekcem SIM tamaynut"
+msgstr ""
 
 #: panels/wwan/cc-wwan-device-page.c:297
 msgid "PIN code should be a 4-8 digit number"
@@ -9283,11 +9291,11 @@ msgstr ""
 
 #: panels/wwan/cc-wwan-device-page.c:315
 msgid "Unlocking…"
-msgstr "Tukksa n usekkeṛ…"
+msgstr ""
 
 #: panels/wwan/cc-wwan-device-page.ui:18
 msgid "No SIM"
-msgstr "Ulac takarḍa SIM"
+msgstr ""
 
 #: panels/wwan/cc-wwan-device-page.ui:19
 msgid "Insert a SIM card to use this modem"
@@ -9299,7 +9307,7 @@ msgstr ""
 
 #: panels/wwan/cc-wwan-device-page.ui:76
 msgid "_Mobile Data"
-msgstr "Isefka n uziraz (_M)"
+msgstr ""
 
 #: panels/wwan/cc-wwan-device-page.ui:77
 msgid "Access data using mobile network"
@@ -9315,7 +9323,7 @@ msgstr ""
 
 #: panels/wwan/cc-wwan-device-page.ui:112
 msgid "_Network Mode"
-msgstr "Askar n uzeṭṭa (_N)"
+msgstr ""
 
 #: panels/wwan/cc-wwan-device-page.ui:118
 msgid "N_etwork"
@@ -9534,7 +9542,7 @@ msgstr "Sken amḍan n lqem"
 
 #: shell/cc-application.c:69
 msgid "Enable verbose mode"
-msgstr "Sermed askar aɣezfan"
+msgstr ""
 
 #: shell/cc-application.c:70
 msgid "Search for the string"
@@ -9546,7 +9554,7 @@ msgstr ""
 
 #: shell/cc-application.c:72
 msgid "Panel to display"
-msgstr "Agalis ara yettwabeqqeḍen"
+msgstr ""
 
 #: shell/cc-application.c:72
 msgid "[PANEL] [ARGUMENT…]"
@@ -9555,7 +9563,7 @@ msgstr ""
 #. Translators should localize the following string which will be displayed in the About dialog giving credit to the translator(s).
 #: shell/cc-application.c:117
 msgid "translator-credits"
-msgstr "amsuqqel-isemdan"
+msgstr ""
 
 #: shell/cc-application.c:118
 #, c-format
@@ -9570,7 +9578,7 @@ msgstr ""
 msgid "No Results Found"
 msgstr "Ulac igmad i yettwafen"
 
-#: shell/cc-panel-loader.c:311
+#: shell/cc-panel-loader.c:310
 msgid "Available panels:"
 msgstr ""
 
@@ -9703,7 +9711,7 @@ msgstr[1] "%u n yinekcumen"
 
 #: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
-msgstr "Imeslan n unagraw"
+msgstr ""
 
 #~ msgid "No Apps Available"
 #~ msgstr "Ulac isnasen i yellan"

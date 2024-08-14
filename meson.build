@@ -1,6 +1,6 @@
 project(
   'gnome-control-center', 'c',
-        version : '46.4',
+        version : '47.beta',
         license : 'GPL2+',
   meson_version : '>= 0.58.0'
 )
@@ -32,18 +32,18 @@ python = py.find_installation('python3')
 
 config_h.set_quoted('TEST_NM_PYTHON', python.full_path())
 
+application_id = 'org.gnome.Settings'
+
 if get_option('profile') == 'development'
-    profile = 'Devel'
-else
-    profile = ''
+    application_id += '.' + 'Devel'
 endif
-application_id = 'org.gnome.Settings@0@'.format(profile)
 
 version_split = meson.project_version().split('.')
 
 # defines
 set_defines = [
   # package
+  ['APPLICATION_ID', application_id],
   ['PACKAGE', meson.project_name()],
   ['PACKAGE_VERSION', meson.project_version()],
   ['VERSION', meson.project_version()],
@@ -126,16 +126,17 @@ libgvc = subproject(
 )
 libgvc_dep = libgvc.get_variable('libgvc_dep')
 
-goa_req_version = '>= 3.49.1'
+libadwaita_version = '>= 1.6.beta'
+goa_req_version = '>= 3.51.0'
 pulse_req_version = '>= 2.0'
 
 gtk_dep = dependency(
   'gtk4',
-  version: '>= 4.11.2',
-  fallback: ['gtk', 'gtk_dep'],
+  version: '>= 4.15.2',
+  fallback: 'gtk',
   default_options: [
     'introspection=disabled',
-    'demos=false',
+    'build-demos=false',
     'build-testsuite=false',
     'build-tests=false',
     'build-examples=false',
@@ -144,14 +145,16 @@ gtk_dep = dependency(
 
 libadwaita_dep = dependency(
   'libadwaita-1',
-  version: '>= 1.4.alpha',
+  version: libadwaita_version,
   required: false
 )
 # FIXME: this is a workaround because interactive-tests don't work with libadwaita as a subproject. See !1754
 libadwaita_is_subproject = not libadwaita_dep.found()
 if libadwaita_is_subproject
-  libadwaita = subproject(
-    'libadwaita',
+  libadwaita_dep = dependency(
+    'libadwaita-1',
+    version: libadwaita_version,
+    fallback: 'libadwaita',
     default_options: [
       'examples=false',
       'introspection=disabled',
@@ -159,7 +162,6 @@ if libadwaita_is_subproject
       'vapi=false',
     ],
   )
-  libadwaita_dep = libadwaita.get_variable('libadwaita_dep')
 endif
 
 tecla_dep = dependency(
@@ -184,8 +186,8 @@ gnome_desktop_dep = dependency('gnome-desktop-4')
 gnome_bg_dep = dependency('gnome-bg-4')
 gnome_rr_dep = dependency('gnome-rr-4')
 gnome_settings_dep = dependency('gnome-settings-daemon', version: '>= 41.0')
-goa_dep = dependency('goa-1.0', version: goa_req_version)
-gsettings_desktop_dep = dependency('gsettings-desktop-schemas', version: '>= 46.beta')
+goa_dep = dependency('goa-1.0', version: goa_req_version, fallback: 'goa')
+gsettings_desktop_dep = dependency('gsettings-desktop-schemas', version: '>= 47.alpha')
 libxml_dep = dependency('libxml-2.0')
 pulse_dep = dependency('libpulse', version: pulse_req_version)
 pulse_mainloop_dep = dependency('libpulse-mainloop-glib', version: pulse_req_version)

@@ -1,3 +1,19 @@
+gnome-control-center (1:47~beta-2) experimental; urgency=medium
+
+  * New upstream release
+  * Refresh patches
+  * Bump minimum GTK4, libadwaita, gnome-online-accounts, &
+    gsettings-desktop-schemas
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Mon, 12 Aug 2024 13:05:44 -0400
+
+gnome-control-center (1:46.4-1) unstable; urgency=medium
+
+  * New upstream release
+  * Bump Standards Version to 4.7.0
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Wed, 07 Aug 2024 15:40:09 -0400
+
 gnome-control-center (1:46.4-0ubuntu1) oracular; urgency=medium
 
   * New upstream version
@@ -8,6 +24,15 @@ gnome-control-center (1:46.4-0ubuntu1) oracular; urgency=medium
     Better handle dbus callback from WhoopsiePreferences (LP: #2065294)
 
  -- Sebastien Bacher <seb128@ubuntu.com>  Tue, 13 Aug 2024 17:56:03 +0200
+
+gnome-control-center (1:46.3-1) unstable; urgency=medium
+
+  * New upstream release
+  * Drop revert Remote Login patch since gnome-remote-desktop 46 is in Unstable
+  * Depend instead of Recommend gnome-remote-desktop 46. See upstream #2977
+  * Add Depends: heif-gdk-pixbuf, heif-thumbnailer (Closes: #981757)
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Sat, 13 Jul 2024 08:03:59 -0400
 
 gnome-control-center (1:46.3-0ubuntu1) oracular; urgency=medium
 

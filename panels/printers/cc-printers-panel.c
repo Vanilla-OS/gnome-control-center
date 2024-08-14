@@ -71,8 +71,6 @@ struct _CcPrintersPanel
 
   GtkListBox          *content;
   GtkStack            *main_stack;
-  GtkRevealer         *notification;
-  GtkLabel            *notification_label;
   CcPermissionInfobar *permission_infobar;
   GtkWidget           *printer_add_button;
   GtkWidget           *printer_add_button_empty;
@@ -80,6 +78,8 @@ struct _CcPrintersPanel
   GtkSearchBar        *search_bar;
   GtkWidget           *search_button;
   GtkEditable         *search_entry;
+  AdwToastOverlay     *toast_overlay;
+  AdwToast            *toast;
 
   PpCups *cups;
 
@@ -607,8 +607,6 @@ free_dests (CcPrintersPanel *self)
 static void
 on_printer_deletion_undone (CcPrintersPanel *self)
 {
-  gtk_revealer_set_reveal_child (self->notification, FALSE);
-
   g_clear_pointer (&self->deleted_printer_name, g_free);
 
   gtk_list_box_invalidate_filter (self->content);
@@ -647,7 +645,10 @@ on_notification_dismissed (CcPrintersPanel *self)
       self->deleted_printer_name = NULL;
     }
 
-  gtk_revealer_set_reveal_child (self->notification, FALSE);
+  if (self->toast)
+    adw_toast_dismiss (self->toast);
+
+  self->toast = NULL;
 }
 
 static gboolean
@@ -668,16 +669,28 @@ on_printer_deleted (CcPrintersPanel *self,
 
   on_notification_dismissed (self);
 
+  if (!self->toast)
+    {
+      self->toast = adw_toast_new ("");
+
+      adw_toast_overlay_add_toast (self->toast_overlay, self->toast);
+      adw_toast_set_button_label (self->toast, _("Undo"));
+      adw_toast_set_timeout (self->toast, 10);
+
+      g_signal_connect_swapped (self->toast, "button-clicked",
+                                G_CALLBACK (on_printer_deletion_undone), self);
+      g_signal_connect_swapped (self->toast, "dismissed",
+                                G_CALLBACK (on_notification_dismissed), self);
+    }
+
   /* Translators: %s is the printer name */
   notification_message = g_strdup_printf (_("Printer “%s” has been deleted"),
                                           pp_printer_entry_get_name (printer_entry));
-  gtk_label_set_label (self->notification_label, notification_message);
 
+  adw_toast_set_title (self->toast, notification_message);
   self->deleted_printer_name = g_strdup (pp_printer_entry_get_name (printer_entry));
 
   gtk_list_box_invalidate_filter (self->content);
-
-  gtk_revealer_set_reveal_child (self->notification, TRUE);
 
   self->remove_printer_timeout_id = g_timeout_add_seconds (10, G_SOURCE_FUNC (on_remove_printer_timeout), self);
 
@@ -908,19 +921,11 @@ printer_add_async_cb (GObject      *source_object,
         {
           g_warning ("%s", error->message);
 
-          GtkWidget *message_dialog;
+          if (!self->toast)
+            self->toast = adw_toast_new ("");
 
-          message_dialog = gtk_message_dialog_new (NULL,
-                                                   0,
-                                                   GTK_MESSAGE_ERROR,
-                                                   GTK_BUTTONS_CLOSE,
-          /* Translators: Addition of the new printer failed. */
-                                                   _("Failed to add new printer."));
-          g_signal_connect (message_dialog,
-                            "response",
-                            G_CALLBACK (gtk_window_destroy),
-                            NULL);
-          gtk_window_present (GTK_WINDOW (message_dialog));
+          adw_toast_overlay_add_toast (self->toast_overlay, self->toast);
+          adw_toast_set_title (self->toast, _("Failed to add new printer."));
         }
     }
 
@@ -1209,8 +1214,6 @@ cc_printers_panel_class_init (CcPrintersPanelClass *klass)
 
   gtk_widget_class_bind_template_child (widget_class, CcPrintersPanel, content);
   gtk_widget_class_bind_template_child (widget_class, CcPrintersPanel, main_stack);
-  gtk_widget_class_bind_template_child (widget_class, CcPrintersPanel, notification);
-  gtk_widget_class_bind_template_child (widget_class, CcPrintersPanel, notification_label);
   gtk_widget_class_bind_template_child (widget_class, CcPrintersPanel, permission_infobar);
   gtk_widget_class_bind_template_child (widget_class, CcPrintersPanel, printer_add_button);
   gtk_widget_class_bind_template_child (widget_class, CcPrintersPanel, printer_add_button_empty);
@@ -1218,6 +1221,7 @@ cc_printers_panel_class_init (CcPrintersPanelClass *klass)
   gtk_widget_class_bind_template_child (widget_class, CcPrintersPanel, search_bar);
   gtk_widget_class_bind_template_child (widget_class, CcPrintersPanel, search_button);
   gtk_widget_class_bind_template_child (widget_class, CcPrintersPanel, search_entry);
+  gtk_widget_class_bind_template_child (widget_class, CcPrintersPanel, toast_overlay);
 
   gtk_widget_class_bind_template_callback (widget_class, printer_add_cb);
   gtk_widget_class_bind_template_callback (widget_class, on_printer_deletion_undone);

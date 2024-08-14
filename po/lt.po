@@ -16,8 +16,8 @@ msgstr ""
 "Project-Id-Version: gnome-control-center master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-control-center/"
 "issues\n"
-"POT-Creation-Date: 2024-04-19 09:19+0000\n"
-"PO-Revision-Date: 2024-04-20 13:40+0300\n"
+"POT-Creation-Date: 2024-03-03 17:04+0000\n"
+"PO-Revision-Date: 2024-03-03 22:44+0200\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -51,7 +51,7 @@ msgstr "Seanso magistralė"
 
 #: panels/applications/cc-applications-panel.c:834
 #: panels/privacy/cc-bolt-page.ui:240 panels/privacy/cc-bolt-page.ui:284
-#: panels/privacy/cc-privacy-panel.ui:75
+#: panels/privacy/cc-privacy-panel.ui:74
 msgid "Devices"
 msgstr "Įrenginiai"
 
@@ -89,7 +89,7 @@ msgstr "Failų sistema"
 
 #: panels/applications/cc-applications-panel.c:854
 #: panels/keyboard/01-launchers.xml.in:6
-#: shell/appdata/org.gnome.Settings.appdata.xml.in:7 shell/cc-window.c:798
+#: shell/appdata/org.gnome.Settings.appdata.xml.in:7 shell/cc-window.c:775
 #: shell/cc-window.ui:20 shell/org.gnome.Settings.desktop.in:3
 msgid "Settings"
 msgstr "Nustatymai"
@@ -139,36 +139,36 @@ msgstr "Ieškoti programų"
 msgid "_Default Apps"
 msgstr "_Numatytosios programos"
 
-#: panels/applications/cc-applications-panel.ui:62
+#: panels/applications/cc-applications-panel.ui:87
 msgid "No Apps Found"
 msgstr "Nerasta programų"
 
-#: panels/applications/cc-applications-panel.ui:65
+#: panels/applications/cc-applications-panel.ui:99
 msgid "_Find in Software"
 msgstr "_Ieškoti Programinėje įrangoje"
 
-#: panels/applications/cc-applications-panel.ui:101
+#: panels/applications/cc-applications-panel.ui:139
 #: panels/applications/cc-default-apps-page.ui:4
 msgid "Default Apps"
 msgstr "Numatytosios programos"
 
-#: panels/applications/cc-applications-panel.ui:119
+#: panels/applications/cc-applications-panel.ui:157
 msgid "Removable Media"
 msgstr "Išimamos laikmenos"
 
-#: panels/applications/cc-applications-panel.ui:122
+#: panels/applications/cc-applications-panel.ui:160
 msgid "Automat_ically Launch Apps"
 msgstr "Automat_iškai užrakinti ekraną"
 
-#: panels/applications/cc-applications-panel.ui:123
+#: panels/applications/cc-applications-panel.ui:161
 msgid "Start apps when media is connected or inserted"
 msgstr "Paleisti programas kai prijungiamos arba įkišamos laikmenos"
 
-#: panels/applications/cc-applications-panel.ui:144
+#: panels/applications/cc-applications-panel.ui:182
 msgid "App Settings"
 msgstr "Programų nuostatos"
 
-#: panels/applications/cc-applications-panel.ui:164
+#: panels/applications/cc-applications-panel.ui:202
 msgid ""
 "App settings cannot be fully enforced for apps which are not sandboxed. "
 "These apps may use permissions which are not shown."
@@ -176,26 +176,26 @@ msgstr ""
 "Programų nuostatos negali būti visiškai užtikrintos neapribotoms programoms. "
 "Tokios programos gali naudoti nerodomus leidimus."
 
-#: panels/applications/cc-applications-panel.ui:207
+#: panels/applications/cc-applications-panel.ui:245
 #: panels/printers/pp-details-dialog.c:267
-#: panels/sharing/cc-sharing-panel.c:242
+#: panels/sharing/cc-sharing-panel.c:240
 msgid "_Open"
 msgstr "_Atverti"
 
-#: panels/applications/cc-applications-panel.ui:219
+#: panels/applications/cc-applications-panel.ui:257
 msgid "App _Details"
 msgstr "Programos _detalės"
 
-#: panels/applications/cc-applications-panel.ui:237
+#: panels/applications/cc-applications-panel.ui:275
 msgid "Permissions"
 msgstr "Leidimai"
 
 #. Translators: This row shows/sets whether the app shown in this page can add results to the GNOME Shell search results. Internally this enables/disables the app's Shell Search Provider
-#: panels/applications/cc-applications-panel.ui:240
+#: panels/applications/cc-applications-panel.ui:278
 msgid "_Search"
 msgstr "_Ieškoti"
 
-#: panels/applications/cc-applications-panel.ui:241
+#: panels/applications/cc-applications-panel.ui:279
 msgid "Receive system searches and send results"
 msgstr "Gauti sistemos paieškas bei siųsti rezultatus"
 
@@ -204,172 +204,172 @@ msgstr "Gauti sistemos paieškas bei siųsti rezultatus"
 #.
 #. translators:
 #. * The device has been disabled
-#: panels/applications/cc-applications-panel.ui:250
-#: panels/applications/cc-applications-panel.ui:297
-#: panels/applications/cc-applications-panel.ui:319
-#: panels/applications/cc-applications-panel.ui:334
-#: panels/applications/cc-applications-panel.ui:349
+#: panels/applications/cc-applications-panel.ui:288
+#: panels/applications/cc-applications-panel.ui:335
+#: panels/applications/cc-applications-panel.ui:357
+#: panels/applications/cc-applications-panel.ui:372
+#: panels/applications/cc-applications-panel.ui:387
 #: panels/keyboard/cc-keyboard-shortcut-editor.ui:123
 #: panels/keyboard/cc-xkb-modifier-dialog.c:342
 #: panels/keyboard/keyboard-shortcuts.c:367
 #: panels/system/users/cc-user-page.c:379
 #: panels/system/users/cc-user-page.c:749 panels/wwan/cc-wwan-device-page.c:477
-#: subprojects/gvc/gvc-mixer-control.c:1872
+#: subprojects/gvc/gvc-mixer-control.c:1908
 msgid "Disabled"
 msgstr "Išjungta"
 
-#: panels/applications/cc-applications-panel.ui:255
+#: panels/applications/cc-applications-panel.ui:293
 msgid "_Notifications"
 msgstr "Pra_nešimai"
 
-#: panels/applications/cc-applications-panel.ui:256
+#: panels/applications/cc-applications-panel.ui:294
 msgid "Show system notifications"
 msgstr "Rodyti sistemos pranešimus"
 
-#: panels/applications/cc-applications-panel.ui:263
+#: panels/applications/cc-applications-panel.ui:301
 msgid "_Run in Background"
 msgstr "_Vykdyti fone"
 
-#: panels/applications/cc-applications-panel.ui:264
+#: panels/applications/cc-applications-panel.ui:302
 msgid "Allow activity when the app is closed"
 msgstr "Leisti veiklą, kai programa yra užverta"
 
-#: panels/applications/cc-applications-panel.ui:271
+#: panels/applications/cc-applications-panel.ui:309
 msgid "Scr_eenshots"
 msgstr "_Ekrano nuotraukos"
 
-#: panels/applications/cc-applications-panel.ui:272
+#: panels/applications/cc-applications-panel.ui:310
 msgid "Take pictures of the screen at any time"
 msgstr "Fotografuokite ekraną bet kuriuo metu"
 
-#: panels/applications/cc-applications-panel.ui:279
+#: panels/applications/cc-applications-panel.ui:317
 msgid "Change _Wallpaper"
 msgstr "Keisti _foną"
 
-#: panels/applications/cc-applications-panel.ui:280
+#: panels/applications/cc-applications-panel.ui:318
 msgid "Change the desktop wallpaper"
 msgstr "Keisti darbastalio foną"
 
-#: panels/applications/cc-applications-panel.ui:287
-#: panels/applications/cc-applications-panel.ui:295
+#: panels/applications/cc-applications-panel.ui:325
+#: panels/applications/cc-applications-panel.ui:333
 msgid "So_unds"
 msgstr "_Garsai"
 
-#: panels/applications/cc-applications-panel.ui:288
-#: panels/applications/cc-applications-panel.ui:296
+#: panels/applications/cc-applications-panel.ui:326
+#: panels/applications/cc-applications-panel.ui:334
 msgid "Reproduce sounds"
 msgstr "Atkurti garsus"
 
-#: panels/applications/cc-applications-panel.ui:302
+#: panels/applications/cc-applications-panel.ui:340
 msgid "_Inhibit Shortcuts"
 msgstr "N_ustatyti trumpinius"
 
-#: panels/applications/cc-applications-panel.ui:303
+#: panels/applications/cc-applications-panel.ui:341
 msgid "Block standard keyboard shortcuts"
 msgstr "Neleisti sisteminių klaviatūros trumpinių"
 
-#: panels/applications/cc-applications-panel.ui:310
+#: panels/applications/cc-applications-panel.ui:348
 msgid "Camera"
 msgstr "Kamera"
 
-#: panels/applications/cc-applications-panel.ui:311
-#: panels/applications/cc-applications-panel.ui:318
+#: panels/applications/cc-applications-panel.ui:349
+#: panels/applications/cc-applications-panel.ui:356
 msgid "Take pictures with the camera"
 msgstr "Fotografuoti naudojant kamerą"
 
-#: panels/applications/cc-applications-panel.ui:317
+#: panels/applications/cc-applications-panel.ui:355
 msgid "C_amera"
 msgstr "K_amera"
 
-#: panels/applications/cc-applications-panel.ui:324
-#: panels/applications/cc-applications-panel.ui:332
+#: panels/applications/cc-applications-panel.ui:362
+#: panels/applications/cc-applications-panel.ui:370
 msgid "_Microphone"
 msgstr "_Mikrofonas"
 
-#: panels/applications/cc-applications-panel.ui:325
-#: panels/applications/cc-applications-panel.ui:333
+#: panels/applications/cc-applications-panel.ui:363
+#: panels/applications/cc-applications-panel.ui:371
 msgid "Record audio with the microphone"
 msgstr "Įrašyti garsą mikrofonu"
 
-#: panels/applications/cc-applications-panel.ui:339
-#: panels/applications/cc-applications-panel.ui:347
+#: panels/applications/cc-applications-panel.ui:377
+#: panels/applications/cc-applications-panel.ui:385
 msgid "_Location Services"
 msgstr "_Vietos tarnybos"
 
-#: panels/applications/cc-applications-panel.ui:340
-#: panels/applications/cc-applications-panel.ui:348
+#: panels/applications/cc-applications-panel.ui:378
+#: panels/applications/cc-applications-panel.ui:386
 msgid "Access device location data"
 msgstr "Pasiekti jūsų buvimo vietos informaciją"
 
-#: panels/applications/cc-applications-panel.ui:359
+#: panels/applications/cc-applications-panel.ui:397
 msgid "Re_quired Access"
 msgstr "_Būtina prieiga"
 
-#: panels/applications/cc-applications-panel.ui:360
+#: panels/applications/cc-applications-panel.ui:398
 msgid "System access that is required by the app"
 msgstr "Sistemos prieiga, kurios reikia šiai programai"
 
-#: panels/applications/cc-applications-panel.ui:371
+#: panels/applications/cc-applications-panel.ui:409
 #: panels/mouse/cc-mouse-panel.ui:66
 #: panels/multitasking/cc-multitasking-panel.ui:15
 #: panels/power/cc-power-panel.ui:171
 msgid "General"
 msgstr "Bendri"
 
-#: panels/applications/cc-applications-panel.ui:374
+#: panels/applications/cc-applications-panel.ui:412
 msgid "_File &amp; Link Associations"
 msgstr "Failų bei saitų susiejimai"
 
-#: panels/applications/cc-applications-panel.ui:382
+#: panels/applications/cc-applications-panel.ui:420
 msgid "S_torage"
 msgstr "_Saugykla"
 
-#: panels/applications/cc-applications-panel.ui:405
+#: panels/applications/cc-applications-panel.ui:443
 msgid "Required Access"
 msgstr "Būtina prieiga"
 
-#: panels/applications/cc-applications-panel.ui:451
+#: panels/applications/cc-applications-panel.ui:489
 msgid "File & Link Associations"
 msgstr "Failų bei saitų susiejimai"
 
-#: panels/applications/cc-applications-panel.ui:480
+#: panels/applications/cc-applications-panel.ui:518
 msgid "File Types"
 msgstr "Failų tipai"
 
-#: panels/applications/cc-applications-panel.ui:486
+#: panels/applications/cc-applications-panel.ui:524
 msgid "Link Types"
 msgstr "Saitų tipai"
 
-#: panels/applications/cc-applications-panel.ui:496
+#: panels/applications/cc-applications-panel.ui:534
 msgid "_Reset"
 msgstr "_Atstatyti"
 
-#: panels/applications/cc-applications-panel.ui:517
+#: panels/applications/cc-applications-panel.ui:555
 msgid "Storage"
 msgstr "Saugykla"
 
-#: panels/applications/cc-applications-panel.ui:542
+#: panels/applications/cc-applications-panel.ui:580
 msgid "How much disk space this app is occupying with app data and caches"
 msgstr ""
 "Kiek disko vietos užima šį programa su programos duomenimis bei podėliu"
 
-#: panels/applications/cc-applications-panel.ui:547
+#: panels/applications/cc-applications-panel.ui:585
 msgid "App"
 msgstr "Programa"
 
-#: panels/applications/cc-applications-panel.ui:553
+#: panels/applications/cc-applications-panel.ui:591
 msgid "Data"
 msgstr "Duomenys"
 
-#: panels/applications/cc-applications-panel.ui:559
+#: panels/applications/cc-applications-panel.ui:597
 msgid "Cache"
 msgstr "Podėlis"
 
-#: panels/applications/cc-applications-panel.ui:565
+#: panels/applications/cc-applications-panel.ui:603
 msgid "<b>Total</b>"
 msgstr "<b>Iš viso</b>"
 
-#: panels/applications/cc-applications-panel.ui:575
+#: panels/applications/cc-applications-panel.ui:613
 msgid "_Clear Cache"
 msgstr "Iš_valyti podėlį"
 
@@ -975,9 +975,9 @@ msgstr "Ekrano kalibravimas"
 #: panels/network/connection-editor/connection-editor.ui:16
 #: panels/printers/new-printer-dialog.ui:54
 #: panels/printers/pp-details-dialog.c:266 panels/privacy/cc-usage-page.c:136
-#: panels/sharing/cc-sharing-panel.c:241
+#: panels/sharing/cc-sharing-panel.c:239
 #: panels/system/region/cc-format-chooser.ui:24
-#: panels/system/users/cc-add-user-dialog.ui:34
+#: panels/system/users/cc-add-user-dialog.ui:25
 #: panels/system/users/cc-enterprise-login-dialog.ui:58
 #: panels/system/users/cc-avatar-chooser.c:92
 #: panels/system/users/cc-fingerprint-dialog.ui:32
@@ -1289,7 +1289,7 @@ msgstr "_Importuoti failą…"
 #: panels/keyboard/cc-keyboard-shortcut-editor.ui:33
 #: panels/network/connection-editor/net-connection-editor.c:653
 #: panels/printers/new-printer-dialog.ui:85
-#: panels/system/users/cc-add-user-dialog.ui:48
+#: panels/system/users/cc-add-user-dialog.ui:39
 #: panels/system/users/cc-enterprise-login-dialog.ui:66
 msgid "_Add"
 msgstr "_Pridėti"
@@ -1574,36 +1574,36 @@ msgstr "Sumažinti valandą"
 msgid "Decrement Minute"
 msgstr "Sumažinti minutę"
 
-#: panels/common/cc-util.c:130
+#: panels/common/cc-util.c:127
 #: panels/network/connection-editor/ce-page-details.c:199
 msgid "Today"
 msgstr "Šiandien"
 
-#: panels/common/cc-util.c:134
+#: panels/common/cc-util.c:131
 #: panels/network/connection-editor/ce-page-details.c:201
 msgid "Yesterday"
 msgstr "Vakar"
 
 #. Translators: This is a date format string in the style of "Feb 24".
-#: panels/common/cc-util.c:142
+#: panels/common/cc-util.c:139
 #, no-c-format
 msgid "%b %e"
 msgstr "%b %e"
 
 #. Translators: This is a date format string in the style of "Feb 24, 2013".
-#: panels/common/cc-util.c:147
+#: panels/common/cc-util.c:144
 msgid "%b %e, %Y"
 msgstr "%Y %B %e"
 
 #. TRANSLATORS: This is the datetime format in the style of
 #. "Aug 1, 10:10:10 PM", "Feb 24, 2013, 10:10:10 PM", "Today, 10:10:10 AM",
 #. and "Yesterday, 10:10:10 AM"
-#: panels/common/cc-util.c:166
+#: panels/common/cc-util.c:163
 #, c-format
 msgid "%1$s, %2$s"
 msgstr "%1$s, %2$s"
 
-#: panels/common/cc-util.c:186
+#: panels/common/cc-util.c:183
 #, c-format
 msgid "%d hour"
 msgid_plural "%d hours"
@@ -1612,7 +1612,7 @@ msgstr[1] "%d valandos"
 msgstr[2] "%d valandų"
 
 #. Translators: Option for "Blank Screen" in "Power" panel
-#: panels/common/cc-util.c:187 panels/power/cc-power-panel.c:790
+#: panels/common/cc-util.c:184 panels/power/cc-power-panel.c:790
 #, c-format
 msgid "%d minute"
 msgid_plural "%d minutes"
@@ -1620,7 +1620,7 @@ msgstr[0] "%d minutė"
 msgstr[1] "%d minutės"
 msgstr[2] "%d minučių"
 
-#: panels/common/cc-util.c:188
+#: panels/common/cc-util.c:185
 #, c-format
 msgid "%d second"
 msgid_plural "%d seconds"
@@ -1629,42 +1629,42 @@ msgstr[1] "%d sekundes"
 msgstr[2] "%d sekundžių"
 
 #. 5 hours 2 minutes 12 seconds
-#: panels/common/cc-util.c:195
+#: panels/common/cc-util.c:192
 #, c-format
 msgctxt "hours minutes seconds"
 msgid "%s %s %s"
 msgstr "%s %s %s"
 
 #. 5 hours 2 minutes
-#: panels/common/cc-util.c:200
+#: panels/common/cc-util.c:197
 #, c-format
 msgctxt "hours minutes"
 msgid "%s %s"
 msgstr "%s %s"
 
 #. 5 hours
-#: panels/common/cc-util.c:205
+#: panels/common/cc-util.c:202
 #, c-format
 msgctxt "hours"
 msgid "%s"
 msgstr "%s"
 
 #. 2 minutes 12 seconds
-#: panels/common/cc-util.c:213
+#: panels/common/cc-util.c:210
 #, c-format
 msgctxt "minutes seconds"
 msgid "%s %s"
 msgstr "%s %s"
 
 #. 2 minutes
-#: panels/common/cc-util.c:218
+#: panels/common/cc-util.c:215
 #, c-format
 msgctxt "minutes"
 msgid "%s"
 msgstr "%s"
 
 #. 0 seconds
-#: panels/common/cc-util.c:229
+#: panels/common/cc-util.c:226
 msgid "0 seconds"
 msgstr "0 sekundžių"
 
@@ -1674,27 +1674,27 @@ msgctxt "hotspot"
 msgid "Hotspot"
 msgstr "Prieigos tašką"
 
-#: panels/display/cc-display-panel.c:507
+#: panels/display/cc-display-panel.c:510
 #: panels/notifications/cc-notifications-panel.c:213
 #: panels/power/cc-power-panel.c:679 panels/power/cc-power-panel.c:686
 msgid "On"
 msgstr "Įjungta"
 
-#: panels/display/cc-display-panel.c:509 panels/network/cc-net-proxy-page.c:182
+#: panels/display/cc-display-panel.c:512 panels/network/cc-net-proxy-page.c:182
 #: panels/notifications/cc-notifications-panel.c:213
 #: panels/power/cc-power-panel.c:673 panels/power/cc-power-panel.c:684
 msgid "Off"
 msgstr "Išjungta"
 
-#: panels/display/cc-display-panel.c:927
+#: panels/display/cc-display-panel.c:931
 msgid "Apply Changes?"
 msgstr "Pritaikyti pakeitimus?"
 
-#: panels/display/cc-display-panel.c:933
+#: panels/display/cc-display-panel.c:937
 msgid "Changes Cannot be Applied"
 msgstr "Pakeitimų negalima pritaikyti"
 
-#: panels/display/cc-display-panel.c:935
+#: panels/display/cc-display-panel.c:939
 msgid "This could be due to hardware limitations."
 msgstr "Taip gali būti dėl aparatinės įrangos apribojimų."
 
@@ -2475,13 +2475,13 @@ msgstr "Žymeklio greitis"
 
 #: panels/mouse/cc-mouse-panel.ui:119 panels/mouse/cc-mouse-panel.ui:222
 #: panels/universal-access/cc-ua-typing-page.ui:58
-#: panels/universal-access/cc-ua-typing-page.ui:111
+#: panels/universal-access/cc-ua-typing-page.ui:110
 msgid "Slow"
 msgstr "Lėtas"
 
 #: panels/mouse/cc-mouse-panel.ui:121 panels/mouse/cc-mouse-panel.ui:224
 #: panels/universal-access/cc-ua-typing-page.ui:55
-#: panels/universal-access/cc-ua-typing-page.ui:108
+#: panels/universal-access/cc-ua-typing-page.ui:107
 msgid "Fast"
 msgstr "Greitas"
 
@@ -2975,9 +2975,9 @@ msgstr "Tinklo pavadinimas"
 #: panels/network/cc-wifi-hotspot-dialog.ui:92
 #: panels/printers/new-printer-dialog.ui:293
 #: panels/printers/pp-jobs-dialog.ui:54
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:109
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:110
 #: panels/system/remote-desktop/cc-remote-session-page.ui:108
-#: panels/system/users/cc-add-user-dialog.ui:159
+#: panels/system/users/cc-add-user-dialog.ui:150
 #: panels/wwan/cc-wwan-apn-dialog.ui:175
 msgid "Password"
 msgstr "Slaptažodis"
@@ -3071,7 +3071,7 @@ msgstr "802.1x _Sauga"
 #: panels/network/connection-editor/bluetooth-page.ui:16
 #: panels/network/connection-editor/ethernet-page.ui:27
 #: panels/network/connection-editor/vpn-page.ui:23
-#: panels/system/users/cc-add-user-dialog.ui:75
+#: panels/system/users/cc-add-user-dialog.ui:66
 #: panels/system/users/cc-user-page.ui:84
 msgid "_Name"
 msgstr "_Pavadinimas"
@@ -3090,30 +3090,22 @@ msgid "Identity"
 msgstr "Tapatybė"
 
 #: panels/network/connection-editor/ce-page.c:234
-#: panels/network/connection-editor/ce-page.c:238
 msgid "Preserve"
 msgstr "Išlaikyti"
 
 #: panels/network/connection-editor/ce-page.c:235
-#: panels/network/connection-editor/ce-page.c:239
 msgid "Permanent"
 msgstr "Nuolatinis"
 
 #: panels/network/connection-editor/ce-page.c:236
-#: panels/network/connection-editor/ce-page.c:240
 msgid "Random"
 msgstr "Atsitiktinis"
 
 #: panels/network/connection-editor/ce-page.c:237
-#: panels/network/connection-editor/ce-page.c:241
 msgid "Stable"
 msgstr "Stabilus"
 
-#: panels/network/connection-editor/ce-page.c:243
-msgid "Stable per SSID"
-msgstr "Stabilus kiekvienam SSID"
-
-#: panels/network/connection-editor/ce-page.c:251
+#: panels/network/connection-editor/ce-page.c:241
 msgid ""
 "The MAC address entered here will be used as hardware address for the "
 "network device this connection is activated on. This feature is known as MAC "
@@ -3123,7 +3115,7 @@ msgstr ""
 "aktyvuotas šis ryšys. Ši savybė yra žinoma kaip MAC klonavimas arba "
 "apsimetimas (spoofing). Pvz.: 00:11:22:33:44:55"
 
-#: panels/network/connection-editor/ce-page.c:409
+#: panels/network/connection-editor/ce-page.c:399
 #, c-format
 msgid "Profile %d"
 msgstr "Profilis %d"
@@ -4863,7 +4855,7 @@ msgstr ""
 #. Translators: This is a username on a print server.
 #: panels/printers/new-printer-dialog.ui:272
 #: panels/printers/pp-jobs-dialog.ui:42
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:93
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:94
 #: panels/system/remote-desktop/cc-remote-session-page.ui:92
 #: panels/wwan/cc-wwan-apn-dialog.ui:150
 msgid "Username"
@@ -6123,7 +6115,7 @@ msgid "No sandboxed apps have asked for location access"
 msgstr "Jokia apribota programa neprašė prieigos prie vietovės informacijos"
 
 #. Translators: This will be presented as the text of a link to the privacy policy
-#: panels/privacy/cc-location-page.c:446
+#: panels/privacy/cc-location-page.c:414
 msgid "Learn about what data is collected, and how it is used."
 msgstr "Sužinokite daugiau apie duomenų rinkimą ir kaip jie naudojami."
 
@@ -6165,59 +6157,59 @@ msgstr "_Ekrano užrakinimas"
 msgid "Automatic screen lock"
 msgstr "Automatinis ekrano užrakinimas"
 
-#: panels/privacy/cc-privacy-panel.ui:37
+#: panels/privacy/cc-privacy-panel.ui:36
 msgid "_Location"
 msgstr "_Vietovė"
 
-#: panels/privacy/cc-privacy-panel.ui:38
+#: panels/privacy/cc-privacy-panel.ui:37
 msgid "Control access to your location"
 msgstr "Valdykite prieigą prie savo buvimo vietos"
 
-#: panels/privacy/cc-privacy-panel.ui:48
+#: panels/privacy/cc-privacy-panel.ui:47
 msgid "_File History &amp; Trash"
 msgstr "_Failų istorija ir šiukšlinė"
 
-#: panels/privacy/cc-privacy-panel.ui:49
+#: panels/privacy/cc-privacy-panel.ui:48
 msgid "Remove saved data and files"
 msgstr "Pašalinti įrašytus duomenis bei failus"
 
-#: panels/privacy/cc-privacy-panel.ui:59
+#: panels/privacy/cc-privacy-panel.ui:58
 msgid "_Diagnostics"
 msgstr "_Diagnostika"
 
-#: panels/privacy/cc-privacy-panel.ui:60
+#: panels/privacy/cc-privacy-panel.ui:59
 msgid "Automatic problem reporting"
 msgstr "Automatinis pranešimas apie problemas"
 
-#: panels/privacy/cc-privacy-panel.ui:79
+#: panels/privacy/cc-privacy-panel.ui:78
 msgid "_Cameras"
 msgstr "_Kameros"
 
-#: panels/privacy/cc-privacy-panel.ui:80
+#: panels/privacy/cc-privacy-panel.ui:79
 msgid "Control camera access"
 msgstr "Valdyti prieigą prie kamerų"
 
-#: panels/privacy/cc-privacy-panel.ui:90
+#: panels/privacy/cc-privacy-panel.ui:89
 msgid "_Microphones"
 msgstr "_Mikrofonai"
 
-#: panels/privacy/cc-privacy-panel.ui:91
+#: panels/privacy/cc-privacy-panel.ui:90
 msgid "Control microphone access"
 msgstr "Valdyti prieigą prie mikrofonų"
 
-#: panels/privacy/cc-privacy-panel.ui:103
+#: panels/privacy/cc-privacy-panel.ui:102
 msgid "_Thunderbolt"
 msgstr "_Thunderbolt"
 
-#: panels/privacy/cc-privacy-panel.ui:104
+#: panels/privacy/cc-privacy-panel.ui:103
 msgid "Manage device access"
 msgstr "Valdyti prieigą prie Thunderbolt įrenginių"
 
-#: panels/privacy/cc-privacy-panel.ui:114
+#: panels/privacy/cc-privacy-panel.ui:113
 msgid "Device _Security"
 msgstr "Įrenginio _sauga"
 
-#: panels/privacy/cc-privacy-panel.ui:115
+#: panels/privacy/cc-privacy-panel.ui:114
 msgid "Hardware security status and information"
 msgstr "Kompiuterio aparatinės įrangos saugos būsena"
 
@@ -6597,7 +6589,7 @@ msgid "Subfolders must be manually added for this location"
 msgstr "Aplankai turi būti rankomis pridėti į šią vietą"
 
 #: panels/search/cc-search-locations-dialog.c:572
-#: panels/sharing/cc-sharing-panel.c:363
+#: panels/sharing/cc-sharing-panel.c:361
 msgid "Remove Folder"
 msgstr "Pašalinti aplanką"
 
@@ -6676,31 +6668,31 @@ msgstr "Paieška;rasti;indeksas;slėpti;privatumas;rezultatai;"
 msgid "No networks selected for sharing"
 msgstr "Nėra pasirinktų bendrinimui tinklų"
 
-#: panels/sharing/cc-sharing-panel.c:151
+#: panels/sharing/cc-sharing-panel.c:149
 msgctxt "service is disabled"
 msgid "Off"
 msgstr "Išjungta"
 
-#: panels/sharing/cc-sharing-panel.c:154
+#: panels/sharing/cc-sharing-panel.c:152
 msgctxt "service is enabled"
 msgid "Enabled"
 msgstr "Įjungta"
 
-#: panels/sharing/cc-sharing-panel.c:157
+#: panels/sharing/cc-sharing-panel.c:155
 msgctxt "service is active"
 msgid "Active"
 msgstr "Aktyvūs"
 
-#: panels/sharing/cc-sharing-panel.c:238
+#: panels/sharing/cc-sharing-panel.c:236
 msgid "Choose a Folder"
 msgstr "Pasirinkite aplanką"
 
-#: panels/sharing/cc-sharing-panel.c:386
+#: panels/sharing/cc-sharing-panel.c:384
 msgid "Add Folder"
 msgstr "Pridėti aplanką"
 
 #. TRANSLATORS: %s is replaced with a link to a dav://<hostname> URL
-#: panels/sharing/cc-sharing-panel.c:474
+#: panels/sharing/cc-sharing-panel.c:471
 #, c-format
 msgid ""
 "File Sharing allows you to share your Public folder with others on your "
@@ -6951,7 +6943,6 @@ msgstr ""
 "Išvestis;Įvestis;"
 
 #: panels/system/about/cc-about-page.ui:4
-#: panels/system/about/gnome-about-panel.desktop.in:3
 msgid "About"
 msgstr "Apie"
 
@@ -7154,24 +7145,6 @@ msgstr "Virtualizacija"
 msgid "Kernel Version"
 msgstr "Branduolio versija"
 
-#: panels/system/about/gnome-about-panel.desktop.in:4
-msgid "View information about your system"
-msgstr "Rodyti informaciją apie sistemą"
-
-#. Translators: Search terms to find the About panel.
-#. Do NOT translate or localize the semicolons!
-#. The list MUST also end with a semicolon!
-#. "Preferred Applications" is the old name for the preference, so make
-#. sure that you use the same "translation" for those keywords
-#: panels/system/about/gnome-about-panel.desktop.in:19
-msgid ""
-"device;system;information;hostname;memory;processor;version;default;"
-"application;preferred;cd;dvd;usb;audio;video;disc;removable;media;autorun;"
-msgstr ""
-"įrenginys;sistema;informacija;pavadinimas;atmintis;procesorius;versija;"
-"numatyta;programa;pageidaujama;cd;dvd;usb;audio;video;diskas;išimama;"
-"laikmena;autopaleidimas;"
-
 #: panels/system/cc-system-panel.ui:23
 msgid "_Region &amp; Language"
 msgstr "_Regionas ir kalba"
@@ -7180,63 +7153,63 @@ msgstr "_Regionas ir kalba"
 msgid "System language and localization"
 msgstr "Sistemos kalbos ir lokalizacija"
 
-#: panels/system/cc-system-panel.ui:33
+#: panels/system/cc-system-panel.ui:34
 msgid "_Date &amp; Time"
 msgstr "_Data ir laikas"
 
-#: panels/system/cc-system-panel.ui:34
+#: panels/system/cc-system-panel.ui:35
 msgid "Time zone and clock settings"
 msgstr "Laiko juosta ir laikrodžio nuostatos"
 
-#: panels/system/cc-system-panel.ui:43
+#: panels/system/cc-system-panel.ui:45
 msgid "_Users"
 msgstr "Na_udotojai"
 
-#: panels/system/cc-system-panel.ui:44
+#: panels/system/cc-system-panel.ui:46
 msgid "Add and remove accounts, change password"
 msgstr "Pridėti arba šalinti naudotojus bei keisti slaptažodžius"
 
-#: panels/system/cc-system-panel.ui:54
+#: panels/system/cc-system-panel.ui:58
 msgid "R_emote Desktop"
 msgstr "_Nuotolinis darbalaukis"
 
-#: panels/system/cc-system-panel.ui:55
+#: panels/system/cc-system-panel.ui:59
 msgid "Allow this device to be used remotely"
 msgstr "Leisti naudotis šiuo įrenginiu per nuotolį"
 
-#: panels/system/cc-system-panel.ui:64
+#: panels/system/cc-system-panel.ui:69
 #: panels/system/remote-login/cc-remote-login-page.ui:51
 msgid "Secu_re Shell"
 msgstr "_Saugus apvalkalas"
 
-#: panels/system/cc-system-panel.ui:65
+#: panels/system/cc-system-panel.ui:70
 msgid "SSH network access"
 msgstr "SSH tinklo prieiga"
 
-#: panels/system/cc-system-panel.ui:74
+#: panels/system/cc-system-panel.ui:79
 msgid "_About"
 msgstr "_Apie"
 
-#: panels/system/cc-system-panel.ui:75
+#: panels/system/cc-system-panel.ui:80
 msgid "Hardware details and software versions"
 msgstr "Aparatinės įrangos informacija bei programinės įrangos versijos"
 
-#: panels/system/cc-system-panel.ui:91
+#: panels/system/cc-system-panel.ui:97
 msgid "Software _Updates"
 msgstr "Programinės įrangos atna_ujinimai"
 
 #. Translators: This is the full date and time format used in 12-hour mode.
-#: panels/system/datetime/cc-datetime-page.c:237
+#: panels/system/datetime/cc-datetime-page.c:230
 msgid "%e %B %Y, %l:%M %p"
 msgstr "%Y %B %d, %l:%M %p"
 
 #. Translators: This is the full date and time format used in 24-hour mode.
-#: panels/system/datetime/cc-datetime-page.c:242
+#: panels/system/datetime/cc-datetime-page.c:235
 msgid "%e %B %Y, %R"
 msgstr "%Y %B %d, %R"
 
 #. Translators: "city, country"
-#: panels/system/datetime/cc-datetime-page.c:403
+#: panels/system/datetime/cc-datetime-page.c:388
 #, c-format
 msgctxt "timezone loc"
 msgid "%s, %s"
@@ -7244,39 +7217,38 @@ msgstr "%s, %s"
 
 #. Update the timezone on the listbow row
 #. Translators: "timezone (details)"
-#: panels/system/datetime/cc-datetime-page.c:420
+#: panels/system/datetime/cc-datetime-page.c:405
 #, c-format
 msgctxt "timezone desc"
 msgid "%s (%s)"
 msgstr "%s (%s)"
 
 #: panels/system/datetime/cc-datetime-page.ui:9
-#: panels/system/datetime/cc-datetime-page.ui:116
-#: panels/system/datetime/gnome-datetime-panel.desktop.in:3
+#: panels/system/datetime/cc-datetime-page.ui:117
 msgid "Date & Time"
 msgstr "Data ir laikas"
 
-#: panels/system/datetime/cc-datetime-page.ui:59
+#: panels/system/datetime/cc-datetime-page.ui:60
 msgid "_Year"
 msgstr "_Metai"
 
-#: panels/system/datetime/cc-datetime-page.ui:70
+#: panels/system/datetime/cc-datetime-page.ui:71
 msgid "_Month"
 msgstr "Mė_nuo"
 
-#: panels/system/datetime/cc-datetime-page.ui:97
+#: panels/system/datetime/cc-datetime-page.ui:98
 msgid "_Day"
 msgstr "_Diena"
 
-#: panels/system/datetime/cc-datetime-page.ui:136
+#: panels/system/datetime/cc-datetime-page.ui:137
 msgid "Automatic _Date &amp; Time"
 msgstr "Automatinė _data ir laikas"
 
-#: panels/system/datetime/cc-datetime-page.ui:137
+#: panels/system/datetime/cc-datetime-page.ui:138
 msgid "Requires internet access"
 msgstr "Reikalauja interneto ryšio"
 
-#: panels/system/datetime/cc-datetime-page.ui:149
+#: panels/system/datetime/cc-datetime-page.ui:150
 msgid "Date &amp; _Time"
 msgstr "Da_ta ir laikas"
 
@@ -7332,51 +7304,51 @@ msgstr "Savaičių _numeriai"
 msgid "Shown in the dropdown calendar"
 msgstr "Rodoma iššokančiame kalendoriuje"
 
-#: panels/system/datetime/cc-datetime-page.ui:270
+#: panels/system/datetime/cc-datetime-page.ui:271
 msgid "January"
 msgstr "Sausis"
 
-#: panels/system/datetime/cc-datetime-page.ui:271
+#: panels/system/datetime/cc-datetime-page.ui:272
 msgid "February"
 msgstr "Vasaris"
 
-#: panels/system/datetime/cc-datetime-page.ui:272
+#: panels/system/datetime/cc-datetime-page.ui:273
 msgid "March"
 msgstr "Kovas"
 
-#: panels/system/datetime/cc-datetime-page.ui:273
+#: panels/system/datetime/cc-datetime-page.ui:274
 msgid "April"
 msgstr "Balandis"
 
-#: panels/system/datetime/cc-datetime-page.ui:274
+#: panels/system/datetime/cc-datetime-page.ui:275
 msgid "May"
 msgstr "Gegužė"
 
-#: panels/system/datetime/cc-datetime-page.ui:275
+#: panels/system/datetime/cc-datetime-page.ui:276
 msgid "June"
 msgstr "Birželis"
 
-#: panels/system/datetime/cc-datetime-page.ui:276
+#: panels/system/datetime/cc-datetime-page.ui:277
 msgid "July"
 msgstr "Liepa"
 
-#: panels/system/datetime/cc-datetime-page.ui:277
+#: panels/system/datetime/cc-datetime-page.ui:278
 msgid "August"
 msgstr "Rugpjūtis"
 
-#: panels/system/datetime/cc-datetime-page.ui:278
+#: panels/system/datetime/cc-datetime-page.ui:279
 msgid "September"
 msgstr "Rugsėjis"
 
-#: panels/system/datetime/cc-datetime-page.ui:279
+#: panels/system/datetime/cc-datetime-page.ui:280
 msgid "October"
 msgstr "Spalis"
 
-#: panels/system/datetime/cc-datetime-page.ui:280
+#: panels/system/datetime/cc-datetime-page.ui:281
 msgid "November"
 msgstr "Lapkritis"
 
-#: panels/system/datetime/cc-datetime-page.ui:281
+#: panels/system/datetime/cc-datetime-page.ui:282
 msgid "December"
 msgstr "Gruodis"
 
@@ -7391,15 +7363,6 @@ msgstr "Ieškoti miestų"
 #: panels/system/datetime/cc-tz-dialog.ui:47
 msgid "No Results"
 msgstr "Nerasta rezultatų"
-
-#: panels/system/datetime/gnome-datetime-panel.desktop.in:4
-msgid "Change the date and time, including time zone"
-msgstr "Keiskite datą ir laiką, įskaitant laiko juostą"
-
-#. Translators: Search terms to find the Date and Time panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
-#: panels/system/datetime/gnome-datetime-panel.desktop.in:15
-msgid "Clock;Timezone;Location;"
-msgstr "Laikrodis;Laiko juosta;Vietovė;"
 
 #: panels/system/datetime/org.gnome.controlcenter.system.policy.in:11
 msgid "Change system time and date settings"
@@ -7489,7 +7452,6 @@ msgid "Paper"
 msgstr "Popierius"
 
 #: panels/system/region/cc-region-page.ui:4
-#: panels/system/region/gnome-region-panel.desktop.in:3
 msgid "Region & Language"
 msgstr "Regionas ir kalba"
 
@@ -7534,15 +7496,6 @@ msgstr "K_alba"
 msgid "Fo_rmats"
 msgstr "Fo_rmatai"
 
-#: panels/system/region/gnome-region-panel.desktop.in:4
-msgid "Select your display language and formats"
-msgstr "Pasirinkite rodymo kalbą bei formatus"
-
-#. Translators: Search terms to find the Region and Language panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
-#: panels/system/region/gnome-region-panel.desktop.in:15
-msgid "Language;Layout;Keyboard;Input;"
-msgstr "Kalba;Išdėstymas;Klaviatūra;Įvestis;"
-
 #: panels/system/remote-desktop/cc-desktop-sharing-page.c:364
 #: panels/system/remote-desktop/cc-remote-session-page.c:98
 msgid "Device address copied"
@@ -7563,7 +7516,7 @@ msgstr "Naudotojo vardas nukopijuotas"
 msgid "Password copied"
 msgstr "Slaptažodis nukopijuotas"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:12
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:13
 msgid ""
 "Share your existing desktop with other devices. The remote connection uses "
 "the existing screen resolution"
@@ -7571,25 +7524,24 @@ msgstr ""
 "Dalinkitės savo darbalaukiu su kitais įrenginiais. Nuotolinis ryšys naudoja "
 "esamą ekrano raišką"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:27
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:28
 msgid "_Desktop Sharing"
 msgstr "_Dalinimasis darbalaukiu"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:33
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:34
 msgid "Remote _Control"
 msgstr "Nuotolinį _valdymas"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:35
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:36
 msgid "Allows desktop shares to control the screen"
 msgstr "Visada leidžia nuotoliniams ryšiams valdyti ekraną"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:42
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:43
 #: panels/system/remote-desktop/cc-remote-session-page.ui:41
 msgid "How to Connect"
 msgstr "Kaip prisijungti"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:43
-#: panels/system/remote-desktop/cc-remote-session-page.ui:42
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:44
 msgid ""
 "Use a remote desktop app to connect using the RDP protocol. Additional "
 "information about the device’s network location may also be required."
@@ -7597,15 +7549,15 @@ msgstr ""
 "Naudokite nuotolinio darbalaukio programą prisijungimiu RDP protokolu. Gali "
 "prireikti papildomos informacijos apie įrenginio tinklo vietą."
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:46
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:47
 #: panels/system/remote-desktop/cc-remote-session-page.ui:45
 msgid "_Hostname"
 msgstr "_Kompiuterio pavadinimas"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:54
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:75
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:96
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:112
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:55
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:76
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:97
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:113
 #: panels/system/remote-desktop/cc-remote-session-page.ui:53
 #: panels/system/remote-desktop/cc-remote-session-page.ui:74
 #: panels/system/remote-desktop/cc-remote-session-page.ui:95
@@ -7614,22 +7566,22 @@ msgstr "_Kompiuterio pavadinimas"
 msgid "Copy"
 msgstr "Kopijuoti"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:67
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:68
 #: panels/system/remote-desktop/cc-remote-session-page.ui:66
 msgid "_Port"
 msgstr "_Prievadas"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:90
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:91
 #: panels/system/remote-desktop/cc-remote-session-page.ui:89
 msgid "Login Details"
 msgstr "Prisijungimo informacija"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:131
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:132
 #: panels/system/remote-desktop/cc-remote-session-page.ui:130
 msgid "_Generate New Password"
 msgstr "_Generuoti naują slaptažodį"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:142
+#: panels/system/remote-desktop/cc-desktop-sharing-page.ui:143
 #: panels/system/remote-desktop/cc-remote-session-page.ui:141
 msgid "_Verify Encryption"
 msgstr "Patikrinti ši_fravimą"
@@ -7660,11 +7612,19 @@ msgstr ""
 "Nuotoliu prisijungti prie savo naudotojo paskyros, kai ji nenaudojama. "
 "Ekrano raišką galima nustatyti nuotoliu."
 
-#: panels/system/remote-desktop/cc-encryption-fingerprint-dialog.ui:28
+#: panels/system/remote-desktop/cc-remote-session-page.ui:42
+msgid ""
+"Use a remote desktop app to connect using the RDP protocol. Additional "
+"information about the device's network location may also be required"
+msgstr ""
+"Naudokite nuotolinio darbalaukio programą prisijungimui RDP protokolu. Gali "
+"prireikti papildomos informacijos apie įrenginio tinklo vietą"
+
+#: panels/system/remote-desktop/cc-encryption-fingerprint-dialog.ui:20
 msgid "Encryption Fingerprint"
 msgstr "Šifravimo piršto atspaudas"
 
-#: panels/system/remote-desktop/cc-encryption-fingerprint-dialog.ui:29
+#: panels/system/remote-desktop/cc-encryption-fingerprint-dialog.ui:21
 msgid ""
 "The encryption fingerprint can be seen in connecting clients and should be "
 "identical"
@@ -7718,16 +7678,16 @@ msgstr "Slaptažodžiai nesutampa."
 msgid "Add User"
 msgstr "Pridėti naudotojo paskyrą"
 
-#: panels/system/users/cc-add-user-dialog.ui:102
+#: panels/system/users/cc-add-user-dialog.ui:93
 #: panels/system/users/cc-enterprise-login-dialog.ui:107
 msgid "_Username"
 msgstr "_Naudotojo vardas"
 
-#: panels/system/users/cc-add-user-dialog.ui:140
+#: panels/system/users/cc-add-user-dialog.ui:131
 msgid "Ad_ministrator"
 msgstr "Ad_ministratorius"
 
-#: panels/system/users/cc-add-user-dialog.ui:145
+#: panels/system/users/cc-add-user-dialog.ui:136
 #: panels/system/users/cc-user-page.ui:141
 msgid ""
 "Administrators have extra abilities, including adding and removing users, "
@@ -7738,58 +7698,58 @@ msgstr ""
 "naudotojus, keisti prisijungimo nustatymus bei šalinti programinę įrangą. "
 "Tėvų kontrolė negali būti pritaikyta administratoriams."
 
-#: panels/system/users/cc-add-user-dialog.ui:163
+#: panels/system/users/cc-add-user-dialog.ui:154
 msgid "User sets password on _first login"
 msgstr "Naudotojas nustato slaptažodį _pirmo prisijungimo metu"
 
-#: panels/system/users/cc-add-user-dialog.ui:176
+#: panels/system/users/cc-add-user-dialog.ui:167
 msgid "Set password n_ow"
 msgstr "Nustatyti slaptažodį _dabar"
 
-#: panels/system/users/cc-add-user-dialog.ui:196
+#: panels/system/users/cc-add-user-dialog.ui:187
 msgid "Pass_word"
 msgstr "S_laptažodis"
 
-#: panels/system/users/cc-add-user-dialog.ui:240
+#: panels/system/users/cc-add-user-dialog.ui:231
 msgid "_Confirm"
 msgstr "_Patvirtinti"
 
-#: panels/system/users/cc-enterprise-login-dialog.c:148
+#: panels/system/users/cc-enterprise-login-dialog.c:133
+#: panels/system/users/cc-enterprise-login-dialog.c:171
 #: panels/system/users/cc-enterprise-login-dialog.c:186
-#: panels/system/users/cc-enterprise-login-dialog.c:201
 msgid "Failed to register account"
 msgstr "Nepavyko priregistruoti paskyros"
 
-#: panels/system/users/cc-enterprise-login-dialog.c:255
-#: panels/system/users/cc-enterprise-login-dialog.c:424
+#: panels/system/users/cc-enterprise-login-dialog.c:240
+#: panels/system/users/cc-enterprise-login-dialog.c:411
 msgid "Failed to join domain"
 msgstr "Nepavyko prisijungti prie srities"
 
-#: panels/system/users/cc-enterprise-login-dialog.c:290
+#: panels/system/users/cc-enterprise-login-dialog.c:275
 msgid "No supported way to authenticate with this domain"
 msgstr "Nėra palaikomo būdo patvirtinti tapatybę šiame serveryje"
 
-#: panels/system/users/cc-enterprise-login-dialog.c:300
-#: panels/system/users/cc-enterprise-login-dialog.c:489
+#: panels/system/users/cc-enterprise-login-dialog.c:285
+#: panels/system/users/cc-enterprise-login-dialog.c:476
 msgid "That login name didn’t work"
 msgstr "Šis prisijungimo vardas nesuveikė"
 
-#: panels/system/users/cc-enterprise-login-dialog.c:307
-#: panels/system/users/cc-enterprise-login-dialog.c:496
+#: panels/system/users/cc-enterprise-login-dialog.c:292
+#: panels/system/users/cc-enterprise-login-dialog.c:483
 msgid "That login password didn’t work"
 msgstr "Šis prisijungimo slaptažodis nesuveikė"
 
-#: panels/system/users/cc-enterprise-login-dialog.c:314
+#: panels/system/users/cc-enterprise-login-dialog.c:299
 msgid "That hostname didn’t work"
 msgstr "Šis kompiuterio pavadinimas nesuveikė"
 
-#: panels/system/users/cc-enterprise-login-dialog.c:321
-#: panels/system/users/cc-enterprise-login-dialog.c:504
+#: panels/system/users/cc-enterprise-login-dialog.c:306
+#: panels/system/users/cc-enterprise-login-dialog.c:491
 msgid "Failed to log into domain"
 msgstr "Nepavyko prisijungti prie srities"
 
 #. Translators: The "%s" is a domain address (e.g. "demo1.freeipa.org").
-#: panels/system/users/cc-enterprise-login-dialog.c:365
+#: panels/system/users/cc-enterprise-login-dialog.c:352
 #, c-format
 msgid ""
 "To add an enterprise login account, this device needs to be enrolled with "
@@ -7799,19 +7759,19 @@ msgstr ""
 "Kompanijos prisijungimams naudoti, šis kompiuteris turi būti įtrauktas į "
 "<b>%s</b>. Paprašykite tinklo administratoriaus įvesti jų srities slaptažodį."
 
-#: panels/system/users/cc-enterprise-login-dialog.c:548
+#: panels/system/users/cc-enterprise-login-dialog.c:538
 msgid "Valid domain"
 msgstr "Tinkamas domenas"
 
-#: panels/system/users/cc-enterprise-login-dialog.c:552
+#: panels/system/users/cc-enterprise-login-dialog.c:542
 msgid "Domain not found"
 msgstr "Domenas nerastas"
 
-#: panels/system/users/cc-enterprise-login-dialog.c:595
+#: panels/system/users/cc-enterprise-login-dialog.c:585
 msgid "Checking domain…"
 msgstr "Tikrinamas domenas…"
 
-#: panels/system/users/cc-enterprise-login-dialog.c:639
+#: panels/system/users/cc-enterprise-login-dialog.c:629
 msgid "Failed to contact realmd service"
 msgstr "Nepavyko susisiekti su realmd tarnyba"
 
@@ -8238,7 +8198,6 @@ msgid "_Delete Files and Settings"
 msgstr "Iš_trinti failus bei nuostatas"
 
 #: panels/system/users/cc-users-page.ui:11
-#: panels/system/users/gnome-users-panel.desktop.in:3
 msgid "Users"
 msgstr "Naudotojai"
 
@@ -8271,20 +8230,6 @@ msgstr ""
 #: panels/system/users/data/join-dialog.ui:135
 msgid "Administrator Password"
 msgstr "Administratoriaus slaptažodis"
-
-#: panels/system/users/gnome-users-panel.desktop.in:4
-msgid "Add or remove users and change your password"
-msgstr "Pridėti arba šalinti naudotojus bei keiskite savo slaptažodį"
-
-#. Translators: Search terms to find the Users panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
-#: panels/system/users/gnome-users-panel.desktop.in:15
-msgid ""
-"Login;Name;Fingerprint;Avatar;Logo;Face;Password;Parental Controls;Screen "
-"Time;App Restrictions;Web Restrictions;Usage;Usage Limit;Kid;Child;"
-msgstr ""
-"Prisijungimas;Pavadinimas;Piršto atspaudas;Atvaizdas;Logo;Veidas;Slaptažodis;"
-"Tėvų kontrolė;Ekrano laikas;Programų ribojimai;Žiniatinklio ribojimai;"
-"Naudojimas;Naudojimo ribojimai;Vaikas;"
 
 #: panels/system/users/org.gnome.controlcenter.user-accounts.policy.in:11
 msgid "Manage user accounts"
@@ -8559,9 +8504,9 @@ msgstr "_Dvigubas paspaudimo delsa"
 #: panels/universal-access/cc-ua-mouse-page.ui:40
 #: panels/universal-access/cc-ua-mouse-page.ui:78
 #: panels/universal-access/cc-ua-mouse-page.ui:111
-#: panels/universal-access/cc-ua-typing-page.ui:133
-#: panels/universal-access/cc-ua-typing-page.ui:186
-#: panels/universal-access/cc-ua-typing-page.ui:233
+#: panels/universal-access/cc-ua-typing-page.ui:131
+#: panels/universal-access/cc-ua-typing-page.ui:183
+#: panels/universal-access/cc-ua-typing-page.ui:230
 #: panels/universal-access/cc-ua-zoom-page.ui:179
 msgid "Short"
 msgstr "Trumpas"
@@ -8570,9 +8515,9 @@ msgstr "Trumpas"
 #: panels/universal-access/cc-ua-mouse-page.ui:43
 #: panels/universal-access/cc-ua-mouse-page.ui:81
 #: panels/universal-access/cc-ua-mouse-page.ui:114
-#: panels/universal-access/cc-ua-typing-page.ui:136
-#: panels/universal-access/cc-ua-typing-page.ui:189
-#: panels/universal-access/cc-ua-typing-page.ui:236
+#: panels/universal-access/cc-ua-typing-page.ui:134
+#: panels/universal-access/cc-ua-typing-page.ui:186
+#: panels/universal-access/cc-ua-typing-page.ui:233
 #: panels/universal-access/cc-ua-zoom-page.ui:183
 msgid "Long"
 msgstr "Ilgas"
@@ -8590,8 +8535,8 @@ msgid "Secondary click by holding down the primary mouse button"
 msgstr "Pradėti antrinį spustelėjimą laikant pagrindinį mygtuką"
 
 #: panels/universal-access/cc-ua-mouse-page.ui:73
-#: panels/universal-access/cc-ua-typing-page.ui:180
-#: panels/universal-access/cc-ua-typing-page.ui:228
+#: panels/universal-access/cc-ua-typing-page.ui:178
+#: panels/universal-access/cc-ua-typing-page.ui:225
 msgid "Acceptance Delay"
 msgstr "_Priėmimo delsa"
 
@@ -8604,7 +8549,7 @@ msgid "Trigger a click when the pointer hovers"
 msgstr "Pradėti spustelėjimą sustabdžius pelės žymeklį"
 
 #: panels/universal-access/cc-ua-mouse-page.ui:106
-#: panels/universal-access/cc-ua-typing-page.ui:127
+#: panels/universal-access/cc-ua-typing-page.ui:126
 msgid "Delay"
 msgstr "Delsa"
 
@@ -8810,48 +8755,48 @@ msgstr "Klavišų paspaudimai kartojami, kai klavišas laikomas nuspaustu"
 msgid "Speed"
 msgstr "Greitis"
 
-#: panels/universal-access/cc-ua-typing-page.ui:155
+#: panels/universal-access/cc-ua-typing-page.ui:153
 msgid "_Sticky Keys"
 msgstr "_Kibieji klavišai"
 
-#: panels/universal-access/cc-ua-typing-page.ui:156
+#: panels/universal-access/cc-ua-typing-page.ui:154
 msgid "Sequences of modifier keys act as a key combination"
 msgstr "Traktuoja modifikavimo klavišų seką kaip klavišų kombinaciją"
 
-#: panels/universal-access/cc-ua-typing-page.ui:161
+#: panels/universal-access/cc-ua-typing-page.ui:159
 msgid "Disable if two keys are pressed together"
 msgstr "Išjungti, jei du klavišai paspaudžiami kartu"
 
-#: panels/universal-access/cc-ua-typing-page.ui:166
+#: panels/universal-access/cc-ua-typing-page.ui:164
 msgid "Beep when modifier key is pressed"
 msgstr "Pyptelėti, kai paspaustas modifikatorius"
 
-#: panels/universal-access/cc-ua-typing-page.ui:174
+#: panels/universal-access/cc-ua-typing-page.ui:172
 msgid "S_low Keys"
 msgstr "_Lėtieji klavišai"
 
-#: panels/universal-access/cc-ua-typing-page.ui:175
+#: panels/universal-access/cc-ua-typing-page.ui:173
 msgid "Delay between when a key is pressed and when it is accepted"
 msgstr "Nustato delsą tarp klavišo paspaudimo ir jo priėmimo"
 
-#: panels/universal-access/cc-ua-typing-page.ui:204
+#: panels/universal-access/cc-ua-typing-page.ui:201
 msgid "Beep when a key is pressed"
 msgstr "Pyptelėti, kai paspaudžiamas klavišas"
 
-#: panels/universal-access/cc-ua-typing-page.ui:209
+#: panels/universal-access/cc-ua-typing-page.ui:206
 msgid "Beep when a key is accepted"
 msgstr "Pyptelėti, kai klavišas priimamas"
 
-#: panels/universal-access/cc-ua-typing-page.ui:214
-#: panels/universal-access/cc-ua-typing-page.ui:251
+#: panels/universal-access/cc-ua-typing-page.ui:211
+#: panels/universal-access/cc-ua-typing-page.ui:248
 msgid "Beep when a key is rejected"
 msgstr "Pyptelėti, jei klavišas atmestas"
 
-#: panels/universal-access/cc-ua-typing-page.ui:222
+#: panels/universal-access/cc-ua-typing-page.ui:219
 msgid "B_ounce Keys"
 msgstr "Pasi_kartojantys klavišai"
 
-#: panels/universal-access/cc-ua-typing-page.ui:223
+#: panels/universal-access/cc-ua-typing-page.ui:220
 msgid "Ignore fast duplicate keypresses"
 msgstr "Nepaiso greitų dvigubų klavišų paspaudimų"
 
@@ -9241,19 +9186,19 @@ msgstr "_Trintuko spaudimo jutimas"
 msgid "Eraser pressure"
 msgstr "Trintuko spaudimo jėga"
 
-#: panels/wacom/cc-wacom-tool.c:362
+#: panels/wacom/cc-wacom-tool.c:361
 msgid "Airbrush stylus with pressure, tilt, and integrated slider"
 msgstr "Orinis pieštukas yra spaudimo jėga, palenkimu ir integruotu slankikliu"
 
-#: panels/wacom/cc-wacom-tool.c:364
+#: panels/wacom/cc-wacom-tool.c:363
 msgid "Art pen with pressure, tilt, and rotation"
 msgstr "Orinis pieštukas yra spaudimo jėga, palenkimu ir posūkiu"
 
-#: panels/wacom/cc-wacom-tool.c:366
+#: panels/wacom/cc-wacom-tool.c:365
 msgid "Stylus with pressure and tilt"
 msgstr "Pieštukas su spaudimo jėga ir palenkimu"
 
-#: panels/wacom/cc-wacom-tool.c:368
+#: panels/wacom/cc-wacom-tool.c:367
 msgid "Stylus with pressure"
 msgstr "Pieštukas su spaudimo jėga"
 
@@ -9830,7 +9775,7 @@ msgid "Settings is the primary interface for configuring your system."
 msgstr "Nustatymai yra pirminė sąsaja jūsų sistemos konfigūravimui."
 
 #. developer_name tag deprecated with Appstream 1.0
-#: shell/appdata/org.gnome.Settings.appdata.xml.in:39
+#: shell/appdata/org.gnome.Settings.appdata.xml.in:38
 msgid "The GNOME Project"
 msgstr "GNOME projektas"
 
@@ -9878,7 +9823,7 @@ msgstr "Nuostatų kategorijos"
 msgid "No Results Found"
 msgstr "Nerasta rezultatų"
 
-#: shell/cc-panel-loader.c:311
+#: shell/cc-panel-loader.c:308
 msgid "Available panels:"
 msgstr "Prieinami skydeliai:"
 
@@ -9998,7 +9943,7 @@ msgstr ""
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1879
+#: subprojects/gvc/gvc-mixer-control.c:1915
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -10008,7 +9953,7 @@ msgstr[2] "%u išvesčių"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1889
+#: subprojects/gvc/gvc-mixer-control.c:1925
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
@@ -10016,16 +9961,9 @@ msgstr[0] "%u įvestis"
 msgstr[1] "%u įvestys"
 msgstr[2] "%u įvesčių"
 
-#: subprojects/gvc/gvc-mixer-control.c:2872
+#: subprojects/gvc/gvc-mixer-control.c:2882
 msgid "System Sounds"
 msgstr "Sistemos garsai"
-
-#~ msgid ""
-#~ "Use a remote desktop app to connect using the RDP protocol. Additional "
-#~ "information about the device's network location may also be required"
-#~ msgstr ""
-#~ "Naudokite nuotolinio darbalaukio programą prisijungimui RDP protokolu. "
-#~ "Gali prireikti papildomos informacijos apie įrenginio tinklo vietą"
 
 #~ msgid "Device name copied"
 #~ msgstr "Įrenginio pavadinimas nukopijuotas"
@@ -10109,6 +10047,12 @@ msgstr "Sistemos garsai"
 #~ msgid "Date"
 #~ msgstr "Data"
 
+#~ msgid "Change the date and time, including time zone"
+#~ msgstr "Keiskite datą ir laiką, įskaitant laiko juostą"
+
+#~ msgid "Clock;Timezone;Location;"
+#~ msgstr "Laikrodis;Laiko juosta;Vietovė;"
+
 #~ msgid "Links &amp; Files"
 #~ msgstr "Saitai ir failai"
 
@@ -10126,6 +10070,9 @@ msgstr "Sistemos garsai"
 
 #~ msgid "Not Available"
 #~ msgstr "Neprieinama"
+
+#~ msgid "View information about your system"
+#~ msgstr "Rodyti informaciją apie sistemą"
 
 #~ msgid "Options"
 #~ msgstr "Parametrai"
@@ -10203,6 +10150,12 @@ msgstr "Sistemos garsai"
 
 #~ msgid "Privacy"
 #~ msgstr "Privatumas"
+
+#~ msgid "Select your display language and formats"
+#~ msgstr "Pasirinkite rodymo kalbą bei formatus"
+
+#~ msgid "Language;Layout;Keyboard;Input;"
+#~ msgstr "Kalba;Išdėstymas;Klaviatūra;Įvestis;"
 
 #~ msgid "Select how media should be handled"
 #~ msgstr "Pasirinkite, kaip laikmena turi būti apdorota"
@@ -10321,6 +10274,17 @@ msgstr "Sistemos garsai"
 
 #~ msgid "_Delete"
 #~ msgstr "_Ištrinti"
+
+#~ msgid "Add or remove users and change your password"
+#~ msgstr "Pridėti arba šalinti naudotojus bei keiskite savo slaptažodį"
+
+#~ msgid ""
+#~ "Login;Name;Fingerprint;Avatar;Logo;Face;Password;Parental Controls;Screen "
+#~ "Time;App Restrictions;Web Restrictions;Usage;Usage Limit;Kid;Child;"
+#~ msgstr ""
+#~ "Prisijungimas;Pavadinimas;Piršto atspaudas;Atvaizdas;Logo;Veidas;"
+#~ "Slaptažodis;Tėvų kontrolė;Ekrano laikas;Programų ribojimai;Žiniatinklio "
+#~ "ribojimai;Naudojimas;Naudojimo ribojimai;Vaikas;"
 
 #~ msgid "External pad device"
 #~ msgstr "Išorinis planšetinis įrenginys"

@@ -66,7 +66,7 @@ G_DEFINE_TYPE (CcApplication, cc_application, ADW_TYPE_APPLICATION)
 
 const GOptionEntry all_options[] = {
   { "version", 0, 0, G_OPTION_ARG_NONE, NULL, N_("Display version number"), NULL },
-  { "verbose", 'v', G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, cmd_verbose_cb, N_("Enable verbose mode"), NULL },
+  { "verbose", 'v', G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, cmd_verbose_cb, N_("Enable verbose mode. Specify multiple times to increase verbosity"), NULL },
   { "search", 's', 0, G_OPTION_ARG_STRING, NULL, N_("Search for the string"), "SEARCH" },
   { "list", 'l', 0, G_OPTION_ARG_NONE, NULL, N_("List possible panel names and exit"), NULL },
   { G_OPTION_REMAINING, '\0', 0, G_OPTION_ARG_FILENAME_ARRAY, NULL, N_("Panel to display"), N_("[PANEL] [ARGUMENT…]") },
@@ -107,18 +107,17 @@ about_activated (GSimpleAction *action,
 
 {
   CcApplication *self = CC_APPLICATION (user_data);
-  GtkWidget *about_window;
+  AdwDialog *about_dialog;
   const char *developer_name;
 
-  about_window = adw_about_window_new_from_appdata ("/org/gnome/Settings/appdata", NULL);
-  adw_about_window_set_version (ADW_ABOUT_WINDOW (about_window), VERSION);
-  developer_name = adw_about_window_get_developer_name (ADW_ABOUT_WINDOW (about_window));
+  about_dialog = adw_about_dialog_new_from_appdata ("/org/gnome/Settings/appdata", NULL);
+  adw_about_dialog_set_version (ADW_ABOUT_DIALOG (about_dialog), VERSION);
+  developer_name = adw_about_dialog_get_developer_name (ADW_ABOUT_DIALOG (about_dialog));
   /* Translators should localize the following string which will be displayed in the About dialog giving credit to the translator(s). */
-  adw_about_window_set_translator_credits (ADW_ABOUT_WINDOW (about_window), _("translator-credits"));
-  adw_about_window_set_copyright (ADW_ABOUT_WINDOW (about_window), g_strdup_printf (_("© 1998 %s"), developer_name));
-  gtk_window_set_transient_for (GTK_WINDOW (about_window), GTK_WINDOW (self->window));
+  adw_about_dialog_set_translator_credits (ADW_ABOUT_DIALOG (about_dialog), _("translator-credits"));
+  adw_about_dialog_set_copyright (ADW_ABOUT_DIALOG (about_dialog), g_strdup_printf (_("© 1998 %s"), developer_name));
 
-  gtk_window_present (GTK_WINDOW (about_window));
+  adw_dialog_present (about_dialog, GTK_WIDGET (self->window));
 }
 
 static gboolean
@@ -303,6 +302,8 @@ cc_application_startup (GApplication *application)
 
   G_APPLICATION_CLASS (cc_application_parent_class)->startup (application);
 
+  gtk_window_set_default_icon_name (APPLICATION_ID);
+
   gtk_application_set_accels_for_action (GTK_APPLICATION (application),
                                          "app.help", help_accels);
 
@@ -370,7 +371,7 @@ GtkApplication *
 cc_application_new (void)
 {
   return g_object_new (CC_TYPE_APPLICATION,
-                       "application-id", "org.gnome.Settings",
+                       "application-id", APPLICATION_ID,
                        "flags", G_APPLICATION_HANDLES_COMMAND_LINE,
                        NULL);
 }

@@ -31,14 +31,12 @@
 #include "datetime/cc-datetime-page.h"
 #include "region/cc-region-page.h"
 #include "remote-desktop/cc-remote-desktop-page.h"
-#include "remote-login/cc-remote-login-page.h"
+#include "secure-shell/cc-secure-shell-page.h"
 #include "users/cc-users-page.h"
 
 struct _CcSystemPanel
 {
   CcPanel    parent_instance;
-
-  AdwNavigationView *navigation;
 
   AdwActionRow *about_row;
   AdwActionRow *datetime_row;
@@ -46,7 +44,7 @@ struct _CcSystemPanel
   AdwActionRow *remote_desktop_row;
   AdwActionRow *users_row;
 
-  GtkWidget *remote_login_dialog;
+  CcSecureShellPage *secure_shell_dialog;
   AdwNavigationPage *software_updates_group;
 };
 
@@ -122,70 +120,14 @@ cc_system_page_open_software_update (CcSystemPanel *self)
 static void
 on_secure_shell_row_clicked (CcSystemPanel *self)
 {
-  if (self->remote_login_dialog == NULL) {
-    GtkWidget *parent = cc_shell_get_toplevel (cc_panel_get_shell (CC_PANEL (self)));
+  if (self->secure_shell_dialog == NULL)
+    {
+      self->secure_shell_dialog = g_object_new (CC_TYPE_SECURE_SHELL_PAGE, NULL);
+      g_object_add_weak_pointer (G_OBJECT (self->secure_shell_dialog),
+                                 (gpointer *) &self->secure_shell_dialog);
+    }
 
-    self->remote_login_dialog = g_object_new (CC_TYPE_REMOTE_LOGIN_PAGE, NULL);
-
-    gtk_window_set_transient_for (GTK_WINDOW (self->remote_login_dialog),
-                                  GTK_WINDOW (parent));
-  }
-
-  gtk_window_present (GTK_WINDOW (self->remote_login_dialog));
-}
-
-static void
-on_subpage_set (CcSystemPanel *self)
-{
-  AdwNavigationPage *subpage;
-  g_autofree gchar *tag = NULL;
-  GType page_type = G_TYPE_INVALID;
-
-  g_object_get (self, "subpage", &tag, NULL);
-  if (!tag)
-    return;
-
-  if (g_str_equal (tag, "about"))
-    page_type = CC_TYPE_ABOUT_PAGE;
-  else if (g_str_equal (tag, "datetime"))
-    page_type = CC_TYPE_DATE_TIME_PAGE;
-  else if (g_str_equal (tag, "region"))
-    page_type = CC_TYPE_REGION_PAGE;
-  else if (g_str_equal (tag, "remote-desktop"))
-    page_type = CC_TYPE_REMOTE_DESKTOP_PAGE;
-  else if (g_str_equal (tag, "users"))
-    page_type = CC_TYPE_USERS_PAGE;
-
-  if (page_type == G_TYPE_INVALID)
-    return;
-
-  subpage = ADW_NAVIGATION_PAGE (g_object_new (page_type, NULL));
-  if (subpage)
-    adw_navigation_view_push (self->navigation, subpage);
-}
-
-static void
-on_page_activated (AdwActionRow *row,
-                   gpointer      user_data)
-{
-  CcSystemPanel *self = CC_SYSTEM_PANEL (user_data);
-  GType page_type = G_TYPE_INVALID;
-
-  if (row == self->about_row)
-    page_type = CC_TYPE_ABOUT_PAGE;
-  else if (row == self->datetime_row)
-    page_type = CC_TYPE_DATE_TIME_PAGE;
-  else if (row == self->region_row)
-    page_type = CC_TYPE_REGION_PAGE;
-  else if (row == self->remote_desktop_row)
-    page_type = CC_TYPE_REMOTE_DESKTOP_PAGE;
-  else if (row == self->users_row)
-    page_type = CC_TYPE_USERS_PAGE;
-
-  if (!page_type)
-    return;
-
-  adw_navigation_view_push (self->navigation, g_object_new (page_type, NULL));
+  adw_dialog_present (ADW_DIALOG (self->secure_shell_dialog), GTK_WIDGET (self));
 }
 
 static void
@@ -200,18 +142,17 @@ cc_system_panel_class_init (CcSystemPanelClass *klass)
   gtk_widget_class_bind_template_child (widget_class, CcSystemPanel, region_row);
   gtk_widget_class_bind_template_child (widget_class, CcSystemPanel, remote_desktop_row);
   gtk_widget_class_bind_template_child (widget_class, CcSystemPanel, users_row);
-  gtk_widget_class_bind_template_child (widget_class, CcSystemPanel, navigation);
   gtk_widget_class_bind_template_child (widget_class, CcSystemPanel, software_updates_group);
 
   gtk_widget_class_bind_template_callback (widget_class, cc_system_page_open_software_update);
   gtk_widget_class_bind_template_callback (widget_class, on_secure_shell_row_clicked);
-  gtk_widget_class_bind_template_callback (widget_class, on_page_activated);
 
   g_type_ensure (CC_TYPE_ABOUT_PAGE);
   g_type_ensure (CC_TYPE_DATE_TIME_PAGE);
+  g_type_ensure (CC_TYPE_LIST_ROW);
   g_type_ensure (CC_TYPE_REGION_PAGE);
   g_type_ensure (CC_TYPE_REMOTE_DESKTOP_PAGE);
-  g_type_ensure (CC_TYPE_REMOTE_LOGIN_PAGE);
+  g_type_ensure (CC_TYPE_SECURE_SHELL_PAGE);
   g_type_ensure (CC_TYPE_USERS_PAGE);
 }
 
@@ -223,5 +164,9 @@ cc_system_panel_init (CcSystemPanel *self)
 
   gtk_widget_set_visible (GTK_WIDGET (self->software_updates_group), show_software_updates_group (self));
 
-  g_signal_connect_object (self, "notify::subpage", G_CALLBACK (on_subpage_set), self, G_CONNECT_SWAPPED);
+  cc_panel_add_static_subpage (CC_PANEL (self), "about", CC_TYPE_ABOUT_PAGE);
+  cc_panel_add_static_subpage (CC_PANEL (self), "datetime", CC_TYPE_DATE_TIME_PAGE);
+  cc_panel_add_static_subpage (CC_PANEL (self), "region", CC_TYPE_REGION_PAGE);
+  cc_panel_add_static_subpage (CC_PANEL (self), "remote-desktop", CC_TYPE_REMOTE_DESKTOP_PAGE);
+  cc_panel_add_static_subpage (CC_PANEL (self), "users", CC_TYPE_USERS_PAGE);
 }

@@ -63,7 +63,8 @@ struct _CcUserPage {
     CcAvatarChooser     *avatar_chooser;
     GtkMenuButton       *avatar_edit_button;
     GtkButton           *avatar_remove_button;
-    AdwSwitchRow        *auto_login_row;
+    AdwActionRow        *auto_login_row;
+    GtkSwitch           *auto_login_switch;
     CcListRow           *fingerprint_row;
     CcListRow           *language_row;
     AdwEntryRow         *fullname_row;
@@ -74,7 +75,7 @@ struct _CcUserPage {
     CcPermissionInfobar *permission_infobar;
     AdwSwitchRow        *remove_local_files_choice;
     GtkWidget           *remove_user_button;
-    AdwMessageDialog    *remove_local_user_dialog;
+    AdwAlertDialog      *remove_local_user_dialog;
 
     ActUser              *user;
     GSettings            *login_screen_settings;
@@ -317,12 +318,8 @@ static void
 change_password (CcUserPage *self)
 {
     CcPasswordDialog *dialog = cc_password_dialog_new (self->user);
-    GtkWindow *parent;
 
-    parent = (GtkWindow *)gtk_widget_get_native (GTK_WIDGET (self));
-    gtk_window_set_transient_for (GTK_WINDOW (dialog), parent);
-
-    gtk_window_present (GTK_WINDOW (dialog));
+    adw_dialog_present (ADW_DIALOG (dialog), GTK_WIDGET (self));
 }
 
 static void
@@ -331,7 +328,7 @@ autologin_changed (CcUserPage *self)
     ActUserManager *user_manager = act_user_manager_get_default ();
     gboolean active;
 
-    active = adw_switch_row_get_active (self->auto_login_row);
+    active = gtk_switch_get_active (self->auto_login_switch);
     if (active != act_user_get_automatic_login (self->user)) {
         act_user_set_automatic_login (self->user, active);
 
@@ -404,17 +401,11 @@ delete_user_done (ActUserManager *manager,
 }
 
 static void
-remove_local_user_response (CcUserPage       *self,
-                            gchar            *response,
-                            AdwMessageDialog *dialog)
+remove_local_user_response (CcUserPage *self)
 {
     gboolean remove_files;
 
     g_assert (ADW_IS_SWITCH_ROW (self->remove_local_files_choice));
-
-    if (g_strcmp0 (response, "cancel") == 0) {
-        return;
-    }
 
     /* remove autologin */
     if (act_user_get_automatic_login (self->user)) {
@@ -436,13 +427,9 @@ remove_local_user_response (CcUserPage       *self,
 static void
 remove_user (CcUserPage *self)
 {
-    GtkWindow *parent;
-
     // TODO: Handle enterprise accounts
-    parent = GTK_WINDOW (gtk_widget_get_native (GTK_WIDGET (self)));
-    gtk_window_set_transient_for (GTK_WINDOW (self->remove_local_user_dialog), parent);
-    adw_message_dialog_format_heading (self->remove_local_user_dialog, _("Remove %s?"), get_real_or_user_name (self->user));
-    gtk_window_present (GTK_WINDOW (self->remove_local_user_dialog));
+    adw_alert_dialog_format_heading (self->remove_local_user_dialog, _("Remove %s?"), get_real_or_user_name (self->user));
+    adw_dialog_present (ADW_DIALOG (self->remove_local_user_dialog), GTK_WIDGET (self));
 }
 
 static void
@@ -653,6 +640,7 @@ cc_user_page_class_init (CcUserPageClass * klass)
     gtk_widget_class_bind_template_child (widget_class, CcUserPage, account_type_row);
     gtk_widget_class_bind_template_child (widget_class, CcUserPage, account_type_switch);
     gtk_widget_class_bind_template_child (widget_class, CcUserPage, auto_login_row);
+    gtk_widget_class_bind_template_child (widget_class, CcUserPage, auto_login_switch);
     gtk_widget_class_bind_template_child (widget_class, CcUserPage, fingerprint_row);
     gtk_widget_class_bind_template_child (widget_class, CcUserPage, fullname_row);
     gtk_widget_class_bind_template_child (widget_class, CcUserPage, language_row);
@@ -752,10 +740,10 @@ cc_user_page_set_user (CcUserPage  *self,
                                      _("Enabled") : _("Disabled"));
 #endif
 
-    g_signal_handlers_block_by_func (self->auto_login_row, autologin_changed, self);
+    g_signal_handlers_block_by_func (self->auto_login_switch, autologin_changed, self);
     gtk_widget_set_visible (GTK_WIDGET (self->auto_login_row), get_autologin_possible (user));
-    adw_switch_row_set_active (self->auto_login_row, act_user_get_automatic_login (user));
-    g_signal_handlers_unblock_by_func (self->auto_login_row, autologin_changed, self);
+    gtk_switch_set_active (self->auto_login_switch, act_user_get_automatic_login (user));
+    g_signal_handlers_unblock_by_func (self->auto_login_switch, autologin_changed, self);
 
     cc_list_row_set_secondary_label (self->password_row, get_password_mode_text (user));
     user_language = get_user_language (user);

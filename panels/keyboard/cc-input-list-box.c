@@ -44,7 +44,6 @@ struct _CcInputListBox {
 
   GtkListBoxRow   *add_input_row;
   GtkListBox      *listbox;
-  AdwActionRow    *no_inputs_row;
 
   GCancellable    *cancellable;
 
@@ -97,22 +96,21 @@ static void show_input_chooser (CcInputListBox *self);
 static void
 update_ibus_active_sources (CcInputListBox *self)
 {
-  GtkWidget *child;
+  GtkListBoxRow *row;
+  gint i = 0;
 
-  for (child = gtk_widget_get_first_child (GTK_WIDGET (self->listbox));
-       child;
-       child = gtk_widget_get_next_sibling (child)) {
-    CcInputRow *row;
+  while ((row = gtk_list_box_get_row_at_index (self->listbox, i++))) {
+    CcInputRow *input_row;
     CcInputSourceIBus *source;
     IBusEngineDesc *engine_desc;
 
-    if (!CC_IS_INPUT_ROW (child))
+    if (!CC_IS_INPUT_ROW (row))
       continue;
-    row = CC_INPUT_ROW (child);
+    input_row = CC_INPUT_ROW (row);
 
-    if (!CC_IS_INPUT_SOURCE_IBUS (cc_input_row_get_source (row)))
+    if (!CC_IS_INPUT_SOURCE_IBUS (cc_input_row_get_source (input_row)))
       continue;
-    source = CC_INPUT_SOURCE_IBUS (cc_input_row_get_source (row));
+    source = CC_INPUT_SOURCE_IBUS (cc_input_row_get_source (input_row));
 
     engine_desc = g_hash_table_lookup (self->ibus_engines, cc_input_source_ibus_get_engine_name (source));
     if (engine_desc != NULL)
@@ -226,31 +224,8 @@ row_settings_cb (CcInputListBox *self,
     g_warning ("Failed to launch input source setup: %s", error->message);
 }
 
-static void
-row_layout_cb (CcInputListBox *self,
-               CcInputRow    *row)
-{
-  CcInputSource *source;
-  const gchar *layout, *layout_variant;
-  g_autofree gchar *commandline = NULL;
-
-  source = cc_input_row_get_source (row);
-
-  layout = cc_input_source_get_layout (source);
-  layout_variant = cc_input_source_get_layout_variant (source);
-
-  if (layout_variant && layout_variant[0])
-    commandline = g_strdup_printf (KEYBOARD_PREVIEWER_EXEC " \"%s+%s\"",
-				   layout, layout_variant);
-  else
-    commandline = g_strdup_printf (KEYBOARD_PREVIEWER_EXEC " %s",
-				   layout);
-
-  g_debug ("Launching keyboard previewer with command line: '%s'\n", commandline);
-  g_spawn_command_line_async (commandline, NULL);
-}
-
 static void move_input (CcInputListBox *self, CcInputRow *source, CcInputRow *dest);
+static void update_input_rows (CcInputListBox *self);
 
 static void
 row_moved_cb (CcInputListBox *self,
@@ -258,6 +233,7 @@ row_moved_cb (CcInputListBox *self,
               CcInputRow    *row)
 {
   move_input (self, row, dest_row);
+  update_input_rows (self);
 }
 
 static void remove_input (CcInputListBox *self, CcInputRow *row);
@@ -272,31 +248,26 @@ row_removed_cb (CcInputListBox *self,
 static void
 update_input_rows (CcInputListBox *self)
 {
-  GtkWidget *child;
+  GtkListBoxRow *row;
   guint n_input_rows = 0;
+  gint i = 0;
 
-  child = gtk_widget_get_first_child (GTK_WIDGET (self->listbox));
-  while ((child = gtk_widget_get_next_sibling (child)) != NULL)
-    if (CC_IS_INPUT_ROW (child))
+  while ((row = gtk_list_box_get_row_at_index (self->listbox, i++)))
+    if (CC_IS_INPUT_ROW (row))
       n_input_rows++;
 
-  for (child = gtk_widget_get_first_child (GTK_WIDGET (self->listbox));
-       child;
-       child = gtk_widget_get_next_sibling (child)) {
-    CcInputRow *row;
-    gint row_idx;
+  for (i = 0; (row = gtk_list_box_get_row_at_index (self->listbox, i)); i++) {
+    CcInputRow *input_row;
 
-    if (!CC_IS_INPUT_ROW (child))
+    if (!CC_IS_INPUT_ROW (row))
       continue;
-    row = CC_INPUT_ROW (child);
-    row_idx = gtk_list_box_row_get_index (GTK_LIST_BOX_ROW (row));
+    input_row = CC_INPUT_ROW (row);
 
-    cc_input_row_set_removable (row, n_input_rows > 1);
-    cc_input_row_set_draggable (row, n_input_rows > 1);
+    cc_input_row_set_removable (input_row, n_input_rows > 1);
+    cc_input_row_set_draggable (input_row, n_input_rows > 1);
 
-    gtk_widget_action_set_enabled (GTK_WIDGET (row), "row.move-up", row_idx != 1);
-    gtk_widget_action_set_enabled (GTK_WIDGET (row), "row.move-down", GTK_LIST_BOX_ROW (gtk_widget_get_next_sibling (child)) != self->add_input_row);
-
+    gtk_widget_action_set_enabled (GTK_WIDGET (row), "row.move-up", i > 0);
+    gtk_widget_action_set_enabled (GTK_WIDGET (row), "row.move-down", i < (n_input_rows - 1));
   }
 }
 
@@ -305,11 +276,9 @@ add_input_row (CcInputListBox *self, CcInputSource *source)
 {
   CcInputRow *row;
 
-  gtk_widget_set_visible (GTK_WIDGET (self->no_inputs_row), FALSE);
-
   row = cc_input_row_new (source);
   g_signal_connect_object (row, "show-settings", G_CALLBACK (row_settings_cb), self, G_CONNECT_SWAPPED);
-  g_signal_connect_object (row, "show-layout", G_CALLBACK (row_layout_cb), self, G_CONNECT_SWAPPED);
+  g_signal_connect_swapped (row, "show-layout", G_CALLBACK (cc_input_source_launch_previewer), source);
   g_signal_connect_object (row, "move-row", G_CALLBACK (row_moved_cb), self, G_CONNECT_SWAPPED);
   g_signal_connect_object (row, "remove-row", G_CALLBACK (row_removed_cb), self, G_CONNECT_SWAPPED);
   gtk_list_box_insert (self->listbox, GTK_WIDGET (row), gtk_list_box_row_get_index (self->add_input_row));
@@ -322,11 +291,6 @@ add_input_sources (CcInputListBox *self,
 {
   GVariantIter iter;
   const gchar *type, *id;
-
-  if (g_variant_n_children (sources) < 1) {
-    gtk_widget_set_visible (GTK_WIDGET (self->no_inputs_row), TRUE);
-    return;
-  }
 
   g_variant_iter_init (&iter, sources);
   while (g_variant_iter_next (&iter, "(&s&s)", &type, &id)) {
@@ -363,35 +327,32 @@ add_input_sources_from_settings (CcInputListBox *self)
 static void
 clear_input_sources (CcInputListBox *self)
 {
-  GtkWidget *child;
+  GtkListBoxRow *row;
+  gint i = 0;
 
-  child = gtk_widget_get_first_child (GTK_WIDGET (self->listbox));
-  while (child) {
-    GtkWidget *next = gtk_widget_get_next_sibling (child);
-
-    if (CC_IS_INPUT_ROW (child))
-      gtk_list_box_remove (self->listbox, GTK_WIDGET (child));
-
-    child = next;
-  }
+  /* Remove all rows, skipping over non CcInputRows */
+  while ((row = gtk_list_box_get_row_at_index (self->listbox, i)))
+    if (CC_IS_INPUT_ROW (row))
+      gtk_list_box_remove (self->listbox, GTK_WIDGET (row));
+    else
+      i++;
 }
 
 static CcInputRow *
 get_row_by_source (CcInputListBox *self, CcInputSource *source)
 {
-  GtkWidget *child;
+  GtkListBoxRow *row;
+  gint i = 0;
 
-  for (child = gtk_widget_get_first_child (GTK_WIDGET (self->listbox));
-       child;
-       child = gtk_widget_get_next_sibling (child)) {
-    CcInputRow *row;
+  while ((row = gtk_list_box_get_row_at_index (self->listbox, i++))) {
+    CcInputRow *input_row;
 
-    if (!CC_IS_INPUT_ROW (child))
+    if (!CC_IS_INPUT_ROW (row))
       continue;
-    row = CC_INPUT_ROW (child);
+    input_row = CC_INPUT_ROW (row);
 
-    if (cc_input_source_matches (source, cc_input_row_get_source (row)))
-      return row;
+    if (cc_input_source_matches (source, cc_input_row_get_source (input_row)))
+      return input_row;
   }
 
   return NULL;
@@ -420,22 +381,21 @@ static void
 set_input_settings (CcInputListBox *self)
 {
   GVariantBuilder builder;
-  GtkWidget *child;
+  GtkListBoxRow *row;
   GVariant *value;
   GVariant *previous_value = g_settings_get_value (self->input_settings, KEY_INPUT_SOURCES);
+  gint i = 0;
 
   g_variant_builder_init (&builder, G_VARIANT_TYPE ("a(ss)"));
 
-  for (child = gtk_widget_get_first_child (GTK_WIDGET (self->listbox));
-       child;
-       child = gtk_widget_get_next_sibling (child)) {
-    CcInputRow *row;
+  while ((row = gtk_list_box_get_row_at_index (self->listbox, i++))) {
+    CcInputRow *input_row;
     CcInputSource *source;
 
-    if (!CC_IS_INPUT_ROW (child))
+    if (!CC_IS_INPUT_ROW (row))
       continue;
-    row = CC_INPUT_ROW (child);
-    source = cc_input_row_get_source (row);
+    input_row = CC_INPUT_ROW (row);
+    source = cc_input_row_get_source (input_row);
 
     if (CC_IS_INPUT_SOURCE_XKB (source)) {
       g_autofree gchar *id = cc_input_source_xkb_get_id (CC_INPUT_SOURCE_XKB (source));
@@ -505,10 +465,8 @@ show_input_chooser (CcInputListBox *self)
 				  NULL
 #endif
 				  );
-  gtk_window_set_transient_for (GTK_WINDOW (chooser),
-                                GTK_WINDOW (gtk_widget_get_native (GTK_WIDGET (self))));
   g_signal_connect_swapped (chooser, "source-selected", G_CALLBACK (on_chooser_response_cb), self);
-  gtk_window_present (GTK_WINDOW (chooser));
+  adw_dialog_present (ADW_DIALOG (chooser), GTK_WIDGET (self));
 }
 
 // Duplicated from cc-region-panel.c
@@ -549,39 +507,13 @@ add_input (CcInputListBox *self)
   }
 }
 
-static GtkWidget *
-find_sibling (GtkWidget *child)
-{
-  GtkWidget *sibling;
-
-  for (sibling = gtk_widget_get_next_sibling (child);
-       sibling;
-       sibling = gtk_widget_get_next_sibling (child)) {
-    if (gtk_widget_get_visible (sibling) && gtk_widget_get_child_visible (sibling))
-      return sibling;
-  }
-
-  for (sibling = gtk_widget_get_prev_sibling (child);
-       sibling;
-       sibling = gtk_widget_get_prev_sibling (child)) {
-    if (gtk_widget_get_visible (sibling) && gtk_widget_get_child_visible (sibling))
-      return sibling;
-  }
-
-  return NULL;
-}
-
 static void
 do_remove_input (CcInputListBox *self, CcInputRow *row)
 {
-        GtkWidget *sibling;
+  gtk_list_box_remove (self->listbox, GTK_WIDGET (row));
 
-        sibling = find_sibling (GTK_WIDGET (row));
-        gtk_list_box_remove (self->listbox, GTK_WIDGET (row));
-        gtk_list_box_select_row (self->listbox, GTK_LIST_BOX_ROW (sibling));
-
-        update_input (self);
-        update_input_rows (self);
+  update_input (self);
+  update_input_rows (self);
 }
 
 static void
@@ -693,7 +625,6 @@ add_input_sources_from_localed (CcInputListBox *self)
     g_autoptr(CcInputSourceXkb) source = cc_input_source_xkb_new (self->xkb_info, layouts[i], variant);
     add_input_row (self, CC_INPUT_SOURCE (source));
   }
-  gtk_widget_set_visible (GTK_WIDGET (self->no_inputs_row), n == 0);
 }
 
 static void
@@ -701,26 +632,25 @@ set_localed_input (CcInputListBox *self)
 {
   g_autoptr(GString) layouts = NULL;
   g_autoptr(GString) variants = NULL;
-  GtkWidget *child;
+  GtkListBoxRow *row;
+  gint i = 0;
 
   layouts = g_string_new ("");
   variants = g_string_new ("");
 
-  for (child = gtk_widget_get_first_child (GTK_WIDGET (self->listbox));
-       child;
-       child = gtk_widget_get_next_sibling (child)) {
-    CcInputRow *row;
+  while ((row = gtk_list_box_get_row_at_index (self->listbox, i++))) {
+    CcInputRow *input_row;
     CcInputSourceXkb *source;
     g_autofree gchar *id = NULL;
     const gchar *l, *v;
 
-    if (!CC_IS_INPUT_ROW (child))
+    if (!CC_IS_INPUT_ROW (row))
       continue;
-    row = CC_INPUT_ROW (child);
+    input_row = CC_INPUT_ROW (row);
 
-    if (!CC_IS_INPUT_SOURCE_XKB (cc_input_row_get_source (row)))
+    if (!CC_IS_INPUT_SOURCE_XKB (cc_input_row_get_source (input_row)))
       continue;
-    source = CC_INPUT_SOURCE_XKB (cc_input_row_get_source (row));
+    source = CC_INPUT_SOURCE_XKB (cc_input_row_get_source (input_row));
 
     id = cc_input_source_xkb_get_id (source);
     if (gnome_xkb_info_get_layout_info (self->xkb_info, id, NULL, NULL, &l, &v)) {
@@ -769,7 +699,6 @@ cc_input_list_box_class_init (CcInputListBoxClass *klass)
 
   gtk_widget_class_bind_template_child (widget_class, CcInputListBox, add_input_row);
   gtk_widget_class_bind_template_child (widget_class, CcInputListBox, listbox);
-  gtk_widget_class_bind_template_child (widget_class, CcInputListBox, no_inputs_row);
 
   gtk_widget_class_bind_template_callback (widget_class, input_row_activated_cb);
   gtk_widget_class_bind_template_callback (widget_class, keynav_failed_cb);

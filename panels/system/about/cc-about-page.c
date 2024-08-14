@@ -32,14 +32,14 @@ struct _CcAboutPage
 {
   AdwNavigationPage parent_instance;
 
-  CcListRow       *disk_row;
-  CcListRow       *hardware_model_row;
-  CcListRow       *memory_row;
+  AdwActionRow    *disk_row;
+  AdwActionRow    *hardware_model_row;
+  AdwActionRow    *memory_row;
   GtkPicture      *os_logo;
-  CcListRow       *os_name_row;
-  CcListRow       *processor_row;
+  AdwActionRow    *os_name_row;
+  AdwActionRow    *processor_row;
 
-  GtkWindow       *system_details_window;
+  AdwDialog       *system_details_window;
   guint            create_system_details_id;
 };
 
@@ -56,25 +56,25 @@ about_page_setup_overview (CcAboutPage *self)
   g_autofree gchar *disk_capacity_string = NULL;
 
   hardware_model_text = get_hardware_model_string ();
-  cc_list_row_set_secondary_label (self->hardware_model_row, hardware_model_text);
+  adw_action_row_set_subtitle (self->hardware_model_row, hardware_model_text);
   gtk_widget_set_visible (GTK_WIDGET (self->hardware_model_row), hardware_model_text != NULL);
 
   ram_size = get_ram_size_dmi ();
   if (ram_size == 0)
     ram_size = get_ram_size_libgtop ();
   memory_text = g_format_size_full (ram_size, G_FORMAT_SIZE_IEC_UNITS);
-  cc_list_row_set_secondary_label (self->memory_row, memory_text);
+  adw_action_row_set_subtitle (self->memory_row, memory_text);
 
   cpu_text = get_cpu_info ();
-  cc_list_row_set_secondary_markup (self->processor_row, cpu_text);
+  adw_action_row_set_subtitle (self->processor_row, cpu_text);
 
   disk_capacity_string = get_primary_disk_info ();
   if (disk_capacity_string == NULL)
     disk_capacity_string = g_strdup (_("Unknown"));
-  cc_list_row_set_secondary_label (self->disk_row, disk_capacity_string);
+  adw_action_row_set_subtitle (self->disk_row, disk_capacity_string);
 
   os_name_text = get_os_name ();
-  cc_list_row_set_secondary_label (self->os_name_row, os_name_text);
+  adw_action_row_set_subtitle (self->os_name_row, os_name_text);
 }
 
 static gboolean
@@ -82,7 +82,7 @@ cc_about_page_create_system_details (CcAboutPage *self)
 {
   if (!self->system_details_window)
     {
-      self->system_details_window = GTK_WINDOW (cc_system_details_window_new ());
+      self->system_details_window = ADW_DIALOG (cc_system_details_window_new ());
       g_object_ref_sink (self->system_details_window);
     }
 
@@ -94,13 +94,9 @@ cc_about_page_create_system_details (CcAboutPage *self)
 static void
 cc_about_page_open_system_details (CcAboutPage *self)
 {
-  GtkNative *parent;
-
   cc_about_page_create_system_details (self);
 
-  parent = gtk_widget_get_native (GTK_WIDGET (self));
-  gtk_window_set_transient_for (self->system_details_window, GTK_WINDOW (parent));
-  gtk_window_present (GTK_WINDOW (self->system_details_window));
+  adw_dialog_present (self->system_details_window, GTK_WIDGET (self));
 }
 
 #if !defined(DISTRIBUTOR_LOGO) || defined(DARK_MODE_DISTRIBUTOR_LOGO)
@@ -163,7 +159,7 @@ cc_about_page_dispose (GObject *object)
   CcAboutPage *self = CC_ABOUT_PAGE (object);
 
   if (self->system_details_window)
-    gtk_window_destroy (self->system_details_window);
+    adw_dialog_close (self->system_details_window);
   g_clear_object (&self->system_details_window);
 
   g_clear_handle_id (&self->create_system_details_id, g_source_remove);
@@ -191,8 +187,6 @@ cc_about_page_class_init (CcAboutPageClass *klass)
   gtk_widget_class_bind_template_child (widget_class, CcAboutPage, processor_row);
 
   gtk_widget_class_bind_template_callback (widget_class, cc_about_page_open_system_details);
-
-  g_type_ensure (CC_TYPE_LIST_ROW);
 }
 
 static void

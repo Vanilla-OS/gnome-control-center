@@ -28,6 +28,7 @@
 #include "cc-input-chooser.h"
 #include "cc-input-source-ibus.h"
 #include "cc-input-source-xkb.h"
+#include "shell/cc-panel.h"
 
 #ifdef HAVE_IBUS
 #include <ibus.h>
@@ -55,15 +56,15 @@ typedef enum
 
 struct _CcInputChooser
 {
-  AdwWindow          parent_instance;
+  AdwDialog          parent_instance;
 
   GtkButton         *add_button;
   GtkSearchEntry    *filter_entry;
   GtkListBox        *input_sources_listbox;
+  GtkStack          *input_sources_stack;
   GtkLabel          *login_label;
   GtkListBoxRow     *more_row;
   GtkWidget         *no_results;
-  GtkAdjustment     *scroll_adjustment;
 
   GnomeXkbInfo      *xkb_info;
   GHashTable        *ibus_engines;
@@ -76,7 +77,7 @@ struct _CcInputChooser
   gboolean           is_login;
 };
 
-G_DEFINE_TYPE (CcInputChooser, cc_input_chooser, ADW_TYPE_WINDOW)
+G_DEFINE_TYPE (CcInputChooser, cc_input_chooser, ADW_TYPE_DIALOG)
 
 enum
 {
@@ -234,15 +235,32 @@ input_source_row_new (CcInputChooser *self,
   if (g_str_equal (type, INPUT_SOURCE_TYPE_XKB))
     {
       const gchar *display_name;
+      CcInputSource *source;
+      GtkWidget *box;
+      GtkWidget *preview_button;
 
       gnome_xkb_info_get_layout_info (self->xkb_info, id, &display_name, NULL, NULL, NULL);
 
       row = gtk_list_box_row_new ();
+      box = gtk_box_new (0, GTK_ORIENTATION_HORIZONTAL);
       widget = padded_label_new (display_name,
                                  ROW_LABEL_POSITION_START,
                                  ROW_TRAVEL_DIRECTION_NONE,
                                  FALSE);
-      gtk_list_box_row_set_child (GTK_LIST_BOX_ROW (row), widget);
+      gtk_box_append (GTK_BOX (box), widget);
+
+      preview_button = gtk_button_new_from_icon_name ("view-reveal-symbolic");
+      gtk_widget_set_tooltip_text (preview_button, _("View Keyboard Layout"));
+      gtk_widget_add_css_class (preview_button, "flat");
+      gtk_box_append (GTK_BOX (box), preview_button);
+
+      source = CC_INPUT_SOURCE (cc_input_source_xkb_new_from_id (self->xkb_info, id));
+      g_signal_connect_swapped (preview_button,
+                                "clicked",
+                                (GCallback) cc_input_source_launch_previewer,
+                                source);
+
+      gtk_list_box_row_set_child (GTK_LIST_BOX_ROW (row), box);
       g_object_set_data (G_OBJECT (row), "name", (gpointer) display_name);
       g_object_set_data_full (G_OBJECT (row), "unaccented-name",
                               cc_util_normalize_casefold_and_unaccent (display_name), g_free);
@@ -320,7 +338,7 @@ cc_input_chooser_emit_source_selected (CcInputChooser *self)
   g_signal_emit (self, signals[SIGNAL_SOURCE_SELECTED], 0,
                  cc_input_chooser_get_source (self));
 
-  gtk_window_close (GTK_WINDOW (self));
+  adw_dialog_close (ADW_DIALOG (self));
 }
 
 static void
@@ -362,8 +380,6 @@ show_input_sources_for_locale (CcInputChooser *self,
 
   add_input_source_rows_for_locale (self, info);
 
-  gtk_adjustment_set_value (self->scroll_adjustment,
-                            gtk_adjustment_get_lower (self->scroll_adjustment));
   gtk_list_box_invalidate_filter (self->input_sources_listbox);
   gtk_list_box_set_selection_mode (self->input_sources_listbox, GTK_SELECTION_SINGLE);
   gtk_list_box_set_activate_on_single_click (self->input_sources_listbox, FALSE);
@@ -415,9 +431,6 @@ show_locale_rows (CcInputChooser *self)
     }
 
   gtk_list_box_append (self->input_sources_listbox, GTK_WIDGET (self->more_row));
-
-  gtk_adjustment_set_value (self->scroll_adjustment,
-                            gtk_adjustment_get_lower (self->scroll_adjustment));
   gtk_list_box_invalidate_filter (self->input_sources_listbox);
   gtk_list_box_set_selection_mode (self->input_sources_listbox, GTK_SELECTION_NONE);
   gtk_list_box_set_activate_on_single_click (self->input_sources_listbox, TRUE);
@@ -710,7 +723,7 @@ on_stop_search_cb (CcInputChooser *self)
   if (search_text && g_strcmp0 (search_text, "") != 0)
     gtk_editable_set_text (GTK_EDITABLE (self->filter_entry), "");
   else
-    gtk_window_close (GTK_WINDOW (self));
+    adw_dialog_close (ADW_DIALOG (self));
 }
 
 static void
@@ -1063,6 +1076,45 @@ on_filter_entry_key_release_event_cb (CcInputChooser *self, GdkEventKey *event)
  */
 
 static void
+on_locale_infos_loaded_cb (GObject      *source_object,
+                           GAsyncResult *result,
+                           gpointer      user_data)
+{
+  CcInputChooser *self = CC_INPUT_CHOOSER (source_object);
+
+  gtk_stack_set_visible_child_name (self->input_sources_stack, "input-sources-page");
+}
+
+static void
+cc_input_chooser_load_locale_infos_thread (GTask        *task,
+                                           gpointer      source_object,
+                                           gpointer      task_data,
+                                           GCancellable *cancellable)
+{
+  CcInputChooser *self = CC_INPUT_CHOOSER (source_object);
+
+  get_locale_infos (self);
+#ifdef HAVE_IBUS
+  get_ibus_locale_infos (self);
+#endif  /* HAVE_IBUS */
+  show_locale_rows (self);
+
+  g_task_return_pointer (task, NULL, NULL);
+}
+
+static void
+cc_input_chooser_load_locale_infos_async (CcInputChooser      *self,
+                                          GCancellable        *cancellable,
+                                          GAsyncReadyCallback  callback,
+                                          gpointer             user_data)
+{
+  g_autoptr(GTask) task = g_task_new (self, cancellable, callback, user_data);
+
+  g_task_run_in_thread (task, cc_input_chooser_load_locale_infos_thread);
+}
+
+
+static void
 cc_input_chooser_dispose (GObject *object)
 {
   CcInputChooser *self = CC_INPUT_CHOOSER (object);
@@ -1087,8 +1139,6 @@ cc_input_chooser_class_init (CcInputChooserClass *klass)
 
   object_class->dispose = cc_input_chooser_dispose;
 
-  gtk_widget_class_add_binding_action (widget_class, GDK_KEY_Escape, 0, "window.close", NULL);
-
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/keyboard/cc-input-chooser.ui");
 
   signals[SIGNAL_SOURCE_SELECTED] = g_signal_new ("source-selected",
@@ -1102,8 +1152,8 @@ cc_input_chooser_class_init (CcInputChooserClass *klass)
   gtk_widget_class_bind_template_child (widget_class, CcInputChooser, add_button);
   gtk_widget_class_bind_template_child (widget_class, CcInputChooser, filter_entry);
   gtk_widget_class_bind_template_child (widget_class, CcInputChooser, input_sources_listbox);
+  gtk_widget_class_bind_template_child (widget_class, CcInputChooser, input_sources_stack);
   gtk_widget_class_bind_template_child (widget_class, CcInputChooser, login_label);
-  gtk_widget_class_bind_template_child (widget_class, CcInputChooser, scroll_adjustment);
 
   gtk_widget_class_bind_template_callback (widget_class, on_input_sources_listbox_row_activated_cb);
   gtk_widget_class_bind_template_callback (widget_class, on_input_sources_listbox_selected_rows_changed_cb);
@@ -1141,11 +1191,10 @@ cc_input_chooser_new (gboolean      is_login,
 
   gtk_widget_set_visible (GTK_WIDGET (self->login_label), self->is_login);
 
-  get_locale_infos (self);
-#ifdef HAVE_IBUS
-  get_ibus_locale_infos (self);
-#endif  /* HAVE_IBUS */
-  show_locale_rows (self);
+  cc_input_chooser_load_locale_infos_async (self,
+                                            NULL,
+                                            on_locale_infos_loaded_cb,
+                                            NULL);
 
   return self;
 }

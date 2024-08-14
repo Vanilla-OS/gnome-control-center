@@ -47,16 +47,13 @@ struct _CcMousePanel
   GtkBox            *primary_button_box;
   GtkToggleButton   *primary_button_left;
   GtkToggleButton   *primary_button_right;
-  AdwPreferencesPage*preferences;
   CcSplitRow        *two_finger_push_row;
   GtkStack          *title_stack;
   CcIllustratedRow  *tap_to_click_row;
   GtkSwitch         *tap_to_click_switch;
-  AdwPreferencesGroup *touchpad_group;
   AdwViewStackPage  *touchpad_stack_page;
   CcSplitRow        *touchpad_scroll_direction_row;
   CcSplitRow        *touchpad_scroll_method_row;
-  GtkListBoxRow     *touchpad_speed_row;
   GtkScale          *touchpad_speed_scale;
   AdwSwitchRow      *touchpad_toggle_row;
   AdwSwitchRow      *touchpad_typing_row;
@@ -75,54 +72,6 @@ struct _CcMousePanel
 };
 
 CC_PANEL_REGISTER (CcMousePanel, cc_mouse_panel)
-
-#define ASSET_RESOURCES_PREFIX "/org/gnome/control-center/mouse/assets/"
-
-static void
-setup_illustrations (CcMousePanel *self)
-{
-  AdwStyleManager *style_manager = adw_style_manager_get_default ();
-  gboolean use_dark = adw_style_manager_get_dark (style_manager);
-  struct {
-    CcSplitRow *row;
-    const gchar *default_resource;
-    const gchar *alternative_resource;
-  } row_resources[] = {
-    { self->mouse_scroll_direction_row, "scroll-traditional", "scroll-natural" },
-    { self->two_finger_push_row, "push-to-click-anywhere", "push-areas" },
-    { self->touchpad_scroll_method_row, "scroll-2finger", "edge-scroll" },
-    { self->touchpad_scroll_direction_row, "touch-scroll-traditional", "touch-scroll-natural" },
-  };
-
-  for (gsize i = 0; i < G_N_ELEMENTS (row_resources); i++)
-    {
-      g_autofree gchar *alternative_resource = NULL;
-      g_autofree gchar *default_resource = NULL;
-      const gchar *style_suffix;
-
-      style_suffix = use_dark ? "d" : "l";
-      default_resource = g_strdup_printf (ASSET_RESOURCES_PREFIX "%s-%s.webm",
-                                          row_resources[i].default_resource,
-                                          style_suffix);
-      alternative_resource = g_strdup_printf (ASSET_RESOURCES_PREFIX "%s-%s.webm",
-                                              row_resources[i].alternative_resource,
-                                              style_suffix);
-
-      cc_split_row_set_default_illustration_resource (row_resources[i].row, default_resource);
-      cc_split_row_set_alternative_illustration_resource (row_resources[i].row, alternative_resource);
-    }
-
-  /* Tap to click */
-  {
-    g_autofree gchar *resource = NULL;
-
-    resource = g_strdup_printf (ASSET_RESOURCES_PREFIX "%s-%s.webm",
-                                "tap-to-click",
-                                use_dark ? "d" : "l");
-
-    cc_illustrated_row_set_resource (self->tap_to_click_row, resource);
-  }
-}
 
 static void
 setup_touchpad_options (CcMousePanel *self)
@@ -400,13 +349,6 @@ setup_dialog (CcMousePanel *self)
                    G_SETTINGS_BIND_DEFAULT);
 
   setup_touchpad_options (self);
-
-  g_signal_connect_object (adw_style_manager_get_default (),
-                           "notify::dark",
-                           G_CALLBACK (setup_illustrations),
-                           self,
-                           G_CONNECT_SWAPPED);
-  setup_illustrations (self);
 }
 
 /* Callback issued when a button is clicked on the dialog */
@@ -452,7 +394,7 @@ cc_mouse_panel_get_help_uri (CcPanel *panel)
 }
 
 static void
-test_button_clicked_cb (CcMousePanel *self)
+test_button_row_activated_cb (CcMousePanel *self)
 {
   CcShell *shell = cc_panel_get_shell (CC_PANEL (self));
 
@@ -515,14 +457,11 @@ cc_mouse_panel_class_init (CcMousePanelClass *klass)
   gtk_widget_class_bind_template_child (widget_class, CcMousePanel, primary_button_box);
   gtk_widget_class_bind_template_child (widget_class, CcMousePanel, primary_button_left);
   gtk_widget_class_bind_template_child (widget_class, CcMousePanel, primary_button_right);
-  gtk_widget_class_bind_template_child (widget_class, CcMousePanel, preferences);
   gtk_widget_class_bind_template_child (widget_class, CcMousePanel, title_stack);
   gtk_widget_class_bind_template_child (widget_class, CcMousePanel, tap_to_click_row);
   gtk_widget_class_bind_template_child (widget_class, CcMousePanel, tap_to_click_switch);
-  gtk_widget_class_bind_template_child (widget_class, CcMousePanel, touchpad_group);
   gtk_widget_class_bind_template_child (widget_class, CcMousePanel, touchpad_scroll_direction_row);
   gtk_widget_class_bind_template_child (widget_class, CcMousePanel, touchpad_scroll_method_row);
-  gtk_widget_class_bind_template_child (widget_class, CcMousePanel, touchpad_speed_row);
   gtk_widget_class_bind_template_child (widget_class, CcMousePanel, touchpad_stack_page);
   gtk_widget_class_bind_template_child (widget_class, CcMousePanel, touchpad_speed_scale);
   gtk_widget_class_bind_template_child (widget_class, CcMousePanel, touchpad_toggle_row);
@@ -530,5 +469,5 @@ cc_mouse_panel_class_init (CcMousePanelClass *klass)
   gtk_widget_class_bind_template_child (widget_class, CcMousePanel, two_finger_push_row);
 
   gtk_widget_class_bind_template_callback (widget_class, on_touchpad_scroll_method_changed_cb);
-  gtk_widget_class_bind_template_callback (widget_class, test_button_clicked_cb);
+  gtk_widget_class_bind_template_callback (widget_class, test_button_row_activated_cb);
 }

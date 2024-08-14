@@ -88,7 +88,8 @@
                         <child>
                           <object class="GtkLabel" id="proxy_warning_label">
                             <property name="margin-top">12</property>
-                            <property name="wrap">1</property>
+                            <property name="wrap">True</property>
+                            <property name="xalign">0.0</property>
                             <property name="label" translatable="yes">Web Proxy Autodiscovery is used when a Configuration URL is not provided. This is not recommended for untrusted public networks.</property>
                             <style>
                               <class name="dim-label"/>
@@ -124,9 +125,6 @@
                                     <property name="step-increment">1</property>
                                   </object>
                                 </property>
-                                <accessibility>
-                                  <property name="label" translatable="yes">HTTP proxy port</property>
-                                </accessibility>
                               </object>
                             </child>
                           </object>
@@ -153,9 +151,6 @@
                                     <property name="step-increment">1</property>
                                   </object>
                                 </property>
-                                <accessibility>
-                                  <property name="label" translatable="yes">HTTPS proxy port</property>
-                                </accessibility>
                               </object>
                             </child>
                           </object>
@@ -182,9 +177,6 @@
                                     <property name="step-increment">1</property>
                                   </object>
                                 </property>
-                                <accessibility>
-                                  <property name="label" translatable="yes">FTP proxy port</property>
-                                </accessibility>
                               </object>
                             </child>
                           </object>
@@ -211,9 +203,6 @@
                                     <property name="step-increment">1</property>
                                   </object>
                                 </property>
-                                <accessibility>
-                                  <property name="label" translatable="yes">SOCKS host port</property>
-                                </accessibility>
                               </object>
                             </child>
                           </object>

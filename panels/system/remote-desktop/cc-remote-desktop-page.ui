@@ -36,8 +36,9 @@
               <object class="AdwViewStack" id="stack">
                 <child>
                   <object class="AdwViewStackPage">
-                    <property name="title" translatable="yes">Desktop Sharing</property>
-                    <property name="icon-name">preferences-desktop-remote-desktop-symbolic</property>
+                    <property name="title" translatable="yes">Desktop _Sharing</property>
+                    <property name="use-underline">True</property>
+                    <property name="icon-name">org.gnome.Settings-desktop-sharing-symbolic</property>
                     <property name="child">
                       <object class="CcDesktopSharingPage" id="desktop_sharing_page"/>
                     </property>
@@ -45,10 +46,11 @@
                 </child>
                 <child>
                   <object class="AdwViewStackPage">
-                    <property name="title" translatable="yes">Remote Login</property>
-                    <property name="icon-name">preferences-desktop-display-symbolic</property>
+                    <property name="title" translatable="yes">Remote _Login</property>
+                    <property name="use-underline">True</property>
+                    <property name="icon-name">org.gnome.Settings-remote-desktop-symbolic</property>
                     <property name="child">
-                      <object class="CcRemoteSessionPage" id="remote_session_page"/>
+                      <object class="CcRemoteLoginPage" id="remote_login_page"/>
                     </property>
                   </object>
                 </child>

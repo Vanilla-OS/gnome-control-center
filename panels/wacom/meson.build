@@ -1,5 +1,4 @@
 deps = common_deps + wacom_deps + [
-  gnome_rr_dep,
   gnome_settings_dep,
   liblanguage_dep,
   x11_dep,
@@ -51,7 +50,10 @@ sources = common_sources + files(
   'cc-wacom-ekr-page.c',
 )
 
-deps += libdevice_dep
+deps += [
+  keyboard_shortcuts_dep,
+  libdevice_dep
+]
 
 incs = [
   top_inc,
@@ -77,7 +79,7 @@ executable(
   include_directories : incs,
          dependencies : deps,
                c_args : test_cflags,
-            link_with : [ libwacom_calibrator_test ]
+            link_with : [ libwacom_calibrator_test, display_panel_lib ]
 )
 
 subdir('icons')

@@ -26,17 +26,16 @@
 
 struct _PpJobRow
 {
-  GtkListBoxRow parent;
+  AdwActionRow parent;
 
   GtkButton *pause_button;
   GtkButton *priority_button;
   GtkLabel  *state_label;
-  GtkLabel  *title_label;
 
   PpJob *job;
 };
 
-G_DEFINE_TYPE (PpJobRow, pp_job_row, GTK_TYPE_LIST_BOX_ROW)
+G_DEFINE_TYPE (PpJobRow, pp_job_row, ADW_TYPE_ACTION_ROW)
 
 enum {
   PRIORITY_CHANGED,
@@ -50,10 +49,8 @@ update_pause_button (PpJobRow *self, gboolean paused)
 {
   gtk_button_set_icon_name (self->pause_button,
                             paused ? "media-playback-start-symbolic" : "media-playback-pause-symbolic");
-  gtk_accessible_update_property (GTK_ACCESSIBLE (self->pause_button),
-                                  GTK_ACCESSIBLE_PROPERTY_LABEL,
-                                  paused ? _("Resume") : _("Pause"),
-                                  -1);
+  gtk_widget_set_tooltip_text (GTK_WIDGET (self->pause_button),
+                               paused ? _("Resume") : _("Pause"));
 }
 
 static void
@@ -99,7 +96,6 @@ pp_job_row_class_init (PpJobRowClass *klass)
   gtk_widget_class_bind_template_child (widget_class, PpJobRow, pause_button);
   gtk_widget_class_bind_template_child (widget_class, PpJobRow, priority_button);
   gtk_widget_class_bind_template_child (widget_class, PpJobRow, state_label);
-  gtk_widget_class_bind_template_child (widget_class, PpJobRow, title_label);
 
   gtk_widget_class_bind_template_callback (widget_class, pause_cb);
   gtk_widget_class_bind_template_callback (widget_class, stop_cb);
@@ -164,8 +160,8 @@ pp_job_row_new (PpJob *job)
         state_string = g_strdup (C_("print job", "Stopped"));
         break;
       case IPP_JOB_CANCELED:
-        /* Translators: Job's state (job has been canceled) */
-        state_string = g_strdup (C_("print job", "Canceled"));
+        /* Translators: Job's state (job has been cancelled) */
+        state_string = g_strdup (C_("print job", "Cancelled"));
         break;
       case IPP_JOB_ABORTED:
         /* Translators: Job's state (job has aborted due to error) */
@@ -176,14 +172,11 @@ pp_job_row_new (PpJob *job)
         state_string = g_strdup (C_("print job", "Completed"));
         break;
     }
-  gtk_label_set_text (self->title_label, pp_job_get_title (job));
+  adw_preferences_row_set_title (ADW_PREFERENCES_ROW (self), pp_job_get_title (job));
   gtk_label_set_markup (self->state_label, state_string);
   gtk_widget_set_sensitive (GTK_WIDGET (self->pause_button), pp_job_get_auth_info_required (job) == NULL);
   status = pp_job_priority_get_sensitive (job);
   gtk_widget_set_sensitive (GTK_WIDGET (self->priority_button), status);
-  if (status)
-    /* Translators: Clicking this button prioritizes printing of this print job */
-    gtk_widget_set_tooltip_text (GTK_WIDGET (self->priority_button), _("Move this job to the top of the queue"));
   update_pause_button (self,
                        pp_job_get_state (self->job) == IPP_JOB_HELD);
   return self;
