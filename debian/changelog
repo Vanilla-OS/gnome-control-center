@@ -1,3 +1,12 @@
+gnome-control-center (1:47~beta-2ubuntu2) UNRELEASED; urgency=medium
+
+  * d/p/ubuntu: Set legacy gtk theming options on accent color changes
+  * debian/patches: Add brown accent color support to background panel
+  * d/p/ubuntu: Add switch to toggle the startup sound
+  * debian/control: Bump desktop schemas dependency
+
+ -- Marco Trevisan (Treviño) <marco@ubuntu.com>  Thu, 15 Aug 2024 09:22:12 -0400
+
 gnome-control-center (1:47~beta-2ubuntu1) oracular; urgency=medium
 
   * Merge with Debian (LP: #2064762). Remaining changes:
