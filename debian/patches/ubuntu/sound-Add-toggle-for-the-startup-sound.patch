@@ -1,0 +1,102 @@
+From: =?utf-8?b?Ik1hcmNvIFRyZXZpc2FuIChUcmV2acOxbyki?= <mail@3v1n0.net>
+Date: Thu, 15 Aug 2024 05:54:49 -0400
+Subject: sound: Add toggle for the startup sound
+
+We hardcode the sound to a specific file for now
+---
+ panels/sound/cc-sound-panel.c  | 41 +++++++++++++++++++++++++++++++++++++++++
+ panels/sound/cc-sound-panel.ui |  6 ++++++
+ 2 files changed, 47 insertions(+)
+
+diff --git a/panels/sound/cc-sound-panel.c b/panels/sound/cc-sound-panel.c
+index 2e3ca39..1e05cf3 100644
+--- a/panels/sound/cc-sound-panel.c
++++ b/panels/sound/cc-sound-panel.c
+@@ -55,6 +55,7 @@ struct _CcSoundPanel
+   CcVolumeSlider      *output_volume_slider;
+   CcBalanceSlider     *balance_slider;
+   AdwSwitchRow        *allow_amplify_row;
++  AdwSwitchRow        *startup_sound_row;
+   AdwPreferencesRow   *fade_row;
+   CcFadeSlider        *fade_slider;
+   AdwPreferencesRow   *subwoofer_row;
+@@ -283,6 +284,7 @@ cc_sound_panel_class_init (CcSoundPanelClass *klass)
+   gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, output_profile_combo_box);
+   gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, output_volume_slider);
+   gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, allow_amplify_row);
++  gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, startup_sound_row);
+   gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, balance_slider);
+   gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, fade_row);
+   gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, fade_slider);
+@@ -314,6 +316,28 @@ cc_sound_panel_class_init (CcSoundPanelClass *klass)
+   g_type_ensure (CC_TYPE_LIST_ROW);
+ }
+ 
++static gboolean
++startup_sound_get_mapping (GValue    *value,
++                           GVariant  *variant,
++                           gpointer   user_data)
++{
++  const char *sound_path = g_variant_get_string (variant, NULL);
++
++  g_value_set_boolean (value, sound_path != NULL && *sound_path != '\0');
++  return TRUE;
++}
++
++static GVariant *
++startup_sound_set_mapping (const GValue       *value,
++                           const GVariantType *type,
++                           gpointer            user_data)
++{
++  gboolean enabled;
++
++  enabled = g_value_get_boolean (value);
++  return g_variant_new_string (enabled ? "warty-startup" : "");
++}
++
+ static void
+ cc_sound_panel_init (CcSoundPanel *self)
+ {
+@@ -336,8 +360,25 @@ cc_sound_panel_init (CcSoundPanel *self)
+   if (desktops && g_strv_contains ((const gchar * const *) desktops, "ubuntu")) {
+     g_settings_bind (self->sound_settings, "allow-volume-above-100-percent",
+                      self->allow_amplify_row, "active", G_SETTINGS_BIND_DEFAULT);
++
++    GSettingsSchemaSource *schema_source = g_settings_schema_source_get_default ();
++    g_autoptr(GSettingsSchema) ubuntu_shell_schema = NULL;
++    ubuntu_shell_schema = g_settings_schema_source_lookup (schema_source,
++                                                           "org.gnome.shell.ubuntu",
++                                                           TRUE);
++    if (ubuntu_shell_schema &&
++        g_settings_schema_has_key (ubuntu_shell_schema, "startup-sound")) {
++        g_autoptr(GSettings) ubuntu_shell_settings = g_settings_new ("org.gnome.shell.ubuntu");
++        g_settings_bind_with_mapping (ubuntu_shell_settings, "startup-sound",
++                                      self->startup_sound_row, "active",
++                                      G_SETTINGS_BIND_DEFAULT,
++                                      startup_sound_get_mapping,
++                                      startup_sound_set_mapping,
++                                      NULL, NULL);
++    }
+   } else {
+     gtk_widget_set_visible (GTK_WIDGET (self->allow_amplify_row), FALSE);
++    gtk_widget_set_visible (GTK_WIDGET (self->startup_sound_row), FALSE);
+   }
+ 
+   self->mixer_control = gvc_mixer_control_new ("GNOME Settings");
+diff --git a/panels/sound/cc-sound-panel.ui b/panels/sound/cc-sound-panel.ui
+index 47b8fd5..4449d66 100644
+--- a/panels/sound/cc-sound-panel.ui
++++ b/panels/sound/cc-sound-panel.ui
+@@ -378,6 +378,12 @@
+                         <signal name="activated" handler="alert_sound_activated_cb" swapped="yes"/>
+                       </object>
+                     </child>
++                    <child>
++                      <object class="AdwSwitchRow" id="startup_sound_row">
++                        <property name="title" translatable="yes">_Startup Sound</property>
++                        <property name="use-underline">True</property>
++                      </object>
++                    </child>
+                   </object>
+                 </child>
+               </object>
