@@ -23,3 +23,4 @@ ubuntu/applications-Launch-snap-store-if-it-is-installed.patch
 ubuntu/display-Allow-fractional-scaling-to-be-enabled.patch
 ubuntu/CVE-2023-5616.patch
 ubuntu/background-Update-legacy-theme-settings-matching-the-acce.patch
+ubuntu/background-Add-brown-accent-color-support.patch
