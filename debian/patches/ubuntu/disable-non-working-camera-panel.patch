@@ -26,10 +26,10 @@ inadequate to document these significant limitations.
  1 file changed, 1 insertion(+)
 
 diff --git a/panels/privacy/cc-privacy-panel.ui b/panels/privacy/cc-privacy-panel.ui
-index 9a3cbf0..bcd89bd 100644
+index 58d0728..40977fc 100644
 --- a/panels/privacy/cc-privacy-panel.ui
 +++ b/panels/privacy/cc-privacy-panel.ui
-@@ -87,6 +87,7 @@
+@@ -88,6 +88,7 @@
                          <property name="title" translatable="yes">_Cameras</property>
                          <property name="subtitle" translatable="yes">Control camera access</property>
                          <property name="icon-name">org.gnome.Settings-camera-access-symbolic</property>

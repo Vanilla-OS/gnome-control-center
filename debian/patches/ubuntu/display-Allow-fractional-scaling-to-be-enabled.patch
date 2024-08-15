@@ -513,7 +513,7 @@ index 4fdc2dd..ebe8423 100644
  const char*       cc_display_monitor_get_display_name       (CcDisplayMonitor   *monitor);
  gboolean          cc_display_monitor_is_active              (CcDisplayMonitor   *monitor);
 diff --git a/panels/display/cc-display-settings.c b/panels/display/cc-display-settings.c
-index cf6ba5b..d9d1c04 100644
+index cf6ba5b..0dd4d0f 100644
 --- a/panels/display/cc-display-settings.c
 +++ b/panels/display/cc-display-settings.c
 @@ -58,6 +58,7 @@ struct _CcDisplaySettings

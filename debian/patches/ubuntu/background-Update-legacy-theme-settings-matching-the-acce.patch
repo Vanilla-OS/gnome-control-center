@@ -1,0 +1,166 @@
+From: =?utf-8?b?Ik1hcmNvIFRyZXZpc2FuIChUcmV2acOxbyki?= <mail@3v1n0.net>
+Date: Thu, 15 Aug 2024 04:32:20 -0400
+Subject: background: Update legacy theme settings matching the accent color
+
+When the accent color is changed, update the legacy gtk settings to
+ensure that we use the proper icon and gtk theme (for old gtk3 and gtk2
+apps).
+
+We rely on the yaru generated themes for this, since those old toolkits
+have no support for accent colors.
+---
+ panels/background/cc-background-panel.c | 99 +++++++++++++++++++++++++++++++++
+ 1 file changed, 99 insertions(+)
+
+diff --git a/panels/background/cc-background-panel.c b/panels/background/cc-background-panel.c
+index e9d416f..4655dcb 100644
+--- a/panels/background/cc-background-panel.c
++++ b/panels/background/cc-background-panel.c
+@@ -46,6 +46,15 @@
+ #define INTERFACE_PATH_ID "org.gnome.desktop.interface"
+ #define INTERFACE_COLOR_SCHEME_KEY "color-scheme"
+ #define INTERFACE_ACCENT_COLOR_KEY "accent-color"
++#define INTERFACE_GTK_THEME_KEY "gtk-theme"
++#define INTERFACE_CURSOR_THEME_KEY "cursor-theme"
++#define INTERFACE_ICON_THEME_KEY "icon-theme"
++
++#define GEDIT_PREFRENCES_SCHEMA "org.gnome.gedit.preferences.editor"
++#define GEDIT_THEME_KEY "scheme"
++
++#define DEFAULT_ACCENT_COLOR "default"
++
+ 
+ struct _CcBackgroundPanel
+ {
+@@ -56,6 +65,7 @@ struct _CcBackgroundPanel
+   GSettings *settings;
+   GSettings *lock_settings;
+   GSettings *interface_settings;
++  GSettings *gedit_settings;
+ 
+   GDBusProxy *proxy;
+ 
+@@ -105,6 +115,71 @@ transition_screen (CcBackgroundPanel *self)
+     g_warning ("Couldn't transition screen: %s", error->message);
+ }
+ 
++static void
++update_yaru_accent_settings (CcBackgroundPanel *self)
++{
++  g_autoptr(GString) gtk_theme = NULL;
++  g_autoptr(GString) icon_theme = NULL;
++  g_autoptr(GString) gedit_theme = NULL;
++  g_autofree char *current_gtk_theme = NULL;
++  g_autofree char *current_icon_theme = NULL;
++  g_autofree char *yaru_accent = NULL;
++  GDesktopColorScheme scheme;
++
++  g_object_get (G_OBJECT (adw_style_manager_get_default ()), "yaru-accent",
++                &yaru_accent, NULL);
++  if (yaru_accent == NULL)
++    return;
++
++  gtk_theme = g_string_new ("Yaru");
++  icon_theme = g_string_new ("Yaru");
++  gedit_theme = g_string_new ("Yaru");
++
++  if (!g_str_equal (yaru_accent, DEFAULT_ACCENT_COLOR))
++    {
++      g_string_append_printf (gtk_theme, "-%s", yaru_accent);
++      g_string_append_printf (icon_theme, "-%s", yaru_accent);
++    }
++
++  scheme = g_settings_get_enum (self->interface_settings, INTERFACE_COLOR_SCHEME_KEY);
++  if (scheme == G_DESKTOP_COLOR_SCHEME_PREFER_DARK)
++    {
++      g_string_append (gtk_theme, "-dark");
++      g_string_append (icon_theme, "-dark");
++      g_string_append (gedit_theme, "-dark");
++    }
++
++  current_gtk_theme = g_settings_get_string (self->interface_settings, INTERFACE_GTK_THEME_KEY);
++  if (g_strcmp0 (current_gtk_theme, gtk_theme->str) != 0)
++    g_settings_set_string (self->interface_settings, INTERFACE_GTK_THEME_KEY, gtk_theme->str);
++
++  current_icon_theme = g_settings_get_string (self->interface_settings, INTERFACE_ICON_THEME_KEY);
++
++  if (!current_icon_theme ||
++      g_str_has_prefix (current_icon_theme, "Yaru"))
++    g_settings_set_string (self->interface_settings, INTERFACE_ICON_THEME_KEY, icon_theme->str);
++
++  if (self->gedit_settings)
++    {
++      g_autoptr(GVariant) gedit_user_value = NULL;
++      const char *gedit_theme_name = NULL;
++
++      gedit_user_value = g_settings_get_user_value (self->gedit_settings,
++                                                    GEDIT_THEME_KEY);
++
++      if (gedit_user_value)
++        gedit_theme_name = g_variant_get_string (gedit_user_value, NULL);
++
++      if (!gedit_theme_name || *gedit_theme_name == '\0' ||
++          g_str_has_prefix (gedit_theme_name, "Yaru"))
++        {
++          /* Only change the gedit setting if user is using a Yaru theme, or unset */
++          g_settings_set_string (self->gedit_settings, GEDIT_THEME_KEY,
++                                 gedit_theme->str);
++        }
++    }
++}
++
+ static void
+ on_accent_color_toggled_cb (CcBackgroundPanel *self,
+                             GtkToggleButton   *toggle)
+@@ -270,6 +345,8 @@ set_color_scheme (CcBackgroundPanel   *self,
+   g_settings_set_enum (self->interface_settings,
+                        INTERFACE_COLOR_SCHEME_KEY,
+                        color_scheme);
++
++  update_yaru_accent_settings (self);
+ }
+ 
+ /* Color schemes */
+@@ -488,6 +565,7 @@ cc_background_panel_dispose (GObject *object)
+   g_clear_object (&self->settings);
+   g_clear_object (&self->lock_settings);
+   g_clear_object (&self->interface_settings);
++  g_clear_object (&self->gedit_settings);
+   g_clear_object (&self->proxy);
+ 
+   G_OBJECT_CLASS (cc_background_panel_parent_class)->dispose (object);
+@@ -556,6 +634,21 @@ cc_background_panel_init (CcBackgroundPanel *self)
+ 
+   self->interface_settings = g_settings_new (INTERFACE_PATH_ID);
+ 
++  GSettingsSchemaSource *schema_source = g_settings_schema_source_get_default ();
++  g_autoptr(GSettingsSchema) schema = NULL;
++  schema = g_settings_schema_source_lookup (schema_source, GEDIT_PREFRENCES_SCHEMA, TRUE);
++  if (schema)
++    {
++      self->gedit_settings = g_settings_new (GEDIT_PREFRENCES_SCHEMA);
++      g_signal_connect_object (self->gedit_settings, "changed::" GEDIT_THEME_KEY,
++                               G_CALLBACK (update_yaru_accent_settings), self,
++                               G_CONNECT_SWAPPED);
++    }
++  else
++    {
++      g_warning ("No gedit is installed here. Colors won't be updated. Please fix your installation.");
++    }
++
+   /* Load the background */
+   reload_current_bg (self);
+   update_preview (self);
+@@ -579,6 +672,12 @@ cc_background_panel_init (CcBackgroundPanel *self)
+                            self,
+                            G_CONNECT_SWAPPED);
+ 
++  g_signal_connect_object (adw_style_manager_get_default (),
++                           "notify::yaru-accent",
++                           G_CALLBACK (update_yaru_accent_settings),
++                           self,
++                           G_CONNECT_SWAPPED);
++
+   g_dbus_proxy_new_for_bus (G_BUS_TYPE_SESSION,
+                             G_DBUS_PROXY_FLAGS_NONE,
+                             NULL,
