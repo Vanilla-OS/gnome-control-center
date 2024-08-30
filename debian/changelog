@@ -1,3 +1,9 @@
+gnome-control-center (1:47~beta-3) UNRELEASED; urgency=medium
+
+  * Move gnome-online-accounts from Recommends to Depends
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Fri, 30 Aug 2024 15:27:33 -0400
+
 gnome-control-center (1:47~beta-2) experimental; urgency=medium
 
   * New upstream release
