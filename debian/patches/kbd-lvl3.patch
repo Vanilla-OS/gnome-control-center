@@ -1,0 +1,76 @@
+Description: Add the option to unset the alternate character key (a.k.a. lv3),
+ which we hereby name "None", and the option to leave the layout alone, which
+ we hereby name "Layout's default".
+ .
+ This is a rework of Ian Douglas Scott's <idscott@system76.com>
+ keyboard-For-xkb-options-have-Layout-default-toggle-and-N.patch,
+ which was invalidated in Gnome 47 beta.
+ .
+Author: Nathan Pratta Teodosio <nteodosio@ubuntu.com>
+Forwarded: https://gitlab.gnome.org/GNOME/gnome-control-center/-/merge_requests/2811
+
+diff --git a/panels/keyboard/cc-keyboard-panel.c b/panels/keyboard/cc-keyboard-panel.c
+index 6b6234ef6..5ea76235d 100644
+--- a/panels/keyboard/cc-keyboard-panel.c
++++ b/panels/keyboard/cc-keyboard-panel.c
+@@ -63,6 +63,11 @@ static const CcXkbModifier LV3_MODIFIER = {
+   N_("Alternate Characters Key"),
+   N_("The alternate characters key can be used to enter additional characters. These are sometimes printed as a third-option on your keyboard."),
+   (CcXkbOption[]){
++    /* Set xkb_option to the prefix, namely "lv3:", to signify removal of any
++     * lv3: option from the xkb-options Gsetting.
++     */
++    { NC_("keyboard key", "Default"),     "lv3:" },
++    { NC_("keyboard key", "None"),        "lv3:ralt_alt" },
+     { NC_("keyboard key", "Left Alt"),    "lv3:lalt_switch" },
+     { NC_("keyboard key", "Right Alt"),   "lv3:ralt_switch" },
+     { NC_("keyboard key", "Left Super"),  "lv3:lwin_switch" },
+@@ -71,7 +76,7 @@ static const CcXkbModifier LV3_MODIFIER = {
+     { NC_("keyboard key", "Right Ctrl"),  "lv3:switch" },
+     { NULL,                               NULL }
+   },
+-  "lv3:ralt_switch",
++  "lv3:",
+ };
+ 
+ static const CcXkbModifier COMPOSE_MODIFIER = {
+diff --git a/panels/keyboard/cc-xkb-modifier-page.c b/panels/keyboard/cc-xkb-modifier-page.c
+index ddbf72b71..935909ad1 100644
+--- a/panels/keyboard/cc-xkb-modifier-page.c
++++ b/panels/keyboard/cc-xkb-modifier-page.c
+@@ -117,21 +117,23 @@ set_xkb_option (CcXkbModifierPage *self,
+ {
+   g_autoptr(GPtrArray) array = NULL;
+   g_auto(GStrv) options = NULL;
+-  gboolean found;
++  gboolean found, is_prefix;
+   guint i;
+ 
+   /* Either replace the existing "<modifier>:" option in the string
+-   * array, or add the option at the end
++   * array, or add the option at the end, or, in case the argument is exactly
++   * <modifier>:, remove any instance of <modifier>:
+    */
+   array = g_ptr_array_new ();
+   options = g_settings_get_strv (self->input_source_settings, "xkb-options");
+   found = FALSE;
++  is_prefix = !g_strcmp0(self->modifier->prefix, xkb_option);
+ 
+   for (i = 0; options != NULL && options[i] != NULL; i++)
+     {
+       if (g_str_has_prefix (options[i], self->modifier->prefix))
+         {
+-          if (!found && xkb_option != NULL)
++          if (!found && xkb_option != NULL && !is_prefix)
+             g_ptr_array_add (array, xkb_option);
+           found = TRUE;
+         }
+@@ -141,7 +143,7 @@ set_xkb_option (CcXkbModifierPage *self,
+         }
+     }
+ 
+-  if (!found && xkb_option != NULL)
++  if (!found && xkb_option != NULL && !is_prefix)
+     g_ptr_array_add (array, xkb_option);
+ 
+   g_ptr_array_add (array, NULL);
