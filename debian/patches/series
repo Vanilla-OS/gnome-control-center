@@ -25,3 +25,4 @@ ubuntu/CVE-2023-5616.patch
 ubuntu/background-Update-legacy-theme-settings-matching-the-acce.patch
 ubuntu/background-Add-brown-accent-color-support.patch
 ubuntu/sound-Add-toggle-for-the-startup-sound.patch
+ubuntu/list-apps-even-without-malcontent.patch
