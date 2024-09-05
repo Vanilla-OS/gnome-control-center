@@ -46,7 +46,7 @@ index b2302bf..08f3c65 100644
  option('dark_mode_distributor_logo', type: 'string', description: 'absolute path to distributor logo dark mode variant')
 +option('whoopsie', type: 'boolean', value: false, description: 'build with Whoopsie support')
 diff --git a/panels/privacy/diagnostics/cc-diagnostics-page.c b/panels/privacy/diagnostics/cc-diagnostics-page.c
-index 8e7e826..4fa766c 100644
+index 8e7e826..7a8124c 100644
 --- a/panels/privacy/diagnostics/cc-diagnostics-page.c
 +++ b/panels/privacy/diagnostics/cc-diagnostics-page.c
 @@ -18,6 +18,8 @@
@@ -285,7 +285,7 @@ index 8e7e826..4fa766c 100644
 +
 +  g_signal_connect_object (self->whoopsie, "notify::g-name-owner",
 +                           G_CALLBACK (whoopsie_bus_owner_changed),
-+                           NULL, 0);
++                           self, 0);
 +
 +
 +  whoopsie_properties_changed (self);
