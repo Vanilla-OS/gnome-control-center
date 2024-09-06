@@ -1,7 +1,7 @@
-gnome-control-center (1:47~rc-1ubuntu1) UNRELEASED; urgency=medium
+gnome-control-center (1:47~rc-1ubuntu1) oracular; urgency=medium
 
   [ Jeremy Bícha ]
-  * Merge with Debian. Remaining changes:
+  * Merge with Debian (LP: #2076994). Remaining changes:
     + Add gnome-control-center-faces package to share with unity-control-center
     + Install apport hook
     + debian/control:
@@ -57,6 +57,8 @@ gnome-control-center (1:47~rc-1ubuntu1) UNRELEASED; urgency=medium
       - u/background-Update-legacy-theme-settings-matching-the-acce.patch
       - u/background-Add-brown-accent-color-support.patch
       - u/sound-Add-toggle-for-the-startup-sound.patch
+  * Disambiguate Overamplification keyboard accelerator after
+    sound panel changes
 
   [ Nathan Pratta Teodosio ]
   * List applications even if Malcontent is missing at runtime. (LP: #2072772)
@@ -64,7 +66,7 @@ gnome-control-center (1:47~rc-1ubuntu1) UNRELEASED; urgency=medium
   [ Marco Trevisan (Treviño) ]
   * d/p: Disconnect to whoopsie proxy name changes when the panel is finalized
 
- -- Jeremy Bícha <jbicha@ubuntu.com>  Fri, 06 Sep 2024 15:37:20 -0400
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Fri, 06 Sep 2024 15:45:45 -0400
 
 gnome-control-center (1:47~rc-1) experimental; urgency=medium
 
