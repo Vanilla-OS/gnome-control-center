@@ -9,7 +9,7 @@ Bug-Debian: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=910141
  1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/panels/system/users/cc-add-user-dialog.c b/panels/system/users/cc-add-user-dialog.c
-index 4828e78..d982eba 100644
+index 340b18f..da562f8 100644
 --- a/panels/system/users/cc-add-user-dialog.c
 +++ b/panels/system/users/cc-add-user-dialog.c
 @@ -164,6 +164,7 @@ create_user_done (ActUserManager  *manager,

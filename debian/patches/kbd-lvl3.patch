@@ -1,16 +1,22 @@
-Description: Add the option to unset the alternate character key (a.k.a. lv3),
- which we hereby name "None", and the option to leave the layout alone, which
- we hereby name "Layout's default".
- .
- This is a rework of Ian Douglas Scott's <idscott@system76.com>
- keyboard-For-xkb-options-have-Layout-default-toggle-and-N.patch,
- which was invalidated in Gnome 47 beta.
- .
-Author: Nathan Pratta Teodosio <nteodosio@ubuntu.com>
+From: Nathan Pratta Teodosio <nteodosio@ubuntu.com>
+Date: Fri, 6 Sep 2024 15:45:01 -0400
+Subject: Add the option to unset the alternate character key (a.k.a. lv3),
+
 Forwarded: https://gitlab.gnome.org/GNOME/gnome-control-center/-/merge_requests/2811
 
+which we hereby name "None", and the option to leave the layout alone, which
+we hereby name "Layout's default".
+
+This is a rework of Ian Douglas Scott's <idscott@system76.com>
+keyboard-For-xkb-options-have-Layout-default-toggle-and-N.patch,
+which was invalidated in Gnome 47 beta.
+---
+ panels/keyboard/cc-keyboard-panel.c    |  7 ++++++-
+ panels/keyboard/cc-xkb-modifier-page.c | 10 ++++++----
+ 2 files changed, 12 insertions(+), 5 deletions(-)
+
 diff --git a/panels/keyboard/cc-keyboard-panel.c b/panels/keyboard/cc-keyboard-panel.c
-index 6b6234ef6..5ea76235d 100644
+index 6b6234e..1187ff8 100644
 --- a/panels/keyboard/cc-keyboard-panel.c
 +++ b/panels/keyboard/cc-keyboard-panel.c
 @@ -63,6 +63,11 @@ static const CcXkbModifier LV3_MODIFIER = {
@@ -35,7 +41,7 @@ index 6b6234ef6..5ea76235d 100644
  
  static const CcXkbModifier COMPOSE_MODIFIER = {
 diff --git a/panels/keyboard/cc-xkb-modifier-page.c b/panels/keyboard/cc-xkb-modifier-page.c
-index ddbf72b71..935909ad1 100644
+index ddbf72b..935909a 100644
 --- a/panels/keyboard/cc-xkb-modifier-page.c
 +++ b/panels/keyboard/cc-xkb-modifier-page.c
 @@ -117,21 +117,23 @@ set_xkb_option (CcXkbModifierPage *self,

@@ -1,9 +1,17 @@
-Author: Nathan Pratta Teodosio <nteodosio@ubuntu.com>
-Description: Applications should be listed even if Malcontent is not present
- at runtime.
+From: Nathan Pratta Teodosio <nteodosio@ubuntu.com>
+Date: Fri, 6 Sep 2024 15:45:02 -0400
+Subject: Applications should be listed even if Malcontent is not present
+
 Forwarded: not-yet
 Bug-Ubuntu: https://launchpad.net/bugs/2072772
 
+at runtime.
+---
+ panels/applications/cc-applications-panel.c | 22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
+
+diff --git a/panels/applications/cc-applications-panel.c b/panels/applications/cc-applications-panel.c
+index bb8a6ad..5cc8a4d 100644
 --- a/panels/applications/cc-applications-panel.c
 +++ b/panels/applications/cc-applications-panel.c
 @@ -74,6 +74,7 @@ struct _CcApplicationsPanel
@@ -14,7 +22,7 @@ Bug-Ubuntu: https://launchpad.net/bugs/2072772
  #endif
  
    gchar           *current_app_id;
-@@ -1241,7 +1242,7 @@ on_items_changed_cb (GListModel *list,
+@@ -1251,7 +1252,7 @@ on_items_changed_cb (GListModel *list,
      gtk_widget_set_visible (GTK_WIDGET (self->app_search_entry), FALSE);
    }
  #ifdef HAVE_MALCONTENT
@@ -23,7 +31,7 @@ Bug-Ubuntu: https://launchpad.net/bugs/2072772
      gtk_stack_set_visible_child_name (self->main_page_stack, "malcontent-not-found-page");
      gtk_widget_set_visible (GTK_WIDGET (self->app_search_entry), FALSE);
    }
-@@ -1501,7 +1502,8 @@ populate_applications (CcApplicationsPanel *self)
+@@ -1512,7 +1513,8 @@ populate_applications (CcApplicationsPanel *self)
  
    g_list_store_remove_all (G_LIST_STORE (self->app_model));
  #ifdef HAVE_MALCONTENT
@@ -33,7 +41,7 @@ Bug-Ubuntu: https://launchpad.net/bugs/2072772
  #endif
  
    infos = g_app_info_get_all ();
-@@ -1516,7 +1518,7 @@ populate_applications (CcApplicationsPanel *self)
+@@ -1527,7 +1529,7 @@ populate_applications (CcApplicationsPanel *self)
          continue;
  
  #ifdef HAVE_MALCONTENT
@@ -42,7 +50,7 @@ Bug-Ubuntu: https://launchpad.net/bugs/2072772
          continue;
  #endif
  
-@@ -1528,7 +1530,8 @@ populate_applications (CcApplicationsPanel *self)
+@@ -1539,7 +1541,8 @@ populate_applications (CcApplicationsPanel *self)
          gtk_list_box_select_row (self->app_listbox, GTK_LIST_BOX_ROW (row));
      }
  #ifdef HAVE_MALCONTENT
@@ -52,7 +60,7 @@ Bug-Ubuntu: https://launchpad.net/bugs/2072772
  #endif
  }
  
-@@ -1916,6 +1919,7 @@ cc_applications_panel_init (CcApplicationsPanel *self)
+@@ -1928,6 +1931,7 @@ cc_applications_panel_init (CcApplicationsPanel *self)
                     G_SETTINGS_BIND_INVERT_BOOLEAN);
  
  #ifdef HAVE_MALCONTENT
@@ -60,7 +68,7 @@ Bug-Ubuntu: https://launchpad.net/bugs/2072772
     /* FIXME: should become asynchronous */
    system_bus = g_bus_get_sync (G_BUS_TYPE_SYSTEM, self->cancellable, &error);
    if (system_bus == NULL)
-@@ -1932,13 +1936,13 @@ cc_applications_panel_init (CcApplicationsPanel *self)
+@@ -1944,13 +1948,13 @@ cc_applications_panel_init (CcApplicationsPanel *self)
                                                   self->cancellable,
                                                   &error);
    if (error)

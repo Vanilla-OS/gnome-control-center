@@ -84,7 +84,7 @@ index 2e3ca39..1e05cf3 100644
  
    self->mixer_control = gvc_mixer_control_new ("GNOME Settings");
 diff --git a/panels/sound/cc-sound-panel.ui b/panels/sound/cc-sound-panel.ui
-index 47b8fd5..4449d66 100644
+index 4689159..ce7612f 100644
 --- a/panels/sound/cc-sound-panel.ui
 +++ b/panels/sound/cc-sound-panel.ui
 @@ -378,6 +378,12 @@
