@@ -61,7 +61,7 @@ index a5367e8..2e3ca39 100644
  
    cc_volume_slider_set_mixer_control (self->input_volume_slider, self->mixer_control);
 diff --git a/panels/sound/cc-sound-panel.ui b/panels/sound/cc-sound-panel.ui
-index ce6d945..47b8fd5 100644
+index ce6d945..4689159 100644
 --- a/panels/sound/cc-sound-panel.ui
 +++ b/panels/sound/cc-sound-panel.ui
 @@ -215,6 +215,14 @@
@@ -70,7 +70,7 @@ index ce6d945..47b8fd5 100644
                      </child>
 +                    <child>
 +                      <object class="AdwSwitchRow" id="allow_amplify_row">
-+                        <property name="title" translatable="yes">_Overamplification</property>
++                        <property name="title" translatable="yes">O_veramplification</property>
 +                        <property name="subtitle" translatable="yes">Allow volume to exceed 100%, with reduced sound quality</property>
 +                        <property name="subtitle-lines">6</property>
 +                        <property name="use-underline">True</property>
