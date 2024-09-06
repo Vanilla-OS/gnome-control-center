@@ -288,10 +288,8 @@ cc_background_preview_set_item (CcBackgroundPreview *self,
                                            item,
                                            paint_flags,
                                            THUMBNAIL_WIDTH,
-                                           THUMBNAIL_HEIGHT);
-
-  g_object_bind_property (self->picture, "scale-factor",
-                          paintable, "scale-factor", G_BINDING_SYNC_CREATE);
+                                           THUMBNAIL_HEIGHT,
+                                           GTK_WIDGET (self));
 
   gtk_picture_set_paintable (GTK_PICTURE (self->picture), GDK_PAINTABLE (paintable));
 

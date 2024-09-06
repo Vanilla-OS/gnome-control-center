@@ -1,3 +1,15 @@
+gnome-control-center (1:47~rc-1) experimental; urgency=medium
+
+  [ Jeremy Bícha ]
+  * New upstream release
+  * Move gnome-online-accounts from Recommends to Depends
+  * Move malcontent-gui from Recommends to Depends
+
+  [ Nathan Pratta Teodosio ]
+  * Add patch to allow unsetting the alternate characters key
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Fri, 06 Sep 2024 09:47:13 -0400
+
 gnome-control-center (1:47~beta-2ubuntu2) oracular; urgency=medium
 
   * d/p/ubuntu: Set legacy gtk theming options on accent color changes
