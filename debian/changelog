@@ -1,5 +1,6 @@
-gnome-control-center (1:47.0.1-1) UNRELEASED; urgency=medium
+gnome-control-center (1:47.0.1-1) experimental; urgency=medium
 
+  * Team upload
   * New upstream release
 
  -- Alessandro Astone <alessandro.astone@canonical.com>  Mon, 16 Sep 2024 15:39:31 +0200
