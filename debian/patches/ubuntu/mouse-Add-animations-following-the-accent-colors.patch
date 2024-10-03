@@ -18,16 +18,16 @@ theme.
 Bug-Ubuntu: https://bugs.launchpad.net/ubuntu/+source/gnome-control-center/+bug/2011849
 Bug-Ubuntu: https://bugs.launchpad.net/ubuntu/+source/gnome-control-center/+bug/2077117
 ---
- panels/mouse/cc-mouse-panel.c                 | 176 +++++++++++++++++++++++++
+ panels/mouse/cc-mouse-panel.c                 | 179 +++++++++++++++++++++++++
  panels/mouse/meson.build                      |  29 ++++
  panels/mouse/yaru-assets-generator.py         | 183 ++++++++++++++++++++++++++
  panels/mouse/yaru-default-mouse.gresource.xml |  23 ++++
- 4 files changed, 411 insertions(+)
+ 4 files changed, 414 insertions(+)
  create mode 100644 panels/mouse/yaru-assets-generator.py
  create mode 100644 panels/mouse/yaru-default-mouse.gresource.xml
 
 diff --git a/panels/mouse/cc-mouse-panel.c b/panels/mouse/cc-mouse-panel.c
-index 88dadac..a337856 100644
+index 88dadac..af0c9c4 100644
 --- a/panels/mouse/cc-mouse-panel.c
 +++ b/panels/mouse/cc-mouse-panel.c
 @@ -31,6 +31,7 @@
@@ -111,7 +111,7 @@ index 88dadac..a337856 100644
  static void
  setup_touchpad_options (CcMousePanel *self)
  {
-@@ -248,6 +306,108 @@ update_primary_mouse_button_order (CcMousePanel *self)
+@@ -248,6 +306,111 @@ update_primary_mouse_button_order (CcMousePanel *self)
    }
  }
  
@@ -204,6 +204,9 @@ index 88dadac..a337856 100644
 +    "}\n"
 +    ".yaru-red .accented picture {"
 +    "  filter: hue-rotate(331deg) saturate(110%);"
++    "}\n"
++    ".yaru-yellow .accented picture {"
++    "  filter: hue-rotate(24.9deg) saturate(90.8%);"
 +    "}\n",
 +    -1);
 +  gtk_style_context_add_provider_for_display (gdk_display_get_default (),
@@ -220,7 +223,7 @@ index 88dadac..a337856 100644
  /* Set up the property editors in the dialog. */
  static void
  setup_dialog (CcMousePanel *self)
-@@ -348,6 +508,20 @@ setup_dialog (CcMousePanel *self)
+@@ -348,6 +511,20 @@ setup_dialog (CcMousePanel *self)
                     G_SETTINGS_BIND_DEFAULT);
  
    setup_touchpad_options (self);
@@ -241,7 +244,7 @@ index 88dadac..a337856 100644
  }
  
  /* Callback issued when a button is clicked on the dialog */
-@@ -385,6 +559,8 @@ cc_mouse_panel_dispose (GObject *object)
+@@ -385,6 +562,8 @@ cc_mouse_panel_dispose (GObject *object)
    g_clear_object (&self->mouse_settings);
    g_clear_object (&self->touchpad_settings);
    g_clear_pointer (&self->mouse_test, gtk_window_destroy);
