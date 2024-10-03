@@ -1,0 +1,510 @@
+From: =?utf-8?b?Ik1hcmNvIFRyZXZpc2FuIChUcmV2acOxbyki?= <mail@3v1n0.net>
+Date: Fri, 17 Mar 2023 04:48:58 +0100
+Subject: mouse: Add animations following the accent colors
+
+The animations are generated using blender with the provided script
+(yaru-assets-generator.py) that allows to generate all the animations
+for the yaru accent colors.
+
+See the source code for help on generating them, it may require further
+tunings in future if more animations are added.
+
+Animations are generated using this blender file:
+ - https://gitlab.gnome.org/Teams/Design/settings-mockups/-/commit/e6a94586991a
+
+Animations are then loaded by mouse panel checking the configured user
+theme.
+
+Bug-Ubuntu: https://bugs.launchpad.net/ubuntu/+source/gnome-control-center/+bug/2011849
+Bug-Ubuntu: https://bugs.launchpad.net/ubuntu/+source/gnome-control-center/+bug/2077117
+---
+ panels/mouse/cc-mouse-panel.c                 | 176 +++++++++++++++++++++++++
+ panels/mouse/meson.build                      |  29 ++++
+ panels/mouse/yaru-assets-generator.py         | 183 ++++++++++++++++++++++++++
+ panels/mouse/yaru-default-mouse.gresource.xml |  23 ++++
+ 4 files changed, 411 insertions(+)
+ create mode 100644 panels/mouse/yaru-assets-generator.py
+ create mode 100644 panels/mouse/yaru-default-mouse.gresource.xml
+
+diff --git a/panels/mouse/cc-mouse-panel.c b/panels/mouse/cc-mouse-panel.c
+index 88dadac..a337856 100644
+--- a/panels/mouse/cc-mouse-panel.c
++++ b/panels/mouse/cc-mouse-panel.c
+@@ -31,6 +31,7 @@
+ #include "cc-mouse-caps-helper.h"
+ #include "cc-mouse-panel.h"
+ #include "cc-mouse-resources.h"
++#include "cc-mouse-yaru-default-resources.h"
+ #include "cc-mouse-test.h"
+ #include "gsd-device-manager.h"
+ #include "gsd-input-helper.h"
+@@ -59,8 +60,11 @@ struct _CcMousePanel
+   AdwSwitchRow      *touchpad_typing_row;
+ 
+   GSettings         *mouse_settings;
++  GSettings         *interface_settings;
+   GSettings         *touchpad_settings;
+ 
++  char              *yaru_variant;
++
+   gboolean           have_mouse;
+   gboolean           have_touchpad;
+   gboolean           have_touchscreen;
+@@ -72,6 +76,60 @@ struct _CcMousePanel
+ 
+ CC_PANEL_REGISTER (CcMousePanel, cc_mouse_panel)
+ 
++#define ASSET_RESOURCES_PREFIX "/org/gnome/control-center/mouse/assets/"
++
++static void
++setup_illustrations (CcMousePanel *self)
++{
++  AdwStyleManager *style_manager = adw_style_manager_get_default ();
++  gboolean use_dark = adw_style_manager_get_dark (style_manager);
++  const char *yaru_prefix = self->yaru_variant ? "yaru/default-" : "";
++  struct {
++    CcSplitRow *row;
++    const gchar *default_resource;
++    const gchar *alternative_resource;
++  } row_resources[] = {
++    { self->mouse_scroll_direction_row, "scroll-traditional", "scroll-natural" },
++    { self->two_finger_push_row, "push-to-click-anywhere", "push-areas" },
++    { self->touchpad_scroll_method_row, "scroll-2finger", "edge-scroll" },
++    { self->touchpad_scroll_direction_row, "touch-scroll-traditional", "touch-scroll-natural" },
++  };
++
++  for (gsize i = 0; i < G_N_ELEMENTS (row_resources); i++)
++    {
++      g_autofree gchar *alternative_resource = NULL;
++      g_autofree gchar *default_resource = NULL;
++      const gchar *style_suffix;
++
++      style_suffix = use_dark ? "d" : "l";
++      default_resource = g_strdup_printf (ASSET_RESOURCES_PREFIX "%s%s-%s.webm",
++                                          yaru_prefix,
++                                          row_resources[i].default_resource,
++                                          style_suffix);
++      alternative_resource = g_strdup_printf (ASSET_RESOURCES_PREFIX "%s%s-%s.webm",
++                                              yaru_prefix,
++                                              row_resources[i].alternative_resource,
++                                              style_suffix);
++
++      g_debug ("Using resource %s (or %s)", default_resource, alternative_resource);
++
++      cc_split_row_set_default_illustration_resource (row_resources[i].row, default_resource);
++      cc_split_row_set_alternative_illustration_resource (row_resources[i].row, alternative_resource);
++    }
++
++  /* Tap to click */
++  {
++    g_autofree gchar *resource = NULL;
++
++    resource = g_strdup_printf (ASSET_RESOURCES_PREFIX "%s%s-%s.webm",
++                                yaru_prefix,
++                                "tap-to-click",
++                                use_dark ? "d" : "l");
++
++    cc_illustrated_row_set_resource (self->tap_to_click_row, resource);
++  }
++}
++
+ static void
+ setup_touchpad_options (CcMousePanel *self)
+ {
+@@ -248,6 +306,108 @@ update_primary_mouse_button_order (CcMousePanel *self)
+   }
+ }
+ 
++static void
++update_interface_settings (CcMousePanel *self)
++{
++  g_autofree gchar *gtk_theme = NULL;
++  g_auto(GStrv) parts = NULL;
++  const char *accent_color = NULL;
++  gboolean is_dark;
++
++  if (self->yaru_variant)
++    gtk_widget_remove_css_class (GTK_WIDGET (self), self->yaru_variant);
++
++  g_clear_pointer (&self->yaru_variant, g_free);
++
++  gtk_theme = g_settings_get_string (self->interface_settings, "gtk-theme");
++
++  if (!g_str_has_prefix (gtk_theme, "Yaru"))
++    {
++      g_resources_unregister (cc_mouse_yaru_default_get_resource ());
++      g_resources_register (cc_mouse_get_resource ());
++      g_warning ("No yaru theme selected!");
++      return;
++    }
++
++  parts = g_strsplit (gtk_theme, "-", 3);
++  is_dark = g_str_has_suffix (gtk_theme, "-dark");
++
++  switch (g_strv_length (parts))
++    {
++      case 3:
++        accent_color = parts[1];
++        break;
++      case 2:
++        if (!is_dark)
++          accent_color = parts[1];
++        break;
++    }
++
++  if (!self->yaru_variant)
++    g_resources_register (cc_mouse_yaru_default_get_resource ());
++
++  if (accent_color)
++    self->yaru_variant = g_strdup_printf ("yaru-%s", accent_color);
++  else
++    self->yaru_variant = g_strdup ("yaru-default");
++
++  gtk_widget_add_css_class (GTK_WIDGET (self), self->yaru_variant);
++}
++
++static void
++on_interface_settings_changed (CcMousePanel *self)
++{
++  update_interface_settings (self);
++  setup_illustrations (self);
++}
++
++static void
++load_custom_css (CcMousePanel *self)
++{
++  g_autoptr(GtkCssProvider) provider = NULL;
++
++  /* use custom CSS */
++  provider = gtk_css_provider_new ();
++  gtk_css_provider_load_from_data (provider,
++    ".yaru-magenta .accented picture {"
++    "  filter: hue-rotate(284deg) saturate(60%) brightness(110%);"
++    "}\n"
++    ".yaru-olive .accented picture {"
++    "  filter: hue-rotate(69deg) saturate(115%);"
++    "}\n"
++    ".yaru-blue .accented picture {"
++    "  filter: hue-rotate(199deg) saturate(117%) brightness(97%);"
++    "}\n"
++    ".yaru-bark .accented picture {"
++    "  filter: hue-rotate(53deg) saturate(18%);"
++    "}\n"
++    ".yaru-sage .accented picture {"
++    "  filter: hue-rotate(110deg) saturate(13%) brightness(105%);"
++    "}\n"
++    ".yaru-viridian .accented picture {"
++    "  filter: hue-rotate(146deg) saturate(105%);"
++    "}\n"
++    ".yaru-prussiangreen .accented picture {"
++    "  filter: hue-rotate(163deg) saturate(45%) brightness(105%);"
++    "}\n"
++    ".yaru-purple .accented picture {"
++    "  filter: hue-rotate(240.5deg) saturate(68%);"
++    "}\n"
++    ".yaru-red .accented picture {"
++    "  filter: hue-rotate(331deg) saturate(110%);"
++    "}\n",
++    -1);
++  gtk_style_context_add_provider_for_display (gdk_display_get_default (),
++                                              GTK_STYLE_PROVIDER (provider),
++                                              GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
++
++  gtk_widget_add_css_class (GTK_WIDGET (self->mouse_scroll_direction_row), "accented");
++  gtk_widget_add_css_class (GTK_WIDGET (self->two_finger_push_row), "accented");
++  gtk_widget_add_css_class (GTK_WIDGET (self->touchpad_scroll_method_row), "accented");
++  gtk_widget_add_css_class (GTK_WIDGET (self->touchpad_scroll_direction_row), "accented");
++  gtk_widget_add_css_class (GTK_WIDGET (self->tap_to_click_row), "accented");
++}
++
+ /* Set up the property editors in the dialog. */
+ static void
+ setup_dialog (CcMousePanel *self)
+@@ -348,6 +508,20 @@ setup_dialog (CcMousePanel *self)
+                    G_SETTINGS_BIND_DEFAULT);
+ 
+   setup_touchpad_options (self);
++
++  self->interface_settings = g_settings_new ("org.gnome.desktop.interface");
++  g_signal_connect_object (self->interface_settings, "changed::gtk-theme",
++                           G_CALLBACK (on_interface_settings_changed), self,
++                           G_CONNECT_SWAPPED);
++  load_custom_css (self);
++  update_interface_settings (self);
++
++  g_signal_connect_object (adw_style_manager_get_default (),
++                           "notify::dark",
++                           G_CALLBACK (setup_illustrations),
++                           self,
++                           G_CONNECT_SWAPPED);
++  setup_illustrations (self);
+ }
+ 
+ /* Callback issued when a button is clicked on the dialog */
+@@ -385,6 +559,8 @@ cc_mouse_panel_dispose (GObject *object)
+   g_clear_object (&self->mouse_settings);
+   g_clear_object (&self->touchpad_settings);
+   g_clear_pointer (&self->mouse_test, gtk_window_destroy);
++  g_clear_object (&self->interface_settings);
++  g_clear_pointer (&self->yaru_variant, g_free);
+ 
+   G_OBJECT_CLASS (cc_mouse_panel_parent_class)->dispose (object);
+ }
+diff --git a/panels/mouse/meson.build b/panels/mouse/meson.build
+index 2cc5048..069712d 100644
+--- a/panels/mouse/meson.build
++++ b/panels/mouse/meson.build
+@@ -17,6 +17,35 @@ common_sources = gnome.compile_resources(
+   export: true
+ )
+ 
++yaru_colors = [
++  'default',
++]
++
++yaru_resources_includes = []
++yaru_resources_checks = []
++
++foreach color: yaru_colors
++  yaru_resources = []
++  foreach resource: resource_data
++    resource = '@0@'.format(resource)
++    if resource.endswith('.webm')
++      name = resource.split('/')[-1]
++      dir = meson.project_source_root() / resource.replace(name, '')
++      yaru_resources += files(dir / 'yaru' / color + '-' + name)
++    endif
++  endforeach
++
++  color_file = '-'.join([cappletname, 'yaru', color])
++  resource_file = '-'.  join(['yaru', color, cappletname]) + '.gresource.xml'
++  common_sources += gnome.compile_resources(
++    'cc-' + color_file + '-resources',
++    resource_file,
++    c_name: 'cc_' + color_file.replace('-', '_'),
++    dependencies: yaru_resources,
++    export: true
++  )
++endforeach
++
+ sources = common_sources + files(
+   'cc-mouse-panel.c',
+   'cc-mouse-caps-helper.c',
+diff --git a/panels/mouse/yaru-assets-generator.py b/panels/mouse/yaru-assets-generator.py
+new file mode 100644
+index 0000000..33b82fd
+--- /dev/null
++++ b/panels/mouse/yaru-assets-generator.py
+@@ -0,0 +1,183 @@
++import argparse
++import bpy
++import os
++import sys
++
++# run outside as: blender -b <blender-file> -P <this-script> -- args
++# run inside blender with exec(bpy.data.texts['convert.py'].as_string())
++
++# Example:
++#  blender -t 8 /tmp/upstream-mouse-touchpad-v2.blend -b \
++#  -P yaru-assets-generator.py -- --accent red --output-path=$PWD/rendered
++
++# mouse-touchpad.blend file was originally at:
++# https://gitlab.gnome.org/Teams/Design/settings-mockups/-/commits/master/mouse-and-touchpad/src/mouse-touchpad-v2.blend
++
++class ArgumentParserForBlender(argparse.ArgumentParser):
++    """
++    This class is identical to its superclass, except for the parse_args
++    method (see docstring). It resolves the ambiguity generated when calling
++    Blender from the CLI with a python script, and both Blender and the script
++    have arguments. E.g., the following call will make Blender crash because
++    it will try to process the script's -a and -b flags:
++    >>> blender --python my_script.py -a 1 -b 2
++
++    To bypass this issue this class uses the fact that Blender will ignore all
++    arguments given after a double-dash ('--'). The approach is that all
++    arguments before '--' go to Blender, arguments after go to the script.
++    The following calls work fine:
++    >>> blender --python my_script.py -- -a 1 -b 2
++    >>> blender --python my_script.py --
++    """
++
++    def _get_argv_after_doubledash(self):
++        """
++        Given the sys.argv as a list of strings, this method returns the
++        sublist right after the '--' element (if present, otherwise returns
++        an empty list).
++        """
++        try:
++            idx = sys.argv.index("--")
++            return sys.argv[idx+1:] # the list after '--'
++        except ValueError as e: # '--' not in the list:
++            return []
++
++    # overrides superclass
++    def parse_args(self):
++        """
++        This method is expected to behave identically as in the superclass,
++        except that the sys.argv list will be pre-processed using
++        _get_argv_after_doubledash before. See the docstring of the class for
++        usage examples and details.
++        """
++        return super().parse_args(args=self._get_argv_after_doubledash())
++
++parser = ArgumentParserForBlender()
++parser.add_argument('-o', '--output-path',
++        help='Where to save the output .xml files (default: %(default)s)',
++        default=os.path.realpath(os.path.join(os.path.curdir, '/renderer')))
++parser.add_argument('-a', '--accent',
++        help='What accent color to generate')
++parser.add_argument('-s', '--asset',
++        help='What asset to generate')
++parser.add_argument('--list-assets', action='store_true')
++parser.add_argument('--list-accents', action='store_true')
++ARGS = parser.parse_args()
++
++DEFAULT_REPLACEMENTS = ['3584E4', '98C1F1', '323232']
++
++ACCENTS = {
++    'default': [ 'E95420', 'E99A7F', '3D3D3D' ],
++    'bark': [ '787859', 'BBBB90', '3D3D3D' ],
++    'sage': [ '657B69', 'A0C2A6', '3D3D3D' ],
++    'olive': [ '4B8501', '6BAC18', '3D3D3D' ],
++    'viridian': [ '03875B', '4E9A81', '3D3D3D' ],
++    'prussiangreen': [ '308280', '5CB698', '3D3D3D' ],
++    'blue': [ '0073E5', '71ABE5', '3D3D3D' ],
++    'purple': [ '7764D8', 'A49AD8', '3D3D3D' ],
++    'magenta': [ 'B34CB3', 'B38EB3', '3D3D3D' ],
++    'red': [ 'DA3450', 'DA7586', '3D3D3D' ],
++}
++
++def srgb_to_linear(color):
++    def color_conversion(c):
++        if c <= 0.0404482362771082:
++            return c / 12.92
++        else:
++            return ((c + 0.055) / 1.055) ** 2.4
++
++    return list(map(lambda c: color_conversion(c), color[:3])) + [color[-1]]
++
++def linear_to_srgb(color):
++    def color_conversion(c):
++        if c <= 0.00313066844250063:
++            return c * 12.92
++        else:
++            return 1.055 * (c ** (1/2.4)) - 0.055
++
++    return list(map(lambda c: color_conversion(c), color[:3])) + [color[-1]]
++
++def hex_to_rgba(color_str):
++    # supports '123456', '#123456' and '0x123456'
++    (r,g,b), a = map(lambda c: c / 255, bytes.fromhex(color_str[-6:])), 1.0
++    return (r,g,b,a)
++
++def rgba_to_hex(color, alpha=False):
++    rgba = ''.join(map(lambda c: "{:02x}".format(round(c * 255)), color))
++    return rgba[:0 if alpha else -2].upper()
++
++def replace_color(original, replacement):
++    print('replacing', original, 'with', replacement)
++    for material in bpy.data.materials:
++        hex_color = rgba_to_hex(linear_to_srgb(material.diffuse_color))
++        #print(material.name, 'display color (linear)', hex_color)
++
++        emission = material.node_tree.nodes.get('Emission', None)
++        if not emission:
++            continue
++
++        emission_color = emission.inputs['Color']
++        hex_color = rgba_to_hex(linear_to_srgb(emission_color.default_value))
++        #print('', material.name, 'emission color', hex_color)
++
++        if hex_color == original:
++            new_color = srgb_to_linear(hex_to_rgba(replacement))
++            print('  converting',material.name,'to', new_color, '({})'.format(replacement))
++            emission_color.default_value = new_color
++
++def render_scene(scene, name_prefix=''):
++    bpy.context.window.scene = scene
++
++    if name_prefix:
++        old_path = bpy.context.scene.render.filepath
++        basename = bpy.path.basename(old_path)
++        if ARGS.output_path:
++            output_dir = ARGS.output_path
++        else:
++            output_dir = os.path.dirname(old_path)
++        new_path = output_dir = os.path.join(output_dir,
++            name_prefix + '-' + basename)
++
++        bpy.context.scene.render.filepath = new_path
++
++    print('Rendering as', bpy.context.scene.render.filepath)
++    bpy.ops.render.render(animation=True) #use scene=""
++
++    if name_prefix:
++        bpy.context.scene.render.filepath = old_path
++
++def render_all_scenes(name_prefix=''):
++    for scene in bpy.data.scenes.values():
++        render_scene(scene, name_prefix)
++
++
++if ARGS.list_accents:
++    print('\n'.join(ACCENTS.keys()))
++    sys.exit(0)
++
++if ARGS.list_assets:
++    print('\n'.join(bpy.data.scenes.keys()))
++    sys.exit(0)
++
++previous_colors = DEFAULT_REPLACEMENTS
++restored_values = [['original', DEFAULT_REPLACEMENTS]]
++
++if ARGS.accent:
++    all_replacements = [[ARGS.accent, ACCENTS[ARGS.accent]]] + restored_values
++else:
++    all_replacements = list(ACCENTS.items()) + restored_values
++
++for (accent, replacements) in all_replacements:
++    print('Processing accent', accent, replacements)
++    for i in range(0, len(DEFAULT_REPLACEMENTS)):
++        original = previous_colors[i]
++        replacement = replacements[i]
++        replace_color(original, replacement)
++
++    if accent != 'original':
++        if ARGS.asset:
++            render_scene(bpy.data.scenes[ARGS.asset], name_prefix=accent)
++        else:
++            render_all_scenes(name_prefix=accent)
++
++    previous_colors = replacements
+diff --git a/panels/mouse/yaru-default-mouse.gresource.xml b/panels/mouse/yaru-default-mouse.gresource.xml
+new file mode 100644
+index 0000000..9b20836
+--- /dev/null
++++ b/panels/mouse/yaru-default-mouse.gresource.xml
+@@ -0,0 +1,23 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<gresources>
++  <gresource prefix="/org/gnome/control-center/mouse">
++    <file>assets/yaru/default-edge-scroll-d.webm</file>
++    <file>assets/yaru/default-edge-scroll-l.webm</file>
++    <file>assets/yaru/default-scroll-2finger-d.webm</file>
++    <file>assets/yaru/default-scroll-2finger-l.webm</file>
++    <file>assets/yaru/default-scroll-traditional-d.webm</file>
++    <file>assets/yaru/default-scroll-traditional-l.webm</file>
++    <file>assets/yaru/default-scroll-natural-d.webm</file>
++    <file>assets/yaru/default-scroll-natural-l.webm</file>
++    <file>assets/yaru/default-push-areas-d.webm</file>
++    <file>assets/yaru/default-push-areas-l.webm</file>
++    <file>assets/yaru/default-push-to-click-anywhere-d.webm</file>
++    <file>assets/yaru/default-push-to-click-anywhere-l.webm</file>
++    <file>assets/yaru/default-touch-scroll-natural-d.webm</file>
++    <file>assets/yaru/default-touch-scroll-natural-l.webm</file>
++    <file>assets/yaru/default-touch-scroll-traditional-d.webm</file>
++    <file>assets/yaru/default-touch-scroll-traditional-l.webm</file>
++    <file>assets/yaru/default-tap-to-click-l.webm</file>
++    <file>assets/yaru/default-tap-to-click-d.webm</file>
++  </gresource>
++</gresources>

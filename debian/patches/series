@@ -25,3 +25,6 @@ ubuntu/background-Update-legacy-theme-settings-matching-the-acce.patch
 ubuntu/background-Add-brown-accent-color-support.patch
 ubuntu/sound-Add-toggle-for-the-startup-sound.patch
 ubuntu/list-apps-even-without-malcontent.patch
+Revert-split-row-Recolor-the-illustration-with-accent-col.patch
+ubuntu/mouse-Add-animations-assets-with-the-ubuntu-orange-accent.patch
+ubuntu/mouse-Add-animations-following-the-accent-colors.patch
