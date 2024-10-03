@@ -1,3 +1,16 @@
+gnome-control-center (1:47.0.1-1ubuntu2) UNRELEASED; urgency=medium
+
+  * d/p/ubuntu: Add back the noble patches for recoloring the mouse animations.
+    Go back using css filtering since it's safer to use when gstreamer-bad
+    is not installed.
+    This requires reverting a related upstream change (LP: #2077117)
+  * d/p/ubuntu/mouse-animations: Add support for yellow accent color
+    (LP: #2077117)
+  * d/p/ubuntu/mouse-animations: Add support for wartybrown accent color
+    (LP: #2077117)
+
+ -- Marco Trevisan (Treviño) <marco@ubuntu.com>  Thu, 03 Oct 2024 23:26:24 +0200
+
 gnome-control-center (1:47.0.1-1ubuntu1) oracular; urgency=medium
 
   * Merge with Debian. Remaining changes:
