@@ -1,4 +1,4 @@
-gnome-control-center (1:47.0.1-1ubuntu2) UNRELEASED; urgency=medium
+gnome-control-center (1:47.0.1-1ubuntu2) oracular; urgency=medium
 
   * d/p/ubuntu: Add back the noble patches for recoloring the mouse animations.
     Go back using css filtering since it's safer to use when gstreamer-bad
@@ -9,7 +9,7 @@ gnome-control-center (1:47.0.1-1ubuntu2) UNRELEASED; urgency=medium
   * d/p/ubuntu/mouse-animations: Add support for wartybrown accent color
     (LP: #2077117)
 
- -- Marco Trevisan (Treviño) <marco@ubuntu.com>  Thu, 03 Oct 2024 23:26:24 +0200
+ -- Marco Trevisan (Treviño) <marco@ubuntu.com>  Thu, 03 Oct 2024 23:26:35 +0200
 
 gnome-control-center (1:47.0.1-1ubuntu1) oracular; urgency=medium
 
