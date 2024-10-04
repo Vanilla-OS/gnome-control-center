@@ -1,3 +1,14 @@
+gnome-control-center (1:47.0.1-2) unstable; urgency=medium
+
+  * Cherry-pick patch to hide Remote Desktop panel if gnome-remote-desktop
+    isn't available
+  * Demote gnome-remote-desktop from Depends to Recommends
+    (Closes: #1014879, #1079256)
+  * Cherry-pick a Wacom crash fix
+  * Release to unstable
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Fri, 04 Oct 2024 19:46:57 -0400
+
 gnome-control-center (1:47.0.1-1) experimental; urgency=medium
 
   * Team upload
