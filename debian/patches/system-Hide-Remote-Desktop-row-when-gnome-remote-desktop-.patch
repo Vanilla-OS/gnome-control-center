@@ -1,0 +1,132 @@
+From: Felipe Borges <felipeborges@gnome.org>
+Date: Thu, 19 Sep 2024 14:07:20 +0200
+Subject: system: Hide "Remote Desktop" row when gnome-remote-desktop not
+ available
+
+If the gnome-remote-desktop systemd service isn't available, we don't show
+the Remote Desktop settings.
+
+We use org.freedesktop.systemd1.Manager.GetUnitFileState to get the
+service state.
+
+Fixes #3196
+
+(cherry picked from commit d1f07ee57663efd057859a9e9e9968e774cfa6b6)
+(cherry picked from commit df8b36a927eefe78fbbcba1314ec1f8b0da8fc22)
+
+Origin: future 47.1
+---
+ panels/system/cc-system-panel.c                   |  7 ++++
+ panels/system/remote-desktop/cc-systemd-service.c | 48 +++++++++++++++++++++++
+ panels/system/remote-desktop/cc-systemd-service.h | 11 ++++++
+ 3 files changed, 66 insertions(+)
+
+diff --git a/panels/system/cc-system-panel.c b/panels/system/cc-system-panel.c
+index 11e41a0..f28a963 100644
+--- a/panels/system/cc-system-panel.c
++++ b/panels/system/cc-system-panel.c
+@@ -30,6 +30,7 @@
+ #include "about/cc-about-page.h"
+ #include "datetime/cc-datetime-page.h"
+ #include "region/cc-region-page.h"
++#include "remote-desktop/cc-systemd-service.h"
+ #include "remote-desktop/cc-remote-desktop-page.h"
+ #include "secure-shell/cc-secure-shell-page.h"
+ #include "users/cc-users-page.h"
+@@ -159,9 +160,15 @@ cc_system_panel_class_init (CcSystemPanelClass *klass)
+ static void
+ cc_system_panel_init (CcSystemPanel *self)
+ {
++  CcServiceState service_state;
++
+   g_resources_register (cc_system_get_resource ());
+   gtk_widget_init_template (GTK_WIDGET (self));
+ 
++  service_state = cc_get_service_state ("gnome-remote-desktop.service", G_BUS_TYPE_SYSTEM);
++  /* Hide the remote-desktop page if the g-r-d service is either "masked", "static", or "not-found". */
++  gtk_widget_set_visible (GTK_WIDGET (self->remote_desktop_row), service_state == CC_SERVICE_STATE_ENABLED ||
++                                                                 service_state == CC_SERVICE_STATE_DISABLED);
+   gtk_widget_set_visible (GTK_WIDGET (self->software_updates_group), show_software_updates_group (self));
+ 
+   cc_panel_add_static_subpage (CC_PANEL (self), "about", CC_TYPE_ABOUT_PAGE);
+diff --git a/panels/system/remote-desktop/cc-systemd-service.c b/panels/system/remote-desktop/cc-systemd-service.c
+index d9ad8f5..3319ea3 100644
+--- a/panels/system/remote-desktop/cc-systemd-service.c
++++ b/panels/system/remote-desktop/cc-systemd-service.c
+@@ -22,6 +22,54 @@
+ 
+ #include "cc-systemd-service.h"
+ 
++CcServiceState
++cc_get_service_state (const char *service,
++                      GBusType    bus_type)
++{
++  g_autoptr(GError) error = NULL;
++  g_autoptr(GDBusConnection) connection = NULL;
++  g_autoptr(GVariant) unit_path_variant = NULL;
++  const gchar *state = NULL;
++
++  connection = g_bus_get_sync (bus_type, NULL, &error);
++  if (!connection)
++    {
++      g_warning ("Failed connecting to D-Bus system bus: %s", error->message);
++      return CC_SERVICE_STATE_NOT_FOUND;
++    }
++
++  unit_path_variant =
++    g_dbus_connection_call_sync (connection,
++                                 "org.freedesktop.systemd1",
++                                 "/org/freedesktop/systemd1",
++                                 "org.freedesktop.systemd1.Manager",
++                                 "GetUnitFileState",
++                                 g_variant_new ("(s)",
++                                                service),
++                                 (GVariantType *) "(s)",
++                                 G_DBUS_CALL_FLAGS_NONE,
++                                 -1,
++                                 NULL,
++                                 &error);
++  if (error) {
++    g_warning ("Failed to get service state %s", error->message);
++
++    return CC_SERVICE_STATE_NOT_FOUND;
++  }
++
++  g_variant_get_child (unit_path_variant, 0, "s", &state);
++  if (g_strcmp0 (state, "enabled") == 0)
++    return CC_SERVICE_STATE_ENABLED;
++  if (g_strcmp0 (state, "disabled") == 0)
++    return CC_SERVICE_STATE_DISABLED;
++  if (g_strcmp0 (state, "static") == 0)
++    return CC_SERVICE_STATE_STATIC;
++  if (g_strcmp0 (state, "masked") == 0)
++    return CC_SERVICE_STATE_MASKED;
++
++  return CC_SERVICE_STATE_NOT_FOUND;
++}
++
+ gboolean
+ cc_is_service_active (const char  *service,
+                       GBusType     bus_type)
+diff --git a/panels/system/remote-desktop/cc-systemd-service.h b/panels/system/remote-desktop/cc-systemd-service.h
+index 995e144..6e633b6 100644
+--- a/panels/system/remote-desktop/cc-systemd-service.h
++++ b/panels/system/remote-desktop/cc-systemd-service.h
+@@ -21,6 +21,17 @@
+ 
+ #include <gio/gio.h>
+ 
++typedef enum {
++  CC_SERVICE_STATE_ENABLED,
++  CC_SERVICE_STATE_DISABLED,
++  CC_SERVICE_STATE_STATIC,
++  CC_SERVICE_STATE_MASKED,
++  CC_SERVICE_STATE_NOT_FOUND
++} CcServiceState;
++
++CcServiceState cc_get_service_state (const char  *service,
++                                     GBusType     bus_type);
++
+ gboolean cc_is_service_active (const char  *service,
+                                GBusType     bus_type);
+ 
