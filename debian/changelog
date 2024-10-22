@@ -1,8 +1,12 @@
-gnome-control-center (1:47.1-1) UNRELEASED; urgency=medium
+gnome-control-center (1:47.1-1) unstable; urgency=medium
 
   * New upstream release
+    - Generate one background thumbnail at a time to improve usability
+      on systems with limited memory (Closes: #1079580, #1085760)
+  * Bump minimum gsettings-desktop-schemas
+  * Remove 2 patches applied in new release
 
- -- Jeremy Bícha <jbicha@ubuntu.com>  Tue, 22 Oct 2024 10:24:52 -0400
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Tue, 22 Oct 2024 10:27:04 -0400
 
 gnome-control-center (1:47.0.1-2) unstable; urgency=medium
 
