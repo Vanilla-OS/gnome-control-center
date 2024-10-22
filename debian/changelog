@@ -1,3 +1,9 @@
+gnome-control-center (1:47.1-1) UNRELEASED; urgency=medium
+
+  * New upstream release
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Tue, 22 Oct 2024 10:24:52 -0400
+
 gnome-control-center (1:47.0.1-2) unstable; urgency=medium
 
   * Cherry-pick patch to hide Remote Desktop panel if gnome-remote-desktop
