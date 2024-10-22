@@ -69,7 +69,9 @@ _goa_provider_get_provider_info (GoaProvider *provider)
   for (size_t i = 0; i < G_N_ELEMENTS (goa_metadata); i++)
     {
       if (g_str_equal (goa_metadata[i].provider, provider_type))
-        return goa_metadata[i];
+        return (ProviderInfo){ goa_metadata[i].provider,
+                               _(goa_metadata[i].title),
+                               _(goa_metadata[i].description) };
     }
 
   return (ProviderInfo){ provider_type, C_("Online Account", "Other"), NULL };
