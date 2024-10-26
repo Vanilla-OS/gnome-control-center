@@ -18,16 +18,16 @@ theme.
 Bug-Ubuntu: https://bugs.launchpad.net/ubuntu/+source/gnome-control-center/+bug/2011849
 Bug-Ubuntu: https://bugs.launchpad.net/ubuntu/+source/gnome-control-center/+bug/2077117
 ---
- panels/mouse/cc-mouse-panel.c                 | 182 +++++++++++++++++++++++++
+ panels/mouse/cc-mouse-panel.c                 | 133 ++++++++++++++++++-
  panels/mouse/meson.build                      |  29 ++++
  panels/mouse/yaru-assets-generator.py         | 183 ++++++++++++++++++++++++++
  panels/mouse/yaru-default-mouse.gresource.xml |  23 ++++
- 4 files changed, 417 insertions(+)
+ 4 files changed, 365 insertions(+), 3 deletions(-)
  create mode 100644 panels/mouse/yaru-assets-generator.py
  create mode 100644 panels/mouse/yaru-default-mouse.gresource.xml
 
 diff --git a/panels/mouse/cc-mouse-panel.c b/panels/mouse/cc-mouse-panel.c
-index 88dadac..5090773 100644
+index cac4f80..5090773 100644
 --- a/panels/mouse/cc-mouse-panel.c
 +++ b/panels/mouse/cc-mouse-panel.c
 @@ -31,6 +31,7 @@
@@ -50,68 +50,45 @@ index 88dadac..5090773 100644
    gboolean           have_mouse;
    gboolean           have_touchpad;
    gboolean           have_touchscreen;
-@@ -72,6 +76,60 @@ struct _CcMousePanel
- 
- CC_PANEL_REGISTER (CcMousePanel, cc_mouse_panel)
- 
-+#define ASSET_RESOURCES_PREFIX "/org/gnome/control-center/mouse/assets/"
-+
-+static void
-+setup_illustrations (CcMousePanel *self)
-+{
-+  AdwStyleManager *style_manager = adw_style_manager_get_default ();
-+  gboolean use_dark = adw_style_manager_get_dark (style_manager);
+@@ -79,6 +83,7 @@ setup_illustrations (CcMousePanel *self)
+ {
+   AdwStyleManager *style_manager = adw_style_manager_get_default ();
+   gboolean use_dark = adw_style_manager_get_dark (style_manager);
 +  const char *yaru_prefix = self->yaru_variant ? "yaru/default-" : "";
-+  struct {
-+    CcSplitRow *row;
-+    const gchar *default_resource;
-+    const gchar *alternative_resource;
-+  } row_resources[] = {
-+    { self->mouse_scroll_direction_row, "scroll-traditional", "scroll-natural" },
-+    { self->two_finger_push_row, "push-to-click-anywhere", "push-areas" },
-+    { self->touchpad_scroll_method_row, "scroll-2finger", "edge-scroll" },
-+    { self->touchpad_scroll_direction_row, "touch-scroll-traditional", "touch-scroll-natural" },
-+  };
-+
-+  for (gsize i = 0; i < G_N_ELEMENTS (row_resources); i++)
-+    {
-+      g_autofree gchar *alternative_resource = NULL;
-+      g_autofree gchar *default_resource = NULL;
-+      const gchar *style_suffix;
-+
-+      style_suffix = use_dark ? "d" : "l";
+   struct {
+     CcSplitRow *row;
+     const gchar *default_resource;
+@@ -97,13 +102,17 @@ setup_illustrations (CcMousePanel *self)
+       const gchar *style_suffix;
+ 
+       style_suffix = use_dark ? "d" : "l";
+-      default_resource = g_strdup_printf (ASSET_RESOURCES_PREFIX "%s-%s.webm",
 +      default_resource = g_strdup_printf (ASSET_RESOURCES_PREFIX "%s%s-%s.webm",
 +                                          yaru_prefix,
-+                                          row_resources[i].default_resource,
-+                                          style_suffix);
+                                           row_resources[i].default_resource,
+                                           style_suffix);
+-      alternative_resource = g_strdup_printf (ASSET_RESOURCES_PREFIX "%s-%s.webm",
 +      alternative_resource = g_strdup_printf (ASSET_RESOURCES_PREFIX "%s%s-%s.webm",
 +                                              yaru_prefix,
-+                                              row_resources[i].alternative_resource,
-+                                              style_suffix);
-+
+                                               row_resources[i].alternative_resource,
+                                               style_suffix);
+ 
 +      g_debug ("Using resource %s (or %s)", default_resource, alternative_resource);
 +
-+      cc_split_row_set_default_illustration_resource (row_resources[i].row, default_resource);
-+      cc_split_row_set_alternative_illustration_resource (row_resources[i].row, alternative_resource);
-+    }
-+
-+  /* Tap to click */
-+  {
-+    g_autofree gchar *resource = NULL;
-+
+       cc_split_row_set_default_illustration_resource (row_resources[i].row, default_resource);
+       cc_split_row_set_alternative_illustration_resource (row_resources[i].row, alternative_resource);
+     }
+@@ -112,7 +121,8 @@ setup_illustrations (CcMousePanel *self)
+   {
+     g_autofree gchar *resource = NULL;
+ 
+-    resource = g_strdup_printf (ASSET_RESOURCES_PREFIX "%s-%s.webm",
 +    resource = g_strdup_printf (ASSET_RESOURCES_PREFIX "%s%s-%s.webm",
 +                                yaru_prefix,
-+                                "tap-to-click",
-+                                use_dark ? "d" : "l");
-+
-+    cc_illustrated_row_set_resource (self->tap_to_click_row, resource);
-+  }
-+}
-+
- static void
- setup_touchpad_options (CcMousePanel *self)
- {
-@@ -248,6 +306,114 @@ update_primary_mouse_button_order (CcMousePanel *self)
+                                 "tap-to-click",
+                                 use_dark ? "d" : "l");
+ 
+@@ -296,6 +306,114 @@ update_primary_mouse_button_order (CcMousePanel *self)
    }
  }
  
@@ -226,11 +203,10 @@ index 88dadac..5090773 100644
  /* Set up the property editors in the dialog. */
  static void
  setup_dialog (CcMousePanel *self)
-@@ -348,6 +514,20 @@ setup_dialog (CcMousePanel *self)
-                    G_SETTINGS_BIND_DEFAULT);
+@@ -397,6 +515,13 @@ setup_dialog (CcMousePanel *self)
  
    setup_touchpad_options (self);
-+
+ 
 +  self->interface_settings = g_settings_new ("org.gnome.desktop.interface");
 +  g_signal_connect_object (self->interface_settings, "changed::gtk-theme",
 +                           G_CALLBACK (on_interface_settings_changed), self,
@@ -238,16 +214,10 @@ index 88dadac..5090773 100644
 +  load_custom_css (self);
 +  update_interface_settings (self);
 +
-+  g_signal_connect_object (adw_style_manager_get_default (),
-+                           "notify::dark",
-+                           G_CALLBACK (setup_illustrations),
-+                           self,
-+                           G_CONNECT_SWAPPED);
-+  setup_illustrations (self);
- }
- 
- /* Callback issued when a button is clicked on the dialog */
-@@ -385,6 +565,8 @@ cc_mouse_panel_dispose (GObject *object)
+   g_signal_connect_object (adw_style_manager_get_default (),
+                            "notify::dark",
+                            G_CALLBACK (setup_illustrations),
+@@ -440,6 +565,8 @@ cc_mouse_panel_dispose (GObject *object)
    g_clear_object (&self->mouse_settings);
    g_clear_object (&self->touchpad_settings);
    g_clear_pointer (&self->mouse_test, gtk_window_destroy);
