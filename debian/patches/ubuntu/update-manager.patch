@@ -8,10 +8,10 @@ Subject: info-overview: Show updates in update-manager instead of GNOME
  1 file changed, 14 insertions(+), 2 deletions(-)
 
 diff --git a/panels/system/cc-system-panel.c b/panels/system/cc-system-panel.c
-index 11e41a0..63707a4 100644
+index f28a963..5bebe5e 100644
 --- a/panels/system/cc-system-panel.c
 +++ b/panels/system/cc-system-panel.c
-@@ -86,11 +86,18 @@ gpk_update_viewer_exists (void)
+@@ -87,11 +87,18 @@ gpk_update_viewer_exists (void)
    return path != NULL;
  }
  
@@ -31,7 +31,7 @@ index 11e41a0..63707a4 100644
  }
  
  static void
-@@ -100,7 +107,12 @@ cc_system_page_open_software_update (CcSystemPanel *self)
+@@ -101,7 +108,12 @@ cc_system_page_open_software_update (CcSystemPanel *self)
    gboolean ret;
    char *argv[3];
  

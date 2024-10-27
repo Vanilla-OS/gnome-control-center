@@ -269,7 +269,7 @@ index 1f578b7..2e5a446 100644
 +
  G_END_DECLS
 diff --git a/panels/system/region/cc-region-page.c b/panels/system/region/cc-region-page.c
-index 91b2a49..a5a6ded 100644
+index efac326..3db53b1 100644
 --- a/panels/system/region/cc-region-page.c
 +++ b/panels/system/region/cc-region-page.c
 @@ -245,27 +245,26 @@ set_localed_locale (CcRegionPage *self)
@@ -316,7 +316,7 @@ index 91b2a49..a5a6ded 100644
          }
          g_dbus_proxy_call (self->localed,
                             "SetLocale",
-@@ -292,6 +291,8 @@ update_language (CcRegionPage   *self,
+@@ -294,6 +293,8 @@ update_language (CcRegionPage   *self,
                   CcLocaleTarget  target,
                   const gchar    *language)
  {
@@ -325,7 +325,7 @@ index 91b2a49..a5a6ded 100644
          switch (target) {
          case USER:
                  if (g_strcmp0 (language, self->language) == 0)
-@@ -321,6 +322,40 @@ set_system_region (CcRegionPage *self,
+@@ -327,6 +328,40 @@ set_system_region (CcRegionPage *self,
          set_localed_locale (self);
  }
  
@@ -366,7 +366,7 @@ index 91b2a49..a5a6ded 100644
  static void
  update_region (CcRegionPage   *self,
                 CcLocaleTarget  target,
-@@ -332,8 +367,10 @@ update_region (CcRegionPage   *self,
+@@ -338,8 +373,10 @@ update_region (CcRegionPage   *self,
                          return;
                  if (region == NULL || region[0] == '\0')
                          g_settings_reset (self->locale_settings, KEY_REGION);
@@ -378,7 +378,7 @@ index 91b2a49..a5a6ded 100644
                  if (self->login_auto_apply)
                          set_system_region (self, region);
  
-@@ -367,7 +404,8 @@ language_response (CcRegionPage      *self,
+@@ -373,7 +410,8 @@ language_response (CcRegionPage      *self,
                  update_language (self, target, language);
  
                  /* Keep format strings consistent with the user's language */
@@ -388,7 +388,7 @@ index 91b2a49..a5a6ded 100644
          }
  
          gtk_window_destroy (GTK_WINDOW (chooser));
-@@ -535,15 +573,19 @@ static void
+@@ -541,15 +579,19 @@ static void
  update_language_from_user (CcRegionPage *self)
  {
          const gchar *language = NULL;
@@ -412,7 +412,7 @@ index 91b2a49..a5a6ded 100644
          update_user_language_row (self);
  }
  
-@@ -551,7 +593,7 @@ static void
+@@ -557,7 +599,7 @@ static void
  update_region_from_setting (CcRegionPage *self)
  {
          g_free (self->region);
@@ -421,7 +421,7 @@ index 91b2a49..a5a6ded 100644
          update_user_region_row (self);
  }
  
-@@ -641,6 +683,16 @@ set_login_button_visibility (CcRegionPage *self)
+@@ -647,6 +689,16 @@ set_login_button_visibility (CcRegionPage *self)
  
  /* Callbacks */
  
@@ -438,7 +438,7 @@ index 91b2a49..a5a6ded 100644
  static void
  on_localed_properties_changed (GDBusProxy    *localed_proxy,
                                 GVariant      *changed_properties,
-@@ -649,33 +701,43 @@ on_localed_properties_changed (GDBusProxy    *localed_proxy,
+@@ -655,33 +707,43 @@ on_localed_properties_changed (GDBusProxy    *localed_proxy,
  {
          g_autoptr(GVariant) v = NULL;
  

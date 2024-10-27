@@ -9,10 +9,10 @@ Workaround for https://launchpad.net/bugs/1631750
  2 files changed, 42 insertions(+)
 
 diff --git a/panels/system/region/cc-region-page.c b/panels/system/region/cc-region-page.c
-index 24ab1b0..91b2a49 100644
+index 724e4f3..efac326 100644
 --- a/panels/system/region/cc-region-page.c
 +++ b/panels/system/region/cc-region-page.c
-@@ -572,6 +572,25 @@ setup_language_section (CcRegionPage *self)
+@@ -578,6 +578,25 @@ setup_language_section (CcRegionPage *self)
          update_region_from_setting (self);
  }
  
@@ -38,7 +38,7 @@ index 24ab1b0..91b2a49 100644
  static void
  update_login_region (CcRegionPage *self)
  {
-@@ -845,6 +864,7 @@ cc_region_page_class_init (CcRegionPageClass * klass)
+@@ -851,6 +870,7 @@ cc_region_page_class_init (CcRegionPageClass * klass)
          gtk_widget_class_bind_template_callback (widget_class, on_user_formats_row_activated_cb);
          gtk_widget_class_bind_template_callback (widget_class, on_user_language_row_activated_cb);
          gtk_widget_class_bind_template_callback (widget_class, restart_now);
