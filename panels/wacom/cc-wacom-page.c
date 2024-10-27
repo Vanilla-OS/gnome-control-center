@@ -36,6 +36,8 @@
 #endif
 
 #include "cc-list-row.h"
+#include "cc-mask-paintable.h"
+#include "cc-texture-utils.h"
 #include "cc-wacom-device.h"
 #include "cc-wacom-button-row.h"
 #include "cc-wacom-page.h"
@@ -63,7 +65,7 @@ struct _CcWacomPage
 	GSettings      *wacom_settings;
 
 	GtkWidget      *tablet_section;
-	GtkWidget      *tablet_icon;
+	CcMaskPaintable *tablet_paintable;
 	GtkWidget      *tablet_display;
 	GtkWidget      *tablet_calibrate;
 	GtkWidget      *tablet_map_buttons;
@@ -485,6 +487,22 @@ on_display_selected (CcWacomPage *page)
 	gtk_widget_set_sensitive (page->tablet_calibrate, has_monitor (page));
 }
 
+static void
+update_mask_color (CcWacomPage *page)
+{
+	AdwStyleManager *style_manager = adw_style_manager_get_default ();
+	GdkRGBA rgba;
+
+	gtk_widget_get_color (GTK_WIDGET (page), &rgba);
+
+	if (adw_style_manager_get_high_contrast (style_manager))
+		rgba.alpha *= 0.5;
+	else
+		rgba.alpha *= 0.2;
+
+	cc_mask_paintable_set_rgba (page->tablet_paintable, &rgba);
+}
+
 /* Boilerplate code goes below */
 
 static void
@@ -531,6 +549,17 @@ cc_wacom_page_dispose (GObject *object)
 }
 
 static void
+cc_wacom_page_css_changed (GtkWidget         *widget,
+                           GtkCssStyleChange *change)
+{
+	CcWacomPage *page = CC_WACOM_PAGE (widget);
+
+	GTK_WIDGET_CLASS (cc_wacom_page_parent_class)->css_changed (widget, change);
+
+	update_mask_color (page);
+}
+
+static void
 cc_wacom_page_class_init (CcWacomPageClass *klass)
 {
 	GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -540,12 +569,15 @@ cc_wacom_page_class_init (CcWacomPageClass *klass)
 	object_class->set_property = cc_wacom_page_set_property;
 	object_class->dispose = cc_wacom_page_dispose;
 
+	widget_class->css_changed = cc_wacom_page_css_changed;
+
 	g_type_ensure (CC_TYPE_LIST_ROW);
+	g_type_ensure (CC_TYPE_MASK_PAINTABLE);
 
 	gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/wacom/cc-wacom-page.ui");
 
 	gtk_widget_class_bind_template_child (widget_class, CcWacomPage, tablet_section);
-	gtk_widget_class_bind_template_child (widget_class, CcWacomPage, tablet_icon);
+	gtk_widget_class_bind_template_child (widget_class, CcWacomPage, tablet_paintable);
 	gtk_widget_class_bind_template_child (widget_class, CcWacomPage, tablet_display);
 	gtk_widget_class_bind_template_child (widget_class, CcWacomPage, tablet_calibrate);
 	gtk_widget_class_bind_template_child (widget_class, CcWacomPage, tablet_map_buttons);
@@ -667,27 +699,31 @@ cc_wacom_page_init (CcWacomPage *page)
 }
 
 static void
-set_icon_name (CcWacomPage *page,
-	       GtkWidget   *widget,
-	       const char  *icon_name)
+update_icon (CcWacomPage *page)
 {
+	const char *icon_name = cc_wacom_device_get_icon_name (page->stylus);
 	g_autofree gchar *resource = NULL;
+	g_autoptr (GdkPaintable) texture = NULL;
+	int scale = gtk_widget_get_scale_factor (GTK_WIDGET (page));
 
 	resource = g_strdup_printf ("/org/gnome/control-center/wacom/%s.svg", icon_name);
-	gtk_picture_set_resource (GTK_PICTURE (widget), resource);
+	texture = cc_texture_new_from_resource_scaled (resource, scale);
+
+	cc_mask_paintable_set_paintable (page->tablet_paintable, GDK_PAINTABLE (texture));
 }
 
 static void
 update_pad_availability (CcWacomPage *page)
 {
-	gtk_widget_set_visible (page->tablet_map_buttons, page->pad != NULL);
+	gboolean is_fallback = cc_wacom_device_is_fallback (page->stylus);
+
+	gtk_widget_set_visible (page->tablet_map_buttons, !is_fallback && page->pad != NULL);
 }
 
 static void
 check_add_pad (CcWacomPage *page,
 	       GsdDevice   *gsd_device)
 {
-	g_autoptr(CcWacomDevice) wacom_device = NULL;
 	const gchar *stylus_vendor, *stylus_product;
 	const gchar *pad_vendor, *pad_product;
 	GsdDevice *stylus_device;
@@ -795,7 +831,10 @@ cc_wacom_page_new (CcWacomPanel  *panel,
 			 G_SETTINGS_BIND_DEFAULT);
 
 	/* Tablet icon */
-	set_icon_name (page, page->tablet_icon, cc_wacom_device_get_icon_name (stylus));
+	g_signal_connect_swapped (page, "map",
+				  G_CALLBACK (update_icon), page);
+	g_signal_connect_swapped (page, "notify::scale-factor",
+				  G_CALLBACK (update_icon), page);
 
 	/* Listen to changes in related/paired pads */
 	page->manager = gsd_device_manager_get ();

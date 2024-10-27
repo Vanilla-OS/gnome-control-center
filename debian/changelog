@@ -1,3 +1,30 @@
+gnome-control-center (1:47.1.1-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Tue, 22 Oct 2024 13:02:27 -0400
+
+gnome-control-center (1:47.1-1) unstable; urgency=medium
+
+  * New upstream release
+    - Generate one background thumbnail at a time to improve usability
+      on systems with limited memory (Closes: #1079580, #1085760)
+  * Bump minimum gsettings-desktop-schemas
+  * Remove 2 patches applied in new release
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Tue, 22 Oct 2024 10:27:04 -0400
+
+gnome-control-center (1:47.0.1-2) unstable; urgency=medium
+
+  * Cherry-pick patch to hide Remote Desktop panel if gnome-remote-desktop
+    isn't available
+  * Demote gnome-remote-desktop from Depends to Recommends
+    (Closes: #1014879, #1079256)
+  * Cherry-pick a Wacom crash fix
+  * Release to unstable
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Fri, 04 Oct 2024 19:46:57 -0400
+
 gnome-control-center (1:47.0.1-1ubuntu2) oracular; urgency=medium
 
   * d/p/ubuntu: Add back the noble patches for recoloring the mouse animations.
