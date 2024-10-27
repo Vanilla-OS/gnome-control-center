@@ -18,31 +18,38 @@ theme.
 Bug-Ubuntu: https://bugs.launchpad.net/ubuntu/+source/gnome-control-center/+bug/2011849
 Bug-Ubuntu: https://bugs.launchpad.net/ubuntu/+source/gnome-control-center/+bug/2077117
 ---
- panels/mouse/cc-mouse-panel.c                 | 133 ++++++++++++++++++-
+ panels/mouse/cc-mouse-panel.c                 | 185 ++++++++++++++++++++++++++
  panels/mouse/meson.build                      |  29 ++++
- panels/mouse/yaru-assets-generator.py         | 183 ++++++++++++++++++++++++++
+ panels/mouse/yaru-assets-generator.py         | 183 +++++++++++++++++++++++++
  panels/mouse/yaru-default-mouse.gresource.xml |  23 ++++
- 4 files changed, 365 insertions(+), 3 deletions(-)
+ 4 files changed, 420 insertions(+)
  create mode 100644 panels/mouse/yaru-assets-generator.py
  create mode 100644 panels/mouse/yaru-default-mouse.gresource.xml
 
 diff --git a/panels/mouse/cc-mouse-panel.c b/panels/mouse/cc-mouse-panel.c
-index cac4f80..5090773 100644
+index 88dadac..7cadebe 100644
 --- a/panels/mouse/cc-mouse-panel.c
 +++ b/panels/mouse/cc-mouse-panel.c
-@@ -31,6 +31,7 @@
+@@ -24,6 +24,7 @@
+ #include <gdesktop-enums.h>
+ #include <gtk/gtk.h>
+ 
++#include "adwaita.h"
+ #include "cc-illustrated-row.h"
+ #include "cc-split-row.h"
+ #include "cc-list-row-info-button.h"
+@@ -31,7 +32,9 @@
  #include "cc-mouse-caps-helper.h"
  #include "cc-mouse-panel.h"
  #include "cc-mouse-resources.h"
 +#include "cc-mouse-yaru-default-resources.h"
  #include "cc-mouse-test.h"
++#include "glib.h"
  #include "gsd-device-manager.h"
  #include "gsd-input-helper.h"
-@@ -59,8 +60,11 @@ struct _CcMousePanel
-   AdwSwitchRow      *touchpad_typing_row;
  
+@@ -61,6 +64,8 @@ struct _CcMousePanel
    GSettings         *mouse_settings;
-+  GSettings         *interface_settings;
    GSettings         *touchpad_settings;
  
 +  char              *yaru_variant;
@@ -50,87 +57,116 @@ index cac4f80..5090773 100644
    gboolean           have_mouse;
    gboolean           have_touchpad;
    gboolean           have_touchscreen;
-@@ -79,6 +83,7 @@ setup_illustrations (CcMousePanel *self)
- {
-   AdwStyleManager *style_manager = adw_style_manager_get_default ();
-   gboolean use_dark = adw_style_manager_get_dark (style_manager);
-+  const char *yaru_prefix = self->yaru_variant ? "yaru/default-" : "";
-   struct {
-     CcSplitRow *row;
-     const gchar *default_resource;
-@@ -97,13 +102,17 @@ setup_illustrations (CcMousePanel *self)
-       const gchar *style_suffix;
+@@ -72,6 +77,56 @@ struct _CcMousePanel
  
-       style_suffix = use_dark ? "d" : "l";
--      default_resource = g_strdup_printf (ASSET_RESOURCES_PREFIX "%s-%s.webm",
-+      default_resource = g_strdup_printf (ASSET_RESOURCES_PREFIX "%s%s-%s.webm",
-+                                          yaru_prefix,
-                                           row_resources[i].default_resource,
-                                           style_suffix);
--      alternative_resource = g_strdup_printf (ASSET_RESOURCES_PREFIX "%s-%s.webm",
-+      alternative_resource = g_strdup_printf (ASSET_RESOURCES_PREFIX "%s%s-%s.webm",
-+                                              yaru_prefix,
-                                               row_resources[i].alternative_resource,
-                                               style_suffix);
+ CC_PANEL_REGISTER (CcMousePanel, cc_mouse_panel)
  
++#define ASSET_RESOURCES_PREFIX "/org/gnome/control-center/mouse/assets/"
++
++static void
++setup_illustrations (CcMousePanel *self)
++{
++  AdwStyleManager *style_manager = adw_style_manager_get_default ();
++  gboolean use_dark = adw_style_manager_get_dark (style_manager);
++  struct {
++    CcSplitRow *row;
++    const gchar *default_resource;
++    const gchar *alternative_resource;
++  } row_resources[] = {
++    { self->mouse_scroll_direction_row, "scroll-traditional", "scroll-natural" },
++    { self->two_finger_push_row, "push-to-click-anywhere", "push-areas" },
++    { self->touchpad_scroll_method_row, "scroll-2finger", "edge-scroll" },
++    { self->touchpad_scroll_direction_row, "touch-scroll-traditional", "touch-scroll-natural" },
++  };
++
++  for (gsize i = 0; i < G_N_ELEMENTS (row_resources); i++)
++    {
++      g_autofree gchar *alternative_resource = NULL;
++      g_autofree gchar *default_resource = NULL;
++      const gchar *style_suffix;
++
++      style_suffix = use_dark ? "d" : "l";
++      default_resource = g_strdup_printf (ASSET_RESOURCES_PREFIX "yaru/default-%s-%s.webm",
++                                          row_resources[i].default_resource,
++                                          style_suffix);
++      alternative_resource = g_strdup_printf (ASSET_RESOURCES_PREFIX "yaru/default-%s-%s.webm",
++                                              row_resources[i].alternative_resource,
++                                              style_suffix);
++
 +      g_debug ("Using resource %s (or %s)", default_resource, alternative_resource);
 +
-       cc_split_row_set_default_illustration_resource (row_resources[i].row, default_resource);
-       cc_split_row_set_alternative_illustration_resource (row_resources[i].row, alternative_resource);
-     }
-@@ -112,7 +121,8 @@ setup_illustrations (CcMousePanel *self)
-   {
-     g_autofree gchar *resource = NULL;
- 
--    resource = g_strdup_printf (ASSET_RESOURCES_PREFIX "%s-%s.webm",
-+    resource = g_strdup_printf (ASSET_RESOURCES_PREFIX "%s%s-%s.webm",
-+                                yaru_prefix,
-                                 "tap-to-click",
-                                 use_dark ? "d" : "l");
- 
-@@ -296,6 +306,114 @@ update_primary_mouse_button_order (CcMousePanel *self)
++      cc_split_row_set_default_illustration_resource (row_resources[i].row, default_resource);
++      cc_split_row_set_alternative_illustration_resource (row_resources[i].row, alternative_resource);
++    }
++
++  /* Tap to click */
++  {
++    g_autofree gchar *resource = NULL;
++
++    resource = g_strdup_printf (ASSET_RESOURCES_PREFIX "yaru/default-%s-%s.webm",
++                                "tap-to-click",
++                                use_dark ? "d" : "l");
++
++    cc_illustrated_row_set_resource (self->tap_to_click_row, resource);
++  }
++}
++
+ static void
+ setup_touchpad_options (CcMousePanel *self)
+ {
+@@ -248,6 +303,117 @@ update_primary_mouse_button_order (CcMousePanel *self)
    }
  }
  
++static const char *
++gnome_accent_to_yaru (void)
++{
++  AdwStyleManager *style_manager = adw_style_manager_get_default ();
++  AdwAccentColor accent_color;
++
++  accent_color = adw_style_manager_get_accent_color (style_manager);
++
++  switch (accent_color)
++    {
++      case ADW_ACCENT_COLOR_BLUE:
++        return "blue";
++      case ADW_ACCENT_COLOR_TEAL:
++        return "prussiangreen";
++      case ADW_ACCENT_COLOR_GREEN:
++        return "olive";
++      case ADW_ACCENT_COLOR_YELLOW:
++        return "yellow";
++      case ADW_ACCENT_COLOR_ORANGE:
++        return NULL;
++      case ADW_ACCENT_COLOR_RED:
++        return "red";
++      case ADW_ACCENT_COLOR_PINK:
++        return "magenta";
++      case ADW_ACCENT_COLOR_PURPLE:
++        return "purple";
++      case ADW_ACCENT_COLOR_SLATE:
++        return "sage";
++      case ADW_ACCENT_COLOR_BROWN:
++        return "wartybrown";
++      default:
++        g_return_val_if_reached ("blue");
++    }
++}
++
 +static void
-+update_interface_settings (CcMousePanel *self)
++update_accent_color (CcMousePanel *self)
 +{
 +  g_autofree gchar *gtk_theme = NULL;
-+  g_auto(GStrv) parts = NULL;
-+  const char *accent_color = NULL;
-+  gboolean is_dark;
++  g_autofree char *accent_color = NULL;
 +
 +  if (self->yaru_variant)
-+    gtk_widget_remove_css_class (GTK_WIDGET (self), self->yaru_variant);
-+
-+  g_clear_pointer (&self->yaru_variant, g_free);
-+
-+  gtk_theme = g_settings_get_string (self->interface_settings, "gtk-theme");
-+
-+  if (!g_str_has_prefix (gtk_theme, "Yaru"))
 +    {
-+      g_resources_unregister (cc_mouse_yaru_default_get_resource ());
-+      g_resources_register (cc_mouse_get_resource ());
-+      g_warning ("No yaru theme selected!");
-+      return;
++      gtk_widget_remove_css_class (GTK_WIDGET (self), self->yaru_variant);
++      g_clear_pointer (&self->yaru_variant, g_free);
 +    }
 +
-+  parts = g_strsplit (gtk_theme, "-", 3);
-+  is_dark = g_str_has_suffix (gtk_theme, "-dark");
-+
-+  switch (g_strv_length (parts))
-+    {
-+      case 3:
-+        accent_color = parts[1];
-+        break;
-+      case 2:
-+        if (!is_dark)
-+          accent_color = parts[1];
-+        break;
-+    }
-+
-+  if (!self->yaru_variant)
-+    g_resources_register (cc_mouse_yaru_default_get_resource ());
++  accent_color = g_strdup (gnome_accent_to_yaru ());
++  g_debug ("Using '%s' accent style!", accent_color);
 +
 +  if (accent_color)
 +    self->yaru_variant = g_strdup_printf ("yaru-%s", accent_color);
@@ -138,13 +174,6 @@ index cac4f80..5090773 100644
 +    self->yaru_variant = g_strdup ("yaru-default");
 +
 +  gtk_widget_add_css_class (GTK_WIDGET (self), self->yaru_variant);
-+}
-+
-+static void
-+on_interface_settings_changed (CcMousePanel *self)
-+{
-+  update_interface_settings (self);
-+  setup_illustrations (self);
 +}
 +
 +static void
@@ -203,25 +232,35 @@ index cac4f80..5090773 100644
  /* Set up the property editors in the dialog. */
  static void
  setup_dialog (CcMousePanel *self)
-@@ -397,6 +515,13 @@ setup_dialog (CcMousePanel *self)
+@@ -348,6 +514,24 @@ setup_dialog (CcMousePanel *self)
+                    G_SETTINGS_BIND_DEFAULT);
  
    setup_touchpad_options (self);
- 
-+  self->interface_settings = g_settings_new ("org.gnome.desktop.interface");
-+  g_signal_connect_object (self->interface_settings, "changed::gtk-theme",
-+                           G_CALLBACK (on_interface_settings_changed), self,
-+                           G_CONNECT_SWAPPED);
-+  load_custom_css (self);
-+  update_interface_settings (self);
 +
-   g_signal_connect_object (adw_style_manager_get_default (),
-                            "notify::dark",
-                            G_CALLBACK (setup_illustrations),
-@@ -440,6 +565,8 @@ cc_mouse_panel_dispose (GObject *object)
++  g_resources_register (cc_mouse_yaru_default_get_resource ());
++  g_resources_register (cc_mouse_get_resource ());
++
++  load_custom_css (self);
++  update_accent_color (self);
++
++  g_signal_connect_object (adw_style_manager_get_default (),
++                           "notify::dark",
++                           G_CALLBACK (setup_illustrations),
++                           self,
++                           G_CONNECT_SWAPPED);
++  g_signal_connect_object (adw_style_manager_get_default (),
++                           "notify::accent-color",
++                           G_CALLBACK (update_accent_color),
++                           self,
++                           G_CONNECT_SWAPPED);
++  setup_illustrations (self);
+ }
+ 
+ /* Callback issued when a button is clicked on the dialog */
+@@ -385,6 +569,7 @@ cc_mouse_panel_dispose (GObject *object)
    g_clear_object (&self->mouse_settings);
    g_clear_object (&self->touchpad_settings);
    g_clear_pointer (&self->mouse_test, gtk_window_destroy);
-+  g_clear_object (&self->interface_settings);
 +  g_clear_pointer (&self->yaru_variant, g_free);
  
    G_OBJECT_CLASS (cc_mouse_panel_parent_class)->dispose (object);
