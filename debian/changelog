@@ -1,3 +1,9 @@
+gnome-control-center (1:47.1.1-1ubuntu2) UNRELEASED; urgency=medium
+
+  * d/p/fractional-scaling-toggle: Also enable xwayland native scaling by default
+
+ -- Marco Trevisan (Treviño) <marco@ubuntu.com>  Mon, 28 Oct 2024 19:22:10 +0100
+
 gnome-control-center (1:47.1.1-1ubuntu1) plucky; urgency=medium
 
   * Merge with debian (LP: #2085721)
