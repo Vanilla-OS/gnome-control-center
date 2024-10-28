@@ -18,16 +18,101 @@ theme.
 Bug-Ubuntu: https://bugs.launchpad.net/ubuntu/+source/gnome-control-center/+bug/2011849
 Bug-Ubuntu: https://bugs.launchpad.net/ubuntu/+source/gnome-control-center/+bug/2077117
 ---
+ panels/common/cc-illustrated-row.c            |  31 ++++-
+ panels/common/cc-illustrated-row.h            |   2 +
  panels/mouse/cc-mouse-panel.c                 | 185 ++++++++++++++++++++++++++
  panels/mouse/meson.build                      |  29 ++++
  panels/mouse/yaru-assets-generator.py         | 183 +++++++++++++++++++++++++
  panels/mouse/yaru-default-mouse.gresource.xml |  23 ++++
- 4 files changed, 420 insertions(+)
+ 6 files changed, 448 insertions(+), 5 deletions(-)
  create mode 100644 panels/mouse/yaru-assets-generator.py
  create mode 100644 panels/mouse/yaru-default-mouse.gresource.xml
 
+diff --git a/panels/common/cc-illustrated-row.c b/panels/common/cc-illustrated-row.c
+index d3b47b5..eb2f0c7 100644
+--- a/panels/common/cc-illustrated-row.c
++++ b/panels/common/cc-illustrated-row.c
+@@ -29,6 +29,7 @@ struct _CcIllustratedRow
+ {
+   CcVerticalRow      parent;
+ 
++  GtkPicture        *picture;
+   GtkBox            *picture_box;
+   CcMaskPaintable   *picture_mask;
+   gchar             *resource_path;
+@@ -148,6 +149,7 @@ cc_illustrated_row_class_init (CcIllustratedRowClass *klass)
+ 
+   gtk_widget_class_bind_template_child (widget_class, CcIllustratedRow, picture_box);
+   gtk_widget_class_bind_template_child (widget_class, CcIllustratedRow, picture_mask);
++  gtk_widget_class_bind_template_child (widget_class, CcIllustratedRow, picture);
+ 
+   gtk_widget_class_bind_template_callback (widget_class, on_picture_hover_cb);
+   gtk_widget_class_bind_template_callback (widget_class, on_picture_leave_cb);
+@@ -192,9 +194,10 @@ cc_illustrated_row_init (CcIllustratedRow *self)
+                             G_CALLBACK (reload_illustration), self);
+ }
+ 
+-void
+-cc_illustrated_row_set_resource (CcIllustratedRow *self,
+-                                 const gchar      *resource_path)
++static void
++cc_illustrated_row_set_resource_internal (CcIllustratedRow *self,
++                                          const gchar      *resource_path,
++                                          gboolean          is_static)
+ {
+   g_return_if_fail (CC_IS_ILLUSTRATED_ROW (self));
+ 
+@@ -203,12 +206,16 @@ cc_illustrated_row_set_resource (CcIllustratedRow *self,
+ 
+   g_set_str (&self->resource_path, resource_path);
+ 
+-  if (g_str_has_suffix (resource_path, ".svg"))
++  if (g_str_has_suffix (resource_path, ".svg") && !is_static)
+     reload_illustration (self);
+   else
+     {
+       self->media_stream = gtk_media_file_new_for_resource (self->resource_path);
+-      cc_mask_paintable_set_paintable (self->picture_mask, GDK_PAINTABLE (self->media_stream));
++
++      if (!is_static)
++        cc_mask_paintable_set_paintable (self->picture_mask, GDK_PAINTABLE (self->media_stream));
++      else
++        gtk_picture_set_paintable (self->picture, GDK_PAINTABLE (self->media_stream));
+     }
+ 
+   gtk_widget_set_visible (GTK_WIDGET (self->picture_box),
+@@ -217,3 +224,17 @@ cc_illustrated_row_set_resource (CcIllustratedRow *self,
+ 
+   g_object_notify_by_pspec (G_OBJECT (self), props[PROP_RESOURCE]);
+ }
++
++void
++cc_illustrated_row_set_resource (CcIllustratedRow *self,
++                                 const gchar      *resource_path)
++{
++  cc_illustrated_row_set_resource_internal (self, resource_path, FALSE);
++}
++
++void
++cc_illustrated_row_set_static_resource (CcIllustratedRow *self,
++                                        const gchar      *resource_path)
++{
++  cc_illustrated_row_set_resource_internal (self, resource_path, TRUE);
++}
+diff --git a/panels/common/cc-illustrated-row.h b/panels/common/cc-illustrated-row.h
+index 0df70f0..ccae8da 100644
+--- a/panels/common/cc-illustrated-row.h
++++ b/panels/common/cc-illustrated-row.h
+@@ -41,5 +41,7 @@ struct _CcIllustratedRowClass
+ 
+ void         cc_illustrated_row_set_resource (CcIllustratedRow *self,
+                                               const gchar      *resource_path);
++void         cc_illustrated_row_set_static_resource (CcIllustratedRow *self,
++                                                     const gchar      *resource_path);
+ 
+ G_END_DECLS
 diff --git a/panels/mouse/cc-mouse-panel.c b/panels/mouse/cc-mouse-panel.c
-index 88dadac..7cadebe 100644
+index 88dadac..d39be05 100644
 --- a/panels/mouse/cc-mouse-panel.c
 +++ b/panels/mouse/cc-mouse-panel.c
 @@ -24,6 +24,7 @@
@@ -107,7 +192,7 @@ index 88dadac..7cadebe 100644
 +                                "tap-to-click",
 +                                use_dark ? "d" : "l");
 +
-+    cc_illustrated_row_set_resource (self->tap_to_click_row, resource);
++    cc_illustrated_row_set_static_resource (self->tap_to_click_row, resource);
 +  }
 +}
 +
