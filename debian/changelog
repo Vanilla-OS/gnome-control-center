@@ -1,4 +1,4 @@
-gnome-control-center (1:47.1.1-1ubuntu1) UNRELEASED; urgency=medium
+gnome-control-center (1:47.1.1-1ubuntu1) plucky; urgency=medium
 
   * Merge with debian (LP: #2085721)
   * d/p: Refresh patches
@@ -66,7 +66,7 @@ gnome-control-center (1:47.1.1-1ubuntu1) UNRELEASED; urgency=medium
       - u/background-Add-brown-accent-color-support.patch
       - u/sound-Add-toggle-for-the-startup-sound.patch
 
- -- Marco Trevisan (Treviño) <marco@ubuntu.com>  Mon, 28 Oct 2024 17:39:08 +0100
+ -- Marco Trevisan (Treviño) <marco@ubuntu.com>  Mon, 28 Oct 2024 17:53:51 +0100
 
 gnome-control-center (1:47.1.1-1) unstable; urgency=medium
 
