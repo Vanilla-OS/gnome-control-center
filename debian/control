@@ -70,7 +70,7 @@ Vcs-Browser: https://salsa.debian.org/gnome-team/gnome-control-center
 
 Package: gnome-control-center
 Architecture: any
-Depends: accountsservice,
+'Depends: accountsservice,
          apg,
          colord (>= 0.1.34),
          desktop-base (>= 10.0.0),
@@ -85,6 +85,7 @@ Depends: accountsservice,
          heif-thumbnailer,
          libjxl-gdk-pixbuf,
          malcontent-gui [amd64 arm64 armel armhf i386 mips64el ppc64el riscv64 s390x hppa powerpc ppc64 x32],
+         mutter-common (>= 47),
          tecla (>= 45~rc),
          webp-pixbuf-loader,
          ${misc:Depends},
