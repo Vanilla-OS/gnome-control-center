@@ -1,9 +1,23 @@
 gnome-control-center (1:47.1.1-2) UNRELEASED; urgency=medium
 
+  [ Jeremy Bícha ]
   * Add Depends: mutter-common for Multitasking panel (Closes: #1875243)
     It is also needed by Ubuntu's fractional scaling patch.
 
- -- Jeremy Bícha <jbicha@ubuntu.com>  Thu, 31 Oct 2024 10:58:19 +0100
+  [ Simon McVittie ]
+  * d/control: Recommend nm-connection-editor instead of
+    network-manager-gnome.
+    The package was split in 1.36.0-3 to separate nm-connection-editor
+    (which we use to configure cellular modems and devices of any
+    otherwise-unsupported type) from nm-applet (which we do not use
+    in GNOME). Continue to accept older versions of n-m-gnome as an
+    alternative, to be nice to users of backports and Ubuntu.
+  * Remove version constraints that are obsolete since Debian 11.
+    Thanks: deb-scrub-obsolete
+  * Replace Suggests on transitional package gstreamer1.0-pulseaudio with
+    gstreamer1.0-plugins-good (>= 1.18.0). Thanks: deb-scrub-obsolete
+
+ -- Simon McVittie <smcv@debian.org>  Wed, 06 Nov 2024 11:58:05 +0000
 
 gnome-control-center (1:47.1.1-1) unstable; urgency=medium
 
