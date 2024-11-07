@@ -92,7 +92,7 @@ jobs:
     - name: Build debian package
       run: |
         wget https://github.com/vanilla-os/gnome-control-center/tarball/main
-        mv main ../gnome-control-center_46~99-orchid-stable.orig.tar.gz
+        mv main ../gnome-control-center_47.1.1~99-orchid-stable.orig.tar.gz
         dpkg-buildpackage -b -uc -us
         tar cvf ../gnome-control-center.tar.xz ../*.deb
     

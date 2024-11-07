@@ -1,16 +1,16 @@
 diff --git a/panels/display/cc-display-panel.c b/panels/display/cc-display-panel.c
-index 193f22ee8..b534a896e 100644
+index 58eeed23b..48ac61b34 100644
 --- a/panels/display/cc-display-panel.c
 +++ b/panels/display/cc-display-panel.c
-@@ -103,6 +103,7 @@ struct _CcDisplayPanel
-   AdwNavigationView *nav_view;
+@@ -102,6 +102,7 @@ struct _CcDisplayPanel
+   AdwNavigationPage *display_settings_page;
    AdwComboRow    *primary_display_row;
    AdwPreferencesGroup *single_display_settings_group;
 +  AdwPreferencesGroup *prime_utility_row;
  
    GtkShortcut *escape_shortcut;
  
-@@ -550,6 +551,37 @@ on_toplevel_escape_pressed_cb (GtkWidget      *widget,
+@@ -549,6 +550,37 @@ on_toplevel_escape_pressed_cb (GtkWidget      *widget,
    return GDK_EVENT_PROPAGATE;
  }
  
@@ -48,7 +48,7 @@ index 193f22ee8..b534a896e 100644
  static void
  cc_display_panel_constructed (GObject *object)
  {
-@@ -622,6 +654,7 @@ cc_display_panel_class_init (CcDisplayPanelClass *klass)
+@@ -620,6 +652,7 @@ cc_display_panel_class_init (CcDisplayPanelClass *klass)
    gtk_widget_class_bind_template_callback (widget_class, on_primary_display_selected_item_changed_cb);
    gtk_widget_class_bind_template_callback (widget_class, on_screen_changed);
    gtk_widget_class_bind_template_callback (widget_class, on_toplevel_escape_pressed_cb);
@@ -56,7 +56,7 @@ index 193f22ee8..b534a896e 100644
  }
  
  static void
-@@ -1115,6 +1148,9 @@ cc_display_panel_init (CcDisplayPanel *self)
+@@ -1113,6 +1146,9 @@ cc_display_panel_init (CcDisplayPanel *self)
    else
      g_clear_object (&self->up_client);
  
@@ -67,34 +67,33 @@ index 193f22ee8..b534a896e 100644
  
    cc_object_storage_create_dbus_proxy (G_BUS_TYPE_SESSION,
 diff --git a/panels/display/cc-display-panel.ui b/panels/display/cc-display-panel.ui
-index ba7e91407..1d5c4ff45 100644
+index b6e8c5391..e13e51ad9 100644
 --- a/panels/display/cc-display-panel.ui
 +++ b/panels/display/cc-display-panel.ui
-@@ -164,6 +164,27 @@
-                       </object>
-                     </child>
+@@ -160,6 +160,26 @@
+                   </object>
+                 </child>
  
-+                    <!-- Prime Utility -->
++		<!-- Prime Utility -->
++                <child>
++                  <object class="AdwPreferencesGroup" id="prime_utility_row">
 +                    <child>
-+                      <object class="AdwPreferencesGroup" id="prime_utility_row">
-+                        <child>
-+                          <object class="AdwActionRow">
-+                            <property name="activatable">True</property>
-+                            <property name="title" translatable="yes">GPU Profile Management (PRIME)</property>
-+                            <property name="use-underline">True</property>
-+                            <signal name="activated" handler="cc_display_panel_prime" swapped="yes"/>
-+                            <child type="suffix">
-+                              <object class="GtkImage">
-+                                <property name="valign">center</property>
-+                                <property name="icon-name">adw-external-link-symbolic</property>
-+                              </object>
-+                            </child>
++                      <object class="AdwActionRow">
++                        <property name="activatable">True</property>
++                        <property name="title" translatable="yes">GPU Profile Management (PRIME)</property>
++                        <property name="use-underline">True</property>
++                        <signal name="activated" handler="cc_display_panel_prime" swapped="yes"/>
++                        <child type="suffix">
++                          <object class="GtkImage">
++                            <property name="valign">center</property>
++                            <property name="icon-name">adw-external-link-symbolic</property>
 +                          </object>
 +                        </child>
 +                      </object>
 +                    </child>
++                  </object>
++                </child>
 +
-+
-                   </object>
-                 </property>
                </object>
+             </property>
+           </object>
