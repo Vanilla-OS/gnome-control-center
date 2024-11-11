@@ -1,0 +1,72 @@
+From: Matthijs Velsink <mvelsink@gnome.org>
+Date: Thu, 7 Nov 2024 21:30:35 +0100
+Subject: mask-paintable: Use luminance masking for webm
+
+For some assets (e.g. VP9 webm files), it might be better not to use
+alpha masking, but to use luminance masking instead. We can avoid using
+"bad" GStreamer plugins then.
+
+That does require switching between alpha or luminance masking mode. Do
+so by simply testing if the resource filename extension is `.webm`.
+
+Origin: adapted to v47.1.1 from https://gitlab.gnome.org/GNOME/gnome-control-center/-/commit/15bafacb161651c8cc5d78ac5b03548ff59756ff
+---
+ panels/common/cc-mask-paintable.c | 24 +++++++++++++++++++++++-
+ 1 file changed, 23 insertions(+), 1 deletion(-)
+
+diff --git a/panels/common/cc-mask-paintable.c b/panels/common/cc-mask-paintable.c
+index da2f296..f9e4d07 100644
+--- a/panels/common/cc-mask-paintable.c
++++ b/panels/common/cc-mask-paintable.c
+@@ -34,6 +34,7 @@ struct _CcMaskPaintable
+ 
+   GdkPaintable *paintable;
+   GdkRGBA       rgba;
++  GskMaskMode   mask_mode;
+ };
+ 
+ static void cc_mask_paintable_iface_init (GdkPaintableInterface *iface);
+@@ -138,6 +139,7 @@ cc_mask_paintable_class_init (CcMaskPaintableClass *klass)
+ static void
+ cc_mask_paintable_init (CcMaskPaintable *self)
+ {
++  self->mask_mode = GSK_MASK_MODE_ALPHA;
+ }
+ 
+ static void
+@@ -160,7 +162,7 @@ cc_mask_paintable_snapshot (GdkPaintable *paintable,
+   if (!node)
+     return;
+ 
+-  gtk_snapshot_push_mask (snapshot, GSK_MASK_MODE_ALPHA);
++  gtk_snapshot_push_mask (snapshot, self->mask_mode);
+ 
+   gtk_snapshot_append_node (snapshot, node);
+   gtk_snapshot_pop (snapshot);
+@@ -254,6 +256,26 @@ cc_mask_paintable_set_paintable (CcMaskPaintable *self,
+   g_return_if_fail (CC_IS_MASK_PAINTABLE (self));
+   g_return_if_fail (GDK_IS_PAINTABLE (paintable));
+ 
++  gboolean resource_is_webm = false;
++  if (GTK_IS_MEDIA_FILE (paintable))
++    {
++      GFile *file = gtk_media_file_get_file (GTK_MEDIA_FILE (paintable));
++      if (file)
++        {
++          g_autofree char *resource_path = g_file_get_uri (file);
++          resource_is_webm = resource_path && g_str_has_suffix (resource_path, ".webm");
++        }
++    }
++
++  /* FIXME: As long as VP9 alpha decoding is in gstreamer-plugins-bad,
++   * we should probably use B&W assets and luminance masking
++   * https://gitlab.gnome.org/GNOME/gnome-control-center/-/issues/3173 
++   * https://gitlab.freedesktop.org/gstreamer/gstreamer/-/issues/3978 */
++  if (resource_is_webm)
++    self->mask_mode = GSK_MASK_MODE_LUMINANCE;
++  else
++    self->mask_mode = GSK_MASK_MODE_ALPHA;
++
+   if (self->paintable)
+     {
+       g_signal_handlers_disconnect_by_func (self->paintable,
