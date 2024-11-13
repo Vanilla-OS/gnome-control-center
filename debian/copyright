@@ -95,7 +95,7 @@ Copyright:
 License: GPL-2+ and GPL-3+ and LGPL-2.1+ and LGPL-2+ and Expat and CC0-1.0
 
 Files:
- panels/datetime/backward
+ panels/system/datetime/backward
 Copyright:
  none
 License: tzdb-public-domain

@@ -1,0 +1,30 @@
+From: ChunAn Wu <an.wu@canonical.com>
+Date: Mon, 14 Oct 2024 06:06:20 +0000
+Subject: display: snap Monitors after updating prefer mode to current config
+ when enable join mode.
+
+In the CC_DISPLAY_CONFIG_JOIN (config_ensure_of_type),
+it would call cc_display_config_set_cloning first to use current configuration
+to caculate poisiton, then set each monitor to prefer mode (mean update resolution).
+This cause the monitor position misalign with new resolution (width).
+So we use cc_display_config_snap_outputs to update monitor position again.
+
+Closes: https://gitlab.gnome.org/GNOME/gnome-control-center/-/issues/3225
+
+Signed-off-by: ChunAn Wu <an.wu@canonical.com>
+---
+ panels/display/cc-display-panel.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/panels/display/cc-display-panel.c b/panels/display/cc-display-panel.c
+index 58eeed2..373fb03 100644
+--- a/panels/display/cc-display-panel.c
++++ b/panels/display/cc-display-panel.c
+@@ -253,6 +253,7 @@ config_ensure_of_type (CcDisplayPanel *self, CcDisplayConfigType type)
+           cc_display_monitor_set_mode (output, mode);
+           cc_display_monitor_set_scale (output, scale);
+         }
++      cc_display_config_snap_outputs (self->current_config);
+       break;
+ 
+     case CC_DISPLAY_CONFIG_CLONE:
