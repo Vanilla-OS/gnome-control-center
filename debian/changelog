@@ -1,4 +1,4 @@
-gnome-control-center (1:47.1.1-3ubuntu1) UNRELEASED; urgency=medium
+gnome-control-center (1:47.1.1-3ubuntu1) plucky; urgency=medium
 
   [ Alessandro Astone ]
   * Merge with Debian. Remaining changes:
