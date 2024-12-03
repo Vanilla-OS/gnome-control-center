@@ -195,6 +195,25 @@ gcm_prefs_combobox_add_profile (CcColorPanel *self,
                       -1);
 }
 
+static gboolean
+gcm_prefs_ensure_connected_profile (CcColorPanel *self,
+                                    CdProfile *profile)
+{
+  gboolean ret;
+  g_autoptr(GError) error = NULL;
+
+  if (cd_profile_get_connected (profile))
+    return TRUE;
+
+  ret = cd_profile_connect_sync (profile,
+                                 cc_panel_get_cancellable (CC_PANEL (self)),
+                                 &error);
+  if (!ret)
+    g_warning ("failed to get profile: %s", error->message);
+
+  return ret;
+}
+
 static void
 gcm_prefs_default_cb (CcColorPanel *self)
 {
@@ -205,6 +224,9 @@ gcm_prefs_default_cb (CcColorPanel *self)
   /* TODO: check if the profile is already systemwide */
   profile = cd_device_get_default_profile (self->current_device);
   if (profile == NULL)
+    return;
+
+  if (!gcm_prefs_ensure_connected_profile (self, profile))
     return;
 
   /* install somewhere out of $HOME */
@@ -709,6 +731,23 @@ gcm_prefs_combo_sort_func_cb (GtkTreeModel *model,
 }
 
 static gboolean
+gcm_prefs_ensure_connected_profiles (CcColorPanel *self,
+                                     GPtrArray *profiles)
+{
+  guint i;
+
+  for (i = 0; i < profiles->len; i++)
+    {
+      CdProfile *profile = g_ptr_array_index (profiles, i);
+
+      if (!gcm_prefs_ensure_connected_profile (self, profile))
+        return FALSE;
+    }
+
+  return TRUE;
+}
+
+static gboolean
 gcm_prefs_profile_exists_in_array (GPtrArray *array, CdProfile *profile)
 {
   CdProfile *profile_tmp;
@@ -756,20 +795,13 @@ gcm_prefs_add_profiles_suitable_for_devices (CcColorPanel *self,
       return;
     }
 
+  if (!gcm_prefs_ensure_connected_profiles (self, profile_array))
+    return;
+
   /* add profiles of the right kind */
   for (i = 0; i < profile_array->len; i++)
     {
       profile_tmp = g_ptr_array_index (profile_array, i);
-
-      /* get properties */
-      ret = cd_profile_connect_sync (profile_tmp,
-                                     cc_panel_get_cancellable (CC_PANEL (self)),
-                                     &error);
-      if (!ret)
-        {
-          g_warning ("failed to get profile: %s", error->message);
-          return;
-        }
 
       /* don't add any of the already added profiles */
       if (profiles != NULL)
@@ -880,6 +912,7 @@ gcm_prefs_profile_add_cb (CcColorPanel *self)
 
   /* add profiles of the right kind */
   profiles = cd_device_get_profiles (self->current_device);
+  gcm_prefs_ensure_connected_profiles (self, profiles);
   gcm_prefs_add_profiles_suitable_for_devices (self, profiles);
 
   /* make insensitive until we have a selection */

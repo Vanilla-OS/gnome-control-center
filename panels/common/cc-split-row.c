@@ -145,20 +145,6 @@ on_checkbutton_toggled_cb (CcSplitRow *self)
 }
 
 static void
-update_mask_color (CcSplitRow *self)
-{
-  AdwStyleManager *style_manager = adw_style_manager_get_default ();
-  AdwAccentColor color;
-  GdkRGBA rgba;
-
-  color = adw_style_manager_get_accent_color (style_manager);
-  adw_accent_color_to_rgba (color, &rgba);
-
-  cc_mask_paintable_set_rgba (self->default_option_mask, &rgba);
-  cc_mask_paintable_set_rgba (self->alternative_option_mask, &rgba);
-}
-
-static void
 cc_split_row_dispose (GObject *object)
 {
   CcSplitRow *self = CC_SPLIT_ROW (object);
@@ -337,20 +323,9 @@ cc_split_row_class_init (CcSplitRowClass *klass)
 static void
 cc_split_row_init (CcSplitRow *self)
 {
-  AdwStyleManager *style_manager = adw_style_manager_get_default ();
-
   gtk_widget_init_template (GTK_WIDGET (self));
   gtk_widget_set_name (GTK_WIDGET (self), "split-row");
   gtk_widget_add_css_class (GTK_WIDGET (self), "split-row");
-
-  update_mask_color (self);
-
-  g_signal_connect_object (style_manager, "notify::dark",
-                           G_CALLBACK (update_mask_color), self,
-                           G_CONNECT_SWAPPED);
-  g_signal_connect_object (style_manager, "notify::accent-color",
-                           G_CALLBACK (update_mask_color), self,
-                           G_CONNECT_SWAPPED);
 }
 
 const gchar *
@@ -363,14 +338,12 @@ void
 cc_split_row_set_default_illustration_resource (CcSplitRow  *self,
                                                 const gchar *resource_path)
 {
-  g_autoptr(GtkMediaStream) media_file = NULL;
-
   g_return_if_fail (CC_IS_SPLIT_ROW (self));
 
   g_set_str (&self->default_resource_path, resource_path);
-  media_file = gtk_media_file_new_for_resource (resource_path);
 
-  cc_mask_paintable_set_paintable (self->default_option_mask, GDK_PAINTABLE (media_file));
+  cc_mask_paintable_set_resource_scaled (self->default_option_mask, resource_path, GTK_WIDGET (self));
+
   gtk_widget_set_visible (GTK_WIDGET (self->default_option_picture),
                           resource_path != NULL && g_strcmp0 (resource_path, "") != 0);
 
@@ -387,15 +360,12 @@ void
 cc_split_row_set_alternative_illustration_resource (CcSplitRow  *self,
                                                     const gchar *resource_path)
 {
-  g_autoptr(GtkMediaStream) media_file = NULL;
-
   g_return_if_fail (CC_IS_SPLIT_ROW (self));
 
   g_set_str (&self->alternative_resource_path, resource_path);
-  media_file = gtk_media_file_new_for_resource (resource_path);
-  gtk_media_stream_set_loop (media_file, TRUE);
 
-  cc_mask_paintable_set_paintable (self->alternative_option_mask, GDK_PAINTABLE (media_file));
+  cc_mask_paintable_set_resource_scaled (self->alternative_option_mask, resource_path, GTK_WIDGET (self));
+
   gtk_widget_set_visible (GTK_WIDGET (self->alternative_option_picture),
                           resource_path != NULL && g_strcmp0 (resource_path, "") != 0);
 
