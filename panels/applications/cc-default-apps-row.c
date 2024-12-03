@@ -95,9 +95,10 @@ static void
 cc_default_apps_row_constructed (GObject *object)
 {
   CcDefaultAppsRow *self;
-  g_autoptr (GAppInfo) default_app, app = NULL;
-  g_autoptr (GList) recommended_apps, l = NULL;
-  GtkExpression *name_expr;
+  g_autoptr(GAppInfo) default_app = NULL;
+  g_autolist(GAppInfo) recommended_apps = NULL;
+  GList *l;
+  g_autoptr(GtkExpression) name_expr = NULL;
 
   G_OBJECT_CLASS (cc_default_apps_row_parent_class)->constructed (object);
 
@@ -111,7 +112,7 @@ cc_default_apps_row_constructed (GObject *object)
     g_list_store_append (self->model, default_app);
 
   for (l = recommended_apps; l != NULL; l = l->next) {
-    app = l->data;
+    GAppInfo *app = l->data;
 
     if (!G_IS_APP_INFO (app) || (default_app != NULL && g_app_info_equal (app, default_app)))
       continue;
@@ -166,7 +167,7 @@ cc_default_apps_row_init (CcDefaultAppsRow *self)
 void
 cc_default_apps_row_update_default_app (CcDefaultAppsRow *self)
 {
-  g_autoptr(GAppInfo) info = NULL;
+  GAppInfo *info;
   g_autoptr(GError) error = NULL;
   int i;
 
