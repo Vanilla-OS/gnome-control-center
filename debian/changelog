@@ -1,3 +1,10 @@
+gnome-control-center (1:47.2-2) unstable; urgency=medium
+
+  [ Aurelien Jarno ]
+  * Increase test timeout (Closes: #1089212)
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Mon, 09 Dec 2024 08:49:47 -0500
+
 gnome-control-center (1:47.2-1) unstable; urgency=medium
 
   * New upstream release
