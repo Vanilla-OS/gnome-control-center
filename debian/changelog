@@ -1,3 +1,11 @@
+gnome-control-center (1:47.2-3) unstable; urgency=medium
+
+  * Add Recommends: mobile-broadband-provider-info
+    network-manager-applet Recommends this but not nm-connection-editor
+    which we use now instead
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Thu, 19 Dec 2024 15:02:40 -0500
+
 gnome-control-center (1:47.2-2) unstable; urgency=medium
 
   [ Aurelien Jarno ]
