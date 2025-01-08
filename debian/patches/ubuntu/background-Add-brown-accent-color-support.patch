@@ -8,10 +8,10 @@ Subject: background: Add brown accent color support
  2 files changed, 13 insertions(+), 2 deletions(-)
 
 diff --git a/panels/background/cc-background-panel.c b/panels/background/cc-background-panel.c
-index 4655dcb..b340a35 100644
+index 09f97f4..6402a2d 100644
 --- a/panels/background/cc-background-panel.c
 +++ b/panels/background/cc-background-panel.c
-@@ -225,6 +225,8 @@ get_color_tooltip (GDesktopAccentColor color)
+@@ -228,6 +228,8 @@ get_color_tooltip (GDesktopAccentColor color)
        return _("Purple");
      case G_DESKTOP_ACCENT_COLOR_SLATE:
        return _("Slate");
@@ -20,7 +20,7 @@ index 4655dcb..b340a35 100644
      default:
        g_assert_not_reached ();
      }
-@@ -253,6 +255,8 @@ get_untranslated_color (GDesktopAccentColor color)
+@@ -256,6 +258,8 @@ get_untranslated_color (GDesktopAccentColor color)
        return "purple";
      case G_DESKTOP_ACCENT_COLOR_SLATE:
        return "slate";
@@ -29,7 +29,7 @@ index 4655dcb..b340a35 100644
      default:
        g_assert_not_reached ();
      }
-@@ -264,7 +268,7 @@ setup_accent_color_toggles (CcBackgroundPanel *self)
+@@ -267,7 +271,7 @@ setup_accent_color_toggles (CcBackgroundPanel *self)
    GDesktopAccentColor accent_color = g_settings_get_enum (self->interface_settings, INTERFACE_ACCENT_COLOR_KEY);
    GDesktopAccentColor i;
  
@@ -38,7 +38,7 @@ index 4655dcb..b340a35 100644
      {
        GtkWidget *button = GTK_WIDGET (gtk_toggle_button_new ());
        GtkToggleButton *grouping_button = GTK_TOGGLE_BUTTON (gtk_widget_get_first_child (self->accent_box));
-@@ -285,6 +289,9 @@ setup_accent_color_toggles (CcBackgroundPanel *self)
+@@ -288,6 +292,9 @@ setup_accent_color_toggles (CcBackgroundPanel *self)
          gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), TRUE);
  
        gtk_box_append (GTK_BOX (self->accent_box), button);

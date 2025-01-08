@@ -13,7 +13,7 @@ have no support for accent colors.
  1 file changed, 99 insertions(+)
 
 diff --git a/panels/background/cc-background-panel.c b/panels/background/cc-background-panel.c
-index e9d416f..4655dcb 100644
+index 201d2ab..09f97f4 100644
 --- a/panels/background/cc-background-panel.c
 +++ b/panels/background/cc-background-panel.c
 @@ -46,6 +46,15 @@
@@ -112,7 +112,7 @@ index e9d416f..4655dcb 100644
  static void
  on_accent_color_toggled_cb (CcBackgroundPanel *self,
                              GtkToggleButton   *toggle)
-@@ -270,6 +345,8 @@ set_color_scheme (CcBackgroundPanel   *self,
+@@ -273,6 +348,8 @@ set_color_scheme (CcBackgroundPanel   *self,
    g_settings_set_enum (self->interface_settings,
                         INTERFACE_COLOR_SCHEME_KEY,
                         color_scheme);
@@ -121,7 +121,7 @@ index e9d416f..4655dcb 100644
  }
  
  /* Color schemes */
-@@ -488,6 +565,7 @@ cc_background_panel_dispose (GObject *object)
+@@ -491,6 +568,7 @@ cc_background_panel_dispose (GObject *object)
    g_clear_object (&self->settings);
    g_clear_object (&self->lock_settings);
    g_clear_object (&self->interface_settings);
@@ -129,7 +129,7 @@ index e9d416f..4655dcb 100644
    g_clear_object (&self->proxy);
  
    G_OBJECT_CLASS (cc_background_panel_parent_class)->dispose (object);
-@@ -556,6 +634,21 @@ cc_background_panel_init (CcBackgroundPanel *self)
+@@ -559,6 +637,21 @@ cc_background_panel_init (CcBackgroundPanel *self)
  
    self->interface_settings = g_settings_new (INTERFACE_PATH_ID);
  
@@ -151,7 +151,7 @@ index e9d416f..4655dcb 100644
    /* Load the background */
    reload_current_bg (self);
    update_preview (self);
-@@ -579,6 +672,12 @@ cc_background_panel_init (CcBackgroundPanel *self)
+@@ -582,6 +675,12 @@ cc_background_panel_init (CcBackgroundPanel *self)
                             self,
                             G_CONNECT_SWAPPED);
  
