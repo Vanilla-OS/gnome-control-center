@@ -1,3 +1,10 @@
+gnome-control-center (1:47.2-4) unstable; urgency=medium
+
+  * Demote malcontent-gui from Depends to Recommends.
+    Thanks to asciiwolf (Closes: #1091092)
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Wed, 08 Jan 2025 07:58:08 -0900
+
 gnome-control-center (1:47.2-3) unstable; urgency=medium
 
   * Add Recommends: mobile-broadband-provider-info
