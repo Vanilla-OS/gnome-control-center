@@ -442,6 +442,7 @@ cc_color_calibrate_finished (CcColorCalibrate *calibrate,
   gtk_widget_set_visible (widget, FALSE);
   widget = GTK_WIDGET (gtk_builder_get_object (calibrate->builder,
                                                "button_done"));
+  gtk_widget_set_visible (widget, TRUE);
 
   str = g_string_new ("");
   if (code == CD_SESSION_ERROR_NONE)
@@ -803,6 +804,35 @@ out:
   return ret;
 }
 
+static GdkMonitor *
+find_device_monitor (CcColorCalibrate *calibrate)
+{
+  GdkDisplay *display;
+  GListModel *monitors;
+  const char *xrandr_name;
+  int num_monitors;
+  int i;
+
+  xrandr_name = cd_device_get_metadata_item (calibrate->device,
+                                             CD_DEVICE_METADATA_XRANDR_NAME);
+
+  display = gdk_display_get_default ();
+  monitors = gdk_display_get_monitors (display);
+  num_monitors = g_list_model_get_n_items (monitors);
+  for (i = 0; i < num_monitors; i++)
+    {
+      g_autoptr(GdkMonitor) monitor = NULL;
+      const char *connector;
+
+      monitor = g_list_model_get_item (monitors, i);
+      connector = gdk_monitor_get_connector (monitor);
+      if (g_strcmp0 (connector, xrandr_name) == 0)
+        return g_steal_pointer (&monitor);
+    }
+
+  return NULL;
+}
+
 gboolean
 cc_color_calibrate_start (CcColorCalibrate *calibrate,
                           GtkWindow *parent,
@@ -813,6 +843,7 @@ cc_color_calibrate_start (CcColorCalibrate *calibrate,
   GtkWindow *window;
   GVariantBuilder builder;
   g_autoptr(GVariant) retval = NULL;
+  g_autoptr(GdkMonitor) monitor = NULL;
 
   g_return_val_if_fail (CC_IS_COLOR_CALIBRATE (calibrate), FALSE);
 
@@ -856,10 +887,15 @@ cc_color_calibrate_start (CcColorCalibrate *calibrate,
   if (retval == NULL)
     return FALSE;
 
-  /* set this above our parent */
   window = GTK_WINDOW (gtk_builder_get_object (calibrate->builder,
                                                "dialog_calibrate"));
   gtk_window_set_modal (window, TRUE);
+  gtk_window_set_transient_for (window, parent);
+  monitor = find_device_monitor (calibrate);
+  if (!monitor)
+    g_warning ("Failed to find monitor to place calibration window on");
+  else
+    gtk_window_fullscreen_on_monitor (window, monitor);
   gtk_window_present (window);
 
   /* show correct buttons */
@@ -927,6 +963,7 @@ cc_color_calibrate_init (CcColorCalibrate *calibrate)
   g_autoptr(GError) error = NULL;
   gint retval;
   g_autoptr(GSettings) settings = NULL;
+  g_autoptr(GtkCssProvider) provider = NULL;
   GtkBox *box;
   GtkWidget *widget;
   GtkWindow *window;
@@ -941,6 +978,13 @@ cc_color_calibrate_init (CcColorCalibrate *calibrate)
                                           &error);
   if (retval == 0)
     g_warning ("Could not load interface: %s", error->message);
+
+  /* load stylesheet */
+  provider = gtk_css_provider_new ();
+  gtk_css_provider_load_from_resource (provider, "/org/gnome/control-center/color/color-calibrate.css");
+  gtk_style_context_add_provider_for_display (gdk_display_get_default (),
+                                              GTK_STYLE_PROVIDER (provider),
+                                              GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 
   /* add sample widget */
   box = GTK_BOX (gtk_builder_get_object (calibrate->builder,
