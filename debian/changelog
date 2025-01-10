@@ -1,3 +1,37 @@
+gnome-control-center (1:47.3-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Thu, 09 Jan 2025 08:34:12 -0900
+
+gnome-control-center (1:47.2-4) unstable; urgency=medium
+
+  * Demote malcontent-gui from Depends to Recommends.
+    Thanks to asciiwolf (Closes: #1091092)
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Wed, 08 Jan 2025 07:58:08 -0900
+
+gnome-control-center (1:47.2-3) unstable; urgency=medium
+
+  * Add Recommends: mobile-broadband-provider-info
+    network-manager-applet Recommends this but not nm-connection-editor
+    which we use now instead
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Thu, 19 Dec 2024 15:02:40 -0500
+
+gnome-control-center (1:47.2-2) unstable; urgency=medium
+
+  [ Aurelien Jarno ]
+  * Increase test timeout (Closes: #1089212)
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Mon, 09 Dec 2024 08:49:47 -0500
+
+gnome-control-center (1:47.2-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Alessandro Astone <alessandro.astone@canonical.com>  Tue, 03 Dec 2024 12:05:01 +0100
+
 gnome-control-center (1:47.1.1-3ubuntu1) plucky; urgency=medium
 
   [ Alessandro Astone ]

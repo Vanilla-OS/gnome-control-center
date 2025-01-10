@@ -15,8 +15,8 @@ msgstr ""
 "Project-Id-Version: gnome-control-center\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-control-center/"
 "issues\n"
-"POT-Creation-Date: 2024-09-25 17:42+0000\n"
-"PO-Revision-Date: 2024-09-26 20:13+0700\n"
+"POT-Creation-Date: 2024-11-07 00:35+0000\n"
+"PO-Revision-Date: 2024-11-09 20:20+0700\n"
 "Last-Translator: Atirut Wattanamongkol <atirut.wattanamongkol@gmail.com>\n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
 "Language: th\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Gtranslator 46.1\n"
+"X-Generator: Gtranslator 47.0\n"
 
 #: panels/applications/cc-applications-panel.c:850
 msgid "System Bus"
@@ -85,7 +85,7 @@ msgstr "ระบบไฟล์"
 #: shell/appdata/org.gnome.Settings.appdata.xml.in.in:7 shell/cc-window.c:798
 #: shell/cc-window.ui:18 shell/org.gnome.Settings.desktop.in:3
 msgid "Settings"
-msgstr "ตั้งค่า"
+msgstr "การตั้งค่า"
 
 #: panels/applications/cc-applications-panel.c:876
 msgid "Can change settings"
@@ -462,9 +462,9 @@ msgstr "_การโทร"
 msgid "_SMS"
 msgstr "_SMS"
 
-#: panels/applications/cc-default-apps-row.c:126
+#: panels/applications/cc-default-apps-row.c:127
 msgid "No Apps Available"
-msgstr "ไม่มีแอพที่ใช้งานได้"
+msgstr "ไม่มีแอปที่ใช้งานได้"
 
 #: panels/applications/cc-removable-media-settings.c:287
 msgid "Ask what to do"
@@ -835,18 +835,18 @@ msgstr "ลบภาพพื้นหลังออก"
 msgid "Select a picture"
 msgstr "เลือกรูปภาพ"
 
-#: panels/background/cc-background-item.c:172
+#: panels/background/cc-background-item.c:234
 msgid "multiple sizes"
 msgstr "หลายขนาด"
 
 #. translators: 100 × 100px
 #. * Note that this is not an "x", but U+00D7 MULTIPLICATION SIGN
-#: panels/background/cc-background-item.c:179
+#: panels/background/cc-background-item.c:241
 #, c-format
 msgid "%d × %d"
 msgstr "%d × %d"
 
-#: panels/background/cc-background-item.c:358
+#: panels/background/cc-background-item.c:427
 msgid "No Desktop Background"
 msgstr "ไม่ใช้ภาพพื้นหลังเดสก์ท็อป"
 
@@ -1768,7 +1768,7 @@ msgid "0 seconds"
 msgstr "0 วินาที"
 
 #. translators: This is the default hotspot name, need to be less than 32-bytes
-#: panels/common/hostname-helper.c:177
+#: panels/common/hostname-helper.c:221
 msgctxt "hotspot"
 msgid "Hotspot"
 msgstr "ฮอตสปอต"
@@ -2835,7 +2835,7 @@ msgstr "มัลติทาสกิง;มัลติทาสก์;กา�
 #: panels/network/connection-editor/ip6-page.ui:37
 #: panels/network/connection-editor/ip6-page.ui:197
 #: panels/network/connection-editor/ip6-page.ui:255
-#: panels/wacom/cc-wacom-page.c:642
+#: panels/wacom/cc-wacom-page.c:674
 msgid "Automatic"
 msgstr "อัตโนมัติ"
 
@@ -3097,7 +3097,7 @@ msgstr "ไม่พบตัวรับสัญญาณ Wi-Fi"
 msgid "Make sure you have a Wi-Fi adapter plugged and turned on"
 msgstr "ตรวจสอบให้แน่ใจว่าคุณได้เสียบปลั๊กและเปิดตัวรับสัญญาณ Wi-Fi แล้ว"
 
-#: panels/network/cc-wifi-panel.ui:96 panels/wwan/cc-wwan-panel.ui:63
+#: panels/network/cc-wifi-panel.ui:96 panels/wwan/cc-wwan-panel.ui:64
 msgid "Airplane Mode On"
 msgstr "โหมดเครื่องบินเปิดอยู่"
 
@@ -5947,7 +5947,6 @@ msgstr "การตรวจสอบความปลอดภัยล้ม
 #. TRANSLATORS: This is the description to describe the failure on
 #. checking the security items.
 #: panels/privacy/firmware-security/cc-firmware-security-dialog.c:111
-#, fuzzy
 msgid ""
 "Hardware does not pass checks. This means that you are not protected against "
 "common hardware security issues.\n"
@@ -5965,21 +5964,19 @@ msgstr ""
 #. TRANSLATORS: in reference to firmware protection: 1/4 stars
 #: panels/privacy/firmware-security/cc-firmware-security-dialog.c:121
 #: panels/privacy/firmware-security/cc-firmware-security-page.c:539
-#, fuzzy
 msgid "Basic Security Checks Passed"
-msgstr "ผ่านการตรวจสอบ"
+msgstr "ผ่านการตรวจสอบความปลอดภัยขั้นพื้นฐาน"
 
 #. TRANSLATORS: This description describes the device passing the
 #. minimum requirement of security check.
 #: panels/privacy/firmware-security/cc-firmware-security-dialog.c:124
-#, fuzzy
 msgid ""
 "This device meets basic security requirements and has protection against "
 "some hardware security threats. However, it lacks other recommended "
 "protections."
 msgstr ""
-"อุปกรณ์นี้เป็นไปตามข้อกำหนดด้านความปลอดภัยขั้นพื้นฐาน "
-"ฮาร์ดแวร์มีการป้องกันภัยคุกคามความปลอดภัยที่พบบ่อยที่สุดบางรายการ"
+"อุปกรณ์นี้เป็นไปตามข้อกำหนดด้านความปลอดภัยพื้นฐานและมีการป้องกันภัยคุกคามต่อความปลอดภัยของฮาร์ดแวร์บางประการ "
+"อย่างไรก็ตาม ยังขาดการป้องกันอื่นๆ ที่แนะนำ"
 
 #. TRANSLATORS: in reference to firmware protection: 2~4 stars
 #: panels/privacy/firmware-security/cc-firmware-security-dialog.c:134
@@ -5990,13 +5987,12 @@ msgstr "ได้รับการป้องกัน"
 #. TRANSLATOR: This description describes the devices passing
 #. the extended security check.
 #: panels/privacy/firmware-security/cc-firmware-security-dialog.c:137
-#, fuzzy
 msgid ""
 "This device passes current security tests. It is protected against the "
 "majority of hardware security threats."
 msgstr ""
 "อุปกรณ์นี้ผ่านการทดสอบความปลอดภัยในปัจจุบัน "
-"ฮาร์ดแวร์ได้รับการปกป้องจากภัยคุกคามความปลอดภัยส่วนใหญ่"
+"และได้รับการปกป้องจากภัยคุกคามด้านความปลอดภัยของฮาร์ดแวร์ส่วนใหญ่"
 
 #: panels/privacy/firmware-security/cc-firmware-security-dialog.c:144
 msgid "Checks Unavailable"
@@ -6004,13 +6000,12 @@ msgstr "ตรวจสอบไม่ได้"
 
 #. TRANSLATORS: When the security result is unavailable, this description is shown.
 #: panels/privacy/firmware-security/cc-firmware-security-dialog.c:146
-#, fuzzy
 msgid ""
 "Device security checks are not available for this device. It is not possible "
 "to tell whether it meets hardware security requirements."
 msgstr ""
 "การตรวจสอบความปลอดภัยของอุปกรณ์ไม่พร้อมใช้งานสำหรับอุปกรณ์นี้ "
-"ไม่สามารถระบุได้ว่าอุปกรณ์นี้ตรงตามข้อกำหนดด้านความปลอดภัยหรือไม่"
+"จึงไม่สามารถระบุได้ว่าอุปกรณ์นี้ตรงตามข้อกำหนดด้านความปลอดภัยของฮาร์ดแวร์หรือไม่"
 
 #: panels/privacy/firmware-security/cc-firmware-security-dialog.c:366
 msgid "Report copied to clipboard"
@@ -6119,9 +6114,8 @@ msgstr "ผ่าน"
 
 #. TRANSLATOR: This is the text event status output when the event status is not "success"
 #: panels/privacy/firmware-security/cc-firmware-security-page.c:237
-#, fuzzy
 msgid "! Fail"
-msgstr "! ไม่ผ่าน"
+msgstr "! ล้มเหลว"
 
 #: panels/privacy/firmware-security/cc-firmware-security-page.c:240
 #, c-format
@@ -6129,25 +6123,21 @@ msgid "(%1$s → %2$s)"
 msgstr ""
 
 #: panels/privacy/firmware-security/cc-firmware-security-page.c:533
-#, fuzzy
 msgid "Hardware does not pass basic security checks."
-msgstr "ฮาร์ดแวร์ไม่ผ่านการตรวจสอบ"
+msgstr "ฮาร์ดแวร์ไม่ผ่านการตรวจสอบความปลอดภัยขั้นพื้นฐาน"
 
 #: panels/privacy/firmware-security/cc-firmware-security-page.c:540
-#, fuzzy
 msgid "Hardware has a basic level of protection."
-msgstr "ฮาร์ดแวร์มีระดับการป้องกันที่ดี"
+msgstr "ฮาร์ดแวร์มีการป้องกันระดับพื้นฐาน"
 
 #: panels/privacy/firmware-security/cc-firmware-security-page.c:550
-#, fuzzy
 msgid "Hardware has a strong level of protection."
-msgstr "ฮาร์ดแวร์มีระดับการป้องกันที่ดี"
+msgstr "ฮาร์ดแวร์มีระดับการป้องกันที่แข็งแกร่ง"
 
 #. TRANSLATORS: in reference to firmware protection: ??? stars
 #: panels/privacy/firmware-security/cc-firmware-security-page.c:556
-#, fuzzy
 msgid "Security Checks Unavailable"
-msgstr "ตรวจสอบไม่ได้"
+msgstr "การตรวจสอบความปลอดภัยไม่พร้อมใช้งาน"
 
 #: panels/privacy/firmware-security/cc-firmware-security-page.c:557
 msgid "Security levels are not available for this device."
@@ -6155,11 +6145,11 @@ msgstr "ระดับความปลอดภัยไม่สามาร
 
 #: panels/privacy/firmware-security/cc-firmware-security-page.ui:4
 msgid "Device Security"
-msgstr "ความปลอดภัยอุปกรณ์"
+msgstr "ความปลอดภัยของอุปกรณ์"
 
 #: panels/privacy/firmware-security/cc-firmware-security-page.ui:37
 msgid "Starting Device Security…"
-msgstr "กำลังเริ่มต้น \"ความปลอดภัยอุปกรณ์\"…"
+msgstr "กำลังเริ่ม \"ความปลอดภัยของอุปกรณ์\"…"
 
 #: panels/privacy/firmware-security/cc-firmware-security-page.ui:48
 msgid "Device Security Unavailable"
@@ -6170,7 +6160,7 @@ msgid ""
 "Device Security is only available on physical hardware. No physical hardware "
 "has been detected."
 msgstr ""
-"การรักษาความปลอดภัยอุปกรณ์มีให้ใช้งานได้เฉพาะกับฮาร์ดแวร์ทางกายภาพเท่านั้น "
+"การรักษาความปลอดภัยของอุปกรณ์มีให้ใช้งานได้เฉพาะกับฮาร์ดแวร์ทางกายภาพเท่านั้น "
 "แต่ไม่พบฮาร์ดแวร์ทางกายภาพใดๆ"
 
 #: panels/privacy/firmware-security/cc-firmware-security-page.ui:183
@@ -6183,15 +6173,13 @@ msgstr "ไม่มีเหตุการณ์"
 
 #. TRANSLATORS: if the status is valid. For example security check is valid and key is valid.
 #: panels/privacy/firmware-security/cc-firmware-security-utils.c:35
-#, fuzzy
 msgid "Valid"
-msgstr "ถูกต้อง"
+msgstr "ผ่าน"
 
 #. TRANSLATORS: if the status or key is not valid.
 #: panels/privacy/firmware-security/cc-firmware-security-utils.c:40
-#, fuzzy
 msgid "Not Valid"
-msgstr "ไม่ถูกต้อง"
+msgstr "ไม่ผ่าน"
 
 #. TRANSLATORS: if the function is enabled through BIOS or OS settings.
 #. TRANSLATORS: Status of Parental Controls setup
@@ -6199,11 +6187,10 @@ msgstr "ไม่ถูกต้อง"
 #: panels/system/users/cc-user-page.c:374
 #: panels/system/users/cc-user-page.c:740 panels/wwan/cc-wwan-device-page.c:475
 msgid "Enabled"
-msgstr "เปิดใช้"
+msgstr "เปิดใช้งานแล้ว"
 
 #. TRANSLATORS: if the function is not enabled through BIOS or OS settings.
 #: panels/privacy/firmware-security/cc-firmware-security-utils.c:50
-#, fuzzy
 msgid "Not Enabled"
 msgstr "ไม่ได้เปิดใช้งาน"
 
@@ -6866,7 +6853,7 @@ msgstr "รุ่นฮาร์ดแวร์"
 #: panels/system/about/cc-about-page.ui:80
 #: panels/system/about/cc-system-details-window.ui:85
 msgid "Processor"
-msgstr "ตัวประมวลผล"
+msgstr "หน่วยประมวลผล"
 
 #: panels/system/about/cc-about-page.ui:91
 #: panels/system/about/cc-system-details-window.ui:78
@@ -6994,7 +6981,7 @@ msgid ""
 "device;system;information;hostname;memory;processor;version;default;"
 "application;preferred;cd;dvd;usb;audio;video;disc;removable;media;autorun;"
 msgstr ""
-"อุปกรณ์;ระบบ;ข้อมูล;ชื่อโฮสต์;หน่วยความจำ;ตัวประมวลผล;รุ่น;เริ่มต้น;แอปพลิเคชัน;ปรับแต่ง;ซีดี;"
+"อุปกรณ์;ระบบ;ข้อมูล;ชื่อโฮสต์;หน่วยความจำ;หน่วยประมวลผล;รุ่น;เริ่มต้น;แอปพลิเคชัน;ปรับแต่ง;ซีดี;"
 "ดีวีดี;usb;เสียง;วิดีโอ;ดิสก์;ถอดเสียบ;สื่อ;autorun;"
 
 #: panels/system/cc-system-panel.ui:20
@@ -7124,83 +7111,83 @@ msgstr "รู_ปแบบเวลา"
 msgid "_24-hour"
 msgstr "_24 ชั่วโมง"
 
-#: panels/system/datetime/cc-datetime-page.ui:185
+#: panels/system/datetime/cc-datetime-page.ui:186
 msgid "AM / _PM"
 msgstr "AM / _PM"
 
-#: panels/system/datetime/cc-datetime-page.ui:198
+#: panels/system/datetime/cc-datetime-page.ui:200
 msgid "Clock &amp; Calendar"
 msgstr "นาฬิกาและปฏิทิน"
 
-#: panels/system/datetime/cc-datetime-page.ui:199
+#: panels/system/datetime/cc-datetime-page.ui:201
 msgid "Control how the time and date is shown in the top bar"
 msgstr "ควบคุมวิธีการแสดงเวลาและวันที่ในแถบด้านบน"
 
-#: panels/system/datetime/cc-datetime-page.ui:202
+#: panels/system/datetime/cc-datetime-page.ui:204
 msgid "_Week Day"
 msgstr "_ชื่อวัน"
 
-#: panels/system/datetime/cc-datetime-page.ui:208
+#: panels/system/datetime/cc-datetime-page.ui:210
 msgid "D_ate"
 msgstr "_วันที่"
 
-#: panels/system/datetime/cc-datetime-page.ui:214
+#: panels/system/datetime/cc-datetime-page.ui:216
 msgid "_Seconds"
 msgstr "วิ_นาที"
 
-#: panels/system/datetime/cc-datetime-page.ui:220
+#: panels/system/datetime/cc-datetime-page.ui:222
 msgid "Week _Numbers"
 msgstr "_เลขสัปดาห์"
 
-#: panels/system/datetime/cc-datetime-page.ui:221
+#: panels/system/datetime/cc-datetime-page.ui:223
 msgid "Shown in the dropdown calendar"
 msgstr "แสดงในปฏิทินดรอปดาวน์"
 
-#: panels/system/datetime/cc-datetime-page.ui:257
+#: panels/system/datetime/cc-datetime-page.ui:259
 msgid "January"
 msgstr "มกราคม"
 
-#: panels/system/datetime/cc-datetime-page.ui:258
+#: panels/system/datetime/cc-datetime-page.ui:260
 msgid "February"
 msgstr "กุมภาพันธ์"
 
-#: panels/system/datetime/cc-datetime-page.ui:259
+#: panels/system/datetime/cc-datetime-page.ui:261
 msgid "March"
 msgstr "มีนาคม"
 
-#: panels/system/datetime/cc-datetime-page.ui:260
+#: panels/system/datetime/cc-datetime-page.ui:262
 msgid "April"
 msgstr "เมษายน"
 
-#: panels/system/datetime/cc-datetime-page.ui:261
+#: panels/system/datetime/cc-datetime-page.ui:263
 msgid "May"
 msgstr "พฤษภาคม"
 
-#: panels/system/datetime/cc-datetime-page.ui:262
+#: panels/system/datetime/cc-datetime-page.ui:264
 msgid "June"
 msgstr "มิถุนายน"
 
-#: panels/system/datetime/cc-datetime-page.ui:263
+#: panels/system/datetime/cc-datetime-page.ui:265
 msgid "July"
 msgstr "กรกฎาคม"
 
-#: panels/system/datetime/cc-datetime-page.ui:264
+#: panels/system/datetime/cc-datetime-page.ui:266
 msgid "August"
 msgstr "สิงหาคม"
 
-#: panels/system/datetime/cc-datetime-page.ui:265
+#: panels/system/datetime/cc-datetime-page.ui:267
 msgid "September"
 msgstr "กันยายน"
 
-#: panels/system/datetime/cc-datetime-page.ui:266
+#: panels/system/datetime/cc-datetime-page.ui:268
 msgid "October"
 msgstr "ตุลาคม"
 
-#: panels/system/datetime/cc-datetime-page.ui:267
+#: panels/system/datetime/cc-datetime-page.ui:269
 msgid "November"
 msgstr "พฤศจิกายน"
 
-#: panels/system/datetime/cc-datetime-page.ui:268
+#: panels/system/datetime/cc-datetime-page.ui:270
 msgid "December"
 msgstr "ธันวาคม"
 
@@ -7240,9 +7227,9 @@ msgid ""
 "operating;os;model;language;region;country;formats;numbers;units;clock;"
 "timezone;date;location;remote;desktop;rdp;vnc;ssh;"
 msgstr ""
-"อุปกรณ์;ระบบ;ข้อมูล;รายละเอียด;ชื่อโฮสต์;หน่วยความจำ;ตัวประมวลผล;รุ่น;ซอฟต์แวร์;ปฏิบัติการ;os;"
-"โมเดล;ภาษา;ภูมิภาค;ประเทศ;รูปแบบ;ตัวเลข;หน่วย;นาฬิกา;เขตเวลา;วันที่;ตำแหน่งที่ตั้ง;ระยะไกล;"
-"เดสก์ท็อป;rdp;vnc;ssh;"
+"อุปกรณ์;ระบบ;ข้อมูล;รายละเอียด;ชื่อโฮสต์;หน่วยความจำ;หน่วยประมวลผล;รุ่น;ซอฟต์แวร์;ปฏิบัติการ;"
+"os;โมเดล;ภาษา;ภูมิภาค;ประเทศ;รูปแบบ;ตัวเลข;หน่วย;นาฬิกา;เขตเวลา;วันที่;ตำแหน่งที่ตั้ง;"
+"ระยะไกล;เดสก์ท็อป;rdp;vnc;ssh;"
 
 #: panels/system/region/cc-format-chooser.c:160
 #: panels/system/region/cc-format-chooser.c:208
@@ -8083,6 +8070,8 @@ msgid ""
 "requiring authentication. Authentication is still required at other times, "
 "such as when unlocking the screen."
 msgstr ""
+"การเข้าสู่ระบบอัตโนมัติจะเปิดบัญชีผู้ใช้เมื่ออุปกรณ์เริ่มทำงาน โดยไม่ต้องมีการยืนยันตัวบุคคล "
+"แต่ยังคงต้องมีการยืนยันตัวบุคคลในกรณีอื่นๆ เช่น เมื่อปลดล็อกหน้าจอ"
 
 #: panels/system/users/cc-user-page.ui:147
 msgid "_Administrator"
@@ -8097,7 +8086,6 @@ msgid "Open the Parental Controls app"
 msgstr "เปิดแอปการควบคุมโดยผู้ปกครอง"
 
 #: panels/system/users/cc-user-page.ui:203
-#, fuzzy
 msgid "_Remove User…"
 msgstr "_ลบผู้ใช้"
 
@@ -8126,7 +8114,7 @@ msgstr "เ_พิ่มผู้ใช้"
 
 #: panels/system/users/cc-users-page.ui:43
 msgid "Add _Enterprise Login"
-msgstr "เพิ่มบัญชีเข้าระบบ_องค์กร"
+msgstr "เพิ่มบัญชีเข้าระบบระดับ_องค์กร"
 
 #: panels/system/users/data/join-dialog.ui:59
 msgid "Domain Administrator Login"
@@ -8992,64 +8980,64 @@ msgstr "แสดงวิธีใช้บนหน้าจอ"
 msgid "This device is unknown and may present wrong capabilities — %s."
 msgstr ""
 
-#: panels/wacom/cc-wacom-device.c:444
+#: panels/wacom/cc-wacom-device.c:460
 msgid "Tablet mounted on laptop panel"
 msgstr ""
 
-#: panels/wacom/cc-wacom-device.c:446
+#: panels/wacom/cc-wacom-device.c:462
 msgid "Tablet mounted on external display"
 msgstr ""
 
-#: panels/wacom/cc-wacom-device.c:448
+#: panels/wacom/cc-wacom-device.c:464
 #, fuzzy
 msgid "External tablet device"
 msgstr "สร้างอุปกรณ์เสมือน"
 
 #. All displays item
-#: panels/wacom/cc-wacom-page.c:629
+#: panels/wacom/cc-wacom-page.c:661
 #, fuzzy
 msgid "All Displays"
 msgstr "การแสดงผล"
 
-#: panels/wacom/cc-wacom-page.ui:16
+#: panels/wacom/cc-wacom-page.ui:19
 #, fuzzy
 msgid "_Tablet Mode"
 msgstr "แท็บเล็ต"
 
-#: panels/wacom/cc-wacom-page.ui:17
+#: panels/wacom/cc-wacom-page.ui:20
 msgid "Use absolute positioning for the pen"
 msgstr ""
 
-#: panels/wacom/cc-wacom-page.ui:23
+#: panels/wacom/cc-wacom-page.ui:26
 #, fuzzy
 msgid "_Left Hand Orientation"
 msgstr "สำหรับมือถนัดซ้าย"
 
-#: panels/wacom/cc-wacom-page.ui:24
+#: panels/wacom/cc-wacom-page.ui:27
 msgid "Tablet and Express Keys™ are rotated for left hand use"
 msgstr ""
 
-#: panels/wacom/cc-wacom-page.ui:30
+#: panels/wacom/cc-wacom-page.ui:33
 #, fuzzy
 msgid "Map _Buttons"
 msgstr "กำหนดปุ่ม"
 
-#: panels/wacom/cc-wacom-page.ui:44
+#: panels/wacom/cc-wacom-page.ui:47
 #, fuzzy
 msgctxt "display setting"
 msgid "Map to _Monitor"
 msgstr "ปรับตำแหน่งกับจอภาพ…"
 
-#: panels/wacom/cc-wacom-page.ui:51
+#: panels/wacom/cc-wacom-page.ui:54
 #, fuzzy
 msgid "_Keep Aspect Ratio"
 msgstr "สัดส่วนจอภาพ"
 
-#: panels/wacom/cc-wacom-page.ui:52
+#: panels/wacom/cc-wacom-page.ui:55
 msgid "Only use a portion of the tablet surface to keep monitor aspect ratio"
 msgstr ""
 
-#: panels/wacom/cc-wacom-page.ui:58
+#: panels/wacom/cc-wacom-page.ui:61
 #, fuzzy
 msgid "_Calibrate"
 msgstr "เทียบมาตรฐาน…"
@@ -9084,99 +9072,99 @@ msgstr "ส่งการกดแป้นพิมพ์"
 msgid "Press Esc to cancel"
 msgstr "กด Esc เพื่อยกเลิก"
 
-#: panels/wacom/cc-wacom-stylus-page.c:395
+#: panels/wacom/cc-wacom-stylus-page.c:438
 #, fuzzy
 msgid "_Left Mousebutton Click"
 msgstr "คลิกเมาส์ปุ่มซ้าย"
 
-#: panels/wacom/cc-wacom-stylus-page.c:398
+#: panels/wacom/cc-wacom-stylus-page.c:441
 #, fuzzy
 msgid "_Middle Mousebutton Click"
 msgstr "คลิกเมาส์ปุ่มกลาง"
 
-#: panels/wacom/cc-wacom-stylus-page.c:401
+#: panels/wacom/cc-wacom-stylus-page.c:444
 #, fuzzy
 msgid "_Right Mousebutton Click"
 msgstr "คลิกเมาส์ปุ่มขวา"
 
 #. Translators: this is the "go back" action of a button
-#: panels/wacom/cc-wacom-stylus-page.c:405
+#: panels/wacom/cc-wacom-stylus-page.c:448
 msgid "_Back"
 msgstr "_ย้อนกลับ"
 
 #. Translators: this is the "go forward" action of a button
-#: panels/wacom/cc-wacom-stylus-page.c:409
+#: panels/wacom/cc-wacom-stylus-page.c:452
 #, fuzzy
 msgid "_Forward"
 msgstr "เดินหน้า"
 
-#: panels/wacom/cc-wacom-stylus-page.c:412
+#: panels/wacom/cc-wacom-stylus-page.c:455
 #, fuzzy
 msgid "_Assign Keystroke"
 msgstr "ส่งการกดแป้นพิมพ์"
 
-#: panels/wacom/cc-wacom-stylus-page.c:415
+#: panels/wacom/cc-wacom-stylus-page.c:458
 #, fuzzy
 msgid "_Switch Monitor"
 msgstr "สลับจอภาพ"
 
-#: panels/wacom/cc-wacom-stylus-page.ui:16
+#: panels/wacom/cc-wacom-stylus-page.ui:19
 #, fuzzy
 msgid "Tip _Pressure Feel"
 msgstr "การรับแรงกดของปลายปากกา"
 
-#: panels/wacom/cc-wacom-stylus-page.ui:22
-#: panels/wacom/cc-wacom-stylus-page.ui:117
+#: panels/wacom/cc-wacom-stylus-page.ui:25
+#: panels/wacom/cc-wacom-stylus-page.ui:120
 msgid "Soft"
 msgstr "นุ่ม"
 
-#: panels/wacom/cc-wacom-stylus-page.ui:36
+#: panels/wacom/cc-wacom-stylus-page.ui:39
 msgid "Stylus tip pressure"
 msgstr ""
 
-#: panels/wacom/cc-wacom-stylus-page.ui:42
-#: panels/wacom/cc-wacom-stylus-page.ui:137
+#: panels/wacom/cc-wacom-stylus-page.ui:45
+#: panels/wacom/cc-wacom-stylus-page.ui:140
 msgid "Firm"
 msgstr "แข็ง"
 
-#: panels/wacom/cc-wacom-stylus-page.ui:54
+#: panels/wacom/cc-wacom-stylus-page.ui:57
 #, fuzzy
 msgid "Button _1"
 msgstr "ปุ่ม"
 
-#: panels/wacom/cc-wacom-stylus-page.ui:73
+#: panels/wacom/cc-wacom-stylus-page.ui:76
 #, fuzzy
 msgid "Button _2"
 msgstr "ปุ่ม"
 
-#: panels/wacom/cc-wacom-stylus-page.ui:92
+#: panels/wacom/cc-wacom-stylus-page.ui:95
 #, fuzzy
 msgid "Button _3"
 msgstr "ปุ่ม"
 
-#: panels/wacom/cc-wacom-stylus-page.ui:111
+#: panels/wacom/cc-wacom-stylus-page.ui:114
 #, fuzzy
 msgid "_Eraser Pressure Feel"
 msgstr "การรับแรงกดของยางลบ"
 
-#: panels/wacom/cc-wacom-stylus-page.ui:131
+#: panels/wacom/cc-wacom-stylus-page.ui:134
 #, fuzzy
 msgid "Eraser pressure"
 msgstr "การรับแรงกดของยางลบ"
 
-#: panels/wacom/cc-wacom-tool.c:362
+#: panels/wacom/cc-wacom-tool.c:365
 msgid "Airbrush stylus with pressure, tilt, and integrated slider"
 msgstr ""
 
-#: panels/wacom/cc-wacom-tool.c:364
+#: panels/wacom/cc-wacom-tool.c:367
 msgid "Art pen with pressure, tilt, and rotation"
 msgstr ""
 
-#: panels/wacom/cc-wacom-tool.c:366
+#: panels/wacom/cc-wacom-tool.c:369
 msgid "Stylus with pressure and tilt"
 msgstr ""
 
-#: panels/wacom/cc-wacom-tool.c:368
+#: panels/wacom/cc-wacom-tool.c:371
 #, fuzzy
 msgid "Stylus with pressure"
 msgstr "สลับไปยังช่องทางก่อนหน้า"
@@ -9730,22 +9718,22 @@ msgstr ""
 msgid "Make sure you have a Wireless Wan/Cellular device"
 msgstr ""
 
-#: panels/wwan/cc-wwan-panel.ui:64
+#: panels/wwan/cc-wwan-panel.ui:65
 #, fuzzy
 msgid "Wireless Wan is disabled when airplane mode is on"
 msgstr "บลูทูทจะถูกปิดใช้งานเมื่อเปิดใช้โหมดเครื่องบิน"
 
-#: panels/wwan/cc-wwan-panel.ui:70
+#: panels/wwan/cc-wwan-panel.ui:71
 #, fuzzy
 msgid "_Turn off Airplane Mode"
 msgstr "ปิดโหมดเครื่องบิน"
 
-#: panels/wwan/cc-wwan-panel.ui:105
+#: panels/wwan/cc-wwan-panel.ui:106
 #, fuzzy
 msgid "Data Connection"
 msgstr "การเชื่อมต่อ"
 
-#: panels/wwan/cc-wwan-panel.ui:106
+#: panels/wwan/cc-wwan-panel.ui:107
 #, fuzzy
 msgid "SIM card used for internet"
 msgstr "ไม่ได้ใส่ SIM card"

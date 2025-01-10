@@ -1,8 +1,13 @@
 include:
- - remote: 'https://gitlab.freedesktop.org/freedesktop/ci-templates/-/raw/145b1bc7ef1702d2bd71584010d7113c6786a506/templates/fedora.yml'
+ - remote: 'https://gitlab.gnome.org/Infrastructure/freedesktop-ci-templates/-/raw/145b1bc7ef1702d2bd71584010d7113c6786a506/templates/fedora.yml'
+ - component: gitlab.gnome.org/GNOME/citemplates/release-service@master
+   inputs:
+     dist-job-name: release-build
+     tarball-artifact-path: $TARBALL_ARTIFACT_PATH
 
 variables:
   FDO_UPSTREAM_REPO: gnome/gnome-control-center
+  TARBALL_ARTIFACT_PATH: "_build/meson-dist/$CI_PROJECT_NAME-$CI_COMMIT_TAG.tar.xz"
 
 stages:
   - prepare
@@ -48,9 +53,9 @@ stages:
     # be created, tailored for the stable branch.
     # Should probably also switch away from 'rawhide',
     # to stable fedora branch as well.
-    BRANCH_NAME: 'main'
-    CONTAINER_TAG: '2024-10-15.0'
-    FEDORA_VERSION: rawhide
+    BRANCH_NAME: 'gnome-47'
+    CONTAINER_TAG: '2024-11-07.0'
+    FEDORA_VERSION: 41
     # Derive FDO variables from this automatically.
     # DO NOT edit, instead change the variables above
     FDO_REPO_SUFFIX: '${BRANCH_NAME}'
@@ -61,7 +66,7 @@ stages:
 #          Create CI Docker Images          #
 #############################################
 
-# See also https://gitlab.freedesktop.org/freedesktop/ci-templates
+# See also https://gitlab.gnome.org/Infrastructure/freedesktop-ci-templates
 build.container.fedora@x86_64:
   extends:
   - '.fdo.container-build@fedora'
@@ -89,40 +94,6 @@ build.container.fedora@x86_64:
       libsass-devel sassc
     FDO_DISTRIBUTION_EXEC: |-
       dnf builddep -y gnome-control-center && \
-      dnf builddep -y gsettings-desktop-schemas && \
-      git clone --depth 1 https://gitlab.gnome.org/GNOME/gsettings-desktop-schemas.git && \
-        cd gsettings-desktop-schemas && \
-        meson setup _build --prefix=/usr && \
-        meson compile -C _build && \
-        meson install -C _build && \
-        cd .. && \
-      dnf builddep -y gnome-settings-daemon && \
-      git clone --depth 1 https://gitlab.gnome.org/GNOME/gnome-settings-daemon.git && \
-        cd gnome-settings-daemon && \
-        meson setup _build --prefix=/usr && \
-        meson compile -C _build && \
-        meson install -C _build && \
-        cd .. && \
-      dnf builddep -y gtk4 && \
-      git clone --depth 1 https://gitlab.gnome.org/GNOME/gtk.git && \
-        cd gtk && \
-        meson setup _build --prefix=/usr && \
-        meson compile -C _build && \
-        meson install -C _build && \
-        cd .. && \
-      dnf builddep -y libadwaita && \
-      git clone --depth 1 https://gitlab.gnome.org/GNOME/libadwaita.git && \
-        cd libadwaita && \
-        meson setup _build --prefix=/usr -Dtests=false -Dexamples=false && \
-        meson compile -C _build && \
-        meson install -C _build && \
-        cd .. && \
-      git clone --depth 1 https://gitlab.gnome.org/GNOME/gnome-online-accounts.git && \
-        cd gnome-online-accounts && \
-        meson setup _build --prefix=/usr -Dfedora=true  && \
-        meson compile -C _build && \
-        meson install -C _build && \
-        cd .. && \
       dnf remove -y systemtap-runtime
 
 ##
@@ -210,12 +181,6 @@ test:
     - *environment_information
     - *run_tests
 
-    - |
-      if [[ -n "${CI_COMMIT_TAG}" ]]; then
-        echo "== Distro Test =="
-        meson dist -C _build
-      fi
-
   artifacts:
     <<: *build_logs
     reports:
@@ -225,6 +190,18 @@ test:
     variables:
       - $CI_PIPELINE_SOURCE == "schedule"
       - $CI_COMMIT_TITLE =~ /^Update.*translation$/
+
+release-build:
+  stage: build
+  extends:
+    - '.fdo.suffixed-image@fedora'
+    - '.fedora.container.common'
+  script:
+    - meson setup _build
+    - meson dist -C _build --no-tests
+  artifacts:
+    paths:
+      - $TARBALL_ARTIFACT_PATH
 
 # Runs the coverage test.
 coverage:
@@ -263,7 +240,7 @@ coverage:
 ##
 # Stage: Deploy
 #
-# Publishes the Coverage Report generated above
+# Publishes release artifacts and the Coverage Report generated above
 ##
 pages:
   extends:

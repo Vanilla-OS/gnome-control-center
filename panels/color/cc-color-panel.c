@@ -195,6 +195,25 @@ gcm_prefs_combobox_add_profile (CcColorPanel *self,
                       -1);
 }
 
+static gboolean
+gcm_prefs_ensure_connected_profile (CcColorPanel *self,
+                                    CdProfile *profile)
+{
+  gboolean ret;
+  g_autoptr(GError) error = NULL;
+
+  if (cd_profile_get_connected (profile))
+    return TRUE;
+
+  ret = cd_profile_connect_sync (profile,
+                                 cc_panel_get_cancellable (CC_PANEL (self)),
+                                 &error);
+  if (!ret)
+    g_warning ("failed to get profile: %s", error->message);
+
+  return ret;
+}
+
 static void
 gcm_prefs_default_cb (CcColorPanel *self)
 {
@@ -205,6 +224,9 @@ gcm_prefs_default_cb (CcColorPanel *self)
   /* TODO: check if the profile is already systemwide */
   profile = cd_device_get_default_profile (self->current_device);
   if (profile == NULL)
+    return;
+
+  if (!gcm_prefs_ensure_connected_profile (self, profile))
     return;
 
   /* install somewhere out of $HOME */
@@ -308,24 +330,6 @@ gcm_prefs_calib_delayed_complete_cb (gpointer user_data)
   assistant = GTK_ASSISTANT (self->assistant_calib);
   gtk_assistant_set_page_complete (assistant, self->box_calib_brightness, TRUE);
   return FALSE;
-}
-
-static void
-gcm_prefs_calib_prepare_cb (CcColorPanel *self,
-                            GtkWidget    *page)
-{
-  /* give the user the indication they should actually manually set the
-   * desired brightness rather than clicking blindly by delaying the
-   * "Next" button deliberately for a second or so */
-  if (page == self->box_calib_brightness)
-  {
-    g_timeout_add_seconds (1, gcm_prefs_calib_delayed_complete_cb, self);
-    return;
-  }
-
-  /* disable the brightness page as we don't want to show a 'Finished'
-   * button if the user goes back at any point */
-  gtk_assistant_set_page_complete (GTK_ASSISTANT (self->assistant_calib), self->box_calib_brightness, FALSE);
 }
 
 static void
@@ -527,6 +531,7 @@ gcm_prefs_calib_sensor_treeview_clicked_cb (CcColorPanel *self,
 static void
 gcm_prefs_calibrate_display (CcColorPanel *self)
 {
+  GtkAssistant *assistant;
   CdSensor *sensor_tmp;
   const gchar *tmp;
   GtkTreeIter iter;
@@ -534,6 +539,12 @@ gcm_prefs_calibrate_display (CcColorPanel *self)
 
   /* set target device */
   cc_color_calibrate_set_device (self->calibrate, self->current_device);
+
+  assistant = GTK_ASSISTANT (self->assistant_calib);
+  gtk_assistant_set_page_complete (assistant, self->box_calib_brightness, FALSE);
+  gtk_assistant_set_page_complete (assistant, self->box_calib_temp, FALSE);
+  gtk_assistant_set_page_complete (assistant, self->box_calib_kind, FALSE);
+  gtk_assistant_set_page_complete (assistant, self->box_calib_sensor, FALSE);
 
   /* add sensors to list */
   gtk_list_store_clear (GTK_LIST_STORE (self->liststore_calib_sensor));
@@ -709,6 +720,23 @@ gcm_prefs_combo_sort_func_cb (GtkTreeModel *model,
 }
 
 static gboolean
+gcm_prefs_ensure_connected_profiles (CcColorPanel *self,
+                                     GPtrArray *profiles)
+{
+  guint i;
+
+  for (i = 0; i < profiles->len; i++)
+    {
+      CdProfile *profile = g_ptr_array_index (profiles, i);
+
+      if (!gcm_prefs_ensure_connected_profile (self, profile))
+        return FALSE;
+    }
+
+  return TRUE;
+}
+
+static gboolean
 gcm_prefs_profile_exists_in_array (GPtrArray *array, CdProfile *profile)
 {
   CdProfile *profile_tmp;
@@ -756,20 +784,13 @@ gcm_prefs_add_profiles_suitable_for_devices (CcColorPanel *self,
       return;
     }
 
+  if (!gcm_prefs_ensure_connected_profiles (self, profile_array))
+    return;
+
   /* add profiles of the right kind */
   for (i = 0; i < profile_array->len; i++)
     {
       profile_tmp = g_ptr_array_index (profile_array, i);
-
-      /* get properties */
-      ret = cd_profile_connect_sync (profile_tmp,
-                                     cc_panel_get_cancellable (CC_PANEL (self)),
-                                     &error);
-      if (!ret)
-        {
-          g_warning ("failed to get profile: %s", error->message);
-          return;
-        }
 
       /* don't add any of the already added profiles */
       if (profiles != NULL)
@@ -880,6 +901,7 @@ gcm_prefs_profile_add_cb (CcColorPanel *self)
 
   /* add profiles of the right kind */
   profiles = cd_device_get_profiles (self->current_device);
+  gcm_prefs_ensure_connected_profiles (self, profiles);
   gcm_prefs_add_profiles_suitable_for_devices (self, profiles);
 
   /* make insensitive until we have a selection */
@@ -1977,6 +1999,46 @@ cc_color_panel_treeview_quality_default_cb (GtkTreeModel *model,
   if (quality == CD_PROFILE_QUALITY_MEDIUM)
     gtk_tree_selection_select_iter (selection, iter);
   return FALSE;
+}
+
+static void
+gcm_prefs_calib_prepare_cb (CcColorPanel *self,
+                            GtkWidget    *page)
+{
+  GtkTreeSelection *selection;
+
+  /* give the user the indication they should actually manually set the
+   * desired brightness rather than clicking blindly by delaying the
+   * "Next" button deliberately for a second or so */
+  if (page == self->box_calib_brightness)
+    {
+      g_timeout_add_seconds (1, gcm_prefs_calib_delayed_complete_cb, self);
+      return;
+    }
+  else if (page == self->box_calib_temp)
+    {
+      selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (self->treeview_calib_temp));
+      gcm_prefs_calib_temp_treeview_clicked_cb (self, selection);
+    }
+  else if (page == self->box_calib_kind)
+    {
+      selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (self->treeview_calib_kind));
+      gcm_prefs_calib_kind_treeview_clicked_cb (self, selection);
+    }
+  else if (page == self->box_calib_quality)
+    {
+      selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (self->treeview_calib_quality));
+      gcm_prefs_calib_quality_treeview_clicked_cb (self, selection);
+    }
+  else if (page == self->box_calib_sensor)
+    {
+      selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (self->treeview_calib_sensor));
+      gcm_prefs_calib_sensor_treeview_clicked_cb (self, selection);
+    }
+
+  /* disable the brightness page as we don't want to show a 'Finished'
+   * button if the user goes back at any point */
+  gtk_assistant_set_page_complete (GTK_ASSISTANT (self->assistant_calib), self->box_calib_brightness, FALSE);
 }
 
 static void
