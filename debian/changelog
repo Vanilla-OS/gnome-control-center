@@ -1,4 +1,4 @@
-gnome-control-center (1:47.3-1ubuntu1) UNRELEASED; urgency=medium
+gnome-control-center (1:47.3-1ubuntu1) plucky; urgency=medium
 
   * Merge with Debian. Remaining changes:
     + Add gnome-control-center-faces package to share with unity-control-center
@@ -13,7 +13,7 @@ gnome-control-center (1:47.3-1ubuntu1) UNRELEASED; urgency=medium
       - Don't recommend libnss-myhostname since we use systemd-resolved
       - Suggest instead of recommend gnome-user-share & realmd
       - Suggest instead of depend on libjxl-gdk-pixbuf
-      - Suggest instead of Recommend on malcontent-gui
+      - Suggest instead of recommend malcontent-gui
     + debian/gnome-control-center-data.install:
       - Don't install gnome-control-center.pkla since we use
         policykit-desktop-privileges instead
