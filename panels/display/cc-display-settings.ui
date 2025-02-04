@@ -79,6 +79,14 @@
           </object>
         </child>
         <child>
+          <object class="AdwSwitchRow" id="hdr_row">
+            <property name="width_request">100</property>
+            <property name="title" translatable="yes">_HDR (High Dynamic Range)</property>
+            <property name="use-underline">True</property>
+            <signal name="notify::active" handler="on_hdr_row_active_changed_cb" swapped="yes"/>
+          </object>
+        </child>
+        <child>
           <object class="AdwSwitchRow" id="underscanning_row">
             <property name="width_request">100</property>
             <property name="title" translatable="yes">Adjust for _TV</property>
@@ -92,12 +100,10 @@
             <property name="title" translatable="yes" context="display setting">_Scale</property>
             <property name="use-underline">True</property>
             <child>
-              <object class="GtkBox" id="scale_bbox">
-                <property name="halign">end</property>
+              <object class="AdwToggleGroup" id="scale_toggle_group">
                 <property name="valign">center</property>
-                <style>
-                  <class name="linked" />
-                </style>
+                <property name="homogeneous">True</property>
+                <signal name="notify::active" handler="on_scale_btn_active_changed_cb" object="CcDisplaySettings" swapped="yes"/>
               </object>
             </child>
           </object>

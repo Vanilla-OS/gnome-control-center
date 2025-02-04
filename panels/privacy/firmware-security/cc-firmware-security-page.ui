@@ -26,23 +26,16 @@
 
             <child>
               <object class="GtkStackPage">
-                <property name="name">panel_loading</property>
+                <property name="name">loading-page</property>
                 <property name="child">
-                  <object class="AdwStatusPage">
-                    <property name="paintable">
-                      <object class="AdwSpinnerPaintable">
-                        <property name="widget">CcFirmwareSecurityPage</property>
-                      </object>
-                    </property>
-                    <property name="title" translatable="yes">Starting Device Security…</property>
-                  </object>
+                  <object class="AdwSpinner"/>
                 </property>
               </object>
             </child>
 
             <child>
               <object class="GtkStackPage">
-                <property name="name">panel_unavailable</property>
+                <property name="name">unavailable-page</property>
                 <property name="child">
                   <object class="AdwStatusPage">
                     <property name="title" translatable="yes">Device Security Unavailable</property>
@@ -55,7 +48,7 @@
 
             <child>
               <object class="GtkStackPage">
-                <property name="name">panel_show</property>
+                <property name="name">firmware-security-page</property>
                 <property name="child">
                   <object class="AdwPreferencesPage">
                     <child>
@@ -177,49 +170,30 @@
                         </child>
                       </object>
                     </child>
-
                     <child>
-                      <object class="AdwPreferencesGroup">
+                      <object class="AdwPreferencesGroup" id="firmware_security_log_pgroup">
                         <property name="title" translatable="yes">Security Events</property>
                         <child>
-                          <object class="AdwViewStack" id="firmware_security_log_stack">
+                          <object class="GtkBox" id="no_events_box">
+                            <property name="orientation">vertical</property>
                             <child>
-                              <object class="AdwViewStackPage">
-                                <property name="name">no-events-page</property>
-                                <property name="child">
-                                  <object class="GtkBox">
-                                    <property name="orientation">vertical</property>
-                                    <child>
-                                      <object class="AdwStatusPage">
-                                        <property name="vexpand">True</property>
-                                        <property name="title" translatable="yes">No Events</property>
-                                        <property name="icon-name">document-open-recent-symbolic</property>
-                                        <style>
-                                          <class name="dim-label" />
-                                          <class name="compact" />
-                                        </style>
-                                      </object>
-                                    </child>
-                                   <style>
-                                      <class name="card" />
-                                   </style>
-                                  </object>
-                                </property>
+                              <object class="AdwStatusPage">
+                                <property name="vexpand">True</property>
+                                <property name="title" translatable="yes">No Events</property>
+                                <property name="icon-name">document-open-recent-symbolic</property>
+                                <style>
+                                  <class name="dim-label" />
+                                  <class name="compact" />
+                                </style>
                               </object>
                             </child>
-                            <child>
-                              <object class="AdwViewStackPage">
-                                <property name="name">events-page</property>
-                                <property name="child">
-                                  <object class="AdwPreferencesGroup" id="firmware_security_log_pgroup" />
-                                </property>
-                              </object>
-                            </child>
+                            <style>
+                              <class name="card" />
+                            </style>
                           </object>
                         </child>
                       </object>
                     </child>
-
                   </object>
                 </property>
               </object>

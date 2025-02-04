@@ -20,6 +20,7 @@
  * Authors: Marco Trevisan <marco.trevisan@canonical.com>
  */
 
+#include <adwaita.h>
 #include <glib/gi18n.h>
 #include <cairo/cairo.h>
 
@@ -54,7 +55,7 @@ typedef enum {
 
 struct _CcFingerprintDialog
 {
-  GtkWindow parent_instance;
+  AdwDialog       parent_instance;
 
   GtkButton      *back_button;
   GtkButton      *cancel_button;
@@ -63,18 +64,16 @@ struct _CcFingerprintDialog
   GtkBox         *add_print_popover_box;
   GtkEntry       *enroll_print_entry;
   GtkFlowBox     *prints_gallery;
-  GtkHeaderBar   *titlebar;
+  AdwHeaderBar   *titlebar;
   GtkImage       *enroll_result_image;
   GtkLabel       *enroll_message;
   GtkLabel       *enroll_result_message;
   GtkLabel       *infobar_error;
-  GtkLabel       *title;
   GtkListBox     *devices_list;
   GtkPopover     *add_print_popover;
   AdwSpinner     *spinner;
   GtkStack       *stack;
   GtkWidget      *add_print_icon;
-  GtkWidget      *delete_confirmation_infobar;
   GtkWidget      *device_selector;
   GtkWidget      *enroll_print_bin;
   GtkWidget      *enroll_result_icon;
@@ -105,7 +104,7 @@ struct _CcFingerprintDialog
   - Devices hotplug (object manager)
  */
 
-G_DEFINE_TYPE (CcFingerprintDialog, cc_fingerprint_dialog, GTK_TYPE_WINDOW)
+G_DEFINE_TYPE (CcFingerprintDialog, cc_fingerprint_dialog, ADW_TYPE_DIALOG)
 
 enum {
   PROP_0,
@@ -583,6 +582,7 @@ delete_prints_cb (GObject      *object,
 
   update_prints_store (self);
   cc_fingerprint_manager_update_state (self->manager, NULL, NULL);
+  remove_dialog_state (self, DIALOG_STATE_DEVICE_DELETING);
 }
 
 static void
@@ -668,6 +668,7 @@ set_enroll_result_message (CcFingerprintDialog *self,
 
   gtk_image_set_from_icon_name (self->enroll_result_image, icon_name);
   gtk_label_set_label (self->enroll_result_message, message);
+  gtk_label_set_wrap (self->enroll_result_message, TRUE);
 }
 
 static gboolean
@@ -1215,9 +1216,14 @@ static void
 on_stack_child_changed (CcFingerprintDialog *self)
 {
   GtkWidget *visible_child = gtk_stack_get_visible_child (self->stack);
+  GtkStackPage *visible_page = gtk_stack_get_page (self->stack, visible_child);
+  const gchar *title = gtk_stack_page_get_title (visible_page);
 
   g_debug ("Fingerprint dialog child changed: %s",
            gtk_stack_get_visible_child_name (self->stack));
+
+  /* Set an empty string for status pages (stack pages with no title). */
+  adw_dialog_set_title (ADW_DIALOG (self), title ? title : "");
 
   gtk_widget_set_visible (GTK_WIDGET (self->back_button), FALSE);
   gtk_widget_set_visible (GTK_WIDGET (self->cancel_button), FALSE);
@@ -1266,9 +1272,6 @@ cc_fingerprint_dialog_init (CcFingerprintDialog *self)
   g_signal_connect_object (self->stack, "notify::visible-child",
                            G_CALLBACK (on_stack_child_changed), self,
                            G_CONNECT_SWAPPED);
-
-  g_object_bind_property (self->stack, "visible-child-name",
-                          self->title, "label", G_BINDING_SYNC_CREATE);
 
   populate_prints_gallery (self);
   populate_enrollment_view (self);
@@ -1355,6 +1358,8 @@ cc_fingerprint_dialog_constructed (GObject *object)
 {
   CcFingerprintDialog *self = CC_FINGERPRINT_DIALOG (object);
 
+  G_OBJECT_CLASS (cc_fingerprint_dialog_parent_class)->constructed (object);
+
   bindtextdomain ("fprintd", GNOMELOCALEDIR);
   bind_textdomain_codeset ("fprintd", "UTF-8");
 
@@ -1377,24 +1382,32 @@ back_button_clicked_cb (CcFingerprintDialog *self)
 }
 
 static void
-confirm_deletion_button_clicked_cb (CcFingerprintDialog *self)
+on_delete_all_response (CcFingerprintDialog *self)
 {
-  gtk_widget_set_visible (self->delete_confirmation_infobar, FALSE);
   delete_enrolled_prints (self);
-}
-
-static void
-cancel_deletion_button_clicked_cb (CcFingerprintDialog *self)
-{
-  gtk_widget_set_sensitive (self->prints_manager, TRUE);
-  gtk_widget_set_visible (self->delete_confirmation_infobar, FALSE);
 }
 
 static void
 delete_prints_button_clicked_cb (CcFingerprintDialog *self)
 {
-  gtk_widget_set_sensitive (self->prints_manager, FALSE);
-  gtk_widget_set_visible (self->delete_confirmation_infobar, TRUE);
+  AdwDialog *dialog;
+
+  dialog = adw_alert_dialog_new (_("Delete All Fingerprints?"),
+                                 _("Deleting all enrolled fingerprints will disable Fingerprint Login. "
+                                   "To re-enable Fingerprint Login at least one fingerprint will have to be enrolled."));
+
+  adw_alert_dialog_add_responses (ADW_ALERT_DIALOG (dialog),
+                                  "cancel",  _("_Cancel"),
+                                  "delete-all", _("_Delete All"),
+                                  NULL);
+  adw_alert_dialog_set_response_appearance (ADW_ALERT_DIALOG (dialog),
+                                            "delete-all",
+                                            ADW_RESPONSE_DESTRUCTIVE);
+  adw_alert_dialog_set_default_response (ADW_ALERT_DIALOG (dialog), "cancel");
+  adw_alert_dialog_set_close_response (ADW_ALERT_DIALOG (dialog), "cancel");
+
+  g_signal_connect_swapped (dialog, "response::delete-all", G_CALLBACK (on_delete_all_response), self);
+  adw_dialog_present (dialog, GTK_WIDGET (self));
 }
 
 static void
@@ -1423,10 +1436,10 @@ done_button_clicked_cb (CcFingerprintDialog *self)
   enroll_stop (self);
 }
 
-static gboolean
-cc_fingerprint_dialog_close_request (GtkWindow *window)
+static void
+cc_fingerprint_dialog_close_attempt (AdwDialog *dialog)
 {
-  CcFingerprintDialog *self = CC_FINGERPRINT_DIALOG (window);
+  CcFingerprintDialog *self = CC_FINGERPRINT_DIALOG (dialog);
 
   cc_fingerprint_manager_update_state (self->manager, NULL, NULL);
 
@@ -1448,7 +1461,8 @@ cc_fingerprint_dialog_close_request (GtkWindow *window)
   g_cancellable_cancel (self->cancellable);
   g_clear_object (&self->cancellable);
 
-  return GTK_WINDOW_CLASS (cc_fingerprint_dialog_parent_class)->close_request (window);
+  adw_dialog_set_can_close (ADW_DIALOG (dialog), TRUE);
+  adw_dialog_close (ADW_DIALOG (dialog));
 }
 
 static void
@@ -1456,7 +1470,7 @@ cc_fingerprint_dialog_class_init (CcFingerprintDialogClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
-  GtkWindowClass *window_class = GTK_WINDOW_CLASS (klass);
+  AdwDialogClass *dialog_class = ADW_DIALOG_CLASS (klass);
 
   gtk_widget_class_add_binding_action (widget_class, GDK_KEY_Escape, 0, "window.close", NULL);
 
@@ -1467,7 +1481,7 @@ cc_fingerprint_dialog_class_init (CcFingerprintDialogClass *klass)
   object_class->get_property = cc_fingerprint_dialog_get_property;
   object_class->set_property = cc_fingerprint_dialog_set_property;
 
-  window_class->close_request = cc_fingerprint_dialog_close_request;
+  dialog_class->close_attempt = cc_fingerprint_dialog_close_attempt;
 
   properties[PROP_MANAGER] =
     g_param_spec_object ("fingerprint-manager",
@@ -1482,7 +1496,6 @@ cc_fingerprint_dialog_class_init (CcFingerprintDialogClass *klass)
   gtk_widget_class_bind_template_child (widget_class, CcFingerprintDialog, add_print_popover_box);
   gtk_widget_class_bind_template_child (widget_class, CcFingerprintDialog, back_button);
   gtk_widget_class_bind_template_child (widget_class, CcFingerprintDialog, cancel_button);
-  gtk_widget_class_bind_template_child (widget_class, CcFingerprintDialog, delete_confirmation_infobar);
   gtk_widget_class_bind_template_child (widget_class, CcFingerprintDialog, delete_prints_button);
   gtk_widget_class_bind_template_child (widget_class, CcFingerprintDialog, device_selector);
   gtk_widget_class_bind_template_child (widget_class, CcFingerprintDialog, devices_list);
@@ -1498,15 +1511,12 @@ cc_fingerprint_dialog_class_init (CcFingerprintDialogClass *klass)
   gtk_widget_class_bind_template_child (widget_class, CcFingerprintDialog, prints_manager);
   gtk_widget_class_bind_template_child (widget_class, CcFingerprintDialog, spinner);
   gtk_widget_class_bind_template_child (widget_class, CcFingerprintDialog, stack);
-  gtk_widget_class_bind_template_child (widget_class, CcFingerprintDialog, title);
   gtk_widget_class_bind_template_child (widget_class, CcFingerprintDialog, titlebar);
 
   gtk_widget_class_bind_template_callback (widget_class, back_button_clicked_cb);
   gtk_widget_class_bind_template_callback (widget_class, cancel_button_clicked_cb);
-  gtk_widget_class_bind_template_callback (widget_class, cancel_deletion_button_clicked_cb);
-  gtk_widget_class_bind_template_callback (widget_class, confirm_deletion_button_clicked_cb);
   gtk_widget_class_bind_template_callback (widget_class, delete_prints_button_clicked_cb);
   gtk_widget_class_bind_template_callback (widget_class, done_button_clicked_cb);
   gtk_widget_class_bind_template_callback (widget_class, on_print_activated_cb);
   gtk_widget_class_bind_template_callback (widget_class, select_device_row);
-}
+  }

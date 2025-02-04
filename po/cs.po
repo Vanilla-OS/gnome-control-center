@@ -24,10 +24,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-control-center\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/browse.cgi?product=gnome-"
-"control-center\n"
-"POT-Creation-Date: 2024-09-09 17:30+0000\n"
-"PO-Revision-Date: 2024-09-10 00:02+0200\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-control-center/"
+"issues\n"
+"POT-Creation-Date: 2024-09-09 17:32+0000\n"
+"PO-Revision-Date: 2024-09-10 00:16+0200\n"
 "Last-Translator: Daniel Rusek <mail@asciiwolf.com>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -54,8 +54,8 @@ msgid "Session Bus"
 msgstr "Sběrnice sezení"
 
 #: panels/applications/cc-applications-panel.c:850
-#: panels/privacy/bolt/cc-bolt-page.ui:199
-#: panels/privacy/bolt/cc-bolt-page.ui:237
+#: panels/privacy/bolt/cc-bolt-page.ui:158
+#: panels/privacy/bolt/cc-bolt-page.ui:196
 #: panels/privacy/cc-privacy-panel.ui:72
 msgid "Devices"
 msgstr "Zařízení"
@@ -167,6 +167,7 @@ msgstr "Nastavte, které aplikace otevírají odkazy, soubory a média"
 
 #: panels/applications/cc-applications-panel.ui:84
 #: panels/keyboard/cc-keyboard-shortcut-dialog.ui:94
+#: panels/printers/cc-printers-panel.ui:101
 #: panels/system/datetime/cc-tz-dialog.ui:42
 #: panels/system/region/cc-format-chooser.ui:176 shell/cc-panel-list.ui:44
 msgid "No Results Found"
@@ -174,6 +175,7 @@ msgstr "Nenalezeny žádné výsledky"
 
 #: panels/applications/cc-applications-panel.ui:85
 #: panels/keyboard/cc-keyboard-shortcut-dialog.ui:95
+#: panels/printers/cc-printers-panel.ui:102
 #: panels/system/datetime/cc-tz-dialog.ui:43
 #: panels/system/region/cc-format-chooser.ui:177 shell/cc-panel-list.ui:45
 msgid "Try a different search"
@@ -192,13 +194,14 @@ msgstr "Najít v So_ftware"
 msgid "Unable to List Apps"
 msgstr "Nelze zobrazit seznam aplikací"
 
+#. Translators: Parental Controls here refers to the features provided by 'malcontent'
 #: panels/applications/cc-applications-panel.ui:122
 msgid ""
 "An error has occurred and apps cannot be listed.\n"
-"Error details: Malcontent is not installed."
+"Error details: Parental Controls are not installed."
 msgstr ""
 "Došlo k chybě a aplikace nelze zobrazit.\n"
-"Podrobnosti o chybě: Malcontent není nainstalován."
+"Podrobnosti o chybě: Rodičovská kontrola není nainstalována."
 
 #: panels/applications/cc-applications-panel.ui:139
 #: panels/applications/cc-default-apps-page.ui:4
@@ -1093,6 +1096,7 @@ msgstr "Kalibrace displeje"
 #: panels/network/connection-editor/ce-page-details.c:89
 #: panels/network/connection-editor/connection-editor.ui:16
 #: panels/printers/pp-details-dialog.c:267
+#: panels/printers/pp-jobs-dialog.ui:125
 #: panels/printers/pp-new-printer-dialog.ui:65
 #: panels/printers/pp-ppd-selection-dialog.ui:17
 #: panels/privacy/usage/cc-usage-page.ui:125
@@ -1102,6 +1106,7 @@ msgstr "Kalibrace displeje"
 #: panels/system/users/cc-add-user-dialog.ui:24
 #: panels/system/users/cc-avatar-chooser.c:92
 #: panels/system/users/cc-enterprise-login-dialog.ui:44
+#: panels/system/users/cc-fingerprint-dialog.c:1396
 #: panels/system/users/cc-fingerprint-dialog.ui:32
 #: panels/system/users/cc-password-dialog.ui:15
 #: panels/system/users/cc-user-page.ui:231
@@ -1661,7 +1666,7 @@ msgid "No languages found"
 msgstr "Žádné jazyky nebyly nenalezeny"
 
 #: panels/common/cc-language-chooser.ui:70
-#: panels/keyboard/cc-input-chooser.c:185
+#: panels/keyboard/cc-input-chooser.c:182
 msgid "More…"
 msgstr "Více…"
 
@@ -2246,15 +2251,15 @@ msgstr "Zmenšit velikost textu"
 msgid "High contrast on or off"
 msgstr "Zapnout nebo vypnout vysoký kontrast"
 
-#: panels/keyboard/cc-input-chooser.c:198
+#: panels/keyboard/cc-input-chooser.c:195
 msgid "No input sources found"
 msgstr "Žádné vstupní zdroje nenalezeny"
 
-#: panels/keyboard/cc-input-chooser.c:253 panels/keyboard/cc-input-row.ui:46
+#: panels/keyboard/cc-input-chooser.c:250 panels/keyboard/cc-input-row.ui:46
 msgid "View Keyboard Layout"
 msgstr "Zobrazit rozložení klávesnice"
 
-#: panels/keyboard/cc-input-chooser.c:1046
+#: panels/keyboard/cc-input-chooser.c:1043
 msgctxt "Input Source"
 msgid "Other"
 msgstr "Další"
@@ -2266,10 +2271,6 @@ msgstr "Přidání vstupního zdroje"
 #: panels/keyboard/cc-input-chooser.ui:37
 msgid "Search languages and countries"
 msgstr "Hledat jazyky a země"
-
-#: panels/keyboard/cc-input-chooser.ui:52
-msgid "Input methods can’t be used on the login screen"
-msgstr "Vstupní metody nemohou být použity na přihlašovací obrazovce"
 
 #: panels/keyboard/cc-input-list-box.ui:14
 msgid "_Add Input Source"
@@ -2402,53 +2403,53 @@ msgstr ""
 "Vstupní zdroje můžete přepínat pomocí klávesové zkratky %s.\n"
 "Tu můžete změnit v nastavení klávesových zkratek."
 
-#: panels/keyboard/cc-keyboard-panel.ui:13
+#: panels/keyboard/cc-keyboard-panel.ui:6
 #: panels/keyboard/gnome-keyboard-panel.desktop.in:3
 msgid "Keyboard"
 msgstr "Klávesnice"
 
-#: panels/keyboard/cc-keyboard-panel.ui:23
+#: panels/keyboard/cc-keyboard-panel.ui:16
 msgid "Input Sources"
 msgstr "Vstupní zdroje"
 
-#: panels/keyboard/cc-keyboard-panel.ui:24
+#: panels/keyboard/cc-keyboard-panel.ui:17
 msgid "Includes keyboard layouts and input methods"
 msgstr "Zahrnuje rozložení klávesnice a metody zadávání"
 
-#: panels/keyboard/cc-keyboard-panel.ui:34
+#: panels/keyboard/cc-keyboard-panel.ui:27
 msgid "Input Source Switching"
 msgstr "Přepínání vstupního zdroje"
 
-#: panels/keyboard/cc-keyboard-panel.ui:37
+#: panels/keyboard/cc-keyboard-panel.ui:30
 msgid "Use the _same source for all windows"
 msgstr "Použít _stejný zdroj pro všechna okna"
 
-#: panels/keyboard/cc-keyboard-panel.ui:49
+#: panels/keyboard/cc-keyboard-panel.ui:42
 msgid "Switch input sources _individually for each window"
 msgstr "Přepínat vstupní zdroje samostatně pro jednotl_ivá okna"
 
-#: panels/keyboard/cc-keyboard-panel.ui:65
+#: panels/keyboard/cc-keyboard-panel.ui:58
 msgid "Special Character Entry"
 msgstr "Psaní speciálních znaků"
 
-#: panels/keyboard/cc-keyboard-panel.ui:66
+#: panels/keyboard/cc-keyboard-panel.ui:59
 msgid "Methods for entering symbols and letter variants using the keyboard"
 msgstr "Způsoby zadávání symbolů a variant písmen pomocí klávesnice"
 
-#: panels/keyboard/cc-keyboard-panel.ui:69
+#: panels/keyboard/cc-keyboard-panel.ui:62
 msgid "A_lternate Characters Key"
 msgstr "Klávesa a_lternativních znaků"
 
-#: panels/keyboard/cc-keyboard-panel.ui:77
+#: panels/keyboard/cc-keyboard-panel.ui:70
 msgid "_Compose Key"
 msgstr "_Compose"
 
-#: panels/keyboard/cc-keyboard-panel.ui:86
+#: panels/keyboard/cc-keyboard-panel.ui:79
 #: panels/keyboard/cc-keyboard-shortcut-dialog.ui:9
 msgid "Keyboard Shortcuts"
 msgstr "Klávesové zkratky"
 
-#: panels/keyboard/cc-keyboard-panel.ui:89
+#: panels/keyboard/cc-keyboard-panel.ui:82
 msgid "_View and Customize Shortcuts"
 msgstr "Zobrazit a přizpůsobit klá_vesové zkratky"
 
@@ -3021,7 +3022,7 @@ msgstr "Název sítě"
 #. Translators: This is a password needed for printing.
 #: panels/network/cc-qr-code-dialog.ui:66
 #: panels/network/cc-wifi-hotspot-dialog.ui:92
-#: panels/printers/pp-jobs-dialog.ui:52
+#: panels/printers/pp-jobs-dialog.ui:178
 #: panels/printers/pp-new-printer-dialog.ui:292
 #: panels/system/users/cc-add-user-dialog.ui:103
 #: panels/wwan/cc-wwan-apn-dialog.ui:175
@@ -4939,21 +4940,21 @@ msgstr ""
 "napájení;uspání;uspání do paměti;uspání na disk;baterie;jas;ztlumit;monitor;"
 "DPMS;neaktivní;energie;"
 
-#: panels/printers/cc-printers-panel.c:677
+#: panels/printers/cc-printers-panel.c:672
 msgid "Undo"
 msgstr "Zpět"
 
 #. Translators: %s is the printer name
-#: panels/printers/cc-printers-panel.c:687
+#: panels/printers/cc-printers-panel.c:682
 #, c-format
 msgid "Printer “%s” has been deleted"
 msgstr "Tiskárna „%s“ byla odebrána"
 
-#: panels/printers/cc-printers-panel.c:928
+#: panels/printers/cc-printers-panel.c:924
 msgid "Failed to add new printer."
 msgstr "Selhalo přidání nové tiskárny."
 
-#: panels/printers/cc-printers-panel.c:1297
+#: panels/printers/cc-printers-panel.c:1293
 msgid "Unlock to add printers and change settings"
 msgstr "Odemkněte, abyste mohli přidávat tiskárny a měnit nastavení"
 
@@ -4964,7 +4965,7 @@ msgstr "Všechny připojené a síťové tiskárny"
 #. Translators: This button adds new printer.
 #. Translators: This button adds a new printer.
 #: panels/printers/cc-printers-panel.ui:31
-#: panels/printers/cc-printers-panel.ui:118
+#: panels/printers/cc-printers-panel.ui:123
 msgid "_Add Printer…"
 msgstr "Přid_at tiskárnu…"
 
@@ -4972,17 +4973,17 @@ msgstr "Přid_at tiskárnu…"
 msgid "Search printers"
 msgstr "hledat tiskárny"
 
-#: panels/printers/cc-printers-panel.ui:115
+#: panels/printers/cc-printers-panel.ui:120
 msgid "No Printers"
 msgstr "Žádné tiskárny"
 
 #. Translators: Title if the CUPS server is not running (we can not connect to it).
-#: panels/printers/cc-printers-panel.ui:140
+#: panels/printers/cc-printers-panel.ui:145
 msgid "No Print Service"
 msgstr "Žádná tisková služba"
 
 #. Translators: Description if the CUPS server is not running (we can not connect to it).
-#: panels/printers/cc-printers-panel.ui:141
+#: panels/printers/cc-printers-panel.ui:146
 msgid "The system printing service doesn’t seem to be available"
 msgstr "Vypadá to, že systémová služba tisku není dostupná"
 
@@ -5172,7 +5173,7 @@ msgid "Move Print Job to Top of Queue"
 msgstr "Přesunout tiskovou úlohu na začátek fronty"
 
 #. Translators: This label shows how many jobs of this printer needs to be authenticated to be printed.
-#: panels/printers/pp-jobs-dialog.c:318
+#: panels/printers/pp-jobs-dialog.c:319
 #, c-format
 msgid "%u Job Requires Authentication"
 msgid_plural "%u Jobs Require Authentication"
@@ -5181,50 +5182,58 @@ msgstr[1] "%u úlohy vyžadují ověření"
 msgstr[2] "%u úloh vyžaduje ověření"
 
 #. Translators: The printer needs authentication info to print.
-#: panels/printers/pp-jobs-dialog.c:455
+#: panels/printers/pp-jobs-dialog.c:456
 #, c-format
 msgid "Enter credentials to print from %s"
 msgstr "Zadejte pověření pro tisk z tiskárny %s"
 
+#. Translators: this action removes (purges) all the listed jobs from the list.
+#: panels/printers/pp-jobs-dialog.ui:12
+msgid "_Clear All"
+msgstr "_Vymazat vše"
+
+#: panels/printers/pp-jobs-dialog.ui:23
+msgid "Active Jobs"
+msgstr "Aktivní úlohy"
+
+#. Translators: this label describes the dialog empty state, with no jobs listed.
+#: panels/printers/pp-jobs-dialog.ui:36
+msgid "No Active Printer Jobs"
+msgstr "Nejsou žádné aktivní tiskové úlohy"
+
+#. Translators: This button pop up authentication dialog for print jobs which need credentials.
+#: panels/printers/pp-jobs-dialog.ui:80
+msgid "_Authenticate"
+msgstr "_Ověřit"
+
+#: panels/printers/pp-jobs-dialog.ui:119
+msgid "Clear All Active Jobs?"
+msgstr "Vymazat všechny aktivní úlohy?"
+
+#: panels/printers/pp-jobs-dialog.ui:120
+msgid "Clearing jobs cannot be undone"
+msgstr "Vymazání úloh nelze vrátit zpět"
+
+#: panels/printers/pp-jobs-dialog.ui:126
+msgid "Clear _All"
+msgstr "Vym_azat vše"
+
 #. Translators: This is a windows domain used with SMB protocol.
-#: panels/printers/pp-jobs-dialog.ui:28
+#: panels/printers/pp-jobs-dialog.ui:154
 msgid "Domain"
 msgstr "Doména"
 
 #. Translators: This is a username on a print server.
-#: panels/printers/pp-jobs-dialog.ui:40
+#: panels/printers/pp-jobs-dialog.ui:166
 #: panels/printers/pp-new-printer-dialog.ui:271
 #: panels/wwan/cc-wwan-apn-dialog.ui:150
 msgid "Username"
 msgstr "Uživatelské jméno"
 
 #. Translators: This button authenticates all print jobs and send them for printing.
-#: panels/printers/pp-jobs-dialog.ui:101
+#: panels/printers/pp-jobs-dialog.ui:227
 msgid "A_uthenticate"
 msgstr "O_věřit"
-
-#: panels/printers/pp-jobs-dialog.ui:119
-msgid "Printer Jobs"
-msgstr "Tiskové úlohy"
-
-#. Translators: this action removes (purges) all the listed jobs from the list.
-#: panels/printers/pp-jobs-dialog.ui:128
-msgid "_Clear All"
-msgstr "_Vymazat vše"
-
-#: panels/printers/pp-jobs-dialog.ui:139
-msgid "Active Jobs"
-msgstr "Aktivní úlohy"
-
-#. Translators: this label describes the dialog empty state, with no jobs listed.
-#: panels/printers/pp-jobs-dialog.ui:152
-msgid "No Active Printer Jobs"
-msgstr "Nejsou žádné aktivní tiskové úlohy"
-
-#. Translators: This button pop up authentication dialog for print jobs which need credentials.
-#: panels/printers/pp-jobs-dialog.ui:196
-msgid "_Authenticate"
-msgstr "_Ověřit"
 
 #. Translators: Name of job which makes printer to autoconfigure itself
 #: panels/printers/pp-new-printer.c:1200
@@ -5773,24 +5782,24 @@ msgctxt "Thunderbolt Device Status"
 msgid "Authorized"
 msgstr "Ověřeno"
 
-#: panels/privacy/bolt/cc-bolt-page.c:216
+#: panels/privacy/bolt/cc-bolt-page.c:211
 msgid ""
 "The Thunderbolt subsystem (boltd) is not installed or not set up properly."
 msgstr ""
 "Subsystém Thunderbolt (boltd) není nainstalovaný, nebo není správně "
 "nastavený."
 
-#: panels/privacy/bolt/cc-bolt-page.c:472
+#: panels/privacy/bolt/cc-bolt-page.c:467
 msgid "Allow direct access to devices such as docks and external GPUs."
 msgstr ""
 "Umožňuje přímý přístup k zařízením, jako jsou dokovací stanice nebo externí "
 "GPU."
 
-#: panels/privacy/bolt/cc-bolt-page.c:473
+#: panels/privacy/bolt/cc-bolt-page.c:468
 msgid "Only USB and Display Port devices can attach."
 msgstr "Připojeny mohou být jen zařízení USB a Display Port."
 
-#: panels/privacy/bolt/cc-bolt-page.c:508
+#: panels/privacy/bolt/cc-bolt-page.c:503
 msgid ""
 "Thunderbolt could not be detected.\n"
 "Either the system lacks Thunderbolt support, it has been disabled in the "
@@ -5800,15 +5809,15 @@ msgstr ""
 "Buď systém postrádá podporu pro Thunderbolt, nebo je vypnutá přes BIOS, nebo "
 "je v něm nastavená nepodporovaná úroveň zabezpečení."
 
-#: panels/privacy/bolt/cc-bolt-page.c:552
+#: panels/privacy/bolt/cc-bolt-page.c:547
 msgid "Thunderbolt support has been disabled in the BIOS."
 msgstr "Podpora pro Thunderbolt je vypnutá přes BIOS."
 
-#: panels/privacy/bolt/cc-bolt-page.c:556
+#: panels/privacy/bolt/cc-bolt-page.c:551
 msgid "Thunderbolt security level could not be determined."
 msgstr "Úroveň zabezpečení zařízení Thunderbolt nemohla být určena."
 
-#: panels/privacy/bolt/cc-bolt-page.c:676
+#: panels/privacy/bolt/cc-bolt-page.c:671
 #, c-format
 msgid "Error switching direct mode: %s"
 msgstr "Chyba při přepínání přímého režimu: %s"
@@ -5817,33 +5826,29 @@ msgstr "Chyba při přepínání přímého režimu: %s"
 msgid "Thunderbolt"
 msgstr "Thunderbolt"
 
-#: panels/privacy/bolt/cc-bolt-page.ui:48
-msgid "Close notification"
-msgstr "Zavřít upozornění"
-
-#: panels/privacy/bolt/cc-bolt-page.ui:92
+#: panels/privacy/bolt/cc-bolt-page.ui:51
 msgid "No Thunderbolt Support"
 msgstr "Bez podpory pro Thunderbolt"
 
-#: panels/privacy/bolt/cc-bolt-page.ui:93
+#: panels/privacy/bolt/cc-bolt-page.ui:52
 msgid "Could not connect to the thunderbolt subsystem"
 msgstr "Nezdařilo se připojit k subsystému thunderbolt"
 
-#: panels/privacy/bolt/cc-bolt-page.ui:110
+#: panels/privacy/bolt/cc-bolt-page.ui:69
 msgid "Direct Access"
 msgstr "Přímý přístup"
 
-#: panels/privacy/bolt/cc-bolt-page.ui:113
+#: panels/privacy/bolt/cc-bolt-page.ui:72
 msgid "Allow direct access to devices such as docks and external GPUs"
 msgstr ""
 "Umožňuje přímý přístup k zařízením, jako jsou dokovací stanice nebo externí "
 "GPU"
 
-#: panels/privacy/bolt/cc-bolt-page.ui:163
+#: panels/privacy/bolt/cc-bolt-page.ui:122
 msgid "Pending Devices"
 msgstr "Čekající zařízení"
 
-#: panels/privacy/bolt/cc-bolt-page.ui:246
+#: panels/privacy/bolt/cc-bolt-page.ui:205
 msgid "No devices attached"
 msgstr "Nejsou připojena žádná zařízení"
 
@@ -6052,7 +6057,7 @@ msgstr ""
 
 #. TRANSLATORS: in reference to firmware protection: 0/4 stars
 #: panels/privacy/firmware-security/cc-firmware-security-dialog.c:108
-#: panels/privacy/firmware-security/cc-firmware-security-page.c:532
+#: panels/privacy/firmware-security/cc-firmware-security-page.c:533
 msgid "Security Checks Failed"
 msgstr "Bezpečnostní kontroly selhaly"
 
@@ -6076,7 +6081,7 @@ msgstr ""
 
 #. TRANSLATORS: in reference to firmware protection: 1/4 stars
 #: panels/privacy/firmware-security/cc-firmware-security-dialog.c:121
-#: panels/privacy/firmware-security/cc-firmware-security-page.c:539
+#: panels/privacy/firmware-security/cc-firmware-security-page.c:540
 msgid "Basic Security Checks Passed"
 msgstr "Základní bezpečnostní kontroly prošly"
 
@@ -6094,7 +6099,7 @@ msgstr ""
 
 #. TRANSLATORS: in reference to firmware protection: 2~4 stars
 #: panels/privacy/firmware-security/cc-firmware-security-dialog.c:134
-#: panels/privacy/firmware-security/cc-firmware-security-page.c:549
+#: panels/privacy/firmware-security/cc-firmware-security-page.c:550
 msgid "Protected"
 msgstr "Chráněno"
 
@@ -6221,44 +6226,44 @@ msgstr ""
 
 #. TRANSLATOR: this is the date in "%Y-%m-%d %H:%M:%S" format,
 #. for example: 2022-08-01 22:48:00
-#: panels/privacy/firmware-security/cc-firmware-security-page.c:228
+#: panels/privacy/firmware-security/cc-firmware-security-page.c:229
 #, c-format
 msgid "%1$s"
 msgstr "%1$s"
 
 #. TRANSLATOR: This is the text event status output when the event status is "success"
-#: panels/privacy/firmware-security/cc-firmware-security-page.c:234
+#: panels/privacy/firmware-security/cc-firmware-security-page.c:235
 msgid "Pass"
 msgstr "Prošlo"
 
 #. TRANSLATOR: This is the text event status output when the event status is not "success"
-#: panels/privacy/firmware-security/cc-firmware-security-page.c:237
+#: panels/privacy/firmware-security/cc-firmware-security-page.c:238
 msgid "! Fail"
 msgstr "! Selhalo"
 
-#: panels/privacy/firmware-security/cc-firmware-security-page.c:240
+#: panels/privacy/firmware-security/cc-firmware-security-page.c:241
 #, c-format
 msgid "(%1$s → %2$s)"
 msgstr "(%1$s → %2$s)"
 
-#: panels/privacy/firmware-security/cc-firmware-security-page.c:533
+#: panels/privacy/firmware-security/cc-firmware-security-page.c:534
 msgid "Hardware does not pass basic security checks."
 msgstr "Hardware neprochází základními bezpečnostními kontrolami."
 
-#: panels/privacy/firmware-security/cc-firmware-security-page.c:540
+#: panels/privacy/firmware-security/cc-firmware-security-page.c:541
 msgid "Hardware has a basic level of protection."
 msgstr "Hardware má základní úroveň ochrany."
 
-#: panels/privacy/firmware-security/cc-firmware-security-page.c:550
+#: panels/privacy/firmware-security/cc-firmware-security-page.c:551
 msgid "Hardware has a strong level of protection."
 msgstr "Hardware má silnou úroveň ochrany."
 
 #. TRANSLATORS: in reference to firmware protection: ??? stars
-#: panels/privacy/firmware-security/cc-firmware-security-page.c:556
+#: panels/privacy/firmware-security/cc-firmware-security-page.c:557
 msgid "Security Checks Unavailable"
 msgstr "Bezpečnostní ověření nedostupná"
 
-#: panels/privacy/firmware-security/cc-firmware-security-page.c:557
+#: panels/privacy/firmware-security/cc-firmware-security-page.c:558
 msgid "Security levels are not available for this device."
 msgstr "Pro toto zařízení nejsou dostupné různé úrovně zabezpečení."
 
@@ -7218,115 +7223,115 @@ msgstr "_Měsíc"
 msgid "_Day"
 msgstr "_Den"
 
-#: panels/system/datetime/cc-datetime-page.ui:123
+#: panels/system/datetime/cc-datetime-page.ui:124
 msgid "Automatic _Date &amp; Time"
 msgstr "_Datum a čas automaticky"
 
-#: panels/system/datetime/cc-datetime-page.ui:124
+#: panels/system/datetime/cc-datetime-page.ui:125
 msgid "Requires internet access"
 msgstr "Vyžaduje přístup k Internetu"
 
-#: panels/system/datetime/cc-datetime-page.ui:136
+#: panels/system/datetime/cc-datetime-page.ui:137
 msgid "Date &amp; _Time"
 msgstr "Da_tum a čas"
 
-#: panels/system/datetime/cc-datetime-page.ui:148
+#: panels/system/datetime/cc-datetime-page.ui:149
 msgid "Automatic Time _Zone"
 msgstr "Časové pás_mo automaticky"
 
-#: panels/system/datetime/cc-datetime-page.ui:149
+#: panels/system/datetime/cc-datetime-page.ui:150
 msgid "Requires location services enabled and internet access"
 msgstr "Vyžaduje zapnuté služby určování polohy a přístup k Internetu"
 
-#: panels/system/datetime/cc-datetime-page.ui:155
+#: panels/system/datetime/cc-datetime-page.ui:156
 msgid "Time Z_one"
 msgstr "Čas_ové pásmo"
 
-#: panels/system/datetime/cc-datetime-page.ui:166
+#: panels/system/datetime/cc-datetime-page.ui:167
 msgid "Time _Format"
 msgstr "_Formát času"
 
-#: panels/system/datetime/cc-datetime-page.ui:177
+#: panels/system/datetime/cc-datetime-page.ui:178
 msgid "_24-hour"
 msgstr "_24hodinový"
 
-#: panels/system/datetime/cc-datetime-page.ui:185
+#: panels/system/datetime/cc-datetime-page.ui:186
 msgid "AM / _PM"
 msgstr "dop./od_p."
 
-#: panels/system/datetime/cc-datetime-page.ui:198
+#: panels/system/datetime/cc-datetime-page.ui:199
 msgid "Clock &amp; Calendar"
 msgstr "Hodiny a kalendář"
 
-#: panels/system/datetime/cc-datetime-page.ui:199
+#: panels/system/datetime/cc-datetime-page.ui:200
 msgid "Control how the time and date is shown in the top bar"
 msgstr "Určit, jak se v horní liště zobrazuje čas a datum"
 
-#: panels/system/datetime/cc-datetime-page.ui:202
+#: panels/system/datetime/cc-datetime-page.ui:203
 msgid "_Week Day"
 msgstr "_Den týdne"
 
-#: panels/system/datetime/cc-datetime-page.ui:208
+#: panels/system/datetime/cc-datetime-page.ui:209
 msgid "D_ate"
 msgstr "D_atum"
 
-#: panels/system/datetime/cc-datetime-page.ui:214
+#: panels/system/datetime/cc-datetime-page.ui:215
 msgid "_Seconds"
 msgstr "_Sekundy"
 
-#: panels/system/datetime/cc-datetime-page.ui:220
+#: panels/system/datetime/cc-datetime-page.ui:221
 msgid "Week _Numbers"
 msgstr "Čísl_a týdnů"
 
-#: panels/system/datetime/cc-datetime-page.ui:221
+#: panels/system/datetime/cc-datetime-page.ui:222
 msgid "Shown in the dropdown calendar"
 msgstr "Zobrazeno v rozbalovacím kalendáři"
 
-#: panels/system/datetime/cc-datetime-page.ui:257
+#: panels/system/datetime/cc-datetime-page.ui:258
 msgid "January"
 msgstr "leden"
 
-#: panels/system/datetime/cc-datetime-page.ui:258
+#: panels/system/datetime/cc-datetime-page.ui:259
 msgid "February"
 msgstr "únor"
 
-#: panels/system/datetime/cc-datetime-page.ui:259
+#: panels/system/datetime/cc-datetime-page.ui:260
 msgid "March"
 msgstr "březen"
 
-#: panels/system/datetime/cc-datetime-page.ui:260
+#: panels/system/datetime/cc-datetime-page.ui:261
 msgid "April"
 msgstr "duben"
 
-#: panels/system/datetime/cc-datetime-page.ui:261
+#: panels/system/datetime/cc-datetime-page.ui:262
 msgid "May"
 msgstr "květen"
 
-#: panels/system/datetime/cc-datetime-page.ui:262
+#: panels/system/datetime/cc-datetime-page.ui:263
 msgid "June"
 msgstr "červen"
 
-#: panels/system/datetime/cc-datetime-page.ui:263
+#: panels/system/datetime/cc-datetime-page.ui:264
 msgid "July"
 msgstr "červenec"
 
-#: panels/system/datetime/cc-datetime-page.ui:264
+#: panels/system/datetime/cc-datetime-page.ui:265
 msgid "August"
 msgstr "srpen"
 
-#: panels/system/datetime/cc-datetime-page.ui:265
+#: panels/system/datetime/cc-datetime-page.ui:266
 msgid "September"
 msgstr "září"
 
-#: panels/system/datetime/cc-datetime-page.ui:266
+#: panels/system/datetime/cc-datetime-page.ui:267
 msgid "October"
 msgstr "říjen"
 
-#: panels/system/datetime/cc-datetime-page.ui:267
+#: panels/system/datetime/cc-datetime-page.ui:268
 msgid "November"
 msgstr "listopad"
 
-#: panels/system/datetime/cc-datetime-page.ui:268
+#: panels/system/datetime/cc-datetime-page.ui:269
 msgid "December"
 msgstr "prosinec"
 
@@ -7891,87 +7896,87 @@ msgstr "Selhalo vypsání otisku prstů: %s"
 msgid "Failed to delete saved fingerprints: %s"
 msgstr "Selhalo smazání uložených otisků prstů: %s"
 
-#: panels/system/users/cc-fingerprint-dialog.c:608
+#: panels/system/users/cc-fingerprint-dialog.c:609
 msgid "Left thumb"
 msgstr "Palec levé ruky"
 
-#: panels/system/users/cc-fingerprint-dialog.c:610
+#: panels/system/users/cc-fingerprint-dialog.c:611
 msgid "Left middle finger"
 msgstr "Prostředníček levé ruky"
 
-#: panels/system/users/cc-fingerprint-dialog.c:612
+#: panels/system/users/cc-fingerprint-dialog.c:613
 msgid "_Left index finger"
 msgstr "Ukazováček _levé ruky"
 
-#: panels/system/users/cc-fingerprint-dialog.c:614
+#: panels/system/users/cc-fingerprint-dialog.c:615
 msgid "Left ring finger"
 msgstr "Prsteníček levé ruky"
 
-#: panels/system/users/cc-fingerprint-dialog.c:616
+#: panels/system/users/cc-fingerprint-dialog.c:617
 msgid "Left little finger"
 msgstr "Malíček levé ruky"
 
-#: panels/system/users/cc-fingerprint-dialog.c:618
+#: panels/system/users/cc-fingerprint-dialog.c:619
 msgid "Right thumb"
 msgstr "Palec pravé ruky"
 
-#: panels/system/users/cc-fingerprint-dialog.c:620
+#: panels/system/users/cc-fingerprint-dialog.c:621
 msgid "Right middle finger"
 msgstr "Prostředníček pravé ruky"
 
-#: panels/system/users/cc-fingerprint-dialog.c:622
+#: panels/system/users/cc-fingerprint-dialog.c:623
 msgid "_Right index finger"
 msgstr "Ukazováček p_ravé ruky"
 
-#: panels/system/users/cc-fingerprint-dialog.c:624
+#: panels/system/users/cc-fingerprint-dialog.c:625
 msgid "Right ring finger"
 msgstr "Prsteníček pravé ruky"
 
-#: panels/system/users/cc-fingerprint-dialog.c:626
+#: panels/system/users/cc-fingerprint-dialog.c:627
 msgid "Right little finger"
 msgstr "Malíček pravé ruky"
 
-#: panels/system/users/cc-fingerprint-dialog.c:628
+#: panels/system/users/cc-fingerprint-dialog.c:629
 msgid "Unknown Finger"
 msgstr "Neznámý otisk prstu"
 
-#: panels/system/users/cc-fingerprint-dialog.c:759
+#: panels/system/users/cc-fingerprint-dialog.c:760
 msgctxt "Fingerprint enroll state"
 msgid "Complete"
 msgstr "Dokončeno"
 
-#: panels/system/users/cc-fingerprint-dialog.c:770
+#: panels/system/users/cc-fingerprint-dialog.c:771
 msgid "Fingerprint device disconnected"
 msgstr "Čtečka otisků prstů je odpojená"
 
-#: panels/system/users/cc-fingerprint-dialog.c:776
+#: panels/system/users/cc-fingerprint-dialog.c:777
 msgid "Fingerprint device storage is full"
 msgstr "Úložiště čtečky otisku prstů je plné"
 
-#: panels/system/users/cc-fingerprint-dialog.c:780
+#: panels/system/users/cc-fingerprint-dialog.c:781
 msgid "Fingerprint is duplicate"
 msgstr "Otisk prstu je duplicitní"
 
-#: panels/system/users/cc-fingerprint-dialog.c:784
+#: panels/system/users/cc-fingerprint-dialog.c:785
 msgid "Failed to enroll new fingerprint"
 msgstr "Selhalo sejmutí nového otisku prstu"
 
-#: panels/system/users/cc-fingerprint-dialog.c:815
+#: panels/system/users/cc-fingerprint-dialog.c:816
 #, c-format
 msgid "Failed to start enrollment: %s"
 msgstr "Selhalo započetí snímání: %s"
 
-#: panels/system/users/cc-fingerprint-dialog.c:823
+#: panels/system/users/cc-fingerprint-dialog.c:824
 msgctxt "Fingerprint enroll state"
 msgid "Failed to enroll new fingerprint"
 msgstr "Selhalo sejmutí nového otisku prstu"
 
-#: panels/system/users/cc-fingerprint-dialog.c:854
+#: panels/system/users/cc-fingerprint-dialog.c:855
 #, c-format
 msgid "Failed to stop enrollment: %s"
 msgstr "Selhalo zastavení snímání: %s"
 
-#: panels/system/users/cc-fingerprint-dialog.c:900
+#: panels/system/users/cc-fingerprint-dialog.c:901
 msgid ""
 "Repeatedly lift and place your finger on the reader to enroll your "
 "fingerprint"
@@ -7979,34 +7984,51 @@ msgstr ""
 "Opakovaně zvedněte a přiložte svůj prst ke čtečce, aby se mohl sejmout otisk "
 "prstu."
 
-#: panels/system/users/cc-fingerprint-dialog.c:1014
+#: panels/system/users/cc-fingerprint-dialog.c:1015
 msgid "_Re-enroll this finger…"
 msgstr "Znovu sejmout tento otisk p_rstu…"
 
 #. TRANSLATORS: This is the label for the button to enroll a new finger
-#: panels/system/users/cc-fingerprint-dialog.c:1029
+#: panels/system/users/cc-fingerprint-dialog.c:1030
 msgid "Scan new fingerprint"
 msgstr "Sejmout nový otisku prstu"
 
-#: panels/system/users/cc-fingerprint-dialog.c:1066
+#: panels/system/users/cc-fingerprint-dialog.c:1067
 #, c-format
 msgid "Failed to release fingerprint device %s: %s"
 msgstr "Selhalo uvolnění čtečky otisku prstu %s: %s"
 
-#: panels/system/users/cc-fingerprint-dialog.c:1138
+#: panels/system/users/cc-fingerprint-dialog.c:1139
 msgctxt "Fingerprint enroll state"
 msgid "Problem Reading Device"
 msgstr "Problém při čtení ze zařízení"
 
-#: panels/system/users/cc-fingerprint-dialog.c:1173
+#: panels/system/users/cc-fingerprint-dialog.c:1174
 #, c-format
 msgid "Failed to claim fingerprint device %s: %s"
 msgstr "Selhalo vyžádání čtečky otisku prstu %s: %s"
 
-#: panels/system/users/cc-fingerprint-dialog.c:1315
+#: panels/system/users/cc-fingerprint-dialog.c:1316
 #, c-format
 msgid "Failed to get fingerprint devices: %s"
 msgstr "Selhalo získání čtečky otisku prstu: %s"
+
+#: panels/system/users/cc-fingerprint-dialog.c:1391
+msgid "Delete All Fingerprints?"
+msgstr "Smazat všechny otisky prstů?"
+
+#: panels/system/users/cc-fingerprint-dialog.c:1392
+msgid ""
+"Deleting all enrolled fingerprints will disable Fingerprint Login. To re-"
+"enable Fingerprint Login at least one fingerprint will have to be enrolled."
+msgstr ""
+"Smazáním všech zaregistrovaných otisků prstů se zakáže přihlášení otiskem "
+"prstu. Pro opětovné povolení přihlášení otiskem prstu bude nutné "
+"zaregistrovat alespoň jeden otisk prstu."
+
+#: panels/system/users/cc-fingerprint-dialog.c:1397
+msgid "_Delete All"
+msgstr "_Smazat vše"
 
 #: panels/system/users/cc-fingerprint-dialog.ui:8
 msgid "Fingerprint Manager"
@@ -8016,48 +8038,32 @@ msgstr "Správa otisků prstů"
 msgid "Fingerprint"
 msgstr "Otiskem prstu"
 
-#: panels/system/users/cc-fingerprint-dialog.ui:77
-msgid "_No"
-msgstr "_Ne"
-
-#: panels/system/users/cc-fingerprint-dialog.ui:85
-msgid "_Yes"
-msgstr "_Ano"
-
-#: panels/system/users/cc-fingerprint-dialog.ui:105
-msgid ""
-"Do you want to delete your registered fingerprints so fingerprint login is "
-"disabled?"
-msgstr ""
-"Přejete si smazat registrované otisky prstů, čímž dojde k vypnutí přihlášení "
-"otiskem prstů?"
-
-#: panels/system/users/cc-fingerprint-dialog.ui:161
+#: panels/system/users/cc-fingerprint-dialog.ui:114
 msgid "No fingerprint device"
 msgstr "Není k dispozici žádná čtečka otisku prstu"
 
 #. Translators: This is the empty state page label which states that there are no devices ready.
-#: panels/system/users/cc-fingerprint-dialog.ui:176
+#: panels/system/users/cc-fingerprint-dialog.ui:129
 msgid "No Fingerprint device"
 msgstr "Není k dispozici žádná čtečka otisku prstu"
 
-#: panels/system/users/cc-fingerprint-dialog.ui:185
+#: panels/system/users/cc-fingerprint-dialog.ui:138
 msgid "Ensure the device is properly connected"
 msgstr "Ujistěte se, že zařízení je správně připojené"
 
-#: panels/system/users/cc-fingerprint-dialog.ui:193
+#: panels/system/users/cc-fingerprint-dialog.ui:146
 msgid "Fingerprint Device"
 msgstr "Čtečka otisku prstu"
 
-#: panels/system/users/cc-fingerprint-dialog.ui:202
+#: panels/system/users/cc-fingerprint-dialog.ui:155
 msgid "Choose the fingerprint device you want to configure"
 msgstr "Zvolte čtečku otisku prstu, kterou chcete nastavit."
 
-#: panels/system/users/cc-fingerprint-dialog.ui:232
+#: panels/system/users/cc-fingerprint-dialog.ui:185
 msgid "Fingerprint Login"
 msgstr "Přihlášení otiskem prstu"
 
-#: panels/system/users/cc-fingerprint-dialog.ui:238
+#: panels/system/users/cc-fingerprint-dialog.ui:191
 msgid ""
 "Fingerprint login allows you to unlock and log into your device with your "
 "finger"
@@ -8065,11 +8071,11 @@ msgstr ""
 "Pomocí přihlášení otiskem prstu můžete své zařízení odemknout a přihlásit se "
 "do něj pouhým přiložením prstu"
 
-#: panels/system/users/cc-fingerprint-dialog.ui:265
+#: panels/system/users/cc-fingerprint-dialog.ui:218
 msgid "_Delete Fingerprints"
 msgstr "_Smazat otisky prstů"
 
-#: panels/system/users/cc-fingerprint-dialog.ui:279
+#: panels/system/users/cc-fingerprint-dialog.ui:232
 msgid "Fingerprint Enroll"
 msgstr "Sejmutí otisku prstu"
 
@@ -9305,6 +9311,75 @@ msgstr "tablet;Wacom;stalus;pero;eraser;guma;myš;"
 msgid "New shortcut…"
 msgstr "Nová klávesová zkratka…"
 
+#. Translators: This separates the duration and interval times when displaying
+#. * the selected break schedule on the wellbeing panel. For example,
+#. * “1 minute / 20 minutes” to indicate a 1 minute break every 20 minutes.
+#: panels/wellbeing/cc-break-schedule-row.c:289
+msgid " / "
+msgstr ""
+
+#: panels/wellbeing/cc-break-schedule-row.c:369
+msgid "Duration"
+msgstr "Trvání"
+
+#: panels/wellbeing/cc-break-schedule-row.c:369
+msgid "Interval"
+msgstr ""
+
+#: panels/wellbeing/cc-wellbeing-panel.ui:18
+msgid "Break Reminders"
+msgstr ""
+
+#: panels/wellbeing/cc-wellbeing-panel.ui:21
+msgid "_Eyesight Reminders"
+msgstr ""
+
+#: panels/wellbeing/cc-wellbeing-panel.ui:22
+msgid "Reminders to look away from the screen"
+msgstr ""
+
+#: panels/wellbeing/cc-wellbeing-panel.ui:28
+msgid "_Movement Reminders"
+msgstr ""
+
+#: panels/wellbeing/cc-wellbeing-panel.ui:29
+#, fuzzy
+#| msgid "Remove Background"
+msgid "Reminders to move around"
+msgstr "Odstranit pozadí"
+
+#: panels/wellbeing/cc-wellbeing-panel.ui:35
+#, fuzzy
+#| msgid "Manual Schedule"
+msgid "Movement Break S_chedule"
+msgstr "Ruční plánování"
+
+#: panels/wellbeing/cc-wellbeing-panel.ui:41
+#, fuzzy
+#| msgid "Sounds"
+msgid "S_ounds"
+msgstr "Zvuky"
+
+#: panels/wellbeing/cc-wellbeing-panel.ui:42
+msgid "Play a sound when a break ends"
+msgstr ""
+
+#: panels/wellbeing/gnome-wellbeing-panel.desktop.in:6
+#| msgid "Seeing"
+msgid "Wellbeing"
+msgstr ""
+
+#: panels/wellbeing/gnome-wellbeing-panel.desktop.in:7
+msgid "Review and limit the amount of time you spend at the computer screen"
+msgstr ""
+
+#. Translators: Search terms to find the Wellbeing panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: panels/wellbeing/gnome-wellbeing-panel.desktop.in:18
+msgid ""
+"Wellbeing;Screen Time;Breaks;Break Reminders;Health Breaks;Daily Usage;"
+"Screen Limits;Usage Limit;"
+msgstr ""
+
 #: panels/wwan/cc-wwan-apn-dialog.c:293
 msgid "Edit"
 msgstr "Upravit"
@@ -9907,7 +9982,7 @@ msgstr "© 1998 %s"
 msgid "Settings categories"
 msgstr "Kategorie nastavení"
 
-#: shell/cc-panel-loader.c:311
+#: shell/cc-panel-loader.c:317
 msgid "Available panels:"
 msgstr "Dostupné panely:"
 
@@ -10046,6 +10121,28 @@ msgstr[2] "%u vstupů"
 #: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "Systémové zvuky"
+
+#~ msgid "Input methods can’t be used on the login screen"
+#~ msgstr "Vstupní metody nemohou být použity na přihlašovací obrazovce"
+
+#~ msgid "Printer Jobs"
+#~ msgstr "Tiskové úlohy"
+
+#~ msgid "Close notification"
+#~ msgstr "Zavřít upozornění"
+
+#~ msgid "_No"
+#~ msgstr "_Ne"
+
+#~ msgid "_Yes"
+#~ msgstr "_Ano"
+
+#~ msgid ""
+#~ "Do you want to delete your registered fingerprints so fingerprint login "
+#~ "is disabled?"
+#~ msgstr ""
+#~ "Přejete si smazat registrované otisky prstů, čímž dojde k vypnutí "
+#~ "přihlášení otiskem prstů?"
 
 #~ msgid "File & Link Associations"
 #~ msgstr "Přiřazené soubory a odkazy"
@@ -10808,9 +10905,6 @@ msgstr "Systémové zvuky"
 
 #~ msgid "The system component `AccountsService` cannot be found"
 #~ msgstr "Systémová komponenta `AccountsService` nebyla nalezena"
-
-#~ msgid "_Delete"
-#~ msgstr "O_dstranit"
 
 #~ msgid "External pad device"
 #~ msgstr "Externí grafický tablet"

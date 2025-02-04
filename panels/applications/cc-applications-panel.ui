@@ -119,8 +119,8 @@
                       <object class="AdwStatusPage">
                         <property name="icon-name">dialog-error-symbolic</property>
                         <property name="title" translatable="yes">Unable to List Apps</property>
-                        <property name="description" translatable="yes">An error has occurred and apps cannot be listed.
-Error details: Malcontent is not installed.</property>
+                        <property name="description" translatable="yes" comments="Translators: Parental Controls here refers to the features provided by 'malcontent'">An error has occurred and apps cannot be listed.
+Error details: Parental Controls are not installed.</property>
                       </object>
                     </property>
                   </object>
@@ -205,7 +205,7 @@ Error details: Malcontent is not installed.</property>
                   </object>
                 </child>
                 <child>
-                <object class="AdwPreferencesPage">
+                  <object class="AdwPreferencesPage">
                     <!-- App icon & buttons -->
                     <child>
                       <object class="AdwPreferencesGroup">
@@ -528,7 +528,6 @@ Error details: Malcontent is not installed.</property>
             </child>
             <property name="content">
               <object class="AdwPreferencesPage" id="storage_page">
-                <property name="description" translatable="yes">How much disk space this app is occupying with app data and caches</property>
                  <child>
                   <object class="AdwPreferencesGroup">
                     <child>
