@@ -23,7 +23,7 @@ Forwarded: https://gitlab.gnome.org/GNOME/gnome-control-center/-/merge_requests/
  2 files changed, 12 insertions(+), 5 deletions(-)
 
 diff --git a/panels/keyboard/cc-keyboard-panel.c b/panels/keyboard/cc-keyboard-panel.c
-index 6b6234e..6640c4d 100644
+index d87e9e7..870b9e4 100644
 --- a/panels/keyboard/cc-keyboard-panel.c
 +++ b/panels/keyboard/cc-keyboard-panel.c
 @@ -63,6 +63,11 @@ static const CcXkbModifier LV3_MODIFIER = {
