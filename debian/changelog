@@ -1,8 +1,12 @@
-gnome-control-center (1:48~beta-1) UNRELEASED; urgency=medium
+gnome-control-center (1:48~beta-1) unstable; urgency=medium
 
   * New upstream release
+    - The new Wellbeing panel won't work without GNOME Shell 48 Beta
+  * Bump dependencies
+  * Remove display join mode patch: applied in new release
+  * Remove test multiplier override: applied in new release
 
- -- Jeremy Bícha <jbicha@ubuntu.com>  Tue, 04 Feb 2025 10:11:13 -0500
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Tue, 04 Feb 2025 10:32:37 -0500
 
 gnome-control-center (1:47.3-1) unstable; urgency=medium
 
