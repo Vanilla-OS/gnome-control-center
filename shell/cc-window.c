@@ -50,6 +50,8 @@ struct _CcWindow
 {
   AdwApplicationWindow parent;
 
+  AdwBreakpoint *break_point;
+
   AdwDialog         *development_warning_dialog;
   AdwNavigationSplitView *split_view;
   CcPanelList       *panel_list;
@@ -60,6 +62,7 @@ struct _CcWindow
   GtkWidget  *current_panel;
   char       *current_panel_id;
   GQueue     *previous_panels;
+  gboolean    single_panel_mode;
 
   GtkWidget  *custom_titlebar;
 
@@ -354,7 +357,10 @@ set_active_panel_from_id (CcWindow     *self,
       CC_RETURN (TRUE);
     }
 
-  if (add_to_history)
+  if (self->single_panel_mode)
+    cc_panel_enable_single_page_mode (CC_PANEL (self->current_panel));
+
+  if (!self->single_panel_mode && add_to_history)
     add_current_panel_to_history (self, start_id);
 
   if (force_moving_to_the_panel)
@@ -365,7 +371,9 @@ set_active_panel_from_id (CcWindow     *self,
 
   CC_TRACE_MSG ("Current panel id: %s", start_id);
 
-  cc_panel_list_set_active_panel (self->panel_list, start_id);
+  /* Don't activate the panel list in single panel mode. */
+  if (!self->single_panel_mode)
+    cc_panel_list_set_active_panel (self->panel_list, start_id);
 
   CC_RETURN (TRUE);
 }
@@ -483,7 +491,6 @@ search_shortcut_cb (GtkWidget *widget,
 {
   CcPanelListView view;
   CcWindow *self;
-  gboolean search;
 
   self = CC_WINDOW (widget);
   view = cc_panel_list_get_view (self->panel_list);
@@ -492,10 +499,8 @@ search_shortcut_cb (GtkWidget *widget,
   if (view != CC_PANEL_LIST_MAIN && view != CC_PANEL_LIST_SEARCH)
     return GDK_EVENT_PROPAGATE;
 
-  search = !gtk_search_bar_get_search_mode (self->search_bar);
-  gtk_search_bar_set_search_mode (self->search_bar, search);
-  if (search)
-    gtk_widget_grab_focus (GTK_WIDGET (self->search_entry));
+  gtk_search_bar_set_search_mode (self->search_bar, TRUE);
+  gtk_widget_grab_focus (GTK_WIDGET (self->search_entry));
 
   return GDK_EVENT_STOP;
 }
@@ -747,6 +752,7 @@ cc_window_class_init (CcWindowClass *klass)
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/Settings/gtk/cc-window.ui");
 
+  gtk_widget_class_bind_template_child (widget_class, CcWindow, break_point);
   gtk_widget_class_bind_template_child (widget_class, CcWindow, development_warning_dialog);
   gtk_widget_class_bind_template_child (widget_class, CcWindow, split_view);
   gtk_widget_class_bind_template_child (widget_class, CcWindow, panel_list);
@@ -809,4 +815,16 @@ cc_window_set_search_item (CcWindow   *center,
   gtk_search_bar_set_search_mode (center->search_bar, TRUE);
   gtk_editable_set_text (GTK_EDITABLE (center->search_entry), search);
   gtk_editable_set_position (GTK_EDITABLE (center->search_entry), -1);
+}
+
+void
+cc_window_enable_single_panel_mode (CcWindow *self)
+{
+  g_return_if_fail (CC_IS_WINDOW (self));
+
+  self->single_panel_mode = TRUE;
+
+  adw_navigation_split_view_set_collapsed (self->split_view, TRUE);
+  adw_navigation_split_view_set_sidebar (self->split_view, NULL);
+  adw_breakpoint_set_condition (self->break_point, NULL);
 }

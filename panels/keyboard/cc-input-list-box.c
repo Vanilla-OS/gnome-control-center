@@ -30,6 +30,7 @@
 #include "cc-input-row.h"
 #include "cc-input-source-ibus.h"
 #include "cc-input-source-xkb.h"
+#include "cc-ui-util.h"
 
 #ifdef HAVE_IBUS
 #include <ibus.h>
@@ -47,7 +48,6 @@ struct _CcInputListBox {
 
   GCancellable    *cancellable;
 
-  gboolean     login;
   gboolean     login_auto_apply;
   GPermission *permission;
   GDBusProxy  *localed;
@@ -180,23 +180,6 @@ maybe_start_ibus (void)
 }
 
 #endif
-
-static gboolean
-keynav_failed_cb (CcInputListBox   *self,
-                  GtkDirectionType  direction,
-                  GtkWidget        *list)
-{
-  GtkWidget *toplevel = GTK_WIDGET (gtk_widget_get_root (GTK_WIDGET (self)));
-
-  if (!toplevel)
-    return FALSE;
-
-  if (direction != GTK_DIR_UP && direction != GTK_DIR_DOWN)
-    return FALSE;
-
-  return gtk_widget_child_focus (toplevel, direction == GTK_DIR_UP ?
-                                 GTK_DIR_TAB_BACKWARD : GTK_DIR_TAB_FORWARD);
-}
 
 static void
 row_settings_cb (CcInputListBox *self,
@@ -431,13 +414,9 @@ static void set_localed_input (CcInputListBox *self);
 static void
 update_input (CcInputListBox *self)
 {
-  if (self->login) {
+  set_input_settings (self);
+  if (self->login_auto_apply)
     set_localed_input (self);
-  } else {
-    set_input_settings (self);
-    if (self->login_auto_apply)
-      set_localed_input (self);
-  }
 }
 
 static void
@@ -457,8 +436,7 @@ show_input_chooser (CcInputListBox *self)
 {
   CcInputChooser *chooser;
 
-  chooser = cc_input_chooser_new (self->login,
-				  self->xkb_info,
+  chooser = cc_input_chooser_new (self->xkb_info,
 #ifdef HAVE_IBUS
 				  self->ibus_engines
 #else
@@ -495,7 +473,7 @@ add_input_permission_cb (GObject *source, GAsyncResult *res, gpointer user_data)
 static void
 add_input (CcInputListBox *self)
 {
-  if (!self->login) {
+  if (!self->login_auto_apply) {
     show_input_chooser (self);
   } else if (g_permission_get_allowed (self->permission)) {
     show_input_chooser (self);
@@ -527,7 +505,7 @@ remove_input_permission_cb (GObject *source, GAsyncResult *res, gpointer user_da
 static void
 remove_input (CcInputListBox *self, CcInputRow *row)
 {
-  if (!self->login) {
+  if (!self->login_auto_apply) {
     do_remove_input (self, row);
   } else if (g_permission_get_allowed (self->permission)) {
     do_remove_input (self, row);
@@ -567,7 +545,7 @@ move_input (CcInputListBox *self,
             CcInputRow    *source,
             CcInputRow    *dest)
 {
-  if (!self->login) {
+  if (!self->login_auto_apply) {
     do_move_input (self, source, dest);
   } else if (g_permission_get_allowed (self->permission)) {
     do_move_input (self, source, dest);
@@ -587,6 +565,8 @@ input_row_activated_cb (CcInputListBox *self, GtkListBoxRow *row)
   }
 }
 
+/* FIXME: We need to properly handle localed sources, see e.g.
+          https://gitlab.gnome.org/GNOME/gnome-shell/-/issues/7761#note_2159232
 static void
 add_input_sources_from_localed (CcInputListBox *self)
 {
@@ -626,6 +606,7 @@ add_input_sources_from_localed (CcInputListBox *self)
     add_input_row (self, CC_INPUT_SOURCE (source));
   }
 }
+*/
 
 static void
 set_localed_input (CcInputListBox *self)
@@ -701,7 +682,7 @@ cc_input_list_box_class_init (CcInputListBoxClass *klass)
   gtk_widget_class_bind_template_child (widget_class, CcInputListBox, listbox);
 
   gtk_widget_class_bind_template_callback (widget_class, input_row_activated_cb);
-  gtk_widget_class_bind_template_callback (widget_class, keynav_failed_cb);
+  gtk_widget_class_bind_template_callback (widget_class, cc_util_keynav_propagate_vertical);
 }
 
 static void
@@ -709,7 +690,6 @@ cc_input_list_box_init (CcInputListBox *self)
 {
   gtk_widget_init_template (GTK_WIDGET (self));
 
-  self->login = FALSE;
   self->login_auto_apply = FALSE;
   self->localed = NULL;
   self->permission = NULL;
@@ -738,17 +718,6 @@ cc_input_list_box_init (CcInputListBox *self)
                            G_CALLBACK (input_sources_changed), self, G_CONNECT_SWAPPED);
 
   add_input_sources_from_settings (self);
-}
-
-void
-cc_input_list_box_set_login (CcInputListBox *self, gboolean login)
-{
-  self->login = login;
-  clear_input_sources (self);
-  if (login)
-    add_input_sources_from_localed (self);
-  else
-    add_input_sources_from_settings (self);
 }
 
 void

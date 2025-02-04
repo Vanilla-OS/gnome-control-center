@@ -55,9 +55,10 @@ struct _CcDisplaySettings
   AdwSwitchRow     *variable_refresh_rate_row;
   AdwComboRow      *preferred_refresh_rate_row;
   GtkWidget        *resolution_row;
-  GtkWidget        *scale_bbox;
+  AdwToggleGroup   *scale_toggle_group;
   GtkWidget        *scale_buttons_row;
   GtkWidget        *scale_combo_row;
+  AdwSwitchRow     *hdr_row;
   AdwSwitchRow     *underscanning_row;
 };
 
@@ -81,10 +82,6 @@ typedef enum
   CC_DISPLAY_RATIO_SQUARE,
   CC_DISPLAY_RATIO_PORTRAIT
 } CcDisplayRatio;
-
-static void on_scale_btn_active_changed_cb (CcDisplaySettings *self,
-                                            GParamSpec        *pspec,
-                                            GtkWidget         *widget);
 
 static gboolean
 should_show_rotation (CcDisplaySettings *self)
@@ -373,13 +370,11 @@ sort_modes_by_refresh_rate_desc (CcDisplayMode *a, CcDisplayMode *b)
 static gboolean
 cc_display_settings_rebuild_ui (CcDisplaySettings *self)
 {
-  GtkWidget *child;
   g_autolist(CcDisplayMode) clone_modes = NULL;
   GList *modes;
   GList *item;
   gint width, height;
   CcDisplayMode *current_mode;
-  GtkToggleButton *group = NULL;
   g_autoptr(GArray) scales = NULL;
   gint i;
 
@@ -394,6 +389,7 @@ cc_display_settings_rebuild_ui (CcDisplaySettings *self)
       gtk_widget_set_visible (self->resolution_row, FALSE);
       gtk_widget_set_visible (self->scale_combo_row, FALSE);
       gtk_widget_set_visible (self->scale_buttons_row, FALSE);
+      gtk_widget_set_visible (GTK_WIDGET (self->hdr_row), FALSE);
       gtk_widget_set_visible (GTK_WIDGET (self->underscanning_row), FALSE);
 
       return G_SOURCE_REMOVE;
@@ -407,7 +403,9 @@ cc_display_settings_rebuild_ui (CcDisplaySettings *self)
   g_object_freeze_notify ((GObject*) self->preferred_refresh_rate_row);
   g_object_freeze_notify ((GObject*) self->resolution_row);
   g_object_freeze_notify ((GObject*) self->scale_combo_row);
+  g_object_freeze_notify ((GObject*) self->hdr_row);
   g_object_freeze_notify ((GObject*) self->underscanning_row);
+  g_object_freeze_notify ((GObject*) self->scale_toggle_group);
 
   cc_display_monitor_get_geometry (self->selected_output, NULL, NULL, &width, &height);
 
@@ -598,10 +596,8 @@ cc_display_settings_rebuild_ui (CcDisplaySettings *self)
           g_list_store_insert (self->resolution_list, ins, mode);
     }
 
-
   /* Scale row is usually shown. */
-  while ((child = gtk_widget_get_first_child (self->scale_bbox)) != NULL)
-    gtk_box_remove (GTK_BOX (self->scale_bbox), child);
+  adw_toggle_group_remove_all (self->scale_toggle_group);
 
   gtk_string_list_splice (GTK_STRING_LIST (self->scale_list),
                           0,
@@ -614,7 +610,7 @@ cc_display_settings_rebuild_ui (CcDisplaySettings *self)
       g_autofree gchar *scale_str = NULL;
       g_autoptr(GObject) value_object = NULL;
       double scale = g_array_index (scales, double, i);
-      GtkWidget *scale_btn;
+      AdwToggle *scale_toggle;
       gboolean is_selected;
 
       /* ComboRow */
@@ -630,25 +626,27 @@ cc_display_settings_rebuild_ui (CcDisplaySettings *self)
         adw_combo_row_set_selected (ADW_COMBO_ROW (self->scale_combo_row),
                                     g_list_model_get_n_items (G_LIST_MODEL (self->scale_list)) - 1);
 
-      /* ButtonBox */
-      scale_btn = gtk_toggle_button_new_with_label (scale_str);
-      gtk_toggle_button_set_group (GTK_TOGGLE_BUTTON (scale_btn), group);
-      g_object_set_data_full (G_OBJECT (scale_btn), "scale",
+      /* AdwToggle */
+      scale_toggle = adw_toggle_new ();
+      adw_toggle_set_label (scale_toggle, scale_str);
+
+      g_object_set_data_full (G_OBJECT (scale_toggle), "scale",
                               g_memdup2 (&scale, sizeof (double)), g_free);
+      adw_toggle_group_add (self->scale_toggle_group, scale_toggle);
 
-      if (!group)
-        group = GTK_TOGGLE_BUTTON (scale_btn);
-      gtk_box_append (GTK_BOX (self->scale_bbox), scale_btn);
-      /* Set active before connecting the signal */
       if (is_selected)
-        gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (scale_btn), TRUE);
+        adw_toggle_group_set_active (self->scale_toggle_group,
+                                     adw_toggle_group_get_n_toggles (self->scale_toggle_group) - 1);
 
-      g_signal_connect_object (scale_btn,
-                               "notify::active",
-                               G_CALLBACK (on_scale_btn_active_changed_cb),
-                               self, G_CONNECT_SWAPPED);
     }
   cc_display_settings_refresh_layout (self, self->collapsed);
+
+  gtk_widget_set_visible (GTK_WIDGET (self->hdr_row),
+                          cc_display_monitor_supports_color_mode (self->selected_output,
+                                                                  CC_DISPLAY_COLOR_MODE_BT2100));
+  adw_switch_row_set_active (self->hdr_row,
+                             cc_display_monitor_get_color_mode (self->selected_output) ==
+                             CC_DISPLAY_COLOR_MODE_BT2100);
 
   gtk_widget_set_visible (GTK_WIDGET (self->underscanning_row),
                           cc_display_monitor_supports_underscanning (self->selected_output) &&
@@ -665,7 +663,9 @@ cc_display_settings_rebuild_ui (CcDisplaySettings *self)
   g_object_thaw_notify ((GObject*) self->preferred_refresh_rate_row);
   g_object_thaw_notify ((GObject*) self->resolution_row);
   g_object_thaw_notify ((GObject*) self->scale_combo_row);
+  g_object_thaw_notify ((GObject*) self->hdr_row);
   g_object_thaw_notify ((GObject*) self->underscanning_row);
+  g_object_thaw_notify ((GObject*) self->scale_toggle_group);
   self->updating = FALSE;
 
   return G_SOURCE_REMOVE;
@@ -783,18 +783,22 @@ on_resolution_selection_changed_cb (CcDisplaySettings *self)
 }
 
 static void
-on_scale_btn_active_changed_cb (CcDisplaySettings *self,
-                                GParamSpec        *pspec,
-                                GtkWidget         *widget)
+on_scale_btn_active_changed_cb (CcDisplaySettings *self)
 {
   gdouble scale;
+  AdwToggle *scale_toggle;
+  guint current_toggle_id;
+
   if (self->updating)
     return;
 
-  if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget)))
+  current_toggle_id = adw_toggle_group_get_active (self->scale_toggle_group);
+  if (current_toggle_id == GTK_INVALID_LIST_POSITION)
     return;
 
-  scale = *(gdouble*) g_object_get_data (G_OBJECT (widget), "scale");
+  scale_toggle = adw_toggle_group_get_toggle (self->scale_toggle_group, current_toggle_id);
+
+  scale = *(gdouble *) g_object_get_data (G_OBJECT (scale_toggle), "scale");
   cc_display_monitor_set_scale (self->selected_output,
                                 scale);
 
@@ -818,6 +822,25 @@ on_scale_selection_changed_cb (CcDisplaySettings *self)
   scale = *(gdouble*) g_object_get_data (G_OBJECT (obj), "scale");
 
   cc_display_monitor_set_scale (self->selected_output, scale);
+
+  g_signal_emit_by_name (G_OBJECT (self), "updated", self->selected_output);
+}
+
+static void
+on_hdr_row_active_changed_cb (CcDisplaySettings *self)
+{
+  CcDisplayColorMode color_mode;
+
+  if (self->updating)
+    return;
+
+  if (adw_switch_row_get_active (self->hdr_row))
+    color_mode = CC_DISPLAY_COLOR_MODE_BT2100;
+  else
+    color_mode = CC_DISPLAY_COLOR_MODE_DEFAULT;
+
+  cc_display_monitor_set_color_mode (self->selected_output,
+                                     color_mode);
 
   g_signal_emit_by_name (G_OBJECT (self), "updated", self->selected_output);
 }
@@ -954,9 +977,10 @@ cc_display_settings_class_init (CcDisplaySettingsClass *klass)
   gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, variable_refresh_rate_row);
   gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, preferred_refresh_rate_row);
   gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, resolution_row);
-  gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, scale_bbox);
+  gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, scale_toggle_group);
   gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, scale_buttons_row);
   gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, scale_combo_row);
+  gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, hdr_row);
   gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, underscanning_row);
 
   gtk_widget_class_bind_template_callback (widget_class, on_enabled_row_active_changed_cb);
@@ -965,6 +989,8 @@ cc_display_settings_class_init (CcDisplaySettingsClass *klass)
   gtk_widget_class_bind_template_callback (widget_class, on_variable_refresh_rate_active_changed_cb);
   gtk_widget_class_bind_template_callback (widget_class, on_resolution_selection_changed_cb);
   gtk_widget_class_bind_template_callback (widget_class, on_scale_selection_changed_cb);
+  gtk_widget_class_bind_template_callback (widget_class, on_scale_btn_active_changed_cb);
+  gtk_widget_class_bind_template_callback (widget_class, on_hdr_row_active_changed_cb);
   gtk_widget_class_bind_template_callback (widget_class, on_underscanning_row_active_changed_cb);
 }
 

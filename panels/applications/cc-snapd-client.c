@@ -43,7 +43,7 @@ make_message (const gchar *method, const gchar *path, JsonNode *request_body)
   SoupMessage *msg;
   SoupMessageHeaders *request_headers;
 
-  uri = g_strdup_printf("http://locahost%s", path);
+  uri = g_strdup_printf("http://localhost%s", path);
   msg = soup_message_new (method, uri);
   request_headers = soup_message_get_request_headers (msg);
   // Allow authentication via polkit.
@@ -203,7 +203,7 @@ cc_snapd_client_init (CcSnapdClient *self)
 CcSnapdClient *
 cc_snapd_client_new (void)
 {
-  return CC_SNAPD_CLIENT (g_object_new (CC_TYPE_SNAPD_CLIENT, NULL));
+  return g_object_new (CC_TYPE_SNAPD_CLIENT, NULL);
 }
 
 JsonObject *

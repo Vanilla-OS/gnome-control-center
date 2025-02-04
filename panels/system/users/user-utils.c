@@ -192,7 +192,9 @@ is_valid_username_async (const gchar *username,
                 return;
         }
         else if (strlen (username) > max_username_length) {
-                data->tip = g_strdup_printf (_("Usernames must have fewer than %ld characters"),
+                data->tip = g_strdup_printf (ngettext ("Usernames must have fewer than %ld character",
+                                                       "Usernames must have fewer than %ld characters",
+                                                       max_username_length),
                                              max_username_length);
                 g_task_return_boolean (task, FALSE);
                 return;

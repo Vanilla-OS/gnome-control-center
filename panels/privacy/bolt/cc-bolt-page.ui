@@ -23,50 +23,9 @@
         </child>
 
         <property name="content">
-          <object class="GtkOverlay">
-            <child type="overlay">
-              <object class="GtkRevealer" id="notification_revealer">
-                <property name="halign">center</property>
-                <property name="valign">start</property>
-                <property name="transition_type">slide-down</property>
-                <child>
-                  <object class="GtkFrame">
-                    <child>
-                      <object class="GtkBox">
-                        <property name="spacing">12</property>
-                        <child>
-                          <object class="GtkLabel" id="notification_label">
-                            <property name="use_markup">True</property>
-                            <property name="wrap">True</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkButton">
-                            <property name="can_focus">True</property>
-                            <property name="icon-name">cross-small-symbolic</property>
-                            <accessibility>
-                              <property name="label" translatable="yes">Close notification</property>
-                            </accessibility>
-                            <style>
-                              <class name="flat" />
-                            </style>
-                            <signal name="clicked"
-                                    handler="on_notification_button_clicked_cb"
-                                    object="CcBoltPage"
-                                    swapped="yes" />
-                          </object>
-                        </child>
-                      </object>
-                    </child>
-                    <style>
-                      <class name="app-notification" />
-                    </style>
-                  </object>
-                </child>
-              </object>
-            </child>
+          <object class="AdwToastOverlay" id="toast_overlay">
 
-            <child>
+            <property name="child">
               <object class="GtkStack" id="container">
                 <property name="hhomogeneous">False</property>
                 <property name="vhomogeneous">False</property>
@@ -109,13 +68,19 @@
                           <object class="AdwPreferencesGroup">
                             <property name="title" translatable="yes">Direct Access</property>
                             <child>
-                              <object class="AdwSwitchRow" id="direct_access_row">
+                               <!-- This should stay AdwActionRow and not become AdwSwitchRow, we use the delayed state change of GtkSwitch -->
+                              <object class="AdwActionRow" id="direct_access_row">
                                 <property name="title" translatable="yes" >Allow direct access to devices such as docks and external GPUs</property>
-                                <property name="active">True</property>
-                                <signal name="notify::active" handler="on_authmode_state_set_cb" object="CcBoltPage" swapped="yes" />
-                                <child type="suffix">
-                                  <object class="AdwSpinner" id="authmode_spinner">
-                                    <property name="visible">False</property>
+                                <property name="activatable-widget">authmode_switch</property>
+
+                                <child>
+                                  <object class="GtkSwitch" id="authmode_switch">
+                                    <property name="valign">center</property>
+                                    <property name="active">True</property>
+                                    <signal name="state-set"
+                                            handler="on_authmode_state_set_cb"
+                                            object="CcBoltPage"
+                                            swapped="yes" />
                                   </object>
                                 </child>
                               </object>
@@ -264,7 +229,7 @@
 
                 <!-- End of 'container' -->
               </object>
-            </child>
+            </property>
 
             <!-- End of overlay -->
           </object>

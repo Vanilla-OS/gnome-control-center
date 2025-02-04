@@ -59,8 +59,7 @@
                   <object class="GtkBox">
                     <property name="orientation">GTK_ORIENTATION_VERTICAL</property>
                     <child>
-                      <object class="CcPermissionInfobar" id="permission_infobar">
-                      </object>
+                      <object class="CcPermissionInfobar" id="permission_infobar"/>
                     </child>
                     <child>
 
@@ -88,7 +87,6 @@
                                     <child>
                                       <object class="GtkListBox" id="content">
                                         <property name="selection-mode">none</property>
-                                        <property name="valign">start</property>
                                         <property name="margin-top">24</property>
                                         <property name="margin-bottom">24</property>
                                         <property name="margin-start">12</property>
@@ -96,6 +94,13 @@
                                         <style>
                                           <class name="boxed-list-separate"/>
                                         </style>
+                                        <child type="placeholder">
+                                          <object class="AdwStatusPage">
+                                            <property name="icon-name">edit-find-symbolic</property>
+                                            <property name="title" translatable="yes">No Results Found</property>
+                                            <property name="description" translatable="yes">Try a different search</property>
+                                          </object>
+                                        </child>
                                       </object>
                                     </child>
                                   </object>
@@ -110,7 +115,7 @@
                             <property name="name">empty-state</property>
                             <property name="child">
                               <object class="AdwStatusPage">
-                                <property name="icon_name">printer-symbolic</property>
+                                <property name="icon_name">org.gnome.Settings-printers-symbolic</property>
                                 <property name="title" translatable="yes">No Printers</property>
                                 <child>
                                   <object class="GtkButton" id="printer_add_button_empty">

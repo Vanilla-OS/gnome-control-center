@@ -10,8 +10,8 @@
 msgid ""
 msgstr "Project-Id-Version: gnome-control-center master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-control-center/issues\n"
-"POT-Creation-Date: 2024-08-27 00:55+0000\n"
-"PO-Revision-Date: 2024-08-27 14:00+0100\n"
+"POT-Creation-Date: 2024-08-20 09:57+0000\n"
+"PO-Revision-Date: 2024-08-20 14:00+0100\n"
 "Last-Translator: Asier Sarasua Garmendia <asiersarasua@ni.eus>\n"
 "Language-Team: Basque <librezale@librezale.eus>\n"
 "Language: eu\n"
@@ -169,12 +169,13 @@ msgstr "_Bilatu Softwaren"
 msgid "Unable to List Apps"
 msgstr "Ezin dira aplikazioak zerrendatu"
 
+#. Translators: Parental Controls here refers to the features provided by 'malcontent'
 #: panels/applications/cc-applications-panel.ui:122
 msgid ""
 "An error has occurred and apps cannot be listed.\n"
-"Error details: Malcontent is not installed."
+"Error details: Parental Controls are not installed."
 msgstr "Errorea bat gertatu da eta aplikazioak ezin dira zerrendatu.\n"
-"Errorearen xehetasunak: Malcontent ez dago instalatuta."
+"Errorearen xehetasunak: Gurasoen kontrolak ez daude instalatuta."
 
 #: panels/applications/cc-applications-panel.ui:139
 #: panels/applications/cc-default-apps-page.ui:4
@@ -1066,6 +1067,7 @@ msgstr "Pantailaren kalibrazioa"
 #: panels/system/users/cc-add-user-dialog.ui:24
 #: panels/system/users/cc-avatar-chooser.c:92
 #: panels/system/users/cc-enterprise-login-dialog.ui:44
+#: panels/system/users/cc-fingerprint-dialog.c:1396
 #: panels/system/users/cc-fingerprint-dialog.ui:32
 #: panels/system/users/cc-password-dialog.ui:15
 #: panels/system/users/cc-user-page.ui:231
@@ -7524,7 +7526,7 @@ msgstr "Gehitu enpresako saio-hasiera"
 
 #: panels/system/users/cc-enterprise-login-dialog.ui:23
 msgid "Offline"
-msgstr "Deskonektatuta"
+msgstr "Lineaz kanpo"
 
 #: panels/system/users/cc-enterprise-login-dialog.ui:24
 msgid "A network connection is needed to add enterprise login accounts."
@@ -7602,120 +7604,134 @@ msgstr "Huts egin du hatz-markak zerrendatzeak: %s"
 msgid "Failed to delete saved fingerprints: %s"
 msgstr "Huts egin du gordetako hatz-markak ezabatzeak: %s"
 
-#: panels/system/users/cc-fingerprint-dialog.c:608
+#: panels/system/users/cc-fingerprint-dialog.c:609
 msgid "Left thumb"
 msgstr "Ezkerreko hatz potoloa"
 
-#: panels/system/users/cc-fingerprint-dialog.c:610
+#: panels/system/users/cc-fingerprint-dialog.c:611
 msgid "Left middle finger"
 msgstr "Ezkerreko erdiko hatza"
 
-#: panels/system/users/cc-fingerprint-dialog.c:612
+#: panels/system/users/cc-fingerprint-dialog.c:613
 msgid "_Left index finger"
 msgstr "E_zkerreko hatz erakuslea"
 
-#: panels/system/users/cc-fingerprint-dialog.c:614
+#: panels/system/users/cc-fingerprint-dialog.c:615
 msgid "Left ring finger"
 msgstr "Ezkerreko hatz nagia"
 
-#: panels/system/users/cc-fingerprint-dialog.c:616
+#: panels/system/users/cc-fingerprint-dialog.c:617
 msgid "Left little finger"
 msgstr "Ezkerreko hatz txikia"
 
-#: panels/system/users/cc-fingerprint-dialog.c:618
+#: panels/system/users/cc-fingerprint-dialog.c:619
 msgid "Right thumb"
 msgstr "Eskuineko hatz potoloa"
 
-#: panels/system/users/cc-fingerprint-dialog.c:620
+#: panels/system/users/cc-fingerprint-dialog.c:621
 msgid "Right middle finger"
 msgstr "Eskuineko erdiko hatza"
 
-#: panels/system/users/cc-fingerprint-dialog.c:622
+#: panels/system/users/cc-fingerprint-dialog.c:623
 msgid "_Right index finger"
 msgstr "E_skuineko hatz erakuslea"
 
-#: panels/system/users/cc-fingerprint-dialog.c:624
+#: panels/system/users/cc-fingerprint-dialog.c:625
 msgid "Right ring finger"
 msgstr "Eskuineko hatz nagia"
 
-#: panels/system/users/cc-fingerprint-dialog.c:626
+#: panels/system/users/cc-fingerprint-dialog.c:627
 msgid "Right little finger"
 msgstr "Eskuineko hatz txikia"
 
-#: panels/system/users/cc-fingerprint-dialog.c:628
+#: panels/system/users/cc-fingerprint-dialog.c:629
 msgid "Unknown Finger"
 msgstr "Hatz-marka ezezaguna"
 
-#: panels/system/users/cc-fingerprint-dialog.c:759
+#: panels/system/users/cc-fingerprint-dialog.c:760
 msgctxt "Fingerprint enroll state"
 msgid "Complete"
 msgstr "Eginda"
 
-#: panels/system/users/cc-fingerprint-dialog.c:770
+#: panels/system/users/cc-fingerprint-dialog.c:771
 msgid "Fingerprint device disconnected"
 msgstr "Hatz-marken gailua deskonektatu da"
 
-#: panels/system/users/cc-fingerprint-dialog.c:776
+#: panels/system/users/cc-fingerprint-dialog.c:777
 msgid "Fingerprint device storage is full"
 msgstr "Hatz-marken gailuen biltegiratzea beteta dago"
 
-#: panels/system/users/cc-fingerprint-dialog.c:780
+#: panels/system/users/cc-fingerprint-dialog.c:781
 msgid "Fingerprint is duplicate"
 msgstr "Hatz-marka bikoiztuta dago"
 
-#: panels/system/users/cc-fingerprint-dialog.c:784
+#: panels/system/users/cc-fingerprint-dialog.c:785
 msgid "Failed to enroll new fingerprint"
 msgstr "Huts egin du hatz-marka berria erregistratzeak"
 
-#: panels/system/users/cc-fingerprint-dialog.c:815
+#: panels/system/users/cc-fingerprint-dialog.c:816
 #, c-format
 msgid "Failed to start enrollment: %s"
 msgstr "Huts egin du erregistroa abiarazteak: %s"
 
-#: panels/system/users/cc-fingerprint-dialog.c:823
+#: panels/system/users/cc-fingerprint-dialog.c:824
 msgctxt "Fingerprint enroll state"
 msgid "Failed to enroll new fingerprint"
 msgstr "Huts egin du hatz-marka berria erregistratzeak"
 
-#: panels/system/users/cc-fingerprint-dialog.c:854
+#: panels/system/users/cc-fingerprint-dialog.c:855
 #, c-format
 msgid "Failed to stop enrollment: %s"
 msgstr "Huts egin du erregistroa gelditzeak: %s"
 
-#: panels/system/users/cc-fingerprint-dialog.c:900
+#: panels/system/users/cc-fingerprint-dialog.c:901
 msgid ""
 "Repeatedly lift and place your finger on the reader to enroll your "
 "fingerprint"
 msgstr "Altxatu eta kokatu hatza irakurgailuan behin eta berriro, zure hatz-marka erregistratzeko"
 
-#: panels/system/users/cc-fingerprint-dialog.c:1014
+#: panels/system/users/cc-fingerprint-dialog.c:1015
 msgid "_Re-enroll this finger…"
 msgstr "Erregistratu berriro hatz hau…"
 
 #. TRANSLATORS: This is the label for the button to enroll a new finger
-#: panels/system/users/cc-fingerprint-dialog.c:1029
+#: panels/system/users/cc-fingerprint-dialog.c:1030
 msgid "Scan new fingerprint"
 msgstr "Eskaneatu hatz-marka berria"
 
-#: panels/system/users/cc-fingerprint-dialog.c:1066
+#: panels/system/users/cc-fingerprint-dialog.c:1067
 #, c-format
 msgid "Failed to release fingerprint device %s: %s"
 msgstr "Huts egin du hatz-marken %s gailua askatzeak: %s"
 
-#: panels/system/users/cc-fingerprint-dialog.c:1138
+#: panels/system/users/cc-fingerprint-dialog.c:1139
 msgctxt "Fingerprint enroll state"
 msgid "Problem Reading Device"
 msgstr "Arazoa gailua irakurtzean"
 
-#: panels/system/users/cc-fingerprint-dialog.c:1173
+#: panels/system/users/cc-fingerprint-dialog.c:1174
 #, c-format
 msgid "Failed to claim fingerprint device %s: %s"
 msgstr "Huts egin du hatz-marken %s gailuaren jabetza galdegiteak: %s"
 
-#: panels/system/users/cc-fingerprint-dialog.c:1315
+#: panels/system/users/cc-fingerprint-dialog.c:1316
 #, c-format
 msgid "Failed to get fingerprint devices: %s"
 msgstr "Huts egin du hatz-marken gailuak eskuratzeak: %s"
+
+#: panels/system/users/cc-fingerprint-dialog.c:1391
+msgid "Delete All Fingerprints?"
+msgstr "Ezabatu hatz-marka guztiak?"
+
+#: panels/system/users/cc-fingerprint-dialog.c:1392
+msgid ""
+"Deleting all enrolled fingerprints will disable Fingerprint Login. To re-"
+"enable Fingerprint Login at least one fingerprint will have to be enrolled."
+msgstr "Erregistratutako hatz-marka guztiak ezabatzen badira, hatz-markaren bidezko saio-hasiera desgaituko da. Hura berriro gaitzeko, erregistratu gutxienez hatz-marka bat."
+
+#: panels/system/users/cc-fingerprint-dialog.c:1397
+msgid "_Delete All"
+msgstr "_Ezabatu denak"
 
 #: panels/system/users/cc-fingerprint-dialog.ui:8
 msgid "Fingerprint Manager"
@@ -7725,56 +7741,42 @@ msgstr "Hatz-marken kudeatzailea"
 msgid "Fingerprint"
 msgstr "Hatz-marka"
 
-#: panels/system/users/cc-fingerprint-dialog.ui:77
-msgid "_No"
-msgstr "_Ez"
-
-#: panels/system/users/cc-fingerprint-dialog.ui:85
-msgid "_Yes"
-msgstr "_Bai"
-
-#: panels/system/users/cc-fingerprint-dialog.ui:105
-msgid ""
-"Do you want to delete your registered fingerprints so fingerprint login is "
-"disabled?"
-msgstr "Erregistratutako zure hatz-markak ezabatze nahi duzu, hatz-marken bidezko saio-hasiera desgaituz?"
-
-#: panels/system/users/cc-fingerprint-dialog.ui:161
+#: panels/system/users/cc-fingerprint-dialog.ui:114
 msgid "No fingerprint device"
 msgstr "Ez dago hatz-marken gailurik"
 
 #. Translators: This is the empty state page label which states that there are no devices ready.
-#: panels/system/users/cc-fingerprint-dialog.ui:176
+#: panels/system/users/cc-fingerprint-dialog.ui:129
 msgid "No Fingerprint device"
 msgstr "Ez dago hatz-marken gailurik"
 
-#: panels/system/users/cc-fingerprint-dialog.ui:185
+#: panels/system/users/cc-fingerprint-dialog.ui:138
 msgid "Ensure the device is properly connected"
 msgstr "Ziurtatu gailua ongi konektatuta dagoela"
 
-#: panels/system/users/cc-fingerprint-dialog.ui:193
+#: panels/system/users/cc-fingerprint-dialog.ui:146
 msgid "Fingerprint Device"
 msgstr "Hatz-marken gailua"
 
-#: panels/system/users/cc-fingerprint-dialog.ui:202
+#: panels/system/users/cc-fingerprint-dialog.ui:155
 msgid "Choose the fingerprint device you want to configure"
 msgstr "Aukeratu konfiguratu nahi duzun hatz-marken gailua"
 
-#: panels/system/users/cc-fingerprint-dialog.ui:232
+#: panels/system/users/cc-fingerprint-dialog.ui:185
 msgid "Fingerprint Login"
 msgstr "Hatz-marken bidezko saio-hasiera"
 
-#: panels/system/users/cc-fingerprint-dialog.ui:238
+#: panels/system/users/cc-fingerprint-dialog.ui:191
 msgid ""
 "Fingerprint login allows you to unlock and log into your device with your "
 "finger"
 msgstr "Hatz-marken bidezko saio-hasierak hatza erabilita gailua desblokeatzea eta saioa hastea ahalbidetzen du."
 
-#: panels/system/users/cc-fingerprint-dialog.ui:265
+#: panels/system/users/cc-fingerprint-dialog.ui:218
 msgid "_Delete Fingerprints"
 msgstr "_Ezabatu hatz-markak"
 
-#: panels/system/users/cc-fingerprint-dialog.ui:279
+#: panels/system/users/cc-fingerprint-dialog.ui:232
 msgid "Fingerprint Enroll"
 msgstr "Hatz-marken erregistroa"
 
@@ -8979,6 +8981,68 @@ msgstr "Taula;Wacom;Estiloa;Borragoma;Sagua;"
 msgid "New shortcut…"
 msgstr "Laster-tekla berria…"
 
+#. Translators: This separates the duration and interval times when displaying
+#. * the selected break schedule on the wellbeing panel. For example,
+#. * “1 minute / 20 minutes” to indicate a 1 minute break every 20 minutes.
+#: panels/wellbeing/cc-break-schedule-row.c:289
+msgid " / "
+msgstr " / "
+
+#: panels/wellbeing/cc-break-schedule-row.c:369
+msgid "Duration"
+msgstr "Iraupena"
+
+#: panels/wellbeing/cc-break-schedule-row.c:369
+msgid "Interval"
+msgstr "Tartea"
+
+#: panels/wellbeing/cc-wellbeing-panel.ui:18
+msgid "Break Reminders"
+msgstr "Etenaldien oroigarriak"
+
+#: panels/wellbeing/cc-wellbeing-panel.ui:21
+msgid "_Eyesight Reminders"
+msgstr "_Ikuspegia aldatzeko oroigarriak"
+
+#: panels/wellbeing/cc-wellbeing-panel.ui:22
+msgid "Reminders to look away from the screen"
+msgstr "Pantailatik begirada aldentzeko oroigarriak"
+
+#: panels/wellbeing/cc-wellbeing-panel.ui:28
+msgid "_Movement Reminders"
+msgstr "_Mugimenduaren oroigarriak"
+
+#: panels/wellbeing/cc-wellbeing-panel.ui:29
+msgid "Reminders to move around"
+msgstr "Gorputza apur bat mugitzeko oroigarriak"
+
+#: panels/wellbeing/cc-wellbeing-panel.ui:35
+msgid "Movement Break S_chedule"
+msgstr "Mugimendu-etenen _programazioa"
+
+#: panels/wellbeing/cc-wellbeing-panel.ui:41
+msgid "S_ounds"
+msgstr "S_oinuak"
+
+#: panels/wellbeing/cc-wellbeing-panel.ui:42
+msgid "Play a sound when a break ends"
+msgstr "Erreproduzitu soinu bat etena amaitzen denean"
+
+#: panels/wellbeing/gnome-wellbeing-panel.desktop.in:6
+msgid "Wellbeing"
+msgstr "Ongizatea"
+
+#: panels/wellbeing/gnome-wellbeing-panel.desktop.in:7
+msgid "Review and limit the amount of time you spend at the computer screen"
+msgstr "Berrikusi eta mugatu pantailaren aurrean igarotzen duzun denbora"
+
+#. Translators: Search terms to find the Wellbeing panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: panels/wellbeing/gnome-wellbeing-panel.desktop.in:18
+msgid ""
+"Wellbeing;Screen Time;Breaks;Break Reminders;Health Breaks;Daily Usage;"
+"Screen Limits;Usage Limit;"
+msgstr "Ongizatea;Pantaila;Etenak;Oroigarriak;Osasuna;Erabilea;Mugak;Erabilea-muga;"
+
 #: panels/wwan/cc-wwan-apn-dialog.c:293
 msgid "Edit"
 msgstr "Editatu"
@@ -9577,7 +9641,7 @@ msgstr "© 1998 %s"
 msgid "Settings categories"
 msgstr "Ezarpenen kategoriak"
 
-#: shell/cc-panel-loader.c:311
+#: shell/cc-panel-loader.c:317
 msgid "Available panels:"
 msgstr "Panel erabilgarriak:"
 
@@ -10129,6 +10193,19 @@ msgstr "Sistemaren soinuak"
 #~ msgid "Pass_word"
 #~ msgstr "_Pasahitza"
 
+#~ msgid "_No"
+#~ msgstr "_Ez"
+
+#~ msgid "_Yes"
+#~ msgstr "_Bai"
+
+#~ msgid ""
+#~ "Do you want to delete your registered fingerprints so fingerprint login "
+#~ "is disabled?"
+#~ msgstr ""
+#~ "Erregistratutako zure hatz-markak ezabatze nahi duzu, hatz-marken bidezko "
+#~ "saio-hasiera desgaituz?"
+
 #~ msgid "_Add User…"
 #~ msgstr "Ge_hitu erabiltzailea…"
 
@@ -10425,9 +10502,6 @@ msgstr "Sistemaren soinuak"
 
 #~ msgid "The system component `AccountsService` cannot be found"
 #~ msgstr "'Kontuen zerbitzua' sistemako osagaia ezin da aurkitu"
-
-#~ msgid "_Delete"
-#~ msgstr "Ez_abatu"
 
 #~ msgid "External pad device"
 #~ msgstr "Kanpoko teklatu-gailua"
@@ -11862,9 +11936,6 @@ msgstr "Sistemaren soinuak"
 #~ "Aplikazioen banakako baimenak <a href=\"privacy\">Pribatutasuna</a> "
 #~ "ezarpenetan berrikusi daitezke."
 
-#~ msgid "Integration"
-#~ msgstr "Integrazioa"
-
 #~ msgid "Set Desktop Background"
 #~ msgstr "Ezarri mahaigainaren atzeko planoa"
 
@@ -12188,10 +12259,6 @@ msgstr "Sistemaren soinuak"
 #~ msgctxt "Battery power"
 #~ msgid "Charging"
 #~ msgstr "Kargatzen"
-
-#~ msgctxt "Battery power"
-#~ msgid "Caution"
-#~ msgstr "Kontuz"
 
 #~ msgctxt "Battery power"
 #~ msgid "Low"

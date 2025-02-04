@@ -1,15 +1,15 @@
 image.symbolic-circular {
-  background-color: alpha(currentColor, 0.08);
+  background-color: color-mix(in srgb, currentColor 8%, transparent);
   min-width: 32px;
   min-height: 32px;
   border-radius: 50%;
 }
 
-.warning-box image,
-.warning-box label {
-  color: @error_color;
+.error-box image,
+.error-box label {
+  color: var(--error-color);
 }
 
-.warning-box label {
+.error-box label {
   font-weight: 600;
 }
