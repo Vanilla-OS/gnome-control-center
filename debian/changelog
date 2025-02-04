@@ -1,3 +1,11 @@
+gnome-control-center (1:48~beta-2) unstable; urgency=medium
+
+  * Bump minimum gnome-settings-daemon
+  * Increase dh_auto_test multiplier to see if it fixes the riscv64 network test
+  * debhelper 13.24 makes dh_auto_test verbose so remove that part of our patch
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Tue, 04 Feb 2025 11:26:12 -0500
+
 gnome-control-center (1:48~beta-1) unstable; urgency=medium
 
   * New upstream release
