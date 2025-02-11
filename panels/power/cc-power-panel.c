@@ -27,7 +27,6 @@
 #include <gio/gdesktopappinfo.h>
 
 #include "shell/cc-object-storage.h"
-#include "cc-list-row.h"
 #include "cc-battery-row.h"
 #include "cc-hostname.h"
 #include "cc-number-row.h"
@@ -35,32 +34,43 @@
 #include "cc-power-profile-info-row.h"
 #include "cc-power-panel.h"
 #include "cc-power-resources.h"
+#include "cc-ui-util.h"
 
 struct _CcPowerPanel
 {
   CcPanel            parent_instance;
 
+  GtkStack           *title_stack;
+  AdwPreferencesPage *general_page;
+  AdwPreferencesPage *power_saving_page;
+  AdwViewStackPage   *power_saving_stack_page;
+
   AdwSwitchRow      *als_row;
-  AdwDialog         *automatic_suspend_dialog;
-  CcListRow         *automatic_suspend_row;
+  AdwPreferencesGroup *battery_charging_section;
   GtkListBox        *battery_listbox;
   AdwSwitchRow      *battery_percentage_row;
   AdwPreferencesGroup *battery_section;
-  CcNumberRow       *blank_screen_row;
+  AdwSwitchRow      *blank_screen_switch_row;
+  CcNumberRow       *blank_screen_delay_row;
+  AdwPreferencesGroup *blank_screen_group;
   GtkListBox        *device_listbox;
   AdwPreferencesGroup *device_section;
   AdwSwitchRow      *dim_screen_row;
   AdwPreferencesGroup *general_section;
+  GtkCheckButton    *maximize_charge_radio;
+  GtkCheckButton    *preserve_battery_radio;
   CcNumberRow       *power_button_row;
   GtkListBox        *power_profile_listbox;
   GtkListBox        *power_profile_info_listbox;
   AdwPreferencesGroup *power_profile_section;
   AdwSwitchRow      *power_saver_low_battery_row;
+  AdwPreferencesGroup *power_saving_group;
   CcNumberRow       *suspend_on_battery_delay_row;
   AdwSwitchRow      *suspend_on_battery_switch_row;
-  GtkWidget         *suspend_on_battery_group;
+  AdwPreferencesGroup *suspend_on_battery_group;
   CcNumberRow       *suspend_on_ac_delay_row;
   AdwSwitchRow      *suspend_on_ac_switch_row;
+  AdwPreferencesGroup *suspend_on_ac_group;
 
   GSettings     *gsd_settings;
   GSettings     *session_settings;
@@ -114,15 +124,6 @@ add_device (CcPowerPanel *self, UpDevice *device)
 }
 
 static void
-empty_listbox (GtkListBox *listbox)
-{
-  GtkWidget *child;
-
-  while ((child = gtk_widget_get_first_child (GTK_WIDGET (listbox))) != NULL)
-    gtk_list_box_remove (listbox, child);
-}
-
-static void
 update_power_saver_low_battery_row_visibility (CcPowerPanel *self)
 {
   g_autoptr(UpDevice) composite = NULL;
@@ -135,20 +136,119 @@ update_power_saver_low_battery_row_visibility (CcPowerPanel *self)
 }
 
 static void
+battery_health_radio_changed_cb (CcPowerPanel *self)
+{
+  guint i;
+  g_autoptr (GDBusConnection) connection = NULL;
+  g_autoptr (GVariant) variant = NULL;
+  g_autoptr (GError) error = NULL;
+  gboolean enabled;
+
+  enabled = gtk_check_button_get_active (GTK_CHECK_BUTTON (self->preserve_battery_radio));
+  g_debug ("Setting preserve battery health enabled %s", enabled ? "on" : "off");
+
+  connection = g_bus_get_sync (G_BUS_TYPE_SYSTEM,
+                               cc_panel_get_cancellable (CC_PANEL (self)),
+                               &error);
+  if (!connection)
+    {
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        g_warning ("system bus not available: %s", error->message);
+      return;
+    }
+
+  for (i = 0; self->devices != NULL && i < self->devices->len; i++)
+    {
+      UpDevice *device = (UpDevice*) g_ptr_array_index (self->devices, i);
+      UpDeviceKind kind;
+      gboolean is_power_supply = FALSE;
+      gboolean is_charge_threshold_supported = FALSE;
+      gboolean is_charge_threshold_enabled = FALSE;
+      g_object_get (device,
+                    "kind", &kind,
+                    "power-supply", &is_power_supply,
+                    "charge-threshold-supported", &is_charge_threshold_supported,
+                    "charge-threshold-enabled", &is_charge_threshold_enabled,
+                    NULL);
+      if (kind == UP_DEVICE_KIND_BATTERY && is_power_supply && is_charge_threshold_supported)
+        {
+          g_debug ("%s charge limit for %s", enabled ? "Enable": "Disable", up_device_get_object_path (device));
+          variant = g_dbus_connection_call_sync (connection,
+                                                 "org.freedesktop.UPower",
+                                                 up_device_get_object_path (device),
+                                                 "org.freedesktop.UPower.Device",
+                                                 "EnableChargeThreshold",
+                                                 g_variant_new ("(b)", enabled),
+                                                 NULL,
+                                                 G_DBUS_CALL_FLAGS_NONE,
+                                                 -1,
+                                                 NULL,
+                                                 &error);
+          if (!variant)
+            {
+              if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+                g_debug ("Failed to call %s(): %s", "EnableChargeThreshold", error->message);
+            }
+        }
+    }
+}
+
+static void
+ensure_power_saving_title (CcPowerPanel *self)
+{
+  const char *power_saving_title;
+
+  /* If we have batteries, we are in split-page mode, so we don't have to set a title */
+  if (self->has_batteries)
+    return;
+
+  /* TRANSLATORS: This is the same title as the title from the .ui file, but without mnemonic */
+  power_saving_title = _("Power Saving");
+  if (gtk_widget_is_visible (GTK_WIDGET (self->power_saving_group)))
+    {
+      adw_preferences_group_set_title (self->power_saving_group, power_saving_title);
+      adw_preferences_group_set_title (self->blank_screen_group, "");
+    }
+  else
+    {
+      adw_preferences_group_set_title (self->blank_screen_group, power_saving_title);
+    }
+}
+
+static void
+power_saving_group_visibility_cb (CcPowerPanel *self)
+{
+  gboolean visible;
+
+  visible = gtk_widget_get_visible (GTK_WIDGET (self->als_row)) ||
+            gtk_widget_get_visible (GTK_WIDGET (self->dim_screen_row)) ||
+            gtk_widget_get_visible (GTK_WIDGET (self->power_saver_low_battery_row));
+
+  gtk_widget_set_visible (GTK_WIDGET (self->power_saving_group), visible);
+
+  ensure_power_saving_title (self);
+}
+
+static void
 up_client_changed (CcPowerPanel *self)
 {
   gint i;
   UpDeviceKind kind;
   guint n_batteries;
   gboolean on_ups;
+  gboolean charge_threshold_supported;
+  gboolean charge_threshold_enabled;
   g_autoptr(UpDevice) composite = NULL;
 
-  empty_listbox (self->battery_listbox);
+  gtk_list_box_remove_all (self->battery_listbox);
   gtk_widget_set_visible (GTK_WIDGET (self->battery_section), FALSE);
 
-  empty_listbox (self->device_listbox);
+  gtk_widget_set_visible (GTK_WIDGET (self->battery_charging_section), FALSE);
+  gtk_list_box_remove_all (self->device_listbox);
   gtk_widget_set_visible (GTK_WIDGET (self->device_section), FALSE);
 
+  charge_threshold_supported = FALSE;
+  charge_threshold_enabled = FALSE;
   on_ups = FALSE;
   n_batteries = 0;
   composite = up_client_get_display_device (self->up_client);
@@ -166,6 +266,9 @@ up_client_changed (CcPowerPanel *self)
         {
           UpDevice *device = (UpDevice*) g_ptr_array_index (self->devices, i);
           gboolean is_power_supply = FALSE;
+          gboolean is_charge_threshold_supported = FALSE;
+          gboolean is_charge_threshold_enabled = FALSE;
+
           g_object_get (device,
                         "kind", &kind,
                         "power-supply", &is_power_supply,
@@ -179,6 +282,18 @@ up_client_changed (CcPowerPanel *self)
                   is_extra_battery = TRUE;
                   g_object_set_data (G_OBJECT (device), "is-main-battery", GINT_TO_POINTER(TRUE));
                 }
+
+                g_object_get (device,
+                              "charge-threshold-enabled", &is_charge_threshold_enabled,
+                              "charge-threshold-supported", &is_charge_threshold_supported,
+                               NULL);
+
+                /* If any of the batteries support setting charge thresholds show a switch */
+                if (is_charge_threshold_supported)
+                  charge_threshold_supported = TRUE;
+
+                if (is_charge_threshold_enabled)
+                  charge_threshold_enabled = TRUE;
             }
         }
     }
@@ -225,6 +340,19 @@ up_client_changed (CcPowerPanel *self)
         {
           add_device (self, device);
         }
+    }
+
+  if (charge_threshold_supported)
+    {
+      if (charge_threshold_enabled)
+        {
+          gtk_check_button_set_active (self->preserve_battery_radio, TRUE);
+        }
+      else
+        {
+          gtk_check_button_set_active (self->maximize_charge_radio, TRUE);
+        }
+      gtk_widget_set_visible (GTK_WIDGET (self->battery_charging_section), TRUE);
     }
 
   update_power_saver_low_battery_row_visibility (self);
@@ -296,15 +424,10 @@ als_enabled_state_changed (CcPowerPanel *self)
   g_signal_handlers_unblock_by_func (self->als_row, als_row_changed_cb, self);
 }
 
-static void
-set_ac_battery_ui_mode (CcPowerPanel *self)
+static gboolean
+devices_have_batteries (GPtrArray *devices)
 {
-  GPtrArray *devices;
   guint i;
-
-  self->has_batteries = FALSE;
-  devices = up_client_get_devices2 (self->up_client);
-  g_debug ("got %d devices from upower\n", devices ? devices->len : 0);
 
   for (i = 0; devices != NULL && i < devices->len; i++)
     {
@@ -319,29 +442,20 @@ set_ac_battery_ui_mode (CcPowerPanel *self)
                     NULL);
       if (kind == UP_DEVICE_KIND_UPS ||
           (kind == UP_DEVICE_KIND_BATTERY && is_power_supply))
-        {
-          self->has_batteries = TRUE;
-          break;
-        }
+        return TRUE;
     }
-  g_clear_pointer (&devices, g_ptr_array_unref);
-
-  if (!self->has_batteries)
-    {
-      gtk_widget_set_visible (GTK_WIDGET (self->suspend_on_battery_group), FALSE);
-      adw_preferences_row_set_title (ADW_PREFERENCES_ROW (self->suspend_on_ac_switch_row), _("When _Idle"));
-    }
+  
+  return FALSE;
 }
 
-static gboolean
-keynav_failed_cb (CcPowerPanel *self, GtkDirectionType direction, GtkWidget *list)
+static void
+set_ac_battery_ui_mode (CcPowerPanel *self)
 {
-  if (direction != GTK_DIR_UP && direction != GTK_DIR_DOWN)
-    return FALSE;
-
-  direction = GTK_DIR_UP ? GTK_DIR_TAB_BACKWARD : GTK_DIR_TAB_FORWARD;
-
-  return gtk_widget_child_focus (GTK_WIDGET (self), direction);
+  if (self->has_batteries)
+    gtk_widget_set_visible (GTK_WIDGET (self->suspend_on_battery_group), TRUE);
+  else
+    adw_preferences_row_set_title (ADW_PREFERENCES_ROW (self->suspend_on_ac_switch_row),
+                                   adw_preferences_group_get_title (self->suspend_on_battery_group));
 }
 
 static void
@@ -394,12 +508,7 @@ get_sleep_type (GValue   *value,
                 GVariant *variant,
                 gpointer  data)
 {
-  gboolean enabled;
-
-  if (g_strcmp0 (g_variant_get_string (variant, NULL), "nothing") == 0)
-    enabled = FALSE;
-  else
-    enabled = TRUE;
+  gboolean enabled = !g_str_equal (g_variant_get_string (variant, NULL), "nothing");
 
   g_value_set_boolean (value, enabled);
 
@@ -411,14 +520,9 @@ set_sleep_type (const GValue       *value,
                 const GVariantType *expected_type,
                 gpointer            data)
 {
-  GVariant *res;
+  const char *sleep_str = g_value_get_boolean (value) ? "suspend" : "nothing";
 
-  if (g_value_get_boolean (value))
-    res = g_variant_new_string ("suspend");
-  else
-    res = g_variant_new_string ("nothing");
-
-  return res;
+  return g_variant_new_string (sleep_str);
 }
 
 static void
@@ -449,64 +553,6 @@ populate_power_button_row (CcNumberRow *row,
         continue;
 
       cc_number_row_add_value_full (row, value, _(name), CC_NUMBER_ORDER_DEFAULT);
-    }
-}
-
-#define NEVER 0
-
-static void
-update_automatic_suspend_label (CcPowerPanel *self)
-{
-  GsdPowerActionType ac_action;
-  GsdPowerActionType battery_action;
-  gint ac_timeout;
-  gint battery_timeout;
-  const gchar *s;
-
-  ac_action = g_settings_get_enum (self->gsd_settings, "sleep-inactive-ac-type");
-  battery_action = g_settings_get_enum (self->gsd_settings, "sleep-inactive-battery-type");
-  ac_timeout = g_settings_get_int (self->gsd_settings, "sleep-inactive-ac-timeout");
-  battery_timeout = g_settings_get_int (self->gsd_settings, "sleep-inactive-battery-timeout");
-
-  if (ac_timeout < 0)
-    g_warning ("Invalid negative timeout for 'sleep-inactive-ac-timeout': %d", ac_timeout);
-  if (battery_timeout < 0)
-    g_warning ("Invalid negative timeout for 'sleep-inactive-battery-timeout': %d", battery_timeout);
-
-  if (ac_action == GSD_POWER_ACTION_NOTHING || ac_timeout < 0)
-    ac_timeout = NEVER;
-  if (battery_action == GSD_POWER_ACTION_NOTHING || battery_timeout < 0)
-    battery_timeout = NEVER;
-
-  if (self->has_batteries)
-    {
-      if (ac_timeout == NEVER && battery_timeout == NEVER)
-        s = _("Off");
-      else if (ac_timeout == NEVER && battery_timeout > 0)
-        s = _("On Battery Power");
-      else if (ac_timeout > 0 && battery_timeout == NEVER)
-        s = _("When Plugged In");
-      else
-        s = _("On");
-    }
-  else
-    {
-      if (ac_timeout == NEVER)
-        s = _("Off");
-      else
-        s = _("On");
-    }
-
-  cc_list_row_set_secondary_label (self->automatic_suspend_row, s);
-}
-
-static void
-on_suspend_settings_changed (CcPowerPanel *self,
-                             const char   *key)
-{
-  if (g_str_has_prefix (key, "sleep-inactive-"))
-    {
-      update_automatic_suspend_label (self);
     }
 }
 
@@ -581,6 +627,51 @@ got_brightness_cb (GObject      *source_object,
 
   gtk_widget_set_visible (GTK_WIDGET (self->dim_screen_row), self->has_brightness);
   als_enabled_state_changed (self);
+}
+
+static void
+blank_screen_switch_cb (CcPowerPanel *self)
+{
+  if (adw_switch_row_get_active (self->blank_screen_switch_row))
+    {
+      /* "Reset" to the delay value if coming from a disabled state */
+      if (g_settings_get_uint (self->session_settings, "idle-delay") == 0)
+        {
+          guint position = adw_combo_row_get_selected (ADW_COMBO_ROW (self->blank_screen_delay_row));
+
+          g_settings_set_uint (self->session_settings, "idle-delay",
+                               cc_number_row_get_value (self->blank_screen_delay_row, position));
+        }
+
+      cc_number_row_bind_settings (self->blank_screen_delay_row, self->session_settings, "idle-delay");
+    }
+  else
+    {
+      cc_number_row_unbind_settings (self->blank_screen_delay_row);
+      g_settings_set_uint (self->session_settings, "idle-delay", 0);
+    }
+}
+
+#define BLANK_SCREEN_DEFAULT 300
+
+static void
+setup_blank_screen_rows (CcPowerPanel *self)
+{
+  if (g_settings_get_uint (self->session_settings, "idle-delay") != 0)
+    {
+      /* The handler sets up a GSettings binding */
+      adw_switch_row_set_active (self->blank_screen_switch_row, TRUE);
+    }
+  else
+    {
+      guint position;
+
+      /* Set the default value on the delay row to show what we'll get if enabled */
+      if (!cc_number_row_has_value (self->blank_screen_delay_row, BLANK_SCREEN_DEFAULT, &position))
+        position = cc_number_row_add_value (self->blank_screen_delay_row, BLANK_SCREEN_DEFAULT);
+
+      adw_combo_row_set_selected (ADW_COMBO_ROW (self->blank_screen_delay_row), position);
+    }
 }
 
 static void
@@ -664,7 +755,7 @@ setup_power_saving (CcPowerPanel *self)
                    self->dim_screen_row, "active",
                    G_SETTINGS_BIND_DEFAULT);
 
-  cc_number_row_bind_settings (self->blank_screen_row, self->session_settings, "idle-delay");
+  setup_blank_screen_rows (self);
 
   /* The default values for these settings are unfortunate for us;
    * timeout == 0, action == suspend means 'do nothing' - just
@@ -683,13 +774,11 @@ setup_power_saving (CcPowerPanel *self)
       g_settings_set_int (self->gsd_settings, "sleep-inactive-battery-timeout", 1800);
     }
 
-  /* Automatic suspend row */
+  /* Automatic suspend rows */
   if (can_suspend_or_hibernate (self, "CanSuspend") && 
       g_strcmp0 (self->chassis_type, "vm") != 0)
     {
-      gtk_widget_set_visible (GTK_WIDGET (self->automatic_suspend_row), TRUE);
-
-      g_signal_connect_object (self->gsd_settings, "changed", G_CALLBACK (on_suspend_settings_changed), self, G_CONNECT_SWAPPED);
+      gtk_widget_set_visible (GTK_WIDGET (self->suspend_on_ac_group), TRUE);
 
       g_settings_bind_with_mapping (self->gsd_settings, "sleep-inactive-battery-type",
                                     self->suspend_on_battery_switch_row, "active",
@@ -704,7 +793,6 @@ setup_power_saving (CcPowerPanel *self)
       setup_suspend_delay_rows (self);
 
       set_ac_battery_ui_mode (self);
-      update_automatic_suspend_label (self);
     }
 }
 
@@ -752,7 +840,7 @@ power_profile_update_info_boxes (CcPowerPanel *self)
   CcPowerProfileInfoRow *row;
   int next_insert = 0;
 
-  empty_listbox (self->power_profile_info_listbox);
+  gtk_list_box_remove_all (self->power_profile_info_listbox);
   gtk_widget_set_visible (GTK_WIDGET (self->power_profile_info_listbox), FALSE);
 
   profile_variant = g_dbus_proxy_get_cached_property (self->power_profiles_proxy, "ActiveProfile");
@@ -1074,6 +1162,29 @@ setup_power_profiles (CcPowerPanel *self)
 }
 
 static void
+switch_to_single_page_layout (CcPowerPanel *self)
+{
+  /* Move all power saving sections before the general one */
+  adw_preferences_page_remove (self->power_saving_page, self->power_saving_group);
+  adw_preferences_page_remove (self->power_saving_page, self->blank_screen_group);
+  adw_preferences_page_remove (self->power_saving_page, self->suspend_on_battery_group);
+  adw_preferences_page_remove (self->power_saving_page, self->suspend_on_ac_group);
+
+  adw_preferences_page_remove (self->general_page, self->general_section);
+  adw_preferences_page_add (self->general_page, self->power_saving_group);
+  adw_preferences_page_add (self->general_page, self->blank_screen_group);
+  adw_preferences_page_add (self->general_page, self->suspend_on_battery_group);
+  adw_preferences_page_add (self->general_page, self->suspend_on_ac_group);
+  adw_preferences_page_add (self->general_page, self->general_section);
+
+  /* Reset title and hide view switcher by hiding stack page */
+  gtk_stack_set_visible_child_name (self->title_stack, "title");
+  adw_view_stack_page_set_visible (self->power_saving_stack_page, FALSE);
+
+  ensure_power_saving_title (self);
+}
+
+static void
 setup_general_section (CcPowerPanel *self)
 {
   gboolean can_suspend, can_hibernate, show_section = FALSE;
@@ -1109,6 +1220,9 @@ setup_general_section (CcPowerPanel *self)
     }
 
   gtk_widget_set_visible (GTK_WIDGET (self->general_section), show_section);
+
+  if (!self->has_batteries)
+    switch_to_single_page_layout (self);
 }
 
 static gint
@@ -1171,29 +1285,41 @@ cc_power_panel_class_init (CcPowerPanelClass *klass)
   g_type_ensure (CC_TYPE_NUMBER_ROW);
 
   gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, als_row);
-  gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, automatic_suspend_dialog);
-  gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, automatic_suspend_row);
+  gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, battery_charging_section);
   gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, battery_listbox);
   gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, battery_percentage_row);
   gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, battery_section);
-  gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, blank_screen_row);
+  gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, blank_screen_delay_row);
+  gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, blank_screen_group);
+  gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, blank_screen_switch_row);
   gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, device_listbox);
   gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, device_section);
   gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, dim_screen_row);
+  gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, general_page);
   gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, general_section);
+  gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, title_stack);
+  gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, maximize_charge_radio);
+  gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, preserve_battery_radio);
   gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, power_button_row);
   gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, power_profile_listbox);
   gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, power_profile_info_listbox);
   gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, power_profile_section);
   gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, power_saver_low_battery_row);
+  gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, power_saving_group);
+  gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, power_saving_page);
+  gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, power_saving_stack_page);
   gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, suspend_on_battery_delay_row);
   gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, suspend_on_battery_switch_row);
   gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, suspend_on_battery_group);
   gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, suspend_on_ac_delay_row);
   gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, suspend_on_ac_switch_row);
+  gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, suspend_on_ac_group);
 
   gtk_widget_class_bind_template_callback (widget_class, als_row_changed_cb);
-  gtk_widget_class_bind_template_callback (widget_class, keynav_failed_cb);
+  gtk_widget_class_bind_template_callback (widget_class, blank_screen_switch_cb);
+  gtk_widget_class_bind_template_callback (widget_class, battery_health_radio_changed_cb);
+  gtk_widget_class_bind_template_callback (widget_class, cc_util_keynav_propagate_vertical);
+  gtk_widget_class_bind_template_callback (widget_class, power_saving_group_visibility_cb);
 }
 
 static void
@@ -1215,6 +1341,8 @@ cc_power_panel_init (CcPowerPanel *self)
   self->chassis_type = cc_hostname_get_chassis_type (cc_hostname_get_default ());
 
   self->up_client = up_client_new ();
+  self->devices = up_client_get_devices2 (self->up_client);
+  self->has_batteries = devices_have_batteries (self->devices);
 
   self->gsd_settings = g_settings_new ("org.gnome.settings-daemon.plugins.power");
   self->session_settings = g_settings_new ("org.gnome.desktop.session");
@@ -1242,7 +1370,6 @@ cc_power_panel_init (CcPowerPanel *self)
   g_signal_connect_object (self->up_client, "device-added", G_CALLBACK (up_client_device_added), self, G_CONNECT_SWAPPED);
   g_signal_connect_object (self->up_client, "device-removed", G_CALLBACK (up_client_device_removed), self, G_CONNECT_SWAPPED);
 
-  self->devices = up_client_get_devices2 (self->up_client);
   for (i = 0; self->devices != NULL && i < self->devices->len; i++) {
     UpDevice *device = g_ptr_array_index (self->devices, i);
     g_signal_connect_object (G_OBJECT (device), "notify",

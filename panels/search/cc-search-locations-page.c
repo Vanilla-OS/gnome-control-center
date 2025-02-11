@@ -22,6 +22,8 @@
 
 #include <glib/gi18n.h>
 
+#include "cc-ui-util.h"
+
 #define TRACKER_SCHEMA "org.freedesktop.Tracker.Miner.Files"
 #define TRACKER3_SCHEMA "org.freedesktop.Tracker3.Miner.Files"
 #define TRACKER_KEY_RECURSIVE_DIRECTORIES "index-recursive-directories"
@@ -57,22 +59,6 @@ struct _CcSearchLocationsPage {
 G_DEFINE_TYPE (CcSearchLocationsPage, cc_search_locations_page, ADW_TYPE_NAVIGATION_PAGE)
 
 static const gchar *path_from_tracker_dir (const gchar *value);
-
-static gboolean
-keynav_failed_cb (CcSearchLocationsPage *self,
-                  GtkDirectionType         direction)
-{
-  GtkWidget *toplevel = GTK_WIDGET (gtk_widget_get_root (GTK_WIDGET (self)));
-
-  if (!toplevel)
-    return FALSE;
-
-  if (direction != GTK_DIR_UP && direction != GTK_DIR_DOWN)
-    return FALSE;
-
-  return gtk_widget_child_focus (toplevel, direction == GTK_DIR_UP ?
-                                 GTK_DIR_TAB_BACKWARD : GTK_DIR_TAB_FORWARD);
-}
 
 static void
 cc_search_locations_page_finalize (GObject *object)
@@ -534,6 +520,21 @@ place_query_info_ready (GObject *source,
 }
 
 static void
+open_folder_button_clicked (CcSearchLocationsPage *self,
+                            GtkWidget *button)
+{
+  Place *place;
+  g_autoptr(GtkFileLauncher) launcher = NULL;
+  GtkWindow *toplevel;
+
+  place = g_object_get_data (G_OBJECT (button), "place");
+  launcher = gtk_file_launcher_new (place->location);
+  toplevel = GTK_WINDOW (gtk_widget_get_root (GTK_WIDGET (self)));
+
+  gtk_file_launcher_launch (launcher, toplevel, NULL, NULL, NULL);
+}
+
+static void
 remove_button_clicked (CcSearchLocationsPage *self,
                        GtkWidget *button)
 {
@@ -579,7 +580,7 @@ static GtkWidget *
 create_row_for_place (CcSearchLocationsPage *self, Place *place)
 {
   AdwActionRow *row;
-  GtkWidget *index_switch, *remove_button;
+  GtkWidget *index_switch;
 
   row = ADW_ACTION_ROW (adw_action_row_new ());
   adw_preferences_row_set_title (ADW_PREFERENCES_ROW (row), place->display_name);
@@ -591,6 +592,16 @@ create_row_for_place (CcSearchLocationsPage *self, Place *place)
 
   if (place->place_type == PLACE_OTHER)
     {
+      GtkWidget *open_location_button, *remove_button;
+
+      open_location_button = gtk_button_new_from_icon_name ("folder-open-symbolic");
+
+      g_object_set_data (G_OBJECT (open_location_button), "place", place);
+      gtk_widget_set_tooltip_text (open_location_button, _("Open Folder"));
+      gtk_widget_add_css_class (open_location_button, "flat");
+      gtk_widget_set_valign (open_location_button, GTK_ALIGN_CENTER);
+      adw_action_row_add_suffix (ADW_ACTION_ROW (row), open_location_button);
+
       /* Other locations can only be removed */
       remove_button = gtk_button_new_from_icon_name ("edit-delete-symbolic");
 
@@ -599,6 +610,9 @@ create_row_for_place (CcSearchLocationsPage *self, Place *place)
       gtk_widget_set_valign (remove_button, GTK_ALIGN_CENTER);
       gtk_widget_add_css_class (remove_button, "flat");
       adw_action_row_add_suffix (ADW_ACTION_ROW (row), remove_button);
+
+      g_signal_connect_swapped (open_location_button, "clicked",
+                                G_CALLBACK (open_folder_button_clicked), self);
 
       g_signal_connect_swapped (remove_button, "clicked",
                                 G_CALLBACK (remove_button_clicked), self);
@@ -787,5 +801,5 @@ cc_search_locations_page_class_init (CcSearchLocationsPageClass *klass)
   gtk_widget_class_bind_template_child (widget_class, CcSearchLocationsPage, others_list);
 
   gtk_widget_class_bind_template_callback (widget_class, add_button_clicked);
-  gtk_widget_class_bind_template_callback (widget_class, keynav_failed_cb);
+  gtk_widget_class_bind_template_callback (widget_class, cc_util_keynav_propagate_vertical);
 }

@@ -58,13 +58,13 @@ struct _CcUserPage {
 
     CcListRow           *account_type_row;
     GtkSwitch           *account_type_switch;
-    GtkBox              *action_area;
     AdwAvatar           *avatar;
     CcAvatarChooser     *avatar_chooser;
     GtkMenuButton       *avatar_edit_button;
     GtkButton           *avatar_remove_button;
     AdwActionRow        *auto_login_row;
     GtkSwitch           *auto_login_switch;
+    AdwPreferencesGroup *button_group;
     CcListRow           *fingerprint_row;
     CcListRow           *language_row;
     AdwEntryRow         *fullname_row;
@@ -73,6 +73,7 @@ struct _CcUserPage {
 #endif
     CcListRow           *password_row;
     CcPermissionInfobar *permission_infobar;
+    AdwPreferencesPage  *preferences_page;
     AdwSwitchRow        *remove_local_files_choice;
     GtkWidget           *remove_user_button;
     AdwAlertDialog      *remove_local_user_dialog;
@@ -84,6 +85,7 @@ struct _CcUserPage {
 
     gboolean              locked;
     gboolean              editable;
+    gboolean              avatar_editable;
     gboolean              can_be_demoted;
 };
 
@@ -97,6 +99,7 @@ enum {
     PROP_0,
     PROP_LOCKED,
     PROP_EDITABLE,
+    PROP_AVATAR_EDITABLE,
     PROP_IS_ADMIN,
     PROP_IS_CURRENT_USER
 };
@@ -262,25 +265,14 @@ fullname_entry_apply_cb (CcUserPage *self)
 }
 
 static void
-language_chooser_response (CcUserPage        *self,
-                           guint              response_id,
-                           CcLanguageChooser *chooser)
+language_response (CcUserPage        *self,
+                   CcLanguageChooser *chooser)
 {
     g_autofree gchar *language_name = NULL;
     const gchar *selected_language;
 
-    if (response_id != GTK_RESPONSE_OK) {
-        gtk_window_destroy (GTK_WINDOW (chooser));
-
-        return;
-    }
-
     selected_language = cc_language_chooser_get_language (chooser);
     if (!selected_language) {
-        return;
-    }
-
-    if (g_strcmp0 (selected_language, act_user_get_language (self->user)) == 0) {
         return;
     }
 
@@ -289,29 +281,28 @@ language_chooser_response (CcUserPage        *self,
     language_name = gnome_get_language_from_locale (selected_language, NULL);
     cc_list_row_set_secondary_label (self->language_row, language_name);
 
-    gtk_window_close (GTK_WINDOW (chooser));
+    adw_dialog_close (ADW_DIALOG (chooser));
 }
 
 static void
-change_language (CcUserPage *self)
+show_language_chooser (CcUserPage *self)
 {
     CcLanguageChooser *language_chooser;
     const gchar *current_language;
 
     current_language = act_user_get_language (self->user);
+
     language_chooser = cc_language_chooser_new ();
 
-    g_signal_connect_object (language_chooser, "response",
-                             G_CALLBACK (language_chooser_response), self,
+    g_signal_connect_object (language_chooser, "language-selected",
+                             G_CALLBACK (language_response), self,
                              G_CONNECT_SWAPPED);
 
     if (current_language && *current_language != '\0') {
         cc_language_chooser_set_language (language_chooser, current_language);
     }
 
-    gtk_window_set_transient_for (GTK_WINDOW (language_chooser),
-                                  GTK_WINDOW (gtk_widget_get_native (GTK_WIDGET (self))));
-    gtk_window_present (GTK_WINDOW (language_chooser));
+    adw_dialog_present (ADW_DIALOG (language_chooser), GTK_WIDGET (self));
 }
 
 static void
@@ -382,9 +373,7 @@ change_fingerprint (CcUserPage *self)
     CcFingerprintDialog *dialog;
 
     dialog = cc_fingerprint_dialog_new (self->fingerprint_manager);
-    gtk_window_set_transient_for (GTK_WINDOW (dialog),
-                                  GTK_WINDOW (gtk_widget_get_native (GTK_WIDGET (self))));
-    gtk_window_present (GTK_WINDOW (dialog));
+    adw_dialog_present (ADW_DIALOG (dialog), GTK_WIDGET (self));
 }
 
 static void
@@ -447,7 +436,14 @@ cc_user_page_buildable_add_child (GtkBuildable *buildable,
 {
     CcUserPage *self = CC_USER_PAGE (buildable);
 
-    gtk_box_append (self->action_area, GTK_WIDGET (child));
+    /* Let's keep the button group last */
+    if (ADW_IS_PREFERENCES_GROUP (child)) {
+        adw_preferences_page_remove (self->preferences_page, self->button_group);
+        adw_preferences_page_add (self->preferences_page, ADW_PREFERENCES_GROUP (child));
+        adw_preferences_page_add (self->preferences_page, self->button_group);
+    } else {
+        adw_preferences_group_add (self->button_group, GTK_WIDGET (child));
+    }
 }
 
 static void
@@ -469,7 +465,10 @@ is_current_user (ActUser *user)
 static void
 update_editable_state (CcUserPage *self)
 {
-    self->editable = (is_current_user (self->user) || !self->locked) && act_user_is_local_account (self->user);
+    self->avatar_editable = (is_current_user (self->user) || !self->locked);
+    g_object_notify (G_OBJECT (self), "avatar-editable");
+
+    self->editable = self->avatar_editable && act_user_is_local_account (self->user);
     g_object_notify (G_OBJECT (self), "editable");
 }
 
@@ -553,6 +552,9 @@ cc_user_page_get_property (GObject    *object,
     case PROP_EDITABLE:
         g_value_set_boolean (value, self->editable);
         break;
+    case PROP_AVATAR_EDITABLE:
+        g_value_set_boolean (value, self->avatar_editable);
+        break;
     case PROP_LOCKED:
         g_value_set_boolean (value, self->locked);
         break;
@@ -581,6 +583,7 @@ cc_user_page_set_property (GObject      *object,
 
     switch (prop_id) {
     case PROP_EDITABLE:
+    case PROP_AVATAR_EDITABLE:
         update_editable_state (self);
         break;
     case PROP_LOCKED:
@@ -609,6 +612,13 @@ cc_user_page_class_init (CcUserPageClass * klass)
                                                            FALSE,
                                                            G_PARAM_READWRITE));
     g_object_class_install_property (object_class,
+                                     PROP_AVATAR_EDITABLE,
+                                     g_param_spec_boolean ("avatar-editable",
+                                                           "Editable avatar",
+                                                           "Whether the avatar is editable",
+                                                           FALSE,
+                                                           G_PARAM_READWRITE));
+    g_object_class_install_property (object_class,
                                      PROP_LOCKED,
                                      g_param_spec_boolean ("locked",
                                                            "Locked",
@@ -630,10 +640,10 @@ cc_user_page_class_init (CcUserPageClass * klass)
                                                            FALSE,
                                                            G_PARAM_READABLE));
     g_type_ensure (CC_TYPE_LIST_ROW);
+    g_type_ensure (CC_TYPE_PERMISSION_INFOBAR);
 
     gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/system/users/cc-user-page.ui");
 
-    gtk_widget_class_bind_template_child (widget_class, CcUserPage, action_area);
     gtk_widget_class_bind_template_child (widget_class, CcUserPage, avatar);
     gtk_widget_class_bind_template_child (widget_class, CcUserPage, avatar_edit_button);
     gtk_widget_class_bind_template_child (widget_class, CcUserPage, avatar_remove_button);
@@ -641,6 +651,7 @@ cc_user_page_class_init (CcUserPageClass * klass)
     gtk_widget_class_bind_template_child (widget_class, CcUserPage, account_type_switch);
     gtk_widget_class_bind_template_child (widget_class, CcUserPage, auto_login_row);
     gtk_widget_class_bind_template_child (widget_class, CcUserPage, auto_login_switch);
+    gtk_widget_class_bind_template_child (widget_class, CcUserPage, button_group);
     gtk_widget_class_bind_template_child (widget_class, CcUserPage, fingerprint_row);
     gtk_widget_class_bind_template_child (widget_class, CcUserPage, fullname_row);
     gtk_widget_class_bind_template_child (widget_class, CcUserPage, language_row);
@@ -649,6 +660,7 @@ cc_user_page_class_init (CcUserPageClass * klass)
 #endif
     gtk_widget_class_bind_template_child (widget_class, CcUserPage, password_row);
     gtk_widget_class_bind_template_child (widget_class, CcUserPage, permission_infobar);
+    gtk_widget_class_bind_template_child (widget_class, CcUserPage, preferences_page);
     gtk_widget_class_bind_template_child (widget_class, CcUserPage, remove_local_files_choice);
     gtk_widget_class_bind_template_child (widget_class, CcUserPage, remove_local_user_dialog);
     gtk_widget_class_bind_template_child (widget_class, CcUserPage, remove_user_button);
@@ -656,7 +668,7 @@ cc_user_page_class_init (CcUserPageClass * klass)
     gtk_widget_class_bind_template_callback (widget_class, account_type_changed);
     gtk_widget_class_bind_template_callback (widget_class, autologin_changed);
     gtk_widget_class_bind_template_callback (widget_class, change_fingerprint);
-    gtk_widget_class_bind_template_callback (widget_class, change_language);
+    gtk_widget_class_bind_template_callback (widget_class, show_language_chooser);
     gtk_widget_class_bind_template_callback (widget_class, change_password);
     gtk_widget_class_bind_template_callback (widget_class, fullname_entry_apply_cb);
     gtk_widget_class_bind_template_callback (widget_class, remove_local_user_response);
@@ -698,7 +710,7 @@ cc_user_page_init (CcUserPage *self)
 CcUserPage *
 cc_user_page_new (void)
 {
-    return CC_USER_PAGE (g_object_new (CC_TYPE_USER_PAGE, NULL));
+    return g_object_new (CC_TYPE_USER_PAGE, NULL);
 }
 
 void
@@ -760,7 +772,6 @@ cc_user_page_set_user (CcUserPage  *self,
     }
 
     cc_permission_infobar_set_permission (self->permission_infobar, permission);
-    cc_permission_infobar_set_title (self->permission_infobar, _("Some settings are locked"));
     g_object_bind_property (permission, "allowed", self, "locked", G_BINDING_SYNC_CREATE | G_BINDING_INVERT_BOOLEAN);
     g_signal_connect_object (permission, "notify", G_CALLBACK (update_editable_state), self, G_CONNECT_SWAPPED);
     update_editable_state (self);

@@ -50,6 +50,11 @@ on_permission_changed (CcPermissionInfobar *self)
   gboolean is_authorized = g_permission_get_allowed (self->permission);
 
   adw_banner_set_revealed (self->banner, !is_authorized);
+  if (!is_authorized)
+    {
+      adw_banner_set_title (self->banner, _("Some settings are locked"));
+      adw_banner_set_button_label (self->banner, _("_Unlock…"));
+    }
 }
 
 static void
@@ -156,9 +161,6 @@ static void
 cc_permission_infobar_init (CcPermissionInfobar *self)
 {
   gtk_widget_init_template (GTK_WIDGET (self));
-
-  /* Set the default title. */
-  cc_permission_infobar_set_title (self, NULL);
 }
 
 void
@@ -180,27 +182,4 @@ cc_permission_infobar_set_permission (CcPermissionInfobar *self,
                            self,
                            G_CONNECT_SWAPPED);
   on_permission_changed (self);
-}
-
-/**
- * cc_permission_infobar_set_title:
- * @self: a #CcPermissionInfobar
- * @title: (nullable): title to display in the infobar, or %NULL for the default
- *
- * Set the title text to display in the infobar.
- */
-void
-cc_permission_infobar_set_title (CcPermissionInfobar *self,
-                                 const gchar         *title)
-{
-  g_return_if_fail (CC_IS_PERMISSION_INFOBAR (self));
-
-  if (self->permission == NULL)
-    title = _("Error — some settings cannot be unlocked");
-
-  if (title == NULL)
-    title = _("Unlock to Change Settings");
-
-  adw_banner_set_title (self->banner, title);
-  adw_banner_set_button_label (self->banner, self->permission ? _("_Unlock…") : NULL);
 }

@@ -13,14 +13,14 @@
               <object class="CcPermissionInfobar" id="permission_infobar"/>
             </child>
             <child>
-              <object class="AdwPreferencesPage">
+              <object class="AdwPreferencesPage" id="preferences_page">
                 <child>
                   <object class="AdwPreferencesGroup">
                     <child>
                       <object class="GtkOverlay">
                         <property name="halign">center</property>
-                        <property name="sensitive" bind-source="CcUserPage" bind-property="editable" bind-flags="sync-create"/>
-                        <property name="has-tooltip" bind-source="CcUserPage" bind-property="editable" bind-flags="invert-boolean"/>
+                        <property name="sensitive" bind-source="CcUserPage" bind-property="avatar-editable" bind-flags="sync-create"/>
+                        <property name="has-tooltip" bind-source="CcUserPage" bind-property="avatar-editable" bind-flags="invert-boolean"/>
                         <property name="tooltip-text" translatable="yes">Unlock to Change This Setting</property>
                         <child>
                           <object class="AdwAvatar" id="avatar">
@@ -183,33 +183,25 @@
                         <property name="use_underline">True</property>
                         <property name="activatable">True</property>
                         <property name="show-arrow">True</property>
-                        <signal name="activated" handler="change_language" object="CcUserPage" swapped="yes"/>
+                        <signal name="activated" handler="show_language_chooser" object="CcUserPage" swapped="yes"/>
                       </object>
                     </child>
                   </object>
                 </child>
 
                 <child>
-                  <object class="AdwPreferencesGroup">
+                  <object class="AdwPreferencesGroup" id="button_group">
+                    <property name="separate-rows">True</property>
                     <child>
-                      <object class="GtkBox" id="action_area">
-                        <property name="orientation">vertical</property>
-                        <property name="spacing">12</property>
-
-                        <child>
-                          <object class="GtkButton" id="remove_user_button">
-                            <property name="visible" bind-source="CcUserPage" bind-property="is-current-user" bind-flags="invert-boolean"/>
-                            <property name="sensitive" bind-source="CcUserPage" bind-property="editable" bind-flags="sync-create"/>
-                            <property name="label" translatable="yes">_Remove User…</property>
-                            <property name="use-underline">True</property>
-                            <property name="halign">center</property>
-                            <signal name="clicked" handler="remove_user" object="CcUserPage" swapped="yes"/>
-                            <style>
-                              <class name="destructive-action"/>
-                              <class name="pill"/>
-                            </style>
-                          </object>
-                        </child>
+                      <object class="AdwButtonRow" id="remove_user_button">
+                        <property name="visible" bind-source="CcUserPage" bind-property="is-current-user" bind-flags="invert-boolean"/>
+                        <property name="sensitive" bind-source="CcUserPage" bind-property="editable" bind-flags="sync-create"/>
+                        <property name="title" translatable="yes">_Remove User…</property>
+                        <property name="use-underline">True</property>
+                        <signal name="activated" handler="remove_user" object="CcUserPage" swapped="yes"/>
+                        <style>
+                          <class name="destructive-action"/>
+                        </style>
                       </object>
                     </child>
                   </object>

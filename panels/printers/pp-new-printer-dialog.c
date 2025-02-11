@@ -572,15 +572,6 @@ update_dialog_state (PpNewPrinterDialog *self)
               self->samba_authenticated_searching ||
               self->samba_searching;
 
-  if (searching)
-    {
-      adw_window_title_set_subtitle (self->header_title, _("Searching for Printers"));
-    }
-  else
-    {
-      adw_window_title_set_subtitle (self->header_title, NULL);
-    }
-
   if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (self->devices_liststore), &iter))
       gtk_stack_set_visible_child_name (self->stack, "standard-page");
   else
@@ -1761,7 +1752,7 @@ pp_new_printer_dialog_new (PPDList              *ppd_list,
 {
   PpNewPrinterDialog *self;
 
-  self = g_object_new (pp_new_printer_dialog_get_type (), NULL);
+  self = g_object_new (PP_TYPE_NEW_PRINTER_DIALOG, NULL);
 
   self->user_callback = user_callback;
   self->user_data = user_data;

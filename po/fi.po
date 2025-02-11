@@ -27,7 +27,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-control-center/"
 "issues\n"
 "POT-Creation-Date: 2024-09-07 18:25+0000\n"
-"PO-Revision-Date: 2024-09-08 10:58+0300\n"
+"PO-Revision-Date: 2024-09-08 11:00+0300\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos+l10n@iki.fi>\n"
 "Language-Team: suomi <lokalisointi-lista@googlegroups.com>\n"
 "Language: fi\n"
@@ -55,8 +55,8 @@ msgid "Session Bus"
 msgstr "Istuntoväylä"
 
 #: panels/applications/cc-applications-panel.c:850
-#: panels/privacy/bolt/cc-bolt-page.ui:199
-#: panels/privacy/bolt/cc-bolt-page.ui:237
+#: panels/privacy/bolt/cc-bolt-page.ui:158
+#: panels/privacy/bolt/cc-bolt-page.ui:196
 #: panels/privacy/cc-privacy-panel.ui:72
 msgid "Devices"
 msgstr "Laitteet"
@@ -167,6 +167,7 @@ msgstr "Aseta linkit, tiedostot ja median avaavat sovellukset"
 
 #: panels/applications/cc-applications-panel.ui:84
 #: panels/keyboard/cc-keyboard-shortcut-dialog.ui:94
+#: panels/printers/cc-printers-panel.ui:102
 #: panels/system/datetime/cc-tz-dialog.ui:42
 #: panels/system/region/cc-format-chooser.ui:176 shell/cc-panel-list.ui:44
 msgid "No Results Found"
@@ -174,6 +175,7 @@ msgstr "Tuloksia ei löytynyt"
 
 #: panels/applications/cc-applications-panel.ui:85
 #: panels/keyboard/cc-keyboard-shortcut-dialog.ui:95
+#: panels/printers/cc-printers-panel.ui:103
 #: panels/system/datetime/cc-tz-dialog.ui:43
 #: panels/system/region/cc-format-chooser.ui:177 shell/cc-panel-list.ui:45
 msgid "Try a different search"
@@ -192,16 +194,14 @@ msgstr "_Etsi ohjelmistokeskuksessa"
 msgid "Unable to List Apps"
 msgstr "Sovellusten listaaminen ei onnistu"
 
+#. Translators: Parental Controls here refers to the features provided by 'malcontent'
 #: panels/applications/cc-applications-panel.ui:122
-#| msgid ""
-#| "An error has occurred and network cannot be used.\n"
-#| " Error details: NetworkManager not running."
 msgid ""
 "An error has occurred and apps cannot be listed.\n"
-"Error details: Malcontent is not installed."
+"Error details: Parental Controls are not installed."
 msgstr ""
-"Tapahtui virhe, eikä sovelluksia voida listata.\n"
-"Virheen tiedot: Malcontent ei ole asennettuna."
+"Tapahtui virhe, jonka vuoksi sovelluksia ei voi listata.\n"
+"Virheen tiedot: Perheasetukset (Parental Controls) ei ole asennettu."
 
 #: panels/applications/cc-applications-panel.ui:139
 #: panels/applications/cc-default-apps-page.ui:4
@@ -1096,6 +1096,7 @@ msgstr "Näytön kalibrointi"
 #: panels/network/connection-editor/ce-page-details.c:89
 #: panels/network/connection-editor/connection-editor.ui:16
 #: panels/printers/pp-details-dialog.c:267
+#: panels/printers/pp-jobs-dialog.ui:125
 #: panels/printers/pp-new-printer-dialog.ui:65
 #: panels/printers/pp-ppd-selection-dialog.ui:17
 #: panels/privacy/usage/cc-usage-page.ui:125
@@ -1105,6 +1106,7 @@ msgstr "Näytön kalibrointi"
 #: panels/system/users/cc-add-user-dialog.ui:24
 #: panels/system/users/cc-avatar-chooser.c:92
 #: panels/system/users/cc-enterprise-login-dialog.ui:44
+#: panels/system/users/cc-fingerprint-dialog.c:1396
 #: panels/system/users/cc-fingerprint-dialog.ui:32
 #: panels/system/users/cc-password-dialog.ui:15
 #: panels/system/users/cc-user-page.ui:231
@@ -1663,7 +1665,7 @@ msgid "No languages found"
 msgstr "Kieli ei löytynyt"
 
 #: panels/common/cc-language-chooser.ui:70
-#: panels/keyboard/cc-input-chooser.c:185
+#: panels/keyboard/cc-input-chooser.c:182
 msgid "More…"
 msgstr "Lisää…"
 
@@ -2242,15 +2244,15 @@ msgstr "Pienennä tekstin kokoa"
 msgid "High contrast on or off"
 msgstr "Korkea kontrasti päälle/pois"
 
-#: panels/keyboard/cc-input-chooser.c:198
+#: panels/keyboard/cc-input-chooser.c:195
 msgid "No input sources found"
 msgstr "Syötelähteitä ei löytynyt"
 
-#: panels/keyboard/cc-input-chooser.c:253 panels/keyboard/cc-input-row.ui:46
+#: panels/keyboard/cc-input-chooser.c:250 panels/keyboard/cc-input-row.ui:46
 msgid "View Keyboard Layout"
 msgstr "Näytä näppäimistöasettelu"
 
-#: panels/keyboard/cc-input-chooser.c:1046
+#: panels/keyboard/cc-input-chooser.c:1043
 msgctxt "Input Source"
 msgid "Other"
 msgstr "Muu"
@@ -2262,10 +2264,6 @@ msgstr "Lisää syötelähde"
 #: panels/keyboard/cc-input-chooser.ui:37
 msgid "Search languages and countries"
 msgstr "Etsi kieliä ja valtioita"
-
-#: panels/keyboard/cc-input-chooser.ui:52
-msgid "Input methods can’t be used on the login screen"
-msgstr "Syötemenetelmiä ei voi käyttää kirjautumisruudussa"
 
 #: panels/keyboard/cc-input-list-box.ui:14
 msgid "_Add Input Source"
@@ -2397,53 +2395,53 @@ msgstr ""
 "Syötetapoja voi vaihtaa käyttämällä pikanäppäintä %s.\n"
 "Näitä pikanäppäimiä voi muuttaa pikanäppäinten asetuksissa."
 
-#: panels/keyboard/cc-keyboard-panel.ui:13
+#: panels/keyboard/cc-keyboard-panel.ui:6
 #: panels/keyboard/gnome-keyboard-panel.desktop.in:3
 msgid "Keyboard"
 msgstr "Näppäimistö"
 
-#: panels/keyboard/cc-keyboard-panel.ui:23
+#: panels/keyboard/cc-keyboard-panel.ui:16
 msgid "Input Sources"
 msgstr "Syötelähteet"
 
-#: panels/keyboard/cc-keyboard-panel.ui:24
+#: panels/keyboard/cc-keyboard-panel.ui:17
 msgid "Includes keyboard layouts and input methods"
 msgstr "Sisältää näppäimistöasettelut ja syötetavat"
 
-#: panels/keyboard/cc-keyboard-panel.ui:34
+#: panels/keyboard/cc-keyboard-panel.ui:27
 msgid "Input Source Switching"
 msgstr "Syötelähteen vaihtaminen"
 
-#: panels/keyboard/cc-keyboard-panel.ui:37
+#: panels/keyboard/cc-keyboard-panel.ui:30
 msgid "Use the _same source for all windows"
 msgstr "Käytä _samaa lähdettä kaikille ikkunoille"
 
-#: panels/keyboard/cc-keyboard-panel.ui:49
+#: panels/keyboard/cc-keyboard-panel.ui:42
 msgid "Switch input sources _individually for each window"
 msgstr "Vaihda syötelähteitä _yksittäin eri ikkunoille"
 
-#: panels/keyboard/cc-keyboard-panel.ui:65
+#: panels/keyboard/cc-keyboard-panel.ui:58
 msgid "Special Character Entry"
 msgstr "Erikoismerkkien kirjoitus"
 
-#: panels/keyboard/cc-keyboard-panel.ui:66
+#: panels/keyboard/cc-keyboard-panel.ui:59
 msgid "Methods for entering symbols and letter variants using the keyboard"
 msgstr "Tavat eri symbolo ja kirjainmuunnelmien syöttämiseen näppäimistöllä"
 
-#: panels/keyboard/cc-keyboard-panel.ui:69
+#: panels/keyboard/cc-keyboard-panel.ui:62
 msgid "A_lternate Characters Key"
 msgstr "_Vaihtoehtoinen merkkinäppäin"
 
-#: panels/keyboard/cc-keyboard-panel.ui:77
+#: panels/keyboard/cc-keyboard-panel.ui:70
 msgid "_Compose Key"
 msgstr "_Compose-näppäin"
 
-#: panels/keyboard/cc-keyboard-panel.ui:86
+#: panels/keyboard/cc-keyboard-panel.ui:79
 #: panels/keyboard/cc-keyboard-shortcut-dialog.ui:9
 msgid "Keyboard Shortcuts"
 msgstr "Pikanäppäimet"
 
-#: panels/keyboard/cc-keyboard-panel.ui:89
+#: panels/keyboard/cc-keyboard-panel.ui:82
 msgid "_View and Customize Shortcuts"
 msgstr "_Katsele ja mukauta pikanäppäimiä"
 
@@ -3017,7 +3015,7 @@ msgstr "Verkon nimi"
 #. Translators: This is a password needed for printing.
 #: panels/network/cc-qr-code-dialog.ui:66
 #: panels/network/cc-wifi-hotspot-dialog.ui:92
-#: panels/printers/pp-jobs-dialog.ui:52
+#: panels/printers/pp-jobs-dialog.ui:178
 #: panels/printers/pp-new-printer-dialog.ui:292
 #: panels/system/users/cc-add-user-dialog.ui:103
 #: panels/wwan/cc-wwan-apn-dialog.ui:175
@@ -3359,12 +3357,10 @@ msgid "%d Mb/s"
 msgstr "%d Mb/s"
 
 #: panels/network/connection-editor/ce-page-details.c:339
-#| msgid "2.4 GHz / 5 GHz"
 msgid "2.4 GHz / 5 GHz / 6 GHz"
 msgstr "2.4 GHz / 5 GHz / 6 GHz"
 
 #: panels/network/connection-editor/ce-page-details.c:342
-#| msgid "2.4 GHz / 5 GHz"
 msgid "5 GHz / 6 GHz"
 msgstr "5 GHz / 6 GHz"
 
@@ -4466,7 +4462,6 @@ msgstr ""
 "Notifications;Banner;Message;Tray;Popup;ilmoitus;ilmoitukset;banneri;viesti;"
 
 #: panels/online-accounts/cc-online-account-provider-row.c:57
-#| msgid "Next"
 msgid "Nextcloud"
 msgstr "Nextcloud"
 
@@ -4937,21 +4932,21 @@ msgstr ""
 "Energy;virta;uni;valmiustila;lepotila;akku;kirkkaus;himmennys;tyhjä;näyttö;"
 "jouten;virransäästö;virranhallinta;"
 
-#: panels/printers/cc-printers-panel.c:677
+#: panels/printers/cc-printers-panel.c:672
 msgid "Undo"
 msgstr "Kumoa"
 
 #. Translators: %s is the printer name
-#: panels/printers/cc-printers-panel.c:687
+#: panels/printers/cc-printers-panel.c:682
 #, c-format
 msgid "Printer “%s” has been deleted"
 msgstr "Tulostin “%s” on poistettu"
 
-#: panels/printers/cc-printers-panel.c:928
+#: panels/printers/cc-printers-panel.c:924
 msgid "Failed to add new printer."
 msgstr "Uuden tulostimen lisäys epäonnistui."
 
-#: panels/printers/cc-printers-panel.c:1297
+#: panels/printers/cc-printers-panel.c:1293
 msgid "Unlock to add printers and change settings"
 msgstr "Avaa lukitus lisätäksesi tulostimia ja muuttaaksesi asetuksia"
 
@@ -4962,7 +4957,7 @@ msgstr "Lisää yhdistetyt tulostimet ja verkkotulostimet"
 #. Translators: This button adds new printer.
 #. Translators: This button adds a new printer.
 #: panels/printers/cc-printers-panel.ui:31
-#: panels/printers/cc-printers-panel.ui:118
+#: panels/printers/cc-printers-panel.ui:124
 msgid "_Add Printer…"
 msgstr "_Lisää tulostin…"
 
@@ -4970,17 +4965,17 @@ msgstr "_Lisää tulostin…"
 msgid "Search printers"
 msgstr "Etsi tulostimia"
 
-#: panels/printers/cc-printers-panel.ui:115
+#: panels/printers/cc-printers-panel.ui:121
 msgid "No Printers"
 msgstr "Ei tulostimia"
 
 #. Translators: Title if the CUPS server is not running (we can not connect to it).
-#: panels/printers/cc-printers-panel.ui:140
+#: panels/printers/cc-printers-panel.ui:146
 msgid "No Print Service"
 msgstr "Ei tulostinpalvelua"
 
 #. Translators: Description if the CUPS server is not running (we can not connect to it).
-#: panels/printers/cc-printers-panel.ui:141
+#: panels/printers/cc-printers-panel.ui:147
 msgid "The system printing service doesn’t seem to be available"
 msgstr "Järjestelmän tulostuspalvelu ei vaikuta olevan käytettävissä"
 
@@ -5171,7 +5166,7 @@ msgid "Move Print Job to Top of Queue"
 msgstr "Siirrä tulostustyö jonon kärkeen"
 
 #. Translators: This label shows how many jobs of this printer needs to be authenticated to be printed.
-#: panels/printers/pp-jobs-dialog.c:318
+#: panels/printers/pp-jobs-dialog.c:319
 #, c-format
 msgid "%u Job Requires Authentication"
 msgid_plural "%u Jobs Require Authentication"
@@ -5179,49 +5174,57 @@ msgstr[0] "%u työ vaatii tunnistautumisen"
 msgstr[1] "%u työtä vaatii tunnistautumisen"
 
 #. Translators: The printer needs authentication info to print.
-#: panels/printers/pp-jobs-dialog.c:455
+#: panels/printers/pp-jobs-dialog.c:456
 #, c-format
 msgid "Enter credentials to print from %s"
 msgstr "Syötä kirjautumistietosi tulostaaksesi tulostimesta %s"
 
+#. Translators: this action removes (purges) all the listed jobs from the list.
+#: panels/printers/pp-jobs-dialog.ui:12
+msgid "_Clear All"
+msgstr "Tyhjenn_ä kaikki"
+
+#: panels/printers/pp-jobs-dialog.ui:23
+msgid "Active Jobs"
+msgstr "Aktiiviset työt"
+
+#. Translators: this label describes the dialog empty state, with no jobs listed.
+#: panels/printers/pp-jobs-dialog.ui:36
+msgid "No Active Printer Jobs"
+msgstr "Ei aktiivisia tulostustöitä"
+
+#. Translators: This button pop up authentication dialog for print jobs which need credentials.
+#: panels/printers/pp-jobs-dialog.ui:80
+msgid "_Authenticate"
+msgstr "_Tunnistaudu"
+
+#: panels/printers/pp-jobs-dialog.ui:119
+msgid "Clear All Active Jobs?"
+msgstr "Tyhjennetäänkö kaikki aktiiviset työt?"
+
+#: panels/printers/pp-jobs-dialog.ui:120
+msgid "Clearing jobs cannot be undone"
+msgstr "Töiden tyhjentämistä ei voi perua"
+
+#: panels/printers/pp-jobs-dialog.ui:126
+msgid "Clear _All"
+msgstr "Tyhjennä k_aikki"
+
 #. Translators: This is a windows domain used with SMB protocol.
-#: panels/printers/pp-jobs-dialog.ui:28
+#: panels/printers/pp-jobs-dialog.ui:154
 msgid "Domain"
 msgstr "Toimialue"
 
 #. Translators: This is a username on a print server.
-#: panels/printers/pp-jobs-dialog.ui:40
+#: panels/printers/pp-jobs-dialog.ui:166
 #: panels/printers/pp-new-printer-dialog.ui:271
 #: panels/wwan/cc-wwan-apn-dialog.ui:150
 msgid "Username"
 msgstr "Käyttäjätunnus"
 
 #. Translators: This button authenticates all print jobs and send them for printing.
-#: panels/printers/pp-jobs-dialog.ui:101
+#: panels/printers/pp-jobs-dialog.ui:227
 msgid "A_uthenticate"
-msgstr "_Tunnistaudu"
-
-#: panels/printers/pp-jobs-dialog.ui:119
-msgid "Printer Jobs"
-msgstr "Tulostustyöt"
-
-#. Translators: this action removes (purges) all the listed jobs from the list.
-#: panels/printers/pp-jobs-dialog.ui:128
-msgid "_Clear All"
-msgstr "Tyhjenn_ä kaikki"
-
-#: panels/printers/pp-jobs-dialog.ui:139
-msgid "Active Jobs"
-msgstr "Aktiiviset työt"
-
-#. Translators: this label describes the dialog empty state, with no jobs listed.
-#: panels/printers/pp-jobs-dialog.ui:152
-msgid "No Active Printer Jobs"
-msgstr "Ei aktiivisia tulostustöitä"
-
-#. Translators: This button pop up authentication dialog for print jobs which need credentials.
-#: panels/printers/pp-jobs-dialog.ui:196
-msgid "_Authenticate"
 msgstr "_Tunnistaudu"
 
 #. Translators: Name of job which makes printer to autoconfigure itself
@@ -5431,7 +5434,7 @@ msgstr "Testisivu"
 #: panels/printers/pp-options-dialog.ui:6
 #: panels/printers/pp-options-dialog.ui:28
 msgid "Printer Options"
-msgstr "Tulostimen määritykset"
+msgstr "Tulostusvalinnat"
 
 #. Translators: This button triggers the printing of a test page.
 #: panels/printers/pp-options-dialog.ui:18
@@ -5770,23 +5773,23 @@ msgctxt "Thunderbolt Device Status"
 msgid "Authorized"
 msgstr "Valtuutettu"
 
-#: panels/privacy/bolt/cc-bolt-page.c:216
+#: panels/privacy/bolt/cc-bolt-page.c:211
 msgid ""
 "The Thunderbolt subsystem (boltd) is not installed or not set up properly."
 msgstr ""
 "Thunderbolt-alijärjestelmää (boltd) ei ole asennettu tai sen asetukset eivät "
 "ole kunnossa."
 
-#: panels/privacy/bolt/cc-bolt-page.c:472
+#: panels/privacy/bolt/cc-bolt-page.c:467
 msgid "Allow direct access to devices such as docks and external GPUs."
 msgstr ""
 "Salli suora pääsy laitteisiin kuten telakoihin ja erillisiin näytönohjaimiin."
 
-#: panels/privacy/bolt/cc-bolt-page.c:473
+#: panels/privacy/bolt/cc-bolt-page.c:468
 msgid "Only USB and Display Port devices can attach."
 msgstr "Vain USB- ja DisplayPort-laitteet voivat liittyä."
 
-#: panels/privacy/bolt/cc-bolt-page.c:508
+#: panels/privacy/bolt/cc-bolt-page.c:503
 msgid ""
 "Thunderbolt could not be detected.\n"
 "Either the system lacks Thunderbolt support, it has been disabled in the "
@@ -5796,15 +5799,15 @@ msgstr ""
 "Järjestelmästä puuttuu Thunderbolt-tuki, tai se on poistettu käytöstä BIOS:"
 "in kautta, tai BIOS:in kautta sille asetettu turvataso ei ole tuettu."
 
-#: panels/privacy/bolt/cc-bolt-page.c:552
+#: panels/privacy/bolt/cc-bolt-page.c:547
 msgid "Thunderbolt support has been disabled in the BIOS."
 msgstr "Thunderbolt-tuki on poistettu käytöstä BIOS:in kautta."
 
-#: panels/privacy/bolt/cc-bolt-page.c:556
+#: panels/privacy/bolt/cc-bolt-page.c:551
 msgid "Thunderbolt security level could not be determined."
 msgstr "Thunderbolt-turvatasoa ei voitu määrittää."
 
-#: panels/privacy/bolt/cc-bolt-page.c:676
+#: panels/privacy/bolt/cc-bolt-page.c:671
 #, c-format
 msgid "Error switching direct mode: %s"
 msgstr "Virhe vaihtaessa direct-tilaan: %s"
@@ -5813,32 +5816,28 @@ msgstr "Virhe vaihtaessa direct-tilaan: %s"
 msgid "Thunderbolt"
 msgstr "Thunderbolt"
 
-#: panels/privacy/bolt/cc-bolt-page.ui:48
-msgid "Close notification"
-msgstr "Sulje ilmoitus"
-
-#: panels/privacy/bolt/cc-bolt-page.ui:92
+#: panels/privacy/bolt/cc-bolt-page.ui:51
 msgid "No Thunderbolt Support"
 msgstr "Ei Thunderbolt-tukea"
 
-#: panels/privacy/bolt/cc-bolt-page.ui:93
+#: panels/privacy/bolt/cc-bolt-page.ui:52
 msgid "Could not connect to the thunderbolt subsystem"
 msgstr "Thunderbolt-alijärjestelmään ei voitu yhdistää"
 
-#: panels/privacy/bolt/cc-bolt-page.ui:110
+#: panels/privacy/bolt/cc-bolt-page.ui:69
 msgid "Direct Access"
 msgstr "Suora pääsy"
 
-#: panels/privacy/bolt/cc-bolt-page.ui:113
+#: panels/privacy/bolt/cc-bolt-page.ui:72
 msgid "Allow direct access to devices such as docks and external GPUs"
 msgstr ""
 "Salli suora pääsy laitteisiin kuten telakoihin ja erillisiin näytönohjaimiin"
 
-#: panels/privacy/bolt/cc-bolt-page.ui:163
+#: panels/privacy/bolt/cc-bolt-page.ui:122
 msgid "Pending Devices"
 msgstr "Odottavat laitteet"
 
-#: panels/privacy/bolt/cc-bolt-page.ui:246
+#: panels/privacy/bolt/cc-bolt-page.ui:205
 msgid "No devices attached"
 msgstr "Ei liitettyjä laitteita"
 
@@ -6044,7 +6043,7 @@ msgstr ""
 
 #. TRANSLATORS: in reference to firmware protection: 0/4 stars
 #: panels/privacy/firmware-security/cc-firmware-security-dialog.c:108
-#: panels/privacy/firmware-security/cc-firmware-security-page.c:532
+#: panels/privacy/firmware-security/cc-firmware-security-page.c:533
 msgid "Security Checks Failed"
 msgstr "Suojaustarkastukset epäonnistuivat"
 
@@ -6069,7 +6068,7 @@ msgstr ""
 
 #. TRANSLATORS: in reference to firmware protection: 1/4 stars
 #: panels/privacy/firmware-security/cc-firmware-security-dialog.c:121
-#: panels/privacy/firmware-security/cc-firmware-security-page.c:539
+#: panels/privacy/firmware-security/cc-firmware-security-page.c:540
 msgid "Basic Security Checks Passed"
 msgstr "Perustason suojaustarkastukset läpäisty"
 
@@ -6087,7 +6086,7 @@ msgstr ""
 
 #. TRANSLATORS: in reference to firmware protection: 2~4 stars
 #: panels/privacy/firmware-security/cc-firmware-security-dialog.c:134
-#: panels/privacy/firmware-security/cc-firmware-security-page.c:549
+#: panels/privacy/firmware-security/cc-firmware-security-page.c:550
 msgid "Protected"
 msgstr "Suojattu"
 
@@ -6215,44 +6214,44 @@ msgstr ""
 
 #. TRANSLATOR: this is the date in "%Y-%m-%d %H:%M:%S" format,
 #. for example: 2022-08-01 22:48:00
-#: panels/privacy/firmware-security/cc-firmware-security-page.c:228
+#: panels/privacy/firmware-security/cc-firmware-security-page.c:229
 #, c-format
 msgid "%1$s"
 msgstr "%1$s"
 
 #. TRANSLATOR: This is the text event status output when the event status is "success"
-#: panels/privacy/firmware-security/cc-firmware-security-page.c:234
+#: panels/privacy/firmware-security/cc-firmware-security-page.c:235
 msgid "Pass"
 msgstr "Läpäisty"
 
 #. TRANSLATOR: This is the text event status output when the event status is not "success"
-#: panels/privacy/firmware-security/cc-firmware-security-page.c:237
+#: panels/privacy/firmware-security/cc-firmware-security-page.c:238
 msgid "! Fail"
 msgstr "! Hylätty"
 
-#: panels/privacy/firmware-security/cc-firmware-security-page.c:240
+#: panels/privacy/firmware-security/cc-firmware-security-page.c:241
 #, c-format
 msgid "(%1$s → %2$s)"
 msgstr "(%1$s → %2$s)"
 
-#: panels/privacy/firmware-security/cc-firmware-security-page.c:533
+#: panels/privacy/firmware-security/cc-firmware-security-page.c:534
 msgid "Hardware does not pass basic security checks."
 msgstr "Laitteisto ei läpäise perustason suojaustarkastuksia."
 
-#: panels/privacy/firmware-security/cc-firmware-security-page.c:540
+#: panels/privacy/firmware-security/cc-firmware-security-page.c:541
 msgid "Hardware has a basic level of protection."
 msgstr "Laitteiston suojaus on perustasolla."
 
-#: panels/privacy/firmware-security/cc-firmware-security-page.c:550
+#: panels/privacy/firmware-security/cc-firmware-security-page.c:551
 msgid "Hardware has a strong level of protection."
 msgstr "Laitteiston suojaus on vahvalla tasolla."
 
 #. TRANSLATORS: in reference to firmware protection: ??? stars
-#: panels/privacy/firmware-security/cc-firmware-security-page.c:556
+#: panels/privacy/firmware-security/cc-firmware-security-page.c:557
 msgid "Security Checks Unavailable"
 msgstr "Suojaustarkastukset eivät ole saatavilla"
 
-#: panels/privacy/firmware-security/cc-firmware-security-page.c:557
+#: panels/privacy/firmware-security/cc-firmware-security-page.c:558
 msgid "Security levels are not available for this device."
 msgstr "Suojaustasot eivät ole saatavilla tälle laitteelle."
 
@@ -7158,7 +7157,6 @@ msgid "Allow this device to be used remotely"
 msgstr "Salli tämän laitteen käyttö etäältä"
 
 #: panels/system/cc-system-panel.ui:65
-#| msgid "Secure Shell"
 msgid "Se_cure Shell"
 msgstr "Se_cure Shell"
 
@@ -7221,116 +7219,116 @@ msgstr "_Kuukausi"
 msgid "_Day"
 msgstr "_Päivä"
 
-#: panels/system/datetime/cc-datetime-page.ui:123
+#: panels/system/datetime/cc-datetime-page.ui:124
 msgid "Automatic _Date &amp; Time"
 msgstr "Automaattinen _päivä ja aika"
 
-#: panels/system/datetime/cc-datetime-page.ui:124
+#: panels/system/datetime/cc-datetime-page.ui:125
 msgid "Requires internet access"
 msgstr "Vaatii internetyhteyden"
 
-#: panels/system/datetime/cc-datetime-page.ui:136
+#: panels/system/datetime/cc-datetime-page.ui:137
 msgid "Date &amp; _Time"
 msgstr "Päivä _ja aika"
 
-#: panels/system/datetime/cc-datetime-page.ui:148
+#: panels/system/datetime/cc-datetime-page.ui:149
 msgid "Automatic Time _Zone"
 msgstr "Automaattinen _aikavyöhyke"
 
-#: panels/system/datetime/cc-datetime-page.ui:149
+#: panels/system/datetime/cc-datetime-page.ui:150
 msgid "Requires location services enabled and internet access"
 msgstr ""
 "Vaatii paikannuspalvelun olevan käytössä ja aktiivisen internetyhteyden"
 
-#: panels/system/datetime/cc-datetime-page.ui:155
+#: panels/system/datetime/cc-datetime-page.ui:156
 msgid "Time Z_one"
 msgstr "Aikav_yöhyke"
 
-#: panels/system/datetime/cc-datetime-page.ui:166
+#: panels/system/datetime/cc-datetime-page.ui:167
 msgid "Time _Format"
 msgstr "Ajan _muoto"
 
-#: panels/system/datetime/cc-datetime-page.ui:177
+#: panels/system/datetime/cc-datetime-page.ui:178
 msgid "_24-hour"
 msgstr "_24 tuntia"
 
-#: panels/system/datetime/cc-datetime-page.ui:185
+#: panels/system/datetime/cc-datetime-page.ui:186
 msgid "AM / _PM"
 msgstr "AM / _PM"
 
-#: panels/system/datetime/cc-datetime-page.ui:198
+#: panels/system/datetime/cc-datetime-page.ui:199
 msgid "Clock &amp; Calendar"
 msgstr "Kello ja kalenteri"
 
-#: panels/system/datetime/cc-datetime-page.ui:199
+#: panels/system/datetime/cc-datetime-page.ui:200
 msgid "Control how the time and date is shown in the top bar"
 msgstr "Määritä miten aika ja päivä esitetään yläpalkissa"
 
-#: panels/system/datetime/cc-datetime-page.ui:202
+#: panels/system/datetime/cc-datetime-page.ui:203
 msgid "_Week Day"
 msgstr "V_iikonpäivä"
 
-#: panels/system/datetime/cc-datetime-page.ui:208
+#: panels/system/datetime/cc-datetime-page.ui:209
 msgid "D_ate"
 msgstr "P_äivä"
 
-#: panels/system/datetime/cc-datetime-page.ui:214
+#: panels/system/datetime/cc-datetime-page.ui:215
 msgid "_Seconds"
 msgstr "_Sekunnit"
 
-#: panels/system/datetime/cc-datetime-page.ui:220
+#: panels/system/datetime/cc-datetime-page.ui:221
 msgid "Week _Numbers"
 msgstr "_Viikkonumerot"
 
-#: panels/system/datetime/cc-datetime-page.ui:221
+#: panels/system/datetime/cc-datetime-page.ui:222
 msgid "Shown in the dropdown calendar"
 msgstr "Näytetään pudotusvalikon kalenterissa"
 
-#: panels/system/datetime/cc-datetime-page.ui:257
+#: panels/system/datetime/cc-datetime-page.ui:258
 msgid "January"
 msgstr "Tammikuu"
 
-#: panels/system/datetime/cc-datetime-page.ui:258
+#: panels/system/datetime/cc-datetime-page.ui:259
 msgid "February"
 msgstr "Helmikuu"
 
-#: panels/system/datetime/cc-datetime-page.ui:259
+#: panels/system/datetime/cc-datetime-page.ui:260
 msgid "March"
 msgstr "Maaliskuu"
 
-#: panels/system/datetime/cc-datetime-page.ui:260
+#: panels/system/datetime/cc-datetime-page.ui:261
 msgid "April"
 msgstr "Huhtikuu"
 
-#: panels/system/datetime/cc-datetime-page.ui:261
+#: panels/system/datetime/cc-datetime-page.ui:262
 msgid "May"
 msgstr "Toukokuu"
 
-#: panels/system/datetime/cc-datetime-page.ui:262
+#: panels/system/datetime/cc-datetime-page.ui:263
 msgid "June"
 msgstr "Kesäkuu"
 
-#: panels/system/datetime/cc-datetime-page.ui:263
+#: panels/system/datetime/cc-datetime-page.ui:264
 msgid "July"
 msgstr "Heinäkuu"
 
-#: panels/system/datetime/cc-datetime-page.ui:264
+#: panels/system/datetime/cc-datetime-page.ui:265
 msgid "August"
 msgstr "Elokuu"
 
-#: panels/system/datetime/cc-datetime-page.ui:265
+#: panels/system/datetime/cc-datetime-page.ui:266
 msgid "September"
 msgstr "Syyskuu"
 
-#: panels/system/datetime/cc-datetime-page.ui:266
+#: panels/system/datetime/cc-datetime-page.ui:267
 msgid "October"
 msgstr "Lokakuu"
 
-#: panels/system/datetime/cc-datetime-page.ui:267
+#: panels/system/datetime/cc-datetime-page.ui:268
 msgid "November"
 msgstr "Marraskuu"
 
-#: panels/system/datetime/cc-datetime-page.ui:268
+#: panels/system/datetime/cc-datetime-page.ui:269
 msgid "December"
 msgstr "Joulukuu"
 
@@ -7898,87 +7896,87 @@ msgstr "Sormenjälkien listaaminen epäonnistui: %s"
 msgid "Failed to delete saved fingerprints: %s"
 msgstr "Tallennettujen sormenjälkien poistaminen epäonnistui: %s"
 
-#: panels/system/users/cc-fingerprint-dialog.c:608
+#: panels/system/users/cc-fingerprint-dialog.c:609
 msgid "Left thumb"
 msgstr "Vasen peukalo"
 
-#: panels/system/users/cc-fingerprint-dialog.c:610
+#: panels/system/users/cc-fingerprint-dialog.c:611
 msgid "Left middle finger"
 msgstr "Vasen keskisormi"
 
-#: panels/system/users/cc-fingerprint-dialog.c:612
+#: panels/system/users/cc-fingerprint-dialog.c:613
 msgid "_Left index finger"
 msgstr "_Vasen etusormi"
 
-#: panels/system/users/cc-fingerprint-dialog.c:614
+#: panels/system/users/cc-fingerprint-dialog.c:615
 msgid "Left ring finger"
 msgstr "Vasen nimetön"
 
-#: panels/system/users/cc-fingerprint-dialog.c:616
+#: panels/system/users/cc-fingerprint-dialog.c:617
 msgid "Left little finger"
 msgstr "Vasen pikkurilli"
 
-#: panels/system/users/cc-fingerprint-dialog.c:618
+#: panels/system/users/cc-fingerprint-dialog.c:619
 msgid "Right thumb"
 msgstr "Oikea peukalo"
 
-#: panels/system/users/cc-fingerprint-dialog.c:620
+#: panels/system/users/cc-fingerprint-dialog.c:621
 msgid "Right middle finger"
 msgstr "Oikea keskisormi"
 
-#: panels/system/users/cc-fingerprint-dialog.c:622
+#: panels/system/users/cc-fingerprint-dialog.c:623
 msgid "_Right index finger"
 msgstr "_Oikea etusormi"
 
-#: panels/system/users/cc-fingerprint-dialog.c:624
+#: panels/system/users/cc-fingerprint-dialog.c:625
 msgid "Right ring finger"
 msgstr "Oikea nimetön"
 
-#: panels/system/users/cc-fingerprint-dialog.c:626
+#: panels/system/users/cc-fingerprint-dialog.c:627
 msgid "Right little finger"
 msgstr "Oikea pikkurilli"
 
-#: panels/system/users/cc-fingerprint-dialog.c:628
+#: panels/system/users/cc-fingerprint-dialog.c:629
 msgid "Unknown Finger"
 msgstr "Tuntematon sormi"
 
-#: panels/system/users/cc-fingerprint-dialog.c:759
+#: panels/system/users/cc-fingerprint-dialog.c:760
 msgctxt "Fingerprint enroll state"
 msgid "Complete"
 msgstr "Valmis"
 
-#: panels/system/users/cc-fingerprint-dialog.c:770
+#: panels/system/users/cc-fingerprint-dialog.c:771
 msgid "Fingerprint device disconnected"
 msgstr "Yhteys sormenjälkilaitteeseen katkaistu"
 
-#: panels/system/users/cc-fingerprint-dialog.c:776
+#: panels/system/users/cc-fingerprint-dialog.c:777
 msgid "Fingerprint device storage is full"
 msgstr "Sormenjälkilaitteen tallennustila on täynnä"
 
-#: panels/system/users/cc-fingerprint-dialog.c:780
+#: panels/system/users/cc-fingerprint-dialog.c:781
 msgid "Fingerprint is duplicate"
 msgstr "Sormenjälki on kaksoiskappale"
 
-#: panels/system/users/cc-fingerprint-dialog.c:784
+#: panels/system/users/cc-fingerprint-dialog.c:785
 msgid "Failed to enroll new fingerprint"
 msgstr "Uuden sormenjäljen lisääminen epäonnistui"
 
-#: panels/system/users/cc-fingerprint-dialog.c:815
+#: panels/system/users/cc-fingerprint-dialog.c:816
 #, c-format
 msgid "Failed to start enrollment: %s"
 msgstr "Sormenjäljen lisäämisen aloittaminen epäonnistui: %s"
 
-#: panels/system/users/cc-fingerprint-dialog.c:823
+#: panels/system/users/cc-fingerprint-dialog.c:824
 msgctxt "Fingerprint enroll state"
 msgid "Failed to enroll new fingerprint"
 msgstr "Uuden sormenjäljen lisääminen epäonnistui"
 
-#: panels/system/users/cc-fingerprint-dialog.c:854
+#: panels/system/users/cc-fingerprint-dialog.c:855
 #, c-format
 msgid "Failed to stop enrollment: %s"
 msgstr "Sormenjäljen lisäämisen pysäyttäminen epäonnistui: %s"
 
-#: panels/system/users/cc-fingerprint-dialog.c:900
+#: panels/system/users/cc-fingerprint-dialog.c:901
 msgid ""
 "Repeatedly lift and place your finger on the reader to enroll your "
 "fingerprint"
@@ -7986,34 +7984,51 @@ msgstr ""
 "Nosta sormea ja aseta se takaisin lukijaan toistuvasti lisätäksesi "
 "sormenjälkesi"
 
-#: panels/system/users/cc-fingerprint-dialog.c:1014
+#: panels/system/users/cc-fingerprint-dialog.c:1015
 msgid "_Re-enroll this finger…"
 msgstr "_Lisää uudelleen tämä sormi…"
 
 #. TRANSLATORS: This is the label for the button to enroll a new finger
-#: panels/system/users/cc-fingerprint-dialog.c:1029
+#: panels/system/users/cc-fingerprint-dialog.c:1030
 msgid "Scan new fingerprint"
 msgstr "Lue uusi sormenjälki"
 
-#: panels/system/users/cc-fingerprint-dialog.c:1066
+#: panels/system/users/cc-fingerprint-dialog.c:1067
 #, c-format
 msgid "Failed to release fingerprint device %s: %s"
 msgstr "Sormenjälkilaitteen %s vapauttaminen epäonnistui: %s"
 
-#: panels/system/users/cc-fingerprint-dialog.c:1138
+#: panels/system/users/cc-fingerprint-dialog.c:1139
 msgctxt "Fingerprint enroll state"
 msgid "Problem Reading Device"
 msgstr "Ongelma laitetta luettaessa"
 
-#: panels/system/users/cc-fingerprint-dialog.c:1173
+#: panels/system/users/cc-fingerprint-dialog.c:1174
 #, c-format
 msgid "Failed to claim fingerprint device %s: %s"
 msgstr "Sormenjälkilaitteen %s varaaminen epäonnistui: %s"
 
-#: panels/system/users/cc-fingerprint-dialog.c:1315
+#: panels/system/users/cc-fingerprint-dialog.c:1316
 #, c-format
 msgid "Failed to get fingerprint devices: %s"
 msgstr "Sormenjälkilaitteiden saaminen epäonnistui: %s"
+
+#: panels/system/users/cc-fingerprint-dialog.c:1391
+msgid "Delete All Fingerprints?"
+msgstr "Poistetaanko kaikki sormenjäljet?"
+
+#: panels/system/users/cc-fingerprint-dialog.c:1392
+msgid ""
+"Deleting all enrolled fingerprints will disable Fingerprint Login. To re-"
+"enable Fingerprint Login at least one fingerprint will have to be enrolled."
+msgstr ""
+"Kaikkien rekisteröityjen sormenjälkien poistaminen poistaa sormenjäljellä "
+"kirjautumisen käytöstä. Jos haluat sen uudelleen käyttöön, vähintään yksi "
+"sormenjälki tulee rekisteröidä."
+
+#: panels/system/users/cc-fingerprint-dialog.c:1397
+msgid "_Delete All"
+msgstr "Poista _kaikki"
 
 #: panels/system/users/cc-fingerprint-dialog.ui:8
 msgid "Fingerprint Manager"
@@ -8023,48 +8038,32 @@ msgstr "Sormenjälkien hallinta"
 msgid "Fingerprint"
 msgstr "Sormenjälki"
 
-#: panels/system/users/cc-fingerprint-dialog.ui:77
-msgid "_No"
-msgstr "_Ei"
-
-#: panels/system/users/cc-fingerprint-dialog.ui:85
-msgid "_Yes"
-msgstr "_Kyllä"
-
-#: panels/system/users/cc-fingerprint-dialog.ui:105
-msgid ""
-"Do you want to delete your registered fingerprints so fingerprint login is "
-"disabled?"
-msgstr ""
-"Haluatko poistaa rekisteröidyt sormenjälkesi, jolloin sormenjäljillä "
-"kirjautuminen poistetaan käytöstä?"
-
-#: panels/system/users/cc-fingerprint-dialog.ui:161
+#: panels/system/users/cc-fingerprint-dialog.ui:114
 msgid "No fingerprint device"
 msgstr "Ei sormenjälkilaitetta"
 
 #. Translators: This is the empty state page label which states that there are no devices ready.
-#: panels/system/users/cc-fingerprint-dialog.ui:176
+#: panels/system/users/cc-fingerprint-dialog.ui:129
 msgid "No Fingerprint device"
 msgstr "Ei sormenjälkilaitetta"
 
-#: panels/system/users/cc-fingerprint-dialog.ui:185
+#: panels/system/users/cc-fingerprint-dialog.ui:138
 msgid "Ensure the device is properly connected"
 msgstr "Varmista että laite kytketty kunnolla"
 
-#: panels/system/users/cc-fingerprint-dialog.ui:193
+#: panels/system/users/cc-fingerprint-dialog.ui:146
 msgid "Fingerprint Device"
 msgstr "Sormenjälkilaite"
 
-#: panels/system/users/cc-fingerprint-dialog.ui:202
+#: panels/system/users/cc-fingerprint-dialog.ui:155
 msgid "Choose the fingerprint device you want to configure"
 msgstr "Valitse sormenjälkilaite, jonka haluat määrittää"
 
-#: panels/system/users/cc-fingerprint-dialog.ui:232
+#: panels/system/users/cc-fingerprint-dialog.ui:185
 msgid "Fingerprint Login"
 msgstr "Sormenjäljellä kirjautuminen"
 
-#: panels/system/users/cc-fingerprint-dialog.ui:238
+#: panels/system/users/cc-fingerprint-dialog.ui:191
 msgid ""
 "Fingerprint login allows you to unlock and log into your device with your "
 "finger"
@@ -8072,11 +8071,11 @@ msgstr ""
 "Sormenjäljellä kirjautuminen mahdollistaa tietokoneen lukituksen avaamisen "
 "ja kirjautumisen sormea käyttäen"
 
-#: panels/system/users/cc-fingerprint-dialog.ui:265
+#: panels/system/users/cc-fingerprint-dialog.ui:218
 msgid "_Delete Fingerprints"
 msgstr "_Poista sormenjäljet"
 
-#: panels/system/users/cc-fingerprint-dialog.ui:279
+#: panels/system/users/cc-fingerprint-dialog.ui:232
 msgid "Fingerprint Enroll"
 msgstr "Sormenjäljen lisääminen"
 
@@ -8380,7 +8379,7 @@ msgstr "Vältä sarjan kaltaisia jonoja, kuten 1234 tai abcd"
 #: panels/system/users/pw-utils.c:139
 msgctxt "Password hint"
 msgid "Password needs to be longer"
-msgstr "Salasanan tulee olla vahvempi"
+msgstr "Salasanan tulee olla pidempi"
 
 #: panels/system/users/pw-utils.c:141
 msgctxt "Password hint"
@@ -9320,6 +9319,71 @@ msgstr "Piirtopöytä;Wacom;Stylus;Eraser;Hiiri;Tablet;Mouse;"
 msgid "New shortcut…"
 msgstr "Uusi pikanäppäin…"
 
+#. Translators: This separates the duration and interval times when displaying
+#. * the selected break schedule on the wellbeing panel. For example,
+#. * “1 minute / 20 minutes” to indicate a 1 minute break every 20 minutes.
+#: panels/wellbeing/cc-break-schedule-row.c:289
+msgid " / "
+msgstr " / "
+
+#: panels/wellbeing/cc-break-schedule-row.c:369
+msgid "Duration"
+msgstr "Kesto"
+
+#: panels/wellbeing/cc-break-schedule-row.c:369
+msgid "Interval"
+msgstr "Aikaväli"
+
+#: panels/wellbeing/cc-wellbeing-panel.ui:18
+msgid "Break Reminders"
+msgstr "Taukomuistutukset"
+
+#: panels/wellbeing/cc-wellbeing-panel.ui:21
+msgid "_Eyesight Reminders"
+msgstr "_Näkömuistutukset"
+
+#: panels/wellbeing/cc-wellbeing-panel.ui:22
+msgid "Reminders to look away from the screen"
+msgstr "Muistutukset kohdistaa katse pois näytöstä"
+
+#: panels/wellbeing/cc-wellbeing-panel.ui:28
+msgid "_Movement Reminders"
+msgstr "_Liikuntamuistutukset"
+
+#: panels/wellbeing/cc-wellbeing-panel.ui:29
+msgid "Reminders to move around"
+msgstr "Muistutukset liikuntaa varten"
+
+#: panels/wellbeing/cc-wellbeing-panel.ui:35
+msgid "Movement Break S_chedule"
+msgstr "Liikuntataukojen _aikataulu"
+
+#: panels/wellbeing/cc-wellbeing-panel.ui:41
+msgid "S_ounds"
+msgstr "_Äänet"
+
+#: panels/wellbeing/cc-wellbeing-panel.ui:42
+msgid "Play a sound when a break ends"
+msgstr "Toista ääni kun tauko päättyy"
+
+#: panels/wellbeing/gnome-wellbeing-panel.desktop.in:6
+msgid "Wellbeing"
+msgstr "Hyvinvointi"
+
+#: panels/wellbeing/gnome-wellbeing-panel.desktop.in:7
+msgid "Review and limit the amount of time you spend at the computer screen"
+msgstr "Katselmoi ja rajoita tietokoneen edessä viettämääsi aikaa"
+
+#. Translators: Search terms to find the Wellbeing panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: panels/wellbeing/gnome-wellbeing-panel.desktop.in:18
+msgid ""
+"Wellbeing;Screen Time;Breaks;Break Reminders;Health Breaks;Daily Usage;"
+"Screen Limits;Usage Limit;"
+msgstr ""
+"Wellbeing;Screen Time;Breaks;Break Reminders;Health Breaks;Daily Usage;"
+"Screen Limits;Usage Limit;hyvinvointi;ruutuaika;tauko;tauot;päivittäinen "
+"käyttö;käyttöraja;"
+
 #: panels/wwan/cc-wwan-apn-dialog.c:293
 msgid "Edit"
 msgstr "Muokkaa"
@@ -9921,7 +9985,7 @@ msgstr "© 1998 %s"
 msgid "Settings categories"
 msgstr "Asetusten luokat"
 
-#: shell/cc-panel-loader.c:311
+#: shell/cc-panel-loader.c:317
 msgid "Available panels:"
 msgstr "Käytettävissä olevat paneelit:"
 
@@ -10060,6 +10124,15 @@ msgstr[1] "%u sisääntuloa"
 #: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "Järjestelmän äänet"
+
+#~ msgid "Input methods can’t be used on the login screen"
+#~ msgstr "Syötemenetelmiä ei voi käyttää kirjautumisruudussa"
+
+#~ msgid "Printer Jobs"
+#~ msgstr "Tulostustyöt"
+
+#~ msgid "Close notification"
+#~ msgstr "Sulje ilmoitus"
 
 #~ msgid "Automat_ically Launch Apps"
 #~ msgstr "Käynnistä sovellukset automaattisest_i"
@@ -10480,6 +10553,19 @@ msgstr "Järjestelmän äänet"
 #~ msgid "Pass_word"
 #~ msgstr "_Salasana"
 
+#~ msgid "_No"
+#~ msgstr "_Ei"
+
+#~ msgid "_Yes"
+#~ msgstr "_Kyllä"
+
+#~ msgid ""
+#~ "Do you want to delete your registered fingerprints so fingerprint login "
+#~ "is disabled?"
+#~ msgstr ""
+#~ "Haluatko poistaa rekisteröidyt sormenjälkesi, jolloin sormenjäljillä "
+#~ "kirjautuminen poistetaan käytöstä?"
+
 #~ msgid "_Add User…"
 #~ msgstr "_Lisää käyttäjä…"
 
@@ -10783,9 +10869,6 @@ msgstr "Järjestelmän äänet"
 
 #~ msgid "The system component `AccountsService` cannot be found"
 #~ msgstr "Järjestelmäkomponenttia `AccountsService` ei löydy"
-
-#~ msgid "_Delete"
-#~ msgstr "_Poista"
 
 #~ msgid "External pad device"
 #~ msgstr "Ulkoinen piirtopöytälaite"
@@ -12020,9 +12103,6 @@ msgstr "Järjestelmän äänet"
 #~ "Sovellusten yksittäiset oikeudet on mahdollista katselmoida <a "
 #~ "href=\"privacy\">yksityisyysasetuksissa</a>."
 
-#~ msgid "Integration"
-#~ msgstr "Integraatio"
-
 #~ msgid "Set Desktop Background"
 #~ msgstr "Aseta työpöydän tausta"
 
@@ -12387,10 +12467,6 @@ msgstr "Järjestelmän äänet"
 #~ msgctxt "Battery power"
 #~ msgid "Charging"
 #~ msgstr "Latautuu"
-
-#~ msgctxt "Battery power"
-#~ msgid "Caution"
-#~ msgstr "Varoitus"
 
 #~ msgctxt "Battery power"
 #~ msgid "Low"

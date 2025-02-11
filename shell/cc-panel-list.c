@@ -24,6 +24,7 @@
 
 #include "cc-log.h"
 #include "cc-panel-list.h"
+#include "cc-ui-util.h"
 #include "cc-util.h"
 
 typedef struct
@@ -262,7 +263,10 @@ row_data_new (CcPanelCategory     category,
   gtk_grid_set_column_spacing (GTK_GRID (grid), 12);
 
   /* Icon */
-  image = gtk_image_new_from_icon_name (icon);
+  image = g_object_new (GTK_TYPE_IMAGE,
+                        "accessible-role", GTK_ACCESSIBLE_ROLE_PRESENTATION,
+                        "icon-name", icon,
+                        NULL);
 
   gtk_grid_attach (GTK_GRID (grid), image, 0, 0, 1, 1);
 
@@ -381,6 +385,7 @@ static const gchar * const panel_order[] = {
   "search",
   "online-accounts",
   "sharing",
+  "wellbeing",
 
   "separator",
 
@@ -654,28 +659,6 @@ cc_panel_list_set_property (GObject      *object,
     }
 }
 
-static gboolean
-search_list_keynav_failed_cb (CcPanelList *self,
-                              GtkDirectionType direction)
-{
-  GtkWidget *toplevel;
-
-  /* We are in the first result of search list and pressing Arrow Up,
-   * so then we move focus back to search text entry */
-  if (direction == GTK_DIR_UP)
-    {
-      toplevel = GTK_WIDGET (gtk_widget_get_root (GTK_WIDGET (self)));
-
-      if (!toplevel)
-        return FALSE;
-
-      return gtk_widget_child_focus (toplevel, GTK_DIR_TAB_BACKWARD);
-    }
-
-  return FALSE;
-}
-
-
 static void
 cc_panel_list_class_init (CcPanelListClass *klass)
 {
@@ -743,9 +726,9 @@ cc_panel_list_class_init (CcPanelListClass *klass)
   gtk_widget_class_bind_template_child (widget_class, CcPanelList, search_listbox);
   gtk_widget_class_bind_template_child (widget_class, CcPanelList, stack);
 
+  gtk_widget_class_bind_template_callback (widget_class, cc_util_keynav_propagate_up);
   gtk_widget_class_bind_template_callback (widget_class, row_activated_cb);
   gtk_widget_class_bind_template_callback (widget_class, search_row_activated_cb);
-  gtk_widget_class_bind_template_callback (widget_class, search_list_keynav_failed_cb);
 }
 
 static void

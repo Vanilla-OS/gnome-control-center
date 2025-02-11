@@ -57,7 +57,6 @@ struct _NetDeviceWifi
 
         AdwWindowTitle          *wifi_headerbar_title;
         AdwPreferencesGroup     *details_box;
-        GtkSwitch               *device_off_switch;
         GtkBox                  *header_box;
         GtkPopover              *header_button_popover;
         GtkBox                  *hotspot_box;
@@ -385,15 +384,20 @@ device_off_switch_changed_cb (NetDeviceWifi *self)
                 return;
 
         active = adw_switch_row_get_active (self->device_enable_row);
-        nm_client_dbus_set_property (self->client,
-                                     NM_DBUS_PATH,
-                                     NM_DBUS_INTERFACE,
-                                     "WirelessEnabled",
-                                     g_variant_new_boolean (active),
-                                     -1,
-                                     NULL, NULL, NULL);
-        if (!active)
+        if (active) {
+                nm_client_dbus_set_property (self->client,
+                                             NM_DBUS_PATH,
+                                             NM_DBUS_INTERFACE,
+                                             "WirelessEnabled",
+                                             g_variant_new_boolean (active),
+                                             -1,
+                                             NULL, NULL, NULL);
+
+        } else {
+                nm_device_disconnect_async (self->device, self->cancellable, NULL, NULL);
                 disable_scan_timeout (self);
+        }
+
         gtk_widget_set_sensitive (GTK_WIDGET (self->connect_hidden_row), active);
 }
 
@@ -1140,7 +1144,7 @@ net_device_wifi_new (CcPanel *panel, NMClient *client, NMDevice *device)
         GtkListBox *listbox;
         CcWifiConnectionList *list;
 
-        self = g_object_new (net_device_wifi_get_type (), NULL);
+        self = g_object_new (NET_TYPE_DEVICE_WIFI, NULL);
         self->panel = panel;
         self->client = g_object_ref (client);
         self->device = g_object_ref (device);

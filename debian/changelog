@@ -1,3 +1,21 @@
+gnome-control-center (1:48~beta-2) unstable; urgency=medium
+
+  * Bump minimum gnome-settings-daemon
+  * Increase dh_auto_test multiplier to see if it fixes the riscv64 network test
+  * debhelper 13.24 makes dh_auto_test verbose so remove that part of our patch
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Tue, 04 Feb 2025 11:26:12 -0500
+
+gnome-control-center (1:48~beta-1) unstable; urgency=medium
+
+  * New upstream release
+    - The new Wellbeing panel won't work without GNOME Shell 48 Beta
+  * Bump dependencies
+  * Remove display join mode patch: applied in new release
+  * Remove test multiplier override: applied in new release
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Tue, 04 Feb 2025 10:32:37 -0500
+
 gnome-control-center (1:47.3-1ubuntu1) plucky; urgency=medium
 
   * Merge with Debian. Remaining changes:

@@ -144,13 +144,13 @@ struct _CcApplicationsPanel
   guint64          data_size;
 };
 
+CC_PANEL_REGISTER (CcApplicationsPanel, cc_applications_panel)
+
 static void select_app (CcApplicationsPanel *self,
                         const gchar         *app_id,
                         gboolean             emit_activate);
 
 static void update_handler_dialog (CcApplicationsPanel *self, GAppInfo *info);
-
-G_DEFINE_TYPE (CcApplicationsPanel, cc_applications_panel, CC_TYPE_PANEL)
 
 enum
 {
@@ -1055,7 +1055,6 @@ add_scheme (CcApplicationsPanel *self,
   gtk_widget_set_valign (button, GTK_ALIGN_CENTER);
   gtk_widget_set_halign (button, GTK_ALIGN_END);
   gtk_widget_add_css_class (button, "flat");
-  gtk_widget_add_css_class (button, "circular");
   adw_action_row_add_suffix (ADW_ACTION_ROW (row), button);
   g_object_set_data_full (G_OBJECT (button), "type", g_strdup (type), g_free);
   g_signal_connect_object (button, "clicked", G_CALLBACK (unset_cb), self, G_CONNECT_SWAPPED);
@@ -1087,7 +1086,6 @@ add_file_type (CcApplicationsPanel *self,
   gtk_widget_set_valign (button, GTK_ALIGN_CENTER);
   gtk_widget_set_halign (button, GTK_ALIGN_END);
   gtk_widget_add_css_class (button, "flat");
-  gtk_widget_add_css_class (button, "circular");
   adw_action_row_add_suffix (ADW_ACTION_ROW (row), button);
   g_object_set_data_full (G_OBJECT (button), "type", g_strdup (type), g_free);
   g_signal_connect_object (button, "clicked", G_CALLBACK (unset_cb), self, G_CONNECT_SWAPPED);
@@ -1493,16 +1491,13 @@ compare_rows (gconstpointer  a,
   key1 = g_utf8_casefold (g_app_info_get_display_name (item1), -1);
   key2 = g_utf8_casefold (g_app_info_get_display_name (item2), -1);
 
-  const gchar *sort_key1 = g_utf8_collate_key (key1, -1);
-  const gchar *sort_key2 = g_utf8_collate_key (key2, -1);
-
-  return strcmp (sort_key1, sort_key2);
+  return g_utf8_collate (key1, key2);
 }
 
 static void
 populate_applications (CcApplicationsPanel *self)
 {
-  g_autolist(GObject) infos = NULL;
+  g_autolist(GAppInfo) infos = NULL;
   GList *l;
 
   g_list_store_remove_all (G_LIST_STORE (self->app_model));
@@ -1515,8 +1510,6 @@ populate_applications (CcApplicationsPanel *self)
   for (l = infos; l; l = l->next)
     {
       GAppInfo *info = l->data;
-      GtkWidget *row;
-      g_autofree gchar *id = NULL;
 
       if (!g_app_info_should_show (info))
         continue;
@@ -1526,12 +1519,7 @@ populate_applications (CcApplicationsPanel *self)
         continue;
 #endif
 
-      row = GTK_WIDGET (cc_applications_row_new (info));
       g_list_store_insert_sorted (G_LIST_STORE (self->app_model), info, compare_rows, NULL);
-
-      id = get_app_id (info);
-      if (g_strcmp0 (id, self->current_app_id) == 0)
-        gtk_list_box_select_row (self->app_listbox, GTK_LIST_BOX_ROW (row));
     }
 #ifdef HAVE_MALCONTENT
   g_signal_handler_unblock (self->manager, self->app_filter_id);
@@ -1781,8 +1769,9 @@ cc_applications_panel_class_init (CcApplicationsPanelClass *klass)
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
   g_type_ensure (CC_TYPE_DEFAULT_APPS_PAGE);
-  g_type_ensure (CC_TYPE_REMOVABLE_MEDIA_SETTINGS);
+  g_type_ensure (CC_TYPE_LIST_ROW);
   g_type_ensure (CC_TYPE_LIST_ROW_INFO_BUTTON);
+  g_type_ensure (CC_TYPE_REMOVABLE_MEDIA_SETTINGS);
 
   object_class->dispose = cc_applications_panel_dispose;
   object_class->finalize = cc_applications_panel_finalize;
@@ -1879,8 +1868,6 @@ cc_applications_panel_init (CcApplicationsPanel *self)
 #endif
 
   g_resources_register (cc_applications_get_resource ());
-
-  g_type_ensure (CC_TYPE_LIST_ROW);
 
   gtk_widget_init_template (GTK_WIDGET (self));
 

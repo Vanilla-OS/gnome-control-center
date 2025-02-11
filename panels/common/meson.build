@@ -8,6 +8,7 @@ common_sources += gnome.mkenums_simple(
 )
 
 common_sources += gnome.mkenums_simple('cc-number-row-enums', sources: files('cc-number-row.h'))
+common_sources += gnome.mkenums_simple('cc-timelike-editor-enums', sources: files('cc-timelike-editor.h'))
 
 common_sources += gnome.compile_resources(
   'cc-common-resources',
@@ -23,7 +24,7 @@ generates_sources_dep = declare_dependency(
 sources = files(
   'cc-hostname-entry.c',
   'cc-number-row.c',
-  'cc-time-entry.c',
+  'cc-timelike-entry.c',
   'cc-util.c',
   'hostname-helper.c'
 )
@@ -41,6 +42,8 @@ libwidgets_dep = declare_dependency(
 
 sources = common_sources + files(
   'cc-common-language.c',
+  'cc-duration-editor.c',
+  'cc-duration-row.c',
   'cc-hostname.c',
   'cc-illustrated-row.c',
   'cc-language-chooser.c',
@@ -49,10 +52,13 @@ sources = common_sources + files(
   'cc-list-row-info-button.c',
   'cc-mask-paintable.c',
   'cc-time-editor.c',
+  'cc-timelike-editor.c',
+  'cc-timelike-editor-layout.c',
   'cc-permission-infobar.c',
   'cc-split-row.c',
   'cc-texture-utils.c',
-  'cc-vertical-row.c',
+  'cc-content-row.c',
+  'cc-ui-util.c',
   'cc-util.c',
   'cc-scaler.c'
 )
