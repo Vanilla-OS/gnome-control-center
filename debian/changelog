@@ -1,4 +1,4 @@
-gnome-control-center (1:48~beta-2ubuntu1) UNRELEASED; urgency=medium
+gnome-control-center (1:48~beta-2ubuntu1) plucky; urgency=medium
 
   * Merge with Debian. Remaining changes:
     + Add gnome-control-center-faces package to share with unity-control-center
@@ -50,8 +50,9 @@ gnome-control-center (1:48~beta-2ubuntu1) UNRELEASED; urgency=medium
       - u/background-Add-brown-accent-color-support.patch
       - u/sound-Add-toggle-for-the-startup-sound.patch
       - u/list-apps-even-without-malcontent.patch
+  * Refresh patches
 
- -- Jeremy Bícha <jbicha@ubuntu.com>  Tue, 11 Feb 2025 15:29:54 -0500
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Tue, 11 Feb 2025 17:21:31 -0500
 
 gnome-control-center (1:48~beta-2) unstable; urgency=medium
 
