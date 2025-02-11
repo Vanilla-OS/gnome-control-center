@@ -9,7 +9,7 @@ We hardcode the sound to a specific file for now
  2 files changed, 47 insertions(+)
 
 diff --git a/panels/sound/cc-sound-panel.c b/panels/sound/cc-sound-panel.c
-index 2e3ca39..1e05cf3 100644
+index da9ae1c..d153fe1 100644
 --- a/panels/sound/cc-sound-panel.c
 +++ b/panels/sound/cc-sound-panel.c
 @@ -55,6 +55,7 @@ struct _CcSoundPanel

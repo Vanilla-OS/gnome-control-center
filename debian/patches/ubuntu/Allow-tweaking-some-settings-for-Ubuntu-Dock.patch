@@ -48,7 +48,7 @@ Forwarded: not-needed
  create mode 100644 panels/ubuntu/ubuntu.gresource.xml
 
 diff --git a/panels/meson.build b/panels/meson.build
-index 3067635..64aad8e 100644
+index 865e533..5c1b838 100644
 --- a/panels/meson.build
 +++ b/panels/meson.build
 @@ -17,6 +17,7 @@ panels = [
@@ -57,8 +57,8 @@ index 3067635..64aad8e 100644
    'system',
 +  'ubuntu',
    'universal-access',
-  'wwan',
- ]
+   'wellbeing',
+   'wwan',
 diff --git a/panels/ubuntu/assets/colors/color.svg.in b/panels/ubuntu/assets/colors/color.svg.in
 new file mode 100644
 index 0000000..4c0e136
@@ -2451,10 +2451,10 @@ index 0000000..a636e9c
 +  </gresource>
 +</gresources>
 diff --git a/po/POTFILES.in b/po/POTFILES.in
-index b11782e..a9450ee 100644
+index 3c828f7..df4d227 100644
 --- a/po/POTFILES.in
 +++ b/po/POTFILES.in
-@@ -237,6 +237,11 @@ panels/system/users/org.gnome.controlcenter.user-accounts.policy.in
+@@ -238,6 +238,11 @@ panels/system/users/org.gnome.controlcenter.user-accounts.policy.in
  panels/system/users/pw-utils.c
  panels/system/users/run-passwd.c
  panels/system/users/user-utils.c
@@ -2463,14 +2463,14 @@ index b11782e..a9450ee 100644
 +panels/ubuntu/cc-ubuntu-dock-dialog.c
 +panels/ubuntu/cc-ubuntu-dock-dialog.ui
 +panels/ubuntu/gnome-ubuntu-panel.desktop.in
- panels/universal-access/cc-cursor-size-dialog.ui
+ panels/universal-access/cc-cursor-size-page.ui
  panels/universal-access/cc-ua-hearing-page.c
  panels/universal-access/cc-ua-hearing-page.ui
 diff --git a/shell/cc-panel-list.c b/shell/cc-panel-list.c
-index 1b3b8f9..f715131 100644
+index c339054..802d958 100644
 --- a/shell/cc-panel-list.c
 +++ b/shell/cc-panel-list.c
-@@ -373,6 +373,7 @@ static const gchar * const panel_order[] = {
+@@ -377,6 +377,7 @@ static const gchar * const panel_order[] = {
    "power",
    "multitasking",
    "background",
@@ -2479,10 +2479,10 @@ index 1b3b8f9..f715131 100644
    "separator",
  
 diff --git a/shell/cc-panel-loader.c b/shell/cc-panel-loader.c
-index 980faec..e765227 100644
+index 28a1671..8845cb6 100644
 --- a/shell/cc-panel-loader.c
 +++ b/shell/cc-panel-loader.c
-@@ -56,12 +56,14 @@ extern GType cc_sharing_panel_get_type (void);
+@@ -56,6 +56,7 @@ extern GType cc_sharing_panel_get_type (void);
  extern GType cc_sound_panel_get_type (void);
  extern GType cc_system_panel_get_type (void);
  extern GType cc_ua_panel_get_type (void);
@@ -2490,6 +2490,7 @@ index 980faec..e765227 100644
  #ifdef BUILD_WACOM
  extern GType cc_wacom_panel_get_type (void);
  #endif /* BUILD_WACOM */
+@@ -63,6 +64,7 @@ extern GType cc_wellbeing_panel_get_type (void);
  #ifdef BUILD_WWAN
  extern GType cc_wwan_panel_get_type (void);
  #endif /* BUILD_WWAN */
@@ -2497,7 +2498,7 @@ index 980faec..e765227 100644
  
  /* Static init functions */
  #ifdef BUILD_NETWORK
-@@ -108,6 +110,7 @@ static CcPanelLoaderVtable default_panels[] =
+@@ -109,6 +111,7 @@ static CcPanelLoaderVtable default_panels[] =
    PANEL_TYPE("sharing",          cc_sharing_panel_get_type,              cc_sharing_panel_static_init_func),
    PANEL_TYPE("sound",            cc_sound_panel_get_type,                NULL),
    PANEL_TYPE("system",           cc_system_panel_get_type,               NULL),

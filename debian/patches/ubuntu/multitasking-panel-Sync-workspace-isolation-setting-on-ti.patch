@@ -8,7 +8,7 @@ Subject: multitasking-panel: Sync workspace isolation setting on tiling
  1 file changed, 42 insertions(+)
 
 diff --git a/panels/multitasking/cc-multitasking-panel.c b/panels/multitasking/cc-multitasking-panel.c
-index 98b6298..3399ded 100644
+index 1ca4d65..7d16b5a 100644
 --- a/panels/multitasking/cc-multitasking-panel.c
 +++ b/panels/multitasking/cc-multitasking-panel.c
 @@ -32,6 +32,7 @@ struct _CcMultitaskingPanel
@@ -19,8 +19,8 @@ index 98b6298..3399ded 100644
    GSettings       *wm_settings;
  
    CcIllustratedRow *active_screen_edges_row;
-@@ -70,6 +71,25 @@ keep_dock_settings_in_sync (CcMultitaskingPanel *self)
-     }
+@@ -82,6 +83,25 @@ fixed_workspaces_changed_cb (CcMultitaskingPanel *self)
+                             multi_workspaces || !fixed_workspaces);
  }
  
 +static void
@@ -45,7 +45,7 @@ index 98b6298..3399ded 100644
  /* GObject overrides */
  
  static void
-@@ -81,6 +101,7 @@ cc_multitasking_panel_finalize (GObject *object)
+@@ -93,6 +113,7 @@ cc_multitasking_panel_finalize (GObject *object)
    g_clear_object (&self->mutter_settings);
    g_clear_object (&self->shell_settings);
    g_clear_object (&self->dock_settings);
@@ -53,7 +53,7 @@ index 98b6298..3399ded 100644
    g_clear_object (&self->wm_settings);
  
    G_OBJECT_CLASS (cc_multitasking_panel_parent_class)->finalize (object);
-@@ -214,5 +235,26 @@ cc_multitasking_panel_init (CcMultitaskingPanel *self)
+@@ -229,5 +250,26 @@ cc_multitasking_panel_init (CcMultitaskingPanel *self)
                         self->dock_each_monitor_radio,
                         "active",
                         G_SETTINGS_BIND_DEFAULT);

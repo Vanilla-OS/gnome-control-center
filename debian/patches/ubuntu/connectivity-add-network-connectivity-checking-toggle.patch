@@ -356,10 +356,10 @@ index e8e2863..3d9612c 100644
      <file preprocess="xml-stripblanks">firmware-security/cc-firmware-security-boot-dialog.ui</file>
      <file preprocess="xml-stripblanks">firmware-security/cc-firmware-security-dialog.ui</file>
 diff --git a/po/POTFILES.in b/po/POTFILES.in
-index a9450ee..0e8948d 100644
+index df4d227..737a96a 100644
 --- a/po/POTFILES.in
 +++ b/po/POTFILES.in
-@@ -153,6 +153,7 @@ panels/privacy/bolt/cc-bolt-page.c
+@@ -154,6 +154,7 @@ panels/privacy/bolt/cc-bolt-page.c
  panels/privacy/bolt/cc-bolt-page.ui
  panels/privacy/camera/cc-camera-page.ui
  panels/privacy/cc-privacy-panel.ui

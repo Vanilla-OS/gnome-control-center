@@ -49,7 +49,7 @@ index 09f97f4..6402a2d 100644
  }
  
 diff --git a/panels/background/preview.css b/panels/background/preview.css
-index 680324d..6ec0c74 100644
+index b93c829..4c49523 100644
 --- a/panels/background/preview.css
 +++ b/panels/background/preview.css
 @@ -135,7 +135,7 @@ flowboxchild.active-item .selected-check {

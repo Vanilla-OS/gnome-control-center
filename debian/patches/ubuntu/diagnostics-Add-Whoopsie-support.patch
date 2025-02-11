@@ -12,12 +12,12 @@ Subject: diagnostics: Add Whoopsie support
  6 files changed, 270 insertions(+), 1 deletion(-)
 
 diff --git a/meson.build b/meson.build
-index 3e97cf1..f7d2ed1 100644
+index a80b3ca..d466cd2 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -281,6 +281,14 @@ location_services = get_option('location-services')
- config_h.set('HAVE_LOCATION_SERVICES', location_services.enabled(),
-              description: 'Whether location services is enabled')
+@@ -284,6 +284,14 @@ config_h.set('HAVE_LOCATION_SERVICES', location_services.enabled(),
+ # Snap support and wellbeing panel
+ json_glib_dep = dependency('json-glib-1.0')
  
 +# Whoopsie (Ubuntu error reporting service)
 +enable_whoopsie = get_option('whoopsie')
@@ -30,12 +30,14 @@ index 3e97cf1..f7d2ed1 100644
  if host_is_linux
    # ModemManager
    mm_dep =  dependency('mm-glib', version: '>= 0.7')
-@@ -379,4 +387,5 @@ summary({
-   'IBus': enable_ibus,
-   'Snap': enable_snap,
-   'Malcontent': enable_malcontent,
-+  'Whoopsie': enable_whoopsie,
- }, section: 'Optional Dependencies')
+@@ -387,6 +395,7 @@ summary({
+     'IBus': enable_ibus,
+     'Snap': enable_snap,
+     'Malcontent': enable_malcontent,
++    'Whoopsie': enable_whoopsie,
+   },
+   section: 'Optional Dependencies',
+   bool_yn: true,
 diff --git a/meson_options.txt b/meson_options.txt
 index b2302bf..08f3c65 100644
 --- a/meson_options.txt

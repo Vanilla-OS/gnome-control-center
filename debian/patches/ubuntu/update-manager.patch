@@ -8,7 +8,7 @@ Subject: info-overview: Show updates in update-manager instead of GNOME
  1 file changed, 14 insertions(+), 2 deletions(-)
 
 diff --git a/panels/system/cc-system-panel.c b/panels/system/cc-system-panel.c
-index f28a963..5bebe5e 100644
+index a81e9a4..94b60e5 100644
 --- a/panels/system/cc-system-panel.c
 +++ b/panels/system/cc-system-panel.c
 @@ -87,11 +87,18 @@ gpk_update_viewer_exists (void)

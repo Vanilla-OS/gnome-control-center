@@ -23,7 +23,7 @@ Bug: https://bugzilla.gnome.org/show_bug.cgi?id=710424
  2 files changed, 21 insertions(+)
 
 diff --git a/panels/sound/cc-sound-panel.c b/panels/sound/cc-sound-panel.c
-index a5367e8..2e3ca39 100644
+index 7acdcdb..da9ae1c 100644
 --- a/panels/sound/cc-sound-panel.c
 +++ b/panels/sound/cc-sound-panel.c
 @@ -54,6 +54,7 @@ struct _CcSoundPanel
