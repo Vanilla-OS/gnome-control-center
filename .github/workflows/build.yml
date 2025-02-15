@@ -20,7 +20,6 @@ jobs:
 
     - name: De-bloat stock image
       run: |
-        rm -r /run/host/usr/share/dotnet
         rm -r /run/host${{ runner.tool_cache }}
 
     - name: Install needed packages
