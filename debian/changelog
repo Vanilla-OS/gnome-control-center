@@ -1,3 +1,9 @@
+gnome-control-center (1:48~beta-2~99-orchid) unstable; urgency=medium
+
+  * Merge debian/1%48_beta-2
+
+ -- jardon <jarred.wilson12@gmail.com>  Sat, 15 Feb 2025 17:42:33 -0600
+
 gnome-control-center (1:48~beta-2) unstable; urgency=medium
 
   * Bump minimum gnome-settings-daemon
