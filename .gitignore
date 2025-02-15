@@ -5,3 +5,4 @@ _build/
 !/subprojects/*.wrap
 .flatpak-builder/
 /.pc
+.cache/clangd/

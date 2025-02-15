@@ -1,94 +1,204 @@
-==============
-Version 47.1.1
-==============
-
-- Fix crash on display scales > 1 due to conflicting type registration
-
-============
-Version 47.1
-============
+===============
+Version 48.beta
+===============
 
 - Various translation updates
-- Require gsettings-desktop-schemas >= 47.0
+- Make search bar always grab focus with shortcuts
+- Fix a memory leak in CcMaskPaintable (used for illustrations)
+- Fix missing icons in Mouse/Wacom/WWAN settings (ship our own icons)
+- Add single-panel-mode for distros to launch Settings in a single panel (without sidebar)
+- Use static hostname instead of pretty hostname (hostnamed) in URLs
 
-About
+Dependency updates
+- gnome-settings-daemon >= 48.alpha.1
+
+Device Security
+- Don't hardcode height of "help" dialog
+
+Display
+- Add monitor HDR setting
+
+Keyboard
+- Rename old "logout" media key name to "Power Off"
+- Add new media keys shortcuts for "Restart" and "Logout"
+- Port shortcuts dialog to AdwDialog
+
+Mouse
+- Use AdwToggleGroup in the "Primary Button" settings
+
+Region
+- Port Format Chooser to AdwPreferencesPage
+- Inform accountsservice of all configured languages
+
+Sound
+- Filter out NULL stream names in Volume Levels settings
+
+Thunderbolt
+- Fix unescaped string in device status dialog
+
+Wellbeing
+- Add screen time support
+- Use gtk_widget_set_child_visible in allocate
+- Various accessibility/navigation/esthetic improvements
+- Split data collection and limits settings
+
+================
+Version 48.alpha
+================
+
+- Various translation updates
+- Start using the new GNOME release service
+- Prevent crash on CcSplitRow related to Gtk size group changes
+- Use accessible-role=presentation for illustrative icons/images
+- Use gtk_list_box_remove_all instead of iterating GTK widget children
+- Import developer docs from gitlab wiki to the docs/ source folder
+- Various improvements to our development Flatpak build
+- Various style/consistency updates to gobject creations
+- Stop calling "gtk_widget_get_root()" incorrectly
+- Various improvements to CcPermissionInfobar
+- Use luminance masking for webm assets
+- Introduce follow-accent property to CcMaskPaintable
 - Allow FQDN hostnames
 
-Appearance
-- Fix thumbnailing of backgrounds causing OOM kills
+Dependency updates
+- upower >= 1.90.6
+- gsettings-desktop-schema >= 47.0
+- libadwaita >= 1.7.alpha
 
-Date and Time
-- Fix resize issue in the time format row when shown in small window sizes
+About
+- Fixes wrong GPU names when g-c-c is launched using dGPU
 
-Online Accounts
-- Fix untranslated account provider info string
-
-Region and Language
-- Update language row after closing language selector
-
-Remote Desktop
-- Hide "Remote Desktop" row when gnome-remote-desktop is not available
-
-Wacom
-- Don't crash when handling an unknown stylus ID
-- Don't show Map Buttons for fallback devices
-- Handle all external remotes like an external TV remote-like device
-- Make assets recolaborable, supporting dark-style, high-contrast, and accent colors
-- Support HDPI for tablet/stylus illustration images
-
-==============
-Version 47.0.1
-==============
-
-- Fix invalid appstream release notes syntax
-
-============
-Version 47.0
-============
-
-- Various translation updates
-
-Appearance
-- Fix accessibility regression on background names
+Accessibility
+- Turn CcCursorSizeDialog into a page
+- Remove "screen" mark labels in zoom page
+- Simplify cursor size subtitle
 
 Apps
-- Handle opening details of Epiphany webapps
+- Avoid crash when parsing invalid app permissions
+- Handle Epiphany webapps
+- Various memory leak fixes
+- Remove .circular style class from some buttons
+
+Appearance
+- Load GnomeBG thumbnails async
+- Internally handle scale-factor
+- Allow for concurrent cache updates
+- Generate one background thumbnail at a time
+- Don't accidentally reset accent colors
+- Add "undo" option when deleting a wallpaper
+- Load async wallpapers in order
 
 Color
-- Fix visibility of control buttons when expanding rows
 - Fix "Show details" link on profile warning
-
-Sharing
-- Make "Media Sharing" dialog use GtkFileDialog for adding new folders
-
-=============
-Version 47.rc
-=============
-
-- Various translation updates
-- Various ports from deprecated GTK and Libadwaita APIs
-
-Appearance
-- Improve performance when loading wallpapers
-
-Apps
-- Fix crash when handling invalid app permissions
+- Fix row expansion and button visibility
+- Port "Add Profile" to AdwDialog
+- Rename "Color" panel to "Color Management"
+- Various code style improvements
+- Port add profile page from GtkTreeView to GtkListView
+- Ensure profile is connected before setting system-wide
+- Various fixes to the color calibration tool
 
 Date and Time
-- Fix "Auto Timezone" setting visibility when Location Services are unavailable
+- Fix incorrect disabling of auto timezone without location services
+- Use AdwToggleGroup in the "Time Format" row
+
+Display
+- Snap monitors after updating prefer mode to current config when enable join mode
+- Port "Scale" and "Multiple Displays" rows to AdwToggleGroup
+- Use real color temp in night light scale widget
+
+Keyboard
+- Port Shortcut editor to AdwDialog
+- Use "--parent-handle" option when launching Tecla (keyboard layout previewer)
+- Fix compose key example string
+
+Network
+- Make metered connection and hotspot settings adaptive to small screens
+- Fix memory leaks in wireguard page
+
+Notifications
+- Update UI when underlying gsetting changes
+
+Mouse
+- Convert VP9 webm with alpha to monochrome variants (so we don't need gstreamer-bad-pluggins)
+- Update webm illustration assets to latest versions
+
+Mobile Networks
+- Fix status pages alignments
+- Use header capitalization in the "Turn off Airplane Mode" button
+
+Multitasking
+- Make workspace settings insensitive for single workspace
 
 Online Accounts
-- Update description of MS365 online account provider
+- Track goa changes in PresentationIdentity and update the UI accordingly
+
+Power
+- Add support for battery charge limiting
+- Split panel into "General" and "Power Saving" pages
+- Split "Black Screen" setting in switch and delay
+- Remove separate dialog for "Automatic Suspend"
+- Various improvements on code readability and refactors
+- Fix conflicting mnemonics
+- Handle when tuned-ppd has an unsupported power profile
+
+Printers
+- Remove "search as you type" feature as it conflicts with global search
+- Add a confirmation dialog when attempting to clear all jobs
+- Add "No Results" page when nothing to show on search
+- Use a consistent printer icon in several status pages
+- Set "Driver" row after selecting ppd file in Printer Details dialog
+- Port "Install PPD" dialog to GtkFileDialog
+
+Region
+- Update language row after closing lang selector
+- Port format chooser dialog to AdwDialog
+- Show locale name in format chooser preview
+- Reset format chooser preview when uncollapsing
+
+Sound
+- Turn sound alert dialog into a subpage
+- Prevent crash in Volume Levels when stream has no name
+
+Search
+- Add a button to open custom search locations
 
 Sharing
-- Fix adding "Shared Media" folders
+- Fix saving of new shared folders in "Media Sharing" settings
+- Make "Media Sharing" dialog use GtkFileDialog for new folders
+
+Tests
+- Disable randomly failing network panel test
+- Improve waiting on NM device/client changes
+- Add FQDN hostname tests
+
+Thunderbolt
+- Use AdwToast to display transient notifications
+- Use property-rows style in device dialog
 
 Users
-- Update feedback icons for validating username and passwords
-- Use a dialog to confirm removable of user fingerprints
+- Use a dialog to confirm fingerprint removal
+- Stop shipping legacy avatar images
+- Fix conflicting mnemonic in "Add User" dialog
+- Port "Remove User" button to AdwButtonRow
+- Make screen reader read avatar file names when there are no names
+- Port fingerprint dialog to AdwDialog
 
-WiFi
-- Fix crash when unplugging removable WiFi adapters
+Wacom
+- Do not crash when handling an unknown stylus ID
+- Support hidpi for tablet/stylus images
+- Make assets recolorable
+- Rename visible entry to "Graphics Tablet"
+- Change from "left handed orientation" to "location of buttons"
+- Various style tweaks to stylus page
+
+Wellbeing
+- Add initial Wellbeing panel (disabled by default)
+
+Wifi
+- Fix crash on wifi adapter removal
+- Fix using wifi hotspot with multiple wifi adapters
+- Don't disable wireless globally when toggling one Wifi connection OFF
 
 ===============
 Version 47.beta

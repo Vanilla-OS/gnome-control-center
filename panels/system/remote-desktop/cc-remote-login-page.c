@@ -41,7 +41,6 @@
 #endif
 
 #define REMOTE_DESKTOP_STORE_CREDENTIALS_TIMEOUT_S 2
-#define REMOTE_LOGIN_SYSTEMD_SERVICE "gnome-remote-desktop.service"
 #define REMOTE_LOGIN_DBUS_SERVICE "org.gnome.RemoteDesktop.Configuration"
 #define REMOTE_LOGIN_OBJECT_PATH "/org/gnome/RemoteDesktop/Configuration"
 #define REMOTE_LOGIN_PERMISSION "org.gnome.controlcenter.remote-session-helper"
@@ -497,6 +496,8 @@ cc_remote_login_page_class_init (CcRemoteLoginPageClass * klass)
 
   object_class->dispose = cc_remote_login_page_dispose;
 
+  g_type_ensure (CC_TYPE_PERMISSION_INFOBAR);
+
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/system/remote-desktop/cc-remote-login-page.ui");
 
   gtk_widget_class_bind_template_child (widget_class, CcRemoteLoginPage, hostname_row);
@@ -691,7 +692,7 @@ cc_remote_login_page_init (CcRemoteLoginPage *self)
 
   self->cancellable = g_cancellable_new ();
 
-  hostname = cc_hostname_get_display_hostname (cc_hostname_get_default ());
+  hostname = cc_hostname_get_static_hostname (cc_hostname_get_default ());
   adw_action_row_set_subtitle (self->hostname_row, hostname);
 
   g_signal_connect_swapped (self->username_entry, "notify::text",
@@ -722,7 +723,6 @@ cc_remote_login_page_init (CcRemoteLoginPage *self)
                           self->generate_password_button_row, "sensitive",
                           G_BINDING_SYNC_CREATE);
   cc_permission_infobar_set_permission (self->permission_infobar, self->permission);
-  cc_permission_infobar_set_title (self->permission_infobar, _("Some settings are locked"));
 
   connect_to_remote_desktop_configuration_rdp_server (self);
 }

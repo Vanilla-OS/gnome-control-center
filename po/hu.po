@@ -19,8 +19,8 @@ msgstr ""
 "Project-Id-Version: gnome-control-center master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-control-center/issu"
 "es\n"
-"POT-Creation-Date: 2024-09-07 14:24+0000\n"
-"PO-Revision-Date: 2024-09-09 00:29+0200\n"
+"POT-Creation-Date: 2024-09-08 08:01+0000\n"
+"PO-Revision-Date: 2024-09-09 00:45+0200\n"
 "Last-Translator: Balázs Úr <ur.balazs at fsf dot hu>\n"
 "Language-Team: Hungarian <openscope at fsf dot hu>\n"
 "Language: hu\n"
@@ -46,8 +46,8 @@ msgid "Session Bus"
 msgstr "Munkamenetbusz"
 
 #: panels/applications/cc-applications-panel.c:850
-#: panels/privacy/bolt/cc-bolt-page.ui:199
-#: panels/privacy/bolt/cc-bolt-page.ui:237
+#: panels/privacy/bolt/cc-bolt-page.ui:158
+#: panels/privacy/bolt/cc-bolt-page.ui:196
 #: panels/privacy/cc-privacy-panel.ui:72
 msgid "Devices"
 msgstr "Eszközök"
@@ -131,8 +131,8 @@ msgstr[1] "%u típus"
 #| msgid "<b>%s</b> is used to open the following types of files and links."
 msgid "<b>%s</b> is used to open the following types of files and links"
 msgstr ""
-"<b>%s</b> van használatban a fájlok és hivatkozások alábbi típusainak"
-" megnyitásához"
+"<b>%s</b> van használatban a fájlok és hivatkozások alábbi típusainak "
+"megnyitásához"
 
 #. TRANSLATORS: %s is an app name.
 #: panels/applications/cc-applications-panel.c:1261
@@ -158,11 +158,12 @@ msgstr "_Alapértelmezett alkalmazások"
 #: panels/applications/cc-applications-panel.ui:50
 msgid "Set which apps open links, files, and media"
 msgstr ""
-"Annak beállítása, hogy mely alkalmazások nyissák meg a hivatkozásokat, a"
-" fájlokat és a médiát"
+"Annak beállítása, hogy mely alkalmazások nyissák meg a hivatkozásokat, a "
+"fájlokat és a médiát"
 
 #: panels/applications/cc-applications-panel.ui:84
 #: panels/keyboard/cc-keyboard-shortcut-dialog.ui:94
+#: panels/printers/cc-printers-panel.ui:102
 #: panels/system/datetime/cc-tz-dialog.ui:42
 #: panels/system/region/cc-format-chooser.ui:176 shell/cc-panel-list.ui:44
 msgid "No Results Found"
@@ -170,6 +171,7 @@ msgstr "Nincs találat"
 
 #: panels/applications/cc-applications-panel.ui:85
 #: panels/keyboard/cc-keyboard-shortcut-dialog.ui:95
+#: panels/printers/cc-printers-panel.ui:103
 #: panels/system/datetime/cc-tz-dialog.ui:43
 #: panels/system/region/cc-format-chooser.ui:177 shell/cc-panel-list.ui:45
 msgid "Try a different search"
@@ -188,16 +190,17 @@ msgstr "_Keresés a Szoftverben"
 msgid "Unable to List Apps"
 msgstr "Nem lehet felsorolni az alkalmazásokat"
 
+#. Translators: Parental Controls here refers to the features provided by 'malcontent'
 #: panels/applications/cc-applications-panel.ui:122
 #| msgid ""
 #| "An error has occurred and network cannot be used.\n"
 #| "Error details: NetworkManager not running."
 msgid ""
 "An error has occurred and apps cannot be listed.\n"
-"Error details: Malcontent is not installed."
+"Error details: Parental Controls are not installed."
 msgstr ""
 "Hiba történt, és az alkalmazásokat nem lehet felsorolni.\n"
-"A hiba részletei: a Malcontent nincs telepítve."
+"A hiba részletei: a szülői felügyelet nincs telepítve."
 
 #: panels/applications/cc-applications-panel.ui:139
 #: panels/applications/cc-default-apps-page.ui:4
@@ -1107,6 +1110,7 @@ msgstr "Kijelző kalibrálása"
 #: panels/network/connection-editor/ce-page-details.c:89
 #: panels/network/connection-editor/connection-editor.ui:16
 #: panels/printers/pp-details-dialog.c:267
+#: panels/printers/pp-jobs-dialog.ui:125
 #: panels/printers/pp-new-printer-dialog.ui:65
 #: panels/printers/pp-ppd-selection-dialog.ui:17
 #: panels/privacy/usage/cc-usage-page.ui:125
@@ -1116,6 +1120,7 @@ msgstr "Kijelző kalibrálása"
 #: panels/system/users/cc-add-user-dialog.ui:24
 #: panels/system/users/cc-avatar-chooser.c:92
 #: panels/system/users/cc-enterprise-login-dialog.ui:44
+#: panels/system/users/cc-fingerprint-dialog.c:1396
 #: panels/system/users/cc-fingerprint-dialog.ui:32
 #: panels/system/users/cc-password-dialog.ui:15
 #: panels/system/users/cc-user-page.ui:231
@@ -1676,7 +1681,7 @@ msgid "No languages found"
 msgstr "Nem találhatók nyelvek"
 
 #: panels/common/cc-language-chooser.ui:70
-#: panels/keyboard/cc-input-chooser.c:185
+#: panels/keyboard/cc-input-chooser.c:182
 msgid "More…"
 msgstr "Tovább…"
 
@@ -2268,15 +2273,15 @@ msgstr "Szövegméret csökkentése"
 msgid "High contrast on or off"
 msgstr "Nagy kontraszt be- vagy kikapcsolása"
 
-#: panels/keyboard/cc-input-chooser.c:198
+#: panels/keyboard/cc-input-chooser.c:195
 msgid "No input sources found"
 msgstr "Nem találhatók bemeneti források"
 
-#: panels/keyboard/cc-input-chooser.c:253 panels/keyboard/cc-input-row.ui:46
+#: panels/keyboard/cc-input-chooser.c:250 panels/keyboard/cc-input-row.ui:46
 msgid "View Keyboard Layout"
 msgstr "Billentyűzetkiosztás megtekintése"
 
-#: panels/keyboard/cc-input-chooser.c:1046
+#: panels/keyboard/cc-input-chooser.c:1043
 msgctxt "Input Source"
 msgid "Other"
 msgstr "Egyéb"
@@ -2288,10 +2293,6 @@ msgstr "Bemeneti forrás hozzáadása"
 #: panels/keyboard/cc-input-chooser.ui:37
 msgid "Search languages and countries"
 msgstr "Nyelvek és országok keresése"
-
-#: panels/keyboard/cc-input-chooser.ui:52
-msgid "Input methods can’t be used on the login screen"
-msgstr "Nem használhatók bemeneti módszerek a bejelentkezési képernyőn"
 
 #: panels/keyboard/cc-input-list-box.ui:14
 #| msgid "Add Input Source"
@@ -2425,54 +2426,54 @@ msgstr ""
 "A bemeneti források a(z) %s gyorsbillentyűvel válthatóak át.\n"
 "Ezt a gyorsbillentyűk beállításaiban lehet megváltoztatni."
 
-#: panels/keyboard/cc-keyboard-panel.ui:13
+#: panels/keyboard/cc-keyboard-panel.ui:6
 #: panels/keyboard/gnome-keyboard-panel.desktop.in:3
 msgid "Keyboard"
 msgstr "Billentyűzet"
 
-#: panels/keyboard/cc-keyboard-panel.ui:23
+#: panels/keyboard/cc-keyboard-panel.ui:16
 msgid "Input Sources"
 msgstr "Bemeneti források"
 
-#: panels/keyboard/cc-keyboard-panel.ui:24
+#: panels/keyboard/cc-keyboard-panel.ui:17
 msgid "Includes keyboard layouts and input methods"
 msgstr "Tartalmazza a billentyűzetkiosztásokat és a beviteli módokat"
 
-#: panels/keyboard/cc-keyboard-panel.ui:34
+#: panels/keyboard/cc-keyboard-panel.ui:27
 msgid "Input Source Switching"
 msgstr "Bemeneti forrás váltása"
 
-#: panels/keyboard/cc-keyboard-panel.ui:37
+#: panels/keyboard/cc-keyboard-panel.ui:30
 msgid "Use the _same source for all windows"
 msgstr "_Azonos forrás használata az összes ablakhoz"
 
-#: panels/keyboard/cc-keyboard-panel.ui:49
+#: panels/keyboard/cc-keyboard-panel.ui:42
 msgid "Switch input sources _individually for each window"
 msgstr "Források váltása _egyesével az összes ablaknál"
 
-#: panels/keyboard/cc-keyboard-panel.ui:65
+#: panels/keyboard/cc-keyboard-panel.ui:58
 msgid "Special Character Entry"
 msgstr "Különleges karakterek beírása"
 
-#: panels/keyboard/cc-keyboard-panel.ui:66
+#: panels/keyboard/cc-keyboard-panel.ui:59
 msgid "Methods for entering symbols and letter variants using the keyboard"
 msgstr ""
 "Módok a szimbólumok és betűváltozatok beírására a billentyűzet segítségével"
 
-#: panels/keyboard/cc-keyboard-panel.ui:69
+#: panels/keyboard/cc-keyboard-panel.ui:62
 msgid "A_lternate Characters Key"
 msgstr "A_lternatív karakterek billentyű"
 
-#: panels/keyboard/cc-keyboard-panel.ui:77
+#: panels/keyboard/cc-keyboard-panel.ui:70
 msgid "_Compose Key"
 msgstr "_Kombináló billentyű"
 
-#: panels/keyboard/cc-keyboard-panel.ui:86
+#: panels/keyboard/cc-keyboard-panel.ui:79
 #: panels/keyboard/cc-keyboard-shortcut-dialog.ui:9
 msgid "Keyboard Shortcuts"
 msgstr "Gyorsbillentyűk"
 
-#: panels/keyboard/cc-keyboard-panel.ui:89
+#: panels/keyboard/cc-keyboard-panel.ui:82
 msgid "_View and Customize Shortcuts"
 msgstr "Gyorsbillentyűk _megtekintése és személyre szabása"
 
@@ -3048,7 +3049,7 @@ msgstr "Hálózat neve"
 #. Translators: This is a password needed for printing.
 #: panels/network/cc-qr-code-dialog.ui:66
 #: panels/network/cc-wifi-hotspot-dialog.ui:92
-#: panels/printers/pp-jobs-dialog.ui:52
+#: panels/printers/pp-jobs-dialog.ui:178
 #: panels/printers/pp-new-printer-dialog.ui:292
 #: panels/system/users/cc-add-user-dialog.ui:103
 #: panels/wwan/cc-wwan-apn-dialog.ui:175
@@ -3108,8 +3109,8 @@ msgid ""
 "Turning on the hotspot will disconnect from %s, and it will not be possible "
 "to access the internet through Wi-Fi."
 msgstr ""
-"A hozzáférési pont bekapcsolása le fogja választani a(z) %s Wi-Fi hálózatról,"
-" és nem lesz lehetséges elérni az internetet Wi-Fi használatával."
+"A hozzáférési pont bekapcsolása le fogja választani a(z) %s Wi-Fi "
+"hálózatról, és nem lesz lehetséges elérni az internetet Wi-Fi használatával."
 
 #: panels/network/cc-wifi-hotspot-dialog.c:250
 msgid "Network name cannot be empty"
@@ -3141,10 +3142,10 @@ msgid ""
 "Wi-Fi network that they can connect to. To do this, you must have an "
 "internet connection through a source other than Wi-Fi."
 msgstr ""
-"A Wi-Fi hozzáférési pont lehetővé teszi másoknak az internetkapcsolat"
-" megosztását egy olyan Wi-Fi hálózat létrehozásával, amelyhez mások"
-" kapcsolódhatnak. Ehhez rendelkeznie kell egy másik, a Wi-Fi hálózaton kívüli"
-" forráson keresztül elérhető internetkapcsolattal."
+"A Wi-Fi hozzáférési pont lehetővé teszi másoknak az internetkapcsolat "
+"megosztását egy olyan Wi-Fi hálózat létrehozásával, amelyhez mások "
+"kapcsolódhatnak. Ehhez rendelkeznie kell egy másik, a Wi-Fi hálózaton kívüli "
+"forráson keresztül elérhető internetkapcsolattal."
 
 #: panels/network/cc-wifi-hotspot-dialog.ui:105
 msgid "Generate Random Password"
@@ -3207,8 +3208,8 @@ msgid ""
 "Turn off the hotspot to use Wi-Fi with this device."
 msgstr ""
 "Keresés egy másik eszközzel a hozzáférési ponthoz való kapcsolódáshoz.\n"
-"Kapcsolja ki a hozzáférési pontot az ezzel az eszközzel történő Wi-Fi"
-" használatához."
+"Kapcsolja ki a hozzáférési pontot az ezzel az eszközzel történő Wi-Fi "
+"használatához."
 
 #: panels/network/cc-wifi-panel.ui:156
 #| msgid "Turn Off Hotspot…"
@@ -3241,8 +3242,8 @@ msgstr "Kikapcsolja a hozzáférési pontot?"
 #: panels/network/cc-wifi-panel.ui:231
 msgid "Turning off will disconnect any devices that are using the hotspot."
 msgstr ""
-"A kikapcsolás leválasztja az összes olyan eszközt, amely a hozzáférési pontot"
-" használja."
+"A kikapcsolás leválasztja az összes olyan eszközt, amely a hozzáférési "
+"pontot használja."
 
 #: panels/network/cc-wifi-panel.ui:237
 msgid "_Turn Off"
@@ -4020,8 +4021,8 @@ msgstr "A Wi-Fi-hálózatokhoz való kapcsolódás módjának szabályozása"
 #: panels/network/gnome-wifi-panel.desktop.in:15
 msgid "Network;Wireless;Wi-Fi;Wifi;IP;LAN;Broadband;DNS;Hotspot;"
 msgstr ""
-"Hálózat;Vezeték nélküli;Wi-Fi;Wifi;IP;LAN;Széles"
-" sáv;Szélessáv;DNS;Hotspot;Hozzáférési pont;"
+"Hálózat;Vezeték nélküli;Wi-Fi;Wifi;IP;LAN;Széles sáv;Szélessáv;DNS;Hotspot;"
+"Hozzáférési pont;"
 
 #: panels/network/net-device-ethernet.c:93
 msgid "never"
@@ -4988,21 +4989,21 @@ msgstr ""
 "Energia;Energiagazdálkodás;Alvás;Felfüggesztés;Hibernálás;Akkumulátor;Telep;"
 "Elsötétítés;Elhalványítás;Monitor;DPMS;Üresjárat;Energia;"
 
-#: panels/printers/cc-printers-panel.c:677
+#: panels/printers/cc-printers-panel.c:672
 msgid "Undo"
 msgstr "Visszavonás"
 
 #. Translators: %s is the printer name
-#: panels/printers/cc-printers-panel.c:687
+#: panels/printers/cc-printers-panel.c:682
 #, c-format
 msgid "Printer “%s” has been deleted"
 msgstr "A(z) „%s” nyomtató törölve lett"
 
-#: panels/printers/cc-printers-panel.c:928
+#: panels/printers/cc-printers-panel.c:924
 msgid "Failed to add new printer."
 msgstr "Nem sikerült hozzáadni új nyomtatót."
 
-#: panels/printers/cc-printers-panel.c:1297
+#: panels/printers/cc-printers-panel.c:1293
 msgid "Unlock to add printers and change settings"
 msgstr "Feloldás a nyomtatók hozzáadásához és a beállítások megváltoztatásához"
 
@@ -5013,7 +5014,7 @@ msgstr "Az összes kapcsolódott és hálózati nyomtató"
 #. Translators: This button adds new printer.
 #. Translators: This button adds a new printer.
 #: panels/printers/cc-printers-panel.ui:31
-#: panels/printers/cc-printers-panel.ui:118
+#: panels/printers/cc-printers-panel.ui:124
 msgid "_Add Printer…"
 msgstr "Nyomtató _hozzáadása…"
 
@@ -5021,17 +5022,17 @@ msgstr "Nyomtató _hozzáadása…"
 msgid "Search printers"
 msgstr "Nyomtatók keresése"
 
-#: panels/printers/cc-printers-panel.ui:115
+#: panels/printers/cc-printers-panel.ui:121
 msgid "No Printers"
 msgstr "Nincsenek nyomtatók"
 
 #. Translators: Title if the CUPS server is not running (we can not connect to it).
-#: panels/printers/cc-printers-panel.ui:140
+#: panels/printers/cc-printers-panel.ui:146
 msgid "No Print Service"
 msgstr "Nincs nyomtatási szolgáltatás"
 
 #. Translators: Description if the CUPS server is not running (we can not connect to it).
-#: panels/printers/cc-printers-panel.ui:141
+#: panels/printers/cc-printers-panel.ui:147
 msgid "The system printing service doesn’t seem to be available"
 msgstr "A rendszer nyomtatószolgáltatása nem tűnik elérhetőnek"
 
@@ -5229,7 +5230,7 @@ msgid "Move Print Job to Top of Queue"
 msgstr "Nyomtatásai feladat áthelyezése a sor elejére"
 
 #. Translators: This label shows how many jobs of this printer needs to be authenticated to be printed.
-#: panels/printers/pp-jobs-dialog.c:318
+#: panels/printers/pp-jobs-dialog.c:319
 #, c-format
 msgid "%u Job Requires Authentication"
 msgid_plural "%u Jobs Require Authentication"
@@ -5237,53 +5238,62 @@ msgstr[0] "%u feladat hitelesítést igényel"
 msgstr[1] "%u feladat hitelesítést igényel"
 
 #. Translators: The printer needs authentication info to print.
-#: panels/printers/pp-jobs-dialog.c:455
+#: panels/printers/pp-jobs-dialog.c:456
 #, c-format
 msgid "Enter credentials to print from %s"
 msgstr "Hitelesítési adatok megadása a következőről történő nyomtatáshoz: %s"
 
+#. Translators: this action removes (purges) all the listed jobs from the list.
+#: panels/printers/pp-jobs-dialog.ui:12
+#| msgid "Clear All"
+msgid "_Clear All"
+msgstr "Összes _törlése"
+
+#: panels/printers/pp-jobs-dialog.ui:23
+#| msgid "No Active Jobs"
+msgid "Active Jobs"
+msgstr "Aktív feladatok"
+
+#. Translators: this label describes the dialog empty state, with no jobs listed.
+#: panels/printers/pp-jobs-dialog.ui:36
+msgid "No Active Printer Jobs"
+msgstr "Nincsenek aktív nyomtatási feladatok"
+
+#. Translators: This button pop up authentication dialog for print jobs which need credentials.
+#: panels/printers/pp-jobs-dialog.ui:80
+msgid "_Authenticate"
+msgstr "_Hitelesítés"
+
+#: panels/printers/pp-jobs-dialog.ui:119
+#| msgid "No Active Jobs"
+msgid "Clear All Active Jobs?"
+msgstr "Törli az aktív feladatokat?"
+
+#: panels/printers/pp-jobs-dialog.ui:120
+msgid "Clearing jobs cannot be undone"
+msgstr "A feladatok törlése nem vonható vissza"
+
+#: panels/printers/pp-jobs-dialog.ui:126
+#| msgid "Clear All"
+msgid "Clear _All"
+msgstr "Összes _törlése"
+
 #. Translators: This is a windows domain used with SMB protocol.
-#: panels/printers/pp-jobs-dialog.ui:28
+#: panels/printers/pp-jobs-dialog.ui:154
 msgid "Domain"
 msgstr "Tartomány"
 
 #. Translators: This is a username on a print server.
-#: panels/printers/pp-jobs-dialog.ui:40
+#: panels/printers/pp-jobs-dialog.ui:166
 #: panels/printers/pp-new-printer-dialog.ui:271
 #: panels/wwan/cc-wwan-apn-dialog.ui:150
 msgid "Username"
 msgstr "Felhasználónév"
 
 #. Translators: This button authenticates all print jobs and send them for printing.
-#: panels/printers/pp-jobs-dialog.ui:101
+#: panels/printers/pp-jobs-dialog.ui:227
 msgid "A_uthenticate"
 msgstr "Hi_telesítés"
-
-#: panels/printers/pp-jobs-dialog.ui:119
-#| msgid "Printers"
-msgid "Printer Jobs"
-msgstr "Nyomtatófeladatok"
-
-#. Translators: this action removes (purges) all the listed jobs from the list.
-#: panels/printers/pp-jobs-dialog.ui:128
-#| msgid "Clear All"
-msgid "_Clear All"
-msgstr "Összes _törlése"
-
-#: panels/printers/pp-jobs-dialog.ui:139
-#| msgid "No Active Jobs"
-msgid "Active Jobs"
-msgstr "Aktív feladatok"
-
-#. Translators: this label describes the dialog empty state, with no jobs listed.
-#: panels/printers/pp-jobs-dialog.ui:152
-msgid "No Active Printer Jobs"
-msgstr "Nincsenek aktív nyomtatási feladatok"
-
-#. Translators: This button pop up authentication dialog for print jobs which need credentials.
-#: panels/printers/pp-jobs-dialog.ui:196
-msgid "_Authenticate"
-msgstr "_Hitelesítés"
 
 #. Translators: Name of job which makes printer to autoconfigure itself
 #: panels/printers/pp-new-printer.c:1200
@@ -5832,23 +5842,23 @@ msgctxt "Thunderbolt Device Status"
 msgid "Authorized"
 msgstr "Engedélyezve"
 
-#: panels/privacy/bolt/cc-bolt-page.c:216
+#: panels/privacy/bolt/cc-bolt-page.c:211
 msgid ""
 "The Thunderbolt subsystem (boltd) is not installed or not set up properly."
 msgstr ""
 "A Thunderbolt alrendszer (boltd) nincs telepítve vagy rosszul van beállítva."
 
-#: panels/privacy/bolt/cc-bolt-page.c:472
+#: panels/privacy/bolt/cc-bolt-page.c:467
 msgid "Allow direct access to devices such as docks and external GPUs."
 msgstr ""
 "Közvetlen hozzáférés engedélyezése az olyan eszközökhöz, mint a dokkolók és "
 "külső GPU-k."
 
-#: panels/privacy/bolt/cc-bolt-page.c:473
+#: panels/privacy/bolt/cc-bolt-page.c:468
 msgid "Only USB and Display Port devices can attach."
 msgstr "Csak USB és Display Port eszközök csatlakoztathatóak."
 
-#: panels/privacy/bolt/cc-bolt-page.c:508
+#: panels/privacy/bolt/cc-bolt-page.c:503
 msgid ""
 "Thunderbolt could not be detected.\n"
 "Either the system lacks Thunderbolt support, it has been disabled in the "
@@ -5858,15 +5868,15 @@ msgstr ""
 "Vagy hiányzik a rendszerből a Thunderbolt támogatás, vagy le lett tiltva a "
 "BIOS-ban, vagy nem támogatott biztonsági szintre van állítva a BIOS-ban."
 
-#: panels/privacy/bolt/cc-bolt-page.c:552
+#: panels/privacy/bolt/cc-bolt-page.c:547
 msgid "Thunderbolt support has been disabled in the BIOS."
 msgstr "A Thunderbolt támogatás le lett tiltva a BIOS-ban."
 
-#: panels/privacy/bolt/cc-bolt-page.c:556
+#: panels/privacy/bolt/cc-bolt-page.c:551
 msgid "Thunderbolt security level could not be determined."
 msgstr "A Thunderbolt biztonsági szintje nem határozható meg."
 
-#: panels/privacy/bolt/cc-bolt-page.c:676
+#: panels/privacy/bolt/cc-bolt-page.c:671
 #, c-format
 msgid "Error switching direct mode: %s"
 msgstr "Hiba a közvetlen módra váltáskor: %s"
@@ -5875,33 +5885,29 @@ msgstr "Hiba a közvetlen módra váltáskor: %s"
 msgid "Thunderbolt"
 msgstr "Thunderbolt"
 
-#: panels/privacy/bolt/cc-bolt-page.ui:48
-msgid "Close notification"
-msgstr "Értesítés bezárása"
-
-#: panels/privacy/bolt/cc-bolt-page.ui:92
+#: panels/privacy/bolt/cc-bolt-page.ui:51
 msgid "No Thunderbolt Support"
 msgstr "Nincs Thunderbolt támogatás"
 
-#: panels/privacy/bolt/cc-bolt-page.ui:93
+#: panels/privacy/bolt/cc-bolt-page.ui:52
 msgid "Could not connect to the thunderbolt subsystem"
 msgstr "Nem sikerült kapcsolódni a thunderbolt alrendszerhez"
 
-#: panels/privacy/bolt/cc-bolt-page.ui:110
+#: panels/privacy/bolt/cc-bolt-page.ui:69
 msgid "Direct Access"
 msgstr "Közvetlen hozzáférés"
 
-#: panels/privacy/bolt/cc-bolt-page.ui:113
+#: panels/privacy/bolt/cc-bolt-page.ui:72
 msgid "Allow direct access to devices such as docks and external GPUs"
 msgstr ""
 "Közvetlen hozzáférés engedélyezése az olyan eszközökhöz, mint a dokkolók és "
 "külső GPU-k"
 
-#: panels/privacy/bolt/cc-bolt-page.ui:163
+#: panels/privacy/bolt/cc-bolt-page.ui:122
 msgid "Pending Devices"
 msgstr "Függőben lévő eszközök"
 
-#: panels/privacy/bolt/cc-bolt-page.ui:246
+#: panels/privacy/bolt/cc-bolt-page.ui:205
 msgid "No devices attached"
 msgstr "Nincs eszköz csatlakoztatva"
 
@@ -6116,7 +6122,7 @@ msgstr ""
 
 #. TRANSLATORS: in reference to firmware protection: 0/4 stars
 #: panels/privacy/firmware-security/cc-firmware-security-dialog.c:108
-#: panels/privacy/firmware-security/cc-firmware-security-page.c:532
+#: panels/privacy/firmware-security/cc-firmware-security-page.c:533
 msgid "Security Checks Failed"
 msgstr "A biztonsági ellenőrzések sikertelenek"
 
@@ -6141,7 +6147,7 @@ msgstr ""
 
 #. TRANSLATORS: in reference to firmware protection: 1/4 stars
 #: panels/privacy/firmware-security/cc-firmware-security-dialog.c:121
-#: panels/privacy/firmware-security/cc-firmware-security-page.c:539
+#: panels/privacy/firmware-security/cc-firmware-security-page.c:540
 msgid "Basic Security Checks Passed"
 msgstr "Az alapvető biztonsági ellenőrzések sikeresek"
 
@@ -6159,7 +6165,7 @@ msgstr ""
 
 #. TRANSLATORS: in reference to firmware protection: 2~4 stars
 #: panels/privacy/firmware-security/cc-firmware-security-dialog.c:134
-#: panels/privacy/firmware-security/cc-firmware-security-page.c:549
+#: panels/privacy/firmware-security/cc-firmware-security-page.c:550
 msgid "Protected"
 msgstr "Védett"
 
@@ -6288,44 +6294,44 @@ msgstr ""
 
 #. TRANSLATOR: this is the date in "%Y-%m-%d %H:%M:%S" format,
 #. for example: 2022-08-01 22:48:00
-#: panels/privacy/firmware-security/cc-firmware-security-page.c:228
+#: panels/privacy/firmware-security/cc-firmware-security-page.c:229
 #, c-format
 msgid "%1$s"
 msgstr "%1$s"
 
 #. TRANSLATOR: This is the text event status output when the event status is "success"
-#: panels/privacy/firmware-security/cc-firmware-security-page.c:234
+#: panels/privacy/firmware-security/cc-firmware-security-page.c:235
 msgid "Pass"
 msgstr "Sikeres"
 
 #. TRANSLATOR: This is the text event status output when the event status is not "success"
-#: panels/privacy/firmware-security/cc-firmware-security-page.c:237
+#: panels/privacy/firmware-security/cc-firmware-security-page.c:238
 msgid "! Fail"
 msgstr "! Sikertelen"
 
-#: panels/privacy/firmware-security/cc-firmware-security-page.c:240
+#: panels/privacy/firmware-security/cc-firmware-security-page.c:241
 #, c-format
 msgid "(%1$s → %2$s)"
 msgstr "(%1$s → %2$s)"
 
-#: panels/privacy/firmware-security/cc-firmware-security-page.c:533
+#: panels/privacy/firmware-security/cc-firmware-security-page.c:534
 msgid "Hardware does not pass basic security checks."
 msgstr "A hardver nem felel meg az alapvető biztonsági ellenőrzéseknek."
 
-#: panels/privacy/firmware-security/cc-firmware-security-page.c:540
+#: panels/privacy/firmware-security/cc-firmware-security-page.c:541
 msgid "Hardware has a basic level of protection."
 msgstr "A hardver alapszintű védelemmel rendelkezik."
 
-#: panels/privacy/firmware-security/cc-firmware-security-page.c:550
+#: panels/privacy/firmware-security/cc-firmware-security-page.c:551
 msgid "Hardware has a strong level of protection."
 msgstr "A hardver erős védelmi szinttel rendelkezik."
 
 #. TRANSLATORS: in reference to firmware protection: ??? stars
-#: panels/privacy/firmware-security/cc-firmware-security-page.c:556
+#: panels/privacy/firmware-security/cc-firmware-security-page.c:557
 msgid "Security Checks Unavailable"
 msgstr "A biztonsági ellenőrzések nem érhetők el"
 
-#: panels/privacy/firmware-security/cc-firmware-security-page.c:557
+#: panels/privacy/firmware-security/cc-firmware-security-page.c:558
 msgid "Security levels are not available for this device."
 msgstr "A biztonsági szintek nem érhetők el ehhez az eszközhöz."
 
@@ -6454,8 +6460,8 @@ msgstr "_Automatikus eszközhely-meghatározás"
 #: panels/privacy/location/cc-location-page.ui:18
 msgid "Use sources like GPS and cellular to determine device location"
 msgstr ""
-"Olyan források használata a készülék helyének meghatározásához, mint a GPS és"
-" a mobilhálózat"
+"Olyan források használata a készülék helyének meghatározásához, mint a GPS "
+"és a mobilhálózat"
 
 #: panels/privacy/location/cc-location-page.ui:28
 msgid ""
@@ -7295,118 +7301,118 @@ msgstr "_Hónap"
 msgid "_Day"
 msgstr "_Nap"
 
-#: panels/system/datetime/cc-datetime-page.ui:123
+#: panels/system/datetime/cc-datetime-page.ui:124
 msgid "Automatic _Date &amp; Time"
 msgstr "Automatikus _dátum és idő"
 
-#: panels/system/datetime/cc-datetime-page.ui:124
+#: panels/system/datetime/cc-datetime-page.ui:125
 msgid "Requires internet access"
 msgstr "Internet-hozzáférést igényel"
 
-#: panels/system/datetime/cc-datetime-page.ui:136
+#: panels/system/datetime/cc-datetime-page.ui:137
 msgid "Date &amp; _Time"
 msgstr "Dátum és _idő"
 
-#: panels/system/datetime/cc-datetime-page.ui:148
+#: panels/system/datetime/cc-datetime-page.ui:149
 msgid "Automatic Time _Zone"
 msgstr "Automatikus idő_zóna"
 
-#: panels/system/datetime/cc-datetime-page.ui:149
+#: panels/system/datetime/cc-datetime-page.ui:150
 msgid "Requires location services enabled and internet access"
 msgstr ""
 "A helymeghatározó szolgáltatások engedélyezését és internet-hozzáférést "
 "igényel"
 
-#: panels/system/datetime/cc-datetime-page.ui:155
+#: panels/system/datetime/cc-datetime-page.ui:156
 msgid "Time Z_one"
 msgstr "Idő_zóna"
 
-#: panels/system/datetime/cc-datetime-page.ui:166
+#: panels/system/datetime/cc-datetime-page.ui:167
 msgid "Time _Format"
 msgstr "Idő_formátum"
 
-#: panels/system/datetime/cc-datetime-page.ui:177
+#: panels/system/datetime/cc-datetime-page.ui:178
 msgid "_24-hour"
 msgstr "_24 órás"
 
-#: panels/system/datetime/cc-datetime-page.ui:185
+#: panels/system/datetime/cc-datetime-page.ui:186
 msgid "AM / _PM"
 msgstr "_12 órás"
 
-#: panels/system/datetime/cc-datetime-page.ui:198
+#: panels/system/datetime/cc-datetime-page.ui:199
 msgid "Clock &amp; Calendar"
 msgstr "Óra és naptár"
 
-#: panels/system/datetime/cc-datetime-page.ui:199
+#: panels/system/datetime/cc-datetime-page.ui:200
 msgid "Control how the time and date is shown in the top bar"
 msgstr ""
 "Annak szabályozása, hogy az idő és a dátum hogyan jelenjen meg a felső sávban"
 
-#: panels/system/datetime/cc-datetime-page.ui:202
+#: panels/system/datetime/cc-datetime-page.ui:203
 msgid "_Week Day"
 msgstr "_Hét napja"
 
-#: panels/system/datetime/cc-datetime-page.ui:208
+#: panels/system/datetime/cc-datetime-page.ui:209
 msgid "D_ate"
 msgstr "_Dátum"
 
-#: panels/system/datetime/cc-datetime-page.ui:214
+#: panels/system/datetime/cc-datetime-page.ui:215
 msgid "_Seconds"
 msgstr "_Másodperc"
 
-#: panels/system/datetime/cc-datetime-page.ui:220
+#: panels/system/datetime/cc-datetime-page.ui:221
 msgid "Week _Numbers"
 msgstr "Hetek _száma"
 
-#: panels/system/datetime/cc-datetime-page.ui:221
+#: panels/system/datetime/cc-datetime-page.ui:222
 msgid "Shown in the dropdown calendar"
 msgstr "A legördülő naptárban jelenik meg"
 
-#: panels/system/datetime/cc-datetime-page.ui:257
+#: panels/system/datetime/cc-datetime-page.ui:258
 msgid "January"
 msgstr "január"
 
-#: panels/system/datetime/cc-datetime-page.ui:258
+#: panels/system/datetime/cc-datetime-page.ui:259
 msgid "February"
 msgstr "február"
 
-#: panels/system/datetime/cc-datetime-page.ui:259
+#: panels/system/datetime/cc-datetime-page.ui:260
 msgid "March"
 msgstr "március"
 
-#: panels/system/datetime/cc-datetime-page.ui:260
+#: panels/system/datetime/cc-datetime-page.ui:261
 msgid "April"
 msgstr "április"
 
-#: panels/system/datetime/cc-datetime-page.ui:261
+#: panels/system/datetime/cc-datetime-page.ui:262
 msgid "May"
 msgstr "május"
 
-#: panels/system/datetime/cc-datetime-page.ui:262
+#: panels/system/datetime/cc-datetime-page.ui:263
 msgid "June"
 msgstr "június"
 
-#: panels/system/datetime/cc-datetime-page.ui:263
+#: panels/system/datetime/cc-datetime-page.ui:264
 msgid "July"
 msgstr "július"
 
-#: panels/system/datetime/cc-datetime-page.ui:264
+#: panels/system/datetime/cc-datetime-page.ui:265
 msgid "August"
 msgstr "augusztus"
 
-#: panels/system/datetime/cc-datetime-page.ui:265
+#: panels/system/datetime/cc-datetime-page.ui:266
 msgid "September"
 msgstr "szeptember"
 
-#: panels/system/datetime/cc-datetime-page.ui:266
+#: panels/system/datetime/cc-datetime-page.ui:267
 msgid "October"
 msgstr "október"
 
-#: panels/system/datetime/cc-datetime-page.ui:267
+#: panels/system/datetime/cc-datetime-page.ui:268
 msgid "November"
 msgstr "november"
 
-#: panels/system/datetime/cc-datetime-page.ui:268
+#: panels/system/datetime/cc-datetime-page.ui:269
 msgid "December"
 msgstr "december"
 
@@ -7803,8 +7809,8 @@ msgid ""
 "Usernames can only include lower case letters, numbers, hyphens and "
 "underscores."
 msgstr ""
-"A felhasználónevek csak kisbetűket, számokat, kötőjeleket és aláhúzásokat"
-" tartalmazhatnak."
+"A felhasználónevek csak kisbetűket, számokat, kötőjeleket és aláhúzásokat "
+"tartalmazhatnak."
 
 #: panels/system/users/cc-add-user-dialog.ui:107
 msgid "User sets password on _first login"
@@ -7825,8 +7831,8 @@ msgstr "Jelszó beállítása"
 msgid ""
 "For a good password, mix upper case, lower case, numbers and punctuation."
 msgstr ""
-"A jó jelszóhoz használjon vegyesen nagybetűket, kisbetűket, számokat és"
-" írásjeleket."
+"A jó jelszóhoz használjon vegyesen nagybetűket, kisbetűket, számokat és "
+"írásjeleket."
 
 #: panels/system/users/cc-add-user-dialog.ui:229
 #| msgid "Confirm Password"
@@ -7995,87 +8001,87 @@ msgstr "Nem sikerült felsorolni az ujjlenyomatokat: %s"
 msgid "Failed to delete saved fingerprints: %s"
 msgstr "Nem sikerült törölni a mentett ujjlenyomatokat: %s"
 
-#: panels/system/users/cc-fingerprint-dialog.c:608
+#: panels/system/users/cc-fingerprint-dialog.c:609
 msgid "Left thumb"
 msgstr "Bal hüvelykujj"
 
-#: panels/system/users/cc-fingerprint-dialog.c:610
+#: panels/system/users/cc-fingerprint-dialog.c:611
 msgid "Left middle finger"
 msgstr "Bal középső ujj"
 
-#: panels/system/users/cc-fingerprint-dialog.c:612
+#: panels/system/users/cc-fingerprint-dialog.c:613
 msgid "_Left index finger"
 msgstr "_Bal mutatóujj"
 
-#: panels/system/users/cc-fingerprint-dialog.c:614
+#: panels/system/users/cc-fingerprint-dialog.c:615
 msgid "Left ring finger"
 msgstr "Bal gyűrűsujj"
 
-#: panels/system/users/cc-fingerprint-dialog.c:616
+#: panels/system/users/cc-fingerprint-dialog.c:617
 msgid "Left little finger"
 msgstr "Bal kisujj"
 
-#: panels/system/users/cc-fingerprint-dialog.c:618
+#: panels/system/users/cc-fingerprint-dialog.c:619
 msgid "Right thumb"
 msgstr "Jobb hüvelykujj"
 
-#: panels/system/users/cc-fingerprint-dialog.c:620
+#: panels/system/users/cc-fingerprint-dialog.c:621
 msgid "Right middle finger"
 msgstr "Jobb középső ujj"
 
-#: panels/system/users/cc-fingerprint-dialog.c:622
+#: panels/system/users/cc-fingerprint-dialog.c:623
 msgid "_Right index finger"
 msgstr "_Jobb mutatóujj"
 
-#: panels/system/users/cc-fingerprint-dialog.c:624
+#: panels/system/users/cc-fingerprint-dialog.c:625
 msgid "Right ring finger"
 msgstr "Jobb gyűrűsujj"
 
-#: panels/system/users/cc-fingerprint-dialog.c:626
+#: panels/system/users/cc-fingerprint-dialog.c:627
 msgid "Right little finger"
 msgstr "Jobb kisujj"
 
-#: panels/system/users/cc-fingerprint-dialog.c:628
+#: panels/system/users/cc-fingerprint-dialog.c:629
 msgid "Unknown Finger"
 msgstr "Ismeretlen ujj"
 
-#: panels/system/users/cc-fingerprint-dialog.c:759
+#: panels/system/users/cc-fingerprint-dialog.c:760
 msgctxt "Fingerprint enroll state"
 msgid "Complete"
 msgstr "Kész"
 
-#: panels/system/users/cc-fingerprint-dialog.c:770
+#: panels/system/users/cc-fingerprint-dialog.c:771
 msgid "Fingerprint device disconnected"
 msgstr "Ujjlenyomatos eszköz leválasztva"
 
-#: panels/system/users/cc-fingerprint-dialog.c:776
+#: panels/system/users/cc-fingerprint-dialog.c:777
 msgid "Fingerprint device storage is full"
 msgstr "Ujjlenyomatos eszköz tárhelye megtelt"
 
-#: panels/system/users/cc-fingerprint-dialog.c:780
+#: panels/system/users/cc-fingerprint-dialog.c:781
 msgid "Fingerprint is duplicate"
 msgstr "Az ujjlenyomat kettőzött"
 
-#: panels/system/users/cc-fingerprint-dialog.c:784
+#: panels/system/users/cc-fingerprint-dialog.c:785
 msgid "Failed to enroll new fingerprint"
 msgstr "Nem sikerült bevinni az új ujjlenyomatot"
 
-#: panels/system/users/cc-fingerprint-dialog.c:815
+#: panels/system/users/cc-fingerprint-dialog.c:816
 #, c-format
 msgid "Failed to start enrollment: %s"
 msgstr "Nem sikerült elindítani a bevitelt: %s"
 
-#: panels/system/users/cc-fingerprint-dialog.c:823
+#: panels/system/users/cc-fingerprint-dialog.c:824
 msgctxt "Fingerprint enroll state"
 msgid "Failed to enroll new fingerprint"
 msgstr "Nem sikerült bevinni az új ujjlenyomatot"
 
-#: panels/system/users/cc-fingerprint-dialog.c:854
+#: panels/system/users/cc-fingerprint-dialog.c:855
 #, c-format
 msgid "Failed to stop enrollment: %s"
 msgstr "Nem sikerült leállítani a bevitelt: %s"
 
-#: panels/system/users/cc-fingerprint-dialog.c:900
+#: panels/system/users/cc-fingerprint-dialog.c:901
 msgid ""
 "Repeatedly lift and place your finger on the reader to enroll your "
 "fingerprint"
@@ -8083,34 +8089,53 @@ msgstr ""
 "Ismételten emelje fel, majd helyezze az ujját az olvasóra az ujjlenyomat "
 "beviteléhez"
 
-#: panels/system/users/cc-fingerprint-dialog.c:1014
+#: panels/system/users/cc-fingerprint-dialog.c:1015
 msgid "_Re-enroll this finger…"
 msgstr "Ujj ú_jbóli bevitele…"
 
 #. TRANSLATORS: This is the label for the button to enroll a new finger
-#: panels/system/users/cc-fingerprint-dialog.c:1029
+#: panels/system/users/cc-fingerprint-dialog.c:1030
 msgid "Scan new fingerprint"
 msgstr "Új ujjlenyomat leolvasása"
 
-#: panels/system/users/cc-fingerprint-dialog.c:1066
+#: panels/system/users/cc-fingerprint-dialog.c:1067
 #, c-format
 msgid "Failed to release fingerprint device %s: %s"
 msgstr "Nem sikerült kiadni a(z) %s ujjlenyomatos eszközt: %s"
 
-#: panels/system/users/cc-fingerprint-dialog.c:1138
+#: panels/system/users/cc-fingerprint-dialog.c:1139
 msgctxt "Fingerprint enroll state"
 msgid "Problem Reading Device"
 msgstr "Probléma az eszköz olvasásakor"
 
-#: panels/system/users/cc-fingerprint-dialog.c:1173
+#: panels/system/users/cc-fingerprint-dialog.c:1174
 #, c-format
 msgid "Failed to claim fingerprint device %s: %s"
 msgstr "Nem sikerült megszerezni a(z) %s ujjlenyomatos eszközt: %s"
 
-#: panels/system/users/cc-fingerprint-dialog.c:1315
+#: panels/system/users/cc-fingerprint-dialog.c:1316
 #, c-format
 msgid "Failed to get fingerprint devices: %s"
 msgstr "Nem sikerült lekérni az ujjlenyomatos eszközöket: %s"
+
+#: panels/system/users/cc-fingerprint-dialog.c:1391
+#| msgid "_Delete Fingerprints"
+msgid "Delete All Fingerprints?"
+msgstr "Törli az összes ujjlenyomatot?"
+
+#: panels/system/users/cc-fingerprint-dialog.c:1392
+msgid ""
+"Deleting all enrolled fingerprints will disable Fingerprint Login. To re-"
+"enable Fingerprint Login at least one fingerprint will have to be enrolled."
+msgstr ""
+"Az összes bejegyzett ujjlenyomat törlése letiltja az ujjlenyomatos"
+" bejelentkezést. Az ujjlenyomatos bejelentkezés újbóli engedélyezéséhez"
+" legalább egy ujjlenyomatot be kell jegyezni."
+
+#: panels/system/users/cc-fingerprint-dialog.c:1397
+#| msgid "_Reset All"
+msgid "_Delete All"
+msgstr "Összes _törlése"
 
 #: panels/system/users/cc-fingerprint-dialog.ui:8
 msgid "Fingerprint Manager"
@@ -8120,48 +8145,32 @@ msgstr "Ujjlenyomat-kezelő"
 msgid "Fingerprint"
 msgstr "Ujjlenyomat"
 
-#: panels/system/users/cc-fingerprint-dialog.ui:77
-msgid "_No"
-msgstr "_Nem"
-
-#: panels/system/users/cc-fingerprint-dialog.ui:85
-msgid "_Yes"
-msgstr "_Igen"
-
-#: panels/system/users/cc-fingerprint-dialog.ui:105
-msgid ""
-"Do you want to delete your registered fingerprints so fingerprint login is "
-"disabled?"
-msgstr ""
-"Törölni kívánja a regisztrált ujjlenyomatokat, ezzel letiltva az "
-"ujjlenyomatos bejelentkezést?"
-
-#: panels/system/users/cc-fingerprint-dialog.ui:161
+#: panels/system/users/cc-fingerprint-dialog.ui:114
 msgid "No fingerprint device"
 msgstr "Nincs ujjlenyomatos eszköz"
 
 #. Translators: This is the empty state page label which states that there are no devices ready.
-#: panels/system/users/cc-fingerprint-dialog.ui:176
+#: panels/system/users/cc-fingerprint-dialog.ui:129
 msgid "No Fingerprint device"
 msgstr "Nincs ujjlenyomatos eszköz"
 
-#: panels/system/users/cc-fingerprint-dialog.ui:185
+#: panels/system/users/cc-fingerprint-dialog.ui:138
 msgid "Ensure the device is properly connected"
 msgstr "Győződjön meg róla, hogy az eszköz helyesen van csatlakoztatva"
 
-#: panels/system/users/cc-fingerprint-dialog.ui:193
+#: panels/system/users/cc-fingerprint-dialog.ui:146
 msgid "Fingerprint Device"
 msgstr "Ujjlenyomatos eszköz"
 
-#: panels/system/users/cc-fingerprint-dialog.ui:202
+#: panels/system/users/cc-fingerprint-dialog.ui:155
 msgid "Choose the fingerprint device you want to configure"
 msgstr "Válasszon ujjlenyomatos eszközt a beállításhoz"
 
-#: panels/system/users/cc-fingerprint-dialog.ui:232
+#: panels/system/users/cc-fingerprint-dialog.ui:185
 msgid "Fingerprint Login"
 msgstr "Ujjlenyomatos bejelentkezés"
 
-#: panels/system/users/cc-fingerprint-dialog.ui:238
+#: panels/system/users/cc-fingerprint-dialog.ui:191
 msgid ""
 "Fingerprint login allows you to unlock and log into your device with your "
 "finger"
@@ -8169,11 +8178,11 @@ msgstr ""
 "Az ujjlenyomatos bejelentkezéssel az ujjával oldhatja fel és jelentkezhet be "
 "az eszközre"
 
-#: panels/system/users/cc-fingerprint-dialog.ui:265
+#: panels/system/users/cc-fingerprint-dialog.ui:218
 msgid "_Delete Fingerprints"
 msgstr "Ujjlenyomatok _törlése"
 
-#: panels/system/users/cc-fingerprint-dialog.ui:279
+#: panels/system/users/cc-fingerprint-dialog.ui:232
 msgid "Fingerprint Enroll"
 msgstr "Ujjlenyomat bevitele"
 
@@ -8876,9 +8885,9 @@ msgid ""
 "motion in the user interface at all. This may introduce unwanted effects "
 "that may have a negative impact on some visual sensitivities."
 msgstr ""
-"Az animációs hatások kikapcsolása hirtelenebb átmeneteket és mozgás nélküli"
-" felhasználói felületet eredményez. Ez olyan nem kívánt hatásokhoz vezethet,"
-" amelyek negatív hatással lehetnek néhány vizuális érzékenységre."
+"Az animációs hatások kikapcsolása hirtelenebb átmeneteket és mozgás nélküli "
+"felhasználói felületet eredményez. Ez olyan nem kívánt hatásokhoz vezethet, "
+"amelyek negatív hatással lehetnek néhány vizuális érzékenységre."
 
 #: panels/universal-access/cc-ua-seeing-page.ui:65
 msgid "_Large Text"
@@ -9277,8 +9286,8 @@ msgstr "Képernyőn lévő súgó megjelenítése"
 #, c-format
 msgid "This device is unknown and may present wrong capabilities — %s."
 msgstr ""
-"Ez az eszköz ismeretlen, és lehet, hogy nem rendelkezik megfelelő"
-" képességekkel – %s."
+"Ez az eszköz ismeretlen, és lehet, hogy nem rendelkezik megfelelő "
+"képességekkel – %s."
 
 #: panels/wacom/cc-wacom-device.c:444
 msgid "Tablet mounted on laptop panel"
@@ -9472,6 +9481,77 @@ msgstr "Rajztábla;Wacom;Íróvessző;Toll;Radír;Egér;"
 #: panels/wacom/gsd-wacom-key-shortcut-button.c:190
 msgid "New shortcut…"
 msgstr "Új gyorsbillentyű…"
+
+#. Translators: This separates the duration and interval times when displaying
+#. * the selected break schedule on the wellbeing panel. For example,
+#. * “1 minute / 20 minutes” to indicate a 1 minute break every 20 minutes.
+#: panels/wellbeing/cc-break-schedule-row.c:289
+msgid " / "
+msgstr " / "
+
+#: panels/wellbeing/cc-break-schedule-row.c:369
+#| msgid "C_onfiguration"
+msgid "Duration"
+msgstr "Időtartam"
+
+#: panels/wellbeing/cc-break-schedule-row.c:369
+msgid "Interval"
+msgstr "Időköz"
+
+#: panels/wellbeing/cc-wellbeing-panel.ui:18
+msgid "Break Reminders"
+msgstr "Szünet emlékeztetők"
+
+#: panels/wellbeing/cc-wellbeing-panel.ui:21
+msgid "_Eyesight Reminders"
+msgstr "_Látási emlékeztetők"
+
+#: panels/wellbeing/cc-wellbeing-panel.ui:22
+msgid "Reminders to look away from the screen"
+msgstr "Emlékeztetők, hogy forduljon el a képernyőtől"
+
+#: panels/wellbeing/cc-wellbeing-panel.ui:28
+msgid "_Movement Reminders"
+msgstr "_Mozgási emlékeztetők"
+
+#: panels/wellbeing/cc-wellbeing-panel.ui:29
+#| msgid "Remove Background"
+msgid "Reminders to move around"
+msgstr "Emlékeztetők, hogy mozogjon"
+
+#: panels/wellbeing/cc-wellbeing-panel.ui:35
+#| msgid "Manual Schedule"
+msgid "Movement Break S_chedule"
+msgstr "Mozgási szünet ü_temezése"
+
+#: panels/wellbeing/cc-wellbeing-panel.ui:41
+#| msgid "Sounds"
+msgid "S_ounds"
+msgstr "_Hangok"
+
+#: panels/wellbeing/cc-wellbeing-panel.ui:42
+msgid "Play a sound when a break ends"
+msgstr "Hang lejátszása a szünet befejezésekor"
+
+#: panels/wellbeing/gnome-wellbeing-panel.desktop.in:6
+#| msgid "Seeing"
+msgid "Wellbeing"
+msgstr "Jólét"
+
+#: panels/wellbeing/gnome-wellbeing-panel.desktop.in:7
+msgid "Review and limit the amount of time you spend at the computer screen"
+msgstr ""
+"A számítógép képernyője előtt eltöltött idő mennyiségének felülvizsgálata és"
+" korlátozása"
+
+#. Translators: Search terms to find the Wellbeing panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: panels/wellbeing/gnome-wellbeing-panel.desktop.in:18
+msgid ""
+"Wellbeing;Screen Time;Breaks;Break Reminders;Health Breaks;Daily Usage;"
+"Screen Limits;Usage Limit;"
+msgstr ""
+"Jólét;Képernyőidő;Szünetek;Szünetemlékeztetők;Egészségügyi szünetek;Napi"
+" használat;Képernyőkorlátok;Használati korlátok;"
 
 #: panels/wwan/cc-wwan-apn-dialog.c:293
 msgid "Edit"
@@ -10076,7 +10156,7 @@ msgstr "© 1998 %s"
 msgid "Settings categories"
 msgstr "Beállítások kategóriái"
 
-#: shell/cc-panel-loader.c:311
+#: shell/cc-panel-loader.c:317
 msgid "Available panels:"
 msgstr "Elérhető panelek:"
 

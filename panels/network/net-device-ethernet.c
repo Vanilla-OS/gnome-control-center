@@ -315,7 +315,7 @@ add_row (NetDeviceEthernet *self, NMConnection *connection)
         gtk_widget_set_hexpand (widget, TRUE);
         gtk_box_append (GTK_BOX (box), widget);
 
-        widget = gtk_button_new_from_icon_name ("emblem-system-symbolic");
+        widget = gtk_button_new_from_icon_name ("cog-wheel-symbolic");
         gtk_widget_set_margin_start (widget, 12);
         gtk_widget_set_margin_end (widget, 12);
         gtk_widget_set_margin_top (widget, 8);
@@ -347,11 +347,9 @@ populate_ui (NetDeviceEthernet *self)
 {
         GSList *connections, *l;
         NMConnection *connection;
-        GtkWidget *child;
         gint n_connections;
 
-        while ((child = gtk_widget_get_first_child (GTK_WIDGET (self->connection_list))) != NULL)
-               gtk_list_box_remove (self->connection_list, child);
+        gtk_list_box_remove_all (self->connection_list);
 
         connections = net_device_get_valid_connections (self->client, self->device);
         for (l = connections; l; l = l->next) {
@@ -517,7 +515,7 @@ net_device_ethernet_new (NMClient *client, NMDevice *device)
 {
         NetDeviceEthernet *self;
 
-        self = g_object_new (net_device_ethernet_get_type (), NULL);
+        self = g_object_new (NET_TYPE_DEVICE_ETHERNET, NULL);
         self->client = g_object_ref (client);
         self->device = g_object_ref (device);
 

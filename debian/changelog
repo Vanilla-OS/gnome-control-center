@@ -1,3 +1,63 @@
+gnome-control-center (1:48~beta-2) unstable; urgency=medium
+
+  * Bump minimum gnome-settings-daemon
+  * Increase dh_auto_test multiplier to see if it fixes the riscv64 network test
+  * debhelper 13.24 makes dh_auto_test verbose so remove that part of our patch
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Tue, 04 Feb 2025 11:26:12 -0500
+
+gnome-control-center (1:48~beta-1) unstable; urgency=medium
+
+  * New upstream release
+    - The new Wellbeing panel won't work without GNOME Shell 48 Beta
+  * Bump dependencies
+  * Remove display join mode patch: applied in new release
+  * Remove test multiplier override: applied in new release
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Tue, 04 Feb 2025 10:32:37 -0500
+
+gnome-control-center (1:47.3-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Thu, 09 Jan 2025 08:34:12 -0900
+
+gnome-control-center (1:47.2-4) unstable; urgency=medium
+
+  * Demote malcontent-gui from Depends to Recommends.
+    Thanks to asciiwolf (Closes: #1091092)
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Wed, 08 Jan 2025 07:58:08 -0900
+
+gnome-control-center (1:47.2-3) unstable; urgency=medium
+
+  * Add Recommends: mobile-broadband-provider-info
+    network-manager-applet Recommends this but not nm-connection-editor
+    which we use now instead
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Thu, 19 Dec 2024 15:02:40 -0500
+
+gnome-control-center (1:47.2-2) unstable; urgency=medium
+
+  [ Aurelien Jarno ]
+  * Increase test timeout (Closes: #1089212)
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Mon, 09 Dec 2024 08:49:47 -0500
+
+gnome-control-center (1:47.2-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Alessandro Astone <alessandro.astone@canonical.com>  Tue, 03 Dec 2024 12:05:01 +0100
+
+gnome-control-center (1:47.1.1-3) unstable; urgency=medium
+
+  [ ChunAn Wu ]
+  * Can't set join mode from mirror mode (LP: #2084407)
+    d/p/display-snap-Monitors-after-updating-prefer-mode.patch
+
+ -- Sebastien Bacher <seb128@ubuntu.com>  Wed, 13 Nov 2024 10:50:03 +0100
+
 gnome-control-center (1:47.1.1~99-orchid) unstable; urgency=medium
 
  * Set to highest version for orchid

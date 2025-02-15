@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amberol\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-control-center/issues\n"
-"POT-Creation-Date: 2024-10-18 08:12+0000\n"
-"PO-Revision-Date: 2024-10-18 23:54+0330\n"
+"POT-Creation-Date: 2024-11-25 13:17+0000\n"
+"PO-Revision-Date: 2024-11-28 17:17+0330\n"
 "Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Farsi\n"
 "Language: fa\n"
@@ -36,7 +36,7 @@ msgid "Session Bus"
 msgstr "گذرگاه نشست"
 
 #: panels/applications/cc-applications-panel.c:856
-#: panels/privacy/bolt/cc-bolt-page.ui:199 panels/privacy/bolt/cc-bolt-page.ui:237
+#: panels/privacy/bolt/cc-bolt-page.ui:164 panels/privacy/bolt/cc-bolt-page.ui:202
 #: panels/privacy/cc-privacy-panel.ui:72
 msgid "Devices"
 msgstr "افزاره‌ها"
@@ -145,15 +145,15 @@ msgstr "تنظیم کاره‌ها برای گشودن پیوندها، پرون
 
 #: panels/applications/cc-applications-panel.ui:84
 #: panels/keyboard/cc-keyboard-shortcut-dialog.ui:94
-#: panels/system/datetime/cc-tz-dialog.ui:42
-#: panels/system/region/cc-format-chooser.ui:176 shell/cc-panel-list.ui:44
+#: panels/printers/cc-printers-panel.ui:100 panels/system/datetime/cc-tz-dialog.ui:42
+#: panels/system/region/cc-format-chooser.ui:169 shell/cc-panel-list.ui:44
 msgid "No Results Found"
 msgstr "هیچ نتیجه‌ای پیدا نشد"
 
 #: panels/applications/cc-applications-panel.ui:85
 #: panels/keyboard/cc-keyboard-shortcut-dialog.ui:95
-#: panels/system/datetime/cc-tz-dialog.ui:43
-#: panels/system/region/cc-format-chooser.ui:177 shell/cc-panel-list.ui:45
+#: panels/printers/cc-printers-panel.ui:101 panels/system/datetime/cc-tz-dialog.ui:43
+#: panels/system/region/cc-format-chooser.ui:170 shell/cc-panel-list.ui:45
 msgid "Try a different search"
 msgstr "جست‌وجویی دیگر را بیازمایید"
 
@@ -170,13 +170,14 @@ msgstr "_یافتن در نرم‌افزارها"
 msgid "Unable to List Apps"
 msgstr "ناتوان در سیاهه کردن کاره‌ها"
 
+#. Translators: Parental Controls here refers to the features provided by 'malcontent'
 #: panels/applications/cc-applications-panel.ui:122
 msgid ""
 "An error has occurred and apps cannot be listed.\n"
-"Error details: Malcontent is not installed."
+"Error details: Parental Controls are not installed."
 msgstr ""
-"خطایی رخ داد و شبکه قابل استفاده نیست.\n"
-"جزییات خطا: Malcontent نصب نشده است."
+"خطایی رخ داد و کاره‌ها نتوانستند سیاهه شوند.\n"
+"جزییات خطا: واپایش‌های والدین نصب نشده‌اند."
 
 #: panels/applications/cc-applications-panel.ui:139
 #: panels/applications/cc-default-apps-page.ui:4
@@ -212,7 +213,6 @@ msgstr ""
 "است چنین کاره‌هایی از اجازه‌هایی استفاده کنند که نشان داده نمی‌شوند."
 
 #: panels/applications/cc-applications-panel.ui:245
-#: panels/printers/pp-details-dialog.c:268
 msgid "_Open"
 msgstr "_باز کردن"
 
@@ -244,10 +244,10 @@ msgstr "گرفتن جست‌وجوهای سامانه و فرستادن نتیج
 #: panels/applications/cc-applications-panel.ui:360
 #: panels/applications/cc-applications-panel.ui:376
 #: panels/applications/cc-applications-panel.ui:392
-#: panels/keyboard/cc-keyboard-shortcut-editor.ui:123
+#: panels/keyboard/cc-keyboard-shortcut-editor.ui:120
 #: panels/keyboard/cc-xkb-modifier-page.c:323
 #: panels/keyboard/keyboard-shortcuts.c:367 panels/network/panel-common.c:336
-#: panels/system/users/cc-user-page.c:376 panels/system/users/cc-user-page.c:740
+#: panels/system/users/cc-user-page.c:367 panels/system/users/cc-user-page.c:752
 #: panels/wwan/cc-wwan-device-page.c:477 subprojects/gvc/gvc-mixer-control.c:1872
 msgid "Disabled"
 msgstr "از کار افتاده"
@@ -355,7 +355,7 @@ msgstr "اجازه‌های سامانه‌ای مورد نیاز کاره"
 
 #: panels/applications/cc-applications-panel.ui:415 panels/mouse/cc-mouse-panel.ui:67
 #: panels/mouse/cc-mouse-panel.ui:201 panels/multitasking/cc-multitasking-panel.ui:15
-#: panels/power/cc-power-panel.ui:129
+#: panels/power/cc-power-panel.ui:161
 msgid "General"
 msgstr "عمومی"
 
@@ -456,9 +456,9 @@ msgstr "_تماس‌ها"
 msgid "_SMS"
 msgstr "_پیامک"
 
-#: panels/applications/cc-default-apps-row.c:126
+#: panels/applications/cc-default-apps-row.c:138
 msgid "No Apps Available"
-msgstr "هیچ کاره‌ای موجود نیست"
+msgstr "هیچ کاره‌ای در دسترس نیست"
 
 #: panels/applications/cc-removable-media-settings.c:287
 msgid "Ask what to do"
@@ -814,8 +814,8 @@ msgid "Remove Background"
 msgstr "برداشتن پس‌زمینه"
 
 #: panels/background/cc-background-chooser.c:339
-msgid "Select a picture"
-msgstr "گزینش یک عکس"
+msgid "Select Picture"
+msgstr "گزینش عکس"
 
 #: panels/background/cc-background-item.c:234
 msgid "multiple sizes"
@@ -832,43 +832,43 @@ msgstr "%Id × %Id"
 msgid "No Desktop Background"
 msgstr "بدون تصویر پس‌زمینه"
 
-#: panels/background/cc-background-panel.c:136
+#: panels/background/cc-background-panel.c:139
 msgid "Blue"
 msgstr "آبی"
 
-#: panels/background/cc-background-panel.c:138
+#: panels/background/cc-background-panel.c:141
 msgid "Teal"
 msgstr "سبزآبی"
 
-#: panels/background/cc-background-panel.c:140
+#: panels/background/cc-background-panel.c:143
 msgid "Green"
 msgstr "سبز"
 
-#: panels/background/cc-background-panel.c:142
+#: panels/background/cc-background-panel.c:145
 msgid "Yellow"
 msgstr "زرد"
 
-#: panels/background/cc-background-panel.c:144
+#: panels/background/cc-background-panel.c:147
 msgid "Orange"
 msgstr "نارنجی"
 
-#: panels/background/cc-background-panel.c:146
+#: panels/background/cc-background-panel.c:149
 msgid "Red"
 msgstr "قرمز"
 
-#: panels/background/cc-background-panel.c:148
+#: panels/background/cc-background-panel.c:151
 msgid "Pink"
 msgstr "صورتی"
 
-#: panels/background/cc-background-panel.c:150
+#: panels/background/cc-background-panel.c:153
 msgid "Purple"
 msgstr "بنفش"
 
-#: panels/background/cc-background-panel.c:152
+#: panels/background/cc-background-panel.c:155
 msgid "Slate"
 msgstr "سنگی"
 
-#: panels/background/cc-background-panel.c:338
+#: panels/background/cc-background-panel.c:341
 msgid "Current background"
 msgstr "تصویر پس‌زمینه کنونی"
 
@@ -884,15 +884,15 @@ msgstr "_پیش‌گزیده"
 msgid "Da_rk"
 msgstr "_تیره"
 
-#: panels/background/cc-background-panel.ui:127
-msgid "Accent color"
+#: panels/background/cc-background-panel.ui:120
+msgid "Accent Color"
 msgstr "رنگ لهجه"
 
-#: panels/background/cc-background-panel.ui:137
+#: panels/background/cc-background-panel.ui:140
 msgid "Background"
 msgstr "پس‌زمینه"
 
-#: panels/background/cc-background-panel.ui:143
+#: panels/background/cc-background-panel.ui:146
 msgid "_Add Picture…"
 msgstr "افزودن نگاره…"
 
@@ -939,7 +939,7 @@ msgstr "حالت هواپیما روشن است"
 msgid "Bluetooth is disabled when airplane mode is on"
 msgstr "بلوتوث هنگام روشن بودن حالت هواپیما از کار می‌افتد"
 
-#: panels/bluetooth/cc-bluetooth-panel.ui:60
+#: panels/bluetooth/cc-bluetooth-panel.ui:60 panels/wwan/cc-wwan-panel.ui:71
 msgid "_Turn Off Airplane Mode"
 msgstr "_خاموش کردن حالت هواپیما"
 
@@ -1044,28 +1044,28 @@ msgstr "مزاحم افزارهٔ واسنجی در هنگام کار نشوید
 msgid "Display Calibration"
 msgstr "واسنجی نمایشگر"
 
-#: panels/color/cc-color-calibrate.ui:22 panels/common/cc-language-chooser.ui:21
-#: panels/display/cc-display-panel.ui:32 panels/display/cc-display-panel.ui:187
-#: panels/display/cc-display-panel.ui:249 panels/keyboard/cc-input-chooser.ui:15
+#: panels/color/cc-color-calibrate.ui:22 panels/common/cc-language-chooser.ui:15
+#: panels/display/cc-display-panel.ui:32 panels/display/cc-display-panel.ui:184
+#: panels/display/cc-display-panel.ui:246 panels/keyboard/cc-input-chooser.ui:15
 #: panels/keyboard/cc-keyboard-shortcut-dialog.ui:162
-#: panels/keyboard/cc-keyboard-shortcut-editor.ui:15
+#: panels/keyboard/cc-keyboard-shortcut-editor.ui:12
 #: panels/network/cc-net-proxy-page.ui:14
 #: panels/network/cc-wifi-hotspot-dialog.ui:142 panels/network/cc-wifi-panel.ui:236
 #: panels/network/connection-editor/ce-page-details.c:89
 #: panels/network/connection-editor/connection-editor.ui:16
-#: panels/printers/pp-details-dialog.c:267
-#: panels/printers/pp-new-printer-dialog.ui:65
+#: panels/printers/pp-jobs-dialog.ui:125 panels/printers/pp-new-printer-dialog.ui:65
 #: panels/printers/pp-ppd-selection-dialog.ui:17
 #: panels/privacy/usage/cc-usage-page.ui:125
 #: panels/privacy/usage/cc-usage-page.ui:136
 #: panels/privacy/usage/cc-usage-page.ui:147
-#: panels/system/region/cc-format-chooser.ui:24
+#: panels/system/region/cc-format-chooser.ui:32
 #: panels/system/users/cc-add-user-dialog.ui:24
 #: panels/system/users/cc-avatar-chooser.c:92
 #: panels/system/users/cc-enterprise-login-dialog.ui:44
-#: panels/system/users/cc-fingerprint-dialog.ui:32
+#: panels/system/users/cc-fingerprint-dialog.c:1399
+#: panels/system/users/cc-fingerprint-dialog.ui:17
 #: panels/system/users/cc-password-dialog.ui:15
-#: panels/system/users/cc-user-page.ui:231 panels/system/users/data/join-dialog.ui:17
+#: panels/system/users/cc-user-page.ui:223 panels/system/users/data/join-dialog.ui:17
 #: panels/wwan/cc-wwan-mode-dialog.ui:32 panels/wwan/cc-wwan-network-dialog.ui:109
 #: panels/wwan/cc-wwan-sim-lock-dialog.ui:239
 msgid "_Cancel"
@@ -1082,8 +1082,8 @@ msgid "_Resume"
 msgstr "از _سر گیری"
 
 #. This button returns the user back to the color control panel
-#: panels/color/cc-color-calibrate.ui:40 panels/system/region/cc-format-chooser.ui:49
-#: panels/system/users/cc-fingerprint-dialog.ui:51
+#: panels/color/cc-color-calibrate.ui:40
+#: panels/system/users/cc-fingerprint-dialog.ui:42
 msgid "_Done"
 msgstr "_انجام شد"
 
@@ -1128,74 +1128,73 @@ msgstr "چاپگر %s"
 msgid "%s Webcam"
 msgstr "وب‌کم %s"
 
-#: panels/color/cc-color-device.c:86
+#: panels/color/cc-color-device.c:85
 #, c-format
 msgid "Enable color management for %s"
 msgstr "به کار انداختن مدیریت رنگ برای %s"
 
-#: panels/color/cc-color-device.c:91
+#: panels/color/cc-color-device.c:90
 #, c-format
 msgid "Show color profiles for %s"
 msgstr "نمایش نمایه‌های رنگی برای %s"
 
-#. "not calibrated" label
-#: panels/color/cc-color-device.c:258
+#: panels/color/cc-color-device.ui:6
 msgid "Not Calibrated"
 msgstr "واسنجی نشده"
 
 #. TRANSLATORS: this is a profile prefix to signify the
 #. * profile has been auto-generated for this hardware
-#: panels/color/cc-color-panel.c:161
+#: panels/color/cc-color-panel.c:138
 msgid "Default: "
 msgstr "پیش‌گزیده: "
 
 #. TRANSLATORS: this is a profile prefix to signify the
 #. * profile his a standard space like AdobeRGB
-#: panels/color/cc-color-panel.c:169
+#: panels/color/cc-color-panel.c:146
 msgid "Colorspace: "
 msgstr "فاصله‌رنگ (Colorspace): "
 
 #. TRANSLATORS: this is a profile prefix to signify the
 #. * profile is a test profile
-#: panels/color/cc-color-panel.c:176
+#: panels/color/cc-color-panel.c:153
 msgid "Test profile: "
 msgstr "آزمایش نمایه: "
 
 #. TRANSLATORS: an ICC profile is a file containing colorspace data
-#: panels/color/cc-color-panel.c:267
+#: panels/color/cc-color-panel.c:293
 msgid "Select ICC Profile File"
 msgstr "انتخاب پروندهٔ نمایهٔ ICC"
 
-#: panels/color/cc-color-panel.c:270
+#: panels/color/cc-color-panel.c:296
 msgid "Import"
 msgstr "درون‌ریزی"
 
 #. TRANSLATORS: filter name on the file->open dialog
-#: panels/color/cc-color-panel.c:282
+#: panels/color/cc-color-panel.c:308
 msgid "Supported ICC profiles"
 msgstr "نمایه‌های ICC پشتیبانی شده"
 
 #. TRANSLATORS: filter name on the file->open dialog
-#: panels/color/cc-color-panel.c:289
+#: panels/color/cc-color-panel.c:315
 msgid "All files"
 msgstr "تمام پرونده‌ها"
 
-#: panels/color/cc-color-panel.c:565
+#: panels/color/cc-color-panel.c:591
 msgid "Screen"
 msgstr "صفحه‌نمایش"
 
 #. TRANSLATORS: this is the dialog to save the ICC profile
-#: panels/color/cc-color-panel.c:851
+#: panels/color/cc-color-panel.c:871
 msgid "Save Profile"
 msgstr "ذخیرهٔ نمایه"
 
 #. TRANSLATORS: this is when the button is sensitive
-#: panels/color/cc-color-panel.c:1149
+#: panels/color/cc-color-panel.c:1129
 msgid "Create a color profile for the selected device"
 msgstr "ایجاد یک نمایهٔ رنگی برای افزارهٔ گزیده"
 
 #. TRANSLATORS: this is when the button is insensitive
-#: panels/color/cc-color-panel.c:1164 panels/color/cc-color-panel.c:1188
+#: panels/color/cc-color-panel.c:1144 panels/color/cc-color-panel.c:1168
 msgid ""
 "The measuring instrument is not detected. Please check it is turned on and "
 "correctly connected."
@@ -1203,26 +1202,26 @@ msgstr ""
 "ابزار اندازه‌گیری پیدا نشد. لطفاً بررسی کنید که روشن باشد و بدرستی نصب شده است."
 
 #. TRANSLATORS: this is when the button is insensitive
-#: panels/color/cc-color-panel.c:1198
+#: panels/color/cc-color-panel.c:1178
 msgid "The measuring instrument does not support printer profiling."
 msgstr "ابزار اندازه‌گیری از profiling پشتیبانی نمی‌کند."
 
 #. TRANSLATORS: this is when the button is insensitive
-#: panels/color/cc-color-panel.c:1209
+#: panels/color/cc-color-panel.c:1189
 msgid "The device type is not currently supported."
 msgstr "این گونه افزاره در حال حاضر پشتیبانی نمی‌شود."
 
 #. Translators: This will be presented as the text of a link to the documentation
 #. translators: Text used in link to privacy policy
 #. Translators: This will be presented as the text of a link to the documentation
-#: panels/color/cc-color-panel.c:2008
+#: panels/color/cc-color-panel.c:1974
 #: panels/privacy/diagnostics/cc-diagnostics-page.c:122
 #: panels/wacom/cc-wacom-device.c:168
 msgid "learn more"
 msgstr "دانستن بیش‌تر"
 
 #. Translators: %s is a link to the documentation with the label "learn more"
-#: panels/color/cc-color-panel.c:2010
+#: panels/color/cc-color-panel.c:1976
 #, c-format
 msgid "Each device needs an up to date color profile to be color managed — %s."
 msgstr "هر افزاره برای مدیریت رنگ، نیاز به یک نمایهٔ رنگی به‌روز دارد — %s."
@@ -1350,19 +1349,12 @@ msgstr ""
 msgid "Add Profile"
 msgstr "افزودن نمایه"
 
-#: panels/color/cc-color-panel.ui:373
-msgid ""
-"Problems detected. The profile may not work correctly. <a href=\"\">Show details.</"
-"a>"
-msgstr ""
-"مشکلاتی شناسایی شدند. ممکن است نمایه درست کار نکند. <a href=\"\">نمایش جزییات.</a>"
-
-#: panels/color/cc-color-panel.ui:384
+#: panels/color/cc-color-panel.ui:343
 msgid "_Import File…"
 msgstr "درون‌ریزی _پرونده…"
 
-#: panels/color/cc-color-panel.ui:390 panels/keyboard/cc-input-chooser.ui:23
-#: panels/keyboard/cc-keyboard-shortcut-editor.ui:33
+#: panels/color/cc-color-panel.ui:349 panels/keyboard/cc-input-chooser.ui:23
+#: panels/keyboard/cc-keyboard-shortcut-editor.ui:30
 #: panels/network/connection-editor/net-connection-editor.c:653
 #: panels/printers/pp-new-printer-dialog.ui:96
 #: panels/system/users/cc-add-user-dialog.c:362
@@ -1372,131 +1364,141 @@ msgstr "درون‌ریزی _پرونده…"
 msgid "_Add"
 msgstr "_اضافه کردن"
 
-#: panels/color/cc-color-panel.ui:442
+#: panels/color/cc-color-panel.ui:418
+msgid ""
+"Problems detected. The profile may not work correctly. <a href=\"\">Show details.</"
+"a>"
+msgstr ""
+"مشکلاتی شناسایی شدند. ممکن است نمایه درست کار نکند. <a href=\"\">نمایش جزییات.</a>"
+
+#: panels/color/cc-color-panel.ui:466
 msgid "_Set for All Users"
 msgstr "_تنظیم برای تمام کاربران"
 
-#: panels/color/cc-color-panel.ui:444 panels/color/cc-color-panel.ui:453
-#: panels/color/cc-color-panel.ui:454
+#: panels/color/cc-color-panel.ui:467
 msgid "Set this profile for all users on this device"
 msgstr "تنظیم این نمایه برای تمام کاربران روی این افزاره"
 
-#: panels/color/cc-color-panel.ui:451
+#: panels/color/cc-color-panel.ui:474
 msgid "_Enable"
 msgstr "_به کار انداختن"
 
-#: panels/color/cc-color-panel.ui:468
+#: panels/color/cc-color-panel.ui:475
+msgid "Enable profile"
+msgstr "به کار انداختن نمایه"
+
+#: panels/color/cc-color-panel.ui:489
 msgid "_Add Profile"
 msgstr "_افزودن نمایه"
 
-#: panels/color/cc-color-panel.ui:475
+#: panels/color/cc-color-panel.ui:496
 msgid "_Calibrate…"
 msgstr "_واسنجی…"
 
-#: panels/color/cc-color-panel.ui:477
+#: panels/color/cc-color-panel.ui:497
 msgid "Calibrate the device"
 msgstr "واسنجی افزاره"
 
-#: panels/color/cc-color-panel.ui:484
+#: panels/color/cc-color-panel.ui:504
 msgid "_Remove Profile"
 msgstr "_برداشتن نمایه"
 
-#: panels/color/cc-color-panel.ui:491
+#: panels/color/cc-color-panel.ui:511
 msgid "_View Details"
 msgstr "_دیدن جزییات"
 
-#: panels/color/cc-color-panel.ui:519
+#: panels/color/cc-color-panel.ui:539
 msgid "No Devices"
 msgstr "بدون افزاره"
 
-#: panels/color/cc-color-panel.ui:520
+#: panels/color/cc-color-panel.ui:540
 msgid "Unable to detect any devices that can be color managed"
 msgstr "هیچگونه افزاره‌ای که بتواند مدیریت رنگ شود پیدا نشد"
 
-#: panels/color/cc-color-panel.ui:553
+#: panels/color/cc-color-panel.ui:561
 msgid "LCD"
 msgstr "LCD"
 
-#: panels/color/cc-color-panel.ui:558
+#: panels/color/cc-color-panel.ui:566
 msgid "LED"
 msgstr "LED"
 
-#: panels/color/cc-color-panel.ui:563
+#: panels/color/cc-color-panel.ui:571
 msgid "CRT"
 msgstr "سی‌آرتی"
 
-#: panels/color/cc-color-panel.ui:568
+#: panels/color/cc-color-panel.ui:576
 msgid "Projector"
 msgstr "پروژکتور"
 
-#: panels/color/cc-color-panel.ui:573
+#: panels/color/cc-color-panel.ui:581
 msgid "Plasma"
 msgstr "پلاسما"
 
-#: panels/color/cc-color-panel.ui:578
+#: panels/color/cc-color-panel.ui:586
 msgid "LCD (CCFL backlight)"
 msgstr "LCD (CCFL backlight)"
 
-#: panels/color/cc-color-panel.ui:583
+#: panels/color/cc-color-panel.ui:591
 msgid "LCD (RGB LED backlight)"
 msgstr "LCD (RGB LED backlight)"
 
-#: panels/color/cc-color-panel.ui:588
+#: panels/color/cc-color-panel.ui:596
 msgid "LCD (white LED backlight)"
 msgstr "LCD (white LED backlight)"
 
-#: panels/color/cc-color-panel.ui:593
+#: panels/color/cc-color-panel.ui:601
 msgid "Wide gamut LCD (CCFL backlight)"
 msgstr "Wide gamut LCD (CCFL backlight)"
 
-#: panels/color/cc-color-panel.ui:598
+#: panels/color/cc-color-panel.ui:606
 msgid "Wide gamut LCD (RGB LED backlight)"
 msgstr "Wide gamut LCD (RGB LED backlight)"
 
-#: panels/color/cc-color-panel.ui:615
+#: panels/color/cc-color-panel.ui:623
 msgctxt "Calibration quality"
 msgid "High"
 msgstr "زیاد"
 
-#: panels/color/cc-color-panel.ui:616
+#: panels/color/cc-color-panel.ui:624
 msgid "40 minutes"
 msgstr "۴۰ دقیقه"
 
-#: panels/color/cc-color-panel.ui:620
+#: panels/color/cc-color-panel.ui:628
 msgctxt "Calibration quality"
 msgid "Medium"
 msgstr "متوسّط"
 
-#: panels/color/cc-color-panel.ui:621
+#: panels/color/cc-color-panel.ui:629
 msgid "30 minutes"
 msgstr "۳۰ دقیقه"
 
-#: panels/color/cc-color-panel.ui:625
+#: panels/color/cc-color-panel.ui:633
 msgctxt "Calibration quality"
 msgid "Low"
 msgstr "کم"
 
-#: panels/color/cc-color-panel.ui:626
+#: panels/color/cc-color-panel.ui:634
 msgid "15 minutes"
 msgstr "۱۵ دقیقه"
 
-#: panels/color/cc-color-panel.ui:648
+#: panels/color/cc-color-panel.ui:656
 msgid "Native to display"
 msgstr "محلی برای نمایشگر"
 
-#: panels/color/cc-color-panel.ui:652
+#: panels/color/cc-color-panel.ui:660
 msgid "D50 (Printing and publishing)"
 msgstr "‫D50 (چاپ و انتشار)"
 
-#: panels/color/cc-color-panel.ui:656
+#: panels/color/cc-color-panel.ui:664
 msgid "D55"
 msgstr "D55"
 
-#: panels/color/cc-color-panel.ui:660
+#: panels/color/cc-color-panel.ui:668
 msgid "D65 (Photography and graphics)"
-msgstr "D65 (عکسبرداری و گرافیک)"
+msgstr "D65 (عکسبرداری و نگاشتار)"
 
-#: panels/color/cc-color-panel.ui:664
+#: panels/color/cc-color-panel.ui:672
 msgid "D75"
 msgstr "D75"
 
@@ -1577,14 +1579,14 @@ msgid "This profile may no longer be accurate"
 msgstr "ممکن است این نمایه دیگر دقیق نباشد"
 
 #: panels/color/gnome-color-panel.desktop.in:3
-msgid "Color"
-msgstr "رنگ"
+msgid "Color Management"
+msgstr "مدیریت رنگ‌ها"
 
 #: panels/color/gnome-color-panel.desktop.in:4
 msgid "Calibrate the color of your devices, such as displays, cameras or printers"
 msgstr "واسنجی رنگ افزاره‌هایتان چون نمایشگرها، دوربین‌ها یا چاپگرها"
 
-#. Translators: Search terms to find the Color panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#. Translators: Search terms to find the Color Management panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
 #: panels/color/gnome-color-panel.desktop.in:15
 msgid "Color;ICC;Profile;Calibrate;Printer;Display;"
 msgstr "Color;ICC;Profile;Calibrate;Printer;Display;رنگ;نمایه;واسنجی;چاپگر;نمایشگر;"
@@ -1593,24 +1595,25 @@ msgstr "Color;ICC;Profile;Calibrate;Printer;Display;رنگ;نمایه;واسنج
 msgid "Other…"
 msgstr "دیگر…"
 
-#: panels/common/cc-language-chooser.ui:5
+#: panels/common/cc-language-chooser.ui:4
 msgid "Select Language"
 msgstr "گزینش زبان"
 
-#: panels/common/cc-language-chooser.ui:13
+#: panels/common/cc-language-chooser.ui:23
 #: panels/printers/pp-ppd-selection-dialog.ui:24
+#: panels/system/region/cc-format-chooser.ui:42
 msgid "_Select"
 msgstr "_گزینش"
 
-#: panels/common/cc-language-chooser.ui:35
+#: panels/common/cc-language-chooser.ui:44
 msgid "Language or country"
 msgstr "زبان یا کشور"
 
-#: panels/common/cc-language-chooser.ui:59
+#: panels/common/cc-language-chooser.ui:68
 msgid "No languages found"
 msgstr "هیچ زبانی پیدا نشد"
 
-#: panels/common/cc-language-chooser.ui:70 panels/keyboard/cc-input-chooser.c:185
+#: panels/common/cc-language-chooser.ui:79 panels/keyboard/cc-input-chooser.c:182
 msgid "More…"
 msgstr "بیش‌تر…"
 
@@ -1622,20 +1625,20 @@ msgstr "اطّلاعات بیش‌تر"
 #, c-format
 msgid "%d day"
 msgid_plural "%d days"
-msgstr[0] "%Id روز"
-msgstr[1] "%Id روز"
+msgstr[0] "%d روز"
+msgstr[1] "%d روز"
 
-#: panels/common/cc-permission-infobar.c:199
-msgid "Error — some settings cannot be unlocked"
-msgstr "خطا — برخی تنظیمات نمی‌توانند قفل‌گشایی شوند"
+#: panels/common/cc-permission-infobar.c:55
+msgid "Some settings are locked"
+msgstr "برخی تنظیمات قفلند"
 
-#: panels/common/cc-permission-infobar.c:202
-msgid "Unlock to Change Settings"
-msgstr "قفل‌گشایی برای دگرگونی تنظیمات"
-
-#: panels/common/cc-permission-infobar.c:205 panels/common/cc-permission-infobar.ui:7
+#: panels/common/cc-permission-infobar.c:56
 msgid "_Unlock…"
 msgstr "_قفل‌گشایی…"
+
+#: panels/common/cc-permission-infobar.ui:6
+msgid "Error — some settings cannot be unlocked"
+msgstr "خطا — برخی تنظیمات نمی‌توانند قفل‌گشایی شوند"
 
 #: panels/common/cc-time-editor.ui:25
 msgid "Increment Hour"
@@ -1751,27 +1754,25 @@ msgctxt "hotspot"
 msgid "Hotspot"
 msgstr "نقطهٔ داغ"
 
-#: panels/display/cc-display-panel.c:506
+#: panels/display/cc-display-panel.c:505
 #: panels/notifications/cc-notifications-panel.c:213
-#: panels/power/cc-power-panel.c:490 panels/power/cc-power-panel.c:497
 msgid "On"
 msgstr "روشن"
 
-#: panels/display/cc-display-panel.c:508 panels/network/cc-net-proxy-page.c:193
+#: panels/display/cc-display-panel.c:507 panels/network/cc-net-proxy-page.c:193
 #: panels/notifications/cc-notifications-panel.c:213
-#: panels/power/cc-power-panel.c:484 panels/power/cc-power-panel.c:495
 msgid "Off"
 msgstr "خاموش"
 
-#: panels/display/cc-display-panel.c:925
+#: panels/display/cc-display-panel.c:923
 msgid "Apply Changes?"
 msgstr "اعمال دگرگونی‌ها؟"
 
-#: panels/display/cc-display-panel.c:931
+#: panels/display/cc-display-panel.c:929
 msgid "Changes Cannot be Applied"
 msgstr "نمی‌توان دگرگونی‌ها را اعمال کرد"
 
-#: panels/display/cc-display-panel.c:933
+#: panels/display/cc-display-panel.c:931
 msgid "This could be due to hardware limitations."
 msgstr "می‌تواند به دلیلی محدودیت‌های سخت‌افزار باشد."
 
@@ -1780,8 +1781,8 @@ msgstr "می‌تواند به دلیلی محدودیت‌های سخت‌اف�
 msgid "Displays"
 msgstr "نمایشگرها"
 
-#: panels/display/cc-display-panel.ui:45 panels/display/cc-display-panel.ui:203
-#: panels/display/cc-display-panel.ui:265
+#: panels/display/cc-display-panel.ui:45 panels/display/cc-display-panel.ui:200
+#: panels/display/cc-display-panel.ui:262
 #: panels/network/connection-editor/connection-editor.ui:23
 msgid "_Apply"
 msgstr "_اِعمال"
@@ -1799,88 +1800,88 @@ msgstr "چندین نمایشگر"
 msgid "_Join"
 msgstr "_پیوستن"
 
-#: panels/display/cc-display-panel.ui:102
+#: panels/display/cc-display-panel.ui:101
 msgid "_Mirror"
 msgstr "_آینه"
 
-#: panels/display/cc-display-panel.ui:131
+#: panels/display/cc-display-panel.ui:128
 msgid "Contains top bar and Activities"
 msgstr "شامل نوار بالایی و فعّالیت‌ها"
 
-#: panels/display/cc-display-panel.ui:132
+#: panels/display/cc-display-panel.ui:129
 msgid "_Primary Display"
 msgstr "_نمایشگر اصلی"
 
 #. This is the redshift functionality where we suppress blue light when the sun has gone down
-#: panels/display/cc-display-panel.ui:153 panels/display/cc-night-light-page.ui:67
+#: panels/display/cc-display-panel.ui:150 panels/display/cc-night-light-page.ui:67
 msgid "_Night Light"
 msgstr "نور _شب"
 
-#: panels/display/cc-display-panel.ui:174
+#: panels/display/cc-display-panel.ui:171
 msgid "Night Light"
 msgstr "نور شب"
 
-#: panels/display/cc-display-settings.c:123
+#: panels/display/cc-display-settings.c:119
 msgctxt "Display rotation"
 msgid "Landscape"
 msgstr "افقی"
 
-#: panels/display/cc-display-settings.c:126
+#: panels/display/cc-display-settings.c:122
 msgctxt "Display rotation"
 msgid "Portrait Right"
 msgstr "عمودی راست"
 
-#: panels/display/cc-display-settings.c:129
+#: panels/display/cc-display-settings.c:125
 msgctxt "Display rotation"
 msgid "Portrait Left"
 msgstr "عمودی چپ"
 
-#: panels/display/cc-display-settings.c:132
+#: panels/display/cc-display-settings.c:128
 msgctxt "Display rotation"
 msgid "Landscape (flipped)"
 msgstr "افقی (معکوس)"
 
-#: panels/display/cc-display-settings.c:143
+#: panels/display/cc-display-settings.c:139
 msgctxt "Display rotation"
 msgid "Portrait"
 msgstr "عمودی"
 
-#: panels/display/cc-display-settings.c:146
+#: panels/display/cc-display-settings.c:142
 msgctxt "Display rotation"
 msgid "Landscape Right"
 msgstr "راست افقی"
 
-#: panels/display/cc-display-settings.c:149
+#: panels/display/cc-display-settings.c:145
 msgctxt "Display rotation"
 msgid "Landscape Left"
 msgstr "چپ افقی"
 
-#: panels/display/cc-display-settings.c:152
+#: panels/display/cc-display-settings.c:148
 msgctxt "Display rotation"
 msgid "Portrait (flipped)"
 msgstr "عمودی (واژگون)"
 
-#: panels/display/cc-display-settings.c:163
+#: panels/display/cc-display-settings.c:159
 msgctxt "Display rotation"
 msgid "Upright"
 msgstr "صاف"
 
-#: panels/display/cc-display-settings.c:166
+#: panels/display/cc-display-settings.c:162
 msgctxt "Display rotation"
 msgid "Right"
 msgstr "راست"
 
-#: panels/display/cc-display-settings.c:169
+#: panels/display/cc-display-settings.c:165
 msgctxt "Display rotation"
 msgid "Left"
 msgstr "چپ"
 
-#: panels/display/cc-display-settings.c:172
+#: panels/display/cc-display-settings.c:168
 msgctxt "Display rotation"
 msgid "Flipped"
 msgstr "واژگون"
 
-#: panels/display/cc-display-settings.c:238
+#: panels/display/cc-display-settings.c:234
 msgid "%.2lf Hz"
 msgstr "%.2lf هرتز"
 
@@ -1889,12 +1890,12 @@ msgstr "%.2lf هرتز"
 #. * 2. The formatting sequence is a range separated by an en-dash
 #. *    (unicode "\u2013"). For example: "Variable (48–144.97 Hz)"
 #.
-#: panels/display/cc-display-settings.c:255
+#: panels/display/cc-display-settings.c:251
 msgid "Variable (%d–%.2lf Hz)"
 msgstr "متغیّر (%Id–%I.2lf ه)"
 
 #. Translators: "Variable" is an adjective that refers to the refresh rate
-#: panels/display/cc-display-settings.c:262
+#: panels/display/cc-display-settings.c:258
 msgid "Variable (up to %.2lf Hz)"
 msgstr "متغیّر (تا %I.2lf ه)"
 
@@ -1924,7 +1925,7 @@ msgstr "_آهنگ نوسازی"
 msgid "Adjust for _TV"
 msgstr "تنظیم برای _تلویزیون"
 
-#: panels/display/cc-display-settings.ui:92 panels/display/cc-display-settings.ui:108
+#: panels/display/cc-display-settings.ui:92 panels/display/cc-display-settings.ui:106
 msgctxt "display setting"
 msgid "_Scale"
 msgstr "_مقیاس کردن"
@@ -1937,7 +1938,7 @@ msgstr "نور شب نمی‌تواند در ماشینی مجازی استفا�
 msgid ""
 "This could be the result of the graphics driver being used, or the desktop being "
 "used remotely."
-msgstr "می‌تواند نتیجهٔ راه‌انداز گرافیکی یا استفاده از میزکار دوردست باشد."
+msgstr "می‌تواند نتیجهٔ راه‌انداز نگاشتاری یا استفاده از میزکار دوردست باشد."
 
 #: panels/display/cc-night-light-page.ui:12
 msgid "Night Light Unavailable"
@@ -2179,15 +2180,15 @@ msgstr "کاهش اندازهٔ متن"
 msgid "High contrast on or off"
 msgstr "روشن یا خاموش کردن سایه‌روشن زیاد"
 
-#: panels/keyboard/cc-input-chooser.c:198
+#: panels/keyboard/cc-input-chooser.c:195
 msgid "No input sources found"
 msgstr "هیچ منبع ورودی پیدا نشد"
 
-#: panels/keyboard/cc-input-chooser.c:253 panels/keyboard/cc-input-row.ui:46
+#: panels/keyboard/cc-input-chooser.c:250 panels/keyboard/cc-input-row.ui:46
 msgid "View Keyboard Layout"
 msgstr "نمایش چیدمان صفحه‌کلید"
 
-#: panels/keyboard/cc-input-chooser.c:1046
+#: panels/keyboard/cc-input-chooser.c:1043
 msgctxt "Input Source"
 msgid "Other"
 msgstr "موارد دیگر"
@@ -2199,10 +2200,6 @@ msgstr "افزودن منبع ورودی"
 #: panels/keyboard/cc-input-chooser.ui:37
 msgid "Search languages and countries"
 msgstr "جست‌وجوب زبان‌ها و کشورها"
-
-#: panels/keyboard/cc-input-chooser.ui:52
-msgid "Input methods can’t be used on the login screen"
-msgstr "روش‌های ورودی نمی‌توانند در صفحهٔ ورود استفاده شوند"
 
 #: panels/keyboard/cc-input-list-box.ui:14
 msgid "_Add Input Source"
@@ -2329,53 +2326,53 @@ msgstr ""
 "منابع ورودی می‌توانند با استفاده از میان‌بر صفحه‌کلید %s تعویض شوند.\n"
 "این میان‌بر می‌تواند در تنظیمات میان‌برهای صفحه‌کلید عوض شود."
 
-#: panels/keyboard/cc-keyboard-panel.ui:13
+#: panels/keyboard/cc-keyboard-panel.ui:6
 #: panels/keyboard/gnome-keyboard-panel.desktop.in:3
 msgid "Keyboard"
 msgstr "صفحه‌کلید"
 
-#: panels/keyboard/cc-keyboard-panel.ui:23
+#: panels/keyboard/cc-keyboard-panel.ui:16
 msgid "Input Sources"
 msgstr "منابع ورودی"
 
-#: panels/keyboard/cc-keyboard-panel.ui:24
+#: panels/keyboard/cc-keyboard-panel.ui:17
 msgid "Includes keyboard layouts and input methods"
 msgstr "شامل چینش‌های صفحه‌کلید و روش‌های ورودی"
 
-#: panels/keyboard/cc-keyboard-panel.ui:34
+#: panels/keyboard/cc-keyboard-panel.ui:27
 msgid "Input Source Switching"
 msgstr "تعویض منبع ورودی"
 
-#: panels/keyboard/cc-keyboard-panel.ui:37
+#: panels/keyboard/cc-keyboard-panel.ui:30
 msgid "Use the _same source for all windows"
 msgstr "از _یک منبع در همه پنجره‌ها استفاده کن"
 
-#: panels/keyboard/cc-keyboard-panel.ui:49
+#: panels/keyboard/cc-keyboard-panel.ui:42
 msgid "Switch input sources _individually for each window"
 msgstr "تعویض منابع ورودی به صورت _جداگانه برای هر پنجره"
 
-#: panels/keyboard/cc-keyboard-panel.ui:65
+#: panels/keyboard/cc-keyboard-panel.ui:58
 msgid "Special Character Entry"
 msgstr "ورود نویسهٔ خاص"
 
-#: panels/keyboard/cc-keyboard-panel.ui:66
+#: panels/keyboard/cc-keyboard-panel.ui:59
 msgid "Methods for entering symbols and letter variants using the keyboard"
 msgstr "روش‌های ورود نشانه‌ها و دگرگونه‌های حروف با استفاده از صفحه‌کلید"
 
-#: panels/keyboard/cc-keyboard-panel.ui:69
+#: panels/keyboard/cc-keyboard-panel.ui:62
 msgid "A_lternate Characters Key"
 msgstr "کلید نویسه‌های _جایگزین"
 
-#: panels/keyboard/cc-keyboard-panel.ui:77
+#: panels/keyboard/cc-keyboard-panel.ui:70
 msgid "_Compose Key"
 msgstr "کلید _ایجاد"
 
-#: panels/keyboard/cc-keyboard-panel.ui:86
+#: panels/keyboard/cc-keyboard-panel.ui:79
 #: panels/keyboard/cc-keyboard-shortcut-dialog.ui:9
 msgid "Keyboard Shortcuts"
 msgstr "میان‌برهای صفحه‌کلید"
 
-#: panels/keyboard/cc-keyboard-panel.ui:89
+#: panels/keyboard/cc-keyboard-panel.ui:82
 msgid "_View and Customize Shortcuts"
 msgstr "_نمایش و سفارشی سازی میان‌برها"
 
@@ -2446,73 +2443,73 @@ msgstr "تنظیم میان‌بر"
 msgid "Enter new shortcut to change <b>%s</b>"
 msgstr "ورود میان‌بر جدید برای دگرگونی <b>%s</b>"
 
-#: panels/keyboard/cc-keyboard-shortcut-editor.c:937
+#: panels/keyboard/cc-keyboard-shortcut-editor.c:932
 msgid "Add Custom Shortcut"
 msgstr "افزودن میان‌بر سفارشی"
 
-#: panels/keyboard/cc-keyboard-shortcut-editor.ui:22
-#: panels/system/users/cc-user-page.ui:232
+#: panels/keyboard/cc-keyboard-shortcut-editor.ui:19
+#: panels/system/users/cc-user-page.ui:224
 msgid "_Remove"
 msgstr "_‌حذف"
 
-#: panels/keyboard/cc-keyboard-shortcut-editor.ui:44
+#: panels/keyboard/cc-keyboard-shortcut-editor.ui:41
 msgid "Re_place"
 msgstr "_جایگزینی"
 
-#: panels/keyboard/cc-keyboard-shortcut-editor.ui:54
+#: panels/keyboard/cc-keyboard-shortcut-editor.ui:51
 #: panels/wwan/cc-wwan-mode-dialog.ui:39 panels/wwan/cc-wwan-network-dialog.ui:116
 #: panels/wwan/cc-wwan-sim-lock-dialog.c:228
 msgid "_Set"
 msgstr "_تنظیم"
 
-#: panels/keyboard/cc-keyboard-shortcut-editor.ui:103
+#: panels/keyboard/cc-keyboard-shortcut-editor.ui:100
 msgid "Press Esc to cancel or Backspace to disable the keyboard shortcut"
 msgstr "فشردن گریز برای لغو یا پس‌بر برای از کار انداختن میان‌بر صفحه‌کلید"
 
-#: panels/keyboard/cc-keyboard-shortcut-editor.ui:131
-#: panels/keyboard/cc-keyboard-shortcut-editor.ui:233
-msgid "Reset"
-msgstr "بازنشانی"
+#: panels/keyboard/cc-keyboard-shortcut-editor.ui:125
+#: panels/keyboard/cc-keyboard-shortcut-row.ui:23
+msgid "Reset Shortcut"
+msgstr "بازنشانی میان‌بر"
 
-#: panels/keyboard/cc-keyboard-shortcut-editor.ui:161
+#: panels/keyboard/cc-keyboard-shortcut-editor.ui:156
 #: panels/wwan/cc-wwan-apn-dialog.ui:96
 msgid "Name"
 msgstr "نام"
 
-#: panels/keyboard/cc-keyboard-shortcut-editor.ui:172
+#: panels/keyboard/cc-keyboard-shortcut-editor.ui:167
 msgid "Command"
 msgstr "فرمان"
 
-#: panels/keyboard/cc-keyboard-shortcut-editor.ui:183
+#: panels/keyboard/cc-keyboard-shortcut-editor.ui:178
 msgid "Shortcut"
 msgstr "میان‌بر"
 
+#: panels/keyboard/cc-keyboard-shortcut-editor.ui:228
+msgid "Reset"
+msgstr "بازنشانی"
+
 #. Translators: This is a mark in the Grayscale scale
-#: panels/keyboard/cc-keyboard-shortcut-editor.ui:247
+#: panels/keyboard/cc-keyboard-shortcut-editor.ui:242
 #: panels/sound/cc-alert-chooser-window.c:340
 #: panels/sound/cc-alert-chooser-window.ui:17
-#: panels/universal-access/cc-ua-zoom-page.ui:285
+#: panels/universal-access/cc-ua-zoom-page.ui:264
 msgid "None"
 msgstr "هیچ‌کدام"
 
-#: panels/keyboard/cc-keyboard-shortcut-editor.ui:256
+#: panels/keyboard/cc-keyboard-shortcut-editor.ui:251
 msgid "_Set Shortcut…"
 msgstr "_تنظیم میان‌بر…"
 
-#: panels/keyboard/cc-keyboard-shortcut-group.c:131
+#: panels/keyboard/cc-keyboard-shortcut-group.c:134
 #, c-format
 msgid "%d modified"
 msgid_plural "%d modified"
 msgstr[0] "%Id تغییریافته"
 msgstr[1] "%Id تغییریافته"
 
-#: panels/keyboard/cc-keyboard-shortcut-group.c:154
+#: panels/keyboard/cc-keyboard-shortcut-group.c:158
 msgid "Add a Shortcut"
 msgstr "افزودن میان‌بر"
-
-#: panels/keyboard/cc-keyboard-shortcut-row.ui:23
-msgid "Reset Shortcut"
-msgstr "بازنشانی میان‌بر"
 
 #: panels/keyboard/gnome-keyboard-panel.desktop.in:4
 msgid ""
@@ -2544,11 +2541,11 @@ msgstr "دکمهٔ اصلی"
 msgid "Order of physical buttons on mice and touchpads"
 msgstr "ترتیب کلیدهای فیزیکی روی موشی‌ها و صفحات لمسی"
 
-#: panels/mouse/cc-mouse-panel.ui:82
+#: panels/mouse/cc-mouse-panel.ui:82 panels/wacom/cc-wacom-page.ui:39
 msgid "_Left"
 msgstr "_چپ"
 
-#: panels/mouse/cc-mouse-panel.ui:90
+#: panels/mouse/cc-mouse-panel.ui:90 panels/wacom/cc-wacom-page.ui:46
 msgid "_Right"
 msgstr "_راست"
 
@@ -2760,31 +2757,31 @@ msgstr "تعداد _ثابت فضاهای کاری"
 msgid "Specify a number of permanent workspaces"
 msgstr "تعیین تعدادی فضای کاری ثابت"
 
-#: panels/multitasking/cc-multitasking-panel.ui:91
+#: panels/multitasking/cc-multitasking-panel.ui:92
 msgid "_Number of Workspaces"
 msgstr "_تعداد فضاهای کاری"
 
-#: panels/multitasking/cc-multitasking-panel.ui:102
+#: panels/multitasking/cc-multitasking-panel.ui:104
 msgid "Multi-Monitor"
 msgstr "چندنمایشگره"
 
-#: panels/multitasking/cc-multitasking-panel.ui:108
+#: panels/multitasking/cc-multitasking-panel.ui:110
 msgid "Workspaces on _primary display only"
 msgstr "فضاهای کاری فقط روی نمایشگر _اصلی"
 
-#: panels/multitasking/cc-multitasking-panel.ui:123
+#: panels/multitasking/cc-multitasking-panel.ui:125
 msgid "Workspaces on all d_isplays"
 msgstr "فضاهای کاری روی _تمامی نمایشگرها"
 
-#: panels/multitasking/cc-multitasking-panel.ui:140
+#: panels/multitasking/cc-multitasking-panel.ui:142
 msgid "App Switching"
 msgstr "تعویض کاره"
 
-#: panels/multitasking/cc-multitasking-panel.ui:146
+#: panels/multitasking/cc-multitasking-panel.ui:149
 msgid "Include apps from all _workspaces"
 msgstr "شامل کاره‌ها از تمامی _فضاهای کاری"
 
-#: panels/multitasking/cc-multitasking-panel.ui:160
+#: panels/multitasking/cc-multitasking-panel.ui:163
 msgid "Include apps from the _current workspace only"
 msgstr "شامل کاره‌ها فقط از فضای کاری _کنونی"
 
@@ -2808,7 +2805,7 @@ msgstr ""
 #: panels/network/connection-editor/ip4-page.ui:244
 #: panels/network/connection-editor/ip6-page.ui:37
 #: panels/network/connection-editor/ip6-page.ui:197
-#: panels/network/connection-editor/ip6-page.ui:255 panels/wacom/cc-wacom-page.c:674
+#: panels/network/connection-editor/ip6-page.ui:255 panels/wacom/cc-wacom-page.c:680
 msgid "Automatic"
 msgstr "خودکار"
 
@@ -2925,7 +2922,7 @@ msgstr "نام شبکه"
 
 #. Translators: This is a password needed for printing.
 #: panels/network/cc-qr-code-dialog.ui:66 panels/network/cc-wifi-hotspot-dialog.ui:92
-#: panels/printers/pp-jobs-dialog.ui:52 panels/printers/pp-new-printer-dialog.ui:292
+#: panels/printers/pp-jobs-dialog.ui:178 panels/printers/pp-new-printer-dialog.ui:292
 #: panels/system/users/cc-add-user-dialog.ui:103
 #: panels/wwan/cc-wwan-apn-dialog.ui:175
 msgid "Password"
@@ -3061,7 +3058,7 @@ msgstr "هیچ سازوارگر وای‌فایی پیدا نشد"
 msgid "Make sure you have a Wi-Fi adapter plugged and turned on"
 msgstr "مطمئن شوید یک سازوارگر وای‌فای وصل‌شده و روشن دارید"
 
-#: panels/network/cc-wifi-panel.ui:96 panels/wwan/cc-wwan-panel.ui:63
+#: panels/network/cc-wifi-panel.ui:96 panels/wwan/cc-wwan-panel.ui:64
 msgid "Airplane Mode On"
 msgstr "حالت هواپیما روشن"
 
@@ -3197,13 +3194,13 @@ msgstr "_فراموشی"
 
 #. TRANSLATORS: this WEP WiFi security
 #: panels/network/connection-editor/ce-page-details.c:118
-#: panels/network/net-device-wifi.c:237
+#: panels/network/net-device-wifi.c:236
 msgid "WEP"
 msgstr "WEP"
 
 #. TRANSLATORS: this WPA WiFi security
 #: panels/network/connection-editor/ce-page-details.c:122
-#: panels/network/net-device-wifi.c:241
+#: panels/network/net-device-wifi.c:240
 msgid "WPA"
 msgstr "WPA"
 
@@ -3229,15 +3226,14 @@ msgid "Enterprise"
 msgstr "تجاری"
 
 #: panels/network/connection-editor/ce-page-details.c:156
-#: panels/network/net-device-wifi.c:228
+#: panels/network/net-device-wifi.c:227
 msgctxt "Wifi security"
 msgid "None"
 msgstr "هیچ‌کدام"
 
-#. Translators: Idle time
 #. Translators: Option for Blank Screen in Screen Lock page
 #: panels/network/connection-editor/ce-page-details.c:177
-#: panels/power/cc-power-panel.ui:101 panels/privacy/screen/cc-screen-page.ui:28
+#: panels/privacy/screen/cc-screen-page.ui:28
 msgid "Never"
 msgstr "هرگز"
 
@@ -3269,15 +3265,15 @@ msgstr "۵ گ‌ه / ۶ گ‌ه"
 
 #: panels/network/connection-editor/ce-page-details.c:347
 msgid "2.4 GHz / 5 GHz"
-msgstr "۲.۴ گیگاهرتز / ۵ گیگاهرتز"
+msgstr "۲٫۴ گ‌ه / ۵ گ‌ه"
 
 #: panels/network/connection-editor/ce-page-details.c:349
 msgid "2.4 GHz"
-msgstr "۲.۴ گیگاهرتز"
+msgstr "۲٫۴ گ‌ه"
 
 #: panels/network/connection-editor/ce-page-details.c:351
 msgid "5 GHz"
-msgstr "۵ گیگاهرتز"
+msgstr "۵ گ‌ه"
 
 #: panels/network/connection-editor/ce-page-details.c:371
 msgctxt "Signal strength"
@@ -3897,35 +3893,35 @@ msgstr "سیمی"
 msgid "Add new connection"
 msgstr "افزودن اتّصال جدید"
 
-#: panels/network/net-device-wifi.c:877
+#: panels/network/net-device-wifi.c:881
 msgid "Network deleted"
 msgstr "شبکه حذف شد"
 
-#: panels/network/net-device-wifi.c:879
+#: panels/network/net-device-wifi.c:883 panels/printers/cc-printers-panel.c:672
 msgid "_Undo"
 msgstr "_برگردان"
 
 #. Translators: %d is the number of network connections deleted.
-#: panels/network/net-device-wifi.c:892
+#: panels/network/net-device-wifi.c:896
 #, c-format
 msgid "%d network deleted"
 msgid_plural "%d networks deleted"
 msgstr[0] "%Id شبکه حذف شد"
 msgstr[1] "%Id شبکه حذف شدند"
 
-#: panels/network/net-device-wifi.c:1126
+#: panels/network/net-device-wifi.c:1130
 msgid "System policy prohibits use as a Hotspot"
 msgstr "سیاست سامانه استفاده از نقطهٔ داغ را منع کرده است"
 
-#: panels/network/net-device-wifi.c:1129
+#: panels/network/net-device-wifi.c:1133
 msgid "Wireless device does not support Hotspot mode"
 msgstr "افزارهٔ بی‌سیم از حالت نقطهٔ داغ پشتیبانی نمی‌کند"
 
-#: panels/network/net-device-wifi.c:1155
+#: panels/network/net-device-wifi.c:1159
 msgid "Searching for networks…"
 msgstr "جست‌وجو کردن برای شبکه‌ها…"
 
-#: panels/network/net-device-wifi.c:1172
+#: panels/network/net-device-wifi.c:1176
 msgid "No saved networks"
 msgstr "بدون شبکهٔ ذخیره شده"
 
@@ -4597,53 +4593,46 @@ msgstr "اضافی"
 msgid "%d %%"
 msgstr "⁦%Id٪⁩"
 
-#: panels/power/cc-power-panel.c:187
+#. TRANSLATORS: This is the same title as the title from the .ui file, but without mnemonic
+#: panels/power/cc-power-panel.c:214
+msgid "Power Saving"
+msgstr "ذخیرهٔ نیرو"
+
+#: panels/power/cc-power-panel.c:310
 msgid "Battery Levels"
 msgstr "سطح‌های باتری"
 
 #. Translators: UPS is an Uninterruptible Power Supply:
 #. * https://en.wikipedia.org/wiki/Uninterruptible_power_supply
-#: panels/power/cc-power-panel.c:192
+#: panels/power/cc-power-panel.c:315
 msgid "UPS"
 msgstr "منبع تغذیهٔ بی‌وقفه"
 
-#: panels/power/cc-power-panel.c:195
+#: panels/power/cc-power-panel.c:318
 msgid "Battery Level"
 msgstr "سطح باتری"
 
-#: panels/power/cc-power-panel.c:332
-msgid "When _Idle"
-msgstr "هنگام _بیکاری"
-
-#: panels/power/cc-power-panel.c:433
+#: panels/power/cc-power-panel.c:556
 msgid "Suspend"
 msgstr "تعلیق"
 
-#: panels/power/cc-power-panel.c:434
+#: panels/power/cc-power-panel.c:557
 msgid "Power Off"
 msgstr "خاموش کردن"
 
-#: panels/power/cc-power-panel.c:435
+#: panels/power/cc-power-panel.c:558
 msgid "Hibernate"
 msgstr "خواب زمستانی"
 
-#: panels/power/cc-power-panel.c:436
+#: panels/power/cc-power-panel.c:559
 msgid "Nothing"
 msgstr "هیچکدام"
 
-#: panels/power/cc-power-panel.c:486
-msgid "On Battery Power"
-msgstr "روی نیروی باتری"
-
-#: panels/power/cc-power-panel.c:488
-msgid "When Plugged In"
-msgstr "هنگام وصل بودن"
-
-#: panels/power/cc-power-panel.c:771
+#: panels/power/cc-power-panel.c:878
 msgid "Performance mode temporarily disabled due to high operating temperature"
 msgstr "حالت کارایی به خاطر دمای عملیاتی زیاد، به صورت موقّتی از کار افتاده"
 
-#: panels/power/cc-power-panel.c:773
+#: panels/power/cc-power-panel.c:880
 msgid ""
 "Lap detected: performance mode temporarily unavailable. Move the device to a "
 "stable surface to restore."
@@ -4651,11 +4640,11 @@ msgstr ""
 "روی زانو: حالت کارایی به صورت موقّتی موجود نیست. برای بازیابی، افزاره را به سطحی "
 "پایدار جابه‌جا کنید."
 
-#: panels/power/cc-power-panel.c:775
+#: panels/power/cc-power-panel.c:882
 msgid "Performance mode temporarily disabled"
 msgstr "حالت کارایی به صورت موقّتی از کار افتاده"
 
-#: panels/power/cc-power-panel.c:817
+#: panels/power/cc-power-panel.c:924
 msgid ""
 "Power saver enabled due to low battery. Previous mode will be restored when "
 "battery is charged."
@@ -4664,100 +4653,120 @@ msgstr ""
 "حالت پیشین برخواهد گشت."
 
 #. translators: "%s" is an application name
-#: panels/power/cc-power-panel.c:825
+#: panels/power/cc-power-panel.c:932
 #, c-format
 msgid "Power Saver mode activated by “%s”"
 msgstr "حالت ذخیرهٔ نیرو به دست «%s» فعّال شد"
 
 #. translators: "%s" is an application name
-#: panels/power/cc-power-panel.c:829
+#: panels/power/cc-power-panel.c:936
 #, c-format
 msgid "Performance mode activated by “%s”"
 msgstr "حالت کارایی به دست «%s» فعّال شد"
 
-#: panels/power/cc-power-panel.ui:30
+#: panels/power/cc-power-panel.ui:55
+msgid "_General"
+msgstr "_عمومی"
+
+#: panels/power/cc-power-panel.ui:78
+msgid "Battery Charging"
+msgstr "پر کردن باتری"
+
+#: panels/power/cc-power-panel.ui:84
+msgid "_Maximize Charge"
+msgstr "_بیشینهٔ شارژ"
+
+#: panels/power/cc-power-panel.ui:85
+msgid "Uses all battery capacity. Degrades batteries more quickly."
+msgstr "استفاده از تمام ظرفیت باتری. باتری‌ها را سریع‌تر فرسوده می‌کند."
+
+#: panels/power/cc-power-panel.ui:99
+msgid "Preserve Battery _Health"
+msgstr "حفاظت از _سلامت باتری"
+
+#: panels/power/cc-power-panel.ui:100
+msgid "Increases battery longevity by maintaining lower charge levels"
+msgstr "افزایش عمر باتری با نگه‌داری در سطح شارژ پایین‌تر"
+
+#: panels/power/cc-power-panel.ui:115
 msgid "Connected Devices"
 msgstr "افزاره‌های وصل شده"
 
-#: panels/power/cc-power-panel.ui:48
+#: panels/power/cc-power-panel.ui:133
 msgid "Power Mode"
 msgstr "حالت نیرو"
 
-#: panels/power/cc-power-panel.ui:76
-msgid "Power Saving"
-msgstr "ذخیرهٔ نیرو"
-
-#: panels/power/cc-power-panel.ui:79
-msgid "A_utomatic Screen Brightness"
-msgstr "_روشنایی خودکار صفحه"
-
-#: panels/power/cc-power-panel.ui:80
-msgid "Adjust screen brightness to the surrounding light"
-msgstr "هماهنگی روشنایی صفحه با نور محیط"
-
-#: panels/power/cc-power-panel.ui:87
-msgid "_Dim Screen"
-msgstr "_تاریکی صفحه"
-
-#: panels/power/cc-power-panel.ui:88
-msgid "Reduce screen brightness when the device is inactive"
-msgstr "کاهش روشنایی صفحه هنگام غیرفعّال بودن افزاره"
-
-#: panels/power/cc-power-panel.ui:94
-msgid "Screen _Blank"
-msgstr "_سیاهی صفحه"
-
-#: panels/power/cc-power-panel.ui:95
-msgid "Turn the screen off after a period of inactivity"
-msgstr "خاموشی صفحه پس از مدّتی غیرفعّال بودن"
-
-#: panels/power/cc-power-panel.ui:111
-msgid "Automatic Power _Saver"
-msgstr "_ذخیره‌ساز نیروی خودکار"
-
-#: panels/power/cc-power-panel.ui:112
-msgid "Turn on power saver mode when battery power is low"
-msgstr "روشنی حلت ذخیرهٔ نیرو هنگام کم بودن باتری"
-
-#: panels/power/cc-power-panel.ui:119
-msgid "_Automatic Suspend"
-msgstr "_تعلیق خودکار"
-
-#: panels/power/cc-power-panel.ui:120
-msgid "Pause the device after a period of inactivity"
-msgstr "مکث افزاره پس از مدّتی غیرفعّال بودن"
-
-#: panels/power/cc-power-panel.ui:133
+#: panels/power/cc-power-panel.ui:165
 msgid "Po_wer Button Behavior"
 msgstr "عمل دکمهٔ _خاموش"
 
-#: panels/power/cc-power-panel.ui:142
-msgid "Show Battery _Percentage"
-msgstr "نمایش _درصد باتری"
+#: panels/power/cc-power-panel.ui:174
+msgid "_Show Battery Percentage"
+msgstr "_نمایش درصد باتری"
 
-#: panels/power/cc-power-panel.ui:143
+#: panels/power/cc-power-panel.ui:175
 msgid "Show exact charge level in the top bar"
 msgstr "نمایش سطح دقیق شارژ در نوار بالایی"
 
-#: panels/power/cc-power-panel.ui:156
+#: panels/power/cc-power-panel.ui:187
+msgid "_Power Saving"
+msgstr "_ذخیرهٔ نیرو"
+
+#: panels/power/cc-power-panel.ui:196
+msgid "A_utomatic Screen Brightness"
+msgstr "_روشنایی خودکار صفحه"
+
+#: panels/power/cc-power-panel.ui:197
+msgid "Adjust screen brightness to the surrounding light"
+msgstr "هماهنگی روشنایی صفحه با نور محیط"
+
+#: panels/power/cc-power-panel.ui:205
+msgid "_Dim Screen"
+msgstr "_تاریکی صفحه"
+
+#: panels/power/cc-power-panel.ui:206
+msgid "Reduce screen brightness when the device is inactive"
+msgstr "کاهش روشنایی صفحه هنگام غیرفعّال بودن افزاره"
+
+#: panels/power/cc-power-panel.ui:214
+msgid "Automatic Power _Saver"
+msgstr "_ذخیره‌ساز نیروی خودکار"
+
+#: panels/power/cc-power-panel.ui:215
+msgid "Turn on power saver mode when battery power is low"
+msgstr "روشنی حالت ذخیرهٔ نیرو هنگام کم بودن باتری"
+
+#: panels/power/cc-power-panel.ui:226
+msgid "Automatic Screen _Blank"
+msgstr "_سیاهی صفحهٔ خودکار"
+
+#: panels/power/cc-power-panel.ui:227
+msgid "Turn the screen off after a period of inactivity"
+msgstr "خاموشی صفحه پس از مدّتی غیرفعّال بودن"
+
+#: panels/power/cc-power-panel.ui:234
+msgid "D_elay"
+msgstr "تأ_خیر"
+
+#: panels/power/cc-power-panel.ui:245
 msgid "Automatic Suspend"
 msgstr "تعلیق خودکار"
 
-#: panels/power/cc-power-panel.ui:169
-msgid "On _Battery Power"
+#: panels/power/cc-power-panel.ui:249
+msgid "On Ba_ttery Power"
 msgstr "روی نیروی _باتری"
 
-#: panels/power/cc-power-panel.ui:176
-msgid "_Delay"
+#: panels/power/cc-power-panel.ui:256
+msgid "De_lay"
 msgstr "_تأخیر"
 
-#: panels/power/cc-power-panel.ui:187
-msgid "When _Plugged In"
+#: panels/power/cc-power-panel.ui:268
+msgid "Whe_n Plugged In"
 msgstr "هنگام _وصل بودن"
 
-#: panels/power/cc-power-panel.ui:194
-msgid "D_elay"
-msgstr "تأ_خیر"
+#: panels/power/cc-power-panel.ui:275
+msgid "Del_ay"
+msgstr "_تأخیر"
 
 #: panels/power/cc-power-profile-row.c:128
 msgctxt "Power profile"
@@ -4803,49 +4812,37 @@ msgstr ""
 "Power;Sleep;Suspend;Hibernate;Battery;Brightness;Dim;Blank;Monitor;DPMS;Idle;"
 "Energy;نیرو;انرژی;خواب;تعلیق;باتری;روشنایی;تاریکی;نمایشگر;مانیتور;مونیتور;صفحه;"
 
-#: panels/printers/cc-printers-panel.c:677
-msgid "Undo"
-msgstr "برگردان"
-
 #. Translators: %s is the printer name
-#: panels/printers/cc-printers-panel.c:687
+#: panels/printers/cc-printers-panel.c:682
 #, c-format
 msgid "Printer “%s” has been deleted"
 msgstr "چاپگر «%s» حذف شد"
 
-#: panels/printers/cc-printers-panel.c:928
+#: panels/printers/cc-printers-panel.c:924
 msgid "Failed to add new printer."
 msgstr "شکست در افزودن چاپگر جدید."
 
-#: panels/printers/cc-printers-panel.c:1297
-msgid "Unlock to add printers and change settings"
-msgstr "قفل‌گشایی برای افزودن چاپگرها و دگرگونی تنظیمات"
-
-#: panels/printers/cc-printers-panel.ui:27
-msgid "All Connected and Network Printers"
-msgstr "همهٔ چاپگرهای شبکه و وصل شده"
-
 #. Translators: This button adds new printer.
 #. Translators: This button adds a new printer.
-#: panels/printers/cc-printers-panel.ui:31 panels/printers/cc-printers-panel.ui:118
+#: panels/printers/cc-printers-panel.ui:30 panels/printers/cc-printers-panel.ui:122
 msgid "_Add Printer…"
 msgstr "_افزودن چاپگر…"
 
-#: panels/printers/cc-printers-panel.ui:49
+#: panels/printers/cc-printers-panel.ui:48
 msgid "Search printers"
 msgstr "جست‌وجوی چاپگرها"
 
-#: panels/printers/cc-printers-panel.ui:115
+#: panels/printers/cc-printers-panel.ui:119
 msgid "No Printers"
 msgstr "هیچ چاپگری نیست"
 
 #. Translators: Title if the CUPS server is not running (we can not connect to it).
-#: panels/printers/cc-printers-panel.ui:140
+#: panels/printers/cc-printers-panel.ui:144
 msgid "No Print Service"
 msgstr "بدون خدمت چاپ"
 
 #. Translators: Description if the CUPS server is not running (we can not connect to it).
-#: panels/printers/cc-printers-panel.ui:141
+#: panels/printers/cc-printers-panel.ui:145
 msgid "The system printing service doesn’t seem to be available"
 msgstr "به نظر نمی‌رسد خدمت چاپ سامانه در دسترس باشد"
 
@@ -4870,11 +4867,7 @@ msgstr "هیچ راه‌انداز مناسبی پیدا نشد"
 msgid "Searching for preferred drivers…"
 msgstr "جست‌وجو برای راه‌اندازهای ترجیحی…"
 
-#: panels/printers/pp-details-dialog.c:264
-msgid "Select PPD File"
-msgstr "انتخاب پروندهٔ PPD"
-
-#: panels/printers/pp-details-dialog.c:273
+#: panels/printers/pp-details-dialog.c:275
 msgid ""
 "PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *.PPD.GZ)"
 msgstr "پرونده‌های تفسیری پست‌اسکریپت (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *.PPD.GZ)"
@@ -5028,7 +5021,7 @@ msgid "Move Print Job to Top of Queue"
 msgstr "جابه‌جایی کار چاپ به بالای صف"
 
 #. Translators: This label shows how many jobs of this printer needs to be authenticated to be printed.
-#: panels/printers/pp-jobs-dialog.c:318
+#: panels/printers/pp-jobs-dialog.c:319
 #, c-format
 msgid "%u Job Requires Authentication"
 msgid_plural "%u Jobs Require Authentication"
@@ -5036,49 +5029,57 @@ msgstr[0] "%Iu کار نیاز به تصدیق هویت دارد"
 msgstr[1] "%Iu کار نیاز به تصدیق هویت دارند"
 
 #. Translators: The printer needs authentication info to print.
-#: panels/printers/pp-jobs-dialog.c:455
+#: panels/printers/pp-jobs-dialog.c:456
 #, c-format
 msgid "Enter credentials to print from %s"
 msgstr "ورود مشخّصات برای چاپ از %s"
 
+#. Translators: this action removes (purges) all the listed jobs from the list.
+#: panels/printers/pp-jobs-dialog.ui:12
+msgid "_Clear All"
+msgstr "_‌پاک کردن همه"
+
+#: panels/printers/pp-jobs-dialog.ui:23
+msgid "Active Jobs"
+msgstr "کارهای فعّال"
+
+#. Translators: this label describes the dialog empty state, with no jobs listed.
+#: panels/printers/pp-jobs-dialog.ui:36
+msgid "No Active Printer Jobs"
+msgstr "هیچ کار فعّالی برای چاپگر موجود نیست"
+
+#. Translators: This button pop up authentication dialog for print jobs which need credentials.
+#: panels/printers/pp-jobs-dialog.ui:80
+msgid "_Authenticate"
+msgstr "_تصدیق هویت"
+
+#: panels/printers/pp-jobs-dialog.ui:119
+msgid "Clear All Active Jobs?"
+msgstr "پاک سازی همهٔ کارهای فعّال؟"
+
+#: panels/printers/pp-jobs-dialog.ui:120
+msgid "Clearing jobs cannot be undone"
+msgstr "پاک سازی کارها قابل بازگشت نیست"
+
+#: panels/printers/pp-jobs-dialog.ui:126
+msgid "Clear _All"
+msgstr "پاک سازی _همه"
+
 #. Translators: This is a windows domain used with SMB protocol.
-#: panels/printers/pp-jobs-dialog.ui:28
+#: panels/printers/pp-jobs-dialog.ui:154
 msgid "Domain"
 msgstr "دامنه"
 
 #. Translators: This is a username on a print server.
-#: panels/printers/pp-jobs-dialog.ui:40 panels/printers/pp-new-printer-dialog.ui:271
+#: panels/printers/pp-jobs-dialog.ui:166 panels/printers/pp-new-printer-dialog.ui:271
 #: panels/wwan/cc-wwan-apn-dialog.ui:150
 msgid "Username"
 msgstr "نام‌کاربری"
 
 #. Translators: This button authenticates all print jobs and send them for printing.
-#: panels/printers/pp-jobs-dialog.ui:101
+#: panels/printers/pp-jobs-dialog.ui:227
 msgid "A_uthenticate"
 msgstr "_تأیید هویت"
-
-#: panels/printers/pp-jobs-dialog.ui:119
-msgid "Printer Jobs"
-msgstr "کارهای چاپگر"
-
-#. Translators: this action removes (purges) all the listed jobs from the list.
-#: panels/printers/pp-jobs-dialog.ui:128
-msgid "_Clear All"
-msgstr "_‌پاک کردن همه"
-
-#: panels/printers/pp-jobs-dialog.ui:139
-msgid "Active Jobs"
-msgstr "کارهای فعّال"
-
-#. Translators: this label describes the dialog empty state, with no jobs listed.
-#: panels/printers/pp-jobs-dialog.ui:152
-msgid "No Active Printer Jobs"
-msgstr "هیچ کار فعّالی برای چاپگر موجود نیست"
-
-#. Translators: This button pop up authentication dialog for print jobs which need credentials.
-#: panels/printers/pp-jobs-dialog.ui:196
-msgid "_Authenticate"
-msgstr "_تصدیق هویت"
 
 #. Translators: Name of job which makes printer to autoconfigure itself
 #: panels/printers/pp-new-printer.c:1200
@@ -5146,8 +5147,7 @@ msgid "Server requires authentication"
 msgstr "کارساز نیاز به تصدیق هویت دارد"
 
 #: panels/printers/pp-new-printer-dialog.ui:78
-#: panels/system/region/cc-format-chooser.ui:37
-#: panels/system/users/cc-fingerprint-dialog.ui:38
+#: panels/system/users/cc-fingerprint-dialog.ui:23
 #: panels/wwan/cc-wwan-apn-dialog.ui:21
 msgid "Back"
 msgstr "بازگشت"
@@ -5507,77 +5507,77 @@ msgstr "پاک‌سازی سرهای چاپ"
 msgid "Remove Printer"
 msgstr "برداشتن چاپگر"
 
-#: panels/privacy/bolt/cc-bolt-device-dialog.c:79
+#: panels/privacy/bolt/cc-bolt-device-dialog.c:78
 #: panels/privacy/bolt/cc-bolt-device-entry.c:121
 msgctxt "Thunderbolt Device Status"
 msgid "Disconnected"
 msgstr "قطع شده"
 
-#: panels/privacy/bolt/cc-bolt-device-dialog.c:82
+#: panels/privacy/bolt/cc-bolt-device-dialog.c:81
 #: panels/privacy/bolt/cc-bolt-device-entry.c:124
 msgctxt "Thunderbolt Device Status"
 msgid "Connecting"
 msgstr "در حال وصل شدن"
 
-#: panels/privacy/bolt/cc-bolt-device-dialog.c:85
+#: panels/privacy/bolt/cc-bolt-device-dialog.c:84
 #: panels/privacy/bolt/cc-bolt-device-entry.c:128
 #: panels/privacy/bolt/cc-bolt-device-entry.c:140
 msgctxt "Thunderbolt Device Status"
 msgid "Connected"
 msgstr "وصل شده"
 
-#: panels/privacy/bolt/cc-bolt-device-dialog.c:88
+#: panels/privacy/bolt/cc-bolt-device-dialog.c:87
 msgctxt "Thunderbolt Device Status"
 msgid "Authorization Error"
 msgstr "شکست در تصدیق هویت"
 
-#: panels/privacy/bolt/cc-bolt-device-dialog.c:91
+#: panels/privacy/bolt/cc-bolt-device-dialog.c:90
 #: panels/privacy/bolt/cc-bolt-device-entry.c:134
 msgctxt "Thunderbolt Device Status"
 msgid "Authorizing"
 msgstr "در حال تأیید"
 
-#: panels/privacy/bolt/cc-bolt-device-dialog.c:98
+#: panels/privacy/bolt/cc-bolt-device-dialog.c:97
 msgctxt "Thunderbolt Device Status"
 msgid "Reduced Functionality"
 msgstr "عملکرد کاسته‌شده"
 
-#: panels/privacy/bolt/cc-bolt-device-dialog.c:100
+#: panels/privacy/bolt/cc-bolt-device-dialog.c:99
 msgctxt "Thunderbolt Device Status"
 msgid "Connected & Authorized"
 msgstr "وصل و تصدیق هویت شده"
 
-#: panels/privacy/bolt/cc-bolt-device-dialog.c:106
+#: panels/privacy/bolt/cc-bolt-device-dialog.c:105
 #: panels/privacy/bolt/cc-bolt-device-entry.c:148
 msgctxt "Thunderbolt Device Status"
 msgid "Unknown"
 msgstr "ناشناخته"
 
 #. Translators: The time point the device was authorized.
-#: panels/privacy/bolt/cc-bolt-device-dialog.c:161
+#: panels/privacy/bolt/cc-bolt-device-dialog.c:160
 msgid "Authorized at"
 msgstr "تأیید شده در"
 
 #. Translators: The time point the device was connected.
-#: panels/privacy/bolt/cc-bolt-device-dialog.c:167
+#: panels/privacy/bolt/cc-bolt-device-dialog.c:166
 msgid "Connected at"
 msgstr "وصل شده در"
 
 #. Translators: The time point the device was enrolled,
 #. * i.e. authorized and stored in the device database.
-#: panels/privacy/bolt/cc-bolt-device-dialog.c:174
+#: panels/privacy/bolt/cc-bolt-device-dialog.c:173
 msgid "Enrolled at"
 msgstr "ثبت شده در"
 
-#: panels/privacy/bolt/cc-bolt-device-dialog.c:248
+#: panels/privacy/bolt/cc-bolt-device-dialog.c:247
 msgid "Failed to authorize device: "
 msgstr "شکست در تصدیق افزاره: "
 
-#: panels/privacy/bolt/cc-bolt-device-dialog.c:315
+#: panels/privacy/bolt/cc-bolt-device-dialog.c:314
 msgid "Failed to forget device: "
 msgstr "شکست در فراموشی افزاره: "
 
-#: panels/privacy/bolt/cc-bolt-device-dialog.c:455
+#: panels/privacy/bolt/cc-bolt-device-dialog.c:454
 #, c-format
 msgid "Depends on %u other device"
 msgid_plural "Depends on %u other devices"
@@ -5588,23 +5588,23 @@ msgstr[1] "وابسته به %Iu افزارهٔ دیگر"
 msgid "Device Identifier"
 msgstr "شناسهٔ افزاره"
 
-#: panels/privacy/bolt/cc-bolt-device-dialog.ui:30
+#: panels/privacy/bolt/cc-bolt-device-dialog.ui:33
 msgid "UUID"
 msgstr "شناسهٔ یکتا"
 
-#: panels/privacy/bolt/cc-bolt-device-dialog.ui:35
+#: panels/privacy/bolt/cc-bolt-device-dialog.ui:41
 msgid "Timestamp"
 msgstr "برچسب‌زمانی"
 
-#: panels/privacy/bolt/cc-bolt-device-dialog.ui:43
+#: panels/privacy/bolt/cc-bolt-device-dialog.ui:52
 msgid "Depends on other devices"
 msgstr "وابسته به افزاره‌های دیگر"
 
-#: panels/privacy/bolt/cc-bolt-device-dialog.ui:71
+#: panels/privacy/bolt/cc-bolt-device-dialog.ui:80
 msgid "Authorize and Connect"
 msgstr "تصدیق و اتّصال"
 
-#: panels/privacy/bolt/cc-bolt-device-dialog.ui:86
+#: panels/privacy/bolt/cc-bolt-device-dialog.ui:95
 msgid "Forget Device"
 msgstr "فراموشی افزاره"
 
@@ -5618,20 +5618,20 @@ msgctxt "Thunderbolt Device Status"
 msgid "Authorized"
 msgstr "تصدیق هویت شده"
 
-#: panels/privacy/bolt/cc-bolt-page.c:216
+#: panels/privacy/bolt/cc-bolt-page.c:213
 msgid "The Thunderbolt subsystem (boltd) is not installed or not set up properly."
 msgstr "زیرسامانهٔ تاندربولت (boltd) نصب یا به درستی پیکربندی نشده است."
 
-#: panels/privacy/bolt/cc-bolt-page.c:472
+#: panels/privacy/bolt/cc-bolt-page.c:469
 msgid "Allow direct access to devices such as docks and external GPUs."
 msgstr ""
-"به افزاره‌هایی نظیر داک‌ها و شتاب‌دهنده‌های گرافیکی خارجی، اجازهٔ دسترسی مستقیم می‌دهد."
+"به افزاره‌هایی نظیر داک‌ها و شتاب‌دهنده‌های نگاشتاری خارجی، اجازهٔ دسترسی مستقیم می‌دهد."
 
-#: panels/privacy/bolt/cc-bolt-page.c:473
+#: panels/privacy/bolt/cc-bolt-page.c:470
 msgid "Only USB and Display Port devices can attach."
 msgstr "فقط افزاره‌های یواس‌بی و دیسپلی‌پورت می‌توانند وصل شوند."
 
-#: panels/privacy/bolt/cc-bolt-page.c:508
+#: panels/privacy/bolt/cc-bolt-page.c:505
 msgid ""
 "Thunderbolt could not be detected.\n"
 "Either the system lacks Thunderbolt support, it has been disabled in the BIOS or "
@@ -5641,15 +5641,15 @@ msgstr ""
 "یا سامانه فاقد پشتیبانی تاندربولت است، یا در بایوس از کار افتاده یا روی سطح امنیتی "
 "پشتیبانی نشده‌ای تنظیم شده."
 
-#: panels/privacy/bolt/cc-bolt-page.c:552
+#: panels/privacy/bolt/cc-bolt-page.c:549
 msgid "Thunderbolt support has been disabled in the BIOS."
 msgstr "پشتیبانی تاندربولت در بایوس از کار افتاده است."
 
-#: panels/privacy/bolt/cc-bolt-page.c:556
+#: panels/privacy/bolt/cc-bolt-page.c:553
 msgid "Thunderbolt security level could not be determined."
 msgstr "نمی‌توان سطح امنیتی تاندربولت را تعیین کرد."
 
-#: panels/privacy/bolt/cc-bolt-page.c:676
+#: panels/privacy/bolt/cc-bolt-page.c:673
 #, c-format
 msgid "Error switching direct mode: %s"
 msgstr "خطا در تعویض حالت مستقیم: %s"
@@ -5658,31 +5658,27 @@ msgstr "خطا در تعویض حالت مستقیم: %s"
 msgid "Thunderbolt"
 msgstr "تاندربولت"
 
-#: panels/privacy/bolt/cc-bolt-page.ui:48
-msgid "Close notification"
-msgstr "بستن آگاهی"
-
-#: panels/privacy/bolt/cc-bolt-page.ui:92
+#: panels/privacy/bolt/cc-bolt-page.ui:51
 msgid "No Thunderbolt Support"
 msgstr "بدون پشتیبانی تاندربولت"
 
-#: panels/privacy/bolt/cc-bolt-page.ui:93
+#: panels/privacy/bolt/cc-bolt-page.ui:52
 msgid "Could not connect to the thunderbolt subsystem"
 msgstr "نتوانست به زیرسامانهٔ تاندربولت وصل شود"
 
-#: panels/privacy/bolt/cc-bolt-page.ui:110
+#: panels/privacy/bolt/cc-bolt-page.ui:69
 msgid "Direct Access"
 msgstr "دسترسی مستقیم"
 
-#: panels/privacy/bolt/cc-bolt-page.ui:113
+#: panels/privacy/bolt/cc-bolt-page.ui:73
 msgid "Allow direct access to devices such as docks and external GPUs"
-msgstr "اجازهٔ دسترسی مستقیم به افزاره‌هایی نظیر داک‌ها و شتاب‌دهنده‌های گرافیکی خارجی"
+msgstr "اجازهٔ دسترسی مستقیم به افزاره‌هایی نظیر داک‌ها و شتاب‌دهنده‌های نگاشتاری خارجی"
 
-#: panels/privacy/bolt/cc-bolt-page.ui:163
+#: panels/privacy/bolt/cc-bolt-page.ui:128
 msgid "Pending Devices"
 msgstr "افزاره‌های در انتظار"
 
-#: panels/privacy/bolt/cc-bolt-page.ui:246
+#: panels/privacy/bolt/cc-bolt-page.ui:211
 msgid "No devices attached"
 msgstr "هیچ افزاره‌ای وصل نشده"
 
@@ -5965,7 +5961,7 @@ msgstr "_رونوشت از گزارش فنی"
 msgid "About Device Security"
 msgstr "دربارهٔ امنیت افزاره"
 
-#: panels/privacy/firmware-security/cc-firmware-security-help-dialog.ui:24
+#: panels/privacy/firmware-security/cc-firmware-security-help-dialog.ui:27
 msgid ""
 "Device security provides information about how protected your device is against "
 "security issues which target the hardware itself.\n"
@@ -5984,17 +5980,17 @@ msgid ""
 "security status of the system and applications."
 msgstr ""
 "امنیت افزاره اطّلاعاتی دربارهٔ مقدار محافظت افزاره‌تان در برابر مشکلات امنیتی‌ای که "
-"خود سخت‌افزار را هدف می گیرند فراهم می‌کنم.\n"
+"خود سخت‌افزار را هدف می گیرند فراهم می‌کند.\n"
 "\n"
 "زوایای سخت‌افزاری که روی امنیت تأثیر می‌گذارند چون:\n"
 "\n"
-"• ویژگی‌های امنیتی‌ای که در خورد سخت‌افزار ساخته شده‌اند;\n"
-"• چگپنگی پیکربندی سخت‌افزار برای محافظت دربرابر مشکلات امنیتی;\n"
+"• ویژگی‌های امنیتی‌ای که در خود سخت‌افزار ساخته شده‌اند؛\n"
+"• چگونگی پیکربندی سخت‌افزار برای محافظت در برابر مشکلات امنیتی؛\n"
 "• امنیت نرم‌افزاری که مستقیم روی سخت‌افزار اجرا می‌شود.\n"
 "\n"
-"تهدیدهای امنیتی که سخت‌افزار را تحت تأثیر قرار می دهند چون بدافزارها و ویروس‌هایی که "
-"نرم‌افزاری را که مستقیم روی سخت‌افزار اجرا می‌شود هدف قرار می‌دهند. همچنین شامل "
-"دستکاری‌های فیزیکی چون وصل شدن فیزیکی به سخت‌افزار برای خواندن داده‌ها و جاسازی "
+"تهدیدهای امنیتی که سخت‌افزار را تحت تأثیر قرار می دهند شامل بدافزارها و ویروس‌هایی "
+"می‌شوند که نرم‌افزاری را که مستقیم روی سخت‌افزار اجرا می‌شود هدف قرار می‌دهند و "
+"همین طور دستکاری‌های فیزیکی مثل وصل شدن به سخت‌افزار برای خواندن داده‌ها و جاسازی "
 "بدافزارها.\n"
 "\n"
 "امنیت افزاره فقط یکی از زوایای امنیت است و وضعیت کلی امنیت سامانه و برنامه‌ها را "
@@ -6050,22 +6046,22 @@ msgstr ""
 
 #. TRANSLATOR: this is the date in "%Y-%m-%d %H:%M:%S" format,
 #. for example: 2022-08-01 22:48:00
-#: panels/privacy/firmware-security/cc-firmware-security-page.c:228
+#: panels/privacy/firmware-security/cc-firmware-security-page.c:229
 #, c-format
 msgid "%1$s"
 msgstr "%1$s"
 
 #. TRANSLATOR: This is the text event status output when the event status is "success"
-#: panels/privacy/firmware-security/cc-firmware-security-page.c:234
+#: panels/privacy/firmware-security/cc-firmware-security-page.c:235
 msgid "Pass"
 msgstr "قبول"
 
 #. TRANSLATOR: This is the text event status output when the event status is not "success"
-#: panels/privacy/firmware-security/cc-firmware-security-page.c:237
+#: panels/privacy/firmware-security/cc-firmware-security-page.c:238
 msgid "! Fail"
 msgstr "! شکست"
 
-#: panels/privacy/firmware-security/cc-firmware-security-page.c:240
+#: panels/privacy/firmware-security/cc-firmware-security-page.c:241
 #, c-format
 msgid "(%1$s → %2$s)"
 msgstr "(%1$s ← %2$s)"
@@ -6095,26 +6091,22 @@ msgstr "سطوح امنیتی برای این افزاره موجود نیست."
 msgid "Device Security"
 msgstr "امنیت افزاره"
 
-#: panels/privacy/firmware-security/cc-firmware-security-page.ui:37
-msgid "Starting Device Security…"
-msgstr "آغاز کردن امنیت افزاره…"
-
-#: panels/privacy/firmware-security/cc-firmware-security-page.ui:48
+#: panels/privacy/firmware-security/cc-firmware-security-page.ui:41
 msgid "Device Security Unavailable"
 msgstr "امنیت افزاره موجود نیست"
 
-#: panels/privacy/firmware-security/cc-firmware-security-page.ui:50
+#: panels/privacy/firmware-security/cc-firmware-security-page.ui:43
 msgid ""
 "Device Security is only available on physical hardware. No physical hardware has "
 "been detected."
 msgstr ""
 "امنیت افزاره فقط در سخت‌افزار فیزیکی موجود است. سخت‌افزاری فیزیکی پیدا نشده است."
 
-#: panels/privacy/firmware-security/cc-firmware-security-page.ui:183
+#: panels/privacy/firmware-security/cc-firmware-security-page.ui:175
 msgid "Security Events"
 msgstr "رویدادهای امنیتی"
 
-#: panels/privacy/firmware-security/cc-firmware-security-page.ui:195
+#: panels/privacy/firmware-security/cc-firmware-security-page.ui:182
 msgid "No Events"
 msgstr "بدون رویداد"
 
@@ -6131,7 +6123,7 @@ msgstr "نامعتبر"
 #. TRANSLATORS: if the function is enabled through BIOS or OS settings.
 #. TRANSLATORS: Status of Parental Controls setup
 #: panels/privacy/firmware-security/cc-firmware-security-utils.c:45
-#: panels/system/users/cc-user-page.c:374 panels/system/users/cc-user-page.c:740
+#: panels/system/users/cc-user-page.c:365 panels/system/users/cc-user-page.c:752
 #: panels/wwan/cc-wwan-device-page.c:475
 msgid "Enabled"
 msgstr "فعال شده"
@@ -6400,15 +6392,19 @@ msgstr "_پاکسازی پرونده‌های موقت"
 msgid "Location not found"
 msgstr "مکان پیدا نشد"
 
-#: panels/search/cc-search-locations-page.c:590
+#: panels/search/cc-search-locations-page.c:605
 msgid "Subfolders must be manually added for this location"
 msgstr "زیرشاخه‌ها برای این مکان باید به صورت دستی افزوده شوند"
 
-#: panels/search/cc-search-locations-page.c:598 panels/sharing/cc-sharing-panel.c:423
+#: panels/search/cc-search-locations-page.c:614 panels/sharing/cc-sharing-panel.c:413
+msgid "Open Folder"
+msgstr "گشودن شاخه"
+
+#: panels/search/cc-search-locations-page.c:623 panels/sharing/cc-sharing-panel.c:423
 msgid "Remove Folder"
 msgstr "برداشتن شاخه"
 
-#: panels/search/cc-search-locations-page.c:710
+#: panels/search/cc-search-locations-page.c:738
 msgid "Select Location"
 msgstr "گزینش مکان"
 
@@ -6502,10 +6498,6 @@ msgstr "فعّال"
 #: panels/sharing/cc-sharing-panel.c:275
 msgid "Choose a Folder"
 msgstr "گزینش یک شاخه"
-
-#: panels/sharing/cc-sharing-panel.c:413
-msgid "Open Folder"
-msgstr "گشودن شاخه"
 
 #: panels/sharing/cc-sharing-panel.c:443
 msgid "_Add Folder"
@@ -6825,12 +6817,12 @@ msgstr "_جزییات سامانه"
 
 #: panels/system/about/cc-system-details-window.c:300
 msgid "Graphics"
-msgstr "گرافیک"
+msgstr "نگاشتار"
 
 #: panels/system/about/cc-system-details-window.c:302
 #, c-format
 msgid "Graphics %d"
-msgstr "گرافیک %Id"
+msgstr "نگاشتار %Id"
 
 #. translators: This is the type of architecture for the OS
 #: panels/system/about/cc-system-details-window.c:344
@@ -6990,17 +6982,17 @@ msgid "S_oftware Updates"
 msgstr "_به‌روز رسانی‌های نرم‌افزاری"
 
 #. Translators: This is the full date and time format used in 12-hour mode.
-#: panels/system/datetime/cc-datetime-page.c:237
+#: panels/system/datetime/cc-datetime-page.c:239
 msgid "%e %B %Y, %l:%M %p"
 msgstr "%Oe %B %OY، ⁦%Ol:%OM⁩ %p"
 
 #. Translators: This is the full date and time format used in 24-hour mode.
-#: panels/system/datetime/cc-datetime-page.c:242
+#: panels/system/datetime/cc-datetime-page.c:244
 msgid "%e %B %Y, %R"
 msgstr "%Oe %B %OY، ⁦%OH:%OM⁩"
 
 #. Translators: "city, country"
-#: panels/system/datetime/cc-datetime-page.c:402
+#: panels/system/datetime/cc-datetime-page.c:404
 #, c-format
 msgctxt "timezone loc"
 msgid "%s, %s"
@@ -7008,7 +7000,7 @@ msgstr "%s، %s"
 
 #. Update the timezone on the listbow row
 #. Translators: "timezone (details)"
-#: panels/system/datetime/cc-datetime-page.c:419
+#: panels/system/datetime/cc-datetime-page.c:421
 #, c-format
 msgctxt "timezone desc"
 msgid "%s (%s)"
@@ -7032,115 +7024,115 @@ msgstr "م_اه"
 msgid "_Day"
 msgstr "_روز"
 
-#: panels/system/datetime/cc-datetime-page.ui:123
+#: panels/system/datetime/cc-datetime-page.ui:124
 msgid "Automatic _Date &amp; Time"
 msgstr "_تاریخ و زمان خودکار"
 
-#: panels/system/datetime/cc-datetime-page.ui:124
+#: panels/system/datetime/cc-datetime-page.ui:125
 msgid "Requires internet access"
 msgstr "احتیاج به دسترسی به اینترنت دارد"
 
-#: panels/system/datetime/cc-datetime-page.ui:136
+#: panels/system/datetime/cc-datetime-page.ui:137
 msgid "Date &amp; _Time"
 msgstr "تاریخ و _زمان"
 
-#: panels/system/datetime/cc-datetime-page.ui:148
+#: panels/system/datetime/cc-datetime-page.ui:149
 msgid "Automatic Time _Zone"
 msgstr "_منطقه زمانی خودکار"
 
-#: panels/system/datetime/cc-datetime-page.ui:149
+#: panels/system/datetime/cc-datetime-page.ui:150
 msgid "Requires location services enabled and internet access"
 msgstr "نیاز به خدمت مکان‌یابی به کار افتاده و دسترسی به اینترنت"
 
-#: panels/system/datetime/cc-datetime-page.ui:155
+#: panels/system/datetime/cc-datetime-page.ui:156
 msgid "Time Z_one"
 msgstr "منطقه ز_مانی"
 
-#: panels/system/datetime/cc-datetime-page.ui:166
+#: panels/system/datetime/cc-datetime-page.ui:167
 msgid "Time _Format"
 msgstr "_قالب زمان"
 
-#: panels/system/datetime/cc-datetime-page.ui:177
+#: panels/system/datetime/cc-datetime-page.ui:176
 msgid "_24-hour"
 msgstr "_۲۴ ساعته"
 
-#: panels/system/datetime/cc-datetime-page.ui:186
+#: panels/system/datetime/cc-datetime-page.ui:183
 msgid "AM / _PM"
 msgstr "_صبح / عصر"
 
-#: panels/system/datetime/cc-datetime-page.ui:200
+#: panels/system/datetime/cc-datetime-page.ui:196
 msgid "Clock &amp; Calendar"
 msgstr "ساعت و تقویم"
 
-#: panels/system/datetime/cc-datetime-page.ui:201
+#: panels/system/datetime/cc-datetime-page.ui:197
 msgid "Control how the time and date is shown in the top bar"
 msgstr "واپایش چگونگی نشان دادن زمان و تاریخ در نوار بالایی"
 
-#: panels/system/datetime/cc-datetime-page.ui:204
+#: panels/system/datetime/cc-datetime-page.ui:200
 msgid "_Week Day"
 msgstr "_روز هفته"
 
-#: panels/system/datetime/cc-datetime-page.ui:210
+#: panels/system/datetime/cc-datetime-page.ui:206
 msgid "D_ate"
 msgstr "_تاریخ"
 
-#: panels/system/datetime/cc-datetime-page.ui:216
+#: panels/system/datetime/cc-datetime-page.ui:212
 msgid "_Seconds"
 msgstr "_ثانیه"
 
-#: panels/system/datetime/cc-datetime-page.ui:222
+#: panels/system/datetime/cc-datetime-page.ui:218
 msgid "Week _Numbers"
 msgstr "_شماره‌های هفته"
 
-#: panels/system/datetime/cc-datetime-page.ui:223
+#: panels/system/datetime/cc-datetime-page.ui:219
 msgid "Shown in the dropdown calendar"
 msgstr "نماش داده در تقویم پایین افتادنی"
 
-#: panels/system/datetime/cc-datetime-page.ui:259
+#: panels/system/datetime/cc-datetime-page.ui:257
 msgid "January"
 msgstr "ژانویه"
 
-#: panels/system/datetime/cc-datetime-page.ui:260
+#: panels/system/datetime/cc-datetime-page.ui:258
 msgid "February"
 msgstr "فوریه"
 
-#: panels/system/datetime/cc-datetime-page.ui:261
+#: panels/system/datetime/cc-datetime-page.ui:259
 msgid "March"
 msgstr "مارس"
 
-#: panels/system/datetime/cc-datetime-page.ui:262
+#: panels/system/datetime/cc-datetime-page.ui:260
 msgid "April"
 msgstr "آوریل"
 
-#: panels/system/datetime/cc-datetime-page.ui:263
+#: panels/system/datetime/cc-datetime-page.ui:261
 msgid "May"
 msgstr "می"
 
-#: panels/system/datetime/cc-datetime-page.ui:264
+#: panels/system/datetime/cc-datetime-page.ui:262
 msgid "June"
 msgstr "ژوئن"
 
-#: panels/system/datetime/cc-datetime-page.ui:265
+#: panels/system/datetime/cc-datetime-page.ui:263
 msgid "July"
 msgstr "ژوئیه"
 
-#: panels/system/datetime/cc-datetime-page.ui:266
+#: panels/system/datetime/cc-datetime-page.ui:264
 msgid "August"
 msgstr "اوت"
 
-#: panels/system/datetime/cc-datetime-page.ui:267
+#: panels/system/datetime/cc-datetime-page.ui:265
 msgid "September"
 msgstr "سپتامبر"
 
-#: panels/system/datetime/cc-datetime-page.ui:268
+#: panels/system/datetime/cc-datetime-page.ui:266
 msgid "October"
 msgstr "اکتبر"
 
-#: panels/system/datetime/cc-datetime-page.ui:269
+#: panels/system/datetime/cc-datetime-page.ui:267
 msgid "November"
 msgstr "نوامبر"
 
-#: panels/system/datetime/cc-datetime-page.ui:270
+#: panels/system/datetime/cc-datetime-page.ui:268
 msgid "December"
 msgstr "دسامبر"
 
@@ -7186,28 +7178,30 @@ msgstr ""
 "نام دامنه;حافظه;پردازشگر;نگارش;نسخه;نرم‌افزار;سیستم‌عامل;مدل;زبان;ناحیه;کشور;قالب‌ها;"
 "اعداد;واحدها;ساعت;منطقه زمانی;تاریخ;مکان;دوردست;میزکار;پوسته;"
 
-#: panels/system/region/cc-format-chooser.c:160
-#: panels/system/region/cc-format-chooser.c:208
+#: panels/system/region/cc-format-chooser.c:228
+#: panels/system/region/cc-format-chooser.ui:196
+msgid "Preview"
+msgstr "پیش‌نمایش"
+
 #: panels/system/region/cc-format-chooser.ui:4
 msgid "Formats"
 msgstr "قالب‌ها"
 
-#: panels/system/region/cc-format-chooser.c:268
-#: panels/system/region/cc-format-chooser.ui:208
-msgid "Preview"
-msgstr "پیش‌نمایش"
-
-#: panels/system/region/cc-format-chooser.ui:76
+#: panels/system/region/cc-format-chooser.ui:68
 msgid "Search locales"
 msgstr "جست‌وجوی موقعیت‌ها"
 
-#: panels/system/region/cc-format-chooser.ui:114
+#: panels/system/region/cc-format-chooser.ui:99
 msgid "Common Formats"
 msgstr "قالب‌های معمول"
 
-#: panels/system/region/cc-format-chooser.ui:141
+#: panels/system/region/cc-format-chooser.ui:126
 msgid "All Formats"
 msgstr "تمام قالب‌ها"
+
+#: panels/system/region/cc-format-chooser.ui:205
+msgid "Close Preview"
+msgstr "بستن پیش‌نمایش"
 
 #: panels/system/region/cc-format-preview.c:148
 msgctxt "measurement format"
@@ -7219,27 +7213,27 @@ msgctxt "measurement format"
 msgid "Metric"
 msgstr "متریک"
 
-#: panels/system/region/cc-format-preview.ui:17
+#: panels/system/region/cc-format-preview.ui:7
 msgid "Dates"
 msgstr "تاریخ‌ها"
 
-#: panels/system/region/cc-format-preview.ui:27
+#: panels/system/region/cc-format-preview.ui:17
 msgid "Times"
 msgstr "زمان‌ها"
 
-#: panels/system/region/cc-format-preview.ui:37
+#: panels/system/region/cc-format-preview.ui:27
 msgid "Dates &amp; Times"
 msgstr "تاریخ‌ها و زمان‌ها"
 
-#: panels/system/region/cc-format-preview.ui:47
+#: panels/system/region/cc-format-preview.ui:37
 msgid "Numbers"
 msgstr "عددها"
 
-#: panels/system/region/cc-format-preview.ui:57
+#: panels/system/region/cc-format-preview.ui:47
 msgid "Measurement"
 msgstr "اندازه‌گیری"
 
-#: panels/system/region/cc-format-preview.ui:67
+#: panels/system/region/cc-format-preview.ui:57
 msgid "Paper"
 msgstr "کاغذ"
 
@@ -7297,23 +7291,23 @@ msgstr "گزینش قالب‌ها و زبان نمایشیتان"
 msgid "Language;Layout;Keyboard;Input;"
 msgstr "زبان;چیدمان;صفحه‌کلید؛ورودی;Language;Layout;Keyboard;Input;"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.c:358
-#: panels/system/remote-desktop/cc-remote-login-page.c:97
+#: panels/system/remote-desktop/cc-desktop-sharing-page.c:357
+#: panels/system/remote-desktop/cc-remote-login-page.c:96
 msgid "Device address copied to clipboard"
 msgstr "نشانی افزاره در تخته‌گیره رونوشت شد"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.c:367
-#: panels/system/remote-desktop/cc-remote-login-page.c:106
+#: panels/system/remote-desktop/cc-desktop-sharing-page.c:366
+#: panels/system/remote-desktop/cc-remote-login-page.c:105
 msgid "Port number copied to clipboard"
 msgstr "شمارهٔ درگاه در تخته‌گیره رونوشت شد"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.c:378
-#: panels/system/remote-desktop/cc-remote-login-page.c:117
+#: panels/system/remote-desktop/cc-desktop-sharing-page.c:377
+#: panels/system/remote-desktop/cc-remote-login-page.c:116
 msgid "Username copied to clipboard"
 msgstr "نام کاربری در تخته‌گیره رونوشت شد"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.c:389
-#: panels/system/remote-desktop/cc-remote-login-page.c:128
+#: panels/system/remote-desktop/cc-desktop-sharing-page.c:388
+#: panels/system/remote-desktop/cc-remote-login-page.c:127
 msgid "Password copied to clipboard"
 msgstr "گذرواژه در تخته‌گیره رونوشت شد"
 
@@ -7410,11 +7404,6 @@ msgstr "_هم‌رسانی میزکار"
 msgid "Remote _Login"
 msgstr "_ورود دوردست"
 
-#: panels/system/remote-desktop/cc-remote-login-page.c:725
-#: panels/system/users/cc-user-page.c:763
-msgid "Some settings are locked"
-msgstr "برخی تنظیمات قفلند"
-
 #: panels/system/remote-desktop/cc-remote-login-page.ui:18
 msgid ""
 "Remotely connect to your user account when it isn’t being used. The display "
@@ -7508,8 +7497,8 @@ msgid "User Details"
 msgstr "جزییات کاربر"
 
 #: panels/system/users/cc-add-user-dialog.ui:79
-msgid "Full _Name"
-msgstr "_نام کامل"
+msgid "Fu_ll Name"
+msgstr "نام _کامل"
 
 #: panels/system/users/cc-add-user-dialog.ui:95
 msgid ""
@@ -7657,40 +7646,40 @@ msgstr "_نام مدیر"
 msgid "Administrator _Password"
 msgstr "_گذرواژهٔ مدیر"
 
-#: panels/system/users/cc-fingerprint-dialog.c:235
+#: panels/system/users/cc-fingerprint-dialog.c:234
 msgid "the device needs to be claimed to perform this action"
 msgstr "پیش از انجام این کنش،‌ افزاره باید درخواست شود"
 
-#: panels/system/users/cc-fingerprint-dialog.c:237
+#: panels/system/users/cc-fingerprint-dialog.c:236
 msgid "the device is already claimed by another process"
 msgstr "افزاره به دست فرایندی دیگر درخواست شده است"
 
-#: panels/system/users/cc-fingerprint-dialog.c:239
+#: panels/system/users/cc-fingerprint-dialog.c:238
 msgid "you do not have permission to perform the action"
 msgstr "اجازهٔ انجام این کنش را ندارید"
 
-#: panels/system/users/cc-fingerprint-dialog.c:241
+#: panels/system/users/cc-fingerprint-dialog.c:240
 msgid "no prints have been enrolled"
 msgstr "هیچ اثر انگشتی ثبت نشده"
 
-#: panels/system/users/cc-fingerprint-dialog.c:250
+#: panels/system/users/cc-fingerprint-dialog.c:249
 msgid "Failed to communicate with the device during enrollment"
 msgstr "شکست در ارتباط با افزاره هنگام ثبت"
 
-#: panels/system/users/cc-fingerprint-dialog.c:254
+#: panels/system/users/cc-fingerprint-dialog.c:253
 msgid "Failed to communicate with the fingerprint reader"
 msgstr "شکست در ارتباط با خوانندهٔ اثر انگشت"
 
-#: panels/system/users/cc-fingerprint-dialog.c:256
+#: panels/system/users/cc-fingerprint-dialog.c:255
 msgid "Failed to communicate with the fingerprint daemon"
 msgstr "شکست در ارتباط با خدمت اثر انگشت"
 
-#: panels/system/users/cc-fingerprint-dialog.c:510
+#: panels/system/users/cc-fingerprint-dialog.c:509
 #, c-format
 msgid "Failed to list fingerprints: %s"
 msgstr "شکست در فهرست اثر انگشت‌ها: %s"
 
-#: panels/system/users/cc-fingerprint-dialog.c:577
+#: panels/system/users/cc-fingerprint-dialog.c:576
 #, c-format
 msgid "Failed to delete saved fingerprints: %s"
 msgstr "شکست در حذف اثر انگشت‌های ذخیره‌شده: %s"
@@ -7804,70 +7793,63 @@ msgstr "مشکل در خواندن از افزاره"
 msgid "Failed to claim fingerprint device %s: %s"
 msgstr "شکست در درخواست افزارهٔ اثر انگشت %s: %s"
 
-#: panels/system/users/cc-fingerprint-dialog.c:1315
+#: panels/system/users/cc-fingerprint-dialog.c:1317
 #, c-format
 msgid "Failed to get fingerprint devices: %s"
 msgstr "شکست در گرفتن افزارهٔ اثر انگشت: %s"
 
-#: panels/system/users/cc-fingerprint-dialog.ui:8
-msgid "Fingerprint Manager"
-msgstr "ورود با اثر انگشت"
+#: panels/system/users/cc-fingerprint-dialog.c:1394
+msgid "Delete All Fingerprints?"
+msgstr "حذف همهٔ اثرانگشت‌ها؟"
 
-#: panels/system/users/cc-fingerprint-dialog.ui:20
-msgid "Fingerprint"
-msgstr "اثر انگشت"
-
-#: panels/system/users/cc-fingerprint-dialog.ui:77
-msgid "_No"
-msgstr "_نه"
-
-#: panels/system/users/cc-fingerprint-dialog.ui:85
-msgid "_Yes"
-msgstr "_بله"
-
-#: panels/system/users/cc-fingerprint-dialog.ui:105
+#: panels/system/users/cc-fingerprint-dialog.c:1395
 msgid ""
-"Do you want to delete your registered fingerprints so fingerprint login is "
-"disabled?"
+"Deleting all enrolled fingerprints will disable Fingerprint Login. To re-enable "
+"Fingerprint Login at least one fingerprint will have to be enrolled."
 msgstr ""
-"مایلید تمام اثرانگشت‌های ثبت شده را حذف کنید تا ورود با اثرانگشت از کار بیفتد؟"
+"حذف همهٔ اثر انگشت‌های ثبت شده، ورود با اثر انگشت را از کار خواهد انداخت. برای به "
+"کار انداختن دوبارهٔ ورود با اثر انگشت باید لااقل یک اثر انگشت ثبت شود."
 
-#: panels/system/users/cc-fingerprint-dialog.ui:161
+#: panels/system/users/cc-fingerprint-dialog.c:1400
+msgid "_Delete All"
+msgstr "_حذف همه"
+
+#: panels/system/users/cc-fingerprint-dialog.ui:104
 msgid "No fingerprint device"
 msgstr "افزارهٔ اثر انگشتی نیست"
 
 #. Translators: This is the empty state page label which states that there are no devices ready.
-#: panels/system/users/cc-fingerprint-dialog.ui:176
+#: panels/system/users/cc-fingerprint-dialog.ui:119
 msgid "No Fingerprint device"
 msgstr "افزارهٔ اثر انگشتی نیست"
 
-#: panels/system/users/cc-fingerprint-dialog.ui:185
+#: panels/system/users/cc-fingerprint-dialog.ui:128
 msgid "Ensure the device is properly connected"
 msgstr "مطمئن شوید افزاره به درستی وصل شده"
 
-#: panels/system/users/cc-fingerprint-dialog.ui:193
+#: panels/system/users/cc-fingerprint-dialog.ui:139
 msgid "Fingerprint Device"
 msgstr "افزارهٔ اثر انگشت"
 
-#: panels/system/users/cc-fingerprint-dialog.ui:202
+#: panels/system/users/cc-fingerprint-dialog.ui:151
 msgid "Choose the fingerprint device you want to configure"
 msgstr "گزینش افزارهٔ اثر انگشتی که می‌خواهید پیکربندی کنید"
 
-#: panels/system/users/cc-fingerprint-dialog.ui:232
+#: panels/system/users/cc-fingerprint-dialog.ui:183
 msgid "Fingerprint Login"
 msgstr "ورود با اثر انگشت"
 
-#: panels/system/users/cc-fingerprint-dialog.ui:238
+#: panels/system/users/cc-fingerprint-dialog.ui:191
 msgid ""
 "Fingerprint login allows you to unlock and log into your device with your finger"
 msgstr ""
 "ورود با اثر انگشت می‌گذارد افزاره را با اثر انگشتتان قفل‌گشایی کرده و به آن وارد شوید"
 
-#: panels/system/users/cc-fingerprint-dialog.ui:265
+#: panels/system/users/cc-fingerprint-dialog.ui:218
 msgid "_Delete Fingerprints"
 msgstr "_حذف اثرانگشت‌ها"
 
-#: panels/system/users/cc-fingerprint-dialog.ui:279
+#: panels/system/users/cc-fingerprint-dialog.ui:234
 msgid "Fingerprint Enroll"
 msgstr "ثبت اثر انگشت"
 
@@ -7938,23 +7920,23 @@ msgstr "گذرواژهٔ نادرست، لطفاً دوباره تلاش کنی�
 msgid "Couldn’t connect to the %s domain: %s"
 msgstr "نمی‌توان به دامنهٔ %s وصل شد: %s"
 
-#: panels/system/users/cc-user-page.c:200
+#: panels/system/users/cc-user-page.c:203
 msgctxt "Password mode"
 msgid "Account disabled"
 msgstr "حساب از کار افتاد"
 
-#: panels/system/users/cc-user-page.c:207
+#: panels/system/users/cc-user-page.c:210
 msgctxt "Password mode"
 msgid "To be set at next login"
 msgstr "در ورود بعدی تنظیم می‌شود"
 
-#: panels/system/users/cc-user-page.c:210
+#: panels/system/users/cc-user-page.c:213
 msgctxt "Password mode"
 msgid "None"
 msgstr "هیچ‌کدام"
 
 #. TODO: Handle enterprise accounts
-#: panels/system/users/cc-user-page.c:431
+#: panels/system/users/cc-user-page.c:420
 #, c-format
 msgid "Remove %s?"
 msgstr "برداشتن %s؟"
@@ -8007,16 +7989,16 @@ msgstr "واپایش‌های _والدین"
 msgid "Open the Parental Controls app"
 msgstr "گشودن کارهٔ واپایش‌های والدین"
 
-#: panels/system/users/cc-user-page.ui:203
+#: panels/system/users/cc-user-page.ui:199
 msgid "_Remove User…"
 msgstr "_برداشتن کاربر…"
 
-#: panels/system/users/cc-user-page.ui:226
+#: panels/system/users/cc-user-page.ui:218
 msgid ""
 "The user will not be able to use this device once their account has been removed"
 msgstr "کاربر نخواهد توانست پس از برداشتن حساب از این افزاره استفاده کند"
 
-#: panels/system/users/cc-user-page.ui:238
+#: panels/system/users/cc-user-page.ui:230
 msgid "_Delete Files and Settings"
 msgstr "_حذف پرونده‌ها و تنظیمات"
 
@@ -8029,11 +8011,11 @@ msgstr "کاربران"
 msgid "Other Users"
 msgstr "دیگر کاربران"
 
-#: panels/system/users/cc-users-page.ui:34
+#: panels/system/users/cc-users-page.ui:31
 msgid "_Add User"
 msgstr "_افزودن کاربر"
 
-#: panels/system/users/cc-users-page.ui:43
+#: panels/system/users/cc-users-page.ui:40
 msgid "Add _Enterprise Login"
 msgstr "افزودن ورود _تجاری"
 
@@ -8241,14 +8223,16 @@ msgstr "نام کاربری از پیش موجود است — نامی دیگر 
 
 #: panels/system/users/user-utils.c:195
 #, c-format
-msgid "Usernames must have fewer than %ld characters"
-msgstr "نام‌های کاربری باید کم‌تر از %Ild نویسه داشته باشد"
+msgid "Usernames must have fewer than %ld character"
+msgid_plural "Usernames must have fewer than %ld characters"
+msgstr[0] "نام‌های کاربری باید کم‌تر از %Ild نویسه داشته باشند"
+msgstr[1] "نام‌های کاربری باید کم‌تر از %Ild نویسه داشته باشند"
 
-#: panels/universal-access/cc-cursor-size-dialog.ui:4
+#: panels/universal-access/cc-cursor-size-page.ui:4
 msgid "Cursor Size"
 msgstr "اندازهٔ نشانگر"
 
-#: panels/universal-access/cc-cursor-size-dialog.ui:13
+#: panels/universal-access/cc-cursor-size-page.ui:12
 msgid "Cursor size can be combined with Zoom to make it easier to see the cursor"
 msgstr "اندازهٔ مکان‌نما می‌تواند برای آسان‌تر دیده شدن با بزرگ‌نمایی ترکیب شود"
 
@@ -8343,7 +8327,7 @@ msgstr "_تأخیر دوبار کلیک"
 #: panels/universal-access/cc-ua-typing-page.ui:134
 #: panels/universal-access/cc-ua-typing-page.ui:187
 #: panels/universal-access/cc-ua-typing-page.ui:234
-#: panels/universal-access/cc-ua-zoom-page.ui:174
+#: panels/universal-access/cc-ua-zoom-page.ui:158
 msgid "Short"
 msgstr "کوتاه"
 
@@ -8354,7 +8338,7 @@ msgstr "کوتاه"
 #: panels/universal-access/cc-ua-typing-page.ui:137
 #: panels/universal-access/cc-ua-typing-page.ui:190
 #: panels/universal-access/cc-ua-typing-page.ui:237
-#: panels/universal-access/cc-ua-zoom-page.ui:178
+#: panels/universal-access/cc-ua-zoom-page.ui:159
 msgid "Long"
 msgstr "بلند"
 
@@ -8758,69 +8742,54 @@ msgstr "باریک"
 msgid "Thick"
 msgstr "ضخیم"
 
-#: panels/universal-access/cc-ua-zoom-page.ui:166
+#: panels/universal-access/cc-ua-zoom-page.ui:153
 msgid "Len_gth"
 msgstr "_درازا"
 
-#. Translators: This is a mark in the Crosshair Length scale
-#: panels/universal-access/cc-ua-zoom-page.ui:175
-msgid "1/4 screen"
-msgstr "¼ صفحه"
-
-#. Translators: This is a mark in the Crosshair Length scale
-#: panels/universal-access/cc-ua-zoom-page.ui:176
-msgid "1/2 Screen"
-msgstr "½ صفحه"
-
-#. Translators: This is a mark in the Crosshair Length scale
 #: panels/universal-access/cc-ua-zoom-page.ui:177
-msgid "3/4 Screen"
-msgstr "¾ صفحه"
-
-#: panels/universal-access/cc-ua-zoom-page.ui:198
 msgid "Colo_r"
 msgstr "_رنگ"
 
-#: panels/universal-access/cc-ua-zoom-page.ui:217
+#: panels/universal-access/cc-ua-zoom-page.ui:196
 msgid "Color Filters"
 msgstr "پالایه‌های رنگی"
 
-#: panels/universal-access/cc-ua-zoom-page.ui:221
+#: panels/universal-access/cc-ua-zoom-page.ui:200
 msgid "_Inverted"
 msgstr "_معکوس"
 
-#: panels/universal-access/cc-ua-zoom-page.ui:222
+#: panels/universal-access/cc-ua-zoom-page.ui:201
 msgid "Invert colors in the magnifier region"
 msgstr "رنگ‌های معموس در ناحیهٔ ذره‌بین"
 
-#: panels/universal-access/cc-ua-zoom-page.ui:229
+#: panels/universal-access/cc-ua-zoom-page.ui:208
 msgid "_Brightness"
 msgstr "_روشنایی"
 
 #. Translators: This is a mark in the Brightness scale
 #. Translators: This is a mark in the Contrast scale
-#: panels/universal-access/cc-ua-zoom-page.ui:235
-#: panels/universal-access/cc-ua-zoom-page.ui:260
+#: panels/universal-access/cc-ua-zoom-page.ui:214
+#: panels/universal-access/cc-ua-zoom-page.ui:239
 msgid "Low"
 msgstr "کم"
 
 #. Translators: This is a mark in the Brightness scale
 #. Translators: This is a mark in the Contrast scale
-#: panels/universal-access/cc-ua-zoom-page.ui:236
-#: panels/universal-access/cc-ua-zoom-page.ui:261
+#: panels/universal-access/cc-ua-zoom-page.ui:215
+#: panels/universal-access/cc-ua-zoom-page.ui:240
 msgid "High"
 msgstr "زیاد"
 
-#: panels/universal-access/cc-ua-zoom-page.ui:255
+#: panels/universal-access/cc-ua-zoom-page.ui:234
 msgid "Co_ntrast"
 msgstr "_سایه‌روشن"
 
-#: panels/universal-access/cc-ua-zoom-page.ui:280
+#: panels/universal-access/cc-ua-zoom-page.ui:259
 msgid "Co_lor"
 msgstr "ر_نگ"
 
 #. Translators: This is a mark in the Grayscale scale
-#: panels/universal-access/cc-ua-zoom-page.ui:286
+#: panels/universal-access/cc-ua-zoom-page.ui:265
 msgid "Full"
 msgstr "کامل"
 
@@ -8841,9 +8810,9 @@ msgstr ""
 "Double;click;Delay;Speed;Assist;Repeat;Blink;Pointer;find;locate;visual;hearing;"
 "audio;typing;animations;صفحه‌کلید;موشی;دسترسی‌پذیری;سایه;روشن;نشانگر;صدا;بزرگ‌نمایی;"
 "صفحه;متن;قلم;اندازه;کلیدهای چسبان;کلیدهای آرام;کلیدهای پرشی;کلیدهای موشی;چشمک;"
-"نشانگر;یافتن;پیدا;سرعت;بینایی;شنوایی;صدا;تایپ;نوشتن;پویانمای‌ها;انیمیشن‌ه"
+"نشانگر;یافتن;پیدا;سرعت;بینایی;شنوایی;صدا;تایپ;نوشتن;پویانمای‌ها;انیمیشن‌ه;"
 
-#: panels/wacom/button-mapping.ui:7 panels/wacom/cc-wacom-ekr-page.ui:18
+#: panels/wacom/button-mapping.ui:7 panels/wacom/cc-wacom-ekr-page.ui:19
 msgid "Map Buttons"
 msgstr "نگاشت کلیدها"
 
@@ -8915,8 +8884,13 @@ msgstr "رایانک سوار شده روی نمایشگر خارجی"
 msgid "External tablet device"
 msgstr "افزارهٔ رایانک خارجی"
 
+#. translators: this is a drawing tablet pad, i.e. a collection of buttons and knobs
+#: panels/wacom/cc-wacom-ekr-page.ui:9
+msgid "External pad device"
+msgstr "افزارهٔ صفحهٔ خارجی"
+
 #. All displays item
-#: panels/wacom/cc-wacom-page.c:661
+#: panels/wacom/cc-wacom-page.c:667
 msgid "All Displays"
 msgstr "تمامی نمایشگرها"
 
@@ -8929,31 +8903,31 @@ msgid "Use absolute positioning for the pen"
 msgstr "استفاده از موقعیت‌یابی صریح برای قلم"
 
 #: panels/wacom/cc-wacom-page.ui:26
-msgid "_Left Hand Orientation"
-msgstr "جهت دست _چپ"
+msgid "Button Location"
+msgstr "مکان دکمه"
 
 #: panels/wacom/cc-wacom-page.ui:27
-msgid "Tablet and Express Keys™ are rotated for left hand use"
-msgstr "رایانک و دکمه‌های اکسپرس™ برای استفاده با دست چپ چرخیده‌اند"
+msgid "The location of the physical buttons on the tablet"
+msgstr "مکان دکمه‌های فیزیکی روی رایانک"
 
-#: panels/wacom/cc-wacom-page.ui:33
+#: panels/wacom/cc-wacom-page.ui:56
 msgid "Map _Buttons"
 msgstr "نگاشت _دکمه‌ها"
 
-#: panels/wacom/cc-wacom-page.ui:47
+#: panels/wacom/cc-wacom-page.ui:70
 msgctxt "display setting"
 msgid "Map to _Monitor"
 msgstr "نگاشت به _نمایشگر"
 
-#: panels/wacom/cc-wacom-page.ui:54
+#: panels/wacom/cc-wacom-page.ui:77
 msgid "_Keep Aspect Ratio"
 msgstr "_نگه داشتن نسبت ابعاد"
 
-#: panels/wacom/cc-wacom-page.ui:55
+#: panels/wacom/cc-wacom-page.ui:78
 msgid "Only use a portion of the tablet surface to keep monitor aspect ratio"
 msgstr "استفاده از فقط بخشی از سطح رایانک برای نگه داشتن نسبت ابعاد نمایشگر"
 
-#: panels/wacom/cc-wacom-page.ui:61
+#: panels/wacom/cc-wacom-page.ui:84
 msgid "_Calibrate"
 msgstr "_واسنجی"
 
@@ -8984,33 +8958,33 @@ msgstr "تخصیص ضربهٔ کلید"
 msgid "Press Esc to cancel"
 msgstr "گریز برای لغو"
 
-#: panels/wacom/cc-wacom-stylus-page.c:438
+#: panels/wacom/cc-wacom-stylus-page.c:431
 msgid "_Left Mousebutton Click"
 msgstr "زدن دکمهٔ _چپ موشی"
 
-#: panels/wacom/cc-wacom-stylus-page.c:441
+#: panels/wacom/cc-wacom-stylus-page.c:434
 msgid "_Middle Mousebutton Click"
 msgstr "زدن دکمهٔ _وسط موشی"
 
-#: panels/wacom/cc-wacom-stylus-page.c:444
+#: panels/wacom/cc-wacom-stylus-page.c:437
 msgid "_Right Mousebutton Click"
 msgstr "زدن دکمهٔ _راست موشی"
 
 #. Translators: this is the "go back" action of a button
-#: panels/wacom/cc-wacom-stylus-page.c:448
+#: panels/wacom/cc-wacom-stylus-page.c:441
 msgid "_Back"
 msgstr "_بازگشت"
 
 #. Translators: this is the "go forward" action of a button
-#: panels/wacom/cc-wacom-stylus-page.c:452
+#: panels/wacom/cc-wacom-stylus-page.c:445
 msgid "_Forward"
 msgstr "_پیشروی"
 
-#: panels/wacom/cc-wacom-stylus-page.c:455
+#: panels/wacom/cc-wacom-stylus-page.c:448
 msgid "_Assign Keystroke"
 msgstr "_تخصیص ضربهٔ کلید"
 
-#: panels/wacom/cc-wacom-stylus-page.c:458
+#: panels/wacom/cc-wacom-stylus-page.c:451
 msgid "_Switch Monitor"
 msgstr "_تعویض نمایشگر"
 
@@ -9067,14 +9041,14 @@ msgid "Stylus with pressure"
 msgstr "قلم با فشار"
 
 #: panels/wacom/gnome-wacom-panel.desktop.in:3
-msgid "Wacom Tablet"
-msgstr "رایانک وکوم"
+msgid "Graphics Tablets"
+msgstr "رایانک‌های نگاشتاری"
 
 #: panels/wacom/gnome-wacom-panel.desktop.in:4
 msgid "Set button mappings and adjust stylus sensitivity for graphics tablets"
-msgstr "تنظیم هدایت کلیدها و تنظیم حساسیت قلم برای رایانک‌های گرافیکی"
+msgstr "تنظیم هدایت کلیدها و تنظیم حساسیت قلم برای رایانک‌های نگاشتاری"
 
-#. Translators: Search terms to find the Wacom Tablet panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#. Translators: Search terms to find the Graphics Tablets panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
 #: panels/wacom/gnome-wacom-panel.desktop.in:15
 msgid "Tablet;Wacom;Stylus;Eraser;Mouse;"
 msgstr "Tablet;Wacom;Stylus;Eraser;Mouse;رایانک;تبلت;Wa­com;استایلوس;پاک‌کن;موشی;"
@@ -9082,6 +9056,70 @@ msgstr "Tablet;Wacom;Stylus;Eraser;Mouse;رایانک;تبلت;Wa­com;استا�
 #: panels/wacom/gsd-wacom-key-shortcut-button.c:190
 msgid "New shortcut…"
 msgstr "میان‌بر جدید…"
+
+#. Translators: This separates the duration and interval times when displaying
+#. * the selected break schedule on the wellbeing panel. For example,
+#. * “1 minute / 20 minutes” to indicate a 1 minute break every 20 minutes.
+#: panels/wellbeing/cc-break-schedule-row.c:289
+msgid " / "
+msgstr " هر "
+
+#: panels/wellbeing/cc-break-schedule-row.c:369
+msgid "Duration"
+msgstr "مدّت"
+
+#: panels/wellbeing/cc-break-schedule-row.c:369
+msgid "Interval"
+msgstr "دوره"
+
+#: panels/wellbeing/cc-wellbeing-panel.ui:18
+msgid "Break Reminders"
+msgstr "یادآورهای استراحت"
+
+#: panels/wellbeing/cc-wellbeing-panel.ui:21
+msgid "_Eyesight Reminders"
+msgstr "یادآورهای _بینایی"
+
+#: panels/wellbeing/cc-wellbeing-panel.ui:22
+msgid "Reminders to look away from the screen"
+msgstr "یادآورها برای برداشتن نگاه از صفحه"
+
+#: panels/wellbeing/cc-wellbeing-panel.ui:28
+msgid "_Movement Reminders"
+msgstr "یادآورهای _جابه‌جایی"
+
+#: panels/wellbeing/cc-wellbeing-panel.ui:29
+msgid "Reminders to move around"
+msgstr "یادآورها برای حرکت"
+
+#: panels/wellbeing/cc-wellbeing-panel.ui:35
+msgid "Movement Break S_chedule"
+msgstr "زمان‌بندی استراحت حرکت"
+
+#: panels/wellbeing/cc-wellbeing-panel.ui:41
+msgid "S_ounds"
+msgstr "_صداها"
+
+#: panels/wellbeing/cc-wellbeing-panel.ui:42
+msgid "Play a sound when a break ends"
+msgstr "پخش صدایی هنگام پایان استراحت"
+
+#: panels/wellbeing/gnome-wellbeing-panel.desktop.in:6
+msgid "Wellbeing"
+msgstr "تندرستی"
+
+#: panels/wellbeing/gnome-wellbeing-panel.desktop.in:7
+msgid "Review and limit the amount of time you spend at the computer screen"
+msgstr "بازبینی و تحدید مقدار زمان صرف شده پای صفحهٔ رایانه"
+
+#. Translators: Search terms to find the Wellbeing panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: panels/wellbeing/gnome-wellbeing-panel.desktop.in:18
+msgid ""
+"Wellbeing;Screen Time;Breaks;Break Reminders;Health Breaks;Daily Usage;Screen "
+"Limits;Usage Limit;"
+msgstr ""
+"Wellbeing;Screen Time;Breaks;Break Reminders;Health Breaks;Daily Usage;Screen "
+"Limits;Usage Limit;تندرستی;زمان;صفحه;استراحت;یادآور;سلامتی;استفاده;محدودیت;"
 
 #: panels/wwan/cc-wwan-apn-dialog.c:293
 msgid "Edit"
@@ -9577,19 +9615,15 @@ msgstr "هیچ سازوارگر شبکهٔ گستردهٔ بی‌سیمی پید
 msgid "Make sure you have a Wireless Wan/Cellular device"
 msgstr "مطمئن شوید یک افزارهٔ سلولی یا شبکهٔ گستردهٔ بی‌سیم دارید"
 
-#: panels/wwan/cc-wwan-panel.ui:64
+#: panels/wwan/cc-wwan-panel.ui:65
 msgid "Wireless Wan is disabled when airplane mode is on"
 msgstr "شبکهٔ گستردهٔ بی‌سیم، هنگام روشن بودن حالت هواپیما از کار می‌افتد"
 
-#: panels/wwan/cc-wwan-panel.ui:70
-msgid "_Turn off Airplane Mode"
-msgstr "_خاموش کردن حالت هواپیما"
-
-#: panels/wwan/cc-wwan-panel.ui:105
+#: panels/wwan/cc-wwan-panel.ui:106
 msgid "Data Connection"
 msgstr "اتّصال داده"
 
-#: panels/wwan/cc-wwan-panel.ui:106
+#: panels/wwan/cc-wwan-panel.ui:107
 msgid "SIM card used for internet"
 msgstr "سیم‌کارت استفاده شده برای اینترنت"
 
@@ -9649,7 +9683,7 @@ msgstr "نمایش شمارهٔ نگارش"
 
 #: shell/cc-application.c:69
 msgid "Enable verbose mode. Specify multiple times to increase verbosity"
-msgstr "به کار انداختن حلت پرگو. چند بار مشخّص کردن برای افزایش پرگویی"
+msgstr "به کار انداختن حالت پرگو. چند بار مشخّص کردن برای افزایش پرگویی"
 
 #: shell/cc-application.c:70
 msgid "Search for the string"
@@ -9684,7 +9718,7 @@ msgstr "© ۱۹۹۸ %s"
 msgid "Settings categories"
 msgstr "دسته‌های تنظیمات"
 
-#: shell/cc-panel-loader.c:311
+#: shell/cc-panel-loader.c:317
 msgid "Available panels:"
 msgstr "تابلوهای موجود:"
 
@@ -9815,6 +9849,84 @@ msgstr[1] "%Iu ورودی"
 #: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "صداهای سامانه"
+
+#~ msgid "Unlock to Change Settings"
+#~ msgstr "قفل‌گشایی برای دگرگونی تنظیمات"
+
+#~ msgid "When _Idle"
+#~ msgstr "هنگام _بیکاری"
+
+#~ msgid "Screen _Blank"
+#~ msgstr "_سیاهی صفحه"
+
+#~ msgid "_Automatic Suspend"
+#~ msgstr "_تعلیق خودکار"
+
+#~ msgid "Pause the device after a period of inactivity"
+#~ msgstr "مکث افزاره پس از مدّتی غیرفعّال بودن"
+
+#~ msgid "On _Battery Power"
+#~ msgstr "روی نیروی _باتری"
+
+#~ msgid "_Delay"
+#~ msgstr "_تأخیر"
+
+#~ msgid "When _Plugged In"
+#~ msgstr "هنگام _وصل بودن"
+
+#~ msgid "Undo"
+#~ msgstr "برگردان"
+
+#~ msgid "Unlock to add printers and change settings"
+#~ msgstr "قفل‌گشایی برای افزودن چاپگرها و دگرگونی تنظیمات"
+
+#~ msgid "All Connected and Network Printers"
+#~ msgstr "همهٔ چاپگرهای شبکه و وصل شده"
+
+#~ msgid "Fingerprint Manager"
+#~ msgstr "ورود با اثر انگشت"
+
+#~ msgid "Fingerprint"
+#~ msgstr "اثر انگشت"
+
+#~ msgid "1/4 screen"
+#~ msgstr "¼ صفحه"
+
+#~ msgid "1/2 Screen"
+#~ msgstr "½ صفحه"
+
+#~ msgid "3/4 Screen"
+#~ msgstr "¾ صفحه"
+
+#~ msgid "_Left Hand Orientation"
+#~ msgstr "جهت دست _چپ"
+
+#~ msgid "Tablet and Express Keys™ are rotated for left hand use"
+#~ msgstr "رایانک و دکمه‌های اکسپرس™ برای استفاده با دست چپ چرخیده‌اند"
+
+#~ msgid "Wacom Tablet"
+#~ msgstr "رایانک وکوم"
+
+#~ msgid "_Turn off Airplane Mode"
+#~ msgstr "_خاموش کردن حالت هواپیما"
+
+#~ msgid "Color"
+#~ msgstr "رنگ"
+
+#~ msgid "Starting Device Security…"
+#~ msgstr "آغاز کردن امنیت افزاره…"
+
+#~ msgid "Input methods can’t be used on the login screen"
+#~ msgstr "روش‌های ورودی نمی‌توانند در صفحهٔ ورود استفاده شوند"
+
+#~ msgid "Select PPD File"
+#~ msgstr "انتخاب پروندهٔ PPD"
+
+#~ msgid "Printer Jobs"
+#~ msgstr "کارهای چاپگر"
+
+#~ msgid "Close notification"
+#~ msgstr "بستن آگاهی"
 
 #~ msgid "Automat_ically Launch Apps"
 #~ msgstr "اجرای _خودکار کاره‌ها"
@@ -10226,6 +10338,18 @@ msgstr "صداهای سامانه"
 #~ msgid "Pass_word"
 #~ msgstr "_گذرواژه"
 
+#~ msgid "_No"
+#~ msgstr "_نه"
+
+#~ msgid "_Yes"
+#~ msgstr "_بله"
+
+#~ msgid ""
+#~ "Do you want to delete your registered fingerprints so fingerprint login is "
+#~ "disabled?"
+#~ msgstr ""
+#~ "مایلید تمام اثرانگشت‌های ثبت شده را حذف کنید تا ورود با اثرانگشت از کار بیفتد؟"
+
 #~ msgid "_Add User…"
 #~ msgstr "_افزودن کاربر…"
 
@@ -10533,12 +10657,6 @@ msgstr "صداهای سامانه"
 #~ msgid "The system component `AccountsService` cannot be found"
 #~ msgstr "مولّفهٔ سامانه‌ای AccountsService پیدا نشد"
 
-#~ msgid "_Delete"
-#~ msgstr "_حذف"
-
-#~ msgid "External pad device"
-#~ msgstr "افزارهٔ صفحهٔ خارجی"
-
 #, c-format
 #~ msgid "Could not load ui: %s"
 #~ msgstr "ناتوان در گشودن واسط کاربری: %s"
@@ -10590,12 +10708,6 @@ msgstr "صداهای سامانه"
 
 #~ msgid "Health Rating"
 #~ msgstr "رتبه‌بندی سلامت"
-
-#~ msgid "Battery Capacity"
-#~ msgstr "ظرفیت باتری"
-
-#~ msgid "_Battery Health"
-#~ msgstr "سلامت _باتری"
 
 #~ msgid ""
 #~ "Current capacity indicates how much charge the battery can currently store, "

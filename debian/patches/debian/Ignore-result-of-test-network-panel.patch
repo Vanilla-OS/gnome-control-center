@@ -4,28 +4,14 @@ Subject: Ignore result of test-network-panel
 
 This is a workaround for the test intermittently failing, especially
 on slower architectures. Continue to run it with the result ignored,
-and force its output to be logged, so that we can see how often it
-fails in practice.
+so that we can see how often it fails in practice.
 
 Bug: https://gitlab.gnome.org/GNOME/gnome-control-center/-/issues/1768
 Forwarded: not-needed, Debian-specific workaround
 ---
- tests/network/meson.build           | 1 +
  tests/network/test-network-panel.py | 3 ++-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tests/network/meson.build b/tests/network/meson.build
-index c6205f4..94f8543 100644
---- a/tests/network/meson.build
-+++ b/tests/network/meson.build
-@@ -31,6 +31,7 @@ if Xvfb.found()
-     'test-network-panel',
-     find_program('test-network-panel.py'),
-         env : envs,
-+    verbose : true,
-     timeout : 60
-   )
- endif
 diff --git a/tests/network/test-network-panel.py b/tests/network/test-network-panel.py
 index 1098bab..dac0894 100644
 --- a/tests/network/test-network-panel.py

@@ -24,6 +24,7 @@
 #include "cc-list-row.h"
 #include "cc-time-editor.h"
 #include "cc-datetime-page.h"
+#include "cc-permission-infobar.h"
 
 #include <langinfo.h>
 #include <sys/time.h>
@@ -88,19 +89,18 @@ struct _CcDateTimePage
   CcListRow *datetime_row;
   AdwDialog *datetime_dialog;
   AdwSpinRow *day_spin_row;
-  GtkToggleButton *twentyfour_format_button;
-  GtkToggleButton *ampm_format_button;
+  AdwToggleGroup *time_format_toggle_group;
   GtkSpinButton *h_spinbutton;
   AdwSwitchRow *weekday_row;
   AdwSwitchRow *date_row;
   AdwSwitchRow *seconds_row;
   AdwSwitchRow *week_numbers_row;
-  GtkLockButton *lock_button;
   GtkListBox *date_box;
   GtkSingleSelection *month_model;
   GtkPopover  *month_popover;
   CcListRow *month_row;
   GtkSwitch *network_time_switch;
+  CcPermissionInfobar *permission_infobar;
   CcTimeEditor *time_editor;
   CcListRow *timezone_row;
   CcTzDialog *timezone_dialog;
@@ -161,16 +161,19 @@ static void clock_settings_changed_cb (CcDateTimePage *self,
                                        gchar          *key);
 
 static void
-change_clock_settings (CcDateTimePage *self)
+change_clock_settings_cb (CcDateTimePage *self)
 {
   GDesktopClockFormat value;
+  const char *active_name;
 
   g_signal_handlers_block_by_func (self->clock_settings, clock_settings_changed_cb,
                                    self);
 
-  if (gtk_toggle_button_get_active (self->twentyfour_format_button))
+  active_name = adw_toggle_group_get_active_name (self->time_format_toggle_group);
+
+  if (g_str_equal (active_name, "twenty-four"))
     value = G_DESKTOP_CLOCK_FORMAT_24H;
-  else
+  if (g_str_equal (active_name, "am-pm"))
     value = G_DESKTOP_CLOCK_FORMAT_12H;
 
   g_settings_set_enum (self->clock_settings, CLOCK_FORMAT_KEY, value);
@@ -192,19 +195,16 @@ clock_settings_changed_cb (CcDateTimePage *self,
   value = g_settings_get_enum (self->clock_settings, CLOCK_FORMAT_KEY);
   self->clock_format = value;
 
-  g_signal_handlers_block_by_func (self->ampm_format_button, change_clock_settings, self);
-  g_signal_handlers_block_by_func (self->twentyfour_format_button, change_clock_settings, self);
+  g_signal_handlers_block_by_func (self->time_format_toggle_group, change_clock_settings_cb, self);
 
-  gtk_toggle_button_set_active (self->twentyfour_format_button,
-                                value == G_DESKTOP_CLOCK_FORMAT_24H);
-  gtk_toggle_button_set_active (self->ampm_format_button,
-                                value == G_DESKTOP_CLOCK_FORMAT_12H);
-  cc_time_editor_set_am_pm (self->time_editor,
-                            value == G_DESKTOP_CLOCK_FORMAT_12H);
+  if (value == G_DESKTOP_CLOCK_FORMAT_24H)
+    adw_toggle_group_set_active_name (self->time_format_toggle_group, "twenty-four");
+  if (value == G_DESKTOP_CLOCK_FORMAT_12H)
+    adw_toggle_group_set_active_name (self->time_format_toggle_group, "am-pm");
+
   update_time (self);
 
-  g_signal_handlers_unblock_by_func (self->twentyfour_format_button, change_clock_settings, self);
-  g_signal_handlers_unblock_by_func (self->ampm_format_button, change_clock_settings, self);
+  g_signal_handlers_unblock_by_func (self->time_format_toggle_group, change_clock_settings_cb, self);
 }
 
 static void on_month_selection_changed_cb (CcDateTimePage *self);
@@ -807,6 +807,7 @@ cc_date_time_page_class_init (CcDateTimePageClass *klass)
   object_class->dispose = cc_date_time_page_dispose;
 
   g_type_ensure (CC_TYPE_LIST_ROW);
+  g_type_ensure (CC_TYPE_PERMISSION_INFOBAR);
   g_type_ensure (CC_TYPE_TIME_EDITOR);
   g_type_ensure (CC_TYPE_TZ_DIALOG);
   g_type_ensure (G_DESKTOP_TYPE_CLOCK_FORMAT);
@@ -820,17 +821,16 @@ cc_date_time_page_class_init (CcDateTimePageClass *klass)
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePage, datetime_row);
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePage, datetime_dialog);
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePage, day_spin_row);
-  gtk_widget_class_bind_template_child (widget_class, CcDateTimePage, twentyfour_format_button);
-  gtk_widget_class_bind_template_child (widget_class, CcDateTimePage, ampm_format_button);
+  gtk_widget_class_bind_template_child (widget_class, CcDateTimePage, time_format_toggle_group);
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePage, weekday_row);
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePage, date_row);
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePage, seconds_row);
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePage, week_numbers_row);
-  gtk_widget_class_bind_template_child (widget_class, CcDateTimePage, lock_button);
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePage, month_model);
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePage, month_popover);
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePage, month_row);
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePage, network_time_switch);
+  gtk_widget_class_bind_template_child (widget_class, CcDateTimePage, permission_infobar);
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePage, time_editor);
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePage, timezone_row);
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePage, timezone_dialog);
@@ -838,7 +838,7 @@ cc_date_time_page_class_init (CcDateTimePageClass *klass)
 
   gtk_widget_class_bind_template_callback (widget_class, panel_tz_selection_changed_cb);
   gtk_widget_class_bind_template_callback (widget_class, list_box_row_activated);
-  gtk_widget_class_bind_template_callback (widget_class, change_clock_settings);
+  gtk_widget_class_bind_template_callback (widget_class, change_clock_settings_cb);
   gtk_widget_class_bind_template_callback (widget_class, on_date_box_row_activated_cb);
 
   bind_textdomain_codeset (GETTEXT_PACKAGE_TIMEZONES, "UTF-8");
@@ -882,7 +882,7 @@ cc_date_time_page_init (CcDateTimePage *self)
       g_warning ("Your system does not have the '%s' PolicyKit files installed. Please check your installation",
                  DATETIME_PERMISSION);
     }
-  gtk_lock_button_set_permission (GTK_LOCK_BUTTON (self->lock_button), self->permission);
+  cc_permission_infobar_set_permission (self->permission_infobar, self->permission);
 
   self->location_settings = g_settings_new (LOCATION_SETTINGS);
   g_signal_connect_object (self->location_settings, "changed",
