@@ -6,9 +6,9 @@ Subject: display: Allow fractional scaling to be enabled
  panels/display/cc-display-config-dbus.c |  60 ++++++++
  panels/display/cc-display-config.c      | 263 ++++++++++++++++++++++++++++++++
  panels/display/cc-display-config.h      |  11 ++
- panels/display/cc-display-settings.c    |  26 ++++
+ panels/display/cc-display-settings.c    |  28 ++++
  panels/display/cc-display-settings.ui   |   7 +
- 5 files changed, 367 insertions(+)
+ 5 files changed, 369 insertions(+)
 
 diff --git a/panels/display/cc-display-config-dbus.c b/panels/display/cc-display-config-dbus.c
 index 690311a..9009131 100644
@@ -532,26 +532,34 @@ index 26ccd57..4f650f1 100644
  const char*       cc_display_monitor_get_display_name       (CcDisplayMonitor   *monitor);
  gboolean          cc_display_monitor_is_active              (CcDisplayMonitor   *monitor);
 diff --git a/panels/display/cc-display-settings.c b/panels/display/cc-display-settings.c
-index 5ef28dc..64f79f9 100644
+index e9429f9..d977ead 100644
 --- a/panels/display/cc-display-settings.c
 +++ b/panels/display/cc-display-settings.c
-@@ -58,6 +58,7 @@ struct _CcDisplaySettings
+@@ -62,6 +62,7 @@ struct _CcDisplaySettings
    AdwToggleGroup   *scale_toggle_group;
    GtkWidget        *scale_buttons_row;
    GtkWidget        *scale_combo_row;
 +  GtkWidget        *scale_fractional_row;
    AdwSwitchRow     *hdr_row;
-   AdwSwitchRow     *underscanning_row;
- };
-@@ -389,6 +390,7 @@ cc_display_settings_rebuild_ui (CcDisplaySettings *self)
+   AdwPreferencesRow *luminance_row;
+   GtkScale         *luminance_scale;
+@@ -433,6 +434,7 @@ cc_display_settings_rebuild_ui (CcDisplaySettings *self)
        gtk_widget_set_visible (self->resolution_row, FALSE);
        gtk_widget_set_visible (self->scale_combo_row, FALSE);
        gtk_widget_set_visible (self->scale_buttons_row, FALSE);
 +      gtk_widget_set_visible (self->scale_fractional_row, FALSE);
        gtk_widget_set_visible (GTK_WIDGET (self->hdr_row), FALSE);
+       gtk_widget_set_visible (GTK_WIDGET (self->luminance_row), FALSE);
        gtk_widget_set_visible (GTK_WIDGET (self->underscanning_row), FALSE);
- 
-@@ -648,6 +650,11 @@ cc_display_settings_rebuild_ui (CcDisplaySettings *self)
+@@ -448,6 +450,7 @@ cc_display_settings_rebuild_ui (CcDisplaySettings *self)
+   g_object_freeze_notify ((GObject*) self->preferred_refresh_rate_row);
+   g_object_freeze_notify ((GObject*) self->resolution_row);
+   g_object_freeze_notify ((GObject*) self->scale_combo_row);
++  g_object_freeze_notify ((GObject*) self->scale_fractional_row);
+   g_object_freeze_notify ((GObject*) self->hdr_row);
+   g_object_freeze_notify ((GObject*) self->luminance_row);
+   g_object_freeze_notify ((GObject*) self->underscanning_row);
+@@ -694,6 +697,11 @@ cc_display_settings_rebuild_ui (CcDisplaySettings *self)
                               cc_display_monitor_get_color_mode (self->selected_output) ==
                               CC_DISPLAY_COLOR_MODE_BT2100);
  
@@ -560,18 +568,26 @@ index 5ef28dc..64f79f9 100644
 +                cc_display_config_get_fractional_scaling (self->config),
 +                NULL);
 +
-   gtk_widget_set_visible (GTK_WIDGET (self->underscanning_row),
-                           cc_display_monitor_supports_underscanning (self->selected_output) &&
-                           !cc_display_config_is_cloning (self->config));
-@@ -980,6 +987,7 @@ cc_display_settings_class_init (CcDisplaySettingsClass *klass)
+   if (cc_display_monitor_supports_color_mode (self->selected_output,
+                                               CC_DISPLAY_COLOR_MODE_BT2100))
+     {
+@@ -744,6 +752,7 @@ cc_display_settings_rebuild_ui (CcDisplaySettings *self)
+   g_object_thaw_notify ((GObject*) self->preferred_refresh_rate_row);
+   g_object_thaw_notify ((GObject*) self->resolution_row);
+   g_object_thaw_notify ((GObject*) self->scale_combo_row);
++  g_object_thaw_notify ((GObject*) self->scale_fractional_row);
+   g_object_thaw_notify ((GObject*) self->hdr_row);
+   g_object_thaw_notify ((GObject*) self->luminance_row);
+   g_object_thaw_notify ((GObject*) self->underscanning_row);
+@@ -1060,6 +1069,7 @@ cc_display_settings_class_init (CcDisplaySettingsClass *klass)
    gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, scale_toggle_group);
    gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, scale_buttons_row);
    gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, scale_combo_row);
 +  gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, scale_fractional_row);
    gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, hdr_row);
-   gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, underscanning_row);
- 
-@@ -994,6 +1002,19 @@ cc_display_settings_class_init (CcDisplaySettingsClass *klass)
+   gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, luminance_row);
+   gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, luminance_scale);
+@@ -1076,6 +1086,19 @@ cc_display_settings_class_init (CcDisplaySettingsClass *klass)
    gtk_widget_class_bind_template_callback (widget_class, on_underscanning_row_active_changed_cb);
  }
  
@@ -591,7 +607,7 @@ index 5ef28dc..64f79f9 100644
  static void
  cc_display_settings_init (CcDisplaySettings *self)
  {
-@@ -1041,6 +1062,11 @@ cc_display_settings_init (CcDisplaySettings *self)
+@@ -1123,6 +1146,11 @@ cc_display_settings_init (CcDisplaySettings *self)
    adw_combo_row_set_model (ADW_COMBO_ROW (self->resolution_row),
                             G_LIST_MODEL (self->resolution_list));
  
@@ -604,10 +620,10 @@ index 5ef28dc..64f79f9 100644
  }
  
 diff --git a/panels/display/cc-display-settings.ui b/panels/display/cc-display-settings.ui
-index 01292f3..682217d 100644
+index 9771ed3..0256f5f 100644
 --- a/panels/display/cc-display-settings.ui
 +++ b/panels/display/cc-display-settings.ui
-@@ -116,6 +116,13 @@
+@@ -137,6 +137,13 @@
              <signal name="notify::selected-item" handler="on_scale_selection_changed_cb" swapped="yes"/>
            </object>
          </child>

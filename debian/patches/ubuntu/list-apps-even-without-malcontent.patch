@@ -11,10 +11,10 @@ at runtime.
  1 file changed, 13 insertions(+), 9 deletions(-)
 
 diff --git a/panels/applications/cc-applications-panel.c b/panels/applications/cc-applications-panel.c
-index 3c2d0ca..ed5b18f 100644
+index 286cadb..9ec1a94 100644
 --- a/panels/applications/cc-applications-panel.c
 +++ b/panels/applications/cc-applications-panel.c
-@@ -74,6 +74,7 @@ struct _CcApplicationsPanel
+@@ -81,6 +81,7 @@ struct _CcApplicationsPanel
    MctAppFilter    *app_filter;
    MctManager      *manager;
    guint            app_filter_id;
@@ -22,7 +22,7 @@ index 3c2d0ca..ed5b18f 100644
  #endif
  
    gchar           *current_app_id;
-@@ -1255,7 +1256,7 @@ on_items_changed_cb (GListModel *list,
+@@ -1285,7 +1286,7 @@ on_items_changed_cb (GListModel *list,
      gtk_widget_set_visible (GTK_WIDGET (self->app_search_entry), FALSE);
    }
  #ifdef HAVE_MALCONTENT
@@ -31,7 +31,7 @@ index 3c2d0ca..ed5b18f 100644
      gtk_stack_set_visible_child_name (self->main_page_stack, "malcontent-not-found-page");
      gtk_widget_set_visible (GTK_WIDGET (self->app_search_entry), FALSE);
    }
-@@ -1513,7 +1514,8 @@ populate_applications (CcApplicationsPanel *self)
+@@ -1569,7 +1570,8 @@ populate_applications (CcApplicationsPanel *self)
  
    g_list_store_remove_all (G_LIST_STORE (self->app_model));
  #ifdef HAVE_MALCONTENT
@@ -41,7 +41,7 @@ index 3c2d0ca..ed5b18f 100644
  #endif
  
    infos = g_app_info_get_all ();
-@@ -1526,14 +1528,15 @@ populate_applications (CcApplicationsPanel *self)
+@@ -1582,14 +1584,15 @@ populate_applications (CcApplicationsPanel *self)
          continue;
  
  #ifdef HAVE_MALCONTENT
@@ -59,7 +59,7 @@ index 3c2d0ca..ed5b18f 100644
  #endif
  }
  
-@@ -1921,6 +1924,7 @@ cc_applications_panel_init (CcApplicationsPanel *self)
+@@ -1979,6 +1982,7 @@ cc_applications_panel_init (CcApplicationsPanel *self)
                     G_SETTINGS_BIND_INVERT_BOOLEAN);
  
  #ifdef HAVE_MALCONTENT
@@ -67,7 +67,7 @@ index 3c2d0ca..ed5b18f 100644
     /* FIXME: should become asynchronous */
    system_bus = g_bus_get_sync (G_BUS_TYPE_SYSTEM, self->cancellable, &error);
    if (system_bus == NULL)
-@@ -1937,13 +1941,13 @@ cc_applications_panel_init (CcApplicationsPanel *self)
+@@ -1995,13 +1999,13 @@ cc_applications_panel_init (CcApplicationsPanel *self)
                                                   self->cancellable,
                                                   &error);
    if (error)

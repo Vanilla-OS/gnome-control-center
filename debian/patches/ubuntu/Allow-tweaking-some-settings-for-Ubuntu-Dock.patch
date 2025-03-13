@@ -48,10 +48,10 @@ Forwarded: not-needed
  create mode 100644 panels/ubuntu/ubuntu.gresource.xml
 
 diff --git a/panels/meson.build b/panels/meson.build
-index 865e533..5c1b838 100644
+index 07c7733..45cf209 100644
 --- a/panels/meson.build
 +++ b/panels/meson.build
-@@ -17,6 +17,7 @@ panels = [
+@@ -20,6 +20,7 @@ panels = [
    'sharing',
    'sound',
    'system',
@@ -2451,10 +2451,10 @@ index 0000000..a636e9c
 +  </gresource>
 +</gresources>
 diff --git a/po/POTFILES.in b/po/POTFILES.in
-index 3c828f7..df4d227 100644
+index 50823b7..b14edf5 100644
 --- a/po/POTFILES.in
 +++ b/po/POTFILES.in
-@@ -238,6 +238,11 @@ panels/system/users/org.gnome.controlcenter.user-accounts.policy.in
+@@ -241,6 +241,11 @@ panels/system/users/org.gnome.controlcenter.user-accounts.policy.in
  panels/system/users/pw-utils.c
  panels/system/users/run-passwd.c
  panels/system/users/user-utils.c

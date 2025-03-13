@@ -12,10 +12,10 @@ Subject: diagnostics: Add Whoopsie support
  6 files changed, 270 insertions(+), 1 deletion(-)
 
 diff --git a/meson.build b/meson.build
-index a80b3ca..d466cd2 100644
+index ea651ad..5919dcd 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -284,6 +284,14 @@ config_h.set('HAVE_LOCATION_SERVICES', location_services.enabled(),
+@@ -294,6 +294,14 @@ config_h.set('HAVE_LOCATION_SERVICES', location_services.enabled(),
  # Snap support and wellbeing panel
  json_glib_dep = dependency('json-glib-1.0')
  
@@ -30,7 +30,7 @@ index a80b3ca..d466cd2 100644
  if host_is_linux
    # ModemManager
    mm_dep =  dependency('mm-glib', version: '>= 0.7')
-@@ -387,6 +395,7 @@ summary({
+@@ -398,6 +406,7 @@ summary({
      'IBus': enable_ibus,
      'Snap': enable_snap,
      'Malcontent': enable_malcontent,
