@@ -1,0 +1,2 @@
+#mesondefine GXDP_HAVE_GTK_WAYLAND
+#mesondefine GXDP_HAVE_GTK_X11
