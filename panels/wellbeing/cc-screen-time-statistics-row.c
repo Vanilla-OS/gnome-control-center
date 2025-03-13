@@ -21,12 +21,19 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+#include "config.h"
+
 #include <adwaita.h>
 #include <glib.h>
 #include <glib/gi18n.h>
 #include <glib-object.h>
 #include <gtk/gtk.h>
 #include <json-glib/json-glib.h>
+
+#ifdef HAVE__NL_TIME_FIRST_WEEKDAY
+#include <langinfo.h>
+#include <locale.h>
+#endif
 
 #include "cc-bar-chart.h"
 #include "cc-screen-time-statistics-row.h"
@@ -512,12 +519,41 @@ is_today (const GDate *date)
   return (g_date_compare (&today, date) == 0);
 }
 
+/* We can’t just use g_date_get_{monday,sunday}_week_of_year() because there
+ * are some countries (such as Egypt) where the week starts on a Saturday.
+ *
+ * FIXME: date_get_week_of_year() can be replaced with new API from GLib once
+ * that’s implemented; see https://gitlab.gnome.org/GNOME/glib/-/issues/3617 */
+static unsigned int
+date_get_week_of_year (const GDate  *date,
+                       GDateWeekday  first_day_of_week)
+{
+  GDate first_day_of_year;
+  unsigned int n_days_before_first_week;
+
+  g_return_val_if_fail (g_date_valid (date), 0);
+
+  g_date_clear (&first_day_of_year, 1);
+  g_date_set_dmy (&first_day_of_year, 1, 1, g_date_get_year (date));
+
+  n_days_before_first_week = (first_day_of_week - g_date_get_weekday (&first_day_of_year) + 7) % 7;
+  return (g_date_get_day_of_year (date) + 6 - n_days_before_first_week) / 7;
+}
+
 static unsigned int
 get_week_of_year (const GDate *date)
 {
   unsigned int week_start = get_week_start (); /* 0 = Sunday, 1 = Monday, 2 = Tuesday etc. */
-  g_assert (week_start == 0 || week_start == 1);
-  return (week_start == 0) ? g_date_get_sunday_week_of_year (date) : g_date_get_monday_week_of_year (date);
+  GDateWeekday week_start_as_weekday = (week_start == 0) ? G_DATE_SUNDAY : (GDateWeekday) week_start;
+  unsigned int week_of_year = date_get_week_of_year (date, week_start_as_weekday);
+
+  /* Safety checks */
+  if (week_start == 0)
+    g_assert (week_of_year == g_date_get_sunday_week_of_year (date));
+  else if (week_start == 1)
+    g_assert (week_of_year == g_date_get_monday_week_of_year (date));
+
+  return week_of_year;
 }
 
 static gboolean
@@ -879,7 +915,16 @@ update_ui_for_model_or_selected_date (CcScreenTimeStatisticsRow *self)
   size_t retval;
   char selected_date_text[100] = { 0, };
   unsigned int screen_time_for_selected_date;
-  char selected_average_text[100] = { 0, };
+  const char * const average_weekday_labels[] = {
+    NULL,  /* G_DATE_BAD_WEEKDAY */
+    _("Average Monday"),
+    _("Average Tuesday"),
+    _("Average Wednesday"),
+    _("Average Thursday"),
+    _("Average Friday"),
+    _("Average Saturday"),
+    _("Average Sunday"),
+  };
   unsigned int average_screen_time_for_selected_day_of_week;
   GDate today;
   GDate first_day_of_selected_week;
@@ -946,10 +991,10 @@ update_ui_for_model_or_selected_date (CcScreenTimeStatisticsRow *self)
       gtk_label_set_label (self->selected_screen_time_label, _("No Data"));
     }
 
-  /* Translators: This is an annotated day of the week. For example ‘Average Monday’. */
-  retval = g_date_strftime (selected_average_text, sizeof (selected_average_text), _("Average %A"), &self->selected_date);
-  g_assert (retval != 0);
-  gtk_label_set_text (self->selected_average_label, selected_average_text);
+  /* We can’t use g_date_strftime() for this, as in some locales weekdays have
+   * different grammatical genders, and the ‘Average’ prefix needs to match that. */
+  gtk_label_set_text (self->selected_average_label,
+                      average_weekday_labels[g_date_get_weekday (&self->selected_date)]);
 
   if (calculate_average_screen_time_for_day_of_week (self, g_date_get_weekday (&self->selected_date), &average_screen_time_for_selected_day_of_week))
     label_set_text_hours_and_minutes (self->selected_average_value_label, average_screen_time_for_selected_day_of_week);

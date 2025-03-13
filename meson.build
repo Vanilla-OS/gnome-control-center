@@ -1,6 +1,6 @@
 project(
   'gnome-control-center', 'c',
-        version : '48.beta',
+        version : '48.rc.1',
         license : 'GPL2+',
   meson_version : '>= 0.58.0'
 )
@@ -178,6 +178,10 @@ if tecla_is_subproject
   )
 endif
 
+subproject('libgxdp',
+  default_options: 'tests=false',
+)
+
 accounts_dep = dependency('accountsservice', version: '>= 23.11.69')
 colord_dep = dependency('colord', version: '>= 0.1.34')
 gdk_pixbuf_dep = dependency('gdk-pixbuf-2.0', version: '>= 2.23.0')
@@ -186,7 +190,7 @@ glib_dep = dependency('glib-2.0', version: '>= 2.76.6')
 gnome_desktop_dep = dependency('gnome-desktop-4')
 gnome_bg_dep = dependency('gnome-bg-4')
 gnome_rr_dep = dependency('gnome-rr-4')
-gnome_settings_dep = dependency('gnome-settings-daemon', version: '>= 48.alpha.1')
+gnome_settings_dep = dependency('gnome-settings-daemon', version: '>= 48.alpha.1', fallback: 'gsd')
 goa_dep = dependency('goa-1.0', version: goa_req_version, fallback: 'goa')
 gsettings_desktop_dep = dependency('gsettings-desktop-schemas', version: '>= 48.alpha')  # actually requires commit 9d55553, just after alpha
 libxml_dep = dependency('libxml-2.0')
@@ -220,6 +224,12 @@ foreach polkit_file: polkit_files
   r = run_command('build-aux/meson/find_xdg_file.py', polkit_file, check: true)
   assert(r.returncode() == 0, 'ITS support missing from polkit, please upgrade or contact your distribution')
 endforeach
+
+# Localisation API
+if cc.has_header_symbol('langinfo.h', '_NL_TIME_FIRST_WEEKDAY')
+  config_h.set('HAVE__NL_TIME_FIRST_WEEKDAY', 1,
+               description: 'Define if langinfo.h supports _NL_TIME_FIRST_WEEKDAY')
+endif
 
 # Check for CUPS 1.4 or newer
 cups_dep = dependency('cups', version : '>= 1.4', required: false)
@@ -346,6 +356,7 @@ subdir('data/icons')
 subdir('po')
 subdir('panels')
 subdir('shell')
+subdir('global-shortcuts-provider')
 subdir('search-provider')
 
 if get_option('tests')

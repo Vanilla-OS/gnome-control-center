@@ -1,3 +1,10 @@
+gnome-control-center (1:48~rc.1-1) unstable; urgency=medium
+
+  * New upstream release
+  * Bump minimum gnome-settings-daemon
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Thu, 13 Mar 2025 10:00:55 -0400
+
 gnome-control-center (1:48~beta-2ubuntu1) plucky; urgency=medium
 
   * Merge with Debian. Remaining changes:
