@@ -65,6 +65,7 @@ struct _CcDisplaySettings
   AdwSwitchRow     *hdr_row;
   AdwPreferencesRow *luminance_row;
   GtkScale         *luminance_scale;
+  GtkAdjustment    *luminance_scale_adjustment;
   AdwSwitchRow     *underscanning_row;
 };
 
@@ -385,19 +386,22 @@ get_pending_color_mode (CcDisplaySettings *self)
 static void
 on_luminance_value_changed_cb (CcDisplaySettings *self)
 {
-  GtkAdjustment *adjustment =
-    gtk_range_get_adjustment (GTK_RANGE (self->luminance_scale));
   CcDisplayConfigManager *config_manager;
   CcDisplayColorMode color_mode;
+  double luminance;
+
+  if (self->updating)
+    return;
 
   config_manager = cc_display_panel_get_config_manager (self->panel);
 
   color_mode = get_pending_color_mode (self);
+  luminance = gtk_adjustment_get_value (self->luminance_scale_adjustment);
 
   cc_display_config_manager_set_luminance (config_manager,
                                            self->selected_output,
                                            color_mode,
-                                           gtk_adjustment_get_value (adjustment));
+                                           luminance);
 }
 
 static void
@@ -449,7 +453,7 @@ cc_display_settings_rebuild_ui (CcDisplaySettings *self)
   g_object_freeze_notify ((GObject*) self->resolution_row);
   g_object_freeze_notify ((GObject*) self->scale_combo_row);
   g_object_freeze_notify ((GObject*) self->hdr_row);
-  g_object_freeze_notify ((GObject*) self->luminance_row);
+  g_object_freeze_notify ((GObject*) self->luminance_scale_adjustment);
   g_object_freeze_notify ((GObject*) self->underscanning_row);
   g_object_freeze_notify ((GObject*) self->scale_toggle_group);
 
@@ -715,7 +719,7 @@ cc_display_settings_rebuild_ui (CcDisplaySettings *self)
                           default_luminance,
                           GTK_POS_BOTTOM,
                           NULL);
-      gtk_adjustment_set_value (gtk_range_get_adjustment (GTK_RANGE (self->luminance_scale)),
+      gtk_adjustment_set_value (self->luminance_scale_adjustment,
                                 luminance);
     }
 
@@ -724,10 +728,6 @@ cc_display_settings_rebuild_ui (CcDisplaySettings *self)
   gtk_widget_set_visible (GTK_WIDGET (self->luminance_row),
                           cc_display_monitor_supports_color_mode (self->selected_output,
                                                                   CC_DISPLAY_COLOR_MODE_BT2100));
-  g_signal_connect_swapped (gtk_range_get_adjustment (GTK_RANGE (self->luminance_scale)),
-                            "notify::value",
-                            G_CALLBACK (on_luminance_value_changed_cb),
-                            self);
 
   gtk_widget_set_visible (GTK_WIDGET (self->underscanning_row),
                           cc_display_monitor_supports_underscanning (self->selected_output) &&
@@ -745,7 +745,7 @@ cc_display_settings_rebuild_ui (CcDisplaySettings *self)
   g_object_thaw_notify ((GObject*) self->resolution_row);
   g_object_thaw_notify ((GObject*) self->scale_combo_row);
   g_object_thaw_notify ((GObject*) self->hdr_row);
-  g_object_thaw_notify ((GObject*) self->luminance_row);
+  g_object_thaw_notify ((GObject*) self->luminance_scale_adjustment);
   g_object_thaw_notify ((GObject*) self->underscanning_row);
   g_object_thaw_notify ((GObject*) self->scale_toggle_group);
   self->updating = FALSE;
@@ -1063,6 +1063,7 @@ cc_display_settings_class_init (CcDisplaySettingsClass *klass)
   gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, hdr_row);
   gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, luminance_row);
   gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, luminance_scale);
+  gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, luminance_scale_adjustment);
   gtk_widget_class_bind_template_child (widget_class, CcDisplaySettings, underscanning_row);
 
   gtk_widget_class_bind_template_callback (widget_class, on_enabled_row_active_changed_cb);
@@ -1122,6 +1123,11 @@ cc_display_settings_init (CcDisplaySettings *self)
   adw_combo_row_set_expression (ADW_COMBO_ROW (self->resolution_row), expression);
   adw_combo_row_set_model (ADW_COMBO_ROW (self->resolution_row),
                            G_LIST_MODEL (self->resolution_list));
+
+  g_signal_connect_swapped (self->luminance_scale_adjustment,
+                            "notify::value",
+                            G_CALLBACK (on_luminance_value_changed_cb),
+                            self);
 
   self->updating = FALSE;
 }
