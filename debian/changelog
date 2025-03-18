@@ -1,4 +1,4 @@
-gnome-control-center (1:48.0-1ubuntu1) UNRELEASED; urgency=medium
+gnome-control-center (1:48.0-1ubuntu1) plucky; urgency=medium
 
   * Merge with Debian. Remaining changes:
     + Add gnome-control-center-faces package to share with unity-control-center
