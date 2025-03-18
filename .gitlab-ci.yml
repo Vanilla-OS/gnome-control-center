@@ -1,5 +1,5 @@
 include:
- - remote: 'https://gitlab.gnome.org/Infrastructure/freedesktop-ci-templates/-/raw/145b1bc7ef1702d2bd71584010d7113c6786a506/templates/fedora.yml'
+ - remote: 'https://gitlab.gnome.org/alatiera/freedesktop-ci-templates/-/raw/alatiera/cbuild-hardcoded/templates/fedora.yml'
  - component: gitlab.gnome.org/GNOME/citemplates/release-service@master
    inputs:
      dist-job-name: release-build
@@ -55,7 +55,7 @@ stages:
     # Should probably also switch away from 'rawhide',
     # to stable fedora branch as well.
     BRANCH_NAME: 'main'
-    CONTAINER_TAG: '2025-01-28.0'
+    CONTAINER_TAG: '2025-03-13.0'
     FEDORA_VERSION: rawhide
     # Derive FDO variables from this automatically.
     # DO NOT edit, instead change the variables above
@@ -84,6 +84,7 @@ build.container.fedora@x86_64:
     # - libsass-devel, sassc are often needed for building libadwaita, gtk, etc.
     FDO_DISTRIBUTION_PACKAGES: >-
       dnf5-plugins
+      gawk
       git
       llvm clang libasan libtsan libubsan compiler-rt gcovr
       meson
@@ -232,7 +233,8 @@ release-build:
     - '.fdo.suffixed-image@fedora'
     - '.fedora.container.common'
   script:
-    - meson setup $MESON_BUILD_DIR
+    - meson subprojects download gvc libgxdp
+    - meson setup $MESON_BUILD_DIR --wrap-mode=nodownload
     - meson dist -C $MESON_BUILD_DIR --no-tests --include-subprojects
   artifacts:
     paths:
