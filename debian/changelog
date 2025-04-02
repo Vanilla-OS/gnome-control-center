@@ -1,3 +1,10 @@
+gnome-control-center (1:48.0-1ubuntu2) plucky; urgency=medium
+
+  * Cherry-pick patch to fix printer settings not "sticking"
+  * Move libjxl-gdk-pixbuf from Suggests to Depends (LP: #2099691)
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Wed, 02 Apr 2025 14:34:53 -0400
+
 gnome-control-center (1:48.0-1ubuntu1) plucky; urgency=medium
 
   * Merge with Debian. Remaining changes:
