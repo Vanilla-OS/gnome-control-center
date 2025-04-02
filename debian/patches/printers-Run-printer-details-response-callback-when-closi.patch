@@ -1,0 +1,54 @@
+From: Felipe Borges <felipe10borges@gmail.com>
+Date: Fri, 21 Mar 2025 09:22:52 +0000
+Subject: printers: Run printer details response callback when closing dialog
+
+The port to AdwDialog in the printer details forgot to make sure that
+the dialog close response runs (which applies the changes).
+
+Fixes #3382
+
+(cherry picked from commit 8b4ba7d72f949f014f73102c196724a2aa96746c)
+
+Co-authored-by: Felipe Borges <felipeborges@gnome.org>
+(cherry picked from commit 10dfeb3ff732f35a420705442c2afc23b3226e38)
+
+Origin: upstream gnome-48 branch, after 48.0
+---
+ panels/printers/pp-details-dialog.ui | 1 +
+ panels/printers/pp-printer-entry.c   | 4 ++--
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/panels/printers/pp-details-dialog.ui b/panels/printers/pp-details-dialog.ui
+index 3afc201..1a91cce 100644
+--- a/panels/printers/pp-details-dialog.ui
++++ b/panels/printers/pp-details-dialog.ui
+@@ -3,6 +3,7 @@
+   <template class="PpDetailsDialog" parent="AdwDialog">
+     <property name="title" translatable="yes">Printer Details</property>
+     <property name="content-width">360</property>
++    <property name="can-close">False</property>
+     <property name="child">
+       <object class="AdwToolbarView">
+         <child type="top">
+diff --git a/panels/printers/pp-printer-entry.c b/panels/printers/pp-printer-entry.c
+index 45c5184..59d3a12 100644
+--- a/panels/printers/pp-printer-entry.c
++++ b/panels/printers/pp-printer-entry.c
+@@ -366,7 +366,7 @@ on_printer_rename_cb (GObject      *source_object,
+   g_signal_emit_by_name (self, "printer-renamed", pp_printer_get_name (PP_PRINTER (source_object)));
+ }
+ 
+-static gboolean
++static void
+ show_printer_details_response_cb (PpPrinterEntry  *self,
+                                   PpDetailsDialog *dialog)
+ {
+@@ -391,7 +391,7 @@ show_printer_details_response_cb (PpPrinterEntry  *self,
+ 
+   g_signal_emit_by_name (self, "printer-changed");
+ 
+-  return GDK_EVENT_PROPAGATE;
++  adw_dialog_force_close (ADW_DIALOG (dialog));
+ }
+ 
+ static void
