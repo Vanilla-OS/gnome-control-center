@@ -9,14 +9,14 @@ apps).
 We rely on the yaru generated themes for this, since those old toolkits
 have no support for accent colors.
 ---
- panels/background/cc-background-panel.c | 99 +++++++++++++++++++++++++++++++++
- 1 file changed, 99 insertions(+)
+ panels/background/cc-background-panel.c | 59 +++++++++++++++++++++++++++++++++
+ 1 file changed, 59 insertions(+)
 
 diff --git a/panels/background/cc-background-panel.c b/panels/background/cc-background-panel.c
-index 201d2ab..09f97f4 100644
+index 201d2ab..d88fc87 100644
 --- a/panels/background/cc-background-panel.c
 +++ b/panels/background/cc-background-panel.c
-@@ -46,6 +46,15 @@
+@@ -46,6 +46,12 @@
  #define INTERFACE_PATH_ID "org.gnome.desktop.interface"
  #define INTERFACE_COLOR_SCHEME_KEY "color-scheme"
  #define INTERFACE_ACCENT_COLOR_KEY "accent-color"
@@ -24,23 +24,12 @@ index 201d2ab..09f97f4 100644
 +#define INTERFACE_CURSOR_THEME_KEY "cursor-theme"
 +#define INTERFACE_ICON_THEME_KEY "icon-theme"
 +
-+#define GEDIT_PREFRENCES_SCHEMA "org.gnome.gedit.preferences.editor"
-+#define GEDIT_THEME_KEY "scheme"
-+
 +#define DEFAULT_ACCENT_COLOR "default"
 +
  
  struct _CcBackgroundPanel
  {
-@@ -56,6 +65,7 @@ struct _CcBackgroundPanel
-   GSettings *settings;
-   GSettings *lock_settings;
-   GSettings *interface_settings;
-+  GSettings *gedit_settings;
- 
-   GDBusProxy *proxy;
- 
-@@ -105,6 +115,71 @@ transition_screen (CcBackgroundPanel *self)
+@@ -105,6 +111,51 @@ transition_screen (CcBackgroundPanel *self)
      g_warning ("Couldn't transition screen: %s", error->message);
  }
  
@@ -87,32 +76,12 @@ index 201d2ab..09f97f4 100644
 +  if (!current_icon_theme ||
 +      g_str_has_prefix (current_icon_theme, "Yaru"))
 +    g_settings_set_string (self->interface_settings, INTERFACE_ICON_THEME_KEY, icon_theme->str);
-+
-+  if (self->gedit_settings)
-+    {
-+      g_autoptr(GVariant) gedit_user_value = NULL;
-+      const char *gedit_theme_name = NULL;
-+
-+      gedit_user_value = g_settings_get_user_value (self->gedit_settings,
-+                                                    GEDIT_THEME_KEY);
-+
-+      if (gedit_user_value)
-+        gedit_theme_name = g_variant_get_string (gedit_user_value, NULL);
-+
-+      if (!gedit_theme_name || *gedit_theme_name == '\0' ||
-+          g_str_has_prefix (gedit_theme_name, "Yaru"))
-+        {
-+          /* Only change the gedit setting if user is using a Yaru theme, or unset */
-+          g_settings_set_string (self->gedit_settings, GEDIT_THEME_KEY,
-+                                 gedit_theme->str);
-+        }
-+    }
 +}
 +
  static void
  on_accent_color_toggled_cb (CcBackgroundPanel *self,
                              GtkToggleButton   *toggle)
-@@ -273,6 +348,8 @@ set_color_scheme (CcBackgroundPanel   *self,
+@@ -273,6 +324,8 @@ set_color_scheme (CcBackgroundPanel   *self,
    g_settings_set_enum (self->interface_settings,
                         INTERFACE_COLOR_SCHEME_KEY,
                         color_scheme);
@@ -121,37 +90,7 @@ index 201d2ab..09f97f4 100644
  }
  
  /* Color schemes */
-@@ -491,6 +568,7 @@ cc_background_panel_dispose (GObject *object)
-   g_clear_object (&self->settings);
-   g_clear_object (&self->lock_settings);
-   g_clear_object (&self->interface_settings);
-+  g_clear_object (&self->gedit_settings);
-   g_clear_object (&self->proxy);
- 
-   G_OBJECT_CLASS (cc_background_panel_parent_class)->dispose (object);
-@@ -559,6 +637,21 @@ cc_background_panel_init (CcBackgroundPanel *self)
- 
-   self->interface_settings = g_settings_new (INTERFACE_PATH_ID);
- 
-+  GSettingsSchemaSource *schema_source = g_settings_schema_source_get_default ();
-+  g_autoptr(GSettingsSchema) schema = NULL;
-+  schema = g_settings_schema_source_lookup (schema_source, GEDIT_PREFRENCES_SCHEMA, TRUE);
-+  if (schema)
-+    {
-+      self->gedit_settings = g_settings_new (GEDIT_PREFRENCES_SCHEMA);
-+      g_signal_connect_object (self->gedit_settings, "changed::" GEDIT_THEME_KEY,
-+                               G_CALLBACK (update_yaru_accent_settings), self,
-+                               G_CONNECT_SWAPPED);
-+    }
-+  else
-+    {
-+      g_warning ("No gedit is installed here. Colors won't be updated. Please fix your installation.");
-+    }
-+
-   /* Load the background */
-   reload_current_bg (self);
-   update_preview (self);
-@@ -582,6 +675,12 @@ cc_background_panel_init (CcBackgroundPanel *self)
+@@ -582,6 +635,12 @@ cc_background_panel_init (CcBackgroundPanel *self)
                             self,
                             G_CONNECT_SWAPPED);
  
