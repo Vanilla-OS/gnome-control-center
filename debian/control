@@ -71,7 +71,6 @@ Vcs-Browser: https://salsa.debian.org/gnome-team/gnome-control-center
 Package: gnome-control-center
 Architecture: any
 Depends: accountsservice (>= 23.11.69),
-         apg,
          colord,
          desktop-base,
          desktop-file-utils,
