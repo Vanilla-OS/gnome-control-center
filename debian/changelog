@@ -1,3 +1,9 @@
+gnome-control-center (1:48.1.1~99-orchid) unstable; urgency=medium
+
+  * Merge debian/1%48.1-2
+
+ -- Jarred Wilson <jarred.wilson12@gmail.com>  Thu, 22 May 2025 10:35:14 -0500
+
 gnome-control-center (1:48.1-2) unstable; urgency=medium
 
   [ James Addison ]
