@@ -26,11 +26,11 @@
 #include "cc-list-row.h"
 #include "cc-system-panel.h"
 #include "cc-system-resources.h"
+#include "cc-systemd-service.h"
 
 #include "about/cc-about-page.h"
 #include "datetime/cc-datetime-page.h"
 #include "region/cc-region-page.h"
-#include "remote-desktop/cc-systemd-service.h"
 #include "remote-desktop/cc-remote-desktop-page.h"
 #include "secure-shell/cc-secure-shell-page.h"
 #include "users/cc-users-page.h"
@@ -165,7 +165,7 @@ cc_system_panel_init (CcSystemPanel *self)
   g_resources_register (cc_system_get_resource ());
   gtk_widget_init_template (GTK_WIDGET (self));
 
-  service_state = cc_get_service_state ("gnome-remote-desktop.service", G_BUS_TYPE_SYSTEM);
+  service_state = cc_get_service_state (REMOTE_DESKTOP_SERVICE, G_BUS_TYPE_SYSTEM);
   /* Hide the remote-desktop page if the g-r-d service is either "masked", "static", or "not-found". */
   gtk_widget_set_visible (GTK_WIDGET (self->remote_desktop_row), service_state == CC_SERVICE_STATE_ENABLED ||
                                                                  service_state == CC_SERVICE_STATE_DISABLED);

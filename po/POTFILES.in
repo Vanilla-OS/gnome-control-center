@@ -1,5 +1,8 @@
 # List of source files containing translatable strings.
 # Please keep this file sorted alphabetically.
+global-shortcuts-provider/cc-global-shortcut-dialog.ui
+panels/applications/cc-application-shortcut-dialog.c
+panels/applications/cc-application-shortcut-dialog.ui
 panels/applications/cc-applications-panel.c
 panels/applications/cc-applications-panel.ui
 panels/applications/cc-default-apps-page.ui
@@ -19,6 +22,7 @@ panels/color/cc-color-calibrate.c
 panels/color/cc-color-calibrate.ui
 panels/color/cc-color-common.c
 panels/color/cc-color-device.c
+panels/color/cc-color-device.ui
 panels/color/cc-color-panel.c
 panels/color/cc-color-panel.ui
 panels/color/cc-color-profile.c
@@ -29,7 +33,7 @@ panels/common/cc-list-row-info-button.ui
 panels/common/cc-number-row.c
 panels/common/cc-permission-infobar.c
 panels/common/cc-permission-infobar.ui
-panels/common/cc-time-editor.ui
+panels/common/cc-timelike-editor.ui
 panels/common/cc-util.c
 panels/common/hostname-helper.c
 panels/display/cc-display-panel.c
@@ -177,8 +181,8 @@ panels/sharing/cc-sharing-networks.ui
 panels/sharing/cc-sharing-panel.c
 panels/sharing/cc-sharing-panel.ui
 panels/sharing/gnome-sharing-panel.desktop.in
-panels/sound/cc-alert-chooser-window.c
-panels/sound/cc-alert-chooser-window.ui
+panels/sound/cc-alert-chooser-page.c
+panels/sound/cc-alert-chooser-page.ui
 panels/sound/cc-balance-slider.ui
 panels/sound/cc-fade-slider.ui
 panels/sound/cc-output-test-wheel.c
@@ -237,7 +241,7 @@ panels/system/users/org.gnome.controlcenter.user-accounts.policy.in
 panels/system/users/pw-utils.c
 panels/system/users/run-passwd.c
 panels/system/users/user-utils.c
-panels/universal-access/cc-cursor-size-dialog.ui
+panels/universal-access/cc-cursor-size-page.ui
 panels/universal-access/cc-ua-hearing-page.c
 panels/universal-access/cc-ua-hearing-page.ui
 panels/universal-access/cc-ua-mouse-page.ui
@@ -263,6 +267,12 @@ panels/wacom/cc-wacom-stylus-page.ui
 panels/wacom/cc-wacom-tool.c
 panels/wacom/gnome-wacom-panel.desktop.in
 panels/wacom/gsd-wacom-key-shortcut-button.c
+panels/wellbeing/cc-bar-chart.c
+panels/wellbeing/cc-break-schedule-row.c
+panels/wellbeing/cc-screen-time-statistics-row.c
+panels/wellbeing/cc-screen-time-statistics-row.ui
+panels/wellbeing/cc-wellbeing-panel.ui
+panels/wellbeing/gnome-wellbeing-panel.desktop.in
 panels/wwan/cc-wwan-apn-dialog.c
 panels/wwan/cc-wwan-apn-dialog.ui
 panels/wwan/cc-wwan-data.c

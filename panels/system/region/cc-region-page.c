@@ -61,29 +61,31 @@ typedef enum {
 struct _CcRegionPage {
         AdwNavigationPage parent_instance;
 
-        CcListRow       *formats_row;
-        AdwBanner       *banner;
-        GtkSizeGroup    *input_size_group;
-        CcListRow       *login_formats_row;
-        GtkWidget       *login_group;
-        CcListRow       *login_language_row;
-        CcListRow       *language_row;
+        CcListRow         *formats_row;
+        AdwBanner         *banner;
+        GtkSizeGroup      *input_size_group;
+        CcListRow         *login_formats_row;
+        GtkWidget         *login_group;
+        CcListRow         *login_language_row;
+        CcListRow         *language_row;
+        CcLanguageChooser *language_chooser;
+        CcFormatChooser   *format_chooser;
 
-        gboolean         login_auto_apply;
-        GPermission     *permission;
-        GDBusProxy      *localed;
-        GDBusProxy      *session;
+        gboolean           login_auto_apply;
+        GPermission       *permission;
+        GDBusProxy        *localed;
+        GDBusProxy        *session;
 
-        ActUserManager  *user_manager;
-        ActUser         *user;
-        GSettings       *locale_settings;
+        ActUserManager    *user_manager;
+        ActUser           *user;
+        GSettings         *locale_settings;
 
-        gchar           *language;
-        gchar           *region;
-        gchar           *system_language;
-        gchar           *system_region;
+        gchar             *language;
+        gchar             *region;
+        gchar             *system_language;
+        gchar             *system_region;
 
-        GCancellable    *cancellable;
+        GCancellable      *cancellable;
 };
 
 G_DEFINE_TYPE (CcRegionPage, cc_region_page, ADW_TYPE_NAVIGATION_PAGE)
@@ -287,6 +289,17 @@ set_system_language (CcRegionPage *self,
         set_localed_locale (self);
 }
 
+static void
+set_accountservice_languages (CcRegionPage *self)
+{
+        const gchar *languages[] = { self->language, NULL, NULL };
+
+        if (g_strcmp0 (self->language, self->region) != 0 && self->region[0] != '\0')
+                languages[1] = self->region;
+
+        act_user_set_languages (self->user, languages);
+}
+
 static void update_user_language_row (CcRegionPage *self);
 
 static void
@@ -298,12 +311,13 @@ update_language (CcRegionPage   *self,
         case USER:
                 if (g_strcmp0 (language, self->language) == 0)
                         return;
-                act_user_set_language (self->user, language);
+                g_set_str (&self->language, language);
+                set_accountservice_languages (self);
+
                 if (self->login_auto_apply)
                         set_system_language (self, language);
                 maybe_notify (self, LC_MESSAGES, language);
 
-                g_set_str (&self->language, language);
                 update_user_language_row (self);
 
                 break;
@@ -340,6 +354,9 @@ update_region (CcRegionPage   *self,
                         g_settings_reset (self->locale_settings, KEY_REGION);
                 else
                         g_settings_set_string (self->locale_settings, KEY_REGION, region);
+
+                set_accountservice_languages (self);
+
                 if (self->login_auto_apply)
                         set_system_region (self, region);
 
@@ -359,24 +376,19 @@ update_region (CcRegionPage   *self,
 }
 
 static void
-language_response (CcRegionPage      *self,
-                   gint               response_id,
-                   CcLanguageChooser *chooser)
+language_response (CcRegionPage *self)
 {
         const gchar *language;
+        CcLocaleTarget target;
 
-        if (response_id == GTK_RESPONSE_OK) {
-                CcLocaleTarget target;
+        language = cc_language_chooser_get_language (self->language_chooser);
+        target = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (self->language_chooser), "target"));
+        update_language (self, target, language);
 
-                language = cc_language_chooser_get_language (chooser);
-                target = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (chooser), "target"));
-                update_language (self, target, language);
+        /* Keep format strings consistent with the user's language */
+        update_region (self, target, NULL);
 
-                /* Keep format strings consistent with the user's language */
-                update_region (self, target, NULL);
-        }
-
-        gtk_window_destroy (GTK_WINDOW (chooser));
+        adw_dialog_close (ADW_DIALOG (self->language_chooser));
 }
 
 static const gchar *
@@ -397,19 +409,13 @@ static void
 show_language_chooser (CcRegionPage   *self,
                        CcLocaleTarget  target)
 {
-        CcLanguageChooser *chooser;
-        GtkNative *native;
-
-        chooser = cc_language_chooser_new ();
-        cc_language_chooser_set_language (chooser, get_effective_language (self, target));
-        g_object_set_data (G_OBJECT (chooser), "target", GINT_TO_POINTER (target));
-        g_signal_connect_object (chooser, "response",
+        self->language_chooser = cc_language_chooser_new ();
+        cc_language_chooser_set_language (self->language_chooser, get_effective_language (self, target));
+        g_object_set_data (G_OBJECT (self->language_chooser), "target", GINT_TO_POINTER (target));
+        g_signal_connect_object (G_OBJECT (self->language_chooser), "language-selected",
                                  G_CALLBACK (language_response), self, G_CONNECT_SWAPPED);
 
-        native = gtk_widget_get_native (GTK_WIDGET (self));
-        gtk_window_set_transient_for (GTK_WINDOW (chooser),
-                                      GTK_WINDOW (native));
-        gtk_window_present (GTK_WINDOW (chooser));
+        adw_dialog_present (ADW_DIALOG (self->language_chooser), GTK_WIDGET (self));
 }
 
 static const gchar *
@@ -438,41 +444,30 @@ get_effective_region (CcRegionPage   *self,
 }
 
 static void
-format_response (CcRegionPage    *self,
-                 gint             response_id,
-                 CcFormatChooser *chooser)
+format_response (CcRegionPage *self)
 {
         const gchar *region;
+        CcLocaleTarget target;
 
-        if (response_id == GTK_RESPONSE_OK) {
-                CcLocaleTarget target;
+        region = cc_format_chooser_get_region (self->format_chooser);
+        target = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (self->format_chooser), "target"));
 
-                region = cc_format_chooser_get_region (chooser);
-                target = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (chooser), "target"));
+        update_region (self, target, region);
 
-                update_region (self, target, region);
-        }
-
-        gtk_window_destroy (GTK_WINDOW (chooser));
+        adw_dialog_close (ADW_DIALOG (self->format_chooser));
 }
 
 static void
-show_region_chooser (CcRegionPage   *self,
+show_format_chooser (CcRegionPage   *self,
                      CcLocaleTarget  target)
 {
-        CcFormatChooser *chooser;
-        GtkNative *native;
-
-        chooser = cc_format_chooser_new ();
-        cc_format_chooser_set_region (chooser, get_effective_region (self, target));
-        g_object_set_data (G_OBJECT (chooser), "target", GINT_TO_POINTER (target));
-        g_signal_connect_object (chooser, "response",
+        self->format_chooser = cc_format_chooser_new ();
+        cc_format_chooser_set_region (self->format_chooser, get_effective_region (self, target));
+        g_object_set_data (G_OBJECT (self->format_chooser), "target", GINT_TO_POINTER (target));
+        g_signal_connect_object (self->format_chooser, "language-selected",
                                  G_CALLBACK (format_response), self, G_CONNECT_SWAPPED);
 
-        native = gtk_widget_get_native (GTK_WIDGET (self));
-        gtk_window_set_transient_for (GTK_WINDOW (chooser),
-                                      GTK_WINDOW (native));
-        gtk_window_present (GTK_WINDOW (chooser));
+        adw_dialog_present (ADW_DIALOG (self->format_chooser), GTK_WIDGET (self));
 }
 
 static gboolean
@@ -502,7 +497,7 @@ choose_region_permission_cb (GObject *source, GAsyncResult *res, gpointer user_d
 {
         CcRegionPage *self = user_data;
         if (permission_acquired (G_PERMISSION (source), res, "choose region"))
-                show_region_chooser (self, SYSTEM);
+                show_format_chooser (self, SYSTEM);
 }
 
 static void
@@ -761,7 +756,7 @@ static void
 on_login_formats_row_activated_cb (CcRegionPage *self)
 {
         if (g_permission_get_allowed (self->permission)) {
-                show_region_chooser (self, SYSTEM);
+                show_format_chooser (self, SYSTEM);
         } else if (g_permission_get_can_acquire (self->permission)) {
                 g_permission_acquire_async (self->permission,
                                             self->cancellable,
@@ -786,7 +781,7 @@ on_login_language_row_activated_cb (CcRegionPage *self)
 static void
 on_user_formats_row_activated_cb (CcRegionPage *self)
 {
-        show_region_chooser (self, USER);
+        show_format_chooser (self, USER);
 }
 
 static void

@@ -20,7 +20,6 @@
 #include <config.h>
 
 #include <glib/gi18n.h>
-#include "cc-list-row.h"
 
 #include "bolt-device.h"
 #include "bolt-error.h"
@@ -40,9 +39,9 @@ struct _CcBoltDeviceDialog
   AdwToastOverlay *toast_overlay;
 
   /* device details */
-  CcListRow *status_row;
-  CcListRow *uuid_row;
-  CcListRow *time_row;
+  AdwActionRow *status_row;
+  AdwActionRow *uuid_row;
+  AdwActionRow *time_row;
 
   /* parents */
   AdwPreferencesGroup *parents_group;
@@ -97,7 +96,7 @@ status_to_string_for_ui (BoltDevice *dev)
       if (nopcie)
         return C_("Thunderbolt Device Status", "Reduced Functionality");
       else
-        return C_("Thunderbolt Device Status", "Connected & Authorized");
+        return C_("Thunderbolt Device Status", "Connected and Authorized");
 
     case BOLT_STATUS_UNKNOWN:
       break; /* use default return value, i.e. Unknown */
@@ -142,7 +141,7 @@ dialog_update_from_device (CcBoltDeviceDialog *dialog)
   gtk_window_set_title (GTK_WINDOW (dialog), label);
 
   status_brief = status_to_string_for_ui (dev);
-  cc_list_row_set_secondary_label (dialog->status_row, status_brief);
+  adw_action_row_set_subtitle (dialog->status_row, status_brief);
   gtk_widget_set_visible (GTK_WIDGET (dialog->forget_button), stored);
 
   /* while we are having an ongoing operation we are setting the buttons
@@ -153,7 +152,7 @@ dialog_update_from_device (CcBoltDeviceDialog *dialog)
     gtk_widget_set_visible (GTK_WIDGET (dialog->connect_button),
                             status == BOLT_STATUS_CONNECTED);
 
-  cc_list_row_set_secondary_label (dialog->uuid_row, uuid);
+  adw_action_row_set_subtitle (dialog->uuid_row, uuid);
 
   if (bolt_status_is_authorized (status))
     {
@@ -176,7 +175,7 @@ dialog_update_from_device (CcBoltDeviceDialog *dialog)
     }
 
   timestr = bolt_epoch_format (timestamp, "%c");
-  cc_list_row_set_secondary_label (dialog->time_row, timestr);
+  adw_action_row_set_subtitle (dialog->time_row, timestr);
 
 }
 
@@ -414,8 +413,6 @@ cc_bolt_device_dialog_set_device (CcBoltDeviceDialog *dialog,
 
   if (dialog->device)
     {
-      GtkWidget *child;
-
       g_cancellable_cancel (dialog->cancel);
       g_clear_object (&dialog->cancel);
       dialog->cancel = g_cancellable_new ();
@@ -425,8 +422,7 @@ cc_bolt_device_dialog_set_device (CcBoltDeviceDialog *dialog,
                                             dialog);
       g_clear_object (&dialog->device);
 
-      while ((child = gtk_widget_get_first_child (GTK_WIDGET (dialog->parents_devices))) != NULL)
-        gtk_list_box_remove (dialog->parents_devices, child);
+      gtk_list_box_remove_all (dialog->parents_devices);
 
       gtk_widget_set_visible (GTK_WIDGET (dialog->parents_group), FALSE);
     }

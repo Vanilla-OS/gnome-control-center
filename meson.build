@@ -1,6 +1,6 @@
 project(
   'gnome-control-center', 'c',
-        version : '47.1.1',
+        version : '48.1',
         license : 'GPL2+',
   meson_version : '>= 0.58.0'
 )
@@ -126,7 +126,7 @@ libgvc = subproject(
 )
 libgvc_dep = libgvc.get_variable('libgvc_dep')
 
-libadwaita_version = '>= 1.6.beta'
+libadwaita_version = '>= 1.7.alpha'
 goa_req_version = '>= 3.51.0'
 pulse_req_version = '>= 2.0'
 
@@ -166,6 +166,7 @@ endif
 
 tecla_dep = dependency(
   'tecla',
+  version: '>=47.0',
   required: false
 )
 
@@ -177,7 +178,11 @@ if tecla_is_subproject
   )
 endif
 
-accounts_dep = dependency('accountsservice', version: '>= 0.6.39')
+subproject('libgxdp',
+  default_options: 'tests=false',
+)
+
+accounts_dep = dependency('accountsservice', version: '>= 23.11.69')
 colord_dep = dependency('colord', version: '>= 0.1.34')
 gdk_pixbuf_dep = dependency('gdk-pixbuf-2.0', version: '>= 2.23.0')
 gio_dep = dependency('gio-2.0')
@@ -185,13 +190,13 @@ glib_dep = dependency('glib-2.0', version: '>= 2.76.6')
 gnome_desktop_dep = dependency('gnome-desktop-4')
 gnome_bg_dep = dependency('gnome-bg-4')
 gnome_rr_dep = dependency('gnome-rr-4')
-gnome_settings_dep = dependency('gnome-settings-daemon', version: '>= 41.0')
+gnome_settings_dep = dependency('gnome-settings-daemon', version: '>= 48.rc', fallback: 'gsd')
 goa_dep = dependency('goa-1.0', version: goa_req_version, fallback: 'goa')
-gsettings_desktop_dep = dependency('gsettings-desktop-schemas', version: '>= 47.0')
+gsettings_desktop_dep = dependency('gsettings-desktop-schemas', version: '>= 48.alpha')  # actually requires commit 9d55553, just after alpha
 libxml_dep = dependency('libxml-2.0')
 pulse_dep = dependency('libpulse', version: pulse_req_version)
 pulse_mainloop_dep = dependency('libpulse-mainloop-glib', version: pulse_req_version)
-upower_glib_dep = dependency('upower-glib', version: '>= 0.99.8')
+upower_glib_dep = dependency('upower-glib', version: '>= 1.90.6')
 gudev_dep = dependency('gudev-1.0', version: '>= 232')
 x11_dep = dependency('x11', version: '>= 1.8')
 xi_dep = dependency('xi', version: '>= 1.2')
@@ -219,6 +224,12 @@ foreach polkit_file: polkit_files
   r = run_command('build-aux/meson/find_xdg_file.py', polkit_file, check: true)
   assert(r.returncode() == 0, 'ITS support missing from polkit, please upgrade or contact your distribution')
 endforeach
+
+# Localisation API
+if cc.has_header_symbol('langinfo.h', '_NL_TIME_FIRST_WEEKDAY')
+  config_h.set('HAVE__NL_TIME_FIRST_WEEKDAY', 1,
+               description: 'Define if langinfo.h supports _NL_TIME_FIRST_WEEKDAY')
+endif
 
 # Check for CUPS 1.4 or newer
 cups_dep = dependency('cups', version : '>= 1.4', required: false)
@@ -260,7 +271,6 @@ config_h.set10('HAVE_FN_EXPLICIT_BZERO',
 # Snap support
 enable_snap = get_option('snap')
 if enable_snap
-  json_glib_dep = dependency('json-glib-1.0')
   libsoup_dep = dependency('libsoup-3.0')
 endif
 config_h.set('HAVE_SNAP', enable_snap,
@@ -280,6 +290,9 @@ config_h.set('HAVE_MALCONTENT', enable_malcontent,
 location_services = get_option('location-services')
 config_h.set('HAVE_LOCATION_SERVICES', location_services.enabled(),
              description: 'Whether location services is enabled')
+
+# Snap support and wellbeing panel
+json_glib_dep = dependency('json-glib-1.0')
 
 if host_is_linux
   # ModemManager
@@ -343,6 +356,7 @@ subdir('data/icons')
 subdir('po')
 subdir('panels')
 subdir('shell')
+subdir('global-shortcuts-provider')
 subdir('search-provider')
 
 if get_option('tests')
@@ -364,19 +378,27 @@ configure_file(
 )
 
 summary({
-  'Documentation': get_option('documentation'),
-  'Tests': get_option('tests'),
-  'Optimized': control_center_optimized,
-})
+    'Documentation': get_option('documentation'),
+    'Tests': get_option('tests'),
+    'Optimized': control_center_optimized,
+  },
+  bool_yn: true,
+)
 
 summary({
-  'GNOME Bluetooth': host_is_linux_not_s390,
-  'NetworkManager': host_is_linux,
-  'Wacom': host_is_linux_not_s390,
-}, section: 'Dependencies')
+    'GNOME Bluetooth': host_is_linux_not_s390,
+    'NetworkManager': host_is_linux,
+    'Wacom': host_is_linux_not_s390,
+  },
+  section: 'Dependencies',
+  bool_yn: true,
+)
 
 summary({
-  'IBus': enable_ibus,
-  'Snap': enable_snap,
-  'Malcontent': enable_malcontent,
-}, section: 'Optional Dependencies')
+    'IBus': enable_ibus,
+    'Snap': enable_snap,
+    'Malcontent': enable_malcontent,
+  },
+  section: 'Optional Dependencies',
+  bool_yn: true,
+)

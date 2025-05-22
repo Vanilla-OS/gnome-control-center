@@ -52,7 +52,6 @@
 #define GNOME_REMOTE_DESKTOP_SCHEMA_ID "org.gnome.desktop.remote-desktop"
 #define GNOME_REMOTE_DESKTOP_RDP_SCHEMA_ID "org.gnome.desktop.remote-desktop.rdp"
 #define REMOTE_DESKTOP_STORE_CREDENTIALS_TIMEOUT_S 1
-#define REMOTE_DESKTOP_SERVICE "gnome-remote-desktop.service"
 #define RDP_SERVER_DBUS_SERVICE "org.gnome.RemoteDesktop.User"
 #define RDP_SERVER_OBJECT_PATH "/org/gnome/RemoteDesktop/Rdp/Server"
 
@@ -105,7 +104,7 @@ on_verify_encryption_button_row_activated (CcDesktopSharingPage *self)
 static char *
 get_hostname (void)
 {
-  return cc_hostname_get_display_hostname (cc_hostname_get_default ());
+  return cc_hostname_get_static_hostname (cc_hostname_get_default ());
 }
 
 static gboolean
@@ -151,7 +150,7 @@ is_desktop_sharing_enabled (CcDesktopSharingPage *self)
   if (!g_settings_get_boolean (self->rdp_settings, "enable"))
     return FALSE;
 
-  return cc_is_service_active (REMOTE_DESKTOP_SERVICE, G_BUS_TYPE_SESSION);
+  return cc_get_service_state (REMOTE_DESKTOP_SERVICE, G_BUS_TYPE_SESSION) == CC_SERVICE_STATE_ENABLED;
 }
 
 static void

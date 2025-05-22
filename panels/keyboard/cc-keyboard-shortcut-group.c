@@ -41,7 +41,6 @@ struct _CcKeyboardShortcutGroup
   GtkListBox               *shortcut_list_box;
 
   GtkSizeGroup             *accelerator_size_group;
-  CcKeyboardShortcutEditor *shortcut_editor;
 
   GListModel               *shortcut_items;
   GtkFilterListModel       *filtered_shortcuts;
@@ -72,24 +71,28 @@ static void
 shortcut_group_row_activated_cb (CcKeyboardShortcutGroup *self,
                                  GtkListBoxRow           *row)
 {
+  CcKeyboardShortcutEditor *shortcut_editor;
+
   g_assert (CC_IS_KEYBOARD_SHORTCUT_GROUP (self));
   g_assert (GTK_IS_LIST_BOX_ROW (row));
+
+  shortcut_editor = cc_keyboard_shortcut_editor_new (self->keyboard_manager);
 
   if (CC_IS_KEYBOARD_SHORTCUT_ROW (row))
     {
       CcKeyboardItem *item;
 
       item = cc_keyboard_shortcut_row_get_item (CC_KEYBOARD_SHORTCUT_ROW (row));
-      cc_keyboard_shortcut_editor_set_mode (self->shortcut_editor, CC_SHORTCUT_EDITOR_EDIT);
-      cc_keyboard_shortcut_editor_set_item (self->shortcut_editor, item);
+      cc_keyboard_shortcut_editor_set_mode (shortcut_editor, CC_SHORTCUT_EDITOR_EDIT);
+      cc_keyboard_shortcut_editor_set_item (shortcut_editor, item);
     }
   else  /* Add shortcut row */
     {
-      cc_keyboard_shortcut_editor_set_mode (self->shortcut_editor, CC_SHORTCUT_EDITOR_CREATE);
-      cc_keyboard_shortcut_editor_set_item (self->shortcut_editor, NULL);
+      cc_keyboard_shortcut_editor_set_mode (shortcut_editor, CC_SHORTCUT_EDITOR_CREATE);
+      cc_keyboard_shortcut_editor_set_item (shortcut_editor, NULL);
     }
 
-  gtk_widget_set_visible (GTK_WIDGET (self->shortcut_editor), TRUE);
+  adw_dialog_present (ADW_DIALOG (shortcut_editor), GTK_WIDGET (self));
 }
 
 static void
@@ -164,7 +167,6 @@ shortcut_group_row_new (gpointer item,
 
   row = GTK_WIDGET (cc_keyboard_shortcut_row_new (item,
                                                   self->keyboard_manager,
-                                                  self->shortcut_editor,
                                                   self->accelerator_size_group));
 
   g_signal_connect_object (item, "notify::is-value-default",
@@ -376,12 +378,11 @@ cc_keyboard_shortcut_group_init (CcKeyboardShortcutGroup *self)
 }
 
 GtkWidget *
-cc_keyboard_shortcut_group_new (GListModel               *shortcut_items,
-                                const char               *section_id,
-                                const char               *section_title,
-                                CcKeyboardManager        *manager,
-                                CcKeyboardShortcutEditor *shortcut_editor,
-                                GtkSizeGroup             *size_group)
+cc_keyboard_shortcut_group_new (GListModel        *shortcut_items,
+                                const char        *section_id,
+                                const char        *section_title,
+                                CcKeyboardManager *manager,
+                                GtkSizeGroup      *size_group)
 {
   CcKeyboardShortcutGroup *self;
 
@@ -394,7 +395,6 @@ cc_keyboard_shortcut_group_new (GListModel               *shortcut_items,
   self->section_id = g_strdup (section_id);
 
   self->keyboard_manager = manager;
-  self->shortcut_editor = shortcut_editor;
   self->accelerator_size_group = size_group;
 
   shortcut_group_set_list_model (self, shortcut_items);

@@ -121,14 +121,22 @@ get_renderer_from_helper (const char **env)
   g_auto(GStrv) envp = NULL;
   g_autofree char *renderer = NULL;
   g_autoptr(GError) error = NULL;
+  /* Environment variables that are needed to run the helper on X11 and Wayland */
+  static const char *env_vars[] = { "DISPLAY", "WAYLAND_DISPLAY", "XDG_RUNTIME_DIR" };
+  guint i;
+
+  for (i = 0; i < G_N_ELEMENTS (env_vars); i++)
+    {
+      const char *value = g_getenv (env_vars[i]);
+      if (value)
+        envp = g_environ_setenv (envp, env_vars[i], value, TRUE);
+    }
 
   g_debug ("About to launch '%s'", argv[0]);
 
   if (env != NULL)
     {
-      guint i;
       g_debug ("With environment:");
-      envp = g_get_environ ();
       for (i = 0; env != NULL && env[i] != NULL; i = i + 2)
         {
           g_debug ("  %s = %s", env[i], env[i+1]);
@@ -262,7 +270,7 @@ get_graphics_hardware_list (void)
   GSList *renderers = NULL;
 
   renderers = get_renderer_from_switcheroo ();
-  
+
   if (!renderers)
     {
       GpuData *gpu_data;
@@ -272,13 +280,13 @@ get_graphics_hardware_list (void)
         renderer = get_renderer_from_helper (NULL);
       if (!renderer)
         renderer = g_strdup (_("Unknown"));
-      
+
       gpu_data = g_new0 (GpuData, 1);
       gpu_data->name = g_strdup (renderer);
       gpu_data->is_default = TRUE;
       renderers = g_slist_prepend (renderers, gpu_data);
     }
-  
+
   return renderers;
 }
 
@@ -300,7 +308,7 @@ create_graphics_rows (CcSystemDetailsWindow *self, GSList *devices)
         label = g_strdup (_("Graphics"));
       else
         label = g_strdup_printf (_("Graphics %d"), ++i);
-      
+
       gpu_entry = cc_info_entry_new (label, name);
 
       gtk_box_append (self->graphics_row, gpu_entry);
@@ -662,7 +670,7 @@ on_copy_button_clicked_cb (GtkWidget              *widget,
                            CcSystemDetailsWindow  *self)
 {
   GdkClipboard *clip_board;
-  GdkDisplay *display; 
+  GdkDisplay *display;
   g_autofree gchar *date_string = NULL;
   g_autoptr (GDateTime) date = NULL;
   guint64 ram_size;
@@ -744,12 +752,12 @@ on_copy_button_clicked_cb (GtkWidget              *widget,
   g_string_append (result_str, "\n");
 
   g_string_append (result_str, "## Software Information:\n");
-  
+
   g_string_append (result_str, "- ");
   system_details_window_title_print_padding ("**Firmware Version:**", result_str, 0);
   firmware_version_text = get_firmware_version_string ();
   g_string_append_printf (result_str, "%s\n", firmware_version_text);
-  
+
   g_string_append (result_str, "- ");
   system_details_window_title_print_padding ("**OS Name:**", result_str, 0);
   os_name_text = get_os_name ();

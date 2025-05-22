@@ -86,6 +86,10 @@ filter_stream (gpointer item,
       return FALSE;
     }
 
+  /* We can't present streams without a name in the UI. */
+  if (gvc_mixer_stream_get_name (stream) == NULL)
+    return FALSE;
+
   return TRUE;
 }
 

@@ -1,0 +1,36 @@
+<Project xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:foaf="http://xmlns.com/foaf/0.1/"
+         xmlns:gnome="http://api.gnome.org/doap-extensions#"
+         xmlns="http://usefulinc.com/ns/doap#">
+
+  <name xml:lang="en">libgxdp</name>
+  <description xml:lang="en">GNOME Desktop Portal helper library</description>
+  <shortdesc xml:lang="en">
+    Library for GNOME XDG Desktop Portal backend utilities.
+  </shortdesc>
+  <!--
+  <homepage rdf:resource="http://www.gnome.org/" />
+  -->
+  <developer-forum rdf:resource="https://discourse.gnome.org/c/platform/" />
+  <download-page rdf:resource="https://download.gnome.org/sources/libgxdp/" />
+  <bug-database rdf:resource="https://gitlab.gnome.org/GNOME/libgxdp/issues/" />
+
+  <category rdf:resource="http://api.gnome.org/doap-extensions#core" />
+  <programming-language>C</programming-language>
+
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Jonas Ådahl</foaf:name>
+      <foaf:mbox rdf:resource="mailto:jadahl@gmail.com" />
+      <gnome:userid>jadahl</gnome:userid>
+    </foaf:Person>
+  </maintainer>
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Georges Basile Stavracas Neto</foaf:name>
+      <foaf:mbox rdf:resource="mailto:gbsneto@gnome.org" />
+      <gnome:userid>gbsneto</gnome:userid>
+    </foaf:Person>
+  </maintainer>
+</Project>

@@ -21,6 +21,7 @@
 #undef G_LOG_DOMAIN
 #define G_LOG_DOMAIN "cc-background-chooser"
 
+#include <adwaita.h>
 #include <glib/gi18n.h>
 #include <libgnome-desktop/gnome-desktop-thumbnail.h>
 
@@ -49,9 +50,28 @@ struct _CcBackgroundChooser
   CcBackgroundItem   *active_item;
 
   GnomeDesktopThumbnailFactory *thumbnail_factory;
+
+  AdwToastOverlay    *toast_overlay;
+  AdwToast           *toast;
+  GPtrArray          *removed_backgrounds;
 };
 
+typedef struct {
+  BgRecentSource     *recent_source;
+  CcBackgroundItem   *item;
+  GtkWidget          *parent;
+} UndoData;
+
 G_DEFINE_TYPE (CcBackgroundChooser, cc_background_chooser, GTK_TYPE_BOX)
+
+enum
+{
+  PROP_0,
+  PROP_TOAST_OVERLAY,
+  N_PROPS
+};
+
+static GParamSpec *properties [N_PROPS];
 
 enum
 {
@@ -78,18 +98,102 @@ emit_background_chosen (CcBackgroundChooser *self)
 }
 
 static void
+really_delete_background (gpointer data)
+{
+  UndoData *undo_data = data;
+
+  bg_recent_source_remove_item (undo_data->recent_source, undo_data->item);
+  g_free (undo_data);
+}
+
+static void
+undo_remove (gpointer data)
+{
+  UndoData *undo_data = data;
+
+  gtk_widget_set_visible (undo_data->parent, TRUE);
+  g_free (undo_data);
+}
+
+static void
+on_removed_backgrounds_undo (CcBackgroundChooser *self)
+{
+  g_ptr_array_set_free_func (self->removed_backgrounds, undo_remove);
+  gtk_widget_set_visible (self->recent_box, TRUE);
+}
+
+static void
+on_removed_backgrounds_dismissed (CcBackgroundChooser *self)
+{
+  self->toast = NULL;
+  g_clear_pointer (&self->removed_backgrounds, g_ptr_array_unref);
+}
+
+static void
 on_delete_background_clicked_cb (GtkButton *button,
                                  BgRecentSource  *source)
 {
   GtkWidget *parent;
+  CcBackgroundChooser *self;
   CcBackgroundItem *item;
+  UndoData *undo_data;
+  GListStore *store;
 
   parent = gtk_widget_get_parent (gtk_widget_get_parent (GTK_WIDGET (button)));
   g_assert (GTK_IS_FLOW_BOX_CHILD (parent));
 
   item = g_object_get_data (G_OBJECT (parent), "item");
+  self = g_object_get_data (G_OBJECT (source), "background-chooser");
 
-  bg_recent_source_remove_item (source, item);
+  gtk_widget_set_visible (parent, FALSE);
+
+  /* Add background to the array of rows to be handled by the undo toast */
+  if (!self->removed_backgrounds)
+    self->removed_backgrounds = g_ptr_array_new_with_free_func (really_delete_background);
+
+  undo_data = g_new (UndoData, 1);
+  undo_data->recent_source = source;
+  undo_data->item = item;
+  undo_data->parent = parent;
+
+  g_ptr_array_add (self->removed_backgrounds, undo_data);
+
+  /* Recent flowbox should be hidden if all backgrounds are to be removed */
+  store = bg_source_get_liststore (BG_SOURCE (self->recent_source));
+
+  if (self->removed_backgrounds->len == g_list_model_get_n_items (G_LIST_MODEL (store)))
+    gtk_widget_set_visible (self->recent_box, FALSE);
+
+  if (!self->toast)
+    {
+      self->toast = adw_toast_new (_("Background removed"));
+      adw_toast_set_button_label (self->toast, _("_Undo"));
+
+      g_signal_connect_swapped (self->toast,
+                                "button-clicked",
+                                G_CALLBACK (on_removed_backgrounds_undo),
+                                self);
+      g_signal_connect_swapped (self->toast,
+                                "dismissed",
+                                G_CALLBACK (on_removed_backgrounds_dismissed),
+                                self);
+    }
+  else
+    {
+      g_autofree gchar *message = NULL;
+
+      /* Translators: %d is the number of backgrounds deleted. */
+      message = g_strdup_printf (ngettext ("%d background removed",
+                                           "%d backgrounds removed",
+                                           self->removed_backgrounds->len),
+                                 self->removed_backgrounds->len);
+
+      adw_toast_set_title (self->toast, message);
+
+      g_object_ref (self->toast);
+    }
+
+  adw_toast_overlay_add_toast (self->toast_overlay, self->toast);
 }
 
 static GtkWidget*
@@ -271,6 +375,25 @@ file_dialog_open_cb (GObject      *source_object,
 /* GObject overrides */
 
 static void
+cc_background_chooser_set_property (GObject      *object,
+                                    guint         prop_id,
+                                    const GValue *value,
+                                    GParamSpec   *pspec)
+{
+  CcBackgroundChooser *self = CC_BACKGROUND_CHOOSER (object);
+
+  switch (prop_id)
+    {
+      case PROP_TOAST_OVERLAY:
+        self->toast_overlay = g_value_get_object (value);
+        break;
+      default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+        break;
+    }
+}
+
+static void
 cc_background_chooser_finalize (GObject *object)
 {
   CcBackgroundChooser *self = (CcBackgroundChooser *)object;
@@ -288,7 +411,13 @@ cc_background_chooser_class_init (CcBackgroundChooserClass *klass)
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
+  object_class->set_property = cc_background_chooser_set_property;
   object_class->finalize = cc_background_chooser_finalize;
+
+  properties[PROP_TOAST_OVERLAY] = g_param_spec_object ("toast-overlay", NULL, NULL,
+                                                        ADW_TYPE_TOAST_OVERLAY,
+                                                        G_PARAM_WRITABLE |
+                                                        G_PARAM_STATIC_STRINGS);
 
   signals[BACKGROUND_CHOSEN] = g_signal_new ("background-chosen",
                                              CC_TYPE_BACKGROUND_CHOOSER,
@@ -305,6 +434,8 @@ cc_background_chooser_class_init (CcBackgroundChooserClass *klass)
   gtk_widget_class_bind_template_child (widget_class, CcBackgroundChooser, recent_flowbox);
 
   gtk_widget_class_bind_template_callback (widget_class, on_item_activated_cb);
+
+  g_object_class_install_properties (object_class, N_PROPS, properties);
 }
 
 static void
@@ -336,7 +467,7 @@ cc_background_chooser_select_file (CcBackgroundChooser *self)
   toplevel = (GtkWindow*) gtk_widget_get_native (GTK_WIDGET (self));
 
   file_dialog = gtk_file_dialog_new ();
-  gtk_file_dialog_set_title (file_dialog, _("Select a picture"));
+  gtk_file_dialog_set_title (file_dialog, _("Select Picture"));
   gtk_file_dialog_set_modal (file_dialog, TRUE);
 
   filter = gtk_file_filter_new ();

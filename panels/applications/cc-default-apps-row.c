@@ -81,10 +81,10 @@ cc_default_apps_row_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_CONTENT_TYPE:
-      self->content_type = g_strdup (g_value_get_string (value));
+      self->content_type = g_value_dup_string (value);
       break;
     case PROP_FILTERS:
-      self->filters = g_strdup (g_value_get_string (value));
+      self->filters = g_value_dup_string (value);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -92,12 +92,24 @@ cc_default_apps_row_set_property (GObject      *object,
 }
 
 static void
+cc_default_apps_row_finalize (GObject *object)
+{
+  CcDefaultAppsRow *self = CC_DEFAULT_APPS_ROW (object);
+
+  g_clear_pointer (&self->content_type, g_free);
+  g_clear_pointer (&self->filters, g_free);
+
+  G_OBJECT_CLASS (cc_default_apps_row_parent_class)->finalize (object);
+}
+
+static void
 cc_default_apps_row_constructed (GObject *object)
 {
   CcDefaultAppsRow *self;
-  g_autoptr (GAppInfo) default_app, app = NULL;
-  g_autoptr (GList) recommended_apps, l = NULL;
-  GtkExpression *name_expr;
+  g_autoptr(GAppInfo) default_app = NULL;
+  g_autolist(GAppInfo) recommended_apps = NULL;
+  GList *l;
+  g_autoptr(GtkExpression) name_expr = NULL;
 
   G_OBJECT_CLASS (cc_default_apps_row_parent_class)->constructed (object);
 
@@ -111,7 +123,7 @@ cc_default_apps_row_constructed (GObject *object)
     g_list_store_append (self->model, default_app);
 
   for (l = recommended_apps; l != NULL; l = l->next) {
-    app = l->data;
+    GAppInfo *app = l->data;
 
     if (!G_IS_APP_INFO (app) || (default_app != NULL && g_app_info_equal (app, default_app)))
       continue;
@@ -124,6 +136,7 @@ cc_default_apps_row_constructed (GObject *object)
       GtkWidget *no_apps_label;
 
       no_apps_label = gtk_label_new (_("No Apps Available"));
+      gtk_widget_add_css_class (no_apps_label, "dim-label");
       adw_action_row_add_suffix (ADW_ACTION_ROW (self), no_apps_label);
     }
 
@@ -144,6 +157,7 @@ cc_default_apps_row_class_init (CcDefaultAppsRowClass *klass)
   object_class->get_property = cc_default_apps_row_get_property;
   object_class->set_property = cc_default_apps_row_set_property;
   object_class->constructed = cc_default_apps_row_constructed;
+  object_class->finalize = cc_default_apps_row_finalize;
 
   properties[PROP_CONTENT_TYPE] =
     g_param_spec_string ("content-type",
@@ -166,7 +180,7 @@ cc_default_apps_row_init (CcDefaultAppsRow *self)
 void
 cc_default_apps_row_update_default_app (CcDefaultAppsRow *self)
 {
-  g_autoptr(GAppInfo) info = NULL;
+  GAppInfo *info;
   g_autoptr(GError) error = NULL;
   int i;
 

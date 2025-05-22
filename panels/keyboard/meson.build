@@ -36,14 +36,11 @@ xml_files = [
   '50-accessibility.xml'
 ]
 
-foreach file: xml_files
-  i18n.merge_file(
-    input: file + '.in',
-    output: file,
-    po_dir: po_dir,
-    data_dirs: its_dir,
-    install: true,
-    install_dir: join_paths(control_center_pkgdatadir, 'keybindings')
+foreach file : xml_files
+  install_data(
+    file + '.in',
+    install_dir: join_paths(control_center_pkgdatadir, 'keybindings'),
+    rename: file
   )
 endforeach
 
@@ -110,5 +107,10 @@ keyboard_panel_lib = static_library(
   ]
 )
 panels_libs += keyboard_panel_lib
+
+keyboard_panel_dep = declare_dependency(
+  include_directories: [top_inc, keyboard_inc],
+  link_with: keyboard_panel_lib,
+)
 
 subdir('icons')

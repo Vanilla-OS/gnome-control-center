@@ -78,7 +78,7 @@ static const CcXkbModifier COMPOSE_MODIFIER = {
   "compose:",
   N_("Compose Key"),
   N_("The compose key allows a wide variety of characters to be entered. To use it, press compose then a sequence of characters. "
-     " For example, compose key followed by <b>C</b> and <b>o</b> will enter <b>©</b>, "
+     " For example, compose key followed by <b>o</b> and <b>c</b> will enter <b>©</b>, "
      "<b>a</b> followed by <b>'</b> will enter <b>á</b>."),
   (CcXkbOption[]){
     { NC_("keyboard key", "Right Alt"),    "compose:ralt" },
@@ -121,14 +121,10 @@ compose_row_activated (CcKeyboardPanel *self)
 static void
 keyboard_shortcuts_activated (CcKeyboardPanel *self)
 {
-  GtkWindow *window;
-  GtkWidget *shortcut_dialog;
+  AdwDialog *dialog;
 
-  window = GTK_WINDOW (cc_shell_get_toplevel (cc_panel_get_shell (CC_PANEL (self))));
-
-  shortcut_dialog = cc_keyboard_shortcut_dialog_new ();
-  gtk_window_set_transient_for (GTK_WINDOW (shortcut_dialog), window);
-  gtk_window_present (GTK_WINDOW (shortcut_dialog));
+  dialog = ADW_DIALOG (cc_keyboard_shortcut_dialog_new ());
+  adw_dialog_present (dialog, GTK_WIDGET (self));
 }
 
 static void

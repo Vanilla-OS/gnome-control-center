@@ -37,7 +37,6 @@
 
 #include "cc-list-row.h"
 #include "cc-mask-paintable.h"
-#include "cc-texture-utils.h"
 #include "cc-wacom-device.h"
 #include "cc-wacom-button-row.h"
 #include "cc-wacom-page.h"
@@ -70,7 +69,8 @@ struct _CcWacomPage
 	GtkWidget      *tablet_calibrate;
 	GtkWidget      *tablet_map_buttons;
 	AdwSwitchRow   *tablet_mode_row;
-	AdwSwitchRow   *tablet_left_handed_row;
+	AdwActionRow   *tablet_button_location_row;
+	AdwToggleGroup *tablet_button_location_group;
 	AdwSwitchRow   *tablet_aspect_ratio_row;
 	GtkWidget      *display_section;
 
@@ -560,6 +560,10 @@ cc_wacom_page_css_changed (GtkWidget         *widget,
 }
 
 static void
+on_tablet_button_location_changed (CcWacomPage *page,
+				   gchar       *key);
+
+static void
 cc_wacom_page_class_init (CcWacomPageClass *klass)
 {
 	GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -582,13 +586,15 @@ cc_wacom_page_class_init (CcWacomPageClass *klass)
 	gtk_widget_class_bind_template_child (widget_class, CcWacomPage, tablet_calibrate);
 	gtk_widget_class_bind_template_child (widget_class, CcWacomPage, tablet_map_buttons);
 	gtk_widget_class_bind_template_child (widget_class, CcWacomPage, tablet_mode_row);
-	gtk_widget_class_bind_template_child (widget_class, CcWacomPage, tablet_left_handed_row);
+	gtk_widget_class_bind_template_child (widget_class, CcWacomPage, tablet_button_location_row);
+	gtk_widget_class_bind_template_child (widget_class, CcWacomPage, tablet_button_location_group);
 	gtk_widget_class_bind_template_child (widget_class, CcWacomPage, tablet_aspect_ratio_row);
 	gtk_widget_class_bind_template_child (widget_class, CcWacomPage, display_section);
 
 	gtk_widget_class_bind_template_callback (widget_class, on_map_buttons_activated);
 	gtk_widget_class_bind_template_callback (widget_class, on_calibrate_activated);
 	gtk_widget_class_bind_template_callback (widget_class, on_display_selected);
+	gtk_widget_class_bind_template_callback (widget_class, on_tablet_button_location_changed);
 }
 
 static void
@@ -699,17 +705,14 @@ cc_wacom_page_init (CcWacomPage *page)
 }
 
 static void
-update_icon (CcWacomPage *page)
+set_icon_name (CcWacomPage *page,
+	       const char  *icon_name)
 {
-	const char *icon_name = cc_wacom_device_get_icon_name (page->stylus);
 	g_autofree gchar *resource = NULL;
-	g_autoptr (GdkPaintable) texture = NULL;
-	int scale = gtk_widget_get_scale_factor (GTK_WIDGET (page));
 
 	resource = g_strdup_printf ("/org/gnome/control-center/wacom/%s.svg", icon_name);
-	texture = cc_texture_new_from_resource_scaled (resource, scale);
 
-	cc_mask_paintable_set_paintable (page->tablet_paintable, GDK_PAINTABLE (texture));
+	cc_mask_paintable_set_resource_scaled (page->tablet_paintable, resource, GTK_WIDGET (page));
 }
 
 static void
@@ -782,6 +785,27 @@ tablet_mode_bind_get (GValue   *value,
 	return TRUE;
 }
 
+static void
+on_tablet_button_location_changed (CcWacomPage *page,
+				   gchar       *key)
+{
+	const char *active_name;
+	bool left_handed;
+
+	g_signal_handlers_block_by_func (page->tablet_button_location_group,
+					 on_tablet_button_location_changed,
+					 page);
+
+	active_name = adw_toggle_group_get_active_name (page->tablet_button_location_group);
+
+	left_handed = g_str_equal (active_name, "right");
+	g_settings_set_boolean (page->wacom_settings, "left-handed", left_handed);
+
+	g_signal_handlers_unblock_by_func (page->tablet_button_location_group,
+					   on_tablet_button_location_changed,
+					   page);
+}
+
 GtkWidget *
 cc_wacom_page_new (CcWacomPanel  *panel,
 		   CcWacomDevice *stylus)
@@ -789,6 +813,7 @@ cc_wacom_page_new (CcWacomPanel  *panel,
 	g_autoptr (GList) pads = NULL;
 	CcWacomPage *page;
 	GList *l;
+	gboolean left_handed;
 
 	g_return_val_if_fail (CC_IS_WACOM_DEVICE (stylus), NULL);
 
@@ -797,7 +822,7 @@ cc_wacom_page_new (CcWacomPanel  *panel,
 	page->panel = panel;
 	page->stylus = stylus;
 
-	gtk_widget_set_visible (GTK_WIDGET (page->tablet_left_handed_row),
+	gtk_widget_set_visible (GTK_WIDGET (page->tablet_button_location_row),
 				get_layout_type (stylus) == LAYOUT_REVERSIBLE);
 	gtk_widget_set_visible (page->tablet_calibrate,
 				get_layout_type (stylus) == LAYOUT_SCREEN);
@@ -823,18 +848,17 @@ cc_wacom_page_new (CcWacomPanel  *panel,
 				      tablet_mode_bind_get,
 				      tablet_mode_bind_set,
 				      NULL, NULL);
-	g_settings_bind (page->wacom_settings, "left-handed",
-			 page->tablet_left_handed_row, "active",
-			 G_SETTINGS_BIND_DEFAULT);
+
+	left_handed = g_settings_get_boolean (page->wacom_settings, "left-handed");
+	adw_toggle_group_set_active_name (page->tablet_button_location_group,
+					  left_handed ? "right" : "left");
+
 	g_settings_bind (page->wacom_settings, "keep-aspect",
 			 page->tablet_aspect_ratio_row, "active",
 			 G_SETTINGS_BIND_DEFAULT);
 
 	/* Tablet icon */
-	g_signal_connect_swapped (page, "map",
-				  G_CALLBACK (update_icon), page);
-	g_signal_connect_swapped (page, "notify::scale-factor",
-				  G_CALLBACK (update_icon), page);
+	set_icon_name (page, cc_wacom_device_get_icon_name (stylus));
 
 	/* Listen to changes in related/paired pads */
 	page->manager = gsd_device_manager_get ();

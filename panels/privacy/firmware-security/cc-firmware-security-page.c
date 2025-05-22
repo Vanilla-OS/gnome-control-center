@@ -61,8 +61,8 @@ struct _CcFirmwareSecurityPage
 
   /* event listbox */
   GtkWidget        *firmware_security_log_listbox;
-  GtkWidget        *firmware_security_log_stack;
   GtkWidget        *firmware_security_log_pgroup;
+  GtkWidget        *no_events_box;
 
   GCancellable     *cancellable;
   guint             timeout_id;
@@ -181,7 +181,7 @@ parse_event_variant_iter (CcFirmwareSecurityPage *self,
   g_autofree gchar *date_string = NULL;
   g_autoptr (GDateTime) date = NULL;
   g_autoptr (FwupdSecurityAttr) attr = fu_security_attr_new_from_variant(iter);
-  GtkWidget *row;
+  GtkWidget *row, *icon;
 
   /* unknown to us */
   if (attr->appstream_id == NULL || attr->title == NULL)
@@ -196,14 +196,15 @@ parse_event_variant_iter (CcFirmwareSecurityPage *self,
   row = adw_expander_row_new ();
   if (attr->flags & FWUPD_SECURITY_ATTR_FLAG_SUCCESS)
     {
-      adw_expander_row_set_icon_name (ADW_EXPANDER_ROW (row), "emblem-ok");
-      gtk_widget_add_css_class (row, "success-icon");
+      icon = gtk_image_new_from_icon_name ("check-plain");
+      gtk_widget_add_css_class (icon, "success-icon");
     }
   else
     {
-      adw_expander_row_set_icon_name (ADW_EXPANDER_ROW (row), "process-stop");
-      gtk_widget_add_css_class (row, "error-icon");
+      icon = gtk_image_new_from_icon_name ("process-stop");
+      gtk_widget_add_css_class (icon, "error-icon");
     }
+  adw_expander_row_add_prefix (ADW_EXPANDER_ROW (row), icon);
 
   if (attr->description != NULL)
     {
@@ -243,9 +244,8 @@ parse_event_variant_iter (CcFirmwareSecurityPage *self,
   g_string_append (self->event_log_output, "\n");
 
   adw_expander_row_set_subtitle (ADW_EXPANDER_ROW (row), date_string);
+  gtk_widget_set_visible (self->no_events_box, FALSE);
   adw_preferences_group_add (ADW_PREFERENCES_GROUP (self->firmware_security_log_pgroup), GTK_WIDGET (row));
-
-  adw_view_stack_set_visible_child_name (ADW_VIEW_STACK (self->firmware_security_log_stack), "events-page");
 }
 
 static void
@@ -384,7 +384,7 @@ static int
 on_timeout_cb (gpointer user_data)
 {
   CcFirmwareSecurityPage *self = CC_FIRMWARE_SECURITY_PAGE (user_data);
-  show_loading_page (self, "panel_show");
+  show_loading_page (self, "firmware-security-page");
   self->timeout_id = 0;
   return 0;
 }
@@ -393,7 +393,7 @@ static int
 on_timeout_unavaliable (gpointer user_data)
 {
   CcFirmwareSecurityPage *self = CC_FIRMWARE_SECURITY_PAGE (user_data);
-  show_loading_page (self, "panel_unavailable");
+  show_loading_page (self, "unavailable-page");
   self->timeout_id = 0;
   return 0;
 }
@@ -674,7 +674,7 @@ cc_firmware_security_page_class_init (CcFirmwareSecurityPageClass *klass)
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/privacy/firmware-security/cc-firmware-security-page.ui");
 
   gtk_widget_class_bind_template_child (widget_class, CcFirmwareSecurityPage, firmware_security_log_pgroup);
-  gtk_widget_class_bind_template_child (widget_class, CcFirmwareSecurityPage, firmware_security_log_stack);
+  gtk_widget_class_bind_template_child (widget_class, CcFirmwareSecurityPage, no_events_box);
   gtk_widget_class_bind_template_child (widget_class, CcFirmwareSecurityPage, hsi_button);
   gtk_widget_class_bind_template_child (widget_class, CcFirmwareSecurityPage, hsi_description);
   gtk_widget_class_bind_template_child (widget_class, CcFirmwareSecurityPage, hsi_icon);

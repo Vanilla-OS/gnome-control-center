@@ -1,8 +1,14 @@
 include:
- - remote: 'https://gitlab.freedesktop.org/freedesktop/ci-templates/-/raw/145b1bc7ef1702d2bd71584010d7113c6786a506/templates/fedora.yml'
+ - remote: 'https://gitlab.gnome.org/Infrastructure/freedesktop-ci-templates/-/raw/765bb77a5e1274b0daeb14344e7caa6cd3876232/templates/fedora.yml'
+ - component: gitlab.gnome.org/GNOME/citemplates/release-service@master
+   inputs:
+     dist-job-name: release-build
+     tarball-artifact-path: $TARBALL_ARTIFACT_PATH
 
 variables:
   FDO_UPSTREAM_REPO: gnome/gnome-control-center
+  MESON_BUILD_DIR: _build
+  TARBALL_ARTIFACT_PATH: "$MESON_BUILD_DIR/meson-dist/$CI_PROJECT_NAME-$CI_COMMIT_TAG.tar.xz"
 
 stages:
   - prepare
@@ -16,7 +22,7 @@ stages:
   when: always
   paths:
     - ./*.log
-    - _build/meson-logs/
+    - $MESON_BUILD_DIR/meson-logs/
 
 .Build Output: &build_output
   artifacts:
@@ -24,7 +30,7 @@ stages:
     when: always
     paths:
       - ./*.log
-      - _build/
+      - $MESON_BUILD_DIR/
     expire_in: 3h30min
 
 .Show Info: &environment_information
@@ -33,13 +39,13 @@ stages:
 
 .Build Procedure: &build_procedure
   echo "== Building ==" &&
-  meson setup _build ${BUILD_OPTS} -Dprofile=development -Dwarning_level=2 &&
-  meson compile -C _build 2>&1 | tee compilation.log
+  meson setup $MESON_BUILD_DIR ${BUILD_OPTS} -Dprofile=development -Dwarning_level=2 &&
+  meson compile -C $MESON_BUILD_DIR 2>&1 | tee compilation.log
 
 .Run Tests: &run_tests
   export GSK_RENDERER=ngl &&
   echo "== Testing ==" &&
-  meson test -C _build --verbose --no-stdsplit --no-rebuild
+  meson test -C $MESON_BUILD_DIR --verbose --no-stdsplit --no-rebuild
 
 .fedora.container.common:
   variables:
@@ -49,7 +55,7 @@ stages:
     # Should probably also switch away from 'rawhide',
     # to stable fedora branch as well.
     BRANCH_NAME: 'main'
-    CONTAINER_TAG: '2024-10-15.0'
+    CONTAINER_TAG: '2025-03-13.0'
     FEDORA_VERSION: rawhide
     # Derive FDO variables from this automatically.
     # DO NOT edit, instead change the variables above
@@ -61,7 +67,7 @@ stages:
 #          Create CI Docker Images          #
 #############################################
 
-# See also https://gitlab.freedesktop.org/freedesktop/ci-templates
+# See also https://gitlab.gnome.org/Infrastructure/freedesktop-ci-templates
 build.container.fedora@x86_64:
   extends:
   - '.fdo.container-build@fedora'
@@ -78,6 +84,7 @@ build.container.fedora@x86_64:
     # - libsass-devel, sassc are often needed for building libadwaita, gtk, etc.
     FDO_DISTRIBUTION_PACKAGES: >-
       dnf5-plugins
+      gawk
       git
       llvm clang libasan libtsan libubsan compiler-rt gcovr
       meson
@@ -92,36 +99,36 @@ build.container.fedora@x86_64:
       dnf builddep -y gsettings-desktop-schemas && \
       git clone --depth 1 https://gitlab.gnome.org/GNOME/gsettings-desktop-schemas.git && \
         cd gsettings-desktop-schemas && \
-        meson setup _build --prefix=/usr && \
-        meson compile -C _build && \
-        meson install -C _build && \
+        meson setup $MESON_BUILD_DIR --prefix=/usr && \
+        meson compile -C $MESON_BUILD_DIR && \
+        meson install -C $MESON_BUILD_DIR && \
         cd .. && \
       dnf builddep -y gnome-settings-daemon && \
       git clone --depth 1 https://gitlab.gnome.org/GNOME/gnome-settings-daemon.git && \
         cd gnome-settings-daemon && \
-        meson setup _build --prefix=/usr && \
-        meson compile -C _build && \
-        meson install -C _build && \
+        meson setup $MESON_BUILD_DIR --prefix=/usr && \
+        meson compile -C $MESON_BUILD_DIR && \
+        meson install -C $MESON_BUILD_DIR && \
         cd .. && \
       dnf builddep -y gtk4 && \
       git clone --depth 1 https://gitlab.gnome.org/GNOME/gtk.git && \
         cd gtk && \
-        meson setup _build --prefix=/usr && \
-        meson compile -C _build && \
-        meson install -C _build && \
+        meson setup $MESON_BUILD_DIR --prefix=/usr && \
+        meson compile -C $MESON_BUILD_DIR && \
+        meson install -C $MESON_BUILD_DIR && \
         cd .. && \
       dnf builddep -y libadwaita && \
       git clone --depth 1 https://gitlab.gnome.org/GNOME/libadwaita.git && \
         cd libadwaita && \
-        meson setup _build --prefix=/usr -Dtests=false -Dexamples=false && \
-        meson compile -C _build && \
-        meson install -C _build && \
+        meson setup $MESON_BUILD_DIR --prefix=/usr -Dtests=false -Dexamples=false && \
+        meson compile -C $MESON_BUILD_DIR && \
+        meson install -C $MESON_BUILD_DIR && \
         cd .. && \
       git clone --depth 1 https://gitlab.gnome.org/GNOME/gnome-online-accounts.git && \
         cd gnome-online-accounts && \
-        meson setup _build --prefix=/usr -Dfedora=true  && \
-        meson compile -C _build && \
-        meson install -C _build && \
+        meson setup $MESON_BUILD_DIR --prefix=/usr -Dfedora=true  && \
+        meson compile -C $MESON_BUILD_DIR && \
+        meson install -C $MESON_BUILD_DIR && \
         cd .. && \
       dnf remove -y systemtap-runtime
 
@@ -143,7 +150,7 @@ build:
     - *build_procedure
 
     - echo "== Installing =="
-    - meson install -C _build
+    - meson install -C $MESON_BUILD_DIR
 
     - echo "== Report =="
     - build-aux/ci/ci-helper.sh "WARNINGS"
@@ -210,21 +217,28 @@ test:
     - *environment_information
     - *run_tests
 
-    - |
-      if [[ -n "${CI_COMMIT_TAG}" ]]; then
-        echo "== Distro Test =="
-        meson dist -C _build
-      fi
-
   artifacts:
     <<: *build_logs
     reports:
-        junit: '_build/meson-logs/testlog.junit.xml'
+        junit: '$MESON_BUILD_DIR/meson-logs/testlog.junit.xml'
 
   except:
     variables:
       - $CI_PIPELINE_SOURCE == "schedule"
       - $CI_COMMIT_TITLE =~ /^Update.*translation$/
+
+release-build:
+  stage: build
+  extends:
+    - '.fdo.suffixed-image@fedora'
+    - '.fedora.container.common'
+  script:
+    - meson subprojects download gvc libgxdp
+    - meson setup $MESON_BUILD_DIR --wrap-mode=nodownload
+    - meson dist -C $MESON_BUILD_DIR --no-tests --include-subprojects
+  artifacts:
+    paths:
+      - $TARBALL_ARTIFACT_PATH
 
 # Runs the coverage test.
 coverage:
@@ -245,12 +259,12 @@ coverage:
     - *build_procedure
     - *run_tests
 
-    - ninja -C _build coverage-html
+    - ninja -C $MESON_BUILD_DIR coverage-html
 
     # Parse the report to get the coverage result
     - |
       echo == Coverage ==
-      sed -e 's/<[^>]*>//g' _build/meson-logs/coveragereport/index.html | tr -d ' \t' | grep -A3 -P '^Lines:$'  | tr '\n' ' '; echo
+      sed -e 's/<[^>]*>//g' $MESON_BUILD_DIR/meson-logs/coveragereport/index.html | tr -d ' \t' | grep -A3 -P '^Lines:$'  | tr '\n' ' '; echo
 
   artifacts:
     <<: *build_logs
@@ -263,7 +277,7 @@ coverage:
 ##
 # Stage: Deploy
 #
-# Publishes the Coverage Report generated above
+# Publishes release artifacts and the Coverage Report generated above
 ##
 pages:
   extends:
@@ -273,7 +287,7 @@ pages:
   dependencies:
     - coverage
   script:
-    - mv _build/meson-logs/coveragereport/ public/
+    - mv $MESON_BUILD_DIR/meson-logs/coveragereport/ public/
   artifacts:
     paths:
       - public

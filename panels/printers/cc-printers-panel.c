@@ -249,15 +249,10 @@ static void
 cc_printers_panel_constructed (GObject *object)
 {
   CcPrintersPanel *self = CC_PRINTERS_PANEL (object);
-  CcShell *shell;
 
   G_OBJECT_CLASS (cc_printers_panel_parent_class)->constructed (object);
 
-  shell = cc_panel_get_shell (CC_PANEL (self));
-
   gtk_search_bar_connect_entry (self->search_bar, self->search_entry);
-  gtk_search_bar_set_key_capture_widget (self->search_bar,
-                                         GTK_WIDGET (shell));
 }
 
 static void
@@ -674,7 +669,7 @@ on_printer_deleted (CcPrintersPanel *self,
       self->toast = adw_toast_new ("");
 
       adw_toast_overlay_add_toast (self->toast_overlay, self->toast);
-      adw_toast_set_button_label (self->toast, _("Undo"));
+      adw_toast_set_button_label (self->toast, _("_Undo"));
       adw_toast_set_timeout (self->toast, 10);
 
       g_signal_connect_swapped (self->toast, "button-clicked",
@@ -834,8 +829,9 @@ actualize_printers_list_cb (GObject      *source_object,
     {
       GtkWidget *next = gtk_widget_get_next_sibling (child);
 
-      if (remove_nonexisting_entry (self, PP_PRINTER_ENTRY (child)))
-        gtk_list_box_remove (self->content, child);
+      if (PP_IS_PRINTER_ENTRY (child))
+        if (remove_nonexisting_entry (self, PP_PRINTER_ENTRY (child)))
+          gtk_list_box_remove (self->content, child);
 
       child = next;
     }
@@ -971,7 +967,7 @@ printer_add_cb (CcPrintersPanel *self)
   gtk_window_set_transient_for (GTK_WINDOW (self->pp_new_printer_dialog),
                                             GTK_WINDOW (native));
 
-  gtk_widget_set_visible (GTK_WIDGET (self->pp_new_printer_dialog), TRUE);
+  gtk_window_present (GTK_WINDOW (self->pp_new_printer_dialog));
 }
 
 static void
@@ -1210,6 +1206,8 @@ cc_printers_panel_class_init (CcPrintersPanelClass *klass)
                                                          FALSE,
                                                          G_PARAM_READWRITE));
 
+  g_type_ensure (CC_TYPE_PERMISSION_INFOBAR);
+
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/printers/cc-printers-panel.ui");
 
   gtk_widget_class_bind_template_child (widget_class, CcPrintersPanel, content);
@@ -1254,8 +1252,6 @@ cc_printers_panel_init (CcPrintersPanel *self)
                                                  g_free,
                                                  NULL);
 
-  g_type_ensure (CC_TYPE_PERMISSION_INFOBAR);
-
   g_object_set_data_full (self->reference, "self", self, NULL);
 
   /* connect signals */
@@ -1293,9 +1289,6 @@ cc_printers_panel_init (CcPrintersPanel *self)
 
       cc_permission_infobar_set_permission (self->permission_infobar,
                                             self->permission);
-      cc_permission_infobar_set_title (self->permission_infobar,
-				       _("Unlock to add printers and change settings"));
-
       on_permission_changed (self);
     }
   else

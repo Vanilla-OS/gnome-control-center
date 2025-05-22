@@ -322,7 +322,7 @@
                 {
                     "type" : "git",
                     "url" : "https://gitlab.freedesktop.org/upower/upower.git",
-                    "tag" : "v1.90.2"
+                    "tag" : "v1.90.6"
                 }
             ]
         },
@@ -367,6 +367,7 @@
                 "-Diptables=/usr/bin/true",
                 "-Dlibpsl=false",
                 "-Dmodem_manager=false",
+                "-Dnm_cloud_setup=false",
                 "-Dnmtui=false",
                 "-Dovs=false",
                 "-Dppp=false",
@@ -429,6 +430,34 @@
                     "type" : "git",
                     "url" : "https://gitlab.gnome.org/GNOME/network-manager-applet.git",
                     "branch" : "main"
+                }
+            ]
+        },
+        {
+            "name" : "NetworkManager-openvpn",
+            "config-opts" : [
+                "--with-gnome",
+                "--with-gtk4"
+            ],
+            "sources" : [
+                {
+                    "type" : "git",
+                    "branch": "main",
+                    "url" : "https://gitlab.gnome.org/GNOME/NetworkManager-openvpn.git"
+                }
+            ]
+        },
+        {
+            "name" : "NetworkManager-vpnc",
+            "config-opts" : [
+                "--with-gnome",
+                "--with-gtk4"
+            ],
+            "sources" : [
+                {
+                    "type" : "git",
+                    "branch": "main",
+                    "url" : "https://gitlab.gnome.org/GNOME/NetworkManager-vpnc.git"
                 }
             ]
         },
@@ -688,6 +717,20 @@
             ]
         },
         {
+            "name": "python3-docutils",
+            "buildsystem": "simple",
+            "build-commands": [
+                "pip3 install --verbose --exists-action=i --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} \"docutils\" --no-build-isolation"
+            ],
+            "sources": [
+                {
+                    "type": "file",
+                    "url": "https://files.pythonhosted.org/packages/8f/d7/9322c609343d929e75e7e5e6255e614fcc67572cfd083959cdef3b7aad79/docutils-0.21.2-py3-none-any.whl",
+                    "sha256": "dafca5b9e384f0e419294eb4d2ff9fa826435bf15f15b7bd45723e8ad76811b2"
+                }
+            ]
+        },
+        {
             "name" : "mutter",
             "buildsystem" : "meson",
             "config-opts" : [
@@ -695,7 +738,8 @@
                 "-Dglx=false",
                 "-Dxwayland=false",
                 "-Dwayland=false",
-                "-Dsystemd=false",
+                "-Dlogind=false",
+                "-Dbash_completion=false",
                 "-Dnative_backend=false",
                 "-Dremote_desktop=false",
                 "-Degl_device=false",
@@ -712,6 +756,35 @@
                     "type" : "git",
                     "branch" : "main",
                     "url" : "https://gitlab.gnome.org/gnome/mutter.git"
+                }
+            ],
+            "modules": [
+                {
+                    "name" : "libdisplay-info",
+                    "buildsystem" : "meson",
+                    "sources" : [
+                        {
+                            "type" : "git",
+                            "branch" : "main",
+                            "url" : "https://gitlab.freedesktop.org/emersion/libdisplay-info.git"
+                        }
+                    ],
+                    "modules": [
+                        {
+                            "name" : "hwdata",
+                            "config-opts" : [
+                                "--prefix=/app",
+                                "--datadir=/app/share",
+                                "--disable-blacklist"
+                            ],
+                            "sources" : [
+                                {
+                                    "type" : "git",
+                                    "url" : "https://github.com/vcrhonek/hwdata.git"
+                                }
+                            ]
+                        }
+                    ]
                 }
             ]
         },
