@@ -1,8 +1,18 @@
+From: Debian GNOME Maintainers
+ <pkg-gnome-maintainers@lists.alioth.debian.org>
+Date: Thu, 22 May 2025 10:42:33 -0500
+Subject: vanilla-prime-utility
+
+---
+ panels/display/cc-display-panel.c  | 36 ++++++++++++++++++++++++++++++++++++
+ panels/display/cc-display-panel.ui | 20 ++++++++++++++++++++
+ 2 files changed, 56 insertions(+)
+
 diff --git a/panels/display/cc-display-panel.c b/panels/display/cc-display-panel.c
-index 58eeed23b..48ac61b34 100644
+index f0ab11b..b455462 100644
 --- a/panels/display/cc-display-panel.c
 +++ b/panels/display/cc-display-panel.c
-@@ -102,6 +102,7 @@ struct _CcDisplayPanel
+@@ -104,6 +104,7 @@ struct _CcDisplayPanel
    AdwNavigationPage *display_settings_page;
    AdwComboRow    *primary_display_row;
    AdwPreferencesGroup *single_display_settings_group;
@@ -10,7 +20,7 @@ index 58eeed23b..48ac61b34 100644
  
    GtkShortcut *escape_shortcut;
  
-@@ -549,6 +550,37 @@ on_toplevel_escape_pressed_cb (GtkWidget      *widget,
+@@ -548,6 +549,37 @@ on_toplevel_escape_pressed_cb (GtkWidget      *widget,
    return GDK_EVENT_PROPAGATE;
  }
  
@@ -48,7 +58,7 @@ index 58eeed23b..48ac61b34 100644
  static void
  cc_display_panel_constructed (GObject *object)
  {
-@@ -620,6 +652,7 @@ cc_display_panel_class_init (CcDisplayPanelClass *klass)
+@@ -618,6 +650,7 @@ cc_display_panel_class_init (CcDisplayPanelClass *klass)
    gtk_widget_class_bind_template_callback (widget_class, on_primary_display_selected_item_changed_cb);
    gtk_widget_class_bind_template_callback (widget_class, on_screen_changed);
    gtk_widget_class_bind_template_callback (widget_class, on_toplevel_escape_pressed_cb);
@@ -56,7 +66,7 @@ index 58eeed23b..48ac61b34 100644
  }
  
  static void
-@@ -1113,6 +1146,9 @@ cc_display_panel_init (CcDisplayPanel *self)
+@@ -1111,6 +1144,9 @@ cc_display_panel_init (CcDisplayPanel *self)
    else
      g_clear_object (&self->up_client);
  
@@ -67,10 +77,10 @@ index 58eeed23b..48ac61b34 100644
  
    cc_object_storage_create_dbus_proxy (G_BUS_TYPE_SESSION,
 diff --git a/panels/display/cc-display-panel.ui b/panels/display/cc-display-panel.ui
-index b6e8c5391..e13e51ad9 100644
+index fc0b425..d7edf17 100644
 --- a/panels/display/cc-display-panel.ui
 +++ b/panels/display/cc-display-panel.ui
-@@ -160,6 +160,26 @@
+@@ -157,6 +157,26 @@
                    </object>
                  </child>
  

@@ -1,8 +1,17 @@
+From: Debian GNOME Maintainers
+ <pkg-gnome-maintainers@lists.alioth.debian.org>
+Date: Thu, 22 May 2025 10:42:33 -0500
+Subject: vanilla-updates-utility
+
+---
+ panels/system/cc-system-panel.c | 50 +++++------------------------------------
+ 1 file changed, 6 insertions(+), 44 deletions(-)
+
 diff --git a/panels/system/cc-system-panel.c b/panels/system/cc-system-panel.c
-index 36f1b8190..005e4d60e 100644
+index a81e9a4..7573c4b 100644
 --- a/panels/system/cc-system-panel.c
 +++ b/panels/system/cc-system-panel.c
-@@ -53,46 +53,16 @@ struct _CcSystemPanel
+@@ -52,46 +52,16 @@ struct _CcSystemPanel
  CC_PANEL_REGISTER (CcSystemPanel, cc_system_panel)
  
  static gboolean
@@ -52,7 +61,7 @@ index 36f1b8190..005e4d60e 100644
  }
  
  static void
-@@ -102,17 +72,9 @@ cc_system_page_open_software_update (CcSystemPanel *self)
+@@ -101,17 +71,9 @@ cc_system_page_open_software_update (CcSystemPanel *self)
    gboolean ret;
    char *argv[3];
  
