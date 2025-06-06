@@ -1,6 +1,6 @@
-gnome-control-center (1:48.2-1) UNRELEASED; urgency=medium
+gnome-control-center (1:48.2-1) experimental; urgency=medium
 
-  * New upstream release
+  * New upstream bugfix release
 
  -- Jeremy Bícha <jbicha@ubuntu.com>  Fri, 06 Jun 2025 14:37:54 -0400
 
