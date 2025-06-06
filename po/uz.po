@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: gnome-control-center-2.0 trunk\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-control-center/"
 "issues\n"
-"POT-Creation-Date: 2025-03-31 11:39+0000\n"
-"PO-Revision-Date: 2025-04-03 10:54+0500\n"
+"POT-Creation-Date: 2025-05-20 12:23+0000\n"
+"PO-Revision-Date: 2025-05-23 00:17+0900\n"
 "Last-Translator: Nurali Abdurahmonov <mavnur@gmail.com>\n"
 "Language-Team: Uzbek\n"
 "Language: uz\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.5\n"
+"X-Generator: Poedit 3.4.2\n"
 
 #: global-shortcuts-provider/cc-global-shortcut-dialog.ui:6
 msgid "Add Keyboard Shortcuts"
@@ -101,7 +101,7 @@ msgstr "_O’chirish"
 msgid "_Remove All Shortcuts"
 msgstr "_Barcha yorliqlarni olib tashlash"
 
-#: panels/applications/cc-application-shortcut-dialog.c:263
+#: panels/applications/cc-application-shortcut-dialog.c:265
 #, c-format
 msgid "%s has registered the following global shortcuts"
 msgstr "%s quyidagi global yorliqlarni qayd etdi"
@@ -110,36 +110,36 @@ msgstr "%s quyidagi global yorliqlarni qayd etdi"
 msgid "Global Shortcuts"
 msgstr "Global yorliqlar"
 
-#: panels/applications/cc-applications-panel.c:881
+#: panels/applications/cc-applications-panel.c:880
 #, fuzzy
 #| msgid "System Sounds"
 msgid "System Bus"
 msgstr "Tizim avtobusi"
 
-#: panels/applications/cc-applications-panel.c:881
-#: panels/applications/cc-applications-panel.c:883
-#: panels/applications/cc-applications-panel.c:896
-#: panels/applications/cc-applications-panel.c:901
+#: panels/applications/cc-applications-panel.c:880
+#: panels/applications/cc-applications-panel.c:882
+#: panels/applications/cc-applications-panel.c:895
+#: panels/applications/cc-applications-panel.c:900
 msgid "Full access"
 msgstr "To’liq ruxsat"
 
-#: panels/applications/cc-applications-panel.c:883
+#: panels/applications/cc-applications-panel.c:882
 #, fuzzy
 msgid "Session Bus"
 msgstr "Seans avtobusidan foydalaning"
 
-#: panels/applications/cc-applications-panel.c:887
+#: panels/applications/cc-applications-panel.c:886
 #: panels/privacy/bolt/cc-bolt-page.ui:164
 #: panels/privacy/bolt/cc-bolt-page.ui:202
 #: panels/privacy/cc-privacy-panel.ui:72
 msgid "Devices"
 msgstr "Uskunalar"
 
-#: panels/applications/cc-applications-panel.c:887
+#: panels/applications/cc-applications-panel.c:886
 msgid "Full access to /dev"
 msgstr "/dev ga to’liq ruxsat"
 
-#: panels/applications/cc-applications-panel.c:891
+#: panels/applications/cc-applications-panel.c:890
 #: panels/network/cc-network-panel.ui:8
 #: panels/network/gnome-network-panel.desktop.in:3
 #: panels/network/network-mobile.ui:235 panels/wwan/cc-wwan-device-page.ui:61
@@ -147,88 +147,84 @@ msgstr "/dev ga to’liq ruxsat"
 msgid "Network"
 msgstr "Tarmoq"
 
-#: panels/applications/cc-applications-panel.c:891
+#: panels/applications/cc-applications-panel.c:890
 msgid "Has network access"
 msgstr "Tarmoqqa kirish imkoniyati mavjud"
 
-#: panels/applications/cc-applications-panel.c:896
-#: panels/applications/cc-applications-panel.c:898
+#: panels/applications/cc-applications-panel.c:895
+#: panels/applications/cc-applications-panel.c:897
 #: panels/search/cc-search-locations-page.c:421
 msgid "Home"
 msgstr "Uy"
 
-#: panels/applications/cc-applications-panel.c:898
-#: panels/applications/cc-applications-panel.c:903
+#: panels/applications/cc-applications-panel.c:897
+#: panels/applications/cc-applications-panel.c:902
 msgid "Read-only"
 msgstr "Faqat o’qish uchun"
 
-#: panels/applications/cc-applications-panel.c:901
-#: panels/applications/cc-applications-panel.c:903
+#: panels/applications/cc-applications-panel.c:900
+#: panels/applications/cc-applications-panel.c:902
 msgid "File System"
 msgstr "Fayl tizimi"
 
-#: panels/applications/cc-applications-panel.c:907
+#: panels/applications/cc-applications-panel.c:906
 #: panels/keyboard/01-launchers.xml.in:6
 #: shell/appdata/org.gnome.Settings.appdata.xml.in.in:7 shell/cc-window.c:804
 #: shell/cc-window.ui:18 shell/org.gnome.Settings.desktop.in:3
 msgid "Settings"
 msgstr "Sozlamalar"
 
-#: panels/applications/cc-applications-panel.c:907
+#: panels/applications/cc-applications-panel.c:906
 msgid "Can change settings"
 msgstr "Sozlamalarni o’zgartirishi mumkin"
 
-#. TRANSLATORS: %s is an app name.
-#: panels/applications/cc-applications-panel.c:911
-#, c-format
+#: panels/applications/cc-applications-panel.c:908
+#, fuzzy, c-format
+#| msgid ""
+#| "%s requires access to the following system resources. To stop this "
+#| "access, the app must be removed."
 msgid ""
-"%s requires access to the following system resources. To stop this access, "
-"the app must be removed."
+"<b>%s</b> requires access to the following system resources. To stop this "
+"access, the app must be removed."
 msgstr ""
 "%s quyidagi tizim resurslariga kirishni talab qiladi. Ushbu kirishni "
 "to’xtatish uchun ilovani olib tashlash kerak."
 
-#: panels/applications/cc-applications-panel.c:915
+#: panels/applications/cc-applications-panel.c:912
 #, c-format
 msgid "%u permission"
 msgid_plural "%u permissions"
 msgstr[0] "%u ruxsati"
 msgstr[1] "%u ruxsat"
 
-#: panels/applications/cc-applications-panel.c:1087
+#: panels/applications/cc-applications-panel.c:1084
 msgid "Remove Link Type"
 msgstr "Havola turini olib tashlang"
 
-#: panels/applications/cc-applications-panel.c:1118
+#: panels/applications/cc-applications-panel.c:1115
 msgid "Remove File Type"
 msgstr "Fayl turini o’chirish"
 
-#: panels/applications/cc-applications-panel.c:1251
+#: panels/applications/cc-applications-panel.c:1247
 #, c-format
 msgid "%u type"
 msgid_plural "%u types"
 msgstr[0] "%u turi"
 msgstr[1] "%u turlari"
 
-#. TRANSLATORS: %s is an app name.
-#: panels/applications/cc-applications-panel.c:1260
-#, c-format
-msgid "%s is used to open the following types of files and links"
+#: panels/applications/cc-applications-panel.c:1254
+#, fuzzy, c-format
+#| msgid "%s is used to open the following types of files and links"
+msgid "<b>%s</b> is used to open the following types of files and links"
 msgstr "%s quyidagi turdagi fayllar va havolalarni ochish uchun ishlatiladi"
 
 #. TRANSLATORS: %s is an app name.
-#: panels/applications/cc-applications-panel.c:1303
-#, c-format
-msgid "How much disk space %s is occupying with app data and caches"
+#: panels/applications/cc-applications-panel.c:1295
+#, fuzzy, c-format
+#| msgid "How much disk space %s is occupying with app data and caches"
+msgid "How much disk space <b>%s</b> is occupying with app data and caches"
 msgstr ""
 "%s ilova maʼlumotlari va keshlari bilan qancha disk maydonini egallaydi"
-
-#: panels/applications/cc-applications-panel.c:1468
-#, c-format
-msgid "%u action"
-msgid_plural "%u actions"
-msgstr[0] "%u harakat"
-msgstr[1] "%u amal"
 
 #: panels/applications/cc-applications-panel.ui:7
 #: panels/applications/gnome-applications-panel.desktop.in:3
@@ -363,7 +359,7 @@ msgstr "Oʻchirilgan"
 
 #: panels/applications/cc-applications-panel.ui:294
 msgid "_Notifications"
-msgstr "_Bildirishnomalar"
+msgstr "Bildirishnomalar"
 
 #: panels/applications/cc-applications-panel.ui:295
 msgid "Show system notifications"
@@ -378,9 +374,8 @@ msgid "Allow activity when the app is closed"
 msgstr "Ilova yopilganda faoliyatga ruxsat bering"
 
 #: panels/applications/cc-applications-panel.ui:310
-#, fuzzy
 msgid "Scr_eenshots"
-msgstr "Scr_eenshots"
+msgstr "Skr_inshotlar"
 
 #: panels/applications/cc-applications-panel.ui:311
 msgid "Take pictures of the screen at any time"
@@ -395,10 +390,8 @@ msgid "Change the desktop wallpaper"
 msgstr "Ish stoli fon rasmini o’zgartiring"
 
 #: panels/applications/cc-applications-panel.ui:326
-#, fuzzy
-#| msgid "Sounds"
 msgid "So_unds"
-msgstr "So_unds"
+msgstr "To_vushlar"
 
 #: panels/applications/cc-applications-panel.ui:327
 #: panels/applications/cc-applications-panel.ui:335
@@ -419,9 +412,8 @@ msgid "Block standard keyboard shortcuts"
 msgstr "Standart klaviatura yorliqlarini bloklash"
 
 #: panels/applications/cc-applications-panel.ui:350
-#, fuzzy
 msgid "C_amera"
-msgstr "C_amera"
+msgstr "K_amera"
 
 #: panels/applications/cc-applications-panel.ui:351
 #: panels/applications/cc-applications-panel.ui:359
@@ -558,9 +550,8 @@ msgid "_Calendar"
 msgstr "_Taqvim"
 
 #: panels/applications/cc-default-apps-page.ui:32
-#, fuzzy
 msgid "M_usic"
-msgstr "M_usic"
+msgstr "M_usiqa"
 
 #: panels/applications/cc-default-apps-page.ui:41
 msgid "_Video"
@@ -682,9 +673,8 @@ msgid "Music Pla_yer"
 msgstr "Musiqa pleyeri"
 
 #: panels/applications/cc-removable-media-settings.ui:45
-#, fuzzy
 msgid "P_hotos"
-msgstr "P_hotos"
+msgstr "Rasmlar"
 
 #: panels/applications/cc-removable-media-settings.ui:58
 msgid "Sof_tware"
@@ -990,7 +980,6 @@ msgid "Teal"
 msgstr "Teal"
 
 #: panels/background/cc-background-panel.c:143
-#| msgid "Screen"
 msgid "Green"
 msgstr "Yashil"
 
@@ -1594,7 +1583,6 @@ msgid "40 minutes"
 msgstr "40 daqiqa"
 
 #: panels/color/cc-color-panel.ui:628
-#| msgid "_Medium"
 msgctxt "Calibration quality"
 msgid "Medium"
 msgstr "O'rta"
@@ -1752,7 +1740,6 @@ msgstr "Ko'proq…"
 
 #: panels/common/cc-list-row-info-button.ui:6
 #: panels/wellbeing/cc-wellbeing-panel.ui:21
-#| msgid "Set your personal information"
 msgid "More Information"
 msgstr "Batafsil"
 
@@ -1797,7 +1784,7 @@ msgstr "Kamaytirish daqiqasi"
 
 #: panels/common/cc-util.c:130
 #: panels/network/connection-editor/ce-page-details.c:188
-#: panels/wellbeing/cc-screen-time-statistics-row.c:973
+#: panels/wellbeing/cc-screen-time-statistics-row.c:975
 msgid "Today"
 msgstr "Bugun"
 
@@ -1841,7 +1828,6 @@ msgstr[1] "%d daqiqa"
 
 #: panels/common/cc-util.c:188
 #, c-format
-#| msgid "seconds"
 msgid "%d second"
 msgid_plural "%d seconds"
 msgstr[0] "%d soniya"
@@ -1884,7 +1870,6 @@ msgstr "%s"
 
 #. 0 seconds
 #: panels/common/cc-util.c:229
-#| msgid "seconds"
 msgid "0 seconds"
 msgstr "0 soniya"
 
@@ -1919,7 +1904,7 @@ msgstr "Buning sababi apparat cheklovlari bo'lishi mumkin."
 #: panels/display/cc-display-panel.ui:19
 #: panels/display/gnome-display-panel.desktop.in:3
 msgid "Displays"
-msgstr "Versiya ma'lumotlarini ko'rsatadi"
+msgstr "Displeylar"
 
 #: panels/display/cc-display-panel.ui:45 panels/display/cc-display-panel.ui:200
 #: panels/display/cc-display-panel.ui:262
@@ -2282,6 +2267,13 @@ msgstr "Uy jildi"
 #: panels/keyboard/01-launchers.xml.in:16
 #: panels/printers/cc-printers-panel.ui:21 panels/search/cc-search-panel.ui:6
 #: panels/search/gnome-search-panel.desktop.in:4 shell/cc-window.ui:26
+msgid "Search"
+msgstr "Qidirish"
+
+#: panels/keyboard/01-launchers.xml.in:16
+#, fuzzy
+#| msgid "Search"
+msgctxt "keybinding"
 msgid "Search"
 msgstr "Qidirish"
 
@@ -2726,9 +2718,8 @@ msgid "Mouse"
 msgstr "Sichqoncha"
 
 #: panels/mouse/cc-mouse-panel.ui:110 panels/mouse/cc-mouse-panel.ui:212
-#, fuzzy
 msgid "Po_inter Speed"
-msgstr "Po_inter tezligi"
+msgstr "Ko_ʻrsatkich tezligi"
 
 #: panels/mouse/cc-mouse-panel.ui:117 panels/mouse/cc-mouse-panel.ui:219
 #: panels/universal-access/cc-ua-typing-page.ui:59
@@ -3053,7 +3044,6 @@ msgstr "URL"
 #: panels/network/cc-net-proxy-page.ui:147
 #: panels/network/cc-net-proxy-page.ui:173
 #: panels/network/cc-net-proxy-page.ui:199
-#| msgid "Port:"
 msgid "Port"
 msgstr "Port"
 
@@ -3087,7 +3077,6 @@ msgstr ""
 
 #: panels/network/cc-network-panel.ui:64 panels/network/cc-network-panel.ui:90
 #: panels/network/connection-editor/net-connection-editor.c:743
-#, fuzzy
 msgid "VPN"
 msgstr "VPN"
 
@@ -3241,7 +3230,6 @@ msgid "Wi-Fi"
 msgstr "Wi-fi"
 
 #: panels/network/cc-wifi-panel.ui:44
-#| msgid "Accel Mode"
 msgid "Airplane Mode"
 msgstr "Samolyot rejimi"
 
@@ -3286,9 +3274,8 @@ msgstr ""
 "Ushbu qurilma bilan Wi-Fi-dan foydalanish uchun hotspotni o'chiring."
 
 #: panels/network/cc-wifi-panel.ui:161
-#, fuzzy
 msgid "T_urn Off Hotspot…"
-msgstr "Hotspotni oʻchirish…"
+msgstr "Hot_spotni oʻchirish…"
 
 #: panels/network/cc-wifi-panel.ui:183
 msgid "Visible Networks"
@@ -3529,7 +3516,6 @@ msgstr "IPv6 manzili"
 #: panels/network/net-device-ethernet.c:151
 #: panels/network/net-device-mobile.c:445
 #: panels/network/net-device-mobile.c:446 panels/network/network-mobile.ui:163
-#| msgid "Address"
 msgid "IP Address"
 msgstr "IP-manzil"
 
@@ -3590,7 +3576,6 @@ msgstr "Avtomatik DNS yoqilgan. Avtomatik DNS-ni o'chirib qo'ymoqchimisiz?"
 
 #: panels/network/connection-editor/ce-page-ip4.c:293
 #: panels/network/connection-editor/ce-page-ip6.c:277
-#| msgid "Address"
 msgid "Delete Address"
 msgstr "Manzilni o'chirish"
 
@@ -3876,9 +3861,8 @@ msgid "Import from file…"
 msgstr "Fayldan import qilish…"
 
 #: panels/network/connection-editor/security-page.ui:22
-#, fuzzy
 msgid "S_ecurity"
-msgstr "S_xavfsizlik"
+msgstr "Xavfs_izlik"
 
 #: panels/network/connection-editor/vpn-helpers.c:141
 msgid "Cannot Import VPN Connection"
@@ -4173,7 +4157,6 @@ msgid "Not connected"
 msgstr "“%s” ulandi"
 
 #: panels/network/network-mobile.ui:310
-#| msgid "_Activate"
 msgid "Active"
 msgstr "Aktiv"
 
@@ -4234,7 +4217,6 @@ msgstr "Ulanmoqda"
 
 #. TRANSLATORS: device status
 #: panels/network/panel-common.c:59
-#| msgid "Authenticated!"
 msgid "Authentication required"
 msgstr "Autentifikatsiya talab qilinadi"
 
@@ -4245,7 +4227,6 @@ msgstr "Aloqa uzilmoqda"
 
 #. TRANSLATORS: device status
 #: panels/network/panel-common.c:71
-#| msgid "Installation Failed"
 msgid "Connection failed"
 msgstr "Ulanish amalga oshmadi"
 
@@ -4473,7 +4454,7 @@ msgstr "Kabel rozetkadan uzilgan"
 #: panels/notifications/cc-app-notifications-page.ui:16
 msgctxt "notifications"
 msgid "_Notifications"
-msgstr "_Bildirishnomalar"
+msgstr "Bildirishnomalar"
 
 #: panels/notifications/cc-app-notifications-page.ui:17
 msgid "Show in notifications list"
@@ -4513,7 +4494,6 @@ msgid "Include message details in notification banners"
 msgstr "Xabar tafsilotlarini bildirishnoma bannerlariga qo'shing"
 
 #: panels/notifications/cc-app-notifications-page.ui:54
-#| msgid "Lock screen"
 msgid "Lock Screen"
 msgstr "Ekranni qulflash"
 
@@ -4541,7 +4521,7 @@ msgstr "Bloklangan ekranga xabar tafsilotlarini kiriting"
 #: panels/notifications/cc-notifications-panel.ui:6
 #: panels/notifications/gnome-notifications-panel.desktop.in:3
 msgid "Notifications"
-msgstr "_Bildirishnomalar"
+msgstr "Bildirishnomalar"
 
 #: panels/notifications/cc-notifications-panel.ui:18
 msgid "_Do Not Disturb"
@@ -4935,7 +4915,6 @@ msgid "Connected Devices"
 msgstr "Ulangan qurilmalar"
 
 #: panels/power/cc-power-panel.ui:133
-#| msgid "Accel Mode"
 msgid "Power Mode"
 msgstr "Quvvat rejimi"
 
@@ -4998,9 +4977,8 @@ msgid "Automatic Suspend"
 msgstr "Avtomatik to'xtatib turish"
 
 #: panels/power/cc-power-panel.ui:249
-#, fuzzy
 msgid "On Ba_ttery Power"
-msgstr "Batareya quvvatida"
+msgstr "Ba_tareya quvvatida"
 
 #: panels/power/cc-power-panel.ui:257
 #, fuzzy
@@ -5174,9 +5152,8 @@ msgid "_Search for Drivers"
 msgstr "_Haydovchilarni qidirish"
 
 #: panels/printers/pp-details-dialog.ui:110
-#, fuzzy
 msgid "S_elect from Database…"
-msgstr "Maʼlumotlar bazasidan S_elect…"
+msgstr "Maʼlumotlar bazas_idan tanlash…"
 
 #: panels/printers/pp-details-dialog.ui:117
 msgid "_Install PPD File…"
@@ -5248,14 +5225,12 @@ msgstr "Kutilmoqda"
 
 #. Translators: Job's state (job is held for printing)
 #: panels/printers/pp-job-row.c:146
-#| msgid "Pause"
 msgctxt "print job"
 msgid "Paused"
 msgstr "Pauza qilingan"
 
 #. Translators: Job's state (job needs authentication to proceed further)
 #: panels/printers/pp-job-row.c:151
-#| msgid "Authenticated!"
 msgctxt "print job"
 msgid "Authentication required"
 msgstr "Autentifikatsiya talab qilinadi"
@@ -5451,7 +5426,6 @@ msgid "Enter a network address or search for a printer"
 msgstr "Tarmoq manzilini kiriting yoki printerni qidiring"
 
 #: panels/printers/pp-new-printer-dialog.ui:253
-#| msgid "Authenticated!"
 msgid "Authentication Required"
 msgstr "Autentifikatsiya talab qilinadi"
 
@@ -6610,9 +6584,8 @@ msgstr ""
 "fayllarni topishni osonlashtiradi."
 
 #: panels/privacy/usage/cc-usage-page.ui:20
-#, fuzzy
 msgid "File H_istory"
-msgstr "H_tarix fayli"
+msgstr "Fayl tarix_i"
 
 #: panels/privacy/usage/cc-usage-page.ui:26
 msgid "File _History Duration"
@@ -6808,7 +6781,6 @@ msgid "Enabled"
 msgstr "Yoqilgan"
 
 #: panels/sharing/cc-sharing-panel.c:191
-#| msgid "_Activate"
 msgctxt "service is active"
 msgid "Active"
 msgstr "Aktiv"
@@ -7311,9 +7283,8 @@ msgid "Hardware details and software versions"
 msgstr "Uskuna tafsilotlari va dasturiy ta'minot versiyalari"
 
 #: panels/system/cc-system-panel.ui:93
-#, fuzzy
 msgid "S_oftware Updates"
-msgstr "S_oftware yangilanishlari"
+msgstr "Das_turiy taʼminot yangilanishlari"
 
 #. Translators: This is the full date and time format used in 12-hour mode.
 #: panels/system/datetime/cc-datetime-page.c:237
@@ -7379,9 +7350,8 @@ msgid "Requires location services enabled and internet access"
 msgstr "Joylashuv xizmatlarini yoqish va internetga kirishni talab qiladi"
 
 #: panels/system/datetime/cc-datetime-page.ui:156
-#, fuzzy
 msgid "Time Z_one"
-msgstr "Z_bir vaqti"
+msgstr "Vaqt z_onasi"
 
 #: panels/system/datetime/cc-datetime-page.ui:167
 msgid "Time _Format"
@@ -7433,7 +7403,6 @@ msgid "February"
 msgstr "Fevral"
 
 #: panels/system/datetime/cc-datetime-page.ui:259
-#| msgid "Search"
 msgid "March"
 msgstr "Mart"
 
@@ -7567,7 +7536,6 @@ msgid "Numbers"
 msgstr "Raqamlar"
 
 #: panels/system/region/cc-format-preview.ui:47
-#| msgid "_Department:"
 msgid "Measurement"
 msgstr "O'lchov Birligi"
 
@@ -7614,14 +7582,12 @@ msgid "Login Screen"
 msgstr "Kirish ekrani"
 
 #: panels/system/region/cc-region-page.ui:56
-#, fuzzy
 msgid "L_anguage"
-msgstr "Til_til"
+msgstr "Til_"
 
 #: panels/system/region/cc-region-page.ui:64
-#, fuzzy
 msgid "Fo_rmats"
-msgstr "For_mats"
+msgstr "Fo_rmatlar"
 
 #: panels/system/region/gnome-region-panel.desktop.in:4
 msgid "Select your display language and formats"
@@ -7711,10 +7677,8 @@ msgstr "_Resurs uchun foydalanuvchi nomi"
 
 #: panels/system/remote-desktop/cc-desktop-sharing-page.ui:108
 #: panels/system/remote-desktop/cc-remote-login-page.ui:108
-#, fuzzy
-#| msgid "_Password:"
 msgid "P_assword"
-msgstr "P_assword"
+msgstr "P_arol"
 
 #: panels/system/remote-desktop/cc-desktop-sharing-page.ui:131
 #: panels/system/remote-desktop/cc-remote-login-page.ui:132
@@ -7825,7 +7789,6 @@ msgid "Add User"
 msgstr "Foydalanuvchi qo'shish"
 
 #: panels/system/users/cc-add-user-dialog.ui:53
-#| msgid "Alert Type"
 msgid "Account Type"
 msgstr "Hisob turi"
 
@@ -7868,10 +7831,8 @@ msgid "User sets password on _first login"
 msgstr "Foydalanuvchi _birinchi kirishda parol o'rnatadi"
 
 #: panels/system/users/cc-add-user-dialog.ui:120
-#, fuzzy
-#| msgid "_New password:"
 msgid "Set password n_ow"
-msgstr "Parolni o'rnating n_ow"
+msgstr "Paroln_i hozir o'rnating"
 
 #: panels/system/users/cc-add-user-dialog.ui:143
 msgid "Set Password"
@@ -8242,22 +8203,18 @@ msgid "Change Password"
 msgstr "Parolni o'zgartirish"
 
 #: panels/system/users/cc-password-dialog.ui:24
-#, fuzzy
 msgid "Ch_ange"
-msgstr "Ch_ange"
+msgstr "Oʻzgartirish_"
 
 #: panels/system/users/cc-password-dialog.ui:42
-#| msgid "Current _password:"
 msgid "Current Password"
 msgstr "Joriy parol"
 
 #: panels/system/users/cc-password-dialog.ui:54
-#| msgid "_New password:"
 msgid "New Password"
 msgstr "Yangi Parol"
 
 #: panels/system/users/cc-password-dialog.ui:82
-#| msgid "Change password"
 msgid "Confirm Password"
 msgstr "Parolni Tasdiqlash"
 
@@ -8328,7 +8285,6 @@ msgid "Unlock to Change This Setting"
 msgstr "Ushbu sozlamani o'zgartirish uchun qulfni oching"
 
 #: panels/system/users/cc-user-page.ui:41
-#| msgid "Change password"
 msgid "Change Avatar"
 msgstr "Изменить главную фотографию"
 
@@ -8337,10 +8293,8 @@ msgid "Remove Avatar"
 msgstr "Avatarni olib tashlang"
 
 #: panels/system/users/cc-user-page.ui:95
-#, fuzzy
-#| msgid "_Password:"
 msgid "Pa_ssword"
-msgstr "Parol"
+msgstr "P_arol"
 
 #: panels/system/users/cc-user-page.ui:107
 msgid "_Fingerprint Login"
@@ -8728,7 +8682,6 @@ msgstr "_Ikki marta bosish kechikishi"
 #: panels/universal-access/cc-ua-typing-page.ui:187
 #: panels/universal-access/cc-ua-typing-page.ui:234
 #: panels/universal-access/cc-ua-zoom-page.ui:158
-#| msgid "Shortcut"
 msgid "Short"
 msgstr "Qisqa"
 
@@ -8824,7 +8777,6 @@ msgid "Default"
 msgstr "Odatiy"
 
 #: panels/universal-access/cc-ua-seeing-page.c:114
-#| msgid "_Medium"
 msgctxt "cursor size"
 msgid "Medium"
 msgstr "Средний"
@@ -9157,9 +9109,8 @@ msgid "Thick"
 msgstr "Qalin"
 
 #: panels/universal-access/cc-ua-zoom-page.ui:153
-#, fuzzy
 msgid "Len_gth"
-msgstr "Uzunlik_uzunligi"
+msgstr "Uzun_lik"
 
 #: panels/universal-access/cc-ua-zoom-page.ui:177
 #, fuzzy
@@ -9198,10 +9149,8 @@ msgid "High"
 msgstr "Yuqori"
 
 #: panels/universal-access/cc-ua-zoom-page.ui:234
-#, fuzzy
-#| msgid "Best co_ntrast"
 msgid "Co_ntrast"
-msgstr "Co_ntrast"
+msgstr "Ko_ntrast"
 
 #: panels/universal-access/cc-ua-zoom-page.ui:259
 #, fuzzy
@@ -9490,51 +9439,51 @@ msgstr "Davomiyligi"
 msgid "Interval"
 msgstr "Oraliq"
 
-#: panels/wellbeing/cc-screen-time-statistics-row.c:228
+#: panels/wellbeing/cc-screen-time-statistics-row.c:230
 msgctxt "abbreviated weekday name for Sunday"
 msgid "S"
 msgstr "YA"
 
-#: panels/wellbeing/cc-screen-time-statistics-row.c:229
+#: panels/wellbeing/cc-screen-time-statistics-row.c:231
 msgctxt "abbreviated weekday name for Monday"
 msgid "M"
 msgstr "DU"
 
-#: panels/wellbeing/cc-screen-time-statistics-row.c:230
+#: panels/wellbeing/cc-screen-time-statistics-row.c:232
 msgctxt "abbreviated weekday name for Tuesday"
 msgid "T"
 msgstr "SE"
 
-#: panels/wellbeing/cc-screen-time-statistics-row.c:231
+#: panels/wellbeing/cc-screen-time-statistics-row.c:233
 msgctxt "abbreviated weekday name for Wednesday"
 msgid "W"
 msgstr "CH"
 
-#: panels/wellbeing/cc-screen-time-statistics-row.c:232
+#: panels/wellbeing/cc-screen-time-statistics-row.c:234
 msgctxt "abbreviated weekday name for Thursday"
 msgid "T"
 msgstr "PA"
 
-#: panels/wellbeing/cc-screen-time-statistics-row.c:233
+#: panels/wellbeing/cc-screen-time-statistics-row.c:235
 msgctxt "abbreviated weekday name for Friday"
 msgid "F"
 msgstr "JU"
 
-#: panels/wellbeing/cc-screen-time-statistics-row.c:234
+#: panels/wellbeing/cc-screen-time-statistics-row.c:236
 msgctxt "abbreviated weekday name for Saturday"
 msgid "S"
 msgstr "SH"
 
 #. Translators: This is a duration in minutes, for example ‘15m’ for 15 minutes.
 #. * Use whatever shortest unit label is used for minutes in your locale.
-#: panels/wellbeing/cc-screen-time-statistics-row.c:391
+#: panels/wellbeing/cc-screen-time-statistics-row.c:393
 #, c-format
 msgid "%um"
 msgstr "%um"
 
 #. Translators: This is a duration in hours, for example ‘2h’ for 2 hours.
 #. * Use whatever shortest unit label is used for hours in your locale.
-#: panels/wellbeing/cc-screen-time-statistics-row.c:397
+#: panels/wellbeing/cc-screen-time-statistics-row.c:399
 #, c-format
 msgid "%uh"
 msgstr "%usoat"
@@ -9542,85 +9491,85 @@ msgstr "%usoat"
 #. Translators: This is a duration in hours and minutes, for example
 #. * ‘3h 15m’ for 3 hours and 15 minutes. Use whatever shortest unit label
 #. * is used for hours and minutes in your locale.
-#: panels/wellbeing/cc-screen-time-statistics-row.c:404
+#: panels/wellbeing/cc-screen-time-statistics-row.c:406
 #, c-format
 msgid "%uh %um"
 msgstr "%usoat %udaq"
 
-#: panels/wellbeing/cc-screen-time-statistics-row.c:663
-#: panels/wellbeing/cc-screen-time-statistics-row.c:783
+#: panels/wellbeing/cc-screen-time-statistics-row.c:665
+#: panels/wellbeing/cc-screen-time-statistics-row.c:785
 #, c-format
 msgid "Failed to load session history file ‘%s’: %s"
 msgstr "“%s” seans tarixi faylini yuklab bo‘lmadi: %s"
 
-#: panels/wellbeing/cc-screen-time-statistics-row.c:664
+#: panels/wellbeing/cc-screen-time-statistics-row.c:666
 msgid "Invalid file structure"
 msgstr "Fayl tuzilishi noto‘g‘ri"
 
-#: panels/wellbeing/cc-screen-time-statistics-row.c:701
+#: panels/wellbeing/cc-screen-time-statistics-row.c:703
 #, c-format
 msgid "Failed to load session history file: %s"
 msgstr "Seans tarixi faylini yuklab bo‘lmadi: %s"
 
-#: panels/wellbeing/cc-screen-time-statistics-row.c:702
-#: panels/wellbeing/cc-screen-time-statistics-row.c:784
+#: panels/wellbeing/cc-screen-time-statistics-row.c:704
+#: panels/wellbeing/cc-screen-time-statistics-row.c:786
 msgid "File is empty"
 msgstr "Fayl boʻsh"
 
 #. G_DATE_BAD_WEEKDAY
-#: panels/wellbeing/cc-screen-time-statistics-row.c:920
+#: panels/wellbeing/cc-screen-time-statistics-row.c:922
 msgid "Average Monday"
 msgstr "O'rtacha dushanba"
 
-#: panels/wellbeing/cc-screen-time-statistics-row.c:921
+#: panels/wellbeing/cc-screen-time-statistics-row.c:923
 msgid "Average Tuesday"
 msgstr "O'rtacha seshanba"
 
-#: panels/wellbeing/cc-screen-time-statistics-row.c:922
+#: panels/wellbeing/cc-screen-time-statistics-row.c:924
 msgid "Average Wednesday"
 msgstr "O'rtacha chorshanba"
 
-#: panels/wellbeing/cc-screen-time-statistics-row.c:923
+#: panels/wellbeing/cc-screen-time-statistics-row.c:925
 msgid "Average Thursday"
 msgstr "O'rtacha payshanba"
 
-#: panels/wellbeing/cc-screen-time-statistics-row.c:924
+#: panels/wellbeing/cc-screen-time-statistics-row.c:926
 msgid "Average Friday"
 msgstr "O'rtacha juma"
 
-#: panels/wellbeing/cc-screen-time-statistics-row.c:925
+#: panels/wellbeing/cc-screen-time-statistics-row.c:927
 msgid "Average Saturday"
 msgstr "O'rtacha shanba"
 
-#: panels/wellbeing/cc-screen-time-statistics-row.c:926
+#: panels/wellbeing/cc-screen-time-statistics-row.c:928
 msgid "Average Sunday"
 msgstr "O'rtacha yakshanba"
 
 #. Translators: This a medium-length date, for example ‘15 April’
-#: panels/wellbeing/cc-screen-time-statistics-row.c:978
+#: panels/wellbeing/cc-screen-time-statistics-row.c:980
 msgid "%-d %B"
 msgstr "%-d %B"
 
-#: panels/wellbeing/cc-screen-time-statistics-row.c:991
-#: panels/wellbeing/cc-screen-time-statistics-row.c:1002
+#: panels/wellbeing/cc-screen-time-statistics-row.c:993
+#: panels/wellbeing/cc-screen-time-statistics-row.c:1004
 msgid "No Data"
 msgstr "Resurs grafiklaridagi ma’lumotlar nuqtalarining vaqt miqdori"
 
-#: panels/wellbeing/cc-screen-time-statistics-row.c:1006
+#: panels/wellbeing/cc-screen-time-statistics-row.c:1008
 #, c-format
 msgid "This Week"
 msgstr "Bu hafta"
 
 #. Translators: This is a range of days within a given month.
 #. * For example ‘20–27 April’. The dash is an en-dash.
-#: panels/wellbeing/cc-screen-time-statistics-row.c:1017
+#: panels/wellbeing/cc-screen-time-statistics-row.c:1019
 #, c-format
 msgid "%u–%u %s"
 msgstr "%u–%u %s"
 
 #. Translators: This is a range of days spanning two months.
 #. * For example, ‘27 April–4 May’. The dash is an en-dash.
-#: panels/wellbeing/cc-screen-time-statistics-row.c:1034
+#: panels/wellbeing/cc-screen-time-statistics-row.c:1036
 #, c-format
 msgid "%u %s–%u %s"
 msgstr "%u %s–%u %s"
@@ -9630,7 +9579,7 @@ msgstr "%u %s–%u %s"
 #. * preferred date representation for the current locale without the time).
 #. * The second placeholder is a formatted time duration (for example,
 #. * ‘3 hours’ or ‘25 minutes’).
-#: panels/wellbeing/cc-screen-time-statistics-row.c:1097
+#: panels/wellbeing/cc-screen-time-statistics-row.c:1102
 #, c-format
 msgid ""
 "Bar chart of screen time usage over the week starting %s. A line is "
@@ -9642,13 +9591,13 @@ msgstr ""
 #. Translators: The placeholder is a formatted date string (formatted
 #. * using the `%x` strftime placeholder, which gives the preferred date
 #. * representation for the current locale without the time).
-#: panels/wellbeing/cc-screen-time-statistics-row.c:1116
+#: panels/wellbeing/cc-screen-time-statistics-row.c:1121
 #, c-format
 msgid "Bar chart of screen time usage over the week starting %s."
 msgstr ""
 "%s dan boshlab bir hafta davomida foydalanish vaqtining shtrix diagrammasi."
 
-#: panels/wellbeing/cc-screen-time-statistics-row.c:1122
+#: panels/wellbeing/cc-screen-time-statistics-row.c:1127
 #, c-format
 msgid ""
 "Placeholder for a bar chart of screen time usage. No data is currently "
@@ -9696,70 +9645,68 @@ msgstr ""
 msgid "_Disable Screen Time"
 msgstr "_Ekran vaqtini o'chirish"
 
-#: panels/wellbeing/cc-wellbeing-panel.ui:76
+#: panels/wellbeing/cc-wellbeing-panel.ui:78
 msgid "Screen Time Recording Disabled"
 msgstr "Ekran vaqtini yozib olish o‘chirilgan"
 
-#: panels/wellbeing/cc-wellbeing-panel.ui:78
+#: panels/wellbeing/cc-wellbeing-panel.ui:80
 msgid "Enable recording to view screen usage history"
 msgstr "Ekrandan foydalanish tarixini ko‘rish uchun yozib olishni yoqing"
 
-#: panels/wellbeing/cc-wellbeing-panel.ui:82
+#: panels/wellbeing/cc-wellbeing-panel.ui:84
 #, fuzzy
 msgid "E_nable"
 msgstr "E_nable"
 
-#: panels/wellbeing/cc-wellbeing-panel.ui:102
+#: panels/wellbeing/cc-wellbeing-panel.ui:104
 msgid "Screen Limits"
 msgstr "Ekran chegaralari"
 
-#: panels/wellbeing/cc-wellbeing-panel.ui:105
+#: panels/wellbeing/cc-wellbeing-panel.ui:107
 msgid "_Screen Time Limit"
 msgstr "_Ekran vaqt chegarasi"
 
-#: panels/wellbeing/cc-wellbeing-panel.ui:112
+#: panels/wellbeing/cc-wellbeing-panel.ui:114
 msgid "Daily _Limit"
 msgstr "Kunlik _Limit"
 
-#: panels/wellbeing/cc-wellbeing-panel.ui:118
+#: panels/wellbeing/cc-wellbeing-panel.ui:120
 msgid "_Grayscale"
 msgstr "_Kulrang rang"
 
-#: panels/wellbeing/cc-wellbeing-panel.ui:119
+#: panels/wellbeing/cc-wellbeing-panel.ui:121
 msgid "Black and white screen for screen limits"
 msgstr "Ekran chegaralari uchun qora va oq ekran"
 
-#: panels/wellbeing/cc-wellbeing-panel.ui:128
+#: panels/wellbeing/cc-wellbeing-panel.ui:130
 msgid "Break Reminders"
 msgstr "Eslatmalarni buzish"
 
-#: panels/wellbeing/cc-wellbeing-panel.ui:131
+#: panels/wellbeing/cc-wellbeing-panel.ui:133
 msgid "_Eyesight Reminders"
 msgstr "_Ko'zni ko'rish haqida eslatmalar"
 
-#: panels/wellbeing/cc-wellbeing-panel.ui:132
+#: panels/wellbeing/cc-wellbeing-panel.ui:134
 msgid "Reminders to look away from the screen"
 msgstr "Ekrandan uzoqqa qarash uchun eslatmalar"
 
-#: panels/wellbeing/cc-wellbeing-panel.ui:138
+#: panels/wellbeing/cc-wellbeing-panel.ui:140
 msgid "_Movement Reminders"
 msgstr "_Harakat eslatmalari"
 
-#: panels/wellbeing/cc-wellbeing-panel.ui:139
+#: panels/wellbeing/cc-wellbeing-panel.ui:141
 msgid "Reminders to move around"
 msgstr "Harakat qilish uchun eslatmalar"
 
-#: panels/wellbeing/cc-wellbeing-panel.ui:145
+#: panels/wellbeing/cc-wellbeing-panel.ui:147
 msgid "Movement _Break Schedule"
 msgstr "Harakat _Tanaffus jadvali"
 
-#: panels/wellbeing/cc-wellbeing-panel.ui:151
-#, fuzzy
-#| msgid "Sounds"
+#: panels/wellbeing/cc-wellbeing-panel.ui:153
 msgid "S_ounds"
-msgstr "S_ounds"
+msgstr "Tovus_hlar"
 
-#: panels/wellbeing/cc-wellbeing-panel.ui:152
+#: panels/wellbeing/cc-wellbeing-panel.ui:154
 msgid "Play a sound when a break ends"
 msgstr "Tanaffus tugagach, ovozni ijro eting"
 
@@ -10372,7 +10319,7 @@ msgstr "[PANEL] [ARGUMENT…]"
 msgid "translator-credits"
 msgstr ""
 "Nurali Abdurahmonov <mavnur@gmail.com>\n"
-"Baxrom Raxmatov <magdiyevbahrom@gmail.com>"
+"Baxrom Raxmatov"
 
 #: shell/cc-application.c:124
 #, c-format
@@ -10523,6 +10470,12 @@ msgstr[1] "%u Kirishlar"
 #: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "Tizim tovushlari"
+
+#, c-format
+#~ msgid "%u action"
+#~ msgid_plural "%u actions"
+#~ msgstr[0] "%u harakat"
+#~ msgstr[1] "%u amal"
 
 #~ msgid "Image/label border"
 #~ msgstr "Rasm/yorliq chegarasi"
