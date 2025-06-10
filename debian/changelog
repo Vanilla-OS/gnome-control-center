@@ -1,6 +1,48 @@
+gnome-control-center (1:48.2-2) UNRELEASED; urgency=medium
+
+  * Summarize upstream changes in previous changelog entry
+
+ -- Simon McVittie <smcv@debian.org>  Tue, 10 Jun 2025 10:05:41 +0100
+
 gnome-control-center (1:48.2-1) experimental; urgency=medium
 
   * New upstream bugfix release
+    - Fix panel crashes that can occur if a type referenced by the UI
+      resource was not registered yet
+      (gnome-control-center!3126 upstream)
+    - Fix a crash due to use-after-free in the notifications page by
+      clearing a signal handler during object destruction
+      (gnome-control-center#3455 upstream)
+    - Use an EFF-supplied word list to generate random passwords instead
+      of /usr/share/dict, which in particular avoids generating passwords
+      that contain offensive or easily-confused words
+      (gnome-control-center#3445 upstream)
+    - Log a warning instead of crashing or emitting a blank image
+      if we cannot create a renderer while cropping a user's avatar
+      (gnome-control-center#3402, #3405 upstream)
+    - Wrap panel labels at 40 characters to ensure the list of panels
+      leaves enough horizontal space for window content in locales where
+      a panel has a long name, for example "Privacy and Security" translated
+      to "Конфиденциальность и безопасность" in ru_RU
+      (gnome-control-cetner#3400 upstream)
+    - Use motion history to get smoother lines when testing a Wacom tablet
+      (gnome-control-center!3140 upstream)
+    - Match the leaf icon that GNOME Shell uses for the Power Saver mode,
+      instead of having a different and worse-looking leaf icon
+      (gnome-control-center#3446 upstream)
+    - On multi-GPU desktop systems, describe non-Nvidia GPUs correctly
+      even if we cannot switch to them via DRI_PRIME
+      (gnome-control-center#3375 upstream, LP: #2037076)
+    - In the applications panel, hide the empty "Required Permissions"
+      section if there would be nothing shown there
+      (gnome-control-center!3144 upstream)
+    - In the application global shortcuts dialog, show the app name in
+      bold, making it easier to see and more consistent with other pages
+      (gnome-control-center!3058 upstream)
+    - Apply rounded borders to illustrations such as mouse wheel scroll
+      direction, hot corners and active screen edges
+      (gnome-control-center!3085 upstream)
+    - Translation updates
 
  -- Jeremy Bícha <jbicha@ubuntu.com>  Fri, 06 Jun 2025 14:37:54 -0400
 
