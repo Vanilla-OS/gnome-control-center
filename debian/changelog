@@ -13,8 +13,9 @@ gnome-control-center (1:48.2-1) experimental; urgency=medium
     - Fix a crash due to use-after-free in the notifications page by
       clearing a signal handler during object destruction
       (gnome-control-center#3455 upstream)
-    - Use an EFF-supplied word list to generate random passwords instead
-      of /usr/share/dict, which in particular avoids generating passwords
+    - Use an EFF-supplied word list to generate random passwords
+      (for example for System -> Remote Desktop) instead of
+      /usr/share/dict, which in particular avoids generating passwords
       that contain offensive or easily-confused words
       (gnome-control-center#3445 upstream)
     - Log a warning instead of crashing or emitting a blank image
