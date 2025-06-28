@@ -1,6 +1,13 @@
-gnome-control-center (1:48.3-1) UNRELEASED; urgency=medium
+gnome-control-center (1:48.3-1) experimental; urgency=medium
 
   * New upstream release
+    - Various translation updates
+    - Various accessibility fixes
+    - Fix use-after-free in CcPermissionInfobar
+    - About: Properly close System Details dialog supressing dispose warning
+    - Colors: Remote extra line below the device name
+    - Global Shortcuts: Discard request from invalid app ID
+    - Wacom: Plug stylus motion backlog array leak
 
  -- Jeremy Bícha <jbicha@ubuntu.com>  Sat, 28 Jun 2025 15:58:20 -0400
 
