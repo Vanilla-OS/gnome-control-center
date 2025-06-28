@@ -1,3 +1,9 @@
+gnome-control-center (1:48.3-1) UNRELEASED; urgency=medium
+
+  * New upstream release
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Sat, 28 Jun 2025 15:58:20 -0400
+
 gnome-control-center (1:48.2-2) unstable; urgency=medium
 
   * Team upload
