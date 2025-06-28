@@ -1803,6 +1803,9 @@ cc_color_panel_dispose (GObject *object)
 {
   CcColorPanel *self = CC_COLOR_PANEL (object);
 
+  if (self->dialog_assign != NULL)
+    adw_dialog_force_close (ADW_DIALOG (self->dialog_assign));
+
   g_clear_object (&self->settings);
   g_clear_object (&self->settings_colord);
   g_clear_object (&self->client);
@@ -1813,11 +1816,6 @@ cc_color_panel_dispose (GObject *object)
   g_clear_pointer (&self->sensors, g_ptr_array_unref);
   g_clear_pointer (&self->list_box_filter, g_free);
   g_clear_object (&self->liststore_assign);
-
-  if (self->dialog_assign != NULL) {
-    adw_dialog_close (ADW_DIALOG (self->dialog_assign));
-    self->dialog_assign = NULL;
-  }
 
   G_OBJECT_CLASS (cc_color_panel_parent_class)->dispose (object);
 }
@@ -1907,13 +1905,18 @@ cc_color_panel_filter_func (GtkListBoxRow *row, void *user_data)
 {
   CcColorPanel *self = CC_COLOR_PANEL (user_data);
   g_autoptr(CdDevice) device = NULL;
+  gboolean is_visible;
 
   /* always show all devices */
   if (CC_IS_COLOR_DEVICE (row))
     return TRUE;
 
   g_object_get (row, "device", &device, NULL);
-  return g_strcmp0 (cd_device_get_id (device), self->list_box_filter) == 0;
+  is_visible = g_strcmp0 (cd_device_get_id (device), self->list_box_filter) == 0;
+
+  /* workaround to remove extra line at the end of a row */
+  gtk_widget_set_visible (GTK_WIDGET (row), is_visible);
+  return is_visible;
 }
 
 static gboolean
