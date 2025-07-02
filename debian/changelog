@@ -1,3 +1,9 @@
+gnome-control-center (1:48.3-2) experimental; urgency=medium
+
+  * Add Depends: libgtk-4-media-gstreamer for Mouse panel. See #1054155
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Wed, 02 Jul 2025 10:12:28 -0400
+
 gnome-control-center (1:48.3-1) experimental; urgency=medium
 
   * New upstream release
