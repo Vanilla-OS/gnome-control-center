@@ -1,3 +1,9 @@
+gnome-control-center (1:48.3-3) unstable; urgency=medium
+
+  * Release to unstable
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Thu, 03 Jul 2025 17:20:23 -0400
+
 gnome-control-center (1:48.3-2) experimental; urgency=medium
 
   * Add Depends: libgtk-4-media-gstreamer for Mouse panel. See #1054155
