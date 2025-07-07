@@ -1,3 +1,15 @@
+gnome-control-center (1:49~alpha-1) UNRELEASED; urgency=medium
+
+  * New upstream release.
+  * d/p/d/Expose-touchpad-settings: Dropped.
+  * d/control:
+    + Add blueprint-compiler as a dependency.
+    + Update version requirements for meson and libnm-dev.
+    + Drop X11 packages from Build-Depends. We no longer build with X11 support.
+
+
+ -- Nathan Pratta Teodosio <nathan.teodosio@canonical.com>  Mon, 07 Jul 2025 11:07:46 +0200
+
 gnome-control-center (1:48.3-3) unstable; urgency=medium
 
   * Release to unstable
