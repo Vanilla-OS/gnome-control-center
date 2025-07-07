@@ -10,6 +10,32 @@ i18n.merge_file(
   install_dir: control_center_desktopdir
 )
 
+blueprints = []
+
+subdir('bolt')
+subdir('camera')
+subdir('diagnostics')
+subdir('firmware-security')
+subdir('icons')
+subdir('location')
+subdir('screen')
+subdir('usage')
+
+ui_sources = files(
+  'cc-privacy-panel.blp',
+)
+
+ui_compiled = []
+foreach ui_source : ui_sources
+  ui_compiled += fs.name(fs.replace_suffix(ui_source, '.ui'))
+endforeach
+
+blueprints += custom_target(
+  input: ui_sources,
+  output: ui_compiled,
+  command: [blueprint_compiler, 'batch-compile', '@OUTDIR@', '@CURRENT_SOURCE_DIR@', '@INPUT@']
+)
+
 sources = files(
   'camera/cc-camera-page.c',
   'diagnostics/cc-diagnostics-page.c',
@@ -54,7 +80,8 @@ sources += gnome.compile_resources(
   'cc-' + cappletname + '-resources',
   cappletname + '.gresource.xml',
   c_name: 'cc_' + cappletname,
-  export: true
+  export: true,
+  dependencies: blueprints,
 )
 
 cflags += [
@@ -77,5 +104,3 @@ panels_libs += static_library(
   dependencies: deps,
   c_args: cflags
 )
-
-subdir('icons')

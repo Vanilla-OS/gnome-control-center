@@ -32,11 +32,11 @@
 #include "cc-list-row.h"
 #include "cc-alert-chooser-page.h"
 #include "cc-balance-slider.h"
-#include "cc-device-combo-box.h"
+#include "cc-device-combo-row.h"
 #include "cc-fade-slider.h"
 #include "cc-level-bar.h"
 #include "cc-output-test-window.h"
-#include "cc-profile-combo-box.h"
+#include "cc-profile-combo-row.h"
 #include "cc-sound-panel.h"
 #include "cc-sound-resources.h"
 #include "cc-subwoofer-slider.h"
@@ -49,9 +49,8 @@ struct _CcSoundPanel
 
   AdwPreferencesGroup *output_group;
   CcLevelBar          *output_level_bar;
-  CcDeviceComboBox    *output_device_combo_box;
-  AdwPreferencesRow   *output_profile_row;
-  CcProfileComboBox   *output_profile_combo_box;
+  CcDeviceComboRow    *output_device_combo_row;
+  CcProfileComboRow   *output_profile_combo_row;
   CcVolumeSlider      *output_volume_slider;
   CcBalanceSlider     *balance_slider;
   AdwPreferencesRow   *fade_row;
@@ -61,9 +60,8 @@ struct _CcSoundPanel
   AdwPreferencesGroup *output_no_devices_group;
   AdwPreferencesGroup *input_group;
   CcLevelBar          *input_level_bar;
-  CcDeviceComboBox    *input_device_combo_box;
-  AdwPreferencesRow   *input_profile_row;
-  CcProfileComboBox   *input_profile_combo_box;
+  CcDeviceComboRow    *input_device_combo_row;
+  CcProfileComboRow   *input_profile_combo_row;
   CcVolumeSlider      *input_volume_slider;
   AdwPreferencesGroup *input_no_devices_group;
   CcListRow           *alert_sound_row;
@@ -125,7 +123,7 @@ output_device_changed_cb (CcSoundPanel *self)
 {
   GvcMixerUIDevice *device;
 
-  device = cc_device_combo_box_get_device (self->output_device_combo_box);
+  device = cc_device_combo_row_get_device (self->output_device_combo_row);
 
   if (device != NULL)
     gvc_mixer_control_change_output (self->mixer_control, device);
@@ -144,7 +142,7 @@ input_device_changed_cb (CcSoundPanel *self)
 {
   GvcMixerUIDevice *device;
 
-  device = cc_device_combo_box_get_device (self->input_device_combo_box);
+  device = cc_device_combo_row_get_device (self->input_device_combo_row);
 
   if (device != NULL)
     gvc_mixer_control_change_input (self->mixer_control, device);
@@ -158,18 +156,18 @@ output_device_update_cb (CcSoundPanel *self,
   gboolean has_multi_profiles;
   GvcMixerStream *stream = NULL;
 
-  g_signal_handlers_block_by_func(self->output_device_combo_box, output_device_changed_cb, self);
-  cc_device_combo_box_active_device_changed (self->output_device_combo_box, id);
-  g_signal_handlers_unblock_by_func(self->output_device_combo_box, output_device_changed_cb, self);
+  g_signal_handlers_block_by_func(self->output_device_combo_row, output_device_changed_cb, self);
+  cc_device_combo_row_active_device_changed (self->output_device_combo_row, id);
+  g_signal_handlers_unblock_by_func(self->output_device_combo_row, output_device_changed_cb, self);
 
-  device = cc_device_combo_box_get_device (self->output_device_combo_box);
+  device = cc_device_combo_row_get_device (self->output_device_combo_row);
 
   gtk_widget_set_visible (GTK_WIDGET (self->output_group), device != NULL);
   gtk_widget_set_visible (GTK_WIDGET (self->output_no_devices_group), device == NULL);
 
-  cc_profile_combo_box_set_device (self->output_profile_combo_box, self->mixer_control, device);
-  has_multi_profiles = (cc_profile_combo_box_get_profile_count (self->output_profile_combo_box) > 1);
-  gtk_widget_set_visible (GTK_WIDGET (self->output_profile_row),
+  cc_profile_combo_row_set_device (self->output_profile_combo_row, self->mixer_control, device);
+  has_multi_profiles = (cc_profile_combo_row_get_profile_count (self->output_profile_combo_row) > 1);
+  gtk_widget_set_visible (GTK_WIDGET (self->output_profile_combo_row),
                           has_multi_profiles);
 
   if (device)
@@ -186,18 +184,18 @@ input_device_update_cb (CcSoundPanel *self,
   gboolean has_multi_profiles;
   GvcMixerStream *stream = NULL;
 
-  g_signal_handlers_block_by_func(self->input_device_combo_box, input_device_changed_cb, self);
-  cc_device_combo_box_active_device_changed (self->input_device_combo_box, id);
-  g_signal_handlers_unblock_by_func(self->input_device_combo_box, input_device_changed_cb, self);
+  g_signal_handlers_block_by_func(self->input_device_combo_row, input_device_changed_cb, self);
+  cc_device_combo_row_active_device_changed (self->input_device_combo_row, id);
+  g_signal_handlers_unblock_by_func(self->input_device_combo_row, input_device_changed_cb, self);
 
-  device = cc_device_combo_box_get_device (self->input_device_combo_box);
+  device = cc_device_combo_row_get_device (self->input_device_combo_row);
 
   gtk_widget_set_visible (GTK_WIDGET (self->input_group), device != NULL);
   gtk_widget_set_visible (GTK_WIDGET (self->input_no_devices_group), device == NULL);
 
-  cc_profile_combo_box_set_device (self->input_profile_combo_box, self->mixer_control, device);
-  has_multi_profiles = (cc_profile_combo_box_get_profile_count (self->input_profile_combo_box) > 1);
-  gtk_widget_set_visible (GTK_WIDGET (self->input_profile_row),
+  cc_profile_combo_row_set_device (self->input_profile_combo_row, self->mixer_control, device);
+  has_multi_profiles = (cc_profile_combo_row_get_profile_count (self->input_profile_combo_row) > 1);
+  gtk_widget_set_visible (GTK_WIDGET (self->input_profile_combo_row),
                           has_multi_profiles);
 
   if (device)
@@ -213,7 +211,7 @@ test_output_configuration_button_clicked_cb (CcSoundPanel *self)
   GvcMixerStream *stream = NULL;
   CcOutputTestWindow *window;
 
-  device = cc_device_combo_box_get_device (self->output_device_combo_box);
+  device = cc_device_combo_row_get_device (self->output_device_combo_row);
   if (device != NULL)
     stream = gvc_mixer_control_get_stream_from_device (self->mixer_control, device);
 
@@ -277,9 +275,8 @@ cc_sound_panel_class_init (CcSoundPanelClass *klass)
 
   gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, output_group);
   gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, output_level_bar);
-  gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, output_device_combo_box);
-  gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, output_profile_row);
-  gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, output_profile_combo_box);
+  gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, output_device_combo_row);
+  gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, output_profile_combo_row);
   gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, output_volume_slider);
   gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, balance_slider);
   gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, fade_row);
@@ -289,9 +286,8 @@ cc_sound_panel_class_init (CcSoundPanelClass *klass)
   gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, output_no_devices_group);
   gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, input_group);
   gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, input_level_bar);
-  gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, input_device_combo_box);
-  gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, input_profile_row);
-  gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, input_profile_combo_box);
+  gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, input_device_combo_row);
+  gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, input_profile_combo_row);
   gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, input_volume_slider);
   gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, input_no_devices_group);
   gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, alert_sound_row);
@@ -303,10 +299,10 @@ cc_sound_panel_class_init (CcSoundPanelClass *klass)
   gtk_widget_class_bind_template_callback (widget_class, alert_sound_activated_cb);
 
   g_type_ensure (CC_TYPE_BALANCE_SLIDER);
-  g_type_ensure (CC_TYPE_DEVICE_COMBO_BOX);
+  g_type_ensure (CC_TYPE_DEVICE_COMBO_ROW);
   g_type_ensure (CC_TYPE_FADE_SLIDER);
   g_type_ensure (CC_TYPE_LEVEL_BAR);
-  g_type_ensure (CC_TYPE_PROFILE_COMBO_BOX);
+  g_type_ensure (CC_TYPE_PROFILE_COMBO_ROW);
   g_type_ensure (CC_TYPE_SUBWOOFER_SLIDER);
   g_type_ensure (CC_TYPE_VOLUME_SLIDER);
   g_type_ensure (CC_TYPE_LIST_ROW);
@@ -332,18 +328,18 @@ cc_sound_panel_init (CcSoundPanel *self)
   cc_volume_slider_set_mixer_control (self->input_volume_slider, self->mixer_control);
   cc_volume_slider_set_mixer_control (self->output_volume_slider, self->mixer_control);
   cc_subwoofer_slider_set_mixer_control (self->subwoofer_slider, self->mixer_control);
-  cc_device_combo_box_set_mixer_control (self->input_device_combo_box, self->mixer_control, FALSE);
-  cc_device_combo_box_set_mixer_control (self->output_device_combo_box, self->mixer_control, TRUE);
+  cc_device_combo_row_set_mixer_control (self->input_device_combo_row, self->mixer_control, FALSE);
+  cc_device_combo_row_set_mixer_control (self->output_device_combo_row, self->mixer_control, TRUE);
 
   g_signal_connect_object (self->mixer_control,
                            "input-added",
-                           G_CALLBACK (cc_device_combo_box_device_added),
-                           self->input_device_combo_box,
+                           G_CALLBACK (cc_device_combo_row_device_added),
+                           self->input_device_combo_row,
                            G_CONNECT_SWAPPED);
   g_signal_connect_object (self->mixer_control,
                            "input-removed",
-                           G_CALLBACK (cc_device_combo_box_device_removed),
-                           self->input_device_combo_box,
+                           G_CALLBACK (cc_device_combo_row_device_removed),
+                           self->input_device_combo_row,
                            G_CONNECT_SWAPPED);
   g_signal_connect_object (self->mixer_control,
                            "active-input-update",
@@ -353,13 +349,13 @@ cc_sound_panel_init (CcSoundPanel *self)
 
   g_signal_connect_object (self->mixer_control,
                            "output-added",
-                           G_CALLBACK (cc_device_combo_box_device_added),
-                           self->output_device_combo_box,
+                           G_CALLBACK (cc_device_combo_row_device_added),
+                           self->output_device_combo_row,
                            G_CONNECT_SWAPPED);
   g_signal_connect_object (self->mixer_control,
                            "output-removed",
-                           G_CALLBACK (cc_device_combo_box_device_removed),
-                           self->output_device_combo_box,
+                           G_CALLBACK (cc_device_combo_row_device_removed),
+                           self->output_device_combo_row,
                            G_CONNECT_SWAPPED);
   g_signal_connect_object (self->mixer_control,
                            "active-output-update",

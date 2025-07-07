@@ -206,12 +206,14 @@
                           <class name="toolbar"/>
                         </style>
                         <child>
-                          <object class="GtkSearchEntry" id="search_entry">
-                            <property name="has_tooltip">True</property>
-                            <property name="placeholder_text" translatable="yes" comments="Translators: The entered text should contain network address of a printer or a text which will filter found devices (their names and locations)">Enter a network address or search for a printer</property>
-                            <property name="margin_start">40</property>
-                            <property name="margin_end">40</property>
-                            <property name="hexpand">True</property>
+                          <object class="GtkSearchBar" id="search_bar">
+                            <property name="search-mode-enabled">True</property>
+                            <child>
+                              <object class="GtkSearchEntry" id="search_entry">
+                                <property name="placeholder-text" translatable="yes" comments="Translators: The entered text should contain network address of a printer or a text which will filter found devices (their names and locations)">Enter a network address or search for a printer</property>
+                                <property name="hexpand">True</property>
+                              </object>
+                            </child>
                           </object>
                         </child>
                       </object>
@@ -256,9 +258,9 @@
                           <property name="column">1</property>
                           <property name="row">0</property>
                         </layout>
-                        <attributes>
-                          <attribute name="weight" value="bold"/>
-                        </attributes>
+                        <style>
+                          <class name="heading" />
+                        </style>
                       </object>
                     </child>
                     <child>
@@ -285,7 +287,6 @@
                     </child>
                     <child>
                       <object class="GtkEntry" id="username_entry">
-                        <property name="invisible_char">●</property>
                         <property name="activates_default">True</property>
                         <property name="hexpand">True</property>
                         <layout>
@@ -307,7 +308,6 @@
                     <child>
                       <object class="GtkEntry" id="password_entry">
                         <property name="visibility">False</property>
-                        <property name="invisible_char">●</property>
                         <property name="activates_default">True</property>
                         <property name="hexpand">True</property>
                         <layout>

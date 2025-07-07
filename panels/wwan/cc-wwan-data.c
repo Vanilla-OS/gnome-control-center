@@ -701,7 +701,7 @@ cc_wwan_data_connection_updated_cb (GObject      *object,
                                               result, &error);
   if (!error)
     {
-      guint apn_index;
+      gint apn_index;
       apn_index = wwan_data_get_apn_index (self, apn);
 
       if (apn_index >= 0)
@@ -1207,7 +1207,6 @@ cc_wwan_data_apn_new (void)
 const gchar *
 cc_wwan_data_apn_get_name (CcWwanDataApn *apn)
 {
-  g_return_val_if_fail (CC_IS_WWAN_DATA_APN (apn), "");
 
   if (apn->remote_connection)
     return nm_connection_get_id (NM_CONNECTION (apn->remote_connection));
@@ -1215,7 +1214,7 @@ cc_wwan_data_apn_get_name (CcWwanDataApn *apn)
   if (apn->access_method)
     return nma_mobile_access_method_get_name (apn->access_method);
 
-  return "";
+  return NULL;
 }
 
 /**
@@ -1262,9 +1261,7 @@ cc_wwan_data_apn_set_name (CcWwanDataApn *apn,
 const gchar *
 cc_wwan_data_apn_get_apn (CcWwanDataApn *apn)
 {
-  const gchar *apn_name = "";
-
-  g_return_val_if_fail (CC_IS_WWAN_DATA_APN (apn), "");
+  const gchar *apn_name;
 
   if (apn->remote_connection)
     {
@@ -1278,7 +1275,7 @@ cc_wwan_data_apn_get_apn (CcWwanDataApn *apn)
       apn_name = nma_mobile_access_method_get_3gpp_apn (apn->access_method);
     }
 
-  return apn_name ? apn_name : "";
+  return apn_name;
 }
 
 /**
@@ -1305,7 +1302,7 @@ cc_wwan_data_apn_set_apn (CcWwanDataApn *apn,
   g_return_if_fail (apn_name != NULL);
   g_return_if_fail (*apn_name != '\0');
 
-  if (g_str_equal (cc_wwan_data_apn_get_apn (apn), apn_name))
+  if (g_strcmp0 (cc_wwan_data_apn_get_apn (apn), apn_name) == 0)
     return;
 
   apn->modified = TRUE;
@@ -1327,9 +1324,7 @@ cc_wwan_data_apn_set_apn (CcWwanDataApn *apn,
 const gchar *
 cc_wwan_data_apn_get_username (CcWwanDataApn *apn)
 {
-  const gchar *username = "";
-
-  g_return_val_if_fail (CC_IS_WWAN_DATA_APN (apn), "");
+  const gchar *username;
 
   if (apn->remote_connection)
     {
@@ -1343,7 +1338,7 @@ cc_wwan_data_apn_get_username (CcWwanDataApn *apn)
       username = nma_mobile_access_method_get_username (apn->access_method);
     }
 
-  return username ? username : "";
+  return username;
 }
 
 /**
@@ -1390,9 +1385,7 @@ cc_wwan_data_apn_set_username (CcWwanDataApn *apn,
 const gchar *
 cc_wwan_data_apn_get_password (CcWwanDataApn *apn)
 {
-  const gchar *password = "";
-
-  g_return_val_if_fail (CC_IS_WWAN_DATA_APN (apn), "");
+  const gchar *password;
 
   if (NM_IS_REMOTE_CONNECTION (apn->remote_connection))
     {
@@ -1409,7 +1402,7 @@ cc_wwan_data_apn_get_password (CcWwanDataApn *apn)
       if (error)
         {
           g_warning ("Error: %s", error->message);
-          return "";
+          return NULL;
         }
     }
 
@@ -1425,7 +1418,7 @@ cc_wwan_data_apn_get_password (CcWwanDataApn *apn)
       password = nma_mobile_access_method_get_password (apn->access_method);
     }
 
-  return password ? password : "";
+  return password;
 }
 
 /**
@@ -1458,6 +1451,399 @@ cc_wwan_data_apn_set_password (CcWwanDataApn *apn,
   setting = nm_connection_get_setting_gsm (connection);
   g_object_set (G_OBJECT (setting),
                 NM_SETTING_GSM_PASSWORD, password,
+                NULL);
+}
+
+/**
+ * cc_wwan_data_apn_get_initial_eps_apn:
+ * @apn: A #CcWwanDataApn
+ *
+ * For LTE modems, get the initial eps bearer APN of @apn
+ *
+ * Returns: (transfer none): The initial eps bearer APN of @apn
+ */
+const gchar *
+cc_wwan_data_apn_get_initial_eps_apn (CcWwanDataApn *apn)
+{
+  const gchar *apn_name;
+
+  if (apn->remote_connection)
+  {
+    NMSettingGsm *setting;
+
+    setting = nm_connection_get_setting_gsm (NM_CONNECTION (apn->remote_connection));
+    apn_name = nm_setting_gsm_get_initial_eps_apn (setting);
+  }
+  /*
+  else if (apn->access_method)
+    {
+      apn_name = nma_mobile_access_method_get_3gpp_apn (apn->access_method);
+    }
+  */
+
+  return apn_name;
+}
+
+/**
+ * cc_wwan_data_apn_set_initial_eps_apn:
+ * @apn: A #CcWwanDataApn
+ * @apn_name: The initial eps bearer apn to be used,
+ * should not be empty
+ *
+ * For LTE modems, set the initial eps bearer apn of @apn to @apn_name.
+ * @apn_name is usually a URL like 窶彳xample.com窶・or
+ * a simple string like 窶彿nternet窶・ *
+ * @apn is only modified, use @cc_wwan_data_save_apn()
+ * to save the changes.
+ */
+void
+cc_wwan_data_apn_set_initial_eps_apn (CcWwanDataApn *apn,
+                                      const gchar   *apn_name)
+{
+  NMConnection *connection;
+  NMSettingGsm *setting;
+
+  g_return_if_fail (CC_IS_WWAN_DATA_APN (apn));
+  g_return_if_fail (apn_name != NULL);
+  g_return_if_fail (*apn_name != '\0');
+
+  if (g_strcmp0 (cc_wwan_data_apn_get_initial_eps_apn (apn), apn_name) == 0)
+    return;
+
+  apn->modified = TRUE;
+  connection = wwan_data_get_nm_connection (apn);
+  setting = nm_connection_get_setting_gsm (connection);
+  g_object_set (G_OBJECT (setting),
+                NM_SETTING_GSM_INITIAL_EPS_BEARER_APN, apn_name,
+                NULL);
+}
+
+/**
+ * cc_wwan_data_apn_get_initial_eps_username:
+ * @apn: A #CcWwanDataApn
+ *
+ * For LTE modems, get the initial eps bearer username of @apn
+ *
+ * Returns: (transfer none): The initial eps bearer username of @apn
+ */
+const gchar *
+cc_wwan_data_apn_get_initial_eps_username (CcWwanDataApn *apn)
+{
+  const gchar *username;
+
+  if (apn->remote_connection)
+  {
+    NMSettingGsm *setting;
+
+    setting = nm_connection_get_setting_gsm (NM_CONNECTION (apn->remote_connection));
+    username = nm_setting_gsm_get_initial_eps_username (setting);
+  }
+
+  return username;
+}
+
+/**
+ * cc_wwan_data_apn_set_initial_eps_username:
+ * @apn: A #CcWwanDataAPN
+ * @username: The initial eps bearer username to be used
+ *
+ * For LTE modems, set the initial eps bearer username of @apn to @username.
+ *
+ * @apn is only modified, use @cc_wwan_data_save_apn()
+ * to save the changes.
+ */
+void
+cc_wwan_data_apn_set_initial_eps_username (CcWwanDataApn *apn,
+                               const gchar   *username)
+{
+  NMConnection *connection;
+  NMSettingGsm *setting;
+
+  g_return_if_fail (CC_IS_WWAN_DATA_APN (apn));
+
+  if (username && !*username)
+    username = NULL;
+
+  if (g_strcmp0 (cc_wwan_data_apn_get_initial_eps_username (apn), username) == 0)
+    return;
+
+  apn->modified = TRUE;
+  connection = wwan_data_get_nm_connection (apn);
+  setting = nm_connection_get_setting_gsm (connection);
+  g_object_set (G_OBJECT (setting),
+                NM_SETTING_GSM_INITIAL_EPS_BEARER_USERNAME, username,
+                NULL);
+}
+
+/**
+ * cc_wwan_data_apn_get_initial_eps_password:
+ * @apn: A #CcWwanDataApn
+ *
+ * For LTE modems, get the initial eps bearer password of @apn
+ *
+ * Returns: (transfer none): The initial eps bearer password of @apn
+ */
+const gchar *
+cc_wwan_data_apn_get_initial_eps_password (CcWwanDataApn *apn)
+{
+  const gchar *password;
+
+  if (NM_IS_REMOTE_CONNECTION (apn->remote_connection))
+    {
+      g_autoptr(GVariant) secrets = NULL;
+      g_autoptr(GError) error = NULL;
+
+      secrets = nm_remote_connection_get_secrets (NM_REMOTE_CONNECTION (apn->remote_connection),
+                                                  "gsm", NULL, &error);
+
+      if (!error)
+        nm_connection_update_secrets (NM_CONNECTION (apn->remote_connection),
+                                      "gsm", secrets, &error);
+
+      if (error)
+        {
+          g_warning ("Error: %s", error->message);
+          return NULL;
+        }
+    }
+
+  if (apn->remote_connection)
+    {
+      NMSettingGsm *setting;
+
+      setting = nm_connection_get_setting_gsm (NM_CONNECTION (apn->remote_connection));
+      password = nm_setting_gsm_get_initial_eps_password (setting);
+    }
+  /*
+  else if (apn->access_method)
+    {
+      password = nma_mobile_access_method_get_password (apn->access_method);
+    }
+  */
+
+  return password;
+}
+
+/**
+ * cc_wwan_data_apn_set_initial_eps_password:
+ * @apn: A #CcWwanDataApn
+ * @password: The initial eps bearer password to be used
+ *
+ * For LTE modems, get the initial eps bearer password of @apn to @password.
+ *
+ * @apn is only modified, use @cc_wwan_data_save_apn()
+ * to save the changes.
+ */
+void
+cc_wwan_data_apn_set_initial_eps_password (CcWwanDataApn *apn,
+                               const gchar   *password)
+{
+  NMConnection *connection;
+  NMSettingGsm *setting;
+
+  g_return_if_fail (CC_IS_WWAN_DATA_APN (apn));
+
+  if (password && !*password)
+    password = NULL;
+
+  if (g_strcmp0 (cc_wwan_data_apn_get_initial_eps_password (apn), password) == 0)
+    return;
+
+  apn->modified = TRUE;
+  connection = wwan_data_get_nm_connection (apn);
+  setting = nm_connection_get_setting_gsm (connection);
+  g_object_set (G_OBJECT (setting),
+                NM_SETTING_GSM_INITIAL_EPS_BEARER_PASSWORD, password,
+                NULL);
+}
+
+/**
+ * cc_wwan_data_apn_get_initial_eps_auth_method:
+ * @apn: A #CcWwanDataApn
+ *
+ * For LTE modems, get the authentication status for all auth types of @apn
+ *
+ * Returns: (transfer none): The authentication status of @apn
+ */
+guint
+cc_wwan_data_apn_get_initial_eps_auth_method (CcWwanDataApn *apn)
+{
+  NMSettingGsm *setting;
+
+  g_return_val_if_fail (CC_IS_WWAN_DATA_APN (apn), 0);
+
+  if (!apn->remote_connection)
+    return 0;
+
+  setting = nm_connection_get_setting_gsm (NM_CONNECTION (apn->remote_connection));
+  if (nm_setting_gsm_get_initial_eps_noauth (setting))
+    return 0;
+  if (!nm_setting_gsm_get_initial_eps_refuse_pap (setting))
+    return 1;
+  if (!nm_setting_gsm_get_initial_eps_refuse_chap (setting))
+    return 2;
+  if (!nm_setting_gsm_get_initial_eps_refuse_eap (setting))
+    return 3;
+  if (!nm_setting_gsm_get_initial_eps_refuse_mschap (setting))
+    return 4;
+  if (!nm_setting_gsm_get_initial_eps_refuse_mschapv2 (setting))
+    return 5;
+
+  return 0;
+}
+
+/**
+ * cc_wwan_data_apn_set_initial_eps_auth_method:
+ * @apn: A #CcWwanDataApn
+ * @authtype: The initial eps bearer auth type
+ *
+ * For LTE modems, set the authentication type of @apn to @authtype.
+ *
+ * @apn is only modified, use @cc_wwan_data_save_apn()
+ * to save the changes.
+ */
+void
+cc_wwan_data_apn_set_initial_eps_auth_method (CcWwanDataApn *apn,
+                                              guint authtype)
+{
+  NMSettingGsm *setting;
+  NMConnection *connection;
+
+  gboolean noauth_enabled;
+  gboolean refuse_pap_enabled;
+  gboolean refuse_chap_enabled;
+  gboolean refuse_eap_enabled;
+  gboolean refuse_mschap_enabled;
+  gboolean refuse_mschapv2_enabled;
+
+  g_return_if_fail (CC_IS_WWAN_DATA_APN (apn));
+  apn->modified = TRUE;
+
+  connection = wwan_data_get_nm_connection (apn);
+  setting = nm_connection_get_setting_gsm (connection);
+
+  switch(authtype)
+  {
+    default:
+    case 0: //None
+      noauth_enabled = TRUE;
+      refuse_pap_enabled = TRUE;
+      refuse_chap_enabled = TRUE;
+      refuse_eap_enabled = TRUE;
+      refuse_mschap_enabled = TRUE;
+      refuse_mschapv2_enabled = TRUE;
+      break;
+    case 1: //PAP
+      noauth_enabled = FALSE;
+      refuse_pap_enabled = FALSE;
+      refuse_chap_enabled = TRUE;
+      refuse_eap_enabled = TRUE;
+      refuse_mschap_enabled = TRUE;
+      refuse_mschapv2_enabled = TRUE;
+      break;
+    case 2: //CHAP
+      noauth_enabled = FALSE;
+      refuse_pap_enabled = TRUE;
+      refuse_chap_enabled = FALSE;
+      refuse_eap_enabled = TRUE;
+      refuse_mschap_enabled = TRUE;
+      refuse_mschapv2_enabled = TRUE;
+      break;
+    case 3: //EAP
+      noauth_enabled = FALSE;
+      refuse_pap_enabled = TRUE;
+      refuse_chap_enabled = TRUE;
+      refuse_eap_enabled = FALSE;
+      refuse_mschap_enabled = TRUE;
+      refuse_mschapv2_enabled = TRUE;
+      break;
+    case 4: //MSCHAP
+      noauth_enabled = FALSE;
+      refuse_pap_enabled = TRUE;
+      refuse_chap_enabled = TRUE;
+      refuse_eap_enabled = TRUE;
+      refuse_mschap_enabled = FALSE;
+      refuse_mschapv2_enabled = TRUE;
+      break;
+    case 5: //MSCHAPV2
+      noauth_enabled = FALSE;
+      refuse_pap_enabled = TRUE;
+      refuse_chap_enabled = TRUE;
+      refuse_eap_enabled = TRUE;
+      refuse_mschap_enabled = TRUE;
+      refuse_mschapv2_enabled = FALSE;
+      break;
+  }
+
+	g_object_set (setting,
+                NM_SETTING_GSM_INITIAL_EPS_BEARER_NOAUTH, noauth_enabled,
+                NM_SETTING_GSM_INITIAL_EPS_BEARER_REFUSE_PAP, refuse_pap_enabled,
+                NM_SETTING_GSM_INITIAL_EPS_BEARER_REFUSE_CHAP, refuse_chap_enabled,
+                NM_SETTING_GSM_INITIAL_EPS_BEARER_REFUSE_EAP, refuse_eap_enabled,
+                NM_SETTING_GSM_INITIAL_EPS_BEARER_REFUSE_MSCHAP, refuse_mschap_enabled,
+                NM_SETTING_GSM_INITIAL_EPS_BEARER_REFUSE_MSCHAPV2, refuse_mschapv2_enabled,
+                NULL);
+}
+
+/**
+ * cc_wwan_data_apn_should_configure_initial_eps_bearer:
+ * @apn: A #CcWwanDataApn
+ *
+ * For LTE modems, Determine whether NetworkManager should explicitly
+ * configure the initial EPS bearer.
+ *
+ * Returns: (transfer none): The initial eps bearer configure status of @apn
+ */
+gboolean
+cc_wwan_data_apn_should_configure_initial_eps_bearer (CcWwanDataApn *apn)
+{
+  gboolean apn_type = FALSE;
+
+  g_return_val_if_fail (CC_IS_WWAN_DATA_APN (apn), FALSE);
+
+  if (apn->remote_connection)
+  {
+    NMSettingGsm *setting;
+
+    setting = nm_connection_get_setting_gsm (NM_CONNECTION (apn->remote_connection));
+    apn_type = nm_setting_gsm_get_initial_eps_config (setting);
+  }
+  /*
+  else if (apn->access_method)
+    {
+      apn_name = nma_mobile_access_method_get_3gpp_apn (apn->access_method);
+    }
+  */
+
+  return apn_type;
+}
+
+/**
+ * cc_wwan_data_apn_set_initial_eps_apntype:
+ * @apn: A #CcWwanDataApn
+ * @apntype: The initial eps bearer configure to be used
+ *
+ * For LTE modems, set whether NetworkManager should explicitly configure
+ * the initial EPS bearer.
+ *
+ * @apn is only modified, use @cc_wwan_data_save_apn()
+ * to save the changes.
+ */
+void
+cc_wwan_data_apn_set_should_configure_initial_eps_bearer (CcWwanDataApn *apn,
+                                                          gboolean       configure)
+{
+  NMConnection *connection;
+  NMSettingGsm *setting;
+
+  g_return_if_fail (CC_IS_WWAN_DATA_APN (apn));
+
+  apn->modified = TRUE;
+  connection = wwan_data_get_nm_connection(apn);
+  setting = nm_connection_get_setting_gsm(connection);
+
+  g_object_set (setting,
+                NM_SETTING_GSM_INITIAL_EPS_BEARER_CONFIGURE, configure,
                 NULL);
 }
 
