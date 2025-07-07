@@ -7,6 +7,7 @@ Uploaders: Amin Bandali <bandali@ubuntu.com>,
            Laurent Bigonville <bigon@debian.org>,
            Marco Trevisan (Treviño) <marco@ubuntu.com>
 Build-Depends: debhelper-compat (= 13),
+               blueprint-compiler (>= 0.17.0),
                desktop-file-utils,
                dh-sequence-gnome (>= 0.22.2),
                gnome-settings-daemon-dev (>= 48~rc),
