@@ -35,6 +35,23 @@ i18n.merge_file(
 
 cflags = ['-DGNOMELOCALEDIR="@0@"'.format(control_center_localedir)]
 
+ui_sources = files(
+  'cc-panel-list.blp',
+  'cc-panel.blp',
+  'cc-window.blp',
+  'help-overlay.blp',
+)
+
+ui_compiled = []
+foreach ui_source : ui_sources
+  ui_compiled += fs.name(fs.replace_suffix(ui_source, '.ui'))
+endforeach
+
+blueprints = custom_target(
+  input: ui_sources,
+  output: ui_compiled,
+  command: [blueprint_compiler, 'batch-compile', '@OUTDIR@', '@CURRENT_SOURCE_DIR@', '@INPUT@']
+)
 
 # Common sources between gnome-control-center and
 # libtestshell.
@@ -67,7 +84,7 @@ generated_sources += gnome.compile_resources(
   'resources',
   gresource_file,
   export : true,
-  dependencies: [gresource_file, appdata_file]
+  dependencies: [gresource_file, appdata_file, blueprints]
 )
 
 common_sources += generated_sources
@@ -101,9 +118,11 @@ shell_deps = common_deps + [
   libdevice_dep,
   liblanguage_dep,
   libwidgets_dep,
-  x11_dep,
   libshell_dep,
 ]
+if have_x11_support
+  shell_deps += [x11_dep]
+endif
 
 if host_is_linux_not_s390
   shell_deps += wacom_deps

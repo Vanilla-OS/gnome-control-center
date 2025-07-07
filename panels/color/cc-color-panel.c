@@ -23,7 +23,9 @@
 #include <glib/gi18n.h>
 #include <colord.h>
 #include <gtk/gtk.h>
+#ifdef HAVE_X11
 #include <gdk/x11/gdkx.h>
+#endif /* HAVE_X11 */
 
 #include "cc-color-calibrate.h"
 #include "cc-color-cell-renderer-text.h"
@@ -282,13 +284,12 @@ gcm_prefs_file_chooser_get_icc_profile (CcColorPanel *self)
 {
   g_autoptr(GFile) current_folder = NULL;
   GtkWindow *toplevel;
-  GtkFileDialog *dialog;
+  g_autoptr(GtkFileDialog) dialog = gtk_file_dialog_new ();
   GtkFileFilter *filter;
-  GListStore *filters;
+  g_autoptr(GListStore) filters = NULL;
 
   /* create new dialog */
   toplevel = GTK_WINDOW (gtk_widget_get_root (GTK_WIDGET (self)));
-  dialog = gtk_file_dialog_new ();
   /* TRANSLATORS: an ICC profile is a file containing colorspace data */
   gtk_file_dialog_set_title (dialog, _("Select ICC Profile File"));
   gtk_file_dialog_set_modal (dialog, TRUE);
@@ -307,6 +308,7 @@ gcm_prefs_file_chooser_get_icc_profile (CcColorPanel *self)
   /* TRANSLATORS: filter name on the file->open dialog */
   gtk_file_filter_set_name (filter, _("Supported ICC profiles"));
   g_list_store_append (filters, filter);
+  g_object_unref (filter);
 
   /* setup the all files filter */
   filter = gtk_file_filter_new ();
@@ -314,6 +316,7 @@ gcm_prefs_file_chooser_get_icc_profile (CcColorPanel *self)
   /* TRANSLATORS: filter name on the file->open dialog */
   gtk_file_filter_set_name (filter, _("All files"));
   g_list_store_append (filters, filter);
+  g_object_unref (filter);
 
   gtk_file_dialog_open (dialog, toplevel, NULL,
                         icc_prefs_imported_cb, self);
@@ -605,39 +608,11 @@ gcm_prefs_title_entry_changed_cb (CcColorPanel *self)
 static void
 gcm_prefs_calibrate_cb (CcColorPanel *self)
 {
-  GtkNative *native;
-  GdkSurface *surface;
-  gboolean ret;
-  g_autoptr(GError) error = NULL;
-  guint xid = 0;
-  g_autoptr(GPtrArray) argv = NULL;
-
-  /* use the new-style calibration helper */
+  /* use the new-style calibration helper which only works for displays */
   if (cd_device_get_kind (self->current_device) == CD_DEVICE_KIND_DISPLAY)
     {
       gcm_prefs_calibrate_display (self);
-      return;
     }
-
-  /* get xid */
-  native = gtk_widget_get_native (GTK_WIDGET (self));
-  surface = gtk_native_get_surface (native);
-
-  if (GDK_IS_X11_SURFACE (surface))
-    xid = gdk_x11_surface_get_xid (GDK_X11_SURFACE (surface));
-
-  /* run with modal set */
-  argv = g_ptr_array_new_with_free_func (g_free);
-  g_ptr_array_add (argv, g_strdup ("gcm-calibrate"));
-  g_ptr_array_add (argv, g_strdup ("--device"));
-  g_ptr_array_add (argv, g_strdup (cd_device_get_id (self->current_device)));
-  g_ptr_array_add (argv, g_strdup ("--parent-window"));
-  g_ptr_array_add (argv, g_strdup_printf ("%i", xid));
-  g_ptr_array_add (argv, NULL);
-  ret = g_spawn_async (NULL, (gchar**) argv->pdata, NULL, G_SPAWN_SEARCH_PATH,
-                       NULL, NULL, NULL, &error);
-  if (!ret)
-    g_warning ("failed to run calibrate: %s", error->message);
 }
 
 static gboolean
@@ -845,7 +820,7 @@ gcm_prefs_calib_export_cb (CcColorPanel *self)
   gboolean ret;
   g_autofree gchar *default_name = NULL;
   g_autoptr(GError) error = NULL;
-  GtkFileDialog *dialog;
+  g_autoptr(GtkFileDialog) dialog = NULL;
 
   profile = cc_color_calibrate_get_profile (self->calibrate);
   ret = cd_profile_connect_sync (profile, NULL, &error);
@@ -979,12 +954,14 @@ gcm_prefs_device_profile_enable_cb (CcColorPanel *self)
 static void
 gcm_prefs_profile_view (CcColorPanel *self, CdProfile *profile)
 {
-  GtkNative *native;
-  GdkSurface *surface;
   g_autoptr(GPtrArray) argv = NULL;
   guint xid = 0;
   gboolean ret;
   g_autoptr(GError) error = NULL;
+
+#ifdef HAVE_X11
+  GtkNative *native;
+  GdkSurface *surface;
 
   /* get xid */
   native = gtk_widget_get_native (GTK_WIDGET (self));
@@ -992,6 +969,7 @@ gcm_prefs_profile_view (CcColorPanel *self, CdProfile *profile)
 
   if (GDK_IS_X11_SURFACE (surface))
     xid = gdk_x11_surface_get_xid (GDK_X11_SURFACE (surface));
+#endif /* HAVE_X11 */
 
   /* open up gcm-viewer as a info pane */
   argv = g_ptr_array_new_with_free_func (g_free);
@@ -1112,7 +1090,6 @@ gcm_prefs_set_calibrate_button_sensitivity (CcColorPanel *self)
   gboolean ret = FALSE;
   const gchar *tooltip;
   CdDeviceKind kind;
-  CdSensor *sensor_tmp;
 
   /* TRANSLATORS: this is when the button is sensitive */
   tooltip = _("Create a color profile for the selected device");
@@ -1138,40 +1115,7 @@ gcm_prefs_set_calibrate_button_sensitivity (CcColorPanel *self)
       ret = TRUE;
 
     }
-  else if (kind == CD_DEVICE_KIND_SCANNER ||
-           kind == CD_DEVICE_KIND_CAMERA ||
-           kind == CD_DEVICE_KIND_WEBCAM)
-    {
-
-      /* TODO: find out if we can scan using gnome-scan */
-      ret = TRUE;
-
-    }
-  else if (kind == CD_DEVICE_KIND_PRINTER)
-    {
-
-    /* find whether we have hardware installed */
-    if (self->sensors == NULL || self->sensors->len == 0)
-      {
-        /* TRANSLATORS: this is when the button is insensitive */
-        tooltip = _("The measuring instrument is not detected. Please check it is turned on and correctly connected.");
-        goto out;
-      }
-
-    /* find whether we have hardware installed */
-    sensor_tmp = g_ptr_array_index (self->sensors, 0);
-    ret = cd_sensor_has_cap (sensor_tmp, CD_SENSOR_CAP_PRINTER);
-    if (!ret)
-      {
-        /* TRANSLATORS: this is when the button is insensitive */
-        tooltip = _("The measuring instrument does not support printer profiling.");
-        goto out;
-      }
-
-    /* success */
-    ret = TRUE;
-
-    }
+  /* no other types of calibration are currently supported */
   else
     {
       /* TRANSLATORS: this is when the button is insensitive */

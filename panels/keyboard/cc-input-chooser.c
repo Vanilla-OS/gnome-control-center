@@ -64,13 +64,13 @@ struct _CcInputChooser
   GtkStack          *input_sources_stack;
   GtkListBoxRow     *more_row;
   GtkWidget         *no_results;
+  GtkSearchBar      *search_bar;
 
   GnomeXkbInfo      *xkb_info;
   GHashTable        *ibus_engines;
   GHashTable        *locales;
   GHashTable        *locales_by_language;
   gboolean           showing_extra;
-  guint              filter_timeout_id;
   gchar            **filter_words;
 };
 
@@ -259,6 +259,7 @@ input_source_row_new (CcInputChooser *self,
 
       gtk_list_box_row_set_child (GTK_LIST_BOX_ROW (row), box);
       g_object_set_data (G_OBJECT (row), "name", (gpointer) display_name);
+      g_object_set_data_full (G_OBJECT (row), "source", source, g_object_unref);
       g_object_set_data_full (G_OBJECT (row), "unaccented-name",
                               cc_util_normalize_casefold_and_unaccent (display_name), g_free);
     }
@@ -372,10 +373,6 @@ show_input_sources_for_locale (CcInputChooser *self,
   gtk_list_box_set_selection_mode (self->input_sources_listbox, GTK_SELECTION_SINGLE);
   gtk_list_box_set_activate_on_single_click (self->input_sources_listbox, FALSE);
   gtk_list_box_unselect_all (self->input_sources_listbox);
-
-  if (gtk_widget_is_visible (GTK_WIDGET (self->filter_entry)) &&
-      !gtk_widget_is_focus (GTK_WIDGET (self->filter_entry)))
-    gtk_widget_grab_focus (GTK_WIDGET (self->filter_entry));
 }
 
 static gboolean
@@ -423,9 +420,6 @@ show_locale_rows (CcInputChooser *self)
   gtk_list_box_set_selection_mode (self->input_sources_listbox, GTK_SELECTION_NONE);
   gtk_list_box_set_activate_on_single_click (self->input_sources_listbox, TRUE);
 
-  if (gtk_widget_is_visible (GTK_WIDGET (self->filter_entry)) &&
-      !gtk_widget_is_focus (GTK_WIDGET (self->filter_entry)))
-    gtk_widget_grab_focus (GTK_WIDGET (self->filter_entry));
 }
 
 static gint
@@ -591,13 +585,21 @@ strvs_differ (gchar **av,
   return TRUE;
 }
 
-static gboolean
-do_filter (CcInputChooser *self)
+static void
+show_more (CcInputChooser *self)
+{
+  gtk_search_bar_set_search_mode (self->search_bar, TRUE);
+
+  self->showing_extra = TRUE;
+
+  gtk_list_box_invalidate_filter (self->input_sources_listbox);
+}
+
+static void
+on_filter_entry_search_changed_cb (CcInputChooser *self)
 {
   g_auto(GStrv) previous_words = NULL;
   g_autofree gchar *filter_contents = NULL;
-
-  self->filter_timeout_id = 0;
 
   filter_contents =
     cc_util_normalize_casefold_and_unaccent (gtk_editable_get_text (GTK_EDITABLE (self->filter_entry)));
@@ -605,38 +607,16 @@ do_filter (CcInputChooser *self)
   previous_words = self->filter_words;
   self->filter_words = g_strsplit_set (g_strstrip (filter_contents), " ", 0);
 
+  show_more (self);
+
   if (!self->filter_words[0])
     {
-      gtk_list_box_invalidate_filter (self->input_sources_listbox);
       gtk_list_box_set_placeholder (self->input_sources_listbox, NULL);
     }
   else if (previous_words == NULL || strvs_differ (self->filter_words, previous_words))
     {
-      gtk_list_box_invalidate_filter (self->input_sources_listbox);
       gtk_list_box_set_placeholder (self->input_sources_listbox, self->no_results);
     }
-
-  return G_SOURCE_REMOVE;
-}
-
-static void
-on_filter_entry_search_changed_cb (CcInputChooser *self)
-{
-  if (self->filter_timeout_id == 0)
-    self->filter_timeout_id = g_timeout_add (FILTER_TIMEOUT, (GSourceFunc) do_filter, self);
-}
-
-static void
-show_more (CcInputChooser *self)
-{
-  gtk_widget_set_visible (GTK_WIDGET (self->filter_entry), TRUE);
-
-  gtk_search_entry_set_key_capture_widget (self->filter_entry, GTK_WIDGET (self));
-  gtk_widget_grab_focus (GTK_WIDGET (self->filter_entry));
-
-  self->showing_extra = TRUE;
-
-  gtk_list_box_invalidate_filter (self->input_sources_listbox);
 }
 
 static void
@@ -1114,7 +1094,6 @@ cc_input_chooser_dispose (GObject *object)
   g_clear_pointer (&self->locales, g_hash_table_unref);
   g_clear_pointer (&self->locales_by_language, g_hash_table_unref);
   g_clear_pointer (&self->filter_words, g_strfreev);
-  g_clear_handle_id (&self->filter_timeout_id, g_source_remove);
 
   G_OBJECT_CLASS (cc_input_chooser_parent_class)->dispose (object);
 }
@@ -1141,6 +1120,7 @@ cc_input_chooser_class_init (CcInputChooserClass *klass)
   gtk_widget_class_bind_template_child (widget_class, CcInputChooser, filter_entry);
   gtk_widget_class_bind_template_child (widget_class, CcInputChooser, input_sources_listbox);
   gtk_widget_class_bind_template_child (widget_class, CcInputChooser, input_sources_stack);
+  gtk_widget_class_bind_template_child (widget_class, CcInputChooser, search_bar);
 
   gtk_widget_class_bind_template_callback (widget_class, on_input_sources_listbox_row_activated_cb);
   gtk_widget_class_bind_template_callback (widget_class, on_input_sources_listbox_selected_rows_changed_cb);
@@ -1154,6 +1134,8 @@ void
 cc_input_chooser_init (CcInputChooser *self)
 {
   gtk_widget_init_template (GTK_WIDGET (self));
+
+  gtk_search_bar_set_key_capture_widget (self->search_bar, GTK_WIDGET (self));
 }
 
 CcInputChooser *

@@ -29,23 +29,23 @@
 # Enrico Nicoletto <hiko@duck.com>, 2012-2016, 2018-2019, 2021-2022.
 # Leônidas Araújo <leorusvellt@hotmail.com>, 2022-2024.
 # Jhonata Fernandes <fjhonata14@gmail.com>, 2024.
-# Álvaro Burns, 2025.
 # Rafael Fontenelle <rafaelff@gnome.org>, 2012-2025.
+# Álvaro Burns <>, 2025.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-control-center\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-control-center/"
 "issues\n"
-"POT-Creation-Date: 2025-04-03 06:00+0000\n"
-"PO-Revision-Date: 2025-03-13 14:31-0300\n"
-"Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
+"POT-Creation-Date: 2025-03-20 19:52+0000\n"
+"PO-Revision-Date: 2025-03-20 18:32-0300\n"
+"Last-Translator: Álvaro Burns <>\n"
 "Language-Team: Brazilian Portuguese <https://br.gnome.org/traducao>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Gtranslator 47.1\n"
 "X-DamnedLies-Scope: partial\n"
 "X-Project-Style: gnome\n"
@@ -146,33 +146,33 @@ msgstr "%s registrou os seguintes atalhos globais"
 msgid "Global Shortcuts"
 msgstr "Atalhos globais"
 
-#: panels/applications/cc-applications-panel.c:880
+#: panels/applications/cc-applications-panel.c:881
 msgid "System Bus"
 msgstr "Barramento do sistema"
 
-#: panels/applications/cc-applications-panel.c:880
-#: panels/applications/cc-applications-panel.c:882
-#: panels/applications/cc-applications-panel.c:895
-#: panels/applications/cc-applications-panel.c:900
+#: panels/applications/cc-applications-panel.c:881
+#: panels/applications/cc-applications-panel.c:883
+#: panels/applications/cc-applications-panel.c:896
+#: panels/applications/cc-applications-panel.c:901
 msgid "Full access"
 msgstr "Acesso completo"
 
-#: panels/applications/cc-applications-panel.c:882
+#: panels/applications/cc-applications-panel.c:883
 msgid "Session Bus"
 msgstr "Barramento da sessão"
 
-#: panels/applications/cc-applications-panel.c:886
+#: panels/applications/cc-applications-panel.c:887
 #: panels/privacy/bolt/cc-bolt-page.ui:164
 #: panels/privacy/bolt/cc-bolt-page.ui:202
 #: panels/privacy/cc-privacy-panel.ui:72
 msgid "Devices"
 msgstr "Dispositivos"
 
-#: panels/applications/cc-applications-panel.c:886
+#: panels/applications/cc-applications-panel.c:887
 msgid "Full access to /dev"
 msgstr "Acesso completo a /dev"
 
-#: panels/applications/cc-applications-panel.c:890
+#: panels/applications/cc-applications-panel.c:891
 #: panels/network/cc-network-panel.ui:8
 #: panels/network/gnome-network-panel.desktop.in:3
 #: panels/network/network-mobile.ui:235 panels/wwan/cc-wwan-device-page.ui:61
@@ -180,80 +180,88 @@ msgstr "Acesso completo a /dev"
 msgid "Network"
 msgstr "Rede"
 
-#: panels/applications/cc-applications-panel.c:890
+#: panels/applications/cc-applications-panel.c:891
 msgid "Has network access"
 msgstr "Tem acesso à rede"
 
-#: panels/applications/cc-applications-panel.c:895
-#: panels/applications/cc-applications-panel.c:897
+#: panels/applications/cc-applications-panel.c:896
+#: panels/applications/cc-applications-panel.c:898
 #: panels/search/cc-search-locations-page.c:421
 msgid "Home"
 msgstr "Pasta pessoal"
 
-#: panels/applications/cc-applications-panel.c:897
-#: panels/applications/cc-applications-panel.c:902
+#: panels/applications/cc-applications-panel.c:898
+#: panels/applications/cc-applications-panel.c:903
 msgid "Read-only"
 msgstr "Somente leitura"
 
-#: panels/applications/cc-applications-panel.c:900
-#: panels/applications/cc-applications-panel.c:902
+#: panels/applications/cc-applications-panel.c:901
+#: panels/applications/cc-applications-panel.c:903
 msgid "File System"
 msgstr "Sistema de arquivos"
 
-#: panels/applications/cc-applications-panel.c:906
+#: panels/applications/cc-applications-panel.c:907
 #: panels/keyboard/01-launchers.xml.in:6
 #: shell/appdata/org.gnome.Settings.appdata.xml.in.in:7 shell/cc-window.c:804
 #: shell/cc-window.ui:18 shell/org.gnome.Settings.desktop.in:3
 msgid "Settings"
 msgstr "Configurações"
 
-#: panels/applications/cc-applications-panel.c:906
+#: panels/applications/cc-applications-panel.c:907
 msgid "Can change settings"
 msgstr "Pode alterar as configurações"
 
-#: panels/applications/cc-applications-panel.c:908
+#. TRANSLATORS: %s is an app name.
+#: panels/applications/cc-applications-panel.c:911
 #, c-format
 msgid ""
-"<b>%s</b> requires access to the following system resources. To stop this "
-"access, the app must be removed."
+"%s requires access to the following system resources. To stop this access, "
+"the app must be removed."
 msgstr ""
-"<b>%s</b> requer acesso aos seguintes recursos do sistema. Para interromper "
-"esse acesso, o aplicativo deve ser removido."
+"%s requer acesso aos seguintes recursos do sistema. Para interromper esse "
+"acesso, o aplicativo deve ser removido."
 
-#: panels/applications/cc-applications-panel.c:912
+#: panels/applications/cc-applications-panel.c:915
 #, c-format
 msgid "%u permission"
 msgid_plural "%u permissions"
 msgstr[0] "%u permissão"
 msgstr[1] "%u permissões"
 
-#: panels/applications/cc-applications-panel.c:1084
+#: panels/applications/cc-applications-panel.c:1087
 msgid "Remove Link Type"
 msgstr "Remove tipo de link"
 
-#: panels/applications/cc-applications-panel.c:1115
+#: panels/applications/cc-applications-panel.c:1118
 msgid "Remove File Type"
 msgstr "Remove tipo de arquivo"
 
-#: panels/applications/cc-applications-panel.c:1247
+#: panels/applications/cc-applications-panel.c:1251
 #, c-format
 msgid "%u type"
 msgid_plural "%u types"
 msgstr[0] "%u tipo"
 msgstr[1] "%u tipos"
 
-#: panels/applications/cc-applications-panel.c:1254
+#. TRANSLATORS: %s is an app name.
+#: panels/applications/cc-applications-panel.c:1260
 #, c-format
-msgid "<b>%s</b> is used to open the following types of files and links"
-msgstr "<b>%s</b> é usado para abrir os seguintes tipos de arquivos e links"
+msgid "%s is used to open the following types of files and links"
+msgstr "%s é usado para abrir os seguintes tipos de arquivos e links"
 
 #. TRANSLATORS: %s is an app name.
-#: panels/applications/cc-applications-panel.c:1295
+#: panels/applications/cc-applications-panel.c:1303
 #, c-format
-msgid "How much disk space <b>%s</b> is occupying with app data and caches"
+msgid "How much disk space %s is occupying with app data and caches"
 msgstr ""
-"Quanto espaço em disco <b>%s</b> está ocupando com dados e caches de "
-"aplicativos"
+"Quanto espaço em disco %s está ocupando com dados e caches de aplicativos"
+
+#: panels/applications/cc-applications-panel.c:1468
+#, c-format
+msgid "%u action"
+msgid_plural "%u actions"
+msgstr[0] "%u ação"
+msgstr[1] "%u ações"
 
 #: panels/applications/cc-applications-panel.ui:7
 #: panels/applications/gnome-applications-panel.desktop.in:3
@@ -2565,11 +2573,11 @@ msgstr "_Veja e personalize atalhos"
 
 #: panels/keyboard/cc-keyboard-shortcut-dialog.ui:34
 msgid "Search shortcuts"
-msgstr "Pesquisar atalhos"
+msgstr "Atalhos de pesquisa"
 
 #: panels/keyboard/cc-keyboard-shortcut-dialog.ui:38
 msgid "Search Shortcuts"
-msgstr "Pesquisar atalhos"
+msgstr "Atalhos de pesquisa"
 
 #: panels/keyboard/cc-keyboard-shortcut-dialog.ui:71
 msgid "_Reset All…"
@@ -3335,7 +3343,7 @@ msgid "_Name"
 msgstr "_Nome"
 
 #: panels/network/connection-editor/ce-page-8021x-security.c:106
-#: panels/network/connection-editor/ce-page-security.c:416
+#: panels/network/connection-editor/ce-page-security.c:415
 #: panels/network/connection-editor/details-page.ui:84
 #: panels/sharing/cc-sharing-panel.ui:112
 msgid "Security"
@@ -3424,7 +3432,7 @@ msgstr "WPA3"
 
 #. TRANSLATORS: this Enhanced Open WiFi security
 #: panels/network/connection-editor/ce-page-details.c:133
-#: panels/network/connection-editor/ce-page-security.c:271
+#: panels/network/connection-editor/ce-page-security.c:270
 msgid "Enhanced Open"
 msgstr "Enhanced Open"
 
@@ -3613,36 +3621,36 @@ msgid "IPv6"
 msgstr "IPv6"
 
 # Leônidas - como se refere a "segurança", mudei o gênero do pronome
-#: panels/network/connection-editor/ce-page-security.c:260
+#: panels/network/connection-editor/ce-page-security.c:259
 msgctxt "Wi-Fi/Ethernet security"
 msgid "None"
 msgstr "Nenhuma"
 
-#: panels/network/connection-editor/ce-page-security.c:295
+#: panels/network/connection-editor/ce-page-security.c:294
 msgid "WEP 40/128-bit Key (Hex or ASCII)"
 msgstr "WEP chave de 40/128-bit (Hex ou ASCII)"
 
-#: panels/network/connection-editor/ce-page-security.c:305
+#: panels/network/connection-editor/ce-page-security.c:304
 msgid "WEP 128-bit Passphrase"
 msgstr "WEP senha de 128-bit"
 
-#: panels/network/connection-editor/ce-page-security.c:318
+#: panels/network/connection-editor/ce-page-security.c:317
 msgid "LEAP"
 msgstr "LEAP"
 
-#: panels/network/connection-editor/ce-page-security.c:331
+#: panels/network/connection-editor/ce-page-security.c:330
 msgid "Dynamic WEP (802.1x)"
 msgstr "WEP dinâmico (802.1x)"
 
-#: panels/network/connection-editor/ce-page-security.c:345
+#: panels/network/connection-editor/ce-page-security.c:344
 msgid "WPA & WPA2 Personal"
 msgstr "WPA & WPA2 pessoal"
 
-#: panels/network/connection-editor/ce-page-security.c:359
+#: panels/network/connection-editor/ce-page-security.c:358
 msgid "WPA & WPA2 Enterprise"
 msgstr "WPA & WPA2 empresarial"
 
-#: panels/network/connection-editor/ce-page-security.c:373
+#: panels/network/connection-editor/ce-page-security.c:372
 msgid "WPA3 Personal"
 msgstr "WPA3 pessoal"
 

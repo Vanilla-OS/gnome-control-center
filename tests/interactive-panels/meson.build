@@ -4,6 +4,22 @@ subdir('applications')
 # Sources #
 ###########
 
+ui_sources = files(
+  'gtp-dynamic-panel.blp',
+  'gtp-static-init.blp',
+)
+
+ui_compiled = []
+foreach ui_source : ui_sources
+  ui_compiled += fs.name(fs.replace_suffix(ui_source, '.ui'))
+endforeach
+
+blueprints = custom_target(
+  input: ui_sources,
+  output: ui_compiled,
+  command: [blueprint_compiler, 'batch-compile', '@OUTDIR@', '@CURRENT_SOURCE_DIR@', '@INPUT@']
+)
+
 sources = files(
   'gtp-dynamic-panel.c',
   'gtp-static-init.c',
@@ -21,6 +37,7 @@ sources += gnome.compile_resources(
               source_dir : '.',
                   c_name : 'test_panels',
                   export : true,
+            dependencies : blueprints,
 )
 
 

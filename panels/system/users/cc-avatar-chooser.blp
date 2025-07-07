@@ -1,0 +1,31 @@
+using Gtk 4.0;
+
+template $CcAvatarChooser: Popover {
+  visible: false;
+
+  Box {
+    orientation: vertical;
+    spacing: 10;
+
+    FlowBox flowbox {
+      selection-mode: none;
+      homogeneous: true;
+      max-children-per-line: 5;
+      column-spacing: 10;
+      accessible-role: group;
+      accessibility {
+        label: _("Stock avatars");
+      }
+    }
+
+    Box {
+      halign: center;
+      spacing: 20;
+
+      Button {
+        label: _("Select a File…");
+        clicked => $cc_avatar_chooser_select_file(template);
+      }
+    }
+  }
+}

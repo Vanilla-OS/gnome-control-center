@@ -10,6 +10,24 @@ i18n.merge_file(
   install_dir : control_center_desktopdir
 )
 
+ui_sources = files(
+  'cc-application-shortcut-dialog.blp',
+  'cc-applications-panel.blp',
+  'cc-applications-row.blp',
+  'cc-default-apps-page.blp',  
+)
+
+ui_compiled = []
+foreach ui_source : ui_sources
+  ui_compiled += fs.name(fs.replace_suffix(ui_source, '.ui'))
+endforeach
+
+blueprints = custom_target(
+  input: ui_sources,
+  output: ui_compiled,
+  command: [blueprint_compiler, 'batch-compile', '@OUTDIR@', '@CURRENT_SOURCE_DIR@', '@INPUT@']
+)
+
 sources = files(
   'cc-applications-panel.c',
   'cc-applications-row.c',
@@ -22,17 +40,11 @@ sources = files(
   'utils.c',
 )
 
-resource_data = files(
-  'cc-applications-panel.ui',
-  'cc-default-apps-page.ui',
-  'cc-removable-media-settings.ui',
-)
-
 sources += gnome.compile_resources(
   'cc-' + cappletname + '-resources',
   cappletname + '.gresource.xml',
   c_name : 'cc_' + cappletname,
-  dependencies: resource_data,
+  dependencies: blueprints,
   export : true
 )
 
@@ -48,7 +60,7 @@ install_data(
   install_dir : control_center_datadir + '/dbus-1/interfaces',
 )
 
-deps = common_deps + keyboard_shortcuts_dep
+deps = common_deps + [keyboard_shortcuts_dep]
 
 if host_is_linux
   deps += mm_dep
