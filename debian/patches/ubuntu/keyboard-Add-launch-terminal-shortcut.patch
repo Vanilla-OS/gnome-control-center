@@ -10,8 +10,6 @@ This could return upstream if GNOME integrates xdg-terminal-exec support
  panels/keyboard/01-launchers.xml.in | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/panels/keyboard/01-launchers.xml.in b/panels/keyboard/01-launchers.xml.in
-index cdeb4bd..cc5d9f3 100644
 --- a/panels/keyboard/01-launchers.xml.in
 +++ b/panels/keyboard/01-launchers.xml.in
 @@ -9,6 +9,8 @@

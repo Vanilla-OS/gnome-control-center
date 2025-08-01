@@ -22,11 +22,9 @@ Forwarded: https://gitlab.gnome.org/GNOME/gnome-control-center/-/merge_requests/
  panels/keyboard/cc-xkb-modifier-page.c | 10 ++++++----
  2 files changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/panels/keyboard/cc-keyboard-panel.c b/panels/keyboard/cc-keyboard-panel.c
-index d87e9e7..870b9e4 100644
 --- a/panels/keyboard/cc-keyboard-panel.c
 +++ b/panels/keyboard/cc-keyboard-panel.c
-@@ -63,6 +63,11 @@ static const CcXkbModifier LV3_MODIFIER = {
+@@ -63,6 +63,11 @@ static const CcXkbModifier LV3_MODIFIER
    N_("Alternate Characters Key"),
    N_("The alternate characters key can be used to enter additional characters. These are sometimes printed as a third-option on your keyboard."),
    (CcXkbOption[]){
@@ -38,7 +36,7 @@ index d87e9e7..870b9e4 100644
      { NC_("keyboard key", "Left Alt"),    "lv3:lalt_switch" },
      { NC_("keyboard key", "Right Alt"),   "lv3:ralt_switch" },
      { NC_("keyboard key", "Left Super"),  "lv3:lwin_switch" },
-@@ -71,7 +76,7 @@ static const CcXkbModifier LV3_MODIFIER = {
+@@ -71,7 +76,7 @@ static const CcXkbModifier LV3_MODIFIER
      { NC_("keyboard key", "Right Ctrl"),  "lv3:switch" },
      { NULL,                               NULL }
    },
@@ -47,8 +45,6 @@ index d87e9e7..870b9e4 100644
  };
  
  static const CcXkbModifier COMPOSE_MODIFIER = {
-diff --git a/panels/keyboard/cc-xkb-modifier-page.c b/panels/keyboard/cc-xkb-modifier-page.c
-index ddbf72b..d2a566d 100644
 --- a/panels/keyboard/cc-xkb-modifier-page.c
 +++ b/panels/keyboard/cc-xkb-modifier-page.c
 @@ -117,21 +117,23 @@ set_xkb_option (CcXkbModifierPage *self,

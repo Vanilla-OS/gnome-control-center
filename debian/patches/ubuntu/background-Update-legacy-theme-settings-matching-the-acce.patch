@@ -12,8 +12,6 @@ have no support for accent colors.
  panels/background/cc-background-panel.c | 59 +++++++++++++++++++++++++++++++++
  1 file changed, 59 insertions(+)
 
-diff --git a/panels/background/cc-background-panel.c b/panels/background/cc-background-panel.c
-index 201d2ab..d88fc87 100644
 --- a/panels/background/cc-background-panel.c
 +++ b/panels/background/cc-background-panel.c
 @@ -46,6 +46,12 @@
@@ -29,11 +27,10 @@ index 201d2ab..d88fc87 100644
  
  struct _CcBackgroundPanel
  {
-@@ -105,6 +111,51 @@ transition_screen (CcBackgroundPanel *self)
-     g_warning ("Couldn't transition screen: %s", error->message);
+@@ -106,6 +112,51 @@ transition_screen (CcBackgroundPanel *se
  }
  
-+static void
+ static void
 +update_yaru_accent_settings (CcBackgroundPanel *self)
 +{
 +  g_autoptr(GString) gtk_theme = NULL;
@@ -78,10 +75,11 @@ index 201d2ab..d88fc87 100644
 +    g_settings_set_string (self->interface_settings, INTERFACE_ICON_THEME_KEY, icon_theme->str);
 +}
 +
- static void
++static void
  on_accent_color_toggled_cb (CcBackgroundPanel *self,
                              GtkToggleButton   *toggle)
-@@ -273,6 +324,8 @@ set_color_scheme (CcBackgroundPanel   *self,
+ {
+@@ -273,6 +324,8 @@ set_color_scheme (CcBackgroundPanel   *s
    g_settings_set_enum (self->interface_settings,
                         INTERFACE_COLOR_SCHEME_KEY,
                         color_scheme);
@@ -90,7 +88,7 @@ index 201d2ab..d88fc87 100644
  }
  
  /* Color schemes */
-@@ -582,6 +635,12 @@ cc_background_panel_init (CcBackgroundPanel *self)
+@@ -582,6 +635,12 @@ cc_background_panel_init (CcBackgroundPa
                             self,
                             G_CONNECT_SWAPPED);
  

@@ -19,11 +19,9 @@ https://gitlab.gnome.org/GNOME/mutter/merge_requests/37
  panels/mouse/cc-mouse-panel.c       | 16 +++++++++-------
  2 files changed, 16 insertions(+), 7 deletions(-)
 
-diff --git a/panels/mouse/cc-mouse-caps-helper.c b/panels/mouse/cc-mouse-caps-helper.c
-index 6658f41..12aafdb 100644
 --- a/panels/mouse/cc-mouse-caps-helper.c
 +++ b/panels/mouse/cc-mouse-caps-helper.c
-@@ -38,6 +38,13 @@ touchpad_check_capabilities_x11 (gboolean *have_two_finger_scrolling,
+@@ -41,6 +41,13 @@ touchpad_check_capabilities_x11 (gboolea
  	unsigned long nitems, bytes_after;
  	unsigned char *data;
  
@@ -37,28 +35,26 @@ index 6658f41..12aafdb 100644
          gdisplay = gdk_display_get_default ();
          display = GDK_DISPLAY_XDISPLAY (gdk_display_get_default ());
  	prop_scroll_methods = XInternAtom (display, "libinput Scroll Methods Available", False);
-diff --git a/panels/mouse/cc-mouse-panel.c b/panels/mouse/cc-mouse-panel.c
-index 0704c57..fd5f73a 100644
 --- a/panels/mouse/cc-mouse-panel.c
 +++ b/panels/mouse/cc-mouse-panel.c
-@@ -62,7 +62,6 @@ struct _CcMousePanel
-   gboolean           have_mouse;
+@@ -70,7 +70,6 @@ struct _CcMousePanel
    gboolean           have_touchpad;
    gboolean           have_touchscreen;
+   gboolean           have_pointingstick;
 -  gboolean           have_synaptics;
  
    GtkGesture        *left_gesture;
    GtkGesture        *right_gesture;
-@@ -77,7 +76,7 @@ setup_touchpad_options (CcMousePanel *self)
-   gboolean have_edge_scrolling;
-   gboolean have_tap_to_click;
+@@ -85,7 +84,7 @@ setup_title_stack (CcMousePanel *self)
+   gboolean have_pointingstick;
+   gboolean have_touchpad;
  
--  if (self->have_synaptics || !self->have_touchpad) {
-+  if (!self->have_touchpad) {
-     adw_view_stack_page_set_visible (self->touchpad_stack_page, FALSE);
-     gtk_stack_set_visible_child_name (self->title_stack, "title");
-     return;
-@@ -331,7 +330,10 @@ setup_dialog (CcMousePanel *self)
+-  have_touchpad = self->have_touchpad && !self->have_synaptics;
++  have_touchpad = self->have_touchpad;
+   have_pointingstick = self->have_pointingstick;
+ 
+   if (have_touchpad) {
+@@ -378,7 +377,10 @@ setup_dialog (CcMousePanel *self)
  static void
  device_changed (CcMousePanel *self)
  {
@@ -67,10 +63,10 @@ index 0704c57..fd5f73a 100644
 +  /*                                              ^^^^^^^^^^^^^^^^^^^^^
 +   *            Workaround https://gitlab.gnome.org/GNOME/gtk/issues/97
 +   */
+   self->have_pointingstick = pointingstick_is_present ();
  
-   setup_touchpad_options (self);
- 
-@@ -398,11 +400,11 @@ cc_mouse_panel_init (CcMousePanel *self)
+   setup_title_stack (self);
+@@ -447,12 +449,12 @@ cc_mouse_panel_init (CcMousePanel *self)
                             G_CALLBACK (device_changed), self, G_CONNECT_SWAPPED);
  
    self->have_mouse = mouse_is_present ();
@@ -80,6 +76,7 @@ index 0704c57..fd5f73a 100644
 +   *            Workaround https://gitlab.gnome.org/GNOME/gtk/issues/97
 +   */
    self->have_touchscreen = touchscreen_is_present ();
+   self->have_pointingstick = pointingstick_is_present ();
 -  self->have_synaptics = cc_synaptics_check ();
 -  if (self->have_synaptics)
 -    g_warning ("Detected synaptics X driver, please migrate to libinput");

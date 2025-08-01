@@ -3,16 +3,10 @@ Date: Thu, 15 Aug 2024 05:54:49 -0400
 Subject: sound: Add toggle for the startup sound
 
 We hardcode the sound to a specific file for now
----
- panels/sound/cc-sound-panel.c  | 41 +++++++++++++++++++++++++++++++++++++++++
- panels/sound/cc-sound-panel.ui |  6 ++++++
- 2 files changed, 47 insertions(+)
 
-diff --git a/panels/sound/cc-sound-panel.c b/panels/sound/cc-sound-panel.c
-index da9ae1c..d153fe1 100644
 --- a/panels/sound/cc-sound-panel.c
 +++ b/panels/sound/cc-sound-panel.c
-@@ -55,6 +55,7 @@ struct _CcSoundPanel
+@@ -54,6 +54,7 @@ struct _CcSoundPanel
    CcVolumeSlider      *output_volume_slider;
    CcBalanceSlider     *balance_slider;
    AdwSwitchRow        *allow_amplify_row;
@@ -20,15 +14,15 @@ index da9ae1c..d153fe1 100644
    AdwPreferencesRow   *fade_row;
    CcFadeSlider        *fade_slider;
    AdwPreferencesRow   *subwoofer_row;
-@@ -283,6 +284,7 @@ cc_sound_panel_class_init (CcSoundPanelClass *klass)
-   gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, output_profile_combo_box);
+@@ -280,6 +281,7 @@ cc_sound_panel_class_init (CcSoundPanelC
+   gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, output_profile_combo_row);
    gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, output_volume_slider);
    gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, allow_amplify_row);
 +  gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, startup_sound_row);
    gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, balance_slider);
    gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, fade_row);
    gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, fade_slider);
-@@ -314,6 +316,28 @@ cc_sound_panel_class_init (CcSoundPanelClass *klass)
+@@ -310,6 +312,28 @@ cc_sound_panel_class_init (CcSoundPanelC
    g_type_ensure (CC_TYPE_LIST_ROW);
  }
  
@@ -57,7 +51,7 @@ index da9ae1c..d153fe1 100644
  static void
  cc_sound_panel_init (CcSoundPanel *self)
  {
-@@ -336,8 +360,25 @@ cc_sound_panel_init (CcSoundPanel *self)
+@@ -332,8 +356,25 @@ cc_sound_panel_init (CcSoundPanel *self)
    if (desktops && g_strv_contains ((const gchar * const *) desktops, "ubuntu")) {
      g_settings_bind (self->sound_settings, "allow-volume-above-100-percent",
                       self->allow_amplify_row, "active", G_SETTINGS_BIND_DEFAULT);
@@ -83,20 +77,17 @@ index da9ae1c..d153fe1 100644
    }
  
    self->mixer_control = gvc_mixer_control_new ("GNOME Settings");
-diff --git a/panels/sound/cc-sound-panel.ui b/panels/sound/cc-sound-panel.ui
-index 4689159..ce7612f 100644
---- a/panels/sound/cc-sound-panel.ui
-+++ b/panels/sound/cc-sound-panel.ui
-@@ -378,6 +378,12 @@
-                         <signal name="activated" handler="alert_sound_activated_cb" swapped="yes"/>
-                       </object>
-                     </child>
-+                    <child>
-+                      <object class="AdwSwitchRow" id="startup_sound_row">
-+                        <property name="title" translatable="yes">_Startup Sound</property>
-+                        <property name="use-underline">True</property>
-+                      </object>
-+                    </child>
-                   </object>
-                 </child>
-               </object>
+--- a/panels/sound/cc-sound-panel.blp
++++ b/panels/sound/cc-sound-panel.blp
+@@ -216,6 +224,11 @@ template $CcSoundPanel: $CcPanel {
+             show-arrow: true;
+             activated => $alert_sound_activated_cb(template);
+           }
++
++          Adw.SwitchRow startup_sound_row {
++            title: _("_Startup Sound");
++            use-underline: true;
++          }
+         }
+       };
+     }

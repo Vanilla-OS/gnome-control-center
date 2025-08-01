@@ -47,8 +47,6 @@ Forwarded: not-needed
  create mode 100644 panels/ubuntu/meson.build
  create mode 100644 panels/ubuntu/ubuntu.gresource.xml
 
-diff --git a/panels/meson.build b/panels/meson.build
-index 07c7733..45cf209 100644
 --- a/panels/meson.build
 +++ b/panels/meson.build
 @@ -20,6 +20,7 @@ panels = [
@@ -59,9 +57,6 @@ index 07c7733..45cf209 100644
    'universal-access',
    'wellbeing',
    'wwan',
-diff --git a/panels/ubuntu/assets/colors/color.svg.in b/panels/ubuntu/assets/colors/color.svg.in
-new file mode 100644
-index 0000000..4c0e136
 --- /dev/null
 +++ b/panels/ubuntu/assets/colors/color.svg.in
 @@ -0,0 +1,5 @@
@@ -70,25 +65,16 @@ index 0000000..4c0e136
 +  <circle cx="417" cy="355" r="13.35" fill="#00ff00" stroke-width="2.9706"/>
 + </g>
 +</svg>
-diff --git a/panels/ubuntu/assets/theme-dark.svg b/panels/ubuntu/assets/theme-dark.svg
-new file mode 100644
-index 0000000..90a7f86
 --- /dev/null
 +++ b/panels/ubuntu/assets/theme-dark.svg
 @@ -0,0 +1 @@
 +<svg version="1.0" width="250" height="150" xmlns="http://www.w3.org/2000/svg"><defs><filter id="a" x="-.042" y="-.055" width="1.085" height="1.111" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="1.5"/></filter><filter id="b" x="-.042" y="-.055" width="1.085" height="1.111" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="1.5"/></filter></defs><g transform="translate(111.066 -45.354) scale(1.1742)"><rect x="-15" y="55" width="85" height="65" ry="5" filter="url(#a)" opacity=".55"/><rect x="-15" y="55" width="85" height="65" ry="5" fill="#404040"/><path d="M-10 55c-2.77 0-5 2.23-5 5v10h85V60c0-2.77-2.23-5-5-5z" fill="#404040"/><rect x="-15" y="69" width="85" height="1" ry="0" fill="#5d5d5d"/></g><g transform="translate(75.84 -10.128) scale(1.1742)"><rect x="-15" y="55" width="85" height="65" ry="5" filter="url(#b)" opacity=".55"/><rect x="-15" y="55" width="85" height="65" ry="5" fill="#242424"/><path d="M-10 55c-2.77 0-5 2.23-5 5v10h85V60c0-2.77-2.23-5-5-5z" fill="#303030" fill-opacity=".937"/><rect x="-15" y="69" width="85" height="1" ry="0" fill="#4d4d4d"/></g></svg>
 \ No newline at end of file
-diff --git a/panels/ubuntu/assets/theme-light.svg b/panels/ubuntu/assets/theme-light.svg
-new file mode 100644
-index 0000000..0a8f29f
 --- /dev/null
 +++ b/panels/ubuntu/assets/theme-light.svg
 @@ -0,0 +1 @@
 +<svg version="1.0" width="250" height="150" xmlns="http://www.w3.org/2000/svg"><defs><filter id="a" x="-.042" y="-.055" width="1.085" height="1.111" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="1.5"/></filter><filter id="c" x="-.042" y="-.055" width="1.085" height="1.111" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="1.5"/></filter><filter id="b" x="-.042" y="-.055" width="1.085" height="1.111" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="1.5"/></filter><filter id="d" x="-.042" y="-.055" width="1.085" height="1.111" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="1.5"/></filter></defs><g transform="translate(111.066 -45.354) scale(1.1742)"><rect x="-15" y="55" width="85" height="65" ry="5" filter="url(#a)" opacity=".55" style="filter:url(#b)"/><rect x="-15" y="55" width="85" height="65" ry="5" fill="#4d4d4d"/><path d="M-10 55c-2.77 0-5 2.23-5 5v10h85V60c0-2.77-2.23-5-5-5z" fill="#4d4d4d"/><rect x="-15" y="69" width="85" height="1" ry="0" fill="#666"/></g><g transform="translate(75.84 -10.128) scale(1.1742)"><rect x="-15" y="55" width="85" height="65" ry="5" filter="url(#c)" opacity=".55" style="filter:url(#d)"/><rect x="-15" y="55" width="85" height="65" ry="5" fill="#fafafa"/><path d="M-10 55c-2.77 0-5 2.23-5 5v10h85V60c0-2.77-2.23-5-5-5z" fill="#dedede"/><rect x="-15" y="69" width="85" height="1" ry="0" fill="#b3b3b3"/></g></svg>
 \ No newline at end of file
-diff --git a/panels/ubuntu/cc-ubuntu-dock-dialog.c b/panels/ubuntu/cc-ubuntu-dock-dialog.c
-new file mode 100644
-index 0000000..266f486
 --- /dev/null
 +++ b/panels/ubuntu/cc-ubuntu-dock-dialog.c
 @@ -0,0 +1,103 @@
@@ -195,9 +181,6 @@ index 0000000..266f486
 +
 +  return dialog;
 +}
-diff --git a/panels/ubuntu/cc-ubuntu-dock-dialog.h b/panels/ubuntu/cc-ubuntu-dock-dialog.h
-new file mode 100644
-index 0000000..cd84651
 --- /dev/null
 +++ b/panels/ubuntu/cc-ubuntu-dock-dialog.h
 @@ -0,0 +1,31 @@
@@ -232,9 +215,6 @@ index 0000000..cd84651
 +CcUbuntuDockDialog *cc_ubuntu_dock_dialog_new (GSettings *settings);
 +
 +G_END_DECLS
-diff --git a/panels/ubuntu/cc-ubuntu-dock-dialog.ui b/panels/ubuntu/cc-ubuntu-dock-dialog.ui
-new file mode 100644
-index 0000000..c7dcd20
 --- /dev/null
 +++ b/panels/ubuntu/cc-ubuntu-dock-dialog.ui
 @@ -0,0 +1,79 @@
@@ -317,9 +297,6 @@ index 0000000..c7dcd20
 +    </child>
 +  </template>
 +</interface>
-diff --git a/panels/ubuntu/cc-ubuntu-panel.c b/panels/ubuntu/cc-ubuntu-panel.c
-new file mode 100644
-index 0000000..8c964af
 --- /dev/null
 +++ b/panels/ubuntu/cc-ubuntu-panel.c
 @@ -0,0 +1,1729 @@
@@ -2052,9 +2029,6 @@ index 0000000..8c964af
 +                                         CC_PANEL_HIDDEN);
 +  }
 +}
-diff --git a/panels/ubuntu/cc-ubuntu-panel.h b/panels/ubuntu/cc-ubuntu-panel.h
-new file mode 100644
-index 0000000..df67a97
 --- /dev/null
 +++ b/panels/ubuntu/cc-ubuntu-panel.h
 @@ -0,0 +1,33 @@
@@ -2091,9 +2065,6 @@ index 0000000..df67a97
 +void cc_ubuntu_panel_static_init_func (void);
 +
 +G_END_DECLS
-diff --git a/panels/ubuntu/cc-ubuntu-panel.ui b/panels/ubuntu/cc-ubuntu-panel.ui
-new file mode 100644
-index 0000000..cb4a44b
 --- /dev/null
 +++ b/panels/ubuntu/cc-ubuntu-panel.ui
 @@ -0,0 +1,219 @@
@@ -2316,9 +2287,6 @@ index 0000000..cb4a44b
 +    <signal name="value-changed" handler="on_icon_size_adjustment_value_changed" object="CcUbuntuPanel" swapped="yes"/>
 +  </object>
 +</interface>
-diff --git a/panels/ubuntu/gnome-ubuntu-panel.desktop.in b/panels/ubuntu/gnome-ubuntu-panel.desktop.in
-new file mode 100644
-index 0000000..ee93bc0
 --- /dev/null
 +++ b/panels/ubuntu/gnome-ubuntu-panel.desktop.in
 @@ -0,0 +1,13 @@
@@ -2335,9 +2303,6 @@ index 0000000..ee93bc0
 +OnlyShowIn=ubuntu;
 +# Translators: those are keywords for the ubuntu control-center panel
 +Keywords=Dock;Launcher;Theme;Ubuntu;Dark;icons;Yaru;Accent;
-diff --git a/panels/ubuntu/meson.build b/panels/ubuntu/meson.build
-new file mode 100644
-index 0000000..529be08
 --- /dev/null
 +++ b/panels/ubuntu/meson.build
 @@ -0,0 +1,97 @@
@@ -2438,9 +2403,6 @@ index 0000000..529be08
 +  dependencies: common_deps,
 +  c_args: cflags
 +)
-diff --git a/panels/ubuntu/ubuntu.gresource.xml b/panels/ubuntu/ubuntu.gresource.xml
-new file mode 100644
-index 0000000..a636e9c
 --- /dev/null
 +++ b/panels/ubuntu/ubuntu.gresource.xml
 @@ -0,0 +1,6 @@
@@ -2450,8 +2412,42 @@ index 0000000..a636e9c
 +    @GENERATED_FILES@
 +  </gresource>
 +</gresources>
-diff --git a/po/POTFILES.in b/po/POTFILES.in
-index 50823b7..b14edf5 100644
+--- a/shell/cc-panel-list.c
++++ b/shell/cc-panel-list.c
+@@ -383,6 +383,7 @@ static const gchar * const panel_order[]
+   "power",
+   "multitasking",
+   "background",
++  "ubuntu",
+ 
+   "separator",
+ 
+--- a/shell/cc-panel-loader.c
++++ b/shell/cc-panel-loader.c
+@@ -56,6 +56,7 @@ extern GType cc_sharing_panel_get_type (
+ extern GType cc_sound_panel_get_type (void);
+ extern GType cc_system_panel_get_type (void);
+ extern GType cc_ua_panel_get_type (void);
++extern GType cc_ubuntu_panel_get_type(void);
+ #ifdef BUILD_WACOM
+ extern GType cc_wacom_panel_get_type (void);
+ #endif /* BUILD_WACOM */
+@@ -63,6 +64,7 @@ extern GType cc_wellbeing_panel_get_type
+ #ifdef BUILD_WWAN
+ extern GType cc_wwan_panel_get_type (void);
+ #endif /* BUILD_WWAN */
++extern void cc_ubuntu_panel_static_init_func (void);
+ 
+ /* Static init functions */
+ #ifdef BUILD_NETWORK
+@@ -109,6 +111,7 @@ static CcPanelLoaderVtable default_panel
+   PANEL_TYPE("sharing",          cc_sharing_panel_get_type,              cc_sharing_panel_static_init_func),
+   PANEL_TYPE("sound",            cc_sound_panel_get_type,                NULL),
+   PANEL_TYPE("system",           cc_system_panel_get_type,               NULL),
++  PANEL_TYPE("ubuntu",           cc_ubuntu_panel_get_type,               cc_ubuntu_panel_static_init_func),
+   PANEL_TYPE("universal-access", cc_ua_panel_get_type,                   NULL),
+ #ifdef BUILD_WACOM
+   PANEL_TYPE("wacom",            cc_wacom_panel_get_type,                cc_wacom_panel_static_init_func),
 --- a/po/POTFILES.in
 +++ b/po/POTFILES.in
 @@ -241,6 +241,11 @@ panels/system/users/org.gnome.controlcenter.user-accounts.policy.in
@@ -2463,46 +2459,6 @@ index 50823b7..b14edf5 100644
 +panels/ubuntu/cc-ubuntu-dock-dialog.c
 +panels/ubuntu/cc-ubuntu-dock-dialog.ui
 +panels/ubuntu/gnome-ubuntu-panel.desktop.in
- panels/universal-access/cc-cursor-size-page.ui
+ panels/universal-access/cc-cursor-size-page.blp
+ panels/universal-access/cc-ua-hearing-page.blp
  panels/universal-access/cc-ua-hearing-page.c
- panels/universal-access/cc-ua-hearing-page.ui
-diff --git a/shell/cc-panel-list.c b/shell/cc-panel-list.c
-index c339054..802d958 100644
---- a/shell/cc-panel-list.c
-+++ b/shell/cc-panel-list.c
-@@ -377,6 +377,7 @@ static const gchar * const panel_order[] = {
-   "power",
-   "multitasking",
-   "background",
-+  "ubuntu",
- 
-   "separator",
- 
-diff --git a/shell/cc-panel-loader.c b/shell/cc-panel-loader.c
-index 28a1671..8845cb6 100644
---- a/shell/cc-panel-loader.c
-+++ b/shell/cc-panel-loader.c
-@@ -56,6 +56,7 @@ extern GType cc_sharing_panel_get_type (void);
- extern GType cc_sound_panel_get_type (void);
- extern GType cc_system_panel_get_type (void);
- extern GType cc_ua_panel_get_type (void);
-+extern GType cc_ubuntu_panel_get_type(void);
- #ifdef BUILD_WACOM
- extern GType cc_wacom_panel_get_type (void);
- #endif /* BUILD_WACOM */
-@@ -63,6 +64,7 @@ extern GType cc_wellbeing_panel_get_type (void);
- #ifdef BUILD_WWAN
- extern GType cc_wwan_panel_get_type (void);
- #endif /* BUILD_WWAN */
-+extern void cc_ubuntu_panel_static_init_func (void);
- 
- /* Static init functions */
- #ifdef BUILD_NETWORK
-@@ -109,6 +111,7 @@ static CcPanelLoaderVtable default_panels[] =
-   PANEL_TYPE("sharing",          cc_sharing_panel_get_type,              cc_sharing_panel_static_init_func),
-   PANEL_TYPE("sound",            cc_sound_panel_get_type,                NULL),
-   PANEL_TYPE("system",           cc_system_panel_get_type,               NULL),
-+  PANEL_TYPE("ubuntu",           cc_ubuntu_panel_get_type,               cc_ubuntu_panel_static_init_func),
-   PANEL_TYPE("universal-access", cc_ua_panel_get_type,                   NULL),
- #ifdef BUILD_WACOM
-   PANEL_TYPE("wacom",            cc_wacom_panel_get_type,                cc_wacom_panel_static_init_func),

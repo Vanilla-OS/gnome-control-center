@@ -14,11 +14,9 @@ Last-Update: 2018-03-09
  panels/online-accounts/cc-online-accounts-panel.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/panels/online-accounts/cc-online-accounts-panel.c b/panels/online-accounts/cc-online-accounts-panel.c
-index c8fa63c..daf212e 100644
 --- a/panels/online-accounts/cc-online-accounts-panel.c
 +++ b/panels/online-accounts/cc-online-accounts-panel.c
-@@ -523,6 +523,7 @@ cc_online_accounts_panel_set_property (GObject      *object,
+@@ -522,6 +522,7 @@ cc_online_accounts_panel_set_property (G
            else if (g_strcmp0 (first_arg, "add") == 0)
              {
                command_add (CC_ONLINE_ACCOUNTS_PANEL (object), parameters);

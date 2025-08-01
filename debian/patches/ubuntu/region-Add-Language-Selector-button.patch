@@ -3,20 +3,13 @@ Date: Thu, 14 Sep 2017 09:23:42 -0400
 Subject: region: Add Language Selector button
 
 Workaround for https://launchpad.net/bugs/1631750
----
- panels/system/region/cc-region-page.c  | 20 ++++++++++++++++++++
- panels/system/region/cc-region-page.ui | 22 ++++++++++++++++++++++
- 2 files changed, 42 insertions(+)
 
-diff --git a/panels/system/region/cc-region-page.c b/panels/system/region/cc-region-page.c
-index d723018..d96b4d2 100644
 --- a/panels/system/region/cc-region-page.c
 +++ b/panels/system/region/cc-region-page.c
-@@ -573,6 +573,25 @@ setup_language_section (CcRegionPage *self)
-         update_region_from_setting (self);
+@@ -574,6 +574,25 @@ setup_language_section (CcRegionPage *se
  }
  
-+static void
+ static void
 +show_language_support (CcRegionPage *self)
 +{
 +        g_autoptr(GAppInfo) app_info = NULL;
@@ -35,10 +28,11 @@ index d723018..d96b4d2 100644
 +                g_warning ("Failed to launch language-selector: %s", error->message);
 +}
 +
- static void
++static void
  update_login_region (CcRegionPage *self)
  {
-@@ -846,6 +865,7 @@ cc_region_page_class_init (CcRegionPageClass * klass)
+         const gchar *region = get_effective_region (self, SYSTEM);
+@@ -846,6 +865,7 @@ cc_region_page_class_init (CcRegionPageC
          gtk_widget_class_bind_template_callback (widget_class, on_user_formats_row_activated_cb);
          gtk_widget_class_bind_template_callback (widget_class, on_user_language_row_activated_cb);
          gtk_widget_class_bind_template_callback (widget_class, restart_now);
@@ -46,36 +40,26 @@ index d723018..d96b4d2 100644
  }
  
  static void
-diff --git a/panels/system/region/cc-region-page.ui b/panels/system/region/cc-region-page.ui
-index 87ba26b..8fac58a 100644
---- a/panels/system/region/cc-region-page.ui
-+++ b/panels/system/region/cc-region-page.ui
-@@ -25,6 +25,28 @@
-             <child>
-               <object class="AdwPreferencesPage">
-                 <property name="description" translatable="yes">The language setting is used for interface text and web pages. Formats are used for numbers, dates, and currencies.</property>
-+                <child>
-+                  <object class="AdwPreferencesGroup">
-+                    <property name="title" translatable="yes">System</property>
+--- a/panels/system/region/cc-region-page.blp
++++ b/panels/system/region/cc-region-page.blp
+@@ -22,6 +22,20 @@ template $CcRegionPage: Adw.NavigationPa
+         description: _("The language setting is used for interface text and web pages. Formats are used for numbers, dates, and currencies.");
+ 
+         Adw.PreferencesGroup {
++          title: _("System");
++          Adw.ActionRow {
++            title: _("Manage _Installed Languages");
++            use-underline: true;
++            activatable: true;
++            activated => $show_language_support(template);
++            Image {
++                valign: center;
++                icon-name: "go-next-symbolic";
++            }
++          }
++        }
 +
-+                    <child>
-+                      <object class="AdwActionRow">
-+                        <property name="use-underline">True</property>
-+                        <property name="title" translatable="yes">Manage _Installed Languages</property>
-+                        <property name="activatable">True</property>
-+                        <signal name="activated" handler="show_language_support" object="CcRegionPage" swapped="yes" />
-+
-+                        <child>
-+                          <object class="GtkImage">
-+                            <property name="valign">center</property>
-+                            <property name="icon-name">go-next-symbolic</property>
-+                          </object>
-+                        </child>
-+                      </object>
-+                    </child>
-+
-+                  </object>
-+                </child>
-                 <child>
-                   <object class="AdwPreferencesGroup">
-                     <property name="title" translatable="yes">Your Account</property>
++        Adw.PreferencesGroup {
+           title: _("Your Account");
+ 
+           $CcListRow language_row {

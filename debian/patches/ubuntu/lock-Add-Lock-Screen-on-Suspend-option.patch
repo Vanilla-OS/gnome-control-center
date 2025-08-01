@@ -8,8 +8,6 @@ https://launchpad.net/bugs/938076
  panels/privacy/screen/cc-screen-page.ui |  8 ++++++++
  2 files changed, 28 insertions(+)
 
-diff --git a/panels/privacy/screen/cc-screen-page.c b/panels/privacy/screen/cc-screen-page.c
-index ddb0a88..2b6882e 100644
 --- a/panels/privacy/screen/cc-screen-page.c
 +++ b/panels/privacy/screen/cc-screen-page.c
 @@ -45,6 +45,7 @@ struct _CcScreenPage
@@ -20,7 +18,7 @@ index ddb0a88..2b6882e 100644
    AdwSwitchRow        *privacy_screen_row;
    AdwSwitchRow        *show_notifications_row;
    AdwSwitchRow        *usb_protection_row;
-@@ -136,6 +137,7 @@ cc_screen_page_class_init (CcScreenPageClass *klass)
+@@ -136,6 +137,7 @@ cc_screen_page_class_init (CcScreenPageC
    gtk_widget_class_bind_template_child (widget_class, CcScreenPage, automatic_screen_lock_row);
    gtk_widget_class_bind_template_child (widget_class, CcScreenPage, blank_screen_row);
    gtk_widget_class_bind_template_child (widget_class, CcScreenPage, lock_after_row);
@@ -28,7 +26,7 @@ index ddb0a88..2b6882e 100644
    gtk_widget_class_bind_template_child (widget_class, CcScreenPage, privacy_screen_row);
    gtk_widget_class_bind_template_child (widget_class, CcScreenPage, screen_privacy_group);
    gtk_widget_class_bind_template_child (widget_class, CcScreenPage, show_notifications_row);
-@@ -177,6 +179,8 @@ update_display_config (CcScreenPage *self)
+@@ -177,6 +179,8 @@ update_display_config (CcScreenPage *sel
  static void
  cc_screen_page_init (CcScreenPage *self)
  {
@@ -67,22 +65,17 @@ index ddb0a88..2b6882e 100644
    g_dbus_proxy_new_for_bus (G_BUS_TYPE_SESSION,
                              G_DBUS_PROXY_FLAGS_NONE,
                              NULL,
-diff --git a/panels/privacy/screen/cc-screen-page.ui b/panels/privacy/screen/cc-screen-page.ui
-index 25c9be7..bca206f 100644
---- a/panels/privacy/screen/cc-screen-page.ui
-+++ b/panels/privacy/screen/cc-screen-page.ui
-@@ -68,6 +68,14 @@
-                   </object>
-                 </child>
+--- a/panels/privacy/screen/cc-screen-page.blp
++++ b/panels/privacy/screen/cc-screen-page.blp
+@@ -60,6 +60,11 @@ template $CcScreenPage: Adw.NavigationPa
+           use-underline: true;
+         }
  
-+                <!-- Automatic Screen Lock Delay row -->
-+                <child>
-+                  <object class="AdwSwitchRow" id="lock_on_suspend_row">
-+                    <property name="title" translatable="yes">Lock Screen _on Suspend</property>
-+                    <property name="use-underline">true</property>
-+                  </object>
-+                </child>
++        Adw.SwitchRow lock_on_suspend_row {
++          title: _("Lock Screen _on Suspend");
++          use-underline: true;
++        }
 +
-                 <!-- USB protection row -->
-                 <child>
-                   <object class="AdwSwitchRow" id="usb_protection_row">
+         Adw.SwitchRow usb_protection_row {
+           visible: false;
+           title: _("Forbid New _USB Devices");
