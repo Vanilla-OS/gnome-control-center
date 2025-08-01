@@ -1,3 +1,151 @@
+gnome-control-center (1:49~alpha-1ubuntu1) questing; urgency=medium
+
+  * d/p/u/multiple-gpu-name-nividia.patch: Removed, applied upstream.
+  * d/p: Refreshes, migration from ui changes to blueprint (blp) changes.
+  * Merge with Debian. Remaining changes:
+    + Add gnome-control-center-faces package to share with unity-control-center
+    + Install apport hook
+    + debian/control:
+      - Build-Depend on libwhoopsie-preferences-dev
+      - Depend on language-selector-gnome & whoopsie-preferences
+      - Depend on libgtk-4-media-gstreamer for Mouse & Touchpad art
+        (LP: #2011849)
+      - Don't depend on desktop-base
+      - Recommend ibus
+      - Don't recommend libnss-myhostname since we use systemd-resolved
+      - Suggest instead of recommend gnome-user-share & realmd
+      - Suggest instead of depend on libjxl-gdk-pixbuf
+      - Suggest instead of recommend malcontent-gui
+    + debian/gnome-control-center-data.install:
+      - Don't install gnome-control-center.pkla since we use
+        policykit-desktop-privileges instead
+      - Install additional assets used by unity-control-center
+    * debian/ubuntu-logo-icon.png, debian/source/include-binaries,
+      debian/gnome-control-center-data.install: Include an Ubuntu logo
+    * debian/gnome-control-center-data.links:
+      - Link audio-speaker-center* to audio-speaker-mono* so that an
+        icon is shown in the test speaker panel. (LP: #1704002)
+    + debian/rules: Enable whoospie integration
+    + debian/rules: set SSHD_SOCKET=ssh.socket via CPPFLAGS in debian/rules.
+    + debian/rules: Enable malcontent support
+    + Add patches:
+      - u/keyboard-Add-launch-terminal-shortcut.patch
+      - u/sound-Allow-volume-to-be-set-above-100.patch
+      - u/Allow-tweaking-some-settings-for-Ubuntu-Dock.patch
+      - u/multitasking-panel-Sync-workspace-and-monitor-isolation-d.patch
+      - u/multitasking-panel-Sync-workspace-isolation-setting-on-ti.patch
+      - u/lock-Add-Lock-Screen-on-Suspend-option.patch
+      - u/region-Add-Language-Selector-button.patch
+      - u/Adapts-the-region-capplet-and-the-language-chooser-in-the.patch
+      - u/connectivity-add-network-connectivity-checking-toggle.patch
+      - u/diagnostics-Add-Whoopsie-support.patch
+      - u/online-accounts-Hide-window-after-adding-an-online-accoun.patch
+      - u/online-accounts-sort.patch
+      - u/display-Support-UI-scaled-logical-monitor-mode.patch
+      - u/disable-non-working-camera-panel.patch
+      - u/update-manager.patch
+      - u/sound-Add-a-button-to-select-the-default-theme.patch
+      - u/applications-Launch-snap-store-if-it-is-installed.patch
+      - u/display-Allow-fractional-scaling-to-be-enabled.patch
+      - u/CVE-2023-5616.patch: Use sshd socket
+      - u/background-Update-legacy-theme-settings-matching-the-acce.patch
+      - u/background-Add-brown-accent-color-support.patch
+      - u/sound-Add-toggle-for-the-startup-sound.patch
+      - u/list-apps-even-without-malcontent.patch
+
+ -- Nathan Pratta Teodosio <nteodosio@ubuntu.com>  Mon, 28 Apr 2025 10:05:28 +0200
+
+gnome-control-center (1:49~alpha-1) experimental; urgency=medium
+
+  * New upstream release
+  * d/p/Expose-touchpad-settings-if-synaptics-is-in-use.patch: Refresh.
+  * d/control: Add blueprint-compiler as a dependency.
+
+ -- Nathan Pratta Teodosio <nathan.teodosio@canonical.com>  Mon, 07 Jul 2025 11:07:46 +0200
+
+gnome-control-center (1:48.3-3) unstable; urgency=medium
+
+  * Release to unstable
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Thu, 03 Jul 2025 17:20:23 -0400
+
+gnome-control-center (1:48.3-2) experimental; urgency=medium
+
+  * Add Depends: libgtk-4-media-gstreamer for Mouse panel. See #1054155
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Wed, 02 Jul 2025 10:12:28 -0400
+
+gnome-control-center (1:48.3-1) experimental; urgency=medium
+
+  * New upstream release
+    - Various translation updates
+    - Various accessibility fixes
+    - Fix use-after-free in CcPermissionInfobar
+    - About: Properly close System Details dialog supressing dispose warning
+    - Colors: Remote extra line below the device name
+    - Global Shortcuts: Discard request from invalid app ID
+    - Wacom: Plug stylus motion backlog array leak
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Sat, 28 Jun 2025 15:58:20 -0400
+
+gnome-control-center (1:48.2-2) unstable; urgency=medium
+
+  * Team upload
+  * Summarize upstream changes in previous changelog entry
+  * Upload to unstable
+
+ -- Simon McVittie <smcv@debian.org>  Wed, 11 Jun 2025 11:20:52 +0100
+
+gnome-control-center (1:48.2-1) experimental; urgency=medium
+
+  * New upstream bugfix release
+    - Fix panel crashes that can occur if a type referenced by the UI
+      resource was not registered yet
+      (gnome-control-center!3126 upstream)
+    - Fix a crash due to use-after-free in the notifications page by
+      clearing a signal handler during object destruction
+      (gnome-control-center#3455 upstream)
+    - Use an EFF-supplied word list to generate random passwords
+      (for example for System -> Remote Desktop) instead of
+      /usr/share/dict, which in particular avoids generating passwords
+      that contain offensive or easily-confused words
+      (gnome-control-center#3445 upstream)
+    - Log a warning instead of crashing or emitting a blank image
+      if we cannot create a renderer while cropping a user's avatar
+      (gnome-control-center#3402, #3405 upstream)
+    - Wrap panel labels at 40 characters to ensure the list of panels
+      leaves enough horizontal space for window content in locales where
+      a panel has a long name, for example "Privacy and Security" translated
+      to "Конфиденциальность и безопасность" in ru_RU
+      (gnome-control-cetner#3400 upstream)
+    - Use motion history to get smoother lines when testing a Wacom tablet
+      (gnome-control-center!3140 upstream)
+    - Match the leaf icon that GNOME Shell uses for the Power Saver mode,
+      instead of having a different and worse-looking leaf icon
+      (gnome-control-center#3446 upstream)
+    - On multi-GPU desktop systems, describe non-Nvidia GPUs correctly
+      even if we cannot switch to them via DRI_PRIME
+      (gnome-control-center#3375 upstream, LP: #2037076)
+    - In the applications panel, hide the empty "Required Permissions"
+      section if there would be nothing shown there
+      (gnome-control-center!3144 upstream)
+    - In the application global shortcuts dialog, show the app name in
+      bold, making it easier to see and more consistent with other pages
+      (gnome-control-center!3058 upstream)
+    - Apply rounded borders to illustrations such as mouse wheel scroll
+      direction, hot corners and active screen edges
+      (gnome-control-center!3085 upstream)
+    - Translation updates
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Fri, 06 Jun 2025 14:37:54 -0400
+
+gnome-control-center (1:48.1-2) unstable; urgency=medium
+
+  [ James Addison ]
+  * Remove unused Depends: apg (Closes: #1104260)
+
+ -- Matthias Geiger <werdahias@debian.org>  Sat, 03 May 2025 13:41:18 +0200
+
 gnome-control-center (1:48.1-1ubuntu1) questing; urgency=medium
 
   * d/p/u/multiple-gpu-name-nividia.patch: Added.
