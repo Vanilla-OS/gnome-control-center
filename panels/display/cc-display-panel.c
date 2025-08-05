@@ -30,19 +30,12 @@
 #include <libupower-glib/upower.h>
 
 #include "cc-list-row.h"
-#include "cc-display-config-manager-dbus.h"
+#include "cc-display-config-manager.h"
 #include "cc-display-config.h"
 #include "cc-display-arrangement.h"
 #include "cc-night-light-page.h"
 #include "cc-display-resources.h"
 #include "cc-display-settings.h"
-
-/* The minimum supported size for the panel
- * Note that WIDTH is assumed to be the larger size and we accept portrait
- * mode too effectively (in principle we should probably restrict the rotation
- * setting in that case). */
-#define MINIMUM_WIDTH  720
-#define MINIMUM_HEIGHT 360
 
 #define PANEL_PADDING   32
 #define SECTION_PADDING 32
@@ -731,7 +724,7 @@ move_display_settings_to_separate_page (CcDisplayPanel *self)
 static void
 rebuild_ui (CcDisplayPanel *self)
 {
-  guint n_active_outputs, n_usable_outputs;
+  guint n_usable_outputs;
   GList *outputs, *l;
   CcDisplayConfigType type;
 
@@ -763,7 +756,6 @@ rebuild_ui (CcDisplayPanel *self)
 
   gtk_widget_set_visible (self->display_settings_disabled_group, FALSE);
 
-  n_active_outputs = 0;
   n_usable_outputs = 0;
   outputs = cc_display_config_get_ui_sorted_monitors (self->current_config);
   for (l = outputs; l; l = l->next)
@@ -777,8 +769,6 @@ rebuild_ui (CcDisplayPanel *self)
 
       if (cc_display_monitor_is_active (output))
         {
-          n_active_outputs += 1;
-
           g_list_store_append (self->primary_display_list, output);
           if (cc_display_monitor_is_primary (output))
             adw_combo_row_set_selected (self->primary_display_row,
@@ -859,7 +849,6 @@ reset_current_config (CcDisplayPanel *self)
   if (!current)
     return;
 
-  cc_display_config_set_minimum_size (current, MINIMUM_WIDTH, MINIMUM_HEIGHT);
   self->current_config = current;
 
   g_signal_connect_object (current, "panel-orientation-managed",
@@ -1057,7 +1046,7 @@ session_bus_ready (GObject        *source,
       return;
     }
 
-  self->manager = cc_display_config_manager_dbus_new ();
+  self->manager = cc_display_config_manager_new ();
   g_signal_connect_object (self->manager, "changed",
                            G_CALLBACK (on_screen_changed),
                            self,
