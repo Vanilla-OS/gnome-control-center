@@ -56,6 +56,28 @@ keyboard_shortcuts_dep = declare_dependency(
   link_with: libkeyboard_shortcuts,
 )
 
+ui_sources = files(
+  'cc-input-chooser.blp',
+  'cc-input-list-box.blp',
+  'cc-input-row.blp',
+  'cc-keyboard-panel.blp',
+  'cc-keyboard-shortcut-dialog.blp',
+  'cc-keyboard-shortcut-editor.blp',
+  'cc-keyboard-shortcut-row.blp',
+  'cc-xkb-modifier-page.blp',
+)
+
+ui_compiled = []
+foreach ui_source : ui_sources
+  ui_compiled += fs.name(fs.replace_suffix(ui_source, '.ui'))
+endforeach
+
+blueprints = custom_target(
+  input: ui_sources,
+  output: ui_compiled,
+  command: [blueprint_compiler, 'batch-compile', '@OUTDIR@', '@CURRENT_SOURCE_DIR@', '@INPUT@']
+)
+
 sources = files(
   'cc-xkb-modifier-page.c',
   'cc-keyboard-shortcut-row.c',
@@ -74,18 +96,23 @@ sources = files(
   'cc-input-source-xkb.c',
 )
 
-sources += gnome.compile_resources(
+resources_ch = gnome.compile_resources(
   'cc-' + cappletname + '-resources',
   cappletname + '.gresource.xml',
   c_name: 'cc_' + cappletname,
-  export: true
+  export: true,
+  dependencies: blueprints,
 )
+
+sources += resources_ch
 
 deps = common_deps + [
   keyboard_shortcuts_dep,
   gnome_desktop_dep,
-  x11_dep
 ]
+if have_x11_support
+  deps += [x11_dep]
+endif
 
 if enable_ibus
   deps += ibus_dep
@@ -110,6 +137,7 @@ panels_libs += keyboard_panel_lib
 
 keyboard_panel_dep = declare_dependency(
   include_directories: [top_inc, keyboard_inc],
+  sources: [resources_ch[1]],
   link_with: keyboard_panel_lib,
 )
 

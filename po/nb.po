@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: unnamed project\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-control-center/"
 "issues\n"
-"POT-Creation-Date: 2025-05-02 10:46+0000\n"
-"PO-Revision-Date: 2025-03-23 23:51+0100\n"
+"POT-Creation-Date: 2025-03-13 14:46+0000\n"
+"PO-Revision-Date: 2025-03-13 19:23+0100\n"
 "Last-Translator: Brage <bragefuglseth@gnome.org>\n"
 "Language-Team: Afar <>\n"
 "Language: nb\n"
@@ -100,7 +100,7 @@ msgstr "_Fjern"
 msgid "_Remove All Shortcuts"
 msgstr "_Fjern alle snarveier"
 
-#: panels/applications/cc-application-shortcut-dialog.c:265
+#: panels/applications/cc-application-shortcut-dialog.c:263
 #, c-format
 msgid "%s has registered the following global shortcuts"
 msgstr "%s har registrert følgende snarveier"
@@ -1006,7 +1006,7 @@ msgstr "_Mørk"
 
 #: panels/background/cc-background-panel.ui:122
 msgid "Accent Color"
-msgstr "Farge"
+msgstr "Systemfarge"
 
 #: panels/background/cc-background-panel.ui:142
 msgid "Background"
@@ -2565,7 +2565,7 @@ msgstr "Sett opp snarvei"
 msgid "Enter new shortcut to change <b>%s</b>"
 msgstr "Tast inn en ny snarvei for å endre <b>%s</b>"
 
-#: panels/keyboard/cc-keyboard-shortcut-editor.c:929
+#: panels/keyboard/cc-keyboard-shortcut-editor.c:932
 msgid "Add Custom Shortcut"
 msgstr "Legg til egendefinert snarvei"
 
@@ -2625,7 +2625,7 @@ msgid_plural "%d modified"
 msgstr[0] "%d endret"
 msgstr[1] "%d endret"
 
-#: panels/keyboard/cc-keyboard-shortcut-group.c:157
+#: panels/keyboard/cc-keyboard-shortcut-group.c:158
 msgid "Add a Shortcut"
 msgstr "Legg til snarvei"
 
@@ -3253,13 +3253,13 @@ msgstr "802.1x-_sikkerhet"
 #: panels/network/connection-editor/bluetooth-page.ui:16
 #: panels/network/connection-editor/ethernet-page.ui:27
 #: panels/network/connection-editor/vpn-page.ui:23
-#: panels/printers/pp-details-dialog.ui:25
+#: panels/printers/pp-details-dialog.ui:24
 #: panels/system/users/cc-user-page.ui:84
 msgid "_Name"
 msgstr "_Navn"
 
 #: panels/network/connection-editor/ce-page-8021x-security.c:106
-#: panels/network/connection-editor/ce-page-security.c:416
+#: panels/network/connection-editor/ce-page-security.c:415
 #: panels/network/connection-editor/details-page.ui:84
 #: panels/sharing/cc-sharing-panel.ui:112
 msgid "Security"
@@ -3347,7 +3347,7 @@ msgstr "WPA3"
 
 #. TRANSLATORS: this Enhanced Open WiFi security
 #: panels/network/connection-editor/ce-page-details.c:133
-#: panels/network/connection-editor/ce-page-security.c:271
+#: panels/network/connection-editor/ce-page-security.c:270
 msgid "Enhanced Open"
 msgstr "Enhanced Open"
 
@@ -3532,36 +3532,36 @@ msgstr "IPv4"
 msgid "IPv6"
 msgstr "IPv6"
 
-#: panels/network/connection-editor/ce-page-security.c:260
+#: panels/network/connection-editor/ce-page-security.c:259
 msgctxt "Wi-Fi/Ethernet security"
 msgid "None"
 msgstr "Ingen"
 
-#: panels/network/connection-editor/ce-page-security.c:295
+#: panels/network/connection-editor/ce-page-security.c:294
 msgid "WEP 40/128-bit Key (Hex or ASCII)"
 msgstr "WEP 40/128-bits nøkkel (Hex eller ASCII)"
 
-#: panels/network/connection-editor/ce-page-security.c:305
+#: panels/network/connection-editor/ce-page-security.c:304
 msgid "WEP 128-bit Passphrase"
 msgstr "WEP 128-bits passord"
 
-#: panels/network/connection-editor/ce-page-security.c:318
+#: panels/network/connection-editor/ce-page-security.c:317
 msgid "LEAP"
 msgstr "LEAP"
 
-#: panels/network/connection-editor/ce-page-security.c:331
+#: panels/network/connection-editor/ce-page-security.c:330
 msgid "Dynamic WEP (802.1x)"
 msgstr "Dynamisk WEP (802.1x)"
 
-#: panels/network/connection-editor/ce-page-security.c:345
+#: panels/network/connection-editor/ce-page-security.c:344
 msgid "WPA & WPA2 Personal"
 msgstr "WPA og WPA2 (personlig)"
 
-#: panels/network/connection-editor/ce-page-security.c:359
+#: panels/network/connection-editor/ce-page-security.c:358
 msgid "WPA & WPA2 Enterprise"
 msgstr "WPA og WPA2 (organisasjon)"
 
-#: panels/network/connection-editor/ce-page-security.c:373
+#: panels/network/connection-editor/ce-page-security.c:372
 msgid "WPA3 Personal"
 msgstr "WPA3 (personlig)"
 
@@ -5041,43 +5041,43 @@ msgid ""
 msgstr "PostScript-egenskapsfil (*.ppd, *.PPD, *.ppd.gz, *PPD.gz, *PPD.GZ)"
 
 #: panels/printers/pp-details-dialog.ui:4
-#: panels/printers/pp-details-dialog.ui:13
+#: panels/printers/pp-details-dialog.ui:12
 #: panels/printers/pp-printer-entry.ui:246
 msgid "Printer Details"
 msgstr "Skriverinformasjon"
 
-#: panels/printers/pp-details-dialog.ui:36
+#: panels/printers/pp-details-dialog.ui:35
 msgid "Printer names cannot contain SPACE, TAB, #, or /"
 msgstr "Skrivernavn kan ikke inneholde mellomrom, tabulatortegn, # eller /"
 
-#: panels/printers/pp-details-dialog.ui:55
+#: panels/printers/pp-details-dialog.ui:54
 #: panels/privacy/cc-privacy-panel.ui:34
 msgid "_Location"
 msgstr "_Posisjon"
 
-#: panels/printers/pp-details-dialog.ui:61
+#: panels/printers/pp-details-dialog.ui:60
 msgid "_Address"
 msgstr "_Adresse"
 
-#: panels/printers/pp-details-dialog.ui:70
+#: panels/printers/pp-details-dialog.ui:69
 msgid "Open Address"
 msgstr "_Åpne adresse"
 
 #. Translators: Name of column showing printer drivers
-#: panels/printers/pp-details-dialog.ui:82
+#: panels/printers/pp-details-dialog.ui:81
 #: panels/printers/pp-ppd-selection-dialog.c:232
 msgid "Driver"
 msgstr "Driver"
 
-#: panels/printers/pp-details-dialog.ui:103
+#: panels/printers/pp-details-dialog.ui:102
 msgid "_Search for Drivers"
 msgstr "_Søk etter drivere"
 
-#: panels/printers/pp-details-dialog.ui:110
+#: panels/printers/pp-details-dialog.ui:109
 msgid "S_elect from Database…"
 msgstr "_Velg fra database…"
 
-#: panels/printers/pp-details-dialog.ui:117
+#: panels/printers/pp-details-dialog.ui:116
 msgid "_Install PPD File…"
 msgstr "_Installer PPD-fil…"
 
@@ -9413,7 +9413,7 @@ msgstr "%u. %s–%u. %s"
 #. * preferred date representation for the current locale without the time).
 #. * The second placeholder is a formatted time duration (for example,
 #. * ‘3 hours’ or ‘25 minutes’).
-#: panels/wellbeing/cc-screen-time-statistics-row.c:1100
+#: panels/wellbeing/cc-screen-time-statistics-row.c:1097
 #, c-format
 msgid ""
 "Bar chart of screen time usage over the week starting %s. A line is "
@@ -9425,13 +9425,13 @@ msgstr ""
 #. Translators: The placeholder is a formatted date string (formatted
 #. * using the `%x` strftime placeholder, which gives the preferred date
 #. * representation for the current locale without the time).
-#: panels/wellbeing/cc-screen-time-statistics-row.c:1119
+#: panels/wellbeing/cc-screen-time-statistics-row.c:1116
 #, c-format
 msgid "Bar chart of screen time usage over the week starting %s."
 msgstr ""
 "Stolpediagram som viser skjermtid gjennom den siste uken, fra og med %s."
 
-#: panels/wellbeing/cc-screen-time-statistics-row.c:1125
+#: panels/wellbeing/cc-screen-time-statistics-row.c:1122
 #, c-format
 msgid ""
 "Placeholder for a bar chart of screen time usage. No data is currently "
@@ -9478,67 +9478,67 @@ msgstr ""
 msgid "_Disable Screen Time"
 msgstr "_Slå av skjermtid"
 
-#: panels/wellbeing/cc-wellbeing-panel.ui:78
+#: panels/wellbeing/cc-wellbeing-panel.ui:76
 msgid "Screen Time Recording Disabled"
 msgstr "Skjermtid er slått av"
 
-#: panels/wellbeing/cc-wellbeing-panel.ui:80
+#: panels/wellbeing/cc-wellbeing-panel.ui:78
 msgid "Enable recording to view screen usage history"
 msgstr "Slå på skjermtid for å se hvor mye du bruker enheten over tid"
 
-#: panels/wellbeing/cc-wellbeing-panel.ui:84
+#: panels/wellbeing/cc-wellbeing-panel.ui:82
 msgid "E_nable"
 msgstr "_Slå på"
 
-#: panels/wellbeing/cc-wellbeing-panel.ui:104
+#: panels/wellbeing/cc-wellbeing-panel.ui:102
 msgid "Screen Limits"
 msgstr "Tidsgrenser"
 
-#: panels/wellbeing/cc-wellbeing-panel.ui:107
+#: panels/wellbeing/cc-wellbeing-panel.ui:105
 msgid "_Screen Time Limit"
 msgstr "_Begrens skjermtid"
 
-#: panels/wellbeing/cc-wellbeing-panel.ui:114
+#: panels/wellbeing/cc-wellbeing-panel.ui:112
 msgid "Daily _Limit"
 msgstr "_Daglig grense"
 
-#: panels/wellbeing/cc-wellbeing-panel.ui:120
+#: panels/wellbeing/cc-wellbeing-panel.ui:118
 msgid "_Grayscale"
 msgstr "_Gråtoner"
 
-#: panels/wellbeing/cc-wellbeing-panel.ui:121
+#: panels/wellbeing/cc-wellbeing-panel.ui:119
 msgid "Black and white screen for screen limits"
 msgstr "Vis alt på skjermen i gråtoner når tidsgrensen krysses"
 
-#: panels/wellbeing/cc-wellbeing-panel.ui:130
+#: panels/wellbeing/cc-wellbeing-panel.ui:128
 msgid "Break Reminders"
 msgstr "Faste pauser"
 
-#: panels/wellbeing/cc-wellbeing-panel.ui:133
+#: panels/wellbeing/cc-wellbeing-panel.ui:131
 msgid "_Eyesight Reminders"
 msgstr "_Hvile av øyne"
 
-#: panels/wellbeing/cc-wellbeing-panel.ui:134
+#: panels/wellbeing/cc-wellbeing-panel.ui:132
 msgid "Reminders to look away from the screen"
 msgstr "Påminnelser om å se vekk fra skjermen"
 
-#: panels/wellbeing/cc-wellbeing-panel.ui:140
+#: panels/wellbeing/cc-wellbeing-panel.ui:138
 msgid "_Movement Reminders"
 msgstr "_Bevegelse"
 
-#: panels/wellbeing/cc-wellbeing-panel.ui:141
+#: panels/wellbeing/cc-wellbeing-panel.ui:139
 msgid "Reminders to move around"
 msgstr "Påminnelser om å bevege seg rundt"
 
-#: panels/wellbeing/cc-wellbeing-panel.ui:147
+#: panels/wellbeing/cc-wellbeing-panel.ui:145
 msgid "Movement _Break Schedule"
 msgstr "_Tidsskjema for bevegelsespauser"
 
-#: panels/wellbeing/cc-wellbeing-panel.ui:153
+#: panels/wellbeing/cc-wellbeing-panel.ui:151
 msgid "S_ounds"
 msgstr "_Lyder"
 
-#: panels/wellbeing/cc-wellbeing-panel.ui:154
+#: panels/wellbeing/cc-wellbeing-panel.ui:152
 msgid "Play a sound when a break ends"
 msgstr "Spill lyd når en pause er over"
 

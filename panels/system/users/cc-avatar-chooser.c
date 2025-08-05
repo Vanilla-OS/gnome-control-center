@@ -79,8 +79,6 @@ crop_dialog_response (CcAvatarChooser *self,
 
         self->crop_area = NULL;
         gtk_window_destroy (GTK_WINDOW (dialog));
-
-        gtk_popover_popdown (GTK_POPOVER (self));
 }
 
 static void
@@ -155,7 +153,7 @@ static void
 cc_avatar_chooser_select_file (CcAvatarChooser *self)
 {
         g_autoptr(GFile) pictures_folder = NULL;
-        GtkFileDialog *file_dialog;
+        g_autoptr(GtkFileDialog) file_dialog = NULL;
         GtkFileFilter *filter;
         GListStore *filters;
 

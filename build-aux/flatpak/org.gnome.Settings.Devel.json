@@ -49,7 +49,8 @@
             "name" : "pwquality",
             "buildsystem" : "autotools",
             "config-opts" : [
-                "--disable-python-bindings"
+                "--disable-python-bindings",
+                "--prefix=/app"
             ],
             "sources" : [
                 {
@@ -369,6 +370,7 @@
                 "-Dmodem_manager=false",
                 "-Dnm_cloud_setup=false",
                 "-Dnmtui=false",
+                "-Dnbft=false",
                 "-Dovs=false",
                 "-Dppp=false",
                 "-Dqt=false",
@@ -745,7 +747,6 @@
                 "-Degl_device=false",
                 "-Dudev=false",
                 "-Dstartup_notification=false",
-                "-Dsm=false",
                 "-Dintrospection=true",
                 "-Ddocs=false",
                 "-Dtests=disabled",
@@ -843,36 +844,6 @@
             "build-commands" : [
                 "make -C sassc",
                 "PREFIX=/app make -C sassc install"
-            ]
-        },
-        {
-            "name" : "cogl",
-            "buildsystem" : "autotools",
-            "sources" : [
-                {
-                    "type" : "git",
-                    "tag" : "cogl-1.22",
-                    "url" : "https://gitlab.gnome.org/Archive/cogl.git"
-                }
-            ]
-        },
-        {
-            "name" : "clutter",
-            "buildsystem" : "meson",
-            "config-opts" : [
-                "-Dbackends='system'",
-                "-Ddrivers='all'",
-                "-Dbuild_tests=false",
-                "-Dbuild_examples=false",
-                "-Ddocumentation=false",
-                "-Dintrospection=true",
-                "-Dpixbuf_tests=false"
-            ],
-            "sources" : [
-                {
-                    "type" : "git",
-                    "url" : "https://gitlab.gnome.org/GNOME/clutter.git"
-                }
             ]
         },
         {

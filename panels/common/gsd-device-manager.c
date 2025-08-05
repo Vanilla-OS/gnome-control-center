@@ -28,7 +28,7 @@
 #include "gsd-common-enums.h"
 #include "gsd-input-helper.h"
 
-#ifdef GDK_WINDOWING_X11
+#ifdef HAVE_X11
 #include <gdk/x11/gdkx.h>
 #include <X11/extensions/XInput2.h>
 #endif
@@ -83,6 +83,7 @@ const gchar *udev_ids[] = {
 	"ID_INPUT_TABLET",
 	"ID_INPUT_TOUCHSCREEN",
 	"ID_INPUT_TABLET_PAD",
+	"ID_INPUT_POINTINGSTICK", /* udev sets ID_INPUT_MOUSE too */
 };
 
 static guint signals[N_SIGNALS] = { 0 };
@@ -311,7 +312,7 @@ gsd_device_manager_real_lookup_device (GsdDeviceManager *manager,
 	GHashTableIter iter;
 	GsdDevice *device;
 
-#ifdef GDK_WINDOWING_X11
+#ifdef HAVE_X11
 	if (GDK_IS_X11_DISPLAY (display)) {
                 XIDeviceInfo *info;
                 int n_infos, i, source_id = 0;
@@ -618,6 +619,8 @@ gsd_device_get_settings (GsdDevice *device)
 		}
 	} else if (type & (GSD_DEVICE_TYPE_MOUSE | GSD_DEVICE_TYPE_TOUCHPAD)) {
 		schema = "org.gnome.desktop.peripherals.mouse";
+	} else if (type & (GSD_DEVICE_TYPE_POINTINGSTICK)) {
+		schema = "org.gnome.desktop.peripherals.pointingstick";
 	} else if (type & GSD_DEVICE_TYPE_KEYBOARD) {
 		schema = "org.gnome.desktop.peripherals.keyboard";
 	} else {

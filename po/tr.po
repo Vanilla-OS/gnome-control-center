@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: gnome-control-center\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-control-center/"
 "issues\n"
-"POT-Creation-Date: 2025-03-21 09:23+0000\n"
+"POT-Creation-Date: 2025-03-20 17:13+0000\n"
 "PO-Revision-Date: 2025-03-21 08:00+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Turkish <takim@gnome.org.tr>\n"
@@ -120,33 +120,33 @@ msgstr "%s şu küresel kısayolları kaydetti"
 msgid "Global Shortcuts"
 msgstr "Küresel Kısayollar"
 
-#: panels/applications/cc-applications-panel.c:880
+#: panels/applications/cc-applications-panel.c:881
 msgid "System Bus"
 msgstr "Sistem Veri Yolu"
 
-#: panels/applications/cc-applications-panel.c:880
-#: panels/applications/cc-applications-panel.c:882
-#: panels/applications/cc-applications-panel.c:895
-#: panels/applications/cc-applications-panel.c:900
+#: panels/applications/cc-applications-panel.c:881
+#: panels/applications/cc-applications-panel.c:883
+#: panels/applications/cc-applications-panel.c:896
+#: panels/applications/cc-applications-panel.c:901
 msgid "Full access"
 msgstr "Tam erişim"
 
-#: panels/applications/cc-applications-panel.c:882
+#: panels/applications/cc-applications-panel.c:883
 msgid "Session Bus"
 msgstr "Oturum Veri Yolu"
 
-#: panels/applications/cc-applications-panel.c:886
+#: panels/applications/cc-applications-panel.c:887
 #: panels/privacy/bolt/cc-bolt-page.ui:164
 #: panels/privacy/bolt/cc-bolt-page.ui:202
 #: panels/privacy/cc-privacy-panel.ui:72
 msgid "Devices"
 msgstr "Aygıtlar"
 
-#: panels/applications/cc-applications-panel.c:886
+#: panels/applications/cc-applications-panel.c:887
 msgid "Full access to /dev"
 msgstr "/dev konumuna tam erişim"
 
-#: panels/applications/cc-applications-panel.c:890
+#: panels/applications/cc-applications-panel.c:891
 #: panels/network/cc-network-panel.ui:8
 #: panels/network/gnome-network-panel.desktop.in:3
 #: panels/network/network-mobile.ui:235 panels/wwan/cc-wwan-device-page.ui:61
@@ -154,77 +154,85 @@ msgstr "/dev konumuna tam erişim"
 msgid "Network"
 msgstr "Ağ"
 
-#: panels/applications/cc-applications-panel.c:890
+#: panels/applications/cc-applications-panel.c:891
 msgid "Has network access"
 msgstr "Ağ erişimi var"
 
-#: panels/applications/cc-applications-panel.c:895
-#: panels/applications/cc-applications-panel.c:897
+#: panels/applications/cc-applications-panel.c:896
+#: panels/applications/cc-applications-panel.c:898
 #: panels/search/cc-search-locations-page.c:421
 msgid "Home"
 msgstr "Ev"
 
-#: panels/applications/cc-applications-panel.c:897
-#: panels/applications/cc-applications-panel.c:902
+#: panels/applications/cc-applications-panel.c:898
+#: panels/applications/cc-applications-panel.c:903
 msgid "Read-only"
 msgstr "Salt Okunur"
 
-#: panels/applications/cc-applications-panel.c:900
-#: panels/applications/cc-applications-panel.c:902
+#: panels/applications/cc-applications-panel.c:901
+#: panels/applications/cc-applications-panel.c:903
 msgid "File System"
 msgstr "Dosya Sistemi"
 
-#: panels/applications/cc-applications-panel.c:906
+#: panels/applications/cc-applications-panel.c:907
 #: panels/keyboard/01-launchers.xml.in:6
 #: shell/appdata/org.gnome.Settings.appdata.xml.in.in:7 shell/cc-window.c:804
 #: shell/cc-window.ui:18 shell/org.gnome.Settings.desktop.in:3
 msgid "Settings"
 msgstr "Ayarlar"
 
-#: panels/applications/cc-applications-panel.c:906
+#: panels/applications/cc-applications-panel.c:907
 msgid "Can change settings"
 msgstr "Ayarları değiştirebilir"
 
-#: panels/applications/cc-applications-panel.c:908
+#. TRANSLATORS: %s is an app name.
+#: panels/applications/cc-applications-panel.c:911
 #, c-format
 msgid ""
-"<b>%s</b> requires access to the following system resources. To stop this "
-"access, the app must be removed."
+"%s requires access to the following system resources. To stop this access, "
+"the app must be removed."
 msgstr ""
-"<b>%s</b>, aşağıdaki sistem kaynaklarına erişime gereksinir. Bu erişimi "
+"%s, aşağıdaki sistem kaynaklarına erişime gereksinir. Bu erişimi "
 "durdurmak için uygulama kaldırılmalıdır."
 
-#: panels/applications/cc-applications-panel.c:912
+#: panels/applications/cc-applications-panel.c:915
 #, c-format
 msgid "%u permission"
 msgid_plural "%u permissions"
 msgstr[0] "%u izin"
 
-#: panels/applications/cc-applications-panel.c:1084
+#: panels/applications/cc-applications-panel.c:1087
 msgid "Remove Link Type"
 msgstr "Bağlantı Türünü Kaldır"
 
-#: panels/applications/cc-applications-panel.c:1115
+#: panels/applications/cc-applications-panel.c:1118
 msgid "Remove File Type"
 msgstr "Dosya Türünü Kaldır"
 
-#: panels/applications/cc-applications-panel.c:1247
+#: panels/applications/cc-applications-panel.c:1251
 #, c-format
 msgid "%u type"
 msgid_plural "%u types"
 msgstr[0] "%u tür"
 
-#: panels/applications/cc-applications-panel.c:1254
+#. TRANSLATORS: %s is an app name.
+#: panels/applications/cc-applications-panel.c:1260
 #, c-format
-msgid "<b>%s</b> is used to open the following types of files and links"
-msgstr "<b>%s</b>, şu türden dosya ve bağlantıları açmada kullanılmaktadır"
+msgid "%s is used to open the following types of files and links"
+msgstr "%s, şu türden dosya ve bağlantıları açmada kullanılmaktadır"
 
 #. TRANSLATORS: %s is an app name.
-#: panels/applications/cc-applications-panel.c:1295
+#: panels/applications/cc-applications-panel.c:1303
 #, c-format
-msgid "How much disk space <b>%s</b> is occupying with app data and caches"
+msgid "How much disk space %s is occupying with app data and caches"
 msgstr ""
-"<b>%s</b> uygulamasının uygulama verisi ve önbelleklerle kapladığı disk alanı"
+"%s uygulamasının uygulama verisi ve önbelleklerle kapladığı disk alanı"
+
+#: panels/applications/cc-applications-panel.c:1468
+#, c-format
+msgid "%u action"
+msgid_plural "%u actions"
+msgstr[0] "%u eylem"
 
 #: panels/applications/cc-applications-panel.ui:7
 #: panels/applications/gnome-applications-panel.desktop.in:3
