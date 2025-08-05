@@ -1,5 +1,6 @@
 gnome-control-center (1:49~alpha-1) UNRELEASED; urgency=medium
 
+  [ Nathan Pratta Teodosio ]
   * New upstream release.
   * d/p/d/Expose-touchpad-settings: Dropped.
   * d/control:
@@ -7,8 +8,14 @@ gnome-control-center (1:49~alpha-1) UNRELEASED; urgency=medium
     + Update version requirements for meson and libnm-dev.
     + Drop X11 packages from Build-Depends. We no longer build with X11 support.
 
+  [ Marco Trevisan (Treviño) ]
+  * debian/control: Remove other unused (for long time) X11 dependencies
+  * debian/control: Mark python3-dbusmock as a test dependency
+  * debian/control: Remove unused xvfb test dependency
+  * debian/debian/gnome-control-center.lintian-overrides: Remove mismatched
+    override
 
- -- Nathan Pratta Teodosio <nathan.teodosio@canonical.com>  Mon, 07 Jul 2025 11:07:46 +0200
+ -- Marco Trevisan (Treviño) <marco@ubuntu.com>  Tue, 05 Aug 2025 23:43:12 +0200
 
 gnome-control-center (1:48.3-3) unstable; urgency=medium
 
