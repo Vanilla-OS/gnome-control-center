@@ -39,7 +39,7 @@ ui_sources = files(
   'cc-panel-list.blp',
   'cc-panel.blp',
   'cc-window.blp',
-  'help-overlay.blp',
+  'shortcuts-dialog.blp',
 )
 
 ui_compiled = []
@@ -84,7 +84,7 @@ generated_sources += gnome.compile_resources(
   'resources',
   gresource_file,
   export : true,
-  dependencies: [gresource_file, appdata_file, blueprints]
+  dependencies: [gresource_file, metainfo_file, blueprints]
 )
 
 common_sources += generated_sources
