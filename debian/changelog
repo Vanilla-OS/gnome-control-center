@@ -1,4 +1,4 @@
-gnome-control-center (1:49~beta-1) UNRELEASED; urgency=medium
+gnome-control-center (1:49~beta-1) experimental; urgency=medium
 
   [ Nathan Pratta Teodosio ]
   * New upstream release (49~alpha).
@@ -17,7 +17,7 @@ gnome-control-center (1:49~beta-1) UNRELEASED; urgency=medium
   * debian/debian/gnome-control-center.lintian-overrides: Remove mismatched
     override
 
- -- Marco Trevisan (Treviño) <marco@ubuntu.com>  Wed, 06 Aug 2025 00:46:52 +0200
+ -- Marco Trevisan (Treviño) <marco@ubuntu.com>  Wed, 06 Aug 2025 00:47:33 +0200
 
 gnome-control-center (1:48.3-3) unstable; urgency=medium
 
