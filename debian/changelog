@@ -1,5 +1,29 @@
+gnome-control-center (1:49~beta-1) experimental; urgency=medium
+
+  [ Nathan Pratta Teodosio ]
+  * New upstream release (49~alpha).
+  * d/p/d/Expose-touchpad-settings: Dropped.
+  * d/control:
+    + Add blueprint-compiler as a dependency.
+    + Update version requirements for meson and libnm-dev.
+    + Drop X11 packages from Build-Depends. We no longer build with X11 support.
+
+  [ Marco Trevisan (Treviño) ]
+  * New upstream release (49~beta)
+  * debian/control: Bump build-dependency on libadwaita-1 1.8~alpha
+  * debian/control: Remove other unused (for long time) X11 dependencies
+  * debian/control: Mark python3-dbusmock as a test dependency
+  * debian/control: Remove unused xvfb test dependency
+  * debian/debian/gnome-control-center.lintian-overrides: Remove mismatched
+    override
+
+ -- Marco Trevisan (Treviño) <marco@ubuntu.com>  Wed, 06 Aug 2025 00:47:33 +0200
+
 gnome-control-center (1:49~alpha-1ubuntu1) questing; urgency=medium
 
+  * New upstream release
+  * d/p/Expose-touchpad-settings-if-synaptics-is-in-use.patch: Refresh.
+  * d/control: Add blueprint-compiler as a dependency.
   * d/p/u/multiple-gpu-name-nividia.patch: Removed, applied upstream.
   * d/p: Refreshes, migration from ui changes to blueprint (blp) changes.
   * Merge with Debian. Remaining changes:
@@ -54,14 +78,6 @@ gnome-control-center (1:49~alpha-1ubuntu1) questing; urgency=medium
       - u/list-apps-even-without-malcontent.patch
 
  -- Nathan Pratta Teodosio <nteodosio@ubuntu.com>  Mon, 28 Apr 2025 10:05:28 +0200
-
-gnome-control-center (1:49~alpha-1) experimental; urgency=medium
-
-  * New upstream release
-  * d/p/Expose-touchpad-settings-if-synaptics-is-in-use.patch: Refresh.
-  * d/control: Add blueprint-compiler as a dependency.
-
- -- Nathan Pratta Teodosio <nathan.teodosio@canonical.com>  Mon, 07 Jul 2025 11:07:46 +0200
 
 gnome-control-center (1:48.3-3) unstable; urgency=medium
 
