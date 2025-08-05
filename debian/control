@@ -59,7 +59,6 @@ Build-Depends: debhelper-compat (= 13),
                shared-mime-info,
                tecla (>= 47),
                tzdata <!nocheck>,
-               xvfb
 Standards-Version: 4.7.0
 Rules-Requires-Root: no
 Vcs-Git: https://salsa.debian.org/gnome-team/gnome-control-center.git
