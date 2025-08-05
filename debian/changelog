@@ -10,13 +10,14 @@ gnome-control-center (1:49~beta-1) UNRELEASED; urgency=medium
 
   [ Marco Trevisan (Treviño) ]
   * New upstream release (49~beta)
+  * debian/control: Bump build-dependency on libadwaita-1 1.8~alpha
   * debian/control: Remove other unused (for long time) X11 dependencies
   * debian/control: Mark python3-dbusmock as a test dependency
   * debian/control: Remove unused xvfb test dependency
   * debian/debian/gnome-control-center.lintian-overrides: Remove mismatched
     override
 
- -- Marco Trevisan (Treviño) <marco@ubuntu.com>  Tue, 05 Aug 2025 23:46:58 +0200
+ -- Marco Trevisan (Treviño) <marco@ubuntu.com>  Wed, 06 Aug 2025 00:46:52 +0200
 
 gnome-control-center (1:48.3-3) unstable; urgency=medium
 
