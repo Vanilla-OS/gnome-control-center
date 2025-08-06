@@ -10,11 +10,28 @@ i18n.merge_file(
   install_dir: control_center_desktopdir
 )
 
+ui_sources = files(
+  'cc-mouse-panel.blp',
+  'cc-mouse-test.blp',
+)
+
+ui_compiled = []
+foreach ui_source : ui_sources
+  ui_compiled += fs.name(fs.replace_suffix(ui_source, '.ui'))
+endforeach
+
+blueprints = custom_target(
+  input: ui_sources,
+  output: ui_compiled,
+  command: [blueprint_compiler, 'batch-compile', '@OUTDIR@', '@CURRENT_SOURCE_DIR@', '@INPUT@']
+)
+
 common_sources = gnome.compile_resources(
   'cc-' + cappletname + '-resources',
   cappletname + '.gresource.xml',
   c_name: 'cc_' + cappletname,
-  export: true
+  export: true,
+  dependencies: blueprints,
 )
 
 sources = common_sources + files(
@@ -26,9 +43,10 @@ sources = common_sources + files(
 deps = common_deps + [
   gnome_settings_dep,
   libdevice_dep,
-  x11_dep,
-  xi_dep
 ]
+if have_x11_support
+  deps += [x11_dep, xi_dep]
+endif
 
 panels_libs += static_library(
   cappletname + '-properties',

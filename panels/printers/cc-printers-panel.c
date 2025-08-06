@@ -313,6 +313,7 @@ cc_printers_panel_dispose (GObject *object)
   g_clear_handle_id (&self->remove_printer_timeout_id, g_source_remove);
   g_clear_pointer (&self->deleted_printer_name, g_free);
   g_clear_pointer (&self->action, g_variant_unref);
+  g_clear_pointer (&self->size_group, g_object_unref);
   g_clear_pointer (&self->printer_entries, g_hash_table_destroy);
   g_clear_pointer (&self->all_ppds_list, ppd_list_free);
   free_dests (self);
@@ -385,17 +386,17 @@ on_cups_notification (GDBusConnection *connection,
                       gpointer         user_data)
 {
   CcPrintersPanel        *self = (CcPrintersPanel*) user_data;
-  gboolean                printer_is_accepting_jobs;
+  gboolean                printer_is_accepting_jobs = FALSE;
   gchar                  *printer_name = NULL;
   gchar                  *text = NULL;
   gchar                  *printer_uri = NULL;
   gchar                  *printer_state_reasons = NULL;
   gchar                  *job_state_reasons = NULL;
   gchar                  *job_name = NULL;
-  guint                   job_id;
-  gint                    printer_state;
-  gint                    job_state;
-  gint                    job_impressions_completed;
+  guint                   job_id = 0;
+  gint                    printer_state = -1;
+  gint                    job_state = -1;
+  gint                    job_impressions_completed = 0;
   static gchar *requested_attrs[] = {
     "job-printer-uri",
     "job-originating-user-name",

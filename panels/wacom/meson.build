@@ -1,23 +1,47 @@
 deps = common_deps + wacom_deps + [
   gnome_settings_dep,
   liblanguage_dep,
-  x11_dep,
-  xi_dep
 ]
+if have_x11_support
+  deps += [x11_dep, xi_dep]
+endif
 
 cflags += ['-DGNOMELOCALEDIR="@0@"'.format(control_center_localedir)]
 
 test_cflags = cflags + ['-DFAKE_AREA']
+
+blueprints = []
+
+subdir('calibrator')
+
+ui_sources = files(
+  'button-mapping.blp',
+  'cc-wacom-ekr-page.blp',
+  'cc-wacom-page.blp',
+  'cc-wacom-panel.blp',
+  'cc-wacom-stylus-action-dialog.blp',
+  'cc-wacom-stylus-page.blp',
+)
+
+ui_compiled = []
+foreach ui_source : ui_sources
+  ui_compiled += fs.name(fs.replace_suffix(ui_source, '.ui'))
+endforeach
+
+blueprints += custom_target(
+  input: ui_sources,
+  output: ui_compiled,
+  command: [blueprint_compiler, 'batch-compile', '@OUTDIR@', '@CURRENT_SOURCE_DIR@', '@INPUT@']
+)
 
 wacom_gresource = gnome.compile_resources(
   'cc-' + cappletname + '-resources',
   cappletname + '.gresource.xml',
     source_dir : '.',
         c_name : 'cc_' + cappletname,
-        export : true
+        export : true,
+  dependencies : blueprints,
 )
-
-subdir('calibrator')
 
 panels_list += cappletname
 desktop = 'gnome-@0@-panel.desktop'.format(cappletname)

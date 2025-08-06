@@ -1183,13 +1183,11 @@ switch_to_single_page_layout (CcPowerPanel *self)
   adw_preferences_page_remove (self->power_saving_page, self->suspend_on_ac_group);
   adw_preferences_page_remove (self->power_saving_page, self->suspend_notice_group);
 
-  adw_preferences_page_remove (self->general_page, self->general_section);
   adw_preferences_page_add (self->general_page, self->power_saving_group);
   adw_preferences_page_add (self->general_page, self->blank_screen_group);
   adw_preferences_page_add (self->general_page, self->suspend_on_battery_group);
   adw_preferences_page_add (self->general_page, self->suspend_on_ac_group);
   adw_preferences_page_add (self->general_page, self->suspend_notice_group);
-  adw_preferences_page_add (self->general_page, self->general_section);
 
   /* Reset title and hide view switcher by hiding stack page */
   gtk_stack_set_visible_child_name (self->title_stack, "title");
@@ -1297,6 +1295,7 @@ cc_power_panel_class_init (CcPowerPanelClass *klass)
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/power/cc-power-panel.ui");
 
   g_type_ensure (CC_TYPE_NUMBER_ROW);
+  g_type_ensure (CC_TYPE_POWER_PROFILE_INFO_ROW);
 
   gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, als_row);
   gtk_widget_class_bind_template_child (widget_class, CcPowerPanel, battery_charging_section);

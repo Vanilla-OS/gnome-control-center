@@ -19,6 +19,23 @@ i18n.merge_file(
   install_dir: join_paths(control_center_datadir, 'polkit-1', 'actions')
 )
 
+ui_sources = files(
+  'cc-system-panel.blp',
+)
+
+ui_compiled = []
+foreach ui_source : ui_sources
+  ui_compiled += fs.name(fs.replace_suffix(ui_source, '.ui'))
+endforeach
+
+blueprints = []
+
+blueprints += custom_target(
+  input: ui_sources,
+  output: ui_compiled,
+  command: [blueprint_compiler, 'batch-compile', '@OUTDIR@', '@CURRENT_SOURCE_DIR@', '@INPUT@']
+)
+
 sources = files(
   'cc-password-utils.c',
   'cc-system-panel.c',
@@ -57,13 +74,6 @@ sources = files(
   'users/pw-utils.c',
   'users/run-passwd.c',
   'users/user-utils.c',
-)
-
-sources += gnome.compile_resources(
-  'cc-' + cappletname + '-resources',
-  cappletname + '.gresource.xml',
-  c_name : 'cc_' + cappletname,
-  export : true
 )
 
 gdesktop_enums_header = files(
@@ -134,6 +144,14 @@ subdir('region')
 subdir('remote-desktop')
 subdir('secure-shell')
 subdir('users')
+
+sources += gnome.compile_resources(
+  'cc-' + cappletname + '-resources',
+  cappletname + '.gresource.xml',
+  c_name : 'cc_' + cappletname,
+  export : true,
+  dependencies : blueprints,
+)
 
 panels_libs += static_library(
   cappletname,

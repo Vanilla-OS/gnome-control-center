@@ -66,6 +66,12 @@ crop_dialog_response (CcAvatarChooser *self,
         }
 
         pb = cc_crop_area_create_pixbuf (CC_CROP_AREA (self->crop_area));
+        if (!pb) {
+                g_warning ("Crop operation failed");
+                self->crop_area = NULL;
+                gtk_window_destroy (GTK_WINDOW (dialog));
+                return;
+        }
         pb2 = gdk_pixbuf_scale_simple (pb, AVATAR_PIXEL_SIZE, AVATAR_PIXEL_SIZE, GDK_INTERP_BILINEAR);
         texture = gdk_texture_new_for_pixbuf (pb2);
 
@@ -73,8 +79,6 @@ crop_dialog_response (CcAvatarChooser *self,
 
         self->crop_area = NULL;
         gtk_window_destroy (GTK_WINDOW (dialog));
-
-        gtk_popover_popdown (GTK_POPOVER (self));
 }
 
 static void
@@ -149,7 +153,7 @@ static void
 cc_avatar_chooser_select_file (CcAvatarChooser *self)
 {
         g_autoptr(GFile) pictures_folder = NULL;
-        GtkFileDialog *file_dialog;
+        g_autoptr(GtkFileDialog) file_dialog = NULL;
         GtkFileFilter *filter;
         GListStore *filters;
 
@@ -228,6 +232,7 @@ create_face_widget (gpointer item,
                 adw_avatar_set_custom_image (ADW_AVATAR (avatar), GDK_PAINTABLE (source_image));
         }
 
+        g_object_set (child, "accessible-role", GTK_ACCESSIBLE_ROLE_BUTTON, NULL);
         gtk_accessible_update_property (GTK_ACCESSIBLE (child),
                                         GTK_ACCESSIBLE_PROPERTY_LABEL, g_object_get_data (item, "a11y_label"),
                                         -1);

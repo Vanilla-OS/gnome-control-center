@@ -23,15 +23,40 @@ cflags += [
   '-DSOUND_DATA_DIR="@0@"'.format(join_paths(control_center_datadir, 'sounds')),
 ]
 
+ui_sources = files(
+  'cc-alert-chooser-page.blp',
+  'cc-balance-slider.blp',
+  'cc-device-combo-row.blp',
+  'cc-fade-slider.blp',
+  'cc-output-test-window.blp',
+  'cc-profile-combo-row.blp',
+  'cc-sound-panel.blp',
+  'cc-stream-row.blp',
+  'cc-subwoofer-slider.blp',
+  'cc-volume-levels-page.blp',
+  'cc-volume-slider.blp',
+)
+
+ui_compiled = []
+foreach ui_source : ui_sources
+  ui_compiled += fs.name(fs.replace_suffix(ui_source, '.ui'))
+endforeach
+
+blueprints = custom_target(
+  input: ui_sources,
+  output: ui_compiled,
+  command: [blueprint_compiler, 'batch-compile', '@OUTDIR@', '@CURRENT_SOURCE_DIR@', '@INPUT@']
+)
+
 sources = files(
   'cc-alert-chooser-page.c',
   'cc-balance-slider.c',
-  'cc-device-combo-box.c',
+  'cc-device-combo-row.c',
   'cc-fade-slider.c',
   'cc-level-bar.c',
   'cc-output-test-wheel.c',
   'cc-output-test-window.c',
-  'cc-profile-combo-box.c',
+  'cc-profile-combo-row.c',
   'cc-sound-panel.c',
   'cc-speaker-test-button.c',
   'cc-stream-row.c',
@@ -44,7 +69,8 @@ sources += gnome.compile_resources(
   'cc-' + cappletname + '-resources',
   cappletname + '.gresource.xml',
   c_name: 'cc_' + cappletname.underscorify (),
-  export: true
+  export: true,
+  dependencies: blueprints,
 )
 
 panels_libs += static_library(
