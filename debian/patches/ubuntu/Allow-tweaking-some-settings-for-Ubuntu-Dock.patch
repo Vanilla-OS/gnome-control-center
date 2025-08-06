@@ -21,28 +21,28 @@ Forwarded: not-needed
  panels/ubuntu/assets/colors/color.svg.in    |    5 +
  panels/ubuntu/assets/theme-dark.svg         |    1 +
  panels/ubuntu/assets/theme-light.svg        |    1 +
+ panels/ubuntu/cc-ubuntu-dock-dialog.blp     |   73 ++
  panels/ubuntu/cc-ubuntu-dock-dialog.c       |  103 ++
  panels/ubuntu/cc-ubuntu-dock-dialog.h       |   31 +
- panels/ubuntu/cc-ubuntu-dock-dialog.ui      |   79 ++
+ panels/ubuntu/cc-ubuntu-panel.blp           |  201 ++++
  panels/ubuntu/cc-ubuntu-panel.c             | 1728 +++++++++++++++++++++++++++
  panels/ubuntu/cc-ubuntu-panel.h             |   33 +
- panels/ubuntu/cc-ubuntu-panel.ui            |  219 ++++
  panels/ubuntu/gnome-ubuntu-panel.desktop.in |   13 +
- panels/ubuntu/meson.build                   |   97 ++
+ panels/ubuntu/meson.build                   |  111 ++
  panels/ubuntu/ubuntu.gresource.xml          |    6 +
  po/POTFILES.in                              |    5 +
  shell/cc-panel-list.c                       |    1 +
  shell/cc-panel-loader.c                     |    3 +
- 16 files changed, 2326 insertions(+)
+ 16 files changed, 2316 insertions(+)
  create mode 100644 panels/ubuntu/assets/colors/color.svg.in
  create mode 100644 panels/ubuntu/assets/theme-dark.svg
  create mode 100644 panels/ubuntu/assets/theme-light.svg
+ create mode 100644 panels/ubuntu/cc-ubuntu-dock-dialog.blp
  create mode 100644 panels/ubuntu/cc-ubuntu-dock-dialog.c
  create mode 100644 panels/ubuntu/cc-ubuntu-dock-dialog.h
- create mode 100644 panels/ubuntu/cc-ubuntu-dock-dialog.ui
+ create mode 100644 panels/ubuntu/cc-ubuntu-panel.blp
  create mode 100644 panels/ubuntu/cc-ubuntu-panel.c
  create mode 100644 panels/ubuntu/cc-ubuntu-panel.h
- create mode 100644 panels/ubuntu/cc-ubuntu-panel.ui
  create mode 100644 panels/ubuntu/gnome-ubuntu-panel.desktop.in
  create mode 100644 panels/ubuntu/meson.build
  create mode 100644 panels/ubuntu/ubuntu.gresource.xml
@@ -86,6 +86,85 @@ index 0000000..0a8f29f
 @@ -0,0 +1 @@
 +<svg version="1.0" width="250" height="150" xmlns="http://www.w3.org/2000/svg"><defs><filter id="a" x="-.042" y="-.055" width="1.085" height="1.111" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="1.5"/></filter><filter id="c" x="-.042" y="-.055" width="1.085" height="1.111" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="1.5"/></filter><filter id="b" x="-.042" y="-.055" width="1.085" height="1.111" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="1.5"/></filter><filter id="d" x="-.042" y="-.055" width="1.085" height="1.111" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="1.5"/></filter></defs><g transform="translate(111.066 -45.354) scale(1.1742)"><rect x="-15" y="55" width="85" height="65" ry="5" filter="url(#a)" opacity=".55" style="filter:url(#b)"/><rect x="-15" y="55" width="85" height="65" ry="5" fill="#4d4d4d"/><path d="M-10 55c-2.77 0-5 2.23-5 5v10h85V60c0-2.77-2.23-5-5-5z" fill="#4d4d4d"/><rect x="-15" y="69" width="85" height="1" ry="0" fill="#666"/></g><g transform="translate(75.84 -10.128) scale(1.1742)"><rect x="-15" y="55" width="85" height="65" ry="5" filter="url(#c)" opacity=".55" style="filter:url(#d)"/><rect x="-15" y="55" width="85" height="65" ry="5" fill="#fafafa"/><path d="M-10 55c-2.77 0-5 2.23-5 5v10h85V60c0-2.77-2.23-5-5-5z" fill="#dedede"/><rect x="-15" y="69" width="85" height="1" ry="0" fill="#b3b3b3"/></g></svg>
 \ No newline at end of file
+diff --git a/panels/ubuntu/cc-ubuntu-dock-dialog.blp b/panels/ubuntu/cc-ubuntu-dock-dialog.blp
+new file mode 100644
+index 0000000..188761f
+--- /dev/null
++++ b/panels/ubuntu/cc-ubuntu-dock-dialog.blp
+@@ -0,0 +1,73 @@
++using Gtk 4.0;
++using Adw 1;
++
++template $CcUbuntuDockDialog: Dialog {
++  width-request: 386;
++  can-focus: false;
++  modal: true;
++  destroy-with-parent: true;
++  hide-on-close: true;
++
++  [internal-child content_area]
++  Box {
++    can-focus: false;
++    orientation: vertical;
++    spacing: 2;
++
++    Adw.PreferencesGroup {
++      margin-top: 12;
++      margin-bottom: 12;
++      margin-start: 12;
++      margin-end: 12;
++
++      Adw.SwitchRow volumes_switch {
++        use-underline: true;
++        can-focus: true;
++        title: _("Show _Volumes and _Devices");
++      }
++
++      Adw.ActionRow unmounted_row {
++        use-underline: true;
++        can-focus: true;
++        title: C_("ubuntu-dock", "Include _Unmounted Volumes");
++        activatable: true;
++        activatable-widget: unmounted_check;
++        sensitive: bind volumes_switch.active;
++
++        [prefix]
++        CheckButton unmounted_check {
++          can-focus: true;
++          valign: center;
++        }
++      }
++
++      Adw.ActionRow network_volumes_row {
++        use-underline: true;
++        can-focus: true;
++        title: C_("ubuntu-dock", "Include _Network Volumes");
++        activatable: true;
++        activatable-widget: network_volumes_check;
++        sensitive: bind volumes_switch.active;
++
++        [prefix]
++        CheckButton network_volumes_check {
++          can-focus: true;
++          valign: center;
++        }
++      }
++    }
++
++    Adw.PreferencesGroup {
++      margin-top: 12;
++      margin-bottom: 12;
++      margin-start: 12;
++      margin-end: 12;
++
++      Adw.SwitchRow trash_switch {
++        use-underline: true;
++        can-focus: true;
++        title: _("Show _Trash");
++      }
++    }
++  }
++}
 diff --git a/panels/ubuntu/cc-ubuntu-dock-dialog.c b/panels/ubuntu/cc-ubuntu-dock-dialog.c
 new file mode 100644
 index 0000000..266f486
@@ -232,91 +311,213 @@ index 0000000..cd84651
 +CcUbuntuDockDialog *cc_ubuntu_dock_dialog_new (GSettings *settings);
 +
 +G_END_DECLS
-diff --git a/panels/ubuntu/cc-ubuntu-dock-dialog.ui b/panels/ubuntu/cc-ubuntu-dock-dialog.ui
+diff --git a/panels/ubuntu/cc-ubuntu-panel.blp b/panels/ubuntu/cc-ubuntu-panel.blp
 new file mode 100644
-index 0000000..c7dcd20
+index 0000000..a8736d8
 --- /dev/null
-+++ b/panels/ubuntu/cc-ubuntu-dock-dialog.ui
-@@ -0,0 +1,79 @@
-+<?xml version="1.0" encoding="UTF-8"?>
-+<interface>
-+  <template class="CcUbuntuDockDialog" parent="GtkDialog">
-+    <property name="width_request">386</property>
-+    <property name="can_focus">False</property>
-+    <property name="modal">True</property>
-+    <property name="destroy-with-parent">True</property>
-+    <property name="hide-on-close">True</property>
-+    <child internal-child="content_area">
-+      <object class="GtkBox">
-+        <property name="can_focus">False</property>
-+        <property name="orientation">vertical</property>
-+        <property name="spacing">2</property>
-+        <child>
-+          <object class="AdwPreferencesGroup">
-+            <property name="margin-top">12</property>
-+            <property name="margin-bottom">12</property>
-+            <property name="margin-start">12</property>
-+            <property name="margin-end">12</property>
-+            <child>
-+              <object class="AdwSwitchRow" id="volumes_switch">
-+                <property name="use_underline">True</property>
-+                <property name="can_focus">True</property>
-+                <property name="title" translatable="yes">Show _Volumes and _Devices</property>
-+              </object>
-+            </child>
-+            <child>
-+              <object class="AdwActionRow" id="unmounted_row">
-+                <property name="use_underline">True</property>
-+                <property name="can_focus">True</property>
-+                <property name="title" translatable="yes" context="ubuntu-dock">Include _Unmounted Volumes</property>
-+                <property name="activatable">True</property>
-+                <property name="activatable_widget">unmounted_check</property>
-+                <property name="sensitive" bind-source="volumes_switch" bind-property="active" bind-flags="default|sync-create" />
-+                <child type="prefix">
-+                  <object class="GtkCheckButton" id="unmounted_check">
-+                    <property name="can_focus">True</property>
-+                    <property name="valign">center</property>
-+                  </object>
-+                </child>
-+              </object>
-+            </child>
-+            <child>
-+              <object class="AdwActionRow" id="network_volumes_row">
-+                <property name="use_underline">True</property>
-+                <property name="can_focus">True</property>
-+                <property name="title" translatable="yes" context="ubuntu-dock">Include _Network Volumes</property>
-+                <property name="activatable">True</property>
-+                <property name="activatable_widget">network_volumes_check</property>
-+                <property name="sensitive" bind-source="volumes_switch" bind-property="active" bind-flags="default|sync-create" />
-+                <child type="prefix">
-+                  <object class="GtkCheckButton" id="network_volumes_check">
-+                    <property name="can_focus">True</property>
-+                    <property name="valign">center</property>
-+                  </object>
-+                </child>
-+              </object>
-+            </child>
-+          </object>
-+        </child>
-+        <child>
-+          <object class="AdwPreferencesGroup">
-+            <property name="margin-top">12</property>
-+            <property name="margin-bottom">12</property>
-+            <property name="margin-start">12</property>
-+            <property name="margin-end">12</property>
-+            <child>
-+              <object class="AdwSwitchRow" id="trash_switch">
-+                <property name="use_underline">True</property>
-+                <property name="can_focus">True</property>
-+                <property name="title" translatable="yes">Show _Trash</property>
-+              </object>
-+            </child>
-+          </object>
-+        </child>
-+      </object>
-+    </child>
-+  </template>
-+</interface>
++++ b/panels/ubuntu/cc-ubuntu-panel.blp
+@@ -0,0 +1,201 @@
++using Gtk 4.0;
++using Adw 1;
++
++template $CcUbuntuPanel: $CcPanel {
++  child: Adw.ToolbarView {
++    [top]
++    Adw.HeaderBar {}
++
++    content: Adw.PreferencesPage {
++      CenterBox no_settings_view {
++        hexpand: true;
++        vexpand: true;
++        halign: center;
++        valign: center;
++        orientation: vertical;
++        margin-top: 18;
++        margin-bottom: 18;
++        margin-start: 18;
++        margin-end: 18;
++        visible: false;
++
++        [start]
++        Image {
++          icon-name: "face-sad-symbolic";
++          pixel-size: 128;
++
++          styles [
++            "dim-label",
++          ]
++        }
++
++        [center]
++        Label {
++          margin-top: 12;
++          wrap: true;
++          label: _("No Ubuntu settings found");
++        }
++
++        [end]
++        Label {
++          wrap: true;
++          label: _("Oops, something has gone wrong. Please report a bug in Launchpad.");
++
++          /*
++          attributes {
++            // FIXME: Set scale attribute to 1.42.
++            // See: https://gitlab.gnome.org/GNOME/blueprint-compiler/-/issues/11
++          }
++          */
++        }
++      }
++
++      Adw.PreferencesGroup ding_preferences_group {
++        /* Translators: Desktop icons settings. */
++        title: _("Desktop Icons");
++
++        header-suffix: Switch ding_switch {
++          valign: center;
++          visible: false;
++          notify::active => $on_ding_switch_changed() swapped;
++        };
++
++        Adw.ComboRow ding_icon_size_row {
++          use-underline: true;
++          can-focus: true;
++          width-request: 100;
++          title: C_("Desktop Icons Size", "Si_ze");
++          sensitive: bind ding_switch.active;
++        }
++
++        Adw.ComboRow ding_icons_new_alignment_row {
++          use-underline: true;
++          can-focus: true;
++          width-request: 100;
++          title: C_("Desktop Icons Size", "Position of _New Icons");
++          sensitive: bind ding_switch.active;
++        }
++
++        Adw.SwitchRow ding_showhome_switch {
++          title: _("Show _Home Folder");
++          use-underline: true;
++          sensitive: bind ding_switch.active;
++        }
++      }
++
++      Adw.PreferencesGroup dock_preferences_group {
++        margin-top: 16;
++
++        /* Translators: Dock settings. */
++        title: _("Dock");
++
++        header-suffix: Switch dock_switch {
++          valign: center;
++          visible: false;
++          notify::active => $on_dock_switch_changed() swapped;
++        };
++
++        Adw.SwitchRow dock_autohide_switch {
++          title: _("_Auto-hide the Dock");
++          subtitle: _("The dock hides when any windows overlap with it");
++          use-underline: true;
++          sensitive: bind dock_switch.active;
++        }
++
++        Adw.SwitchRow dock_extendheight_switch {
++          title: _("Panel _Mode");
++          subtitle: _("The dock extends to the screen edge");
++          use-underline: true;
++          sensitive: bind dock_switch.active;
++        }
++
++        Adw.ActionRow {
++          use-underline: true;
++          can-focus: true;
++          title: _("_Icon Size");
++          activatable: true;
++          sensitive: bind dock_switch.active;
++
++          Scale icon_size_scale {
++            adjustment: icon_size_adjustment;
++            orientation: horizontal;
++            draw-value: true;
++            value-pos: left;
++            width-request: 264;
++          }
++        }
++
++        Adw.ComboRow dock_monitor_row {
++          use-underline: true;
++          can-focus: true;
++          width-request: 100;
++          title: _("_Show on");
++          sensitive: bind dock_switch.active;
++          notify::selected-item => $on_dock_monitor_row_changed() swapped;
++        }
++
++        Adw.ComboRow dock_position_row {
++          use-underline: true;
++          can-focus: true;
++          width-request: 100;
++          title: _("_Position on Screen");
++          sensitive: bind dock_switch.active;
++        }
++
++        Adw.ActionRow dock_behavior_row {
++          can-focus: true;
++          title: _("_Configure Dock Behavior");
++          use-underline: true;
++          activatable: true;
++          sensitive: bind dock_switch.active;
++          activated => $on_dock_behavior_row_activated(template);
++
++          Image {
++            icon-name: "go-next-symbolic";
++
++            styles [
++              "dim-label",
++            ]
++          }
++        }
++      }
++
++      Adw.PreferencesGroup tiling_assistant_preferences_group {
++        margin-top: 16;
++        margin-bottom: 16;
++
++        /* Translators: Tiling Assistant extension settings. */
++        title: _("Enhanced Tiling");
++
++        header-suffix: Switch tiling_assistant_switch {
++          valign: center;
++          notify::active => $on_tiling_assistant_switch_changed() swapped;
++        };
++
++        Adw.SwitchRow tiling_assistant_popup_switch {
++          title: _("_Tiling Popup");
++
++          /* Translators: Tiling Assistant Tiling Popup feature explanation. */
++          subtitle: _("Show a list of open apps to fill empty screen space after tiling a window");
++          use-underline: true;
++          sensitive: bind tiling_assistant_switch.active;
++        }
++
++        Adw.SwitchRow tiling_assistant_tiling_group {
++          title: _("Tile _Groups");
++
++          /* Translators: Tiling Assistant Tile Groups feature explanation */
++          subtitle: _("Keep windows grouped together when tiled, so that raising one brings up the group");
++          use-underline: true;
++          sensitive: bind tiling_assistant_switch.active;
++        }
++      }
++    };
++  };
++}
++
++Adjustment icon_size_adjustment {
++  step-increment: 1;
++  page-increment: 4;
++  value-changed => $on_icon_size_adjustment_value_changed(template);
++}
 diff --git a/panels/ubuntu/cc-ubuntu-panel.c b/panels/ubuntu/cc-ubuntu-panel.c
 new file mode 100644
 index 0000000..b3ce223
@@ -2090,231 +2291,6 @@ index 0000000..df67a97
 +void cc_ubuntu_panel_static_init_func (void);
 +
 +G_END_DECLS
-diff --git a/panels/ubuntu/cc-ubuntu-panel.ui b/panels/ubuntu/cc-ubuntu-panel.ui
-new file mode 100644
-index 0000000..cb4a44b
---- /dev/null
-+++ b/panels/ubuntu/cc-ubuntu-panel.ui
-@@ -0,0 +1,219 @@
-+<?xml version="1.0" encoding="UTF-8"?>
-+<interface>
-+  <template class="CcUbuntuPanel" parent="CcPanel">
-+    <property name="child">
-+      <object class="AdwToolbarView">
-+        <child type="top">
-+          <object class="AdwHeaderBar"/>
-+        </child>
-+        <property name="content">
-+          <object class="AdwPreferencesPage">
-+            <child>
-+              <object class="GtkCenterBox" id="no_settings_view">
-+                <property name="hexpand">True</property>
-+                <property name="vexpand">True</property>
-+                <property name="halign">center</property>
-+                <property name="valign">center</property>
-+                <property name="orientation">vertical</property>
-+                <property name="margin-top">18</property>
-+                <property name="margin-bottom">18</property>
-+                <property name="margin-start">18</property>
-+                <property name="margin-end">18</property>
-+                <property name="visible">False</property>
-+                <child type="start">
-+                  <object class="GtkImage">
-+                    <property name="icon_name">face-sad-symbolic</property>
-+                    <property name="pixel_size">128</property>
-+                    <style>
-+                      <class name="dim-label" />
-+                    </style>
-+                  </object>
-+                </child>
-+                <child type="center">
-+                  <object class="GtkLabel">
-+                    <property name="margin-top">12</property>
-+                    <property name="wrap">True</property>
-+                    <property name="label" translatable="yes">No Ubuntu settings found</property>
-+                  </object>
-+                </child>
-+                <child type="end">
-+                  <object class="GtkLabel">
-+                    <property name="wrap">True</property>
-+                    <property name="label" translatable="yes">Oops, something has gone wrong. Please report a bug in Launchpad.</property>
-+                    <attributes>
-+                      <attribute name="scale" value="1.42" />
-+                    </attributes>
-+                  </object>
-+                </child>
-+              </object>
-+            </child>
-+
-+            <!-- Desktop icons settings -->
-+            <child>
-+              <object class="AdwPreferencesGroup" id="ding_preferences_group">
-+                <property name="title" translatable="yes" comments="Desktop icons settings.">Desktop Icons</property>
-+                <property name="header-suffix">
-+                  <object class="GtkSwitch" id="ding_switch">
-+                    <property name="valign">center</property>
-+                    <property name="visible">False</property>
-+                    <signal name="notify::active" handler="on_ding_switch_changed" swapped="yes"/>
-+                  </object>
-+                </property>
-+                <child>
-+                  <object class="AdwComboRow" id="ding_icon_size_row">
-+                    <property name="use_underline">True</property>
-+                    <property name="can_focus">True</property>
-+                    <property name="can_focus">True</property>
-+                    <property name="width_request">100</property>
-+                    <property name="title" translatable="yes" context="Desktop Icons Size">Si_ze</property>
-+                    <property name="sensitive" bind-source="ding_switch" bind-property="active" bind-flags="sync-create" />
-+                  </object>
-+                </child>
-+                <child>
-+                  <object class="AdwComboRow" id="ding_icons_new_alignment_row">
-+                    <property name="use_underline">True</property>
-+                    <property name="can_focus">True</property>
-+                    <property name="can_focus">True</property>
-+                    <property name="width_request">100</property>
-+                    <property name="title" translatable="yes" context="Desktop Icons Size">Position of _New Icons</property>
-+                    <property name="sensitive" bind-source="ding_switch" bind-property="active" bind-flags="sync-create" />
-+                  </object>
-+                </child>
-+                <child>
-+                  <object class="AdwSwitchRow" id="ding_showhome_switch">
-+                    <property name="title" translatable="yes">Show _Home Folder</property>
-+                    <property name="use-underline">True</property>
-+                    <property name="sensitive" bind-source="ding_switch" bind-property="active" bind-flags="sync-create" />
-+                  </object>
-+                </child>
-+              </object>
-+            </child>
-+
-+            <!-- Dock settings -->
-+            <child>
-+              <object class="AdwPreferencesGroup" id="dock_preferences_group">
-+                <property name="margin_top">16</property>
-+                <property name="title" translatable="yes" comments="Dock settings.">Dock</property>
-+                <property name="header-suffix">
-+                  <object class="GtkSwitch" id="dock_switch">
-+                    <property name="valign">center</property>
-+                    <property name="visible">False</property>
-+                    <signal name="notify::active" handler="on_dock_switch_changed" swapped="yes"/>
-+                  </object>
-+                </property>
-+                <child>
-+                  <object class="AdwSwitchRow" id="dock_autohide_switch">
-+                    <property name="title" translatable="yes">_Auto-hide the Dock</property>
-+                    <property name="subtitle" translatable="yes">The dock hides when any windows overlap with it</property>
-+                    <property name="use-underline">True</property>
-+                    <property name="sensitive" bind-source="dock_switch" bind-property="active" bind-flags="sync-create" />
-+                  </object>
-+                </child>
-+                <child>
-+                  <object class="AdwSwitchRow" id="dock_extendheight_switch">
-+                    <property name="title" translatable="yes">Panel _Mode</property>
-+                    <property name="subtitle" translatable="yes">The dock extends to the screen edge</property>
-+                    <property name="use-underline">True</property>
-+                    <property name="sensitive" bind-source="dock_switch" bind-property="active" bind-flags="sync-create" />
-+                  </object>
-+                </child>
-+                <child>
-+                  <object class="AdwActionRow">
-+                    <property name="use_underline">True</property>
-+                    <property name="can_focus">True</property>
-+                    <property name="title" translatable="yes">_Icon Size</property>
-+                    <property name="activatable">True</property>
-+                    <property name="sensitive" bind-source="dock_switch" bind-property="active" bind-flags="sync-create" />
-+                    <child>
-+                      <object class="GtkScale" id="icon_size_scale">
-+                        <property name="adjustment">icon_size_adjustment</property>
-+                        <property name="orientation">horizontal</property>
-+                        <property name="draw-value">True</property>
-+                        <property name="value-pos">left</property>
-+                        <property name="width_request">264</property>
-+                      </object>
-+                    </child>
-+                  </object>
-+                </child>
-+                <child>
-+                  <object class="AdwComboRow" id="dock_monitor_row">
-+                    <property name="use_underline">True</property>
-+                    <property name="can_focus">True</property>
-+                    <property name="width_request">100</property>
-+                    <property name="title" translatable="yes">_Show on</property>
-+                    <property name="sensitive" bind-source="dock_switch" bind-property="active" bind-flags="sync-create" />
-+                    <signal name="notify::selected-item" handler="on_dock_monitor_row_changed" swapped="yes"/>
-+                  </object>
-+                </child>
-+                <child>
-+                  <object class="AdwComboRow" id="dock_position_row">
-+                    <property name="use_underline">True</property>
-+                    <property name="can_focus">True</property>
-+                    <property name="width_request">100</property>
-+                    <property name="title" translatable="yes">_Position on Screen</property>
-+                    <property name="sensitive" bind-source="dock_switch" bind-property="active" bind-flags="sync-create" />
-+                  </object>
-+                </child>
-+                <child>
-+                  <object class="AdwActionRow" id="dock_behavior_row">
-+                    <property name="can_focus">True</property>
-+                    <property name="title" translatable="yes">_Configure Dock Behavior</property>
-+                    <property name="use-underline">True</property>
-+                    <property name="activatable">True</property>
-+                    <property name="sensitive" bind-source="dock_switch" bind-property="active" bind-flags="sync-create" />
-+                    <signal name="activated" handler="on_dock_behavior_row_activated" object="CcUbuntuPanel" swapped="yes"/>
-+                    <child>
-+                      <object class="GtkImage">
-+                        <property name="icon_name">go-next-symbolic</property>
-+                        <style>
-+                          <class name="dim-label"/>
-+                        </style>
-+                      </object>
-+                    </child>
-+                  </object>
-+                </child>
-+              </object>
-+            </child>
-+
-+            <!-- Tiling Assistant settings -->
-+            <child>
-+              <object class="AdwPreferencesGroup" id="tiling_assistant_preferences_group">
-+                <property name="margin_top">16</property>
-+                <property name="margin_bottom">16</property>
-+                <property name="title" translatable="yes" comments="Tiling Assistant extension settings.">Enhanced Tiling</property>
-+                <property name="header-suffix">
-+                  <object class="GtkSwitch" id="tiling_assistant_switch">
-+                    <property name="valign">center</property>
-+                    <signal name="notify::active" handler="on_tiling_assistant_switch_changed" swapped="yes"/>
-+                  </object>
-+                </property>
-+                <child>
-+                  <object class="AdwSwitchRow" id="tiling_assistant_popup_switch">
-+                    <property name="title" translatable="yes">_Tiling Popup</property>
-+                    <property name="subtitle" translatable="yes" comments="Tiling Assistant Tiling Popup feature explanation.">Show a list of open apps to fill empty screen space after tiling a window</property>
-+                    <property name="use-underline">True</property>
-+                    <property name="sensitive" bind-source="tiling_assistant_switch" bind-property="active" bind-flags="sync-create" />
-+                  </object>
-+                </child>
-+                <child>
-+                  <object class="AdwSwitchRow" id="tiling_assistant_tiling_group">
-+                    <property name="title" translatable="yes">Tile _Groups</property>
-+                    <property name="subtitle" translatable="yes" comments="Tiling Assistant Tile Groups feature explanation">Keep windows grouped together when tiled, so that raising one brings up the group</property>
-+                    <property name="use-underline">True</property>
-+                    <property name="sensitive" bind-source="tiling_assistant_switch" bind-property="active" bind-flags="sync-create" />
-+                  </object>
-+                </child>
-+              </object>
-+            </child>
-+
-+          </object>
-+        </property>
-+      </object>
-+    </property>
-+  </template>
-+  <object class="GtkAdjustment" id="icon_size_adjustment">
-+    <property name="step_increment">1</property>
-+    <property name="page_increment">4</property>
-+    <signal name="value-changed" handler="on_icon_size_adjustment_value_changed" object="CcUbuntuPanel" swapped="yes"/>
-+  </object>
-+</interface>
 diff --git a/panels/ubuntu/gnome-ubuntu-panel.desktop.in b/panels/ubuntu/gnome-ubuntu-panel.desktop.in
 new file mode 100644
 index 0000000..ee93bc0
@@ -2336,10 +2312,10 @@ index 0000000..ee93bc0
 +Keywords=Dock;Launcher;Theme;Ubuntu;Dark;icons;Yaru;Accent;
 diff --git a/panels/ubuntu/meson.build b/panels/ubuntu/meson.build
 new file mode 100644
-index 0000000..529be08
+index 0000000..fc948e7
 --- /dev/null
 +++ b/panels/ubuntu/meson.build
-@@ -0,0 +1,97 @@
+@@ -0,0 +1,111 @@
 +fs = import('fs')
 +
 +panels_list += cappletname
@@ -2372,21 +2348,35 @@ index 0000000..529be08
 +  'red': '#DA3450',
 +}
 +
-+gresource_xml_contents = []
-+resource_generated_data = []
-+resource_data = files(
-+  'assets/theme-dark.svg',
-+  'assets/theme-light.svg',
-+  'cc-ubuntu-panel.ui',
-+  'cc-ubuntu-dock-dialog.ui',
++ui_sources = files(
++  'cc-ubuntu-panel.blp',
++  'cc-ubuntu-dock-dialog.blp',
 +)
 +
++ui_compiled = []
++foreach ui_source : ui_sources
++  ui_compiled += fs.name(fs.replace_suffix(ui_source, '.ui'))
++endforeach
++
++blueprints = custom_target(
++  input: ui_sources,
++  output: ui_compiled,
++  command: [blueprint_compiler, 'batch-compile', '@OUTDIR@', '@CURRENT_SOURCE_DIR@', '@INPUT@']
++)
++
++gresource_xml_contents = []
++resource_generated_data = []
++resource_data = [
++  'assets/theme-dark.svg',
++  'assets/theme-light.svg',
++] + ui_compiled
++
 +foreach file: resource_data
-+  file_path = '@0@'.format(file)
++  ui_file = fs.name(file).endswith('.ui')
 +  gresource_xml_contents += '<file alias="@0@" preprocess="@1@">@2@</file>'.format(
-+    (meson.project_source_root() / file_path).replace(meson.current_source_dir() + '/', ''),
-+    fs.name(file).endswith('.ui') or fs.name(file).endswith('.svg') ? 'xml-stripblanks' : '',
-+    meson.project_source_root() / file_path,
++    file,
++    ui_file or fs.name(file).endswith('.svg') ? 'xml-stripblanks' : '',
++    (ui_file ? meson.current_build_dir() : meson.current_source_dir()) / file,
 +  )
 +endforeach
 +
@@ -2424,7 +2414,7 @@ index 0000000..529be08
 +  'cc-' + cappletname + '-resources',
 +  gresource_xml,
 +  c_name: 'cc_' + cappletname,
-+  dependencies: resource_data + resource_generated_data,
++  dependencies: resource_generated_data + blueprints,
 +  export: true
 +)
 +
@@ -2450,7 +2440,7 @@ index 0000000..a636e9c
 +  </gresource>
 +</gresources>
 diff --git a/po/POTFILES.in b/po/POTFILES.in
-index d3c93dc..5b2ea0f 100644
+index d3c93dc..d176520 100644
 --- a/po/POTFILES.in
 +++ b/po/POTFILES.in
 @@ -240,6 +240,11 @@ panels/system/users/org.gnome.controlcenter.user-accounts.policy.in
@@ -2458,9 +2448,9 @@ index d3c93dc..5b2ea0f 100644
  panels/system/users/run-passwd.c
  panels/system/users/user-utils.c
 +panels/ubuntu/cc-ubuntu-panel.c
-+panels/ubuntu/cc-ubuntu-panel.ui
++panels/ubuntu/cc-ubuntu-panel.blp
 +panels/ubuntu/cc-ubuntu-dock-dialog.c
-+panels/ubuntu/cc-ubuntu-dock-dialog.ui
++panels/ubuntu/cc-ubuntu-dock-dialog.blp
 +panels/ubuntu/gnome-ubuntu-panel.desktop.in
  panels/universal-access/cc-cursor-size-page.blp
  panels/universal-access/cc-ua-hearing-page.blp
