@@ -46,7 +46,6 @@ gnome-control-center (1:49~beta-1ubuntu1) questing; urgency=medium
       - u/diagnostics-Add-Whoopsie-support.patch
       - u/online-accounts-Hide-window-after-adding-an-online-accoun.patch
       - u/online-accounts-sort.patch
-      - u/display-Support-UI-scaled-logical-monitor-mode.patch
       - u/update-manager.patch
       - u/sound-Add-a-button-to-select-the-default-theme.patch
       - u/applications-Launch-snap-store-if-it-is-installed.patch
