@@ -13,19 +13,21 @@ https://bugzilla.gnome.org/show_bug.cgi?id=737362
 ---
  panels/privacy/cc-privacy-panel.blp                |  12 ++
  panels/privacy/cc-privacy-panel.c                  |   2 +
+ .../privacy/connectivity/cc-connectivity-page.blp  |  23 ++++
  panels/privacy/connectivity/cc-connectivity-page.c | 128 +++++++++++++++++++++
  panels/privacy/connectivity/cc-connectivity-page.h |  28 +++++
- .../privacy/connectivity/cc-connectivity-page.ui   |  29 +++++
+ panels/privacy/connectivity/meson.build            |  14 +++
  panels/privacy/gnome-privacy-panel.desktop.in      |   2 +-
  panels/privacy/icons/meson.build                   |   1 +
  ...g.gnome.Settings-network-workgroup-symbolic.svg |   7 ++
- panels/privacy/meson.build                         |   5 +
+ panels/privacy/meson.build                         |   6 +
  panels/privacy/privacy.gresource.xml               |   1 +
  po/POTFILES.in                                     |   1 +
- 11 files changed, 215 insertions(+), 1 deletion(-)
+ 12 files changed, 224 insertions(+), 1 deletion(-)
+ create mode 100644 panels/privacy/connectivity/cc-connectivity-page.blp
  create mode 100644 panels/privacy/connectivity/cc-connectivity-page.c
  create mode 100644 panels/privacy/connectivity/cc-connectivity-page.h
- create mode 100644 panels/privacy/connectivity/cc-connectivity-page.ui
+ create mode 100644 panels/privacy/connectivity/meson.build
  create mode 100644 panels/privacy/icons/scalable/org.gnome.Settings-network-workgroup-symbolic.svg
 
 diff --git a/panels/privacy/cc-privacy-panel.blp b/panels/privacy/cc-privacy-panel.blp
@@ -78,6 +80,35 @@ index 259f78f..d6e3fd1 100644
    g_type_ensure (CC_TYPE_DIAGNOSTICS_PAGE);
    g_type_ensure (CC_TYPE_FIRMWARE_SECURITY_PAGE);
    g_type_ensure (CC_TYPE_LOCATION_PAGE);
+diff --git a/panels/privacy/connectivity/cc-connectivity-page.blp b/panels/privacy/connectivity/cc-connectivity-page.blp
+new file mode 100644
+index 0000000..8139e87
+--- /dev/null
++++ b/panels/privacy/connectivity/cc-connectivity-page.blp
+@@ -0,0 +1,23 @@
++using Gtk 4.0;
++using Adw 1;
++
++template $CcConnectivityPage: Adw.NavigationPage {
++  title: _("Connectivity");
++  tag: "connectivity";
++
++  child: Adw.ToolbarView {
++    [top]
++    Adw.HeaderBar {}
++
++    content: Adw.PreferencesPage {
++      Adw.PreferencesGroup {
++        description: _("Connectivity checking is used to detect connection issues and helps you to stay online. If your network communications are being monitored, it could be used to gather technical information about this computer.");
++
++        Adw.SwitchRow connectivity_switch {
++          title: _("_Connectivity Checking");
++          use-underline: true;
++        }
++      }
++    };
++  };
++}
 diff --git a/panels/privacy/connectivity/cc-connectivity-page.c b/panels/privacy/connectivity/cc-connectivity-page.c
 new file mode 100644
 index 0000000..f3b1928
@@ -246,41 +277,26 @@ index 0000000..12c4074
 +G_DECLARE_FINAL_TYPE (CcConnectivityPage, cc_connectivity_page, CC, CONNECTIVITY_PAGE, AdwNavigationPage)
 +
 +G_END_DECLS
-diff --git a/panels/privacy/connectivity/cc-connectivity-page.ui b/panels/privacy/connectivity/cc-connectivity-page.ui
+diff --git a/panels/privacy/connectivity/meson.build b/panels/privacy/connectivity/meson.build
 new file mode 100644
-index 0000000..bfc21a8
+index 0000000..07f080a
 --- /dev/null
-+++ b/panels/privacy/connectivity/cc-connectivity-page.ui
-@@ -0,0 +1,29 @@
-+<?xml version="1.0" encoding="UTF-8"?>
-+<interface>
-+  <template class="CcConnectivityPage" parent="AdwNavigationPage">
-+    <property name="title" translatable="yes">Connectivity</property>
-+    <property name="tag">connectivity</property>
-+    <property name="child">
-+      <object class="AdwToolbarView">
-+        <child type="top">
-+          <object class="AdwHeaderBar"/>
-+        </child>
-+        <property name="content">
-+          <object class="AdwPreferencesPage">
-+            <child>
-+              <object class="AdwPreferencesGroup">
-+                <property name="description" translatable="yes">Connectivity checking is used to detect connection issues and helps you to stay online. If your network communications are being monitored, it could be used to gather technical information about this computer.</property>
-+                <child>
-+                  <object class="AdwSwitchRow" id="connectivity_switch">
-+                    <property name="title" translatable="yes">_Connectivity Checking</property>
-+                    <property name="use-underline">True</property>
-+                  </object>
-+                </child>
-+              </object>
-+            </child>
-+          </object>
-+        </property>
-+      </object>
-+    </property>
-+  </template>
-+</interface>
++++ b/panels/privacy/connectivity/meson.build
+@@ -0,0 +1,14 @@
++ui_sources = files(
++  'cc-connectivity-page.blp',
++)
++
++ui_compiled = []
++foreach ui_source : ui_sources
++  ui_compiled += fs.name(fs.replace_suffix(ui_source, '.ui'))
++endforeach
++
++blueprints += custom_target(
++  input: ui_sources,
++  output: ui_compiled,
++  command: [blueprint_compiler, 'batch-compile', '@OUTDIR@', '@CURRENT_SOURCE_DIR@', '@INPUT@']
++)
 diff --git a/panels/privacy/gnome-privacy-panel.desktop.in b/panels/privacy/gnome-privacy-panel.desktop.in
 index 5abe66b..f88fd44 100644
 --- a/panels/privacy/gnome-privacy-panel.desktop.in
@@ -317,10 +333,18 @@ index 0000000..09bd2ad
 + </g>
 +</svg>
 diff --git a/panels/privacy/meson.build b/panels/privacy/meson.build
-index 4360b10..e23a019 100644
+index 4360b10..83d93a5 100644
 --- a/panels/privacy/meson.build
 +++ b/panels/privacy/meson.build
-@@ -38,6 +38,7 @@ blueprints += custom_target(
+@@ -14,6 +14,7 @@ blueprints = []
+ 
+ subdir('bolt')
+ subdir('camera')
++subdir('connectivity')
+ subdir('diagnostics')
+ subdir('firmware-security')
+ subdir('icons')
+@@ -38,6 +39,7 @@ blueprints += custom_target(
  
  sources = files(
    'camera/cc-camera-page.c',
@@ -328,7 +352,7 @@ index 4360b10..e23a019 100644
    'diagnostics/cc-diagnostics-page.c',
    'firmware-security/cc-firmware-security-boot-dialog.c',
    'firmware-security/cc-firmware-security-dialog.c',
-@@ -97,6 +98,10 @@ deps = deps + [
+@@ -97,6 +99,10 @@ deps = deps + [
    m_dep,
  ]
  
@@ -352,14 +376,14 @@ index e8e2863..3d9612c 100644
      <file preprocess="xml-stripblanks">firmware-security/cc-firmware-security-boot-dialog.ui</file>
      <file preprocess="xml-stripblanks">firmware-security/cc-firmware-security-dialog.ui</file>
 diff --git a/po/POTFILES.in b/po/POTFILES.in
-index d176520..ca4fca1 100644
+index d176520..df568fd 100644
 --- a/po/POTFILES.in
 +++ b/po/POTFILES.in
 @@ -156,6 +156,7 @@ panels/privacy/bolt/cc-bolt-device-entry.c
  panels/privacy/bolt/cc-bolt-page.blp
  panels/privacy/bolt/cc-bolt-page.c
  panels/privacy/camera/cc-camera-page.blp
-+panels/privacy/connectivity/cc-connectivity-page.ui
++panels/privacy/connectivity/cc-connectivity-page.blp
  panels/privacy/cc-privacy-panel.blp
  panels/privacy/diagnostics/cc-diagnostics-page.blp
  panels/privacy/diagnostics/cc-diagnostics-page.c

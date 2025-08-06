@@ -378,10 +378,10 @@ index f88fd44..3704b2b 100644
 -Keywords=Privacy;Screen;Lock;Private;Usage;Recent;History;Files;Temporary;Tmp;Trash;Purge;Retain;Diagnostics;Crash;Location;Gps;Camera;Photos;Video;Webcam;Recording;Security;Firmware;Thunderbolt;Network;
 +Keywords=Privacy;Screen;Lock;Private;Usage;Recent;History;Files;Temporary;Tmp;Trash;Purge;Retain;Diagnostics;Crash;Location;Gps;Camera;Photos;Video;Webcam;Recording;Security;Firmware;Thunderbolt;Network;error;bug;whoopsie;launchpad;issue;
 diff --git a/panels/privacy/meson.build b/panels/privacy/meson.build
-index e23a019..c8ca23e 100644
+index 83d93a5..03078c7 100644
 --- a/panels/privacy/meson.build
 +++ b/panels/privacy/meson.build
-@@ -102,6 +102,10 @@ if host_is_linux
+@@ -103,6 +103,10 @@ if host_is_linux
    deps += network_manager_deps
  endif
  
