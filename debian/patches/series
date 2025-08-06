@@ -22,3 +22,4 @@ ubuntu/background-Update-legacy-theme-settings-matching-the-acce.patch
 ubuntu/background-Add-brown-accent-color-support.patch
 ubuntu/sound-Add-toggle-for-the-startup-sound.patch
 ubuntu/list-apps-even-without-malcontent.patch
+ubuntu/panels-applications-Add-snap-keywords-to-application-pane.patch
