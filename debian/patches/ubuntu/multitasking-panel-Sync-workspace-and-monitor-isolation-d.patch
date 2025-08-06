@@ -12,10 +12,44 @@ include dock-specifc settings to control multi-monitor behavior.
 
 Forwarded: not-need
 ---
- panels/multitasking/cc-multitasking-panel.c  | 56 ++++++++++++++++++++++++++++
- panels/multitasking/cc-multitasking-panel.ui | 35 +++++++++++++++++
- 2 files changed, 91 insertions(+)
+ panels/multitasking/cc-multitasking-panel.blp | 21 ++++++++++
+ panels/multitasking/cc-multitasking-panel.c   | 56 +++++++++++++++++++++++++++
+ 2 files changed, 77 insertions(+)
 
+diff --git a/panels/multitasking/cc-multitasking-panel.blp b/panels/multitasking/cc-multitasking-panel.blp
+index 1e0452c..d25b477 100644
+--- a/panels/multitasking/cc-multitasking-panel.blp
++++ b/panels/multitasking/cc-multitasking-panel.blp
+@@ -128,6 +128,27 @@ template $CcMultitaskingPanel: $CcPanel {
+             group: all_workspaces_radio;
+           }
+         }
++        Adw.PreferencesGroup monitor_isolation_group {
++          Adw.ActionRow {
++            activatable-widget: dock_monitors_isolation_radio;
++            title: _("Include apps from all _monitors");
++            use-underline: true;
++            [prefix]
++            CheckButton dock_monitors_isolation_radio {
++              valign: center;
++            }
++          }
++          Adw.ActionRow {
++            activatable-widget: dock_each_monitor_radio;
++            title: _("Include apps from _each monitor only");
++            use-underline: true;
++            [prefix]
++            CheckButton dock_each_monitor_radio {
++              valign: center;
++              group: dock_monitors_isolation_radio;
++            }
++          }
++        }
+       }
+     };
+   };
+diff --git a/panels/multitasking/cc-multitasking-panel.c b/panels/multitasking/cc-multitasking-panel.c
+index 58fa78f..1ca4d65 100644
 --- a/panels/multitasking/cc-multitasking-panel.c
 +++ b/panels/multitasking/cc-multitasking-panel.c
 @@ -31,6 +31,7 @@ struct _CcMultitaskingPanel
@@ -35,10 +69,11 @@ Forwarded: not-need
    CcIllustratedRow *hot_corner_row;
    GtkSwitch       *hot_corner_switch;
    AdwSpinRow      *number_of_workspaces_spin_row;
-@@ -50,6 +53,24 @@ struct _CcMultitaskingPanel
+@@ -49,6 +52,24 @@ struct _CcMultitaskingPanel
+ 
  CC_PANEL_REGISTER (CcMultitaskingPanel, cc_multitasking_panel)
  
- static void
++static void
 +keep_dock_settings_in_sync (CcMultitaskingPanel *self)
 +{
 +  gboolean switcher_isolate_workspaces;
@@ -56,11 +91,10 @@ Forwarded: not-need
 +    }
 +}
 +
-+static void
+ static void
  fixed_workspaces_changed_cb (CcMultitaskingPanel *self)
  {
-   gboolean multi_workspaces, fixed_workspaces;
-@@ -71,6 +92,7 @@ cc_multitasking_panel_finalize (GObject
+@@ -71,6 +92,7 @@ cc_multitasking_panel_finalize (GObject *object)
    g_clear_object (&self->interface_settings);
    g_clear_object (&self->mutter_settings);
    g_clear_object (&self->shell_settings);
@@ -68,7 +102,7 @@ Forwarded: not-need
    g_clear_object (&self->wm_settings);
  
    G_OBJECT_CLASS (cc_multitasking_panel_parent_class)->finalize (object);
-@@ -101,12 +123,18 @@ cc_multitasking_panel_class_init (CcMult
+@@ -101,12 +123,18 @@ cc_multitasking_panel_class_init (CcMultitaskingPanelClass *klass)
    gtk_widget_class_bind_template_child (widget_class, CcMultitaskingPanel, workspaces_primary_display_radio);
    gtk_widget_class_bind_template_child (widget_class, CcMultitaskingPanel, workspaces_span_displays_radio);
  
@@ -87,7 +121,7 @@ Forwarded: not-need
    g_resources_register (cc_multitasking_get_resource ());
  
    gtk_widget_init_template (GTK_WIDGET (self));
-@@ -174,4 +202,32 @@ cc_multitasking_panel_init (CcMultitaski
+@@ -174,4 +202,32 @@ cc_multitasking_panel_init (CcMultitaskingPanel *self)
        cc_illustrated_row_set_resource (self->active_screen_edges_row,
                                         "/org/gnome/control-center/multitasking/assets/active-screen-edges-rtl.svg");
      }
@@ -120,33 +154,3 @@ Forwarded: not-need
 +                       G_SETTINGS_BIND_DEFAULT);
 +    }
  }
---- a/panels/multitasking/cc-multitasking-panel.blp
-+++ b/panels/multitasking/cc-multitasking-panel.blp
-@@ -128,6 +128,27 @@ template $CcMultitaskingPanel: $CcPanel
-             group: all_workspaces_radio;
-           }
-         }
-+        Adw.PreferencesGroup monitor_isolation_group {
-+          Adw.ActionRow {
-+            activatable-widget: dock_monitors_isolation_radio;
-+            title: _("Include apps from all _monitors");
-+            use-underline: true;
-+            [prefix]
-+            CheckButton dock_monitors_isolation_radio {
-+              valign: center;
-+            }
-+          }
-+          Adw.ActionRow {
-+            activatable-widget: dock_each_monitor_radio;
-+            title: _("Include apps from _each monitor only");
-+            use-underline: true;
-+            [prefix]
-+            CheckButton dock_each_monitor_radio {
-+              valign: center;
-+              group: dock_monitors_isolation_radio;
-+            }
-+          }
-+        }
-       }
-     };
-   };

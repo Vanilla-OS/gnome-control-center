@@ -15,9 +15,11 @@ Forwarded: No, MPs will follow shortly
  panels/display/cc-display-config.h      |  4 ++++
  4 files changed, 88 insertions(+), 8 deletions(-)
 
+diff --git a/panels/display/cc-display-arrangement.c b/panels/display/cc-display-arrangement.c
+index a55aa6a..3b755d7 100644
 --- a/panels/display/cc-display-arrangement.c
 +++ b/panels/display/cc-display-arrangement.c
-@@ -99,6 +99,7 @@ apply_rotation_to_geometry (CcDisplayMon
+@@ -99,6 +99,7 @@ apply_rotation_to_geometry (CcDisplayMonitor *output,
  static void
  get_scaled_geometry (CcDisplayConfig  *config,
                       CcDisplayMonitor *output,
@@ -25,7 +27,7 @@ Forwarded: No, MPs will follow shortly
                       int              *x,
                       int              *y,
                       int              *w,
-@@ -117,6 +118,10 @@ get_scaled_geometry (CcDisplayConfig  *c
+@@ -117,6 +118,10 @@ get_scaled_geometry (CcDisplayConfig  *config,
    if (cc_display_config_is_layout_logical (config))
      {
        double scale = cc_display_monitor_get_scale (output);
@@ -36,7 +38,7 @@ Forwarded: No, MPs will follow shortly
        *w = round (*w / scale);
        *h = round (*h / scale);
      }
-@@ -134,6 +139,7 @@ get_bounding_box (CcDisplayConfig *confi
+@@ -134,6 +139,7 @@ get_bounding_box (CcDisplayConfig *config,
                    gint            *max_h)
  {
    GList *outputs, *l;
@@ -44,7 +46,7 @@ Forwarded: No, MPs will follow shortly
  
    g_assert (x1 && y1 && x2 && y2);
  
-@@ -141,6 +147,7 @@ get_bounding_box (CcDisplayConfig *confi
+@@ -141,6 +147,7 @@ get_bounding_box (CcDisplayConfig *config,
    *x2 = *y2 = G_MININT;
    *max_w = 0;
    *max_h = 0;
@@ -52,7 +54,7 @@ Forwarded: No, MPs will follow shortly
  
    outputs = cc_display_config_get_monitors (config);
    for (l = outputs; l; l = l->next)
-@@ -151,7 +158,7 @@ get_bounding_box (CcDisplayConfig *confi
+@@ -151,7 +158,7 @@ get_bounding_box (CcDisplayConfig *config,
        if (!cc_display_monitor_is_useful (output))
          continue;
  
@@ -61,7 +63,7 @@ Forwarded: No, MPs will follow shortly
  
        *x1 = MIN (*x1, x);
        *y1 = MIN (*y1, y);
-@@ -171,8 +178,10 @@ monitor_get_drawing_rect (CcDisplayArran
+@@ -171,8 +178,10 @@ monitor_get_drawing_rect (CcDisplayArrangement *self,
                            gint                 *y2)
  {
    gdouble x, y;
@@ -73,7 +75,7 @@ Forwarded: No, MPs will follow shortly
  
    /* get_scaled_geometry returns the width and height */
    *x2 = *x1 + *x2;
-@@ -325,10 +334,12 @@ find_best_snapping (CcDisplayConfig   *c
+@@ -325,10 +334,12 @@ find_best_snapping (CcDisplayConfig   *config,
    GList *outputs, *l;
    gint x1, y1, x2, y2;
    gint w, h;
@@ -87,7 +89,7 @@ Forwarded: No, MPs will follow shortly
    x2 = x1 + w;
    y2 = y1 + h;
  
-@@ -344,6 +355,7 @@ find_best_snapping (CcDisplayConfig   *c
+@@ -344,6 +355,7 @@ find_best_snapping (CcDisplayConfig   *config,
        gint left_snap_pos;
        gint right_snap_pos;
        gdouble dist_x, dist_y;
@@ -95,7 +97,7 @@ Forwarded: No, MPs will follow shortly
        gdouble tmp;
  
        if (output == snap_output)
-@@ -352,7 +364,8 @@ find_best_snapping (CcDisplayConfig   *c
+@@ -352,7 +364,8 @@ find_best_snapping (CcDisplayConfig   *config,
        if (!cc_display_monitor_is_useful (output))
          continue;
  
@@ -105,7 +107,7 @@ Forwarded: No, MPs will follow shortly
        _x2 = _x1 + _w;
        _y2 = _y1 + _h;
  
-@@ -952,11 +965,13 @@ try_snap_output (CcDisplayConfig  *confi
+@@ -952,11 +965,13 @@ try_snap_output (CcDisplayConfig  *config,
  {
    SnapData snap_data;
    gint x, y, w, h;
@@ -120,9 +122,11 @@ Forwarded: No, MPs will follow shortly
  
    snap_data.snapped = SNAP_DIR_NONE;
    snap_data.mon_x = x;
+diff --git a/panels/display/cc-display-config-dbus.c b/panels/display/cc-display-config-dbus.c
+index f9a4f0f..690311a 100644
 --- a/panels/display/cc-display-config-dbus.c
 +++ b/panels/display/cc-display-config-dbus.c
-@@ -1125,7 +1125,8 @@ cc_display_monitor_dbus_new (GVariant *v
+@@ -1125,7 +1125,8 @@ cc_display_monitor_dbus_new (GVariant *variant,
  typedef enum _CcDisplayLayoutMode
  {
    CC_DISPLAY_LAYOUT_MODE_LOGICAL = 1,
@@ -132,7 +136,7 @@ Forwarded: No, MPs will follow shortly
  } CcDisplayLayoutMode;
  
  typedef enum _CcDisplayConfigMethod
-@@ -1624,7 +1625,15 @@ cc_display_config_dbus_is_layout_logical
+@@ -1624,7 +1625,15 @@ cc_display_config_dbus_is_layout_logical (CcDisplayConfig *pself)
  {
    CcDisplayConfigDBus *self = CC_DISPLAY_CONFIG_DBUS (pself);
  
@@ -149,7 +153,7 @@ Forwarded: No, MPs will follow shortly
  }
  
  static gboolean
-@@ -1984,7 +1993,7 @@ cc_display_config_dbus_constructed (GObj
+@@ -1984,7 +1993,7 @@ cc_display_config_dbus_constructed (GObject *object)
            guint32 u = 0;
            g_variant_get (v, "u", &u);
            if (u >= CC_DISPLAY_LAYOUT_MODE_LOGICAL &&
@@ -158,7 +162,7 @@ Forwarded: No, MPs will follow shortly
              self->layout_mode = u;
          }
      }
-@@ -2111,6 +2120,7 @@ cc_display_config_dbus_class_init (CcDis
+@@ -2111,6 +2120,7 @@ cc_display_config_dbus_class_init (CcDisplayConfigDBusClass *klass)
    parent_class->set_minimum_size = cc_display_config_dbus_set_minimum_size;
    parent_class->get_panel_orientation_managed =
      cc_display_config_dbus_get_panel_orientation_managed;
@@ -166,7 +170,7 @@ Forwarded: No, MPs will follow shortly
  
    pspec = g_param_spec_variant ("state",
                                  "GVariant",
-@@ -2171,6 +2181,26 @@ logical_monitor_is_rotated (CcDisplayLog
+@@ -2171,6 +2181,26 @@ logical_monitor_is_rotated (CcDisplayLogicalMonitor *lm)
      }
  }
  
@@ -193,7 +197,7 @@ Forwarded: No, MPs will follow shortly
  static int
  logical_monitor_width (CcDisplayLogicalMonitor *lm)
  {
-@@ -2189,6 +2219,11 @@ logical_monitor_width (CcDisplayLogicalM
+@@ -2189,6 +2219,11 @@ logical_monitor_width (CcDisplayLogicalMonitor *lm)
  
    if (monitor->config->layout_mode == CC_DISPLAY_LAYOUT_MODE_LOGICAL)
      return round (width / lm->scale);
@@ -205,9 +209,11 @@ Forwarded: No, MPs will follow shortly
    else
      return width;
  }
+diff --git a/panels/display/cc-display-config.c b/panels/display/cc-display-config.c
+index 05c1899..36c1a3b 100644
 --- a/panels/display/cc-display-config.c
 +++ b/panels/display/cc-display-config.c
-@@ -753,3 +753,29 @@ cc_display_config_update_ui_numbers_name
+@@ -753,3 +753,29 @@ cc_display_config_update_ui_numbers_names (CcDisplayConfig *self)
        cc_display_monitor_set_ui_info (monitor, current_ui_number, ui_name);
      }
  }
@@ -237,6 +243,8 @@ Forwarded: No, MPs will follow shortly
 +
 +  return max_scale;
 +}
+diff --git a/panels/display/cc-display-config.h b/panels/display/cc-display-config.h
+index 706c78b..26ccd57 100644
 --- a/panels/display/cc-display-config.h
 +++ b/panels/display/cc-display-config.h
 @@ -197,6 +197,7 @@ struct _CcDisplayConfigClass
@@ -247,7 +255,7 @@ Forwarded: No, MPs will follow shortly
  };
  
  
-@@ -226,6 +227,9 @@ gboolean          cc_display_config_is_s
+@@ -226,6 +227,9 @@ gboolean          cc_display_config_is_scaled_mode_valid    (CcDisplayConfig
  gboolean          cc_display_config_get_panel_orientation_managed
                                                              (CcDisplayConfig    *self);
  void              cc_display_config_update_ui_numbers_names (CcDisplayConfig    *self);

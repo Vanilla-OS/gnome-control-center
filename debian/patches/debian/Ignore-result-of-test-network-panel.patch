@@ -12,9 +12,11 @@ Forwarded: not-needed, Debian-specific workaround
  tests/network/test-network-panel.py | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
+diff --git a/tests/network/test-network-panel.py b/tests/network/test-network-panel.py
+index 1098bab..dac0894 100644
 --- a/tests/network/test-network-panel.py
 +++ b/tests/network/test-network-panel.py
-@@ -41,4 +41,5 @@ class PanelTestCase(X11SessionTestCase,
+@@ -41,4 +41,5 @@ class PanelTestCase(X11SessionTestCase, GTest):
  
  if __name__ == '__main__':
      # avoid writing to stderr

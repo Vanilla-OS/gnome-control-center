@@ -10,6 +10,8 @@ at runtime.
  panels/applications/cc-applications-panel.c | 22 +++++++++++++---------
  1 file changed, 13 insertions(+), 9 deletions(-)
 
+diff --git a/panels/applications/cc-applications-panel.c b/panels/applications/cc-applications-panel.c
+index 4ae5ff8..ad10fa1 100644
 --- a/panels/applications/cc-applications-panel.c
 +++ b/panels/applications/cc-applications-panel.c
 @@ -81,6 +81,7 @@ struct _CcApplicationsPanel
@@ -29,7 +31,7 @@ at runtime.
      gtk_stack_set_visible_child_name (self->main_page_stack, "malcontent-not-found-page");
      gtk_widget_set_visible (GTK_WIDGET (self->app_search_entry), FALSE);
    }
-@@ -1588,7 +1589,8 @@ populate_applications (CcApplicationsPan
+@@ -1588,7 +1589,8 @@ populate_applications (CcApplicationsPanel *self)
  
    g_list_store_remove_all (G_LIST_STORE (self->app_model));
  #ifdef HAVE_MALCONTENT
@@ -39,7 +41,7 @@ at runtime.
  #endif
  
    infos = g_app_info_get_all ();
-@@ -1601,14 +1603,15 @@ populate_applications (CcApplicationsPan
+@@ -1601,14 +1603,15 @@ populate_applications (CcApplicationsPanel *self)
          continue;
  
  #ifdef HAVE_MALCONTENT
@@ -57,7 +59,7 @@ at runtime.
  #endif
  }
  
-@@ -1998,6 +2001,7 @@ cc_applications_panel_init (CcApplicatio
+@@ -1998,6 +2001,7 @@ cc_applications_panel_init (CcApplicationsPanel *self)
                     G_SETTINGS_BIND_INVERT_BOOLEAN);
  
  #ifdef HAVE_MALCONTENT
@@ -65,7 +67,7 @@ at runtime.
     /* FIXME: should become asynchronous */
    system_bus = g_bus_get_sync (G_BUS_TYPE_SYSTEM, self->cancellable, &error);
    if (system_bus == NULL)
-@@ -2014,13 +2018,13 @@ cc_applications_panel_init (CcApplicatio
+@@ -2014,13 +2018,13 @@ cc_applications_panel_init (CcApplicationsPanel *self)
                                                   self->cancellable,
                                                   &error);
    if (error)

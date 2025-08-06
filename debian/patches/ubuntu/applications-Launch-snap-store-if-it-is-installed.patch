@@ -10,6 +10,8 @@ TODO: Launch GNOME Software for Flatpaks since snap-store can't handle those
  panels/applications/cc-applications-panel.c | 16 ++++++++++++++--
  1 file changed, 14 insertions(+), 2 deletions(-)
 
+diff --git a/panels/applications/cc-applications-panel.c b/panels/applications/cc-applications-panel.c
+index fddb065..4ae5ff8 100644
 --- a/panels/applications/cc-applications-panel.c
 +++ b/panels/applications/cc-applications-panel.c
 @@ -176,6 +176,13 @@ gnome_software_is_installed (void)
@@ -26,7 +28,7 @@ TODO: Launch GNOME Software for Flatpaks since snap-store can't handle those
  /* Callbacks */
  
  static gboolean
-@@ -196,6 +203,9 @@ open_software_cb (CcApplicationsPanel *s
+@@ -196,6 +203,9 @@ open_software_cb (CcApplicationsPanel *self)
    const gchar *argv[] = { "gnome-software", "--details", "appid", NULL };
    g_autofree gchar *argv_app_id = NULL;
  
@@ -46,7 +48,7 @@ TODO: Launch GNOME Software for Flatpaks since snap-store can't handle those
  
    g_clear_pointer (&self->current_app_id, g_free);
    g_clear_pointer (&self->current_portal_app_id, g_free);
-@@ -1948,7 +1959,8 @@ cc_applications_panel_init (CcApplicatio
+@@ -1948,7 +1959,8 @@ cc_applications_panel_init (CcApplicationsPanel *self)
  
    gtk_widget_init_template (GTK_WIDGET (self));
  

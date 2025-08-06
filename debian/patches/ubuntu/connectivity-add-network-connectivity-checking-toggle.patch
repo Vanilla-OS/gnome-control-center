@@ -11,8 +11,8 @@ panel.
 
 https://bugzilla.gnome.org/show_bug.cgi?id=737362
 ---
+ panels/privacy/cc-privacy-panel.blp                |  12 ++
  panels/privacy/cc-privacy-panel.c                  |   2 +
- panels/privacy/cc-privacy-panel.ui                 |  16 +++
  panels/privacy/connectivity/cc-connectivity-page.c | 128 +++++++++++++++++++++
  panels/privacy/connectivity/cc-connectivity-page.h |  28 +++++
  .../privacy/connectivity/cc-connectivity-page.ui   |  29 +++++
@@ -22,12 +22,44 @@ https://bugzilla.gnome.org/show_bug.cgi?id=737362
  panels/privacy/meson.build                         |   5 +
  panels/privacy/privacy.gresource.xml               |   1 +
  po/POTFILES.in                                     |   1 +
- 11 files changed, 219 insertions(+), 1 deletion(-)
+ 11 files changed, 215 insertions(+), 1 deletion(-)
  create mode 100644 panels/privacy/connectivity/cc-connectivity-page.c
  create mode 100644 panels/privacy/connectivity/cc-connectivity-page.h
  create mode 100644 panels/privacy/connectivity/cc-connectivity-page.ui
  create mode 100644 panels/privacy/icons/scalable/org.gnome.Settings-network-workgroup-symbolic.svg
 
+diff --git a/panels/privacy/cc-privacy-panel.blp b/panels/privacy/cc-privacy-panel.blp
+index 10e6c51..4ef1b86 100644
+--- a/panels/privacy/cc-privacy-panel.blp
++++ b/panels/privacy/cc-privacy-panel.blp
+@@ -51,6 +51,15 @@ template $CcPrivacyPanel: $CcPanel {
+             action-target: "'diagnostics'";
+             visible: bind diagnostics_page.visible;
+           }
++
++          $CcListRow {
++            title: _("Co_nnectivity");
++            subtitle: _("Detect connection issues");
++            icon-name: "org.gnome.Settings-device-diagnostics-symbolic";
++            show-arrow: true;
++            action-name: "navigation.push";
++            action-target: "'connectivity'";
++          }
+         }
+ 
+         Adw.PreferencesGroup {
+@@ -101,6 +110,9 @@ template $CcPrivacyPanel: $CcPanel {
+   [subpage]
+   $CcDiagnosticsPage diagnostics_page {}
+ 
++  [subpage]
++  $CcConnectivityPage {}
++
+   [subpage]
+   $CcFirmwareSecurityPage security_page {}
+ }
+diff --git a/panels/privacy/cc-privacy-panel.c b/panels/privacy/cc-privacy-panel.c
+index 259f78f..d6e3fd1 100644
 --- a/panels/privacy/cc-privacy-panel.c
 +++ b/panels/privacy/cc-privacy-panel.c
 @@ -26,6 +26,7 @@
@@ -38,7 +70,7 @@ https://bugzilla.gnome.org/show_bug.cgi?id=737362
  #include "diagnostics/cc-diagnostics-page.h"
  #include "firmware-security/cc-firmware-security-page.h"
  #include "cc-list-row.h"
-@@ -72,6 +73,7 @@ cc_privacy_panel_class_init (CcPrivacyPa
+@@ -72,6 +73,7 @@ cc_privacy_panel_class_init (CcPrivacyPanelClass *klass)
    gtk_widget_class_bind_template_child (widget_class, CcPrivacyPanel, location_row);
  
    g_type_ensure (CC_TYPE_CAMERA_PAGE);
@@ -46,6 +78,9 @@ https://bugzilla.gnome.org/show_bug.cgi?id=737362
    g_type_ensure (CC_TYPE_DIAGNOSTICS_PAGE);
    g_type_ensure (CC_TYPE_FIRMWARE_SECURITY_PAGE);
    g_type_ensure (CC_TYPE_LOCATION_PAGE);
+diff --git a/panels/privacy/connectivity/cc-connectivity-page.c b/panels/privacy/connectivity/cc-connectivity-page.c
+new file mode 100644
+index 0000000..f3b1928
 --- /dev/null
 +++ b/panels/privacy/connectivity/cc-connectivity-page.c
 @@ -0,0 +1,128 @@
@@ -177,6 +212,9 @@ https://bugzilla.gnome.org/show_bug.cgi?id=737362
 +    nm_client_new_async (self->cancellable, nm_client_ready_cb, self);
 +#endif
 +}
+diff --git a/panels/privacy/connectivity/cc-connectivity-page.h b/panels/privacy/connectivity/cc-connectivity-page.h
+new file mode 100644
+index 0000000..12c4074
 --- /dev/null
 +++ b/panels/privacy/connectivity/cc-connectivity-page.h
 @@ -0,0 +1,28 @@
@@ -208,6 +246,9 @@ https://bugzilla.gnome.org/show_bug.cgi?id=737362
 +G_DECLARE_FINAL_TYPE (CcConnectivityPage, cc_connectivity_page, CC, CONNECTIVITY_PAGE, AdwNavigationPage)
 +
 +G_END_DECLS
+diff --git a/panels/privacy/connectivity/cc-connectivity-page.ui b/panels/privacy/connectivity/cc-connectivity-page.ui
+new file mode 100644
+index 0000000..bfc21a8
 --- /dev/null
 +++ b/panels/privacy/connectivity/cc-connectivity-page.ui
 @@ -0,0 +1,29 @@
@@ -240,6 +281,8 @@ https://bugzilla.gnome.org/show_bug.cgi?id=737362
 +    </property>
 +  </template>
 +</interface>
+diff --git a/panels/privacy/gnome-privacy-panel.desktop.in b/panels/privacy/gnome-privacy-panel.desktop.in
+index 5abe66b..f88fd44 100644
 --- a/panels/privacy/gnome-privacy-panel.desktop.in
 +++ b/panels/privacy/gnome-privacy-panel.desktop.in
 @@ -11,4 +11,4 @@ StartupNotify=true
@@ -248,6 +291,8 @@ https://bugzilla.gnome.org/show_bug.cgi?id=737362
  # Translators: Search terms to find the Privacy panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
 -Keywords=Privacy;Screen;Lock;Private;Usage;Recent;History;Files;Temporary;Tmp;Trash;Purge;Retain;Diagnostics;Crash;Location;Gps;Camera;Photos;Video;Webcam;Recording;Security;Firmware;Thunderbolt;
 +Keywords=Privacy;Screen;Lock;Private;Usage;Recent;History;Files;Temporary;Tmp;Trash;Purge;Retain;Diagnostics;Crash;Location;Gps;Camera;Photos;Video;Webcam;Recording;Security;Firmware;Thunderbolt;Network;
+diff --git a/panels/privacy/icons/meson.build b/panels/privacy/icons/meson.build
+index 59a4777..a18b54c 100644
 --- a/panels/privacy/icons/meson.build
 +++ b/panels/privacy/icons/meson.build
 @@ -5,6 +5,7 @@ install_data(
@@ -258,6 +303,9 @@ https://bugzilla.gnome.org/show_bug.cgi?id=737362
    'scalable/org.gnome.Settings-screen-lock-symbolic.svg',
    'scalable/org.gnome.Settings-thunderbolt-access-symbolic.svg',
    'scalable/org.gnome.Settings-trash-file-history-symbolic.svg',
+diff --git a/panels/privacy/icons/scalable/org.gnome.Settings-network-workgroup-symbolic.svg b/panels/privacy/icons/scalable/org.gnome.Settings-network-workgroup-symbolic.svg
+new file mode 100644
+index 0000000..09bd2ad
 --- /dev/null
 +++ b/panels/privacy/icons/scalable/org.gnome.Settings-network-workgroup-symbolic.svg
 @@ -0,0 +1,7 @@
@@ -268,6 +316,8 @@ https://bugzilla.gnome.org/show_bug.cgi?id=737362
 +  <path d="M7.75 1C6.798 1 6 1.798 6 2.75V3h8v4h-3v3.25c0 .66-.252 1.27-.656 1.75h5.28l-1.5-3h.126C15.202 9 16 8.202 16 7.25v-4.5C16 1.798 15.202 1 14.25 1z" font-family="Andale Mono" overflow="visible" style="text-decoration-line:none;text-indent:0;text-transform:none"/>
 + </g>
 +</svg>
+diff --git a/panels/privacy/meson.build b/panels/privacy/meson.build
+index 4360b10..e23a019 100644
 --- a/panels/privacy/meson.build
 +++ b/panels/privacy/meson.build
 @@ -38,6 +38,7 @@ blueprints += custom_target(
@@ -289,6 +339,8 @@ https://bugzilla.gnome.org/show_bug.cgi?id=737362
  panels_libs += static_library(
    cappletname,
    sources: sources,
+diff --git a/panels/privacy/privacy.gresource.xml b/panels/privacy/privacy.gresource.xml
+index e8e2863..3d9612c 100644
 --- a/panels/privacy/privacy.gresource.xml
 +++ b/panels/privacy/privacy.gresource.xml
 @@ -5,6 +5,7 @@
@@ -299,36 +351,11 @@ https://bugzilla.gnome.org/show_bug.cgi?id=737362
      <file preprocess="xml-stripblanks">diagnostics/cc-diagnostics-page.ui</file>
      <file preprocess="xml-stripblanks">firmware-security/cc-firmware-security-boot-dialog.ui</file>
      <file preprocess="xml-stripblanks">firmware-security/cc-firmware-security-dialog.ui</file>
---- a/panels/privacy/cc-privacy-panel.blp
-+++ b/panels/privacy/cc-privacy-panel.blp
-@@ -51,6 +51,15 @@ template $CcPrivacyPanel: $CcPanel {
-             action-target: "'diagnostics'";
-             visible: bind diagnostics_page.visible;
-           }
-+
-+          $CcListRow {
-+            title: _("Co_nnectivity");
-+            subtitle: _("Detect connection issues");
-+            icon-name: "org.gnome.Settings-device-diagnostics-symbolic";
-+            show-arrow: true;
-+            action-name: "navigation.push";
-+            action-target: "'connectivity'";
-+          }
-         }
- 
-         Adw.PreferencesGroup {
-@@ -102,5 +111,8 @@ template $CcPrivacyPanel: $CcPanel {
-   $CcDiagnosticsPage diagnostics_page {}
- 
-   [subpage]
-+  $CcConnectivityPage {}
-+
-+  [subpage]
-   $CcFirmwareSecurityPage security_page {}
- }
+diff --git a/po/POTFILES.in b/po/POTFILES.in
+index 53b60d6..8d0e588 100644
 --- a/po/POTFILES.in
 +++ b/po/POTFILES.in
-@@ -157,6 +157,7 @@ panels/privacy/bolt/cc-bolt-page.c
+@@ -156,6 +156,7 @@ panels/privacy/bolt/cc-bolt-device-entry.c
  panels/privacy/bolt/cc-bolt-page.blp
  panels/privacy/bolt/cc-bolt-page.c
  panels/privacy/camera/cc-camera-page.blp

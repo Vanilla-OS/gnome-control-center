@@ -8,7 +8,37 @@ https://gitlab.gnome.org/GNOME/gnome-control-center/-/issues/2026
 Also, on Ubuntu, the alert sound doesn't seem to actually change.
 That happens even without this patch.
 https://launchpad.net/bugs/1871320
+---
+ panels/sound/cc-alert-chooser-page.blp | 13 ++++++++
+ panels/sound/cc-alert-chooser-page.c   | 55 +++++++++++++++++++++++++++++++---
+ 2 files changed, 64 insertions(+), 4 deletions(-)
 
+diff --git a/panels/sound/cc-alert-chooser-page.blp b/panels/sound/cc-alert-chooser-page.blp
+index e3b6afc..3735b49 100644
+--- a/panels/sound/cc-alert-chooser-page.blp
++++ b/panels/sound/cc-alert-chooser-page.blp
+@@ -21,6 +21,19 @@ template $CcAlertChooserPage: Adw.NavigationPage {
+           }
+         }
+ 
++        Adw.ActionRow {
++          title: _("Default");
++          activatable-widget: default_button;
++
++          [prefix]
++          CheckButton default_button {
++            valign: center;
++            group: none_button;
++            toggled => $toggled_cb(template);
++            activate => $activate_cb(template);
++          }
++        }
++
+         Adw.ActionRow {
+           title: _("Click");
+           activatable-widget: click_button;
+diff --git a/panels/sound/cc-alert-chooser-page.c b/panels/sound/cc-alert-chooser-page.c
+index 7246619..1aeedf3 100644
 --- a/panels/sound/cc-alert-chooser-page.c
 +++ b/panels/sound/cc-alert-chooser-page.c
 @@ -29,6 +29,7 @@ struct _CcAlertChooserPage
@@ -19,10 +49,11 @@ https://launchpad.net/bugs/1871320
    GtkCheckButton *click_button;
    GtkCheckButton *string_button;
    GtkCheckButton *swing_button;
-@@ -121,6 +122,27 @@ set_sound_symlink (const gchar *alert_na
+@@ -120,6 +121,27 @@ set_sound_symlink (const gchar *alert_name,
+     g_warning ("Failed to make sound theme symbolic link %s->%s: %s", source_path, target_path, error->message);
  }
  
- static void
++static void
 +remove_sound_symlink (const gchar *alert_name)
 +{
 +  g_autofree gchar *dir = NULL;
@@ -43,14 +74,14 @@ https://launchpad.net/bugs/1871320
 +    }
 +}
 +
-+static void
+ static void
  update_dir_mtime (const char *dir_path)
  {
-   g_autoptr(GFile) dir = NULL;
-@@ -195,6 +217,16 @@ set_custom_theme (CcAlertChooserPage *se
+@@ -194,6 +216,16 @@ set_custom_theme (CcAlertChooserPage *self,
+   g_settings_set_string (self->sound_settings, "theme-name", CUSTOM_THEME_NAME);
  }
  
- static void
++static void
 +set_default_theme (CcAlertChooserPage *self)
 +{
 +  remove_sound_symlink ("bell-terminal");
@@ -60,10 +91,9 @@ https://launchpad.net/bugs/1871320
 +  g_settings_reset (self->sound_settings, "theme-name");
 +}
 +
-+static void
+ static void
  play_sound (CcAlertChooserPage *self,
              const gchar        *name)
- {
 @@ -215,8 +247,13 @@ activate_cb (CcAlertChooserPage *self)
  {
    if (gtk_check_button_get_active (self->click_button))
@@ -91,7 +121,7 @@ https://launchpad.net/bugs/1871320
    else if (gtk_check_button_get_active (self->click_button))
      set_custom_theme (self, "click");
    else if (gtk_check_button_get_active (self->string_button))
-@@ -270,6 +312,7 @@ cc_alert_chooser_page_class_init (CcAler
+@@ -270,6 +312,7 @@ cc_alert_chooser_page_class_init (CcAlertChooserPageClass *klass)
    gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/sound/cc-alert-chooser-page.ui");
  
    gtk_widget_class_bind_template_child (widget_class, CcAlertChooserPage, none_button);
@@ -99,7 +129,7 @@ https://launchpad.net/bugs/1871320
    gtk_widget_class_bind_template_child (widget_class, CcAlertChooserPage, click_button);
    gtk_widget_class_bind_template_child (widget_class, CcAlertChooserPage, string_button);
    gtk_widget_class_bind_template_child (widget_class, CcAlertChooserPage, swing_button);
-@@ -295,19 +338,21 @@ cc_alert_chooser_page_init (CcAlertChoos
+@@ -295,19 +338,21 @@ cc_alert_chooser_page_init (CcAlertChooserPage *self)
  
    alert_name = get_alert_name ();
  
@@ -133,25 +163,3 @@ https://launchpad.net/bugs/1871320
    else if (g_strcmp0 (alert_name, "click") == 0)
      return _("Click");
    else if (g_strcmp0 (alert_name, "hum") == 0)
---- a/panels/sound/cc-alert-chooser-page.blp
-+++ b/panels/sound/cc-alert-chooser-page.blp
-@@ -22,6 +22,19 @@ template $CcAlertChooserPage: Adw.Naviga
-         }
- 
-         Adw.ActionRow {
-+          title: _("Default");
-+          activatable-widget: default_button;
-+
-+          [prefix]
-+          CheckButton default_button {
-+            valign: center;
-+            group: none_button;
-+            toggled => $toggled_cb(template);
-+            activate => $activate_cb(template);
-+          }
-+        }
-+
-+        Adw.ActionRow {
-           title: _("Click");
-           activatable-widget: click_button;
- 

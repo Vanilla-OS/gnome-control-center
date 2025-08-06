@@ -43,9 +43,11 @@ Subject: Adapts the region capplet and the language chooser in the user
  panels/system/users/cc-user-page.c    |   5 ++
  4 files changed, 219 insertions(+), 57 deletions(-)
 
+diff --git a/panels/common/cc-common-language.c b/panels/common/cc-common-language.c
+index 9357c3e..c923d82 100644
 --- a/panels/common/cc-common-language.c
 +++ b/panels/common/cc-common-language.c
-@@ -161,6 +161,55 @@ cc_common_language_get_current_language
+@@ -161,6 +161,55 @@ cc_common_language_get_current_language (void)
          return language;
  }
  
@@ -170,7 +172,7 @@ Subject: Adapts the region capplet and the language chooser in the user
          insert_language (ht, "en_US.UTF-8");
          insert_language (ht, "en_GB.UTF-8");
          insert_language (ht, "de_DE.UTF-8");
-@@ -234,10 +315,30 @@ cc_common_language_get_initial_languages
+@@ -234,10 +315,30 @@ cc_common_language_get_initial_languages (void)
          insert_language (ht, "ja_JP.UTF-8");
          insert_language (ht, "ru_RU.UTF-8");
          insert_language (ht, "ar_EG.UTF-8");
@@ -202,7 +204,7 @@ Subject: Adapts the region capplet and the language chooser in the user
  static void
  foreach_user_lang_cb (gpointer key,
                        gpointer value,
-@@ -263,28 +364,18 @@ cc_common_language_add_user_languages (G
+@@ -263,28 +364,18 @@ cc_common_language_add_user_languages (GtkTreeModel *model)
          GtkListStore *store = GTK_LIST_STORE (model);
          GHashTable *user_langs;
          const char *display;
@@ -235,7 +237,7 @@ Subject: Adapts the region capplet and the language chooser in the user
                  display = g_hash_table_lookup (user_langs, name);
          }
  
-@@ -296,8 +387,8 @@ cc_common_language_add_user_languages (G
+@@ -296,8 +387,8 @@ cc_common_language_add_user_languages (GtkTreeModel *model)
          g_hash_table_foreach (user_langs, (GHFunc) foreach_user_lang_cb, store);
  
          /* And now the "Other…" selection */
@@ -246,9 +248,11 @@ Subject: Adapts the region capplet and the language chooser in the user
  
          g_hash_table_destroy (user_langs);
  }
+diff --git a/panels/common/cc-common-language.h b/panels/common/cc-common-language.h
+index 1f578b7..2e5a446 100644
 --- a/panels/common/cc-common-language.h
 +++ b/panels/common/cc-common-language.h
-@@ -43,6 +43,8 @@ guint    cc_common_language_add_availabl
+@@ -43,6 +43,8 @@ guint    cc_common_language_add_available_languages (GtkListStore     *store,
                                                       GHashTable       *user_langs);
  gboolean cc_common_language_has_font                (const gchar  *locale);
  gchar   *cc_common_language_get_current_language    (void);
@@ -257,13 +261,15 @@ Subject: Adapts the region capplet and the language chooser in the user
  
  GHashTable *cc_common_language_get_initial_languages   (void);
  GHashTable *cc_common_language_get_user_languages      (void);
-@@ -55,4 +57,6 @@ void     cc_common_language_select_curre
+@@ -55,4 +57,6 @@ void     cc_common_language_select_current_language (GtkTreeView  *treeview);
  
  void     cc_common_language_add_user_languages (GtkTreeModel *model);
  
 +void    cc_common_language_get_locale (const gchar *language, gchar **locale);
 +
  G_END_DECLS
+diff --git a/panels/system/region/cc-region-page.c b/panels/system/region/cc-region-page.c
+index d96b4d2..f98498e 100644
 --- a/panels/system/region/cc-region-page.c
 +++ b/panels/system/region/cc-region-page.c
 @@ -247,27 +247,26 @@ set_localed_locale (CcRegionPage *self)
@@ -319,10 +325,11 @@ Subject: Adapts the region capplet and the language chooser in the user
          switch (target) {
          case USER:
                  if (g_strcmp0 (language, self->language) == 0)
-@@ -342,6 +343,40 @@ set_system_region (CcRegionPage *self,
+@@ -341,6 +342,40 @@ set_system_region (CcRegionPage *self,
+         set_localed_locale (self);
  }
  
- static void
++static void
 +set_formats_locale (const gchar *formats_locale)
 +{
 +        g_autoptr(GDBusProxy) proxy = NULL;
@@ -356,10 +363,9 @@ Subject: Adapts the region capplet and the language chooser in the user
 +}
 +
 +
-+static void
+ static void
  update_region (CcRegionPage   *self,
                 CcLocaleTarget  target,
-                const gchar    *region)
 @@ -352,8 +387,10 @@ update_region (CcRegionPage   *self,
                          return;
                  if (region == NULL || region[0] == '\0')
@@ -415,7 +421,7 @@ Subject: Adapts the region capplet and the language chooser in the user
          update_user_region_row (self);
  }
  
-@@ -642,6 +684,16 @@ set_login_button_visibility (CcRegionPag
+@@ -642,6 +684,16 @@ set_login_button_visibility (CcRegionPage *self)
  
  /* Callbacks */
  
@@ -432,7 +438,7 @@ Subject: Adapts the region capplet and the language chooser in the user
  static void
  on_localed_properties_changed (GDBusProxy    *localed_proxy,
                                 GVariant      *changed_properties,
-@@ -650,33 +702,43 @@ on_localed_properties_changed (GDBusProx
+@@ -650,33 +702,43 @@ on_localed_properties_changed (GDBusProxy    *localed_proxy,
  {
          g_autoptr(GVariant) v = NULL;
  
@@ -486,6 +492,8 @@ Subject: Adapts the region capplet and the language chooser in the user
                  g_free (self->system_region);
                  self->system_region = g_strdup (time);
  
+diff --git a/panels/system/users/cc-user-page.c b/panels/system/users/cc-user-page.c
+index 3cae301..e48353c 100644
 --- a/panels/system/users/cc-user-page.c
 +++ b/panels/system/users/cc-user-page.c
 @@ -29,6 +29,7 @@

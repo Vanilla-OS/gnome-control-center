@@ -4,10 +4,28 @@ Subject: lock: Add "Lock Screen on Suspend" option
 
 https://launchpad.net/bugs/938076
 ---
- panels/privacy/screen/cc-screen-page.c  | 20 ++++++++++++++++++++
- panels/privacy/screen/cc-screen-page.ui |  8 ++++++++
- 2 files changed, 28 insertions(+)
+ panels/privacy/screen/cc-screen-page.blp |  5 +++++
+ panels/privacy/screen/cc-screen-page.c   | 20 ++++++++++++++++++++
+ 2 files changed, 25 insertions(+)
 
+diff --git a/panels/privacy/screen/cc-screen-page.blp b/panels/privacy/screen/cc-screen-page.blp
+index 6367683..18a25e3 100644
+--- a/panels/privacy/screen/cc-screen-page.blp
++++ b/panels/privacy/screen/cc-screen-page.blp
+@@ -60,6 +60,11 @@ template $CcScreenPage: Adw.NavigationPage {
+           use-underline: true;
+         }
+ 
++        Adw.SwitchRow lock_on_suspend_row {
++          title: _("Lock Screen _on Suspend");
++          use-underline: true;
++        }
++
+         Adw.SwitchRow usb_protection_row {
+           visible: false;
+           title: _("Forbid New _USB Devices");
+diff --git a/panels/privacy/screen/cc-screen-page.c b/panels/privacy/screen/cc-screen-page.c
+index ddb0a88..2b6882e 100644
 --- a/panels/privacy/screen/cc-screen-page.c
 +++ b/panels/privacy/screen/cc-screen-page.c
 @@ -45,6 +45,7 @@ struct _CcScreenPage
@@ -18,7 +36,7 @@ https://launchpad.net/bugs/938076
    AdwSwitchRow        *privacy_screen_row;
    AdwSwitchRow        *show_notifications_row;
    AdwSwitchRow        *usb_protection_row;
-@@ -136,6 +137,7 @@ cc_screen_page_class_init (CcScreenPageC
+@@ -136,6 +137,7 @@ cc_screen_page_class_init (CcScreenPageClass *klass)
    gtk_widget_class_bind_template_child (widget_class, CcScreenPage, automatic_screen_lock_row);
    gtk_widget_class_bind_template_child (widget_class, CcScreenPage, blank_screen_row);
    gtk_widget_class_bind_template_child (widget_class, CcScreenPage, lock_after_row);
@@ -26,7 +44,7 @@ https://launchpad.net/bugs/938076
    gtk_widget_class_bind_template_child (widget_class, CcScreenPage, privacy_screen_row);
    gtk_widget_class_bind_template_child (widget_class, CcScreenPage, screen_privacy_group);
    gtk_widget_class_bind_template_child (widget_class, CcScreenPage, show_notifications_row);
-@@ -177,6 +179,8 @@ update_display_config (CcScreenPage *sel
+@@ -177,6 +179,8 @@ update_display_config (CcScreenPage *self)
  static void
  cc_screen_page_init (CcScreenPage *self)
  {
@@ -65,17 +83,3 @@ https://launchpad.net/bugs/938076
    g_dbus_proxy_new_for_bus (G_BUS_TYPE_SESSION,
                              G_DBUS_PROXY_FLAGS_NONE,
                              NULL,
---- a/panels/privacy/screen/cc-screen-page.blp
-+++ b/panels/privacy/screen/cc-screen-page.blp
-@@ -60,6 +60,11 @@ template $CcScreenPage: Adw.NavigationPa
-           use-underline: true;
-         }
- 
-+        Adw.SwitchRow lock_on_suspend_row {
-+          title: _("Lock Screen _on Suspend");
-+          use-underline: true;
-+        }
-+
-         Adw.SwitchRow usb_protection_row {
-           visible: false;
-           title: _("Forbid New _USB Devices");

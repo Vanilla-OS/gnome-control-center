@@ -3,17 +3,19 @@ Date: Sat, 4 Jun 2022 14:57:01 +0200
 Subject: diagnostics: Add Whoopsie support
 
 ---
- meson.build                                       |   9 +
- meson_options.txt                                 |   1 +
- panels/privacy/diagnostics/cc-diagnostics-page.c  | 247 ++++++++++++++++++++++
- panels/privacy/diagnostics/cc-diagnostics-page.ui |   8 +
- panels/privacy/gnome-privacy-panel.desktop.in     |   2 +-
- panels/privacy/meson.build                        |   4 +
- 6 files changed, 270 insertions(+), 1 deletion(-)
+ meson.build                                        |   9 +
+ meson_options.txt                                  |   1 +
+ panels/privacy/diagnostics/cc-diagnostics-page.blp |   6 +
+ panels/privacy/diagnostics/cc-diagnostics-page.c   | 247 +++++++++++++++++++++
+ panels/privacy/gnome-privacy-panel.desktop.in      |   2 +-
+ panels/privacy/meson.build                         |   4 +
+ 6 files changed, 268 insertions(+), 1 deletion(-)
 
+diff --git a/meson.build b/meson.build
+index 3097a6a..473ffc2 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -314,6 +314,14 @@ config_h.set('HAVE_LOCATION_SERVICES', l
+@@ -314,6 +314,14 @@ config_h.set('HAVE_LOCATION_SERVICES', location_services.enabled(),
  # Snap support and wellbeing panel
  json_glib_dep = dependency('json-glib-1.0')
  
@@ -36,13 +38,34 @@ Subject: diagnostics: Add Whoopsie support
    },
    section: 'Optional Dependencies',
    bool_yn: true,
+diff --git a/meson_options.txt b/meson_options.txt
+index 9f39e84..a7513c5 100644
 --- a/meson_options.txt
 +++ b/meson_options.txt
-@@ -10,3 +10,4 @@ option('profile', type: 'combo', choices
+@@ -10,3 +10,4 @@ option('profile', type: 'combo', choices: ['default','development'], value: 'def
  option('malcontent', type: 'boolean', value: false, description: 'build with malcontent support')
  option('distributor_logo', type: 'string', description: 'absolute path to distributor logo for the About panel')
  option('dark_mode_distributor_logo', type: 'string', description: 'absolute path to distributor logo dark mode variant')
 +option('whoopsie', type: 'boolean', value: false, description: 'build with Whoopsie support')
+diff --git a/panels/privacy/diagnostics/cc-diagnostics-page.blp b/panels/privacy/diagnostics/cc-diagnostics-page.blp
+index d9252c7..b36b730 100644
+--- a/panels/privacy/diagnostics/cc-diagnostics-page.blp
++++ b/panels/privacy/diagnostics/cc-diagnostics-page.blp
+@@ -17,6 +17,12 @@ template $CcDiagnosticsPage: Adw.NavigationPage {
+           title: _("_Automatic Problem Reporting");
+           use-underline: true;
+         }
++        Adw.ComboRow whoopsie_combo_row {
++          title: _("Send error reports to Canonical");
++          visible: false;
++          use-underline: true;
++          notify::selected-item => $whoopsie_combo_row_changed_cb(template);
++        }
+       }
+     };
+   };
+diff --git a/panels/privacy/diagnostics/cc-diagnostics-page.c b/panels/privacy/diagnostics/cc-diagnostics-page.c
+index 8e7e826..7a8124c 100644
 --- a/panels/privacy/diagnostics/cc-diagnostics-page.c
 +++ b/panels/privacy/diagnostics/cc-diagnostics-page.c
 @@ -18,6 +18,8 @@
@@ -78,7 +101,7 @@ Subject: diagnostics: Add Whoopsie support
    GSettings           *privacy_settings;
  };
  
-@@ -59,10 +71,217 @@ abrt_vanished_cb (GDBusConnection *conne
+@@ -59,9 +71,216 @@ abrt_vanished_cb (GDBusConnection *connection,
    CcDiagnosticsPage *self = CC_DIAGNOSTICS_PAGE (user_data);
  
    g_debug ("ABRT vanished");
@@ -212,8 +235,8 @@ Subject: diagnostics: Add Whoopsie support
 +       */
 +      whoopsie_preferences_call_get_identifier (WHOOPSIE_PREFERENCES (proxy), NULL, NULL, NULL);
 +    }
-+}
-+
+ }
+ 
 +static void
 +populate_whoopsie_button_row (AdwComboRow *combo_row)
 +{
@@ -241,9 +264,9 @@ Subject: diagnostics: Add Whoopsie support
 +    }
 +
 +  adw_combo_row_set_model (combo_row, G_LIST_MODEL (string_list));
- }
- 
- static void
++}
++
++static void
 +on_new_whoopsie_proxy_cb (GObject *object,
 +                          GAsyncResult *res,
 +                          gpointer data)
@@ -292,11 +315,10 @@ Subject: diagnostics: Add Whoopsie support
 +{}
 +#endif
 +
-+static void
+ static void
  cc_diagnostics_page_finalize (GObject *object)
  {
-   CcDiagnosticsPage *self = CC_DIAGNOSTICS_PAGE (object);
-@@ -70,6 +289,12 @@ cc_diagnostics_page_finalize (GObject *o
+@@ -70,6 +289,12 @@ cc_diagnostics_page_finalize (GObject *object)
    g_clear_object (&self->privacy_settings);
  
    G_OBJECT_CLASS (cc_diagnostics_page_parent_class)->finalize (object);
@@ -309,7 +331,7 @@ Subject: diagnostics: Add Whoopsie support
  }
  
  static void
-@@ -84,6 +309,11 @@ cc_diagnostics_page_class_init (CcDiagno
+@@ -84,6 +309,11 @@ cc_diagnostics_page_class_init (CcDiagnosticsPageClass *klass)
  
    gtk_widget_class_bind_template_child (widget_class, CcDiagnosticsPage, diagnostics_group);
    gtk_widget_class_bind_template_child (widget_class, CcDiagnosticsPage, abrt_row);
@@ -321,7 +343,7 @@ Subject: diagnostics: Add Whoopsie support
  }
  
  static void
-@@ -112,6 +342,23 @@ cc_diagnostics_page_init (CcDiagnosticsP
+@@ -112,6 +342,23 @@ cc_diagnostics_page_init (CcDiagnosticsPage *self)
                     self->abrt_row, "active",
                     G_SETTINGS_BIND_DEFAULT);
  
@@ -345,6 +367,8 @@ Subject: diagnostics: Add Whoopsie support
    os_name = g_get_os_info (G_OS_INFO_KEY_NAME);
    if (!os_name)
      os_name = g_strdup ("GNOME");
+diff --git a/panels/privacy/gnome-privacy-panel.desktop.in b/panels/privacy/gnome-privacy-panel.desktop.in
+index f88fd44..3704b2b 100644
 --- a/panels/privacy/gnome-privacy-panel.desktop.in
 +++ b/panels/privacy/gnome-privacy-panel.desktop.in
 @@ -11,4 +11,4 @@ StartupNotify=true
@@ -353,6 +377,8 @@ Subject: diagnostics: Add Whoopsie support
  # Translators: Search terms to find the Privacy panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
 -Keywords=Privacy;Screen;Lock;Private;Usage;Recent;History;Files;Temporary;Tmp;Trash;Purge;Retain;Diagnostics;Crash;Location;Gps;Camera;Photos;Video;Webcam;Recording;Security;Firmware;Thunderbolt;Network;
 +Keywords=Privacy;Screen;Lock;Private;Usage;Recent;History;Files;Temporary;Tmp;Trash;Purge;Retain;Diagnostics;Crash;Location;Gps;Camera;Photos;Video;Webcam;Recording;Security;Firmware;Thunderbolt;Network;error;bug;whoopsie;launchpad;issue;
+diff --git a/panels/privacy/meson.build b/panels/privacy/meson.build
+index e23a019..c8ca23e 100644
 --- a/panels/privacy/meson.build
 +++ b/panels/privacy/meson.build
 @@ -102,6 +102,10 @@ if host_is_linux
@@ -366,18 +392,3 @@ Subject: diagnostics: Add Whoopsie support
  panels_libs += static_library(
    cappletname,
    sources: sources,
---- a/panels/privacy/diagnostics/cc-diagnostics-page.blp
-+++ b/panels/privacy/diagnostics/cc-diagnostics-page.blp
-@@ -17,6 +17,12 @@ template $CcDiagnosticsPage: Adw.Navigat
-           title: _("_Automatic Problem Reporting");
-           use-underline: true;
-         }
-+        Adw.ComboRow whoopsie_combo_row {
-+          title: _("Send error reports to Canonical");
-+          visible: false;
-+          use-underline: true;
-+          notify::selected-item => $whoopsie_combo_row_changed_cb(template);
-+        }
-       }
-     };
-   };

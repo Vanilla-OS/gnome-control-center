@@ -7,9 +7,11 @@ Subject: background: Add brown accent color support
  panels/background/preview.css           | 6 +++++-
  2 files changed, 13 insertions(+), 2 deletions(-)
 
+diff --git a/panels/background/cc-background-panel.c b/panels/background/cc-background-panel.c
+index d88fc87..b2efb21 100644
 --- a/panels/background/cc-background-panel.c
 +++ b/panels/background/cc-background-panel.c
-@@ -204,6 +204,8 @@ get_color_tooltip (GDesktopAccentColor c
+@@ -204,6 +204,8 @@ get_color_tooltip (GDesktopAccentColor color)
        return _("Purple");
      case G_DESKTOP_ACCENT_COLOR_SLATE:
        return _("Slate");
@@ -18,7 +20,7 @@ Subject: background: Add brown accent color support
      default:
        g_assert_not_reached ();
      }
-@@ -232,6 +234,8 @@ get_untranslated_color (GDesktopAccentCo
+@@ -232,6 +234,8 @@ get_untranslated_color (GDesktopAccentColor color)
        return "purple";
      case G_DESKTOP_ACCENT_COLOR_SLATE:
        return "slate";
@@ -27,7 +29,7 @@ Subject: background: Add brown accent color support
      default:
        g_assert_not_reached ();
      }
-@@ -243,7 +247,7 @@ setup_accent_color_toggles (CcBackground
+@@ -243,7 +247,7 @@ setup_accent_color_toggles (CcBackgroundPanel *self)
    GDesktopAccentColor accent_color = g_settings_get_enum (self->interface_settings, INTERFACE_ACCENT_COLOR_KEY);
    GDesktopAccentColor i;
  
@@ -36,7 +38,7 @@ Subject: background: Add brown accent color support
      {
        GtkWidget *button = GTK_WIDGET (gtk_toggle_button_new ());
        GtkToggleButton *grouping_button = GTK_TOGGLE_BUTTON (gtk_widget_get_first_child (self->accent_box));
-@@ -264,6 +268,9 @@ setup_accent_color_toggles (CcBackground
+@@ -264,6 +268,9 @@ setup_accent_color_toggles (CcBackgroundPanel *self)
          gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), TRUE);
  
        gtk_box_append (GTK_BOX (self->accent_box), button);
@@ -46,9 +48,11 @@ Subject: background: Add brown accent color support
      }
  }
  
+diff --git a/panels/background/preview.css b/panels/background/preview.css
+index b93c829..4c49523 100644
 --- a/panels/background/preview.css
 +++ b/panels/background/preview.css
-@@ -135,7 +135,7 @@ flowboxchild.active-item .selected-check
+@@ -135,7 +135,7 @@ flowboxchild.active-item .selected-check {
                0 0 0 6px color-mix(in srgb, var(--accent-color) 30%, transparent);
  }
  
@@ -57,7 +61,7 @@ Subject: background: Add brown accent color support
    --accent-color: oklab(from var(--accent-bg-color) var(--standalone-color-oklab));
  }
  
-@@ -174,3 +174,7 @@ flowboxchild.active-item .selected-check
+@@ -174,3 +174,7 @@ flowboxchild.active-item .selected-check {
  .slate {
    --accent-bg-color: var(--accent-slate);
  }
