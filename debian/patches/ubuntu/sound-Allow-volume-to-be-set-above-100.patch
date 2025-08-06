@@ -23,10 +23,10 @@ Bug: https://bugzilla.gnome.org/show_bug.cgi?id=710424
  2 files changed, 21 insertions(+)
 
 diff --git a/panels/sound/cc-sound-panel.blp b/panels/sound/cc-sound-panel.blp
-index 79bd3e9..15b4987 100644
+index ee4f177..2bc416b 100644
 --- a/panels/sound/cc-sound-panel.blp
 +++ b/panels/sound/cc-sound-panel.blp
-@@ -91,6 +91,14 @@ template $CcSoundPanel: $CcPanel {
+@@ -90,6 +90,14 @@ template $CcSoundPanel: $CcPanel {
              }
            }
  
@@ -42,7 +42,7 @@ index 79bd3e9..15b4987 100644
              activatable: false;
  
 diff --git a/panels/sound/cc-sound-panel.c b/panels/sound/cc-sound-panel.c
-index 955e53a..2b184f7 100644
+index 635bde1..7cc90a0 100644
 --- a/panels/sound/cc-sound-panel.c
 +++ b/panels/sound/cc-sound-panel.c
 @@ -53,6 +53,7 @@ struct _CcSoundPanel
@@ -53,7 +53,7 @@ index 955e53a..2b184f7 100644
    AdwPreferencesRow   *fade_row;
    CcFadeSlider        *fade_slider;
    AdwPreferencesRow   *subwoofer_row;
-@@ -278,6 +279,7 @@ cc_sound_panel_class_init (CcSoundPanelClass *klass)
+@@ -248,6 +249,7 @@ cc_sound_panel_class_init (CcSoundPanelClass *klass)
    gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, output_device_combo_row);
    gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, output_profile_combo_row);
    gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, output_volume_slider);
@@ -61,7 +61,7 @@ index 955e53a..2b184f7 100644
    gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, balance_slider);
    gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, fade_row);
    gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, fade_slider);
-@@ -323,6 +325,17 @@ cc_sound_panel_init (CcSoundPanel *self)
+@@ -291,6 +293,17 @@ cc_sound_panel_init (CcSoundPanel *self)
                             G_CONNECT_SWAPPED);
    allow_amplified_changed_cb (self);
  

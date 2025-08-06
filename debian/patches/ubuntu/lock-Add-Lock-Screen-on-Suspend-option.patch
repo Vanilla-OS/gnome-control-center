@@ -25,7 +25,7 @@ index 6367683..18a25e3 100644
            visible: false;
            title: _("Forbid New _USB Devices");
 diff --git a/panels/privacy/screen/cc-screen-page.c b/panels/privacy/screen/cc-screen-page.c
-index ddb0a88..2b6882e 100644
+index bacb894..adc84d9 100644
 --- a/panels/privacy/screen/cc-screen-page.c
 +++ b/panels/privacy/screen/cc-screen-page.c
 @@ -45,6 +45,7 @@ struct _CcScreenPage

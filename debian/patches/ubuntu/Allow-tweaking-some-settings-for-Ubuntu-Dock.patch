@@ -24,7 +24,7 @@ Forwarded: not-needed
  panels/ubuntu/cc-ubuntu-dock-dialog.c       |  103 ++
  panels/ubuntu/cc-ubuntu-dock-dialog.h       |   31 +
  panels/ubuntu/cc-ubuntu-dock-dialog.ui      |   79 ++
- panels/ubuntu/cc-ubuntu-panel.c             | 1729 +++++++++++++++++++++++++++
+ panels/ubuntu/cc-ubuntu-panel.c             | 1728 +++++++++++++++++++++++++++
  panels/ubuntu/cc-ubuntu-panel.h             |   33 +
  panels/ubuntu/cc-ubuntu-panel.ui            |  219 ++++
  panels/ubuntu/gnome-ubuntu-panel.desktop.in |   13 +
@@ -33,7 +33,7 @@ Forwarded: not-needed
  po/POTFILES.in                              |    5 +
  shell/cc-panel-list.c                       |    1 +
  shell/cc-panel-loader.c                     |    3 +
- 16 files changed, 2327 insertions(+)
+ 16 files changed, 2326 insertions(+)
  create mode 100644 panels/ubuntu/assets/colors/color.svg.in
  create mode 100644 panels/ubuntu/assets/theme-dark.svg
  create mode 100644 panels/ubuntu/assets/theme-light.svg
@@ -319,10 +319,10 @@ index 0000000..c7dcd20
 +</interface>
 diff --git a/panels/ubuntu/cc-ubuntu-panel.c b/panels/ubuntu/cc-ubuntu-panel.c
 new file mode 100644
-index 0000000..8c964af
+index 0000000..b3ce223
 --- /dev/null
 +++ b/panels/ubuntu/cc-ubuntu-panel.c
-@@ -0,0 +1,1729 @@
+@@ -0,0 +1,1728 @@
 +/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 +/*
 + * Copyright (C) 2017-2022 Canonical Ltd
@@ -353,8 +353,7 @@ index 0000000..8c964af
 +#include "shell/cc-application.h"
 +#include "shell/cc-object-storage.h"
 +
-+#include "panels/display/cc-display-config-manager-dbus.h"
-+#include "panels/display/cc-display-config.h"
++#include "panels/display/cc-display-config-manager.h"
 +
 +#define DING_UUID "ding@rastersoft.com"
 +#define DING_SCHEMA "org.gnome.shell.extensions.ding"
@@ -796,11 +795,11 @@ index 0000000..8c964af
 +
 +  if (self->dock_settings)
 +    {
-+      self->display_config_manager = cc_display_config_manager_dbus_new ();
++      self->display_config_manager = cc_display_config_manager_new ();
 +      g_signal_connect_object (self->display_config_manager, "changed",
-+                              G_CALLBACK (on_screen_changed),
-+                              self,
-+                              G_CONNECT_SWAPPED);
++                               G_CALLBACK (on_screen_changed),
++                               self,
++                               G_CONNECT_SWAPPED);
 +    }
 +}
 +
@@ -2451,7 +2450,7 @@ index 0000000..a636e9c
 +  </gresource>
 +</gresources>
 diff --git a/po/POTFILES.in b/po/POTFILES.in
-index b19e300..53b60d6 100644
+index d3c93dc..5b2ea0f 100644
 --- a/po/POTFILES.in
 +++ b/po/POTFILES.in
 @@ -240,6 +240,11 @@ panels/system/users/org.gnome.controlcenter.user-accounts.policy.in

@@ -9,10 +9,10 @@ more useful order for our users
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/panels/online-accounts/cc-online-accounts-panel.c b/panels/online-accounts/cc-online-accounts-panel.c
-index 0ccf993..a94cf9f 100644
+index 419c8a4..b302c42 100644
 --- a/panels/online-accounts/cc-online-accounts-panel.c
 +++ b/panels/online-accounts/cc-online-accounts-panel.c
-@@ -290,10 +290,10 @@ static int
+@@ -294,10 +294,10 @@ static int
  goa_provider_priority (const char *provider_type)
  {
    static const char *goa_priority[] = {

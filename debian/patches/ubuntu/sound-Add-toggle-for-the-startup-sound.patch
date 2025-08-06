@@ -9,10 +9,10 @@ We hardcode the sound to a specific file for now
  2 files changed, 46 insertions(+)
 
 diff --git a/panels/sound/cc-sound-panel.blp b/panels/sound/cc-sound-panel.blp
-index 15b4987..eaf1a9e 100644
+index 2bc416b..a418ff1 100644
 --- a/panels/sound/cc-sound-panel.blp
 +++ b/panels/sound/cc-sound-panel.blp
-@@ -224,6 +224,11 @@ template $CcSoundPanel: $CcPanel {
+@@ -222,6 +222,11 @@ template $CcSoundPanel: $CcPanel {
              show-arrow: true;
              activated => $alert_sound_activated_cb(template);
            }
@@ -25,7 +25,7 @@ index 15b4987..eaf1a9e 100644
        };
      }
 diff --git a/panels/sound/cc-sound-panel.c b/panels/sound/cc-sound-panel.c
-index 2b184f7..69574a3 100644
+index 7cc90a0..8cce92c 100644
 --- a/panels/sound/cc-sound-panel.c
 +++ b/panels/sound/cc-sound-panel.c
 @@ -54,6 +54,7 @@ struct _CcSoundPanel
@@ -36,7 +36,7 @@ index 2b184f7..69574a3 100644
    AdwPreferencesRow   *fade_row;
    CcFadeSlider        *fade_slider;
    AdwPreferencesRow   *subwoofer_row;
-@@ -280,6 +281,7 @@ cc_sound_panel_class_init (CcSoundPanelClass *klass)
+@@ -250,6 +251,7 @@ cc_sound_panel_class_init (CcSoundPanelClass *klass)
    gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, output_profile_combo_row);
    gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, output_volume_slider);
    gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, allow_amplify_row);
@@ -44,7 +44,7 @@ index 2b184f7..69574a3 100644
    gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, balance_slider);
    gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, fade_row);
    gtk_widget_class_bind_template_child (widget_class, CcSoundPanel, fade_slider);
-@@ -310,6 +312,28 @@ cc_sound_panel_class_init (CcSoundPanelClass *klass)
+@@ -278,6 +280,28 @@ cc_sound_panel_class_init (CcSoundPanelClass *klass)
    g_type_ensure (CC_TYPE_LIST_ROW);
  }
  
@@ -73,7 +73,7 @@ index 2b184f7..69574a3 100644
  static void
  cc_sound_panel_init (CcSoundPanel *self)
  {
-@@ -332,8 +356,25 @@ cc_sound_panel_init (CcSoundPanel *self)
+@@ -300,8 +324,25 @@ cc_sound_panel_init (CcSoundPanel *self)
    if (desktops && g_strv_contains ((const gchar * const *) desktops, "ubuntu")) {
      g_settings_bind (self->sound_settings, "allow-volume-above-100-percent",
                       self->allow_amplify_row, "active", G_SETTINGS_BIND_DEFAULT);
