@@ -1,4 +1,4 @@
-gnome-control-center (1:49~beta-1ubuntu1) UNRELEASED; urgency=medium
+gnome-control-center (1:49~beta-1ubuntu1) questing; urgency=medium
 
   * Merge with Debian, containing new upstream version
   * d/p: Update display patches to work with latest upstream code
@@ -59,7 +59,7 @@ gnome-control-center (1:49~beta-1ubuntu1) UNRELEASED; urgency=medium
       - u/panels-applications-Add-snap-keywords-to-application-pane.patch
       - u/applications-Support-controlling-the-autostart-flag-on-ap.patch
 
- -- Marco Trevisan (Treviño) <marco@ubuntu.com>  Wed, 06 Aug 2025 05:20:40 +0200
+ -- Marco Trevisan (Treviño) <marco@ubuntu.com>  Wed, 06 Aug 2025 05:32:10 +0200
 
 gnome-control-center (1:49~beta-1) experimental; urgency=medium
 
