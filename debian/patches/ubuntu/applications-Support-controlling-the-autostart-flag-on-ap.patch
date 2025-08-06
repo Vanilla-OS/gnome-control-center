@@ -1,0 +1,585 @@
+From: =?utf-8?b?Ik1hcmNvIFRyZXZpc2FuIChUcmV2acOxbyki?= <mail@3v1n0.net>
+Date: Fri, 1 Aug 2025 11:31:25 +0200
+Subject: applications: Support controlling the autostart flag on applications
+
+Applications can support auto-start using the XDG autostart protocol [1]
+by providing desktop files in both user configuration path and at system
+level and this is supported for long time by GNOME session.
+
+This is also supported by flatpak applications that can create local
+desktop autostart files tagged with the X-XDP-Autostart key, while legacy
+system and snap applications may do it directly, given that in general
+this is a permission that many non-sandboxed applications use to
+run at user login.
+
+It's currently hard to control this parameter at user level at the
+moment, given that the old gnome session app for doing this has been
+removed long ago, while tweaks is not a default app.
+
+Now, given that a proper applications panel is available, let's use to
+control the legacy apps that are using the auto-start spec.
+
+We also add support to manage those applications which are
+autostart-only, and that they are not normally exposed by the shell
+launcher.
+
+[1] https://xdg.pages.freedesktop.org/xdg-specs/autostart-spec/latest/
+
+Forwarded: https://gitlab.gnome.org/GNOME/gnome-control-center/-/merge_requests/3221
+---
+ panels/applications/cc-applications-panel.blp      |   8 +
+ panels/applications/cc-applications-panel.c        | 416 ++++++++++++++++++++-
+ .../gnome-applications-panel.desktop.in            |   2 +-
+ 3 files changed, 422 insertions(+), 4 deletions(-)
+
+diff --git a/panels/applications/cc-applications-panel.blp b/panels/applications/cc-applications-panel.blp
+index 139925b..ce9a6ea 100644
+--- a/panels/applications/cc-applications-panel.blp
++++ b/panels/applications/cc-applications-panel.blp
+@@ -242,6 +242,14 @@ template $CcApplicationsPanel: $CcPanel {
+               notify::active => $background_cb(template);
+             }
+ 
++            Adw.SwitchRow autostart_row {
++              title: _("Auto_start");
++              subtitle: _("Automatically run on Startup");
++              use-underline: true;
++              sensitive: bind background_row.active;
++              notify::active => $autostart_cb(template);
++            }
++
+             Adw.SwitchRow screenshots_row {
+               title: _("Scr_eenshots");
+               subtitle: _("Take pictures of the screen at any time");
+diff --git a/panels/applications/cc-applications-panel.c b/panels/applications/cc-applications-panel.c
+index ad10fa1..503962d 100644
+--- a/panels/applications/cc-applications-panel.c
++++ b/panels/applications/cc-applications-panel.c
+@@ -56,6 +56,8 @@
+ #define GLOBAL_SHORTCUTS_APP_SCHEMA "org.gnome.settings-daemon.global-shortcuts.application"
+ #define GLOBAL_SHORTCUTS_PATH "/org/gnome/settings-daemon/global-shortcuts/"
+ 
++#define AUTOSTART_DESKTOP_FILE_KEY "X-GNOME-Autostart-enabled"
++
+ #define PORTAL_SNAP_PREFIX "snap."
+ 
+ struct _CcApplicationsPanel
+@@ -75,6 +77,7 @@ struct _CcApplicationsPanel
+   GListModel      *app_model;
+   GListModel      *filter_model;
+   GtkFilter       *filter;
++  GList           *autostart_app_infos;
+ #ifdef HAVE_MALCONTENT
+   GCancellable    *cancellable;
+ 
+@@ -112,6 +115,7 @@ struct _CcApplicationsPanel
+   AdwPreferencesGroup *permissions_group;
+   AdwSwitchRow    *notifications_row;
+   AdwSwitchRow    *background_row;
++  AdwSwitchRow    *autostart_row;
+   AdwSwitchRow    *wallpaper_row;
+   AdwSwitchRow    *screenshots_row;
+   AdwSwitchRow    *sounds_row;
+@@ -552,6 +556,288 @@ wallpaper_cb (CcApplicationsPanel *self)
+     set_wallpaper_allowed (self, adw_switch_row_get_active (self->wallpaper_row));
+ }
+ 
++/* --- autostart --- */
++
++static int
++app_info_compare (gconstpointer appinfo1, gconstpointer appinfo2)
++{
++  return g_strcmp0 (g_app_info_get_id (G_APP_INFO (appinfo1)),
++                    g_app_info_get_id (G_APP_INFO (appinfo2)));
++}
++
++static GDesktopAppInfo *
++find_autostart_app_info (CcApplicationsPanel *self,
++                         GAppInfo            *app_info)
++{
++  GList *l = g_list_find_custom (self->autostart_app_infos, app_info,
++                                 app_info_compare);
++  if (!l)
++    return NULL;
++
++  return G_DESKTOP_APP_INFO (l->data);
++}
++
++static void
++get_autostart_app_state (GDesktopAppInfo *autostart_app,
++                         gboolean        *hidden_out,
++                         gboolean        *enabled_out)
++{
++  static const char *autostart_hidden_systemd_key = "X-GNOME-HiddenUnderSystemd";
++  gboolean enabled, hidden;
++
++  hidden = g_desktop_app_info_get_is_hidden (autostart_app);
++
++  if (!hidden && g_desktop_app_info_has_key (autostart_app, autostart_hidden_systemd_key))
++    hidden = g_desktop_app_info_get_boolean (autostart_app, autostart_hidden_systemd_key);
++
++  enabled = TRUE;
++  if (g_desktop_app_info_has_key (autostart_app, AUTOSTART_DESKTOP_FILE_KEY))
++    enabled = g_desktop_app_info_get_boolean (autostart_app, AUTOSTART_DESKTOP_FILE_KEY);
++
++  if (hidden_out)
++    *hidden_out = hidden;
++
++  if (enabled_out)
++    *enabled_out = enabled;
++}
++
++static void
++get_autostart_allowed (CcApplicationsPanel *self,
++                       GAppInfo            *info,
++                       gboolean            *set,
++                       gboolean            *allowed)
++{
++  GDesktopAppInfo *autostart_app;
++  gboolean enabled, hidden;
++
++  autostart_app = find_autostart_app_info (self, info);
++
++  if (!autostart_app)
++    {
++      *allowed = FALSE;
++
++      if (G_IS_DESKTOP_APP_INFO (info))
++        *set = !g_desktop_app_info_get_is_hidden (G_DESKTOP_APP_INFO (info));
++
++      return;
++    }
++
++  get_autostart_app_state (autostart_app, &hidden, &enabled);
++  *set = !hidden;
++  *allowed = enabled;
++}
++
++static void
++set_autostart_enabled (CcApplicationsPanel *self,
++                       GAppInfo            *app_info,
++                       gboolean             autostart)
++{
++  g_autoptr(GKeyFile) key_file = NULL;
++  g_autoptr(GError) error = NULL;
++  GDesktopAppInfo *autostart_app;
++  GCancellable *cancellable;
++  const char *filename;
++  gboolean is_user_file;
++  gboolean needs_override;
++  gboolean new_file;
++
++  needs_override = TRUE;
++  new_file = FALSE;
++  cancellable = cc_panel_get_cancellable (CC_PANEL (self));
++  autostart_app = find_autostart_app_info (self, app_info);
++  is_user_file = G_DESKTOP_APP_INFO (autostart_app) &&
++                 g_str_has_prefix (g_desktop_app_info_get_filename (autostart_app),
++                                   g_get_user_config_dir ());
++
++  /* If the user file is an override of a system autostart file we can just
++   * drop it if:
++   *  - It's not a flatpak or xrd generated file.
++   *  - The autostart switch is active and another autostart is set.
++   *  - The autostart switch is not active and no other autostart is set.
++   */
++  if (is_user_file &&
++      !g_desktop_app_info_has_key (autostart_app, "X-Flatpak") &&
++      !g_desktop_app_info_has_key (autostart_app, "X-XDP-Autostart"))
++    {
++      g_autolist(GAppInfo) infos = NULL;
++      gboolean remove_local_file = FALSE;
++
++      if (autostart)
++        {
++          GList *l = g_list_find (self->autostart_app_infos, autostart_app);
++
++          /* Look for next autostart file definition... */
++          if ((l = g_list_find_custom (l->next, autostart_app, app_info_compare)))
++            {
++              gboolean hidden, enabled;
++
++              get_autostart_app_state (G_DESKTOP_APP_INFO (l->data), &hidden, &enabled);
++              remove_local_file = !hidden && enabled;
++            }
++        }
++      else
++        {
++          remove_local_file = TRUE;
++        }
++
++      if (remove_local_file)
++        infos = g_app_info_get_all ();
++
++      if (g_list_find_custom (infos, autostart_app, app_info_compare))
++        {
++          g_autoptr(GFile) local_file = NULL;
++
++          local_file = g_file_new_for_path (g_desktop_app_info_get_filename (autostart_app));
++
++          if (g_file_delete (local_file, cancellable, &error))
++            {
++              self->autostart_app_infos = g_list_remove (self->autostart_app_infos,
++                                                         autostart_app);
++              g_clear_object (&autostart_app);
++
++              /* Now ensure that no other autostart app is around, or adjust it in case. */
++              autostart_app = find_autostart_app_info (self, app_info);
++              is_user_file = FALSE;
++            }
++          else
++            {
++              /* If deletion failed, let's still try to disable it using the normal way. */
++              g_warning ("Impossible to change autostart flag for application %s: %s",
++                         g_app_info_get_id (G_APP_INFO (autostart_app)), error->message);
++              g_clear_error (&error);
++            }
++        }
++    }
++
++  if (G_IS_DESKTOP_APP_INFO (autostart_app))
++    {
++      gboolean hidden, enabled;
++
++      get_autostart_app_state (autostart_app, &hidden, &enabled);
++
++      if (!hidden && enabled == autostart)
++        return;
++    }
++  else
++    {
++      if (!autostart)
++        return;
++
++      needs_override = FALSE;
++    }
++
++  if (!G_DESKTOP_APP_INFO (autostart_app) || !is_user_file)
++    {
++      g_autoptr(GFile) local_file_dir = NULL;
++      g_autoptr(GFile) local_file = NULL;
++      g_autofree char *basename = NULL;
++
++      if (!G_IS_DESKTOP_APP_INFO (app_info) ||
++          !(filename = g_desktop_app_info_get_filename (G_DESKTOP_APP_INFO (app_info))))
++        {
++          g_warning ("Impossible to change autostart flag for application %s",
++                     g_app_info_get_id (app_info));
++          return;
++        }
++
++      local_file_dir = g_file_new_build_filename (g_get_user_config_dir (),
++                                                  "autostart", NULL);
++
++      if (!g_file_make_directory_with_parents (local_file_dir, cancellable, &error))
++        {
++          if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_EXISTS))
++            {
++              g_clear_error (&error);
++            }
++          else
++            {
++              g_critical ("Failed to create directory %s: %s",
++                          g_file_peek_path (local_file_dir),
++                          error->message);
++              return;
++            }
++        }
++
++      basename = g_path_get_basename (filename);
++      local_file = g_file_get_child (local_file_dir, basename);
++
++      if (needs_override)
++        {
++          g_autoptr(GFile) original_file = NULL;
++
++          original_file = g_file_new_for_path (filename);
++          new_file = TRUE;
++
++          if (!g_file_copy (original_file, local_file,
++                            G_FILE_COPY_NOFOLLOW_SYMLINKS,
++                            NULL, NULL, cancellable, &error))
++            {
++              g_critical ("Failed to copy %s to %s: %s",
++                          g_file_peek_path (original_file),
++                          g_file_peek_path (local_file),
++                          error->message);
++              return;
++            }
++        }
++      else
++        {
++          if (!g_file_make_symbolic_link (local_file, filename,
++                                          cancellable, &error))
++            {
++              g_critical ("Failed to symlink %s to %s: %s",
++                          g_file_peek_path (local_file),
++                          filename, error->message);
++              return;
++            }
++        }
++
++      autostart_app = g_desktop_app_info_new_from_filename (g_file_peek_path (local_file));
++      self->autostart_app_infos = g_list_prepend (self->autostart_app_infos, autostart_app);
++
++      if (!needs_override)
++        return;
++    }
++
++  if (!(filename = g_desktop_app_info_get_filename (autostart_app)))
++    {
++      g_warning ("Impossible to change autostart flag for application %s",
++                  g_app_info_get_id (G_APP_INFO (autostart_app)));
++      return;
++    }
++
++  key_file = g_key_file_new ();
++  if (!g_key_file_load_from_file (key_file, filename, G_KEY_FILE_NONE, &error))
++    {
++      g_warning ("Impossible to change autostart flag for application %s: %s",
++                 g_app_info_get_id (G_APP_INFO (autostart_app)), error->message);
++      return;
++    }
++
++  g_key_file_set_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP,
++                          AUTOSTART_DESKTOP_FILE_KEY, autostart);
++
++  if (new_file)
++    g_key_file_set_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP,
++                            "X-GNOME-Settings-Autostart-Generated", TRUE);
++
++  if (!g_key_file_save_to_file (key_file, filename, &error))
++    {
++      g_warning ("Impossible to change autostart flag for application %s: %s",
++                 g_app_info_get_id (G_APP_INFO (autostart_app)), error->message);
++      return;
++    }
++}
++
++static void
++autostart_cb (CcApplicationsPanel *self)
++{
++  if (!self->current_app_info)
++    return;
++
++  set_autostart_enabled (self, self->current_app_info,
++                         adw_switch_row_get_active (self->autostart_row));
++}
++
+ /* --- screenshot --- */
+ 
+ static void
+@@ -964,6 +1250,7 @@ update_permissions_group (CcApplicationsPanel *self,
+   g_autofree gchar *portal_app_id = get_portal_app_id (info);
+   gboolean set, allowed, disabled;
+   gboolean has_any = FALSE;
++  gboolean autostart_only_app;
+ 
+   disabled = g_settings_get_boolean (self->search_settings, "disable-external");
+   get_search_enabled (self, app_id, &set, &allowed);
+@@ -983,11 +1270,13 @@ update_permissions_group (CcApplicationsPanel *self,
+       gtk_widget_set_visible (GTK_WIDGET (self->shortcuts_row), FALSE);
+     }
+ 
++  autostart_only_app = !!g_object_get_data (G_OBJECT (info), "autostart-app");
++
+ #ifdef HAVE_SNAP
+   remove_snap_permissions (self);
+ #endif
+ 
+-  if (portal_app_id != NULL)
++  if (portal_app_id != NULL && !autostart_only_app)
+     {
+       g_clear_object (&self->notification_settings);
+       get_notification_allowed (self, portal_app_id, &set, &allowed);
+@@ -1000,6 +1289,11 @@ update_permissions_group (CcApplicationsPanel *self,
+       gtk_widget_set_visible (GTK_WIDGET (self->background_row), set);
+       has_any |= set;
+ 
++      get_autostart_allowed (self, info, &set, &allowed);
++      adw_switch_row_set_active (self->autostart_row, allowed);
++      gtk_widget_set_visible (GTK_WIDGET (self->autostart_row), set);
++      has_any |= set;
++
+       get_wallpaper_allowed (self, portal_app_id, &set, &allowed);
+       adw_switch_row_set_active (self->wallpaper_row, allowed);
+       gtk_widget_set_visible (GTK_WIDGET (self->wallpaper_row), set);
+@@ -1046,7 +1340,13 @@ update_permissions_group (CcApplicationsPanel *self,
+       g_set_object (&self->notification_settings, get_notification_settings (app_id));
+       get_notification_allowed (self, app_id, &set, &allowed);
+       adw_switch_row_set_active (self->notifications_row, allowed);
+-      gtk_widget_set_visible (GTK_WIDGET (self->notifications_row), set);
++      gtk_widget_set_visible (GTK_WIDGET (self->notifications_row),
++                              set && !autostart_only_app);
++      has_any |= gtk_widget_get_visible (GTK_WIDGET (self->notifications_row));
++
++      get_autostart_allowed (self, info, &set, &allowed);
++      adw_switch_row_set_active (self->autostart_row, allowed);
++      gtk_widget_set_visible (GTK_WIDGET (self->autostart_row), set);
+       has_any |= set;
+ 
+       gtk_widget_set_visible (GTK_WIDGET (self->background_row), FALSE);
+@@ -1581,6 +1881,90 @@ compare_rows (gconstpointer  a,
+   return g_utf8_collate (key1, key2);
+ }
+ 
++static GList *
++get_autostart_applications (void)
++{
++  GList *autostart_apps = NULL;
++  const char * const * system_config_dirs = g_get_system_config_dirs ();
++  g_autoptr(GPtrArray) autostart_dirs = NULL;
++
++  autostart_dirs = g_ptr_array_new_with_free_func (g_free);
++
++  g_ptr_array_add (autostart_dirs,
++                   g_build_filename (g_get_user_config_dir (), "autostart", NULL));
++
++  for (size_t i = 0; system_config_dirs[i]; ++i)
++    {
++      g_ptr_array_add (autostart_dirs,
++                       g_build_filename (system_config_dirs[i],
++                                         "gnome", "autostart", NULL));
++    }
++
++  for (size_t i = 0; system_config_dirs[i]; ++i)
++    {
++      g_ptr_array_add (autostart_dirs,
++                       g_build_filename (system_config_dirs[i],
++                                         "autostart", NULL));
++    }
++
++  for (guint i = 0; i < autostart_dirs->len; ++i)
++    {
++      g_autoptr(GFileEnumerator) enumerator = NULL;
++      g_autoptr(GFile) dir = g_file_new_for_path (g_ptr_array_index (autostart_dirs, i));
++      g_autoptr(GError) error = NULL;
++
++      enumerator = g_file_enumerate_children (dir,
++                                              "standard::type,standard::name,standard::content-type",
++                                              G_FILE_QUERY_INFO_NONE,
++                                              NULL, &error);
++
++      if (error != NULL)
++        {
++          if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND) &&
++              !g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
++            g_warning ("Error opening %s: %s - autostart configuration won't be possible",
++                       g_file_peek_path (dir), error->message);
++
++          continue;
++        }
++
++      while (TRUE)
++        {
++          GFile *desktop_file = NULL;
++          g_autoptr(GDesktopAppInfo) info = NULL;
++
++          if (!g_file_enumerator_iterate (enumerator, NULL, &desktop_file, NULL, &error))
++            {
++              g_warning ("Error while reading %s: %s - autostart configuration won't be possible",
++                         g_file_peek_path (dir), error->message);
++              break;
++            }
++
++          if (desktop_file == NULL)
++            break;
++
++          if (!g_str_has_suffix (g_file_peek_path (desktop_file), ".desktop"))
++            continue;
++
++          if (!(info = g_desktop_app_info_new_from_filename (g_file_peek_path (desktop_file))))
++            {
++              g_warning ("Error while parsing %s: autostart configuration won't be possible",
++                         g_file_peek_path (desktop_file));
++              continue;
++            }
++
++          /* We are not ignoring the apps already in the list, but the order is
++           * important, so that if an app is already listed, then it has more
++           * priority of the ones added later (as per the final list reverse).
++           */
++
++          autostart_apps = g_list_prepend (autostart_apps, g_steal_pointer (&info));
++        }
++    }
++
++  return g_list_reverse (g_steal_pointer (&autostart_apps));
++}
++
+ static void
+ populate_applications (CcApplicationsPanel *self)
+ {
+@@ -1593,8 +1977,31 @@ populate_applications (CcApplicationsPanel *self)
+       g_signal_handler_block (self->manager, self->app_filter_id);
+ #endif
+ 
++  g_clear_list (&self->autostart_app_infos, g_object_unref);
++  self->autostart_app_infos = get_autostart_applications ();
++
+   infos = g_app_info_get_all ();
+ 
++  /* Add the not-tracked autostart only applications. */
++  for (l = self->autostart_app_infos; l; l = l->next)
++    {
++      GAppInfo *info = l->data;
++      gboolean hidden;
++
++      get_autostart_app_state (G_DESKTOP_APP_INFO (info), &hidden, NULL);
++      if (hidden)
++        continue;
++
++      if (g_list_find_custom (infos, info, (GCompareFunc) app_info_compare))
++        {
++          g_debug ("Ignoring %s: application, already tracked", g_app_info_get_id (info));
++          continue;
++        }
++
++      g_object_set_data (G_OBJECT (info), "autostart-app", &info);
++      infos = g_list_prepend (infos, g_object_ref (info));
++    }
++
+   for (l = infos; l; l = l->next)
+     {
+       GAppInfo *info = l->data;
+@@ -1798,12 +2205,13 @@ cc_applications_panel_finalize (GObject *object)
+   g_clear_object (&self->location_settings);
+   g_clear_object (&self->privacy_settings);
+   g_clear_object (&self->search_settings);
+-
++  
+   g_clear_object (&self->current_app_info);
+   g_clear_pointer (&self->current_app_id, g_free);
+   g_clear_pointer (&self->current_portal_app_id, g_free);
+   g_clear_pointer (&self->globs, g_hash_table_unref);
+   g_clear_pointer (&self->search_providers, g_hash_table_unref);
++  g_clear_list (&self->autostart_app_infos, g_object_unref);
+ 
+   G_OBJECT_CLASS (cc_applications_panel_parent_class)->finalize (object);
+ }
+@@ -1877,6 +2285,7 @@ cc_applications_panel_class_init (CcApplicationsPanelClass *klass)
+   gtk_widget_class_bind_template_child (widget_class, CcApplicationsPanel, app_name_label);
+   gtk_widget_class_bind_template_child (widget_class, CcApplicationsPanel, app_search_entry);
+   gtk_widget_class_bind_template_child (widget_class, CcApplicationsPanel, app_settings_page);
++  gtk_widget_class_bind_template_child (widget_class, CcApplicationsPanel, autostart_row);
+   gtk_widget_class_bind_template_child (widget_class, CcApplicationsPanel, required_permissions_group);
+   gtk_widget_class_bind_template_child (widget_class, CcApplicationsPanel, autorun_never_row);
+   gtk_widget_class_bind_template_child (widget_class, CcApplicationsPanel, builtin_row);
+@@ -1920,6 +2329,7 @@ cc_applications_panel_class_init (CcApplicationsPanelClass *klass)
+   gtk_widget_class_bind_template_child (widget_class, CcApplicationsPanel, general_group);
+   gtk_widget_class_bind_template_child (widget_class, CcApplicationsPanel, view_details_button);
+ 
++  gtk_widget_class_bind_template_callback (widget_class, autostart_cb);
+   gtk_widget_class_bind_template_callback (widget_class, camera_cb);
+   gtk_widget_class_bind_template_callback (widget_class, location_cb);
+   gtk_widget_class_bind_template_callback (widget_class, microphone_cb);
+diff --git a/panels/applications/gnome-applications-panel.desktop.in b/panels/applications/gnome-applications-panel.desktop.in
+index 31414dd..d6babcd 100644
+--- a/panels/applications/gnome-applications-panel.desktop.in
++++ b/panels/applications/gnome-applications-panel.desktop.in
+@@ -12,4 +12,4 @@ StartupNotify=true
+ Categories=GNOME;GTK;Settings;DesktopSettings;X-GNOME-Settings-Panel;X-GNOME-AccountSettings;
+ OnlyShowIn=GNOME;Unity;
+ # Translators: Search terms to find the Apps panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+-Keywords=application;flatpak;snap;snaps;permission;setting;default;preferred;media;autorun;cd;dvd;usb;audio;video;disc;removable;device;system;
++Keywords=application;flatpak;snap;snaps;permission;setting;default;preferred;media;autorun;cd;dvd;usb;audio;video;disc;removable;device;system;autostart;startup;
