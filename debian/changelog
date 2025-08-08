@@ -3,7 +3,13 @@ gnome-control-center (1:48.4-1) UNRELEASED; urgency=medium
   * d/control, d/gbp.conf, d/watch: Limit to 48.x versions.
     We'll stick to 48.x in testing/unstable for now, to get better
     testing for 48.x updates in trixie later.
-  * New upstream release
+  * New upstream stable release
+    - In the Power panel, move the General section to the top, avoiding a UI
+      reflow when the notice recommending automatic suspend is shown
+      or hidden (gnome-control-center#3373 upstream)
+    - Disable Pango markup when displaying errors from gnome-online-accounts,
+      fixing display of some error messages that contain URLs
+    - Translation updates
 
  -- Simon McVittie <smcv@debian.org>  Fri, 08 Aug 2025 10:13:22 +0100
 
