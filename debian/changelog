@@ -1,10 +1,11 @@
-gnome-control-center (1:48.3-4) UNRELEASED; urgency=medium
+gnome-control-center (1:48.4-1) UNRELEASED; urgency=medium
 
   * d/control, d/gbp.conf, d/watch: Limit to 48.x versions.
     We'll stick to 48.x in testing/unstable for now, to get better
     testing for 48.x updates in trixie later.
+  * New upstream release
 
- -- Simon McVittie <smcv@debian.org>  Fri, 08 Aug 2025 10:12:24 +0100
+ -- Simon McVittie <smcv@debian.org>  Fri, 08 Aug 2025 10:13:22 +0100
 
 gnome-control-center (1:48.3-3) unstable; urgency=medium
 
