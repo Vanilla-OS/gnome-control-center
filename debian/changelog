@@ -1,8 +1,11 @@
 gnome-control-center (1:49~beta-2) UNRELEASED; urgency=medium
 
   * Merge packaging changes from unstable (no functional change)
+  * Build-depend on gobject-introspection instead of
+    libgirepository1.0-dev
+  * Standards-Version: 4.7.2 (no changes required)
 
- -- Simon McVittie <smcv@debian.org>  Fri, 08 Aug 2025 15:14:40 +0100
+ -- Simon McVittie <smcv@debian.org>  Tue, 26 Aug 2025 10:41:19 +0100
 
 gnome-control-center (1:49~beta-1) experimental; urgency=medium
 
