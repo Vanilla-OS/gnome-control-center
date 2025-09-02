@@ -103,7 +103,6 @@ Recommends: cracklib-runtime,
             system-config-printer-common
 Suggests: gnome-software | gnome-packagekit,
           gstreamer1.0-plugins-good (>= 1.18.0),
-          x11-xserver-utils
 Breaks: gnome-remote-desktop (<< 42),
         gnome-shell (<< 42)
 Description: utilities to configure the GNOME desktop
