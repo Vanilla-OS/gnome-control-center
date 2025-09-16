@@ -1,4 +1,14 @@
-gnome-control-center (1:49.0-1) UNRELEASED; urgency=medium
+gnome-control-center (1:49.0-1) unstable; urgency=medium
+
+  [ Jeremy Bícha ]
+  * New upstream release
+  * Add patch to revert a screen brightness change that needs GNOME Shell 49
+  * Release to unstable
+
+  [ Marco Trevisan (Treviño) ]
+  * debian/control: Drop dependency on libgtk-4-media-gstreamer
+  * debian/control: Drop gnome-rr-4 dependency
+  * debian/control: Drop suggest on x11-xserver-utils
 
   [ Simon McVittie ]
   * Merge packaging changes from unstable (no functional change)
@@ -6,10 +16,7 @@ gnome-control-center (1:49.0-1) UNRELEASED; urgency=medium
     libgirepository1.0-dev
   * Standards-Version: 4.7.2 (no changes required)
 
-  [ Jeremy Bícha ]
-  * New upstream release
-
- -- Jeremy Bícha <jbicha@ubuntu.com>  Mon, 15 Sep 2025 23:44:40 -0400
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Tue, 16 Sep 2025 00:07:41 -0400
 
 gnome-control-center (1:49~beta-1) experimental; urgency=medium
 
