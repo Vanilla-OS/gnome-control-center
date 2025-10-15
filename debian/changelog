@@ -1,3 +1,13 @@
+gnome-control-center (1:49.1-1) UNRELEASED; urgency=medium
+
+  [ Jeremy Bícha ]
+  * New upstream release
+
+  [ Marco Trevisan (Treviño) ]
+  * Opt into Salsa CI
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Wed, 15 Oct 2025 07:53:09 -0400
+
 gnome-control-center (1:49.0-1) unstable; urgency=medium
 
   [ Jeremy Bícha ]
