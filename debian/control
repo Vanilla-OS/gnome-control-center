@@ -104,7 +104,7 @@ Recommends: cracklib-runtime,
 Suggests: gnome-software | gnome-packagekit,
           gstreamer1.0-plugins-good (>= 1.18.0),
 Breaks: gnome-remote-desktop (<< 42),
-        gnome-shell (<< 42)
+        gnome-shell (<< 49)
 Description: utilities to configure the GNOME desktop
  This package contains configuration applets for the GNOME desktop,
  allowing to set accessibility configuration, desktop fonts, keyboard
