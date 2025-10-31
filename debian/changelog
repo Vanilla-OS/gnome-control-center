@@ -1,3 +1,10 @@
+gnome-control-center (1:49.1-2) unstable; urgency=medium
+
+  * Remove patch avoiding GNOME Shell 49
+  * Bump Breaks: gnome-shell to << 49
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Fri, 31 Oct 2025 09:28:43 -0400
+
 gnome-control-center (1:49.1-1) unstable; urgency=medium
 
   [ Jeremy Bícha ]
