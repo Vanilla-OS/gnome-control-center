@@ -28,9 +28,6 @@
 #include <glib/gi18n-lib.h>
 #include <gtk/gtk.h>
 #include <gdesktop-enums.h>
-#ifdef GDK_WINDOWING_X11
-#include <gdk/x11/gdkx.h>
-#endif
 #ifdef GDK_WINDOWING_WAYLAND
 #include <gdk/wayland/gdkwayland.h>
 #endif
@@ -44,7 +41,7 @@
 #include "gsd-enums.h"
 #include "calibrator-gui.h"
 #include "gsd-input-helper.h"
-#include "panels/display/cc-display-config-manager-dbus.h"
+#include "panels/display/cc-display-config-manager.h"
 
 #include <string.h>
 
@@ -698,7 +695,7 @@ cc_wacom_page_init (CcWacomPage *page)
 	g_autoptr (GError) error = NULL;
 
 	gtk_widget_init_template (GTK_WIDGET (page));
-	page->display_config_manager = cc_display_config_manager_dbus_new ();
+	page->display_config_manager = cc_display_config_manager_new ();
 	g_signal_connect_object (page->display_config_manager, "changed",
 				 G_CALLBACK (update_displays_model), page,
 				 G_CONNECT_SWAPPED);

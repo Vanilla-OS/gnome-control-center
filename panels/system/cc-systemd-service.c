@@ -57,7 +57,7 @@ cc_get_service_state (const char *service,
     return CC_SERVICE_STATE_NOT_FOUND;
   }
 
-  g_variant_get_child (unit_path_variant, 0, "s", &state);
+  g_variant_get_child (unit_path_variant, 0, "&s", &state);
   if (g_strcmp0 (state, "enabled") == 0)
     return CC_SERVICE_STATE_ENABLED;
   if (g_strcmp0 (state, "disabled") == 0)
@@ -177,7 +177,7 @@ cc_disable_service (const char  *service,
                                                 NULL,
                                                 error);
 
-  if (!stop_result)
+  if (!disable_result)
     {
       g_prefix_error_literal (error, "Failed to disable service: ");
       return FALSE;

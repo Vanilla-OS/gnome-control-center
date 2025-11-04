@@ -32,7 +32,8 @@ get_gtk_gles_renderer (void)
         GtkNative *native;
         GtkWidget *win;
         GdkGLContext *context;
-        char *renderer = NULL;
+        g_autofree char *renderer = NULL;
+        g_autofree char *gl_version = NULL;
 
         win = gtk_window_new ();
         gtk_widget_realize (win);
@@ -43,10 +44,32 @@ get_gtk_gles_renderer (void)
                 return NULL;
         gdk_gl_context_make_current (context);
         renderer = g_strdup ((char *) glGetString (GL_RENDERER));
+        gl_version = g_strdup ((char *) glGetString (GL_VERSION));
         gdk_gl_context_clear_current ();
         g_object_unref (context);
 
-        return renderer;
+        if (strstr (gl_version, "NVIDIA") != NULL)
+          {
+            const char *glvnd_libname = g_getenv ("__GLX_VENDOR_LIBRARY_NAME");
+            const char *dri_prime = g_getenv ("DRI_PRIME");
+            if (g_strcmp0 (glvnd_libname, "nvidia") != 0 && dri_prime != NULL)
+              {
+                /* This helper is launched with parameters from a
+                 * non-NVIDIA GPU, but is running using a NVIDIA
+                 * library. As such, DRI_PRIME envvar from switcheroo
+                 * does not actually take effect, and the GPU name is
+                 * invalid.
+                 *
+                 * If there is no DRI_PRIME envvar neither, assuming
+                 * we failed to use switcheroo to get GPU names, and
+                 * this is called with basic envvars listed in
+                 * cc-system-details-window.c:get_renderer_from_helper()
+                 */
+                return NULL;
+              }
+          }
+
+        return g_steal_pointer (&renderer);
 }
 
 int

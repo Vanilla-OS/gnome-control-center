@@ -1,5 +1,7 @@
 include:
- - remote: 'https://gitlab.gnome.org/Infrastructure/freedesktop-ci-templates/-/raw/765bb77a5e1274b0daeb14344e7caa6cd3876232/templates/fedora.yml'
+ - project: Infrastructure/freedesktop-ci-templates
+   file: templates/fedora.yml
+   ref: 765bb77a5e1274b0daeb14344e7caa6cd3876232
  - component: gitlab.gnome.org/GNOME/citemplates/release-service@master
    inputs:
      dist-job-name: release-build
@@ -39,11 +41,11 @@ stages:
 
 .Build Procedure: &build_procedure
   echo "== Building ==" &&
-  meson setup $MESON_BUILD_DIR ${BUILD_OPTS} -Dprofile=development -Dwarning_level=2 &&
+  meson setup $MESON_BUILD_DIR ${BUILD_OPTS} -Dprofile=development --fatal-meson-warnings --werror -Dwarning_level=2 &&
   meson compile -C $MESON_BUILD_DIR 2>&1 | tee compilation.log
 
 .Run Tests: &run_tests
-  export GSK_RENDERER=ngl &&
+  export GSK_RENDERER=gl &&
   echo "== Testing ==" &&
   meson test -C $MESON_BUILD_DIR --verbose --no-stdsplit --no-rebuild
 
@@ -55,7 +57,7 @@ stages:
     # Should probably also switch away from 'rawhide',
     # to stable fedora branch as well.
     BRANCH_NAME: 'main'
-    CONTAINER_TAG: '2025-03-13.0'
+    CONTAINER_TAG: '2025-07-28.0'
     FEDORA_VERSION: rawhide
     # Derive FDO variables from this automatically.
     # DO NOT edit, instead change the variables above
@@ -97,27 +99,21 @@ build.container.fedora@x86_64:
     FDO_DISTRIBUTION_EXEC: |-
       dnf builddep -y gnome-control-center && \
       dnf builddep -y gsettings-desktop-schemas && \
+      dnf builddep -y gnome-settings-daemon && \
+      dnf builddep -y libadwaita && \
+      dnf builddep -y gnome-online-accounts && \
       git clone --depth 1 https://gitlab.gnome.org/GNOME/gsettings-desktop-schemas.git && \
         cd gsettings-desktop-schemas && \
         meson setup $MESON_BUILD_DIR --prefix=/usr && \
         meson compile -C $MESON_BUILD_DIR && \
         meson install -C $MESON_BUILD_DIR && \
         cd .. && \
-      dnf builddep -y gnome-settings-daemon && \
       git clone --depth 1 https://gitlab.gnome.org/GNOME/gnome-settings-daemon.git && \
         cd gnome-settings-daemon && \
         meson setup $MESON_BUILD_DIR --prefix=/usr && \
         meson compile -C $MESON_BUILD_DIR && \
         meson install -C $MESON_BUILD_DIR && \
         cd .. && \
-      dnf builddep -y gtk4 && \
-      git clone --depth 1 https://gitlab.gnome.org/GNOME/gtk.git && \
-        cd gtk && \
-        meson setup $MESON_BUILD_DIR --prefix=/usr && \
-        meson compile -C $MESON_BUILD_DIR && \
-        meson install -C $MESON_BUILD_DIR && \
-        cd .. && \
-      dnf builddep -y libadwaita && \
       git clone --depth 1 https://gitlab.gnome.org/GNOME/libadwaita.git && \
         cd libadwaita && \
         meson setup $MESON_BUILD_DIR --prefix=/usr -Dtests=false -Dexamples=false && \
@@ -127,6 +123,12 @@ build.container.fedora@x86_64:
       git clone --depth 1 https://gitlab.gnome.org/GNOME/gnome-online-accounts.git && \
         cd gnome-online-accounts && \
         meson setup $MESON_BUILD_DIR --prefix=/usr -Dfedora=true  && \
+        meson compile -C $MESON_BUILD_DIR && \
+        meson install -C $MESON_BUILD_DIR && \
+        cd .. && \
+      git clone --depth 1 https://gitlab.gnome.org/GNOME/blueprint-compiler.git && \
+        cd blueprint-compiler && \
+        meson setup $MESON_BUILD_DIR --prefix=/usr && \
         meson compile -C $MESON_BUILD_DIR && \
         meson install -C $MESON_BUILD_DIR && \
         cd .. && \
@@ -172,6 +174,7 @@ conditional builds:
     matrix:
       - BUILD_OPTS: '-Dmalcontent=true'
       - BUILD_OPTS: '-Ddocumentation=true'
+      - BUILD_OPTS: '-Dx11=true'
 
 ##
 # Stage: Test

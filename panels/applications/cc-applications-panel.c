@@ -161,7 +161,7 @@ static void select_app (CcApplicationsPanel *self,
 
 static void update_handler_dialog (CcApplicationsPanel *self, GAppInfo *info);
 
-static gboolean update_global_shortcuts_section (CcApplicationsPanel *self);
+static void update_usage_section (CcApplicationsPanel *self, GAppInfo *info);
 
 enum
 {
@@ -707,7 +707,7 @@ location_cb (CcApplicationsPanel *self)
 static void
 dialog_closed_cb (CcApplicationsPanel *self)
 {
-  update_global_shortcuts_section (self);
+  update_usage_section (self, self->current_app_info);
 }
 
 static void
@@ -817,7 +817,7 @@ update_sandbox_banner (CcApplicationsPanel *self,
     "org.gnome.DiskUtility",
     "org.gnome.Tour",
     "org.gnome.baobab",
-    "yelp",
+    "org.gnome.Yelp",
   };
   gsize i;
 
@@ -862,6 +862,7 @@ add_static_permissions (CcApplicationsPanel *self,
   g_autofree gchar *app_id = NULL;
   gint added = 0;
   g_autofree gchar *text = NULL;
+  g_autofree gchar *formatted_name = NULL;
   g_autofree gchar *static_permissions_number = NULL;
   gboolean is_sandboxed, is_snap = FALSE;
 
@@ -905,7 +906,9 @@ add_static_permissions (CcApplicationsPanel *self,
   if (str && g_str_equal (str, "talk"))
     added += add_static_permission_row (self, _("Settings"), _("Can change settings"));
 
-  text = g_strdup_printf (_("<b>%s</b> requires access to the following system resources. To stop this access, the app must be removed."), g_app_info_get_display_name (info));
+  formatted_name = g_strdup_printf ("<b>%s</b>", g_app_info_get_display_name (info));
+  /* TRANSLATORS: %s is an app name. */
+  text = g_strdup_printf (_("%s requires access to the following system resources. To stop this access, the app must be removed."), formatted_name);
   adw_preferences_page_set_description (self->builtin_page, text);
 
   static_permissions_number = g_strdup_printf (g_dngettext (GETTEXT_PACKAGE,
@@ -1202,6 +1205,7 @@ update_handler_dialog (CcApplicationsPanel *self,
                        GAppInfo            *info)
 {
   g_autofree gchar *header_title = NULL;
+  g_autofree gchar *formatted_name = NULL;
   g_autoptr(GHashTable) hash = NULL;
   const gchar **types;
   guint n_associations = 0;
@@ -1251,8 +1255,10 @@ update_handler_dialog (CcApplicationsPanel *self,
       cc_list_row_set_secondary_label (self->handler_row, types_number);
     }
 
-  header_title = g_strdup_printf (_("<b>%s</b> is used to open the following types of files and links"),
-                                  g_app_info_get_display_name (info));
+  formatted_name = g_strdup_printf ("<b>%s</b>", g_app_info_get_display_name (info));
+  /* TRANSLATORS: %s is an app name. */
+  header_title = g_strdup_printf (_("%s is used to open the following types of files and links"),
+                                  formatted_name);
   adw_preferences_page_set_description (self->handler_page, header_title);
 }
 
@@ -1290,10 +1296,12 @@ update_storage_page (CcApplicationsPanel *self,
                      GAppInfo            *info)
 {
   g_autofree gchar *storage_page_description = NULL;
+  g_autofree gchar *formatted_name = NULL;
 
+  formatted_name = g_strdup_printf ("<b>%s</b>", g_app_info_get_display_name (info));
   /* TRANSLATORS: %s is an app name. */
-  storage_page_description = g_strdup_printf (_("How much disk space <b>%s</b> is occupying with app data and caches"),
-                                              g_app_info_get_display_name (info));
+  storage_page_description = g_strdup_printf (_("How much disk space %s is occupying with app data and caches"),
+                                              formatted_name);
   adw_preferences_page_set_description (self->storage_page, storage_page_description);
 }
 
@@ -1447,12 +1455,22 @@ update_global_shortcuts_section (CcApplicationsPanel *self)
 {
   int global_shortcuts_count;
   g_autoptr(GVariant) shortcuts = NULL;
+  g_autofree gchar *n_actions = NULL;
 
   shortcuts = g_settings_get_value (self->global_shortcuts_app_settings,
                                     "shortcuts");
   global_shortcuts_count = g_variant_n_children (shortcuts);
   gtk_widget_set_visible (GTK_WIDGET (self->global_shortcuts_row),
                           global_shortcuts_count != 0);
+
+  /* TRANSLATORS: %u is the number of global shortcut actions. */
+  n_actions = g_strdup_printf (g_dngettext (GETTEXT_PACKAGE,
+                                            "%u action",
+                                            "%u actions",
+                                            global_shortcuts_count),
+                               global_shortcuts_count);
+
+  cc_list_row_set_secondary_label (self->global_shortcuts_row, n_actions);
 
   return global_shortcuts_count != 0;
 }
@@ -1463,6 +1481,7 @@ update_usage_section (CcApplicationsPanel *self,
 {
   g_autofree gchar *portal_app_id = get_portal_app_id (info);
   gboolean has_builtin = FALSE, has_global_shortcuts;
+  g_autofree char *app_id = get_app_id (info);
   g_autofree char *app_path;
 
   if (portal_app_id != NULL)
@@ -1473,7 +1492,7 @@ update_usage_section (CcApplicationsPanel *self,
   gtk_widget_set_visible (GTK_WIDGET (self->builtin_row), has_builtin);
 
   g_clear_object (&self->global_shortcuts_app_settings);
-  app_path = g_strdup_printf (GLOBAL_SHORTCUTS_PATH "%s/", get_app_id (info));
+  app_path = g_strdup_printf (GLOBAL_SHORTCUTS_PATH "%s/", app_id);
   self->global_shortcuts_app_settings =
     g_settings_new_with_path (GLOBAL_SHORTCUTS_APP_SCHEMA, app_path);
 
