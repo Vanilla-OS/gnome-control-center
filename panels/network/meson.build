@@ -28,6 +28,30 @@ foreach name: panel_names
   )
 endforeach
 
+ui_sources = files(
+  'cc-net-proxy-page.blp',
+  'cc-network-panel.blp',
+  'cc-qr-code-dialog.blp',
+  'cc-wifi-connection-row.blp',
+  'cc-wifi-hotspot-dialog.blp',
+  'cc-wifi-panel.blp',
+  'network-bluetooth.blp',
+  'network-ethernet.blp',
+  'network-vpn.blp',
+  'network-wifi.blp',
+)
+
+ui_compiled = []
+foreach ui_source : ui_sources
+  ui_compiled += fs.name(fs.replace_suffix(ui_source, '.ui'))
+endforeach
+
+blueprints = custom_target(
+  input: ui_sources,
+  output: ui_compiled,
+  command: [blueprint_compiler, 'batch-compile', '@OUTDIR@', '@CURRENT_SOURCE_DIR@', '@INPUT@']
+)
+
 sources = files(
   'cc-qr-code.c',
   'cc-qr-code-dialog.c',
@@ -47,12 +71,15 @@ sources = files(
   'ui-helpers.c'
 )
 
-sources += gnome.compile_resources(
+resources_ch = gnome.compile_resources(
   'cc-' + cappletname + '-resources',
   cappletname + '.gresource.xml',
   c_name: 'cc_' + cappletname,
-  export: true
+  export: true,
+  dependencies: blueprints,
 )
+
+sources += resources_ch
 
 network_panel_lib = static_library(
   cappletname,
@@ -63,3 +90,9 @@ network_panel_lib = static_library(
   link_with: libconnection_editor
 )
 panels_libs += network_panel_lib
+
+network_panel_dep = declare_dependency(
+  include_directories: [top_inc, network_inc],
+  sources: [resources_ch[1]],
+  link_with: network_panel_lib,
+)

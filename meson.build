@@ -1,8 +1,8 @@
 project(
   'gnome-control-center', 'c',
-        version : '48.1',
+        version : '49.1',
         license : 'GPL2+',
-  meson_version : '>= 0.58.0'
+  meson_version : '>= 0.60.0'
 )
 
 control_center_prefix = get_option('prefix')
@@ -29,6 +29,7 @@ config_h = configuration_data()
 
 py = import('python')
 python = py.find_installation('python3')
+blueprint_compiler = find_program('blueprint-compiler', version: '>= 0.17')
 
 config_h.set_quoted('TEST_NM_PYTHON', python.full_path())
 
@@ -112,6 +113,11 @@ if get_option('buildtype').contains('debug')
   common_flags += cc.get_supported_arguments(test_cflags)
 endif
 
+# Warnings which are not useful for our coding style, regardless of the build type
+common_flags += cc.get_supported_arguments([
+    '-Wno-unused-parameter',
+])
+
 add_project_arguments(common_flags, language: 'c')
 
 # Check that we meet the dependencies
@@ -122,11 +128,12 @@ libgvc = subproject(
     'alsa=false',
     'package_name=' + control_center_gettext,
     'package_version=' + meson.project_version(),
+    'werror=false',
   ]
 )
 libgvc_dep = libgvc.get_variable('libgvc_dep')
 
-libadwaita_version = '>= 1.7.alpha'
+libadwaita_version = '>= 1.8.alpha'
 goa_req_version = '>= 3.51.0'
 pulse_req_version = '>= 2.0'
 
@@ -160,6 +167,7 @@ if libadwaita_is_subproject
       'introspection=disabled',
       'tests=false',
       'vapi=false',
+      'werror=false',
     ],
   )
 endif
@@ -174,12 +182,18 @@ tecla_dep = dependency(
 tecla_is_subproject = not tecla_dep.found()
 if tecla_is_subproject
   tecla = subproject(
-    'tecla'
+    'tecla',
+    default_options: [
+      'werror=false',
+    ],
   )
 endif
 
 subproject('libgxdp',
-  default_options: 'tests=false',
+  default_options: [
+    'tests=false',
+    'werror=false',
+  ],
 )
 
 accounts_dep = dependency('accountsservice', version: '>= 23.11.69')
@@ -189,7 +203,6 @@ gio_dep = dependency('gio-2.0')
 glib_dep = dependency('glib-2.0', version: '>= 2.76.6')
 gnome_desktop_dep = dependency('gnome-desktop-4')
 gnome_bg_dep = dependency('gnome-bg-4')
-gnome_rr_dep = dependency('gnome-rr-4')
 gnome_settings_dep = dependency('gnome-settings-daemon', version: '>= 48.rc', fallback: 'gsd')
 goa_dep = dependency('goa-1.0', version: goa_req_version, fallback: 'goa')
 gsettings_desktop_dep = dependency('gsettings-desktop-schemas', version: '>= 48.alpha')  # actually requires commit 9d55553, just after alpha
@@ -198,8 +211,6 @@ pulse_dep = dependency('libpulse', version: pulse_req_version)
 pulse_mainloop_dep = dependency('libpulse-mainloop-glib', version: pulse_req_version)
 upower_glib_dep = dependency('upower-glib', version: '>= 1.90.6')
 gudev_dep = dependency('gudev-1.0', version: '>= 232')
-x11_dep = dependency('x11', version: '>= 1.8')
-xi_dep = dependency('xi', version: '>= 1.2')
 epoxy_dep = dependency('epoxy')
 gcr_dep = dependency('gcr-4', version: '>= 4.1.0')
 pwquality_dep = dependency('pwquality', version: '>= 1.2.2')
@@ -255,6 +266,14 @@ config_h.set10('HAVE_CUPS_HTTPCONNECT2',
                cc.has_function('httpConnect2', dependencies: cups_dep),
                description: 'Define if httpConnect2() is available in CUPS')
 
+# X11
+have_x11_support = get_option('x11')
+if have_x11_support
+  x11_dep = dependency('x11', version: '>= 1.8')
+  xi_dep = dependency('xi', version: '>= 1.2')
+endif
+config_h.set('HAVE_X11', have_x11_support, description: 'Defined if X11 support is enabled')
+
 # IBus support
 enable_ibus = get_option('ibus')
 if enable_ibus
@@ -299,7 +318,7 @@ if host_is_linux
   mm_dep =  dependency('mm-glib', version: '>= 0.7')
   # NetworkManager
   network_manager_deps = [
-    dependency('libnm', version: '>= 1.24.0'),
+    dependency('libnm', version: '>= 1.52.0'),
     dependency('libnma-gtk4', version: '>= 1.10.2'),
     mm_dep,
   ]
@@ -337,6 +356,7 @@ config_h.set('HAVE_WACOM', host_is_linux_not_s390,
 config_h.set('BUILD_THUNDERBOLT', host_is_linux_not_s390,
              description: 'Define to 1 to build the Thunderbolt panel')
 
+fs = import('fs')
 gnome = import('gnome')
 i18n = import('i18n')
 pkg = import('pkgconfig')
@@ -389,6 +409,7 @@ summary({
     'GNOME Bluetooth': host_is_linux_not_s390,
     'NetworkManager': host_is_linux,
     'Wacom': host_is_linux_not_s390,
+    'X11 xupport': have_x11_support,
   },
   section: 'Dependencies',
   bool_yn: true,

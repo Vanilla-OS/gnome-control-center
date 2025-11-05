@@ -485,7 +485,7 @@ on_month_selection_changed_cb (CcDateTimePage *self)
   g_assert (CC_IS_DATE_TIME_PAGE (self));
 
   i = gtk_single_selection_get_selected (self->month_model);
-  g_assert (i >= 0 && i < 12);
+  g_assert (/* i >= 0 && */ i < 12);
 
   self->month = i + 1;
   month_year_changed (self);
@@ -548,12 +548,6 @@ on_permission_changed (CcDateTimePage *self)
   gtk_widget_set_sensitive (GTK_WIDGET (self->auto_timezone_row), location_allowed && (allowed || tz_allowed));
   gtk_widget_set_sensitive (GTK_WIDGET (self->datetime_row), allowed && !using_ntp);
   gtk_widget_set_sensitive (GTK_WIDGET (self->timezone_row), (allowed || tz_allowed) && (!auto_timezone || !location_allowed));
-
-  /* Hide the subdialogs if we no longer have permissions */
-  if (!allowed)
-      gtk_widget_set_visible (GTK_WIDGET (self->datetime_dialog), FALSE);
-  if (!allowed && !tz_allowed)
-      gtk_widget_set_visible (GTK_WIDGET (self->timezone_dialog), FALSE);
 }
 
 static void
@@ -815,7 +809,6 @@ cc_date_time_page_class_init (CcDateTimePageClass *klass)
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/system/datetime/cc-datetime-page.ui");
 
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePage, auto_datetime_row);
-  gtk_widget_class_bind_template_child (widget_class, CcDateTimePage, auto_timezone_row);
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePage, auto_timezone_row);
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePage, date_box);
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePage, datetime_row);

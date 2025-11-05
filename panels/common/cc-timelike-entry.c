@@ -160,10 +160,10 @@ editable_insert_text_cb (GtkText         *text,
 
   if (new_text_length == 5)
     {
-      const gchar *text = gtk_editable_get_text (GTK_EDITABLE (self));
+      const gchar *text_str = gtk_editable_get_text (GTK_EDITABLE (self));
       guint16 text_length;
 
-      text_length = g_utf8_strlen (text, -1);
+      text_length = g_utf8_strlen (text_str, -1);
 
       /* Return if the text matches XX:XX template (where X is a number) */
       if (text_length == 0 &&
@@ -606,8 +606,8 @@ cc_timelike_entry_set_time (CcTimelikeEntry *self,
   is_am_pm = cc_timelike_entry_get_am_pm (self);
   cc_timelike_entry_set_am_pm (self, FALSE);
 
-  self->hour = CLAMP (hour, 0, 23);
-  self->minute = CLAMP (minute, 0, 59);
+  self->hour = MIN (hour, 23);
+  self->minute = MIN (minute, 59);
 
   cc_timelike_entry_set_am_pm (self, is_am_pm);
 

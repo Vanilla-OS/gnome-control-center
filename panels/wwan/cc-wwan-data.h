@@ -89,5 +89,23 @@ void           cc_wwan_data_apn_set_password (CcWwanDataApn *apn,
 gint           cc_wwan_data_get_priority     (CcWwanData    *self);
 void           cc_wwan_data_set_priority     (CcWwanData    *self,
                                               int            priority);
+const gchar   *cc_wwan_data_apn_get_initial_eps_apn      (CcWwanDataApn *apn);
+void           cc_wwan_data_apn_set_initial_eps_apn      (CcWwanDataApn *apn,
+                                                          const gchar   *apn_name);
+const gchar   *cc_wwan_data_apn_get_initial_eps_username (CcWwanDataApn *apn);
+void           cc_wwan_data_apn_set_initial_eps_username (CcWwanDataApn *apn,
+                                                          const gchar   *username);
+const gchar   *cc_wwan_data_apn_get_initial_eps_password (CcWwanDataApn *apn);
+void           cc_wwan_data_apn_set_initial_eps_password (CcWwanDataApn *apn,
+                                                          const gchar   *password);
+
+guint cc_wwan_data_apn_get_initial_eps_auth_method (CcWwanDataApn *apn);
+void cc_wwan_data_apn_set_initial_eps_auth_method  (CcWwanDataApn *apn,
+                                                    guint allowed_auth);
+
+gboolean cc_wwan_data_apn_should_configure_initial_eps_bearer (CcWwanDataApn *apn);
+
+void cc_wwan_data_apn_set_should_configure_initial_eps_bearer (CcWwanDataApn *apn,
+                                                               gboolean       configure);
 
 G_END_DECLS

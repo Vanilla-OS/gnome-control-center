@@ -41,7 +41,7 @@
 #ifdef GDK_WINDOWING_WAYLAND
 #include <gdk/wayland/gdkwayland.h>
 #endif
-#ifdef GDK_WINDOWING_X11
+#ifdef HAVE_X11
 #include <gdk/x11/gdkx.h>
 #endif
 #include <locale.h>
@@ -167,6 +167,15 @@ typedef struct {
   char *name;
   gboolean is_default;
 } GpuData;
+
+static void
+gpu_data_free (GpuData *data)
+{
+  g_clear_pointer (&data->name, g_free);
+  g_free (data);
+}
+
+G_DEFINE_AUTOPTR_CLEANUP_FUNC (GpuData, gpu_data_free)
 
 static int
 gpu_data_sort (gconstpointer a, gconstpointer b)
@@ -301,7 +310,7 @@ create_graphics_rows (CcSystemDetailsWindow *self, GSList *devices)
   for (l = devices; l != NULL; l = l->next)
     {
       GpuData *data = l->data;
-      g_autofree char *name = data->name;
+      const char *name = data->name;
       g_autofree char *label = NULL;
 
       if (data->is_default)
@@ -335,13 +344,13 @@ get_os_name (void)
 }
 
 static char *
-get_os_build_id (void)
+get_os_image_version (void)
 {
-  char *build_id = NULL;
+  char *image_version = NULL;
 
-  build_id = g_get_os_info ("BUILD_ID");
+  image_version = g_get_os_info ("IMAGE_VERSION");
 
-  return build_id;
+  return image_version;
 }
 
 static char *
@@ -603,10 +612,10 @@ get_windowing_system (void)
 
   display = gdk_display_get_default ();
 
-#if defined(GDK_WINDOWING_X11)
+#if defined(HAVE_X11)
   if (GDK_IS_X11_DISPLAY (display))
     return _("X11");
-#endif /* GDK_WINDOWING_X11 */
+#endif /* HAVE_X11 */
 #if defined(GDK_WINDOWING_WAYLAND)
   if (GDK_IS_WAYLAND_DISPLAY (display))
     return _("Wayland");
@@ -683,7 +692,8 @@ on_copy_button_clicked_cb (GtkWidget              *widget,
   g_autofree char *firmware_version_text = NULL;
   g_autofree char *windowing_system_text = NULL;
   g_autofree char *kernel_version_text = NULL;
-  g_autofree GSList *graphics_hardware_list, *l;
+  g_autoslist(GpuData) graphics_hardware_list = NULL;
+  GSList *l;
   g_autofree gchar *disk_capacity_string = NULL;
   g_autoptr (GString) result_str;
   locale_t untranslated_locale;
@@ -732,7 +742,7 @@ on_copy_button_clicked_cb (GtkWidget              *widget,
   for (l = graphics_hardware_list; l != NULL; l = l->next)
     {
       GpuData *data = l->data;
-      g_autofree char *name = data->name;
+      const char *name = data->name;
       g_autofree char *label = NULL;
 
       if (data->is_default)
@@ -765,7 +775,7 @@ on_copy_button_clicked_cb (GtkWidget              *widget,
 
   g_string_append (result_str, "- ");
   system_details_window_title_print_padding ("**OS Build:**", result_str, 0);
-  os_build_text = get_os_build_id ();
+  os_build_text = get_os_image_version ();
   g_string_append_printf (result_str, "%s\n", os_build_text);
 
   g_string_append (result_str, "- ");
@@ -809,7 +819,7 @@ system_details_window_setup_overview (CcSystemDetailsWindow *self)
   g_autofree char *hardware_model_text = NULL;
   g_autofree char *firmware_version_text = NULL;
   g_autofree char *kernel_version_text = NULL;
-  g_autofree GSList *graphics_hardware_list = NULL;
+  g_autoslist(GpuData) graphics_hardware_list = NULL;
   g_autofree gchar *disk_capacity_string = NULL;
 
   hardware_model_text = get_hardware_model_string ();
@@ -840,7 +850,7 @@ system_details_window_setup_overview (CcSystemDetailsWindow *self)
   os_name_text = get_os_name ();
   cc_info_entry_set_value (self->os_name_row, os_name_text);
 
-  os_build_text = get_os_build_id ();
+  os_build_text = get_os_image_version ();
   cc_info_entry_set_value (self->os_build_row, os_build_text);
   gtk_widget_set_visible (GTK_WIDGET (self->os_build_row), os_build_text != NULL);
 

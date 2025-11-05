@@ -1,4 +1,154 @@
-gnome-control-center (1:48.1.1~99-orchid) unstable; urgency=medium
+gnome-control-center (1:49.1-2) unstable; urgency=medium
+
+  * Remove patch avoiding GNOME Shell 49
+  * Bump Breaks: gnome-shell to << 49
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Fri, 31 Oct 2025 09:28:43 -0400
+
+gnome-control-center (1:49.1-1) unstable; urgency=medium
+
+  [ Jeremy Bícha ]
+  * New upstream release
+
+  [ Marco Trevisan (Treviño) ]
+  * Opt into Salsa CI
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Wed, 15 Oct 2025 07:58:03 -0400
+
+gnome-control-center (1:49.0-1) unstable; urgency=medium
+
+  [ Jeremy Bícha ]
+  * New upstream release
+  * Add patch to revert a screen brightness change that needs GNOME Shell 49
+  * Release to unstable
+
+  [ Marco Trevisan (Treviño) ]
+  * debian/control: Drop dependency on libgtk-4-media-gstreamer
+  * debian/control: Drop gnome-rr-4 dependency
+  * debian/control: Drop suggest on x11-xserver-utils
+
+  [ Simon McVittie ]
+  * Merge packaging changes from unstable (no functional change)
+  * Build-depend on gobject-introspection instead of
+    libgirepository1.0-dev
+  * Standards-Version: 4.7.2 (no changes required)
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Tue, 16 Sep 2025 00:07:41 -0400
+
+gnome-control-center (1:49~beta-1) experimental; urgency=medium
+
+  [ Nathan Pratta Teodosio ]
+  * New upstream release (49~alpha).
+  * d/p/d/Expose-touchpad-settings: Dropped.
+  * d/control:
+    + Add blueprint-compiler as a dependency.
+    + Update version requirements for meson and libnm-dev.
+    + Drop X11 packages from Build-Depends. We no longer build with X11 support.
+
+  [ Marco Trevisan (Treviño) ]
+  * New upstream release (49~beta)
+  * debian/control: Bump build-dependency on libadwaita-1 1.8~alpha
+  * debian/control: Remove other unused (for long time) X11 dependencies
+  * debian/control: Mark python3-dbusmock as a test dependency
+  * debian/control: Remove unused xvfb test dependency
+  * debian/debian/gnome-control-center.lintian-overrides: Remove mismatched
+    override
+
+ -- Marco Trevisan (Treviño) <marco@ubuntu.com>  Wed, 06 Aug 2025 00:47:33 +0200
+
+gnome-control-center (1:48.4-1) unstable; urgency=medium
+
+  * Team upload
+  * d/control, d/gbp.conf, d/watch: Limit to 48.x versions.
+    We'll stick to 48.x in testing/unstable for now, to get better
+    testing for 48.x updates in trixie later.
+  * New upstream stable release
+    - In the Power panel, move the General section to the top, avoiding a UI
+      reflow when the notice recommending automatic suspend is shown
+      or hidden (gnome-control-center#3373 upstream)
+    - Disable Pango markup when displaying errors from gnome-online-accounts,
+      fixing display of some error messages that contain URLs
+    - Translation updates
+
+ -- Simon McVittie <smcv@debian.org>  Fri, 08 Aug 2025 10:18:47 +0100
+
+gnome-control-center (1:48.3-3) unstable; urgency=medium
+
+  * Release to unstable
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Thu, 03 Jul 2025 17:20:23 -0400
+
+gnome-control-center (1:48.3-2) experimental; urgency=medium
+
+  * Add Depends: libgtk-4-media-gstreamer for Mouse panel. See #1054155
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Wed, 02 Jul 2025 10:12:28 -0400
+
+gnome-control-center (1:48.3-1) experimental; urgency=medium
+
+  * New upstream release
+    - Various translation updates
+    - Various accessibility fixes
+    - Fix use-after-free in CcPermissionInfobar
+    - About: Properly close System Details dialog supressing dispose warning
+    - Colors: Remote extra line below the device name
+    - Global Shortcuts: Discard request from invalid app ID
+    - Wacom: Plug stylus motion backlog array leak
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Sat, 28 Jun 2025 15:58:20 -0400
+
+gnome-control-center (1:48.2-2) unstable; urgency=medium
+
+  * Team upload
+  * Summarize upstream changes in previous changelog entry
+  * Upload to unstable
+
+ -- Simon McVittie <smcv@debian.org>  Wed, 11 Jun 2025 11:20:52 +0100
+
+gnome-control-center (1:48.2-1) experimental; urgency=medium
+
+  * New upstream bugfix release
+    - Fix panel crashes that can occur if a type referenced by the UI
+      resource was not registered yet
+      (gnome-control-center!3126 upstream)
+    - Fix a crash due to use-after-free in the notifications page by
+      clearing a signal handler during object destruction
+      (gnome-control-center#3455 upstream)
+    - Use an EFF-supplied word list to generate random passwords
+      (for example for System -> Remote Desktop) instead of
+      /usr/share/dict, which in particular avoids generating passwords
+      that contain offensive or easily-confused words
+      (gnome-control-center#3445 upstream)
+    - Log a warning instead of crashing or emitting a blank image
+      if we cannot create a renderer while cropping a user's avatar
+      (gnome-control-center#3402, #3405 upstream)
+    - Wrap panel labels at 40 characters to ensure the list of panels
+      leaves enough horizontal space for window content in locales where
+      a panel has a long name, for example "Privacy and Security" translated
+      to "Конфиденциальность и безопасность" in ru_RU
+      (gnome-control-cetner#3400 upstream)
+    - Use motion history to get smoother lines when testing a Wacom tablet
+      (gnome-control-center!3140 upstream)
+    - Match the leaf icon that GNOME Shell uses for the Power Saver mode,
+      instead of having a different and worse-looking leaf icon
+      (gnome-control-center#3446 upstream)
+    - On multi-GPU desktop systems, describe non-Nvidia GPUs correctly
+      even if we cannot switch to them via DRI_PRIME
+      (gnome-control-center#3375 upstream, LP: #2037076)
+    - In the applications panel, hide the empty "Required Permissions"
+      section if there would be nothing shown there
+      (gnome-control-center!3144 upstream)
+    - In the application global shortcuts dialog, show the app name in
+      bold, making it easier to see and more consistent with other pages
+      (gnome-control-center!3058 upstream)
+    - Apply rounded borders to illustrations such as mouse wheel scroll
+      direction, hot corners and active screen edges
+      (gnome-control-center!3085 upstream)
+    - Translation updates
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Fri, 06 Jun 2025 14:37:54 -0400
+
+ gnome-control-center (1:48.1.1~99-orchid) unstable; urgency=medium
 
   * Merge debian/1%48.1-2
 
