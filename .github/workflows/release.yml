@@ -88,6 +88,7 @@ jobs:
           tzdata \
           xvfb \
           wget \
+          blueprint-compiler \
           git
   
     - name: Build debian package
