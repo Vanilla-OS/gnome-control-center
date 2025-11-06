@@ -76,34 +76,29 @@ index f0ab11b..b455462 100644
    g_signal_connect (self, "map", G_CALLBACK (mapped_cb), NULL);
  
    cc_object_storage_create_dbus_proxy (G_BUS_TYPE_SESSION,
-diff --git a/panels/display/cc-display-panel.ui b/panels/display/cc-display-panel.ui
-index fc0b425..d7edf17 100644
---- a/panels/display/cc-display-panel.ui
-+++ b/panels/display/cc-display-panel.ui
-@@ -157,6 +157,26 @@
-                   </object>
-                 </child>
- 
-+		<!-- Prime Utility -->
-+                <child>
-+                  <object class="AdwPreferencesGroup" id="prime_utility_row">
-+                    <child>
-+                      <object class="AdwActionRow">
-+                        <property name="activatable">True</property>
-+                        <property name="title" translatable="yes">GPU Profile Management (PRIME)</property>
-+                        <property name="use-underline">True</property>
-+                        <signal name="activated" handler="cc_display_panel_prime" swapped="yes"/>
-+                        <child type="suffix">
-+                          <object class="GtkImage">
-+                            <property name="valign">center</property>
-+                            <property name="icon-name">adw-external-link-symbolic</property>
-+                          </object>
-+                        </child>
-+                      </object>
-+                    </child>
-+                  </object>
-+                </child>
+diff --git a/panels/display/cc-display-panel.blp b/panels/display/cc-display-panel.blp
+index f40b2cfd1..a179c3203 100644
+--- a/panels/display/cc-display-panel.blp
++++ b/panels/display/cc-display-panel.blp
+@@ -117,6 +117,21 @@ template $CcDisplayPanel: $CcPanel {
+             action-target: "'night-light'";
+           }
+         }
 +
-               </object>
-             </property>
-           </object>
++        Adw.PreferencesGroup {
++          Adw.ActionRow prime_utility_row {
++            title: _("GPU Profile Management (PRIME)");
++            activatable: true;
++            use-underline: true;
++            activated => $c_display_panel_prime();
++
++            [suffix]
++            Gtk.Image {
++              icon-name: "adw-external-link-symbolic";
++              valign: center;
++            }
++          }
++        }
+       };
+     };
+   }
