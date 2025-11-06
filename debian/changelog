@@ -1,3 +1,10 @@
+gnome-control-center (1:49.1.1~99-orchid) unstable; urgency=medium
+
+  * Merge debian/1%49.1-2
+  * Rewrite prime utility patch as blp
+
+ -- Jarred Wilson <jarred.wilson12@gmail.com>  Wed, 05 Nov 2025 21:57:43 -0500
+
 gnome-control-center (1:49.1-2) unstable; urgency=medium
 
   * Remove patch avoiding GNOME Shell 49
