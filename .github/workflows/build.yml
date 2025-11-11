@@ -24,45 +24,31 @@ jobs:
 
     - name: Install needed packages
       run: |
+        dpkg --add-architecture arm64
         DEBIAN_FRONTEND=noninteractive apt update
-        DEBIAN_FRONTEND=noninteractive apt install -y \
-          dpkg-dev \
-          build-essential \
-          debhelper-compat \
+        DEBIAN_FRONTEND=noninteractive apt -o Dpkg::Options::="--force-overwrite" install -y \
           desktop-file-utils \
-          dh-sequence-gnome \
+          gnome-pkg-tools \
           gnome-settings-daemon-dev \
-          gsettings-desktop-schemas-dev \
           gtk-doc-tools \
           libaccountsservice-dev \
-          libadwaita-1-dev \
-          libcolord-dev \
           libcolord-gtk4-dev \
           libcups2-dev \
           libgcr-4-dev \
-          libgdk-pixbuf-2.0-dev \
           libgirepository1.0-dev \
-          libglib2.0-dev \
           libgnome-bg-4-dev \
           libgnome-bluetooth-ui-3.0-dev \
-          libgnome-desktop-4-dev \
           libgnome-rr-4-dev \
           libgnutls28-dev \
-          libgoa-1.0-dev \
           libgoa-backend-1.0-dev \
           libgsound-dev \
-          libgtk-4-dev \
           libgtop2-dev \
-          libgudev-1.0-dev \
           libhandy-1-dev \
           libibus-1.0-dev \
           libjson-glib-dev \
-          libkrb5-dev \
           libmalcontent-0-dev \
           libmm-glib-dev \
-          libnm-dev \
           libnma-gtk4-dev \
-          libpolkit-gobject-1-dev \
           libpulse-dev \
           libpwquality-dev \
           libsecret-1-dev \
@@ -71,34 +57,53 @@ jobs:
           libudisks2-dev \
           libupower-glib-dev \
           libwacom-dev \
-          libx11-dev \
-          libxft-dev \
-          libxi-dev \
           libxklavier-dev \
-          libxml2-dev \
           libxml2-utils \
           locales \
           meson \
-          polkitd \
           python3-dbusmock \
-          shared-mime-info \
           tecla \
-          tzdata \
           xvfb \
-          wget \
           blueprint-compiler \
-          git
-  
+          crossbuild-essential-arm64 \
+          libcolord-gtk4-dev:arm64 \
+          libcups2-dev:arm64 \
+          libgcr-4-dev:arm64 \
+          libgnome-bg-4-dev:arm64 \
+          libgnome-bluetooth-ui-3.0-dev:arm64 \
+          libgnome-rr-4-dev:arm64 \
+          libgnutls28-dev:arm64 \
+          libgoa-backend-1.0-dev:arm64 \
+          libgsound-dev:arm64 \
+          libgtop2-dev:arm64 \
+          libibus-1.0-dev:arm64 \
+          libjson-glib-dev:arm64 \
+          libmalcontent-0-dev:arm64 \
+          libnma-gtk4-dev:arm64 \
+          libpulse-dev:arm64 \
+          libpwquality-dev:arm64 \
+          libsecret-1-dev:arm64 \
+          libsmbclient-dev:arm64 \
+          libsoup-3.0-dev:arm64 \
+          libudisks2-dev:arm64 \
+          libwacom-dev:arm64 \
+          libxklavier-dev:arm64
+
     - name: Build debian package
       run: |
         wget https://github.com/vanilla-os/gnome-control-center/tarball/main
         mv main ../gnome-control-center_49.1.1~99-orchid-stable.orig.tar.gz
         dpkg-buildpackage -b -uc -us
+        apt install -y \
+          libaccountsservice-dev:arm64 \
+          libhandy-1-dev:arm64 \
+          libmm-glib-dev:arm64 \
+          libupower-glib-dev:arm64
+        dpkg-buildpackage -a arm64 -B -d -uc -us
         tar cvf ../gnome-control-center.tar.xz ../*.deb
     
     - name: Calculate and Save Checksums
-      run: |
-        sha256sum /__w/gnome-control-center/gnome-control-center.tar.xz >> checksums.txt
+      run: sha256sum /__w/gnome-control-center/gnome-control-center.tar.xz >> checksums.txt
 
     - uses: actions/upload-artifact@v4
       with:
