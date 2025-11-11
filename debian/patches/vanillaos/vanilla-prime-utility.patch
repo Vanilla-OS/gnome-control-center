@@ -22,7 +22,7 @@ index f40b2cf..a179c32 100644
 +            title: _("GPU Profile Management (PRIME)");
 +            activatable: true;
 +            use-underline: true;
-+            activated => $c_display_panel_prime();
++            activated => $c_display_panel_prime(template);
 +
 +            [suffix]
 +            Gtk.Image {
