@@ -79,6 +79,7 @@ Depends: accountsservice (>= 23.11.69),
          libjxl-gdk-pixbuf,
          mutter-common (>= 47),
          tecla (>= 47),
+         upower,
          webp-pixbuf-loader,
          ${misc:Depends},
          ${shlibs:Depends}
