@@ -1,3 +1,10 @@
+gnome-control-center (1:49.2-1) UNRELEASED; urgency=medium
+
+  * New upstream release
+  * Add Depends: upower (Closes: #1081577)
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Mon, 24 Nov 2025 08:08:22 -0500
+
 gnome-control-center (1:49.1-2) unstable; urgency=medium
 
   * Remove patch avoiding GNOME Shell 49
