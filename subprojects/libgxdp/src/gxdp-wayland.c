@@ -90,6 +90,127 @@ init_gtk_wayland_fallback (GError **error)
   return TRUE;
 }
 
+#if GTK_CHECK_VERSION (4,20,0)
+
+static gboolean
+get_high_contrast (GValue   *value,
+                   GVariant *variant,
+                   gpointer  user_data)
+{
+  g_value_set_enum (value,
+                    g_variant_get_boolean (variant)
+                      ? GTK_INTERFACE_CONTRAST_MORE
+                      : GTK_INTERFACE_CONTRAST_NO_PREFERENCE);
+
+  return TRUE;
+}
+
+#define MAX_KEYS 20
+
+static void
+init_settings (void)
+{
+  struct {
+    const char *schema;
+    struct {
+      const char *schema_key;
+      const char *gtk_key;
+      GSettingsBindGetMapping mapping;
+    } mappings[MAX_KEYS];
+  } schemas[] = {
+    {
+      .schema = "org.gnome.desktop.interface",
+      .mappings = {
+        { "icon-theme", "gtk-icon-theme-name" },
+        { "cursor-theme", "gtk-cursor-theme-name" },
+        { "cursor-size", "gtk-cursor-theme-size" },
+        { "cursor-blink", "gtk-cursor-blink" },
+        { "cursor-blink-timeout", "gtk-cursor-blink-timeout" },
+        { "font-name", "gtk-font-name" },
+        { "enable-animations", "gtk-enable-animations" },
+        { "gtk-enable-primary-paste", "gtk-enable-primary-paste" },
+        { "overlay-scrolling", "gtk-overlay-scrolling" },
+        { "text-scaling-factor", "gtk-xft-dpi" },
+      },
+    },
+    {
+      .schema = "org.gnome.desktop.peripherals.mouse",
+      .mappings = {
+        { "double-click", "gtk-double-click-time" },
+        { "drag-threshold", "gtk-dnd-drag-threshold" },
+      },
+    },
+    {
+      .schema = "org.gnome.desktop.sound",
+      .mappings = {
+        { "event-sounds", "gtk-enable-event-sounds" },
+        { "input-feedback-sounds", "gtk-enable-input-feedback-sounds" },
+      },
+    },
+    {
+      .schema = "org.gnome.desktop.privacy",
+      .mappings = {
+        { "recent-files-max-age", "gtk-recent-files-max-age" },
+        { "remember-recent-files", "gtk-recent-files-enabled" },
+      },
+    },
+    {
+      .schema = "org.gnome.desktop.wm-preferences",
+      .mappings = {
+        { "button-layout", "gtk-decoration-layout" },
+        { "action-double-click-titlebar", "gtk-titlebar-double-click" },
+        { "action-middle-click-titlebar", "gtk-titlebar-middle-click" },
+        { "action-right-click-titlebar", "gtk-titlebar-right-click" },
+      },
+    },
+    {
+      .schema = "org.gnome.desktop.a11y",
+      .mappings = {
+        {"always-show-text-caret", "gtk-keynav-use-caret" },
+      },
+    },
+    {
+      .schema = "org.gnome.desktop.a11y.interface",
+      .mappings = {
+        { "high-contrast", "gtk-interface-contrast", get_high_contrast },
+        { "show-status-shapes", "gtk-show-status-shapes" },
+        { "reduced-motion", "gtk-interface-reduced-motion" },
+      },
+    },
+  };
+  GtkSettings *gtk_settings = gtk_settings_get_default ();
+
+  for (size_t i = 0; i < G_N_ELEMENTS (schemas); i++)
+    {
+      g_autoptr (GSettings) settings = NULL;
+
+      settings = g_settings_new (schemas[i].schema);
+      for (size_t j = 0; j < MAX_KEYS && schemas[i].mappings[j].schema_key; j++)
+        {
+          if (schemas[i].mappings[j].mapping)
+            {
+              g_settings_bind_with_mapping (settings,
+                                            schemas[i].mappings[j].schema_key,
+                                            gtk_settings,
+                                            schemas[i].mappings[j].gtk_key,
+                                            G_SETTINGS_BIND_GET,
+                                            schemas[i].mappings[j].mapping,
+                                            NULL, NULL, NULL); 
+            }
+          else
+            {
+              g_settings_bind (settings,
+                               schemas[i].mappings[j].schema_key,
+                               gtk_settings,
+                               schemas[i].mappings[j].gtk_key,
+                               G_SETTINGS_BIND_GET);
+            }
+        }
+    }
+}
+
+#endif
+
 gboolean
 gxdp_wayland_init (GxdpServiceClientType   service_client_type,
                    GError                **error)
@@ -156,6 +277,10 @@ gxdp_wayland_init (GxdpServiceClientType   service_client_type,
     }
 
   init_x11_interop ();
+
+#if GTK_CHECK_VERSION (4,20,0)
+  init_settings ();
+#endif
 
   return TRUE;
 }

@@ -86,6 +86,7 @@ gxdp_external_window_x11_set_parent_of (GxdpExternalWindow *external_window,
   Atom net_wm_window_type_atom;
   Atom net_wm_window_type_dialog_atom;
 
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   display = gdk_display_get_default ();
   xdisplay = gdk_x11_display_get_xdisplay (display);
 
@@ -102,6 +103,7 @@ gxdp_external_window_x11_set_parent_of (GxdpExternalWindow *external_window,
                    net_wm_window_type_atom,
                    XA_ATOM, 32, PropModeReplace,
                    (guchar *) &net_wm_window_type_dialog_atom, 1);
+  G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 static void

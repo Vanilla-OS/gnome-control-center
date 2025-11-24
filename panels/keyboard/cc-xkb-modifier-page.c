@@ -39,6 +39,14 @@ struct _CcXkbModifierPage
 
 G_DEFINE_TYPE (CcXkbModifierPage, cc_xkb_modifier_page, ADW_TYPE_NAVIGATION_PAGE)
 
+static const gchar*
+get_translated_xkb_option_label (const CcXkbOption *option)
+{
+  g_assert (option != NULL);
+
+  return g_dpgettext2 (NULL, "keyboard key", option->label);
+}
+
 static const CcXkbOption*
 get_xkb_option_from_name (const CcXkbModifier *modifier, const gchar* name)
 {
@@ -234,34 +242,37 @@ cc_xkb_modifier_page_class_init (CcXkbModifierPageClass *klass)
 static void
 add_radio_buttons (CcXkbModifierPage *self)
 {
-  g_autoptr (GSList) group = NULL;
-  GtkWidget *row, *radio_button, *last_button = NULL;
+  g_autoptr(GSList) group = NULL;
+  GtkWidget *last_button = NULL;
   CcXkbOption *options = self->modifier->options;
   int i;
 
   for (i = 0; options[i].label && options[i].xkb_option; i++)
     {
-      row = g_object_new (ADW_TYPE_ACTION_ROW,
-                          "selectable", FALSE,
-                          NULL);
-      adw_preferences_group_add (self->options_group, row);
+      AdwActionRow *row;
+      GtkWidget *radio_button;
 
-      radio_button = g_object_new (GTK_TYPE_CHECK_BUTTON,
-                                   "valign", GTK_ALIGN_CENTER,
-                                   "group", last_button,
-                                   NULL);
+      row = ADW_ACTION_ROW (adw_action_row_new ());
+      adw_preferences_row_set_title (ADW_PREFERENCES_ROW (row),
+                                     get_translated_xkb_option_label (&options[i]));
+
+      radio_button = gtk_check_button_new ();
+      gtk_widget_set_valign (radio_button, GTK_ALIGN_CENTER);
+      gtk_check_button_set_group (GTK_CHECK_BUTTON (radio_button), GTK_CHECK_BUTTON (last_button));
       g_object_set_data (G_OBJECT (radio_button), "xkb-option", options[i].xkb_option);
-      g_signal_connect_object (radio_button, "toggled", (GCallback)on_active_radio_changed_cb, self, G_CONNECT_SWAPPED);
-      adw_action_row_add_prefix (ADW_ACTION_ROW (row), radio_button);
-      adw_preferences_row_set_title (ADW_PREFERENCES_ROW (row), options[i].label);
-      adw_action_row_set_activatable_widget (ADW_ACTION_ROW (row), radio_button);
+      g_signal_connect_object (radio_button, "toggled", G_CALLBACK (on_active_radio_changed_cb),
+                               self, G_CONNECT_SWAPPED);
+
+      adw_action_row_add_prefix (row, radio_button);
+      adw_action_row_set_activatable_widget (row, radio_button);
+
+      adw_preferences_group_add (self->options_group, GTK_WIDGET (row));
 
       last_button = radio_button;
       group = g_slist_prepend (group, radio_button);
     }
 
-  self->radio_group = NULL;
-  if (last_button != NULL)
+  if (group != NULL)
     self->radio_group = g_steal_pointer (&group);
 }
 
@@ -327,7 +338,6 @@ xcb_modifier_transform_binding_to_label (GValue   *value,
       entry = get_xkb_option_from_name(modifier, modifier->default_option);
     }
 
-  g_value_set_string (value,
-                      g_dpgettext2 (NULL, "keyboard key", entry->label));
+  g_value_set_string (value, get_translated_xkb_option_label (entry));
   return TRUE;
 }
