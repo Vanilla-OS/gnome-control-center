@@ -155,7 +155,7 @@ init_settings (void)
       },
     },
     {
-      .schema = "org.gnome.desktop.wm-preferences",
+      .schema = "org.gnome.desktop.wm.preferences",
       .mappings = {
         { "button-layout", "gtk-decoration-layout" },
         { "action-double-click-titlebar", "gtk-titlebar-double-click" },
