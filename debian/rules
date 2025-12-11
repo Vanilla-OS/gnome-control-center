@@ -11,11 +11,12 @@ DISTRIBUTOR_LOGO_DARK := /usr/share/pixmaps/ubuntu-logo-text-dark.png
 else
 DISTRIBUTOR_LOGO := /usr/share/icons/vendor/scalable/emblems/emblem-vendor.svg
 DISTRIBUTOR_LOGO_DARK := /usr/share/icons/vendor/scalable/emblems/emblem-vendor.svg
+endif
+
 ifneq (,$(filter $(DEB_HOST_ARCH), amd64 arm64 armel armhf i386 mips64el ppc64el riscv64 s390x hppa powerpc ppc64 x32))
 MALCONTENT := -Dmalcontent=true
 else
 MALCONTENT := -Dmalcontent=false
-endif
 endif
 
 %:
