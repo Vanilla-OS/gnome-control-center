@@ -5,8 +5,8 @@ export DEB_CPPFLAGS_MAINT_APPEND = -DSSHD_SERVICE=\"ssh.service\"
 export DEB_LDFLAGS_MAINT_APPEND = -Wl,-O1 -Wl,-z,defs
 
 ifeq ($(shell dpkg-vendor --is Ubuntu && echo yes),yes)
-DISTRIBUTOR_LOGO := /usr/share/pixmaps/ubuntu-logo-text.png
-DISTRIBUTOR_LOGO_DARK := /usr/share/pixmaps/ubuntu-logo-text-dark.png
+DISTRIBUTOR_LOGO := /usr/share/pixmaps/ubuntu-logo-text.svg
+DISTRIBUTOR_LOGO_DARK := /usr/share/pixmaps/ubuntu-logo-text-dark.svg
 else
 DISTRIBUTOR_LOGO := /usr/share/icons/vendor/scalable/emblems/emblem-vendor.svg
 DISTRIBUTOR_LOGO_DARK := /usr/share/icons/vendor/scalable/emblems/emblem-vendor.svg
