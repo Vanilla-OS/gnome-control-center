@@ -42,7 +42,7 @@ index d9de82c..d6beb69 100644
    AdwNavigationPage *display_settings_page;
    AdwComboRow    *primary_display_row;
    AdwPreferencesGroup *single_display_settings_group;
-+  AdwPreferencesGroup *prime_utility_row;
++  AdwActionRow *prime_utility_row;
  
    GtkShortcut *escape_shortcut;
  
