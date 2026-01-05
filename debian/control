@@ -1,8 +1,7 @@
 Source: gnome-control-center
 Section: gnome
 Maintainer: Debian GNOME Maintainers <pkg-gnome-maintainers@lists.alioth.debian.org>
-Uploaders: Amin Bandali <bandali@ubuntu.com>,
-           Jeremy Bícha <jbicha@ubuntu.com>,
+Uploaders: Jeremy Bícha <jbicha@ubuntu.com>,
            Laurent Bigonville <bigon@debian.org>,
            Marco Trevisan (Treviño) <marco@ubuntu.com>
 Build-Depends: debhelper-compat (= 13),

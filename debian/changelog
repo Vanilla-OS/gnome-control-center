@@ -1,12 +1,14 @@
-gnome-control-center (1:49.3-1) UNRELEASED; urgency=medium
-
-  [ Alessandro Astone ]
-  * d/rules: Enable malcontent for Ubuntu as well
+gnome-control-center (1:49.3-1) unstable; urgency=medium
 
   [ Jeremy Bícha ]
   * New upstream release
+  * Enable malcontent on all Linux architectures
+  * Bump Standards Version to 4.7.3
 
- -- Jeremy Bícha <jbicha@ubuntu.com>  Mon, 05 Jan 2026 09:34:38 -0500
+  [ Alessandro Astone ]
+  * Enable malcontent for Ubuntu as well
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Mon, 05 Jan 2026 09:56:54 -0500
 
 gnome-control-center (1:49.2.2-1) unstable; urgency=medium
 
