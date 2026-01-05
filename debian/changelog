@@ -1,9 +1,12 @@
-gnome-control-center (1:49.2.2-2) UNRELEASED; urgency=medium
+gnome-control-center (1:49.3-1) UNRELEASED; urgency=medium
 
   [ Alessandro Astone ]
   * d/rules: Enable malcontent for Ubuntu as well
 
- -- Jeremy Bícha <jbicha@ubuntu.com>  Mon, 05 Jan 2026 09:33:33 -0500
+  [ Jeremy Bícha ]
+  * New upstream release
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Mon, 05 Jan 2026 09:34:38 -0500
 
 gnome-control-center (1:49.2.2-1) unstable; urgency=medium
 
