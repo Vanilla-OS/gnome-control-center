@@ -3527,7 +3527,7 @@ control-center (1:2.6.0.2-1) experimental; urgency=low
     + Updated dependencies to libnautilus2 2.6.0.
     + Added a conflict on acme, since it's now a part of control-center
     + Changed the build dependency on libxrender-dev to libxcursor-dev
-    (Closes #240483)
+    (Closes: #240483)
 
  -- Arnaud Patard <arnaud.patard@rtp-net.org>  Thu,  1 Apr 2004 00:09:52 +0200
 
