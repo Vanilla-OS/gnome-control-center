@@ -19,8 +19,8 @@ msgstr ""
 "Project-Id-Version: gnome-control-center\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-control-center/"
 "issues\n"
-"POT-Creation-Date: 2025-12-10 13:32+0000\n"
-"PO-Revision-Date: 2026-01-03 18:05+0100\n"
+"POT-Creation-Date: 2026-01-05 13:33+0000\n"
+"PO-Revision-Date: 2026-01-09 11:23+0100\n"
 "Last-Translator: Antonio Marin <gnmer.6qxyg@slmail.me>\n"
 "Language-Team: Romanian <gnomero-list@lists.sourceforge.net>\n"
 "Language: ro\n"
@@ -273,7 +273,7 @@ msgstr "Permite activitatea când aplicația este închisă"
 
 #: panels/applications/cc-applications-panel.blp:246
 msgid "Scr_eenshots"
-msgstr "Instantan_ee"
+msgstr "Instantan_ee de ecran"
 
 #: panels/applications/cc-applications-panel.blp:247
 msgid "Take pictures of the screen at any time"
@@ -281,11 +281,11 @@ msgstr "Fotografiază ecranul în orice moment"
 
 #: panels/applications/cc-applications-panel.blp:253
 msgid "Change _Wallpaper"
-msgstr "Modifică _imaginea de fundal"
+msgstr "Schimbă _imaginea fundalului"
 
 #: panels/applications/cc-applications-panel.blp:254
 msgid "Change the desktop wallpaper"
-msgstr "Modifică imaginea de fundal de pe ecran"
+msgstr "Schimbă imaginea de fundal a ecranului"
 
 #: panels/applications/cc-applications-panel.blp:260
 msgid "So_unds"
@@ -494,7 +494,7 @@ msgstr "Preferințe"
 
 #: panels/applications/cc-applications-panel.c:907
 msgid "Can change settings"
-msgstr "Pot fi schimbate preferințele"
+msgstr "Poate schimba preferințele"
 
 #. TRANSLATORS: %s is an app name.
 #: panels/applications/cc-applications-panel.c:911
@@ -825,7 +825,7 @@ msgstr "Schimbă parametrii de bază ai rețelei"
 #: panels/applications/cc-snap-row.c:309
 msgid "Access the NetworkManager service to read and change network settings"
 msgstr ""
-"Accesează serviciul NetworkManager pentru a citi și modifica parametrii "
+"Accesează serviciul NetworkManager pentru a citi și schimba parametrii "
 "rețelei"
 
 #: panels/applications/cc-snap-row.c:311
@@ -845,8 +845,8 @@ msgid ""
 "Access the ofono service to read and change network settings for mobile "
 "telephony"
 msgstr ""
-"Accesează serviciul ofono pentru a citi și modifica parametrii rețelei "
-"pentru telefonia mobilă"
+"Accesează serviciul ofono pentru a citi și schimba parametrii rețelei pentru "
+"telefonia mobilă"
 
 #: panels/applications/cc-snap-row.c:319
 msgid "Control Open vSwitch hardware"
@@ -858,7 +858,7 @@ msgstr "Citește de pe CD/DVD"
 
 #: panels/applications/cc-snap-row.c:323
 msgid "Read, add, change, or remove saved passwords"
-msgstr "Citește, adaugă, modifică, sau elimină parole salvate"
+msgstr "Citește, adaugă, schimbă, sau elimină parole salvate"
 
 #: panels/applications/cc-snap-row.c:325
 msgid ""
@@ -949,7 +949,7 @@ msgid "Background removed"
 msgstr "Fundal eliminat"
 
 #: panels/background/cc-background-chooser.c:170
-#: panels/network/net-device-wifi.c:883 panels/printers/cc-printers-panel.c:673
+#: panels/network/net-device-wifi.c:890 panels/printers/cc-printers-panel.c:673
 msgid "_Undo"
 msgstr "An_ulează"
 
@@ -2531,7 +2531,7 @@ msgid ""
 "This can be changed in the keyboard shortcut settings."
 msgstr ""
 "Sursele de intrare pot fi schimbate folosind scurtătura %s.\n"
-"Aceasta poate fi modificată din opțiunile pentru scurtături."
+"Aceasta poate fi schimbată din opțiunile pentru scurtături."
 
 #: panels/keyboard/cc-keyboard-shortcut-dialog.blp:32
 msgid "Search shortcuts"
@@ -2574,7 +2574,7 @@ msgstr "Restabilesc toate scurtăturile?"
 
 #: panels/keyboard/cc-keyboard-shortcut-dialog.blp:137
 msgid "All changes to keyboard shortcuts will be lost"
-msgstr "Toate modificările aduse scurtăturilor vor fi pierdute"
+msgstr "Toate schimbările aduse scurtăturilor vor fi pierdute"
 
 #: panels/keyboard/cc-keyboard-shortcut-dialog.blp:144
 msgid "_Reset All"
@@ -3322,7 +3322,7 @@ msgstr "Oprirea va deconecta toate aparatele care utilizează punctul de acces."
 msgid "_Turn Off"
 msgstr "_Oprește"
 
-#: panels/network/cc-wifi-panel.c:420
+#: panels/network/cc-wifi-panel.c:421
 #: panels/network/gnome-wifi-panel.desktop.in:2
 #: panels/network/network-wifi.blp:53 panels/network/network-wifi.blp:58
 msgid "Wi-Fi"
@@ -3410,7 +3410,7 @@ msgid ""
 "any network changes."
 msgstr ""
 "Detaliile salvate pentru „%s” se vor pierde definitiv. Acest lucru include "
-"parolele și orice modificări ale rețelei."
+"parolele și orice schimbări ale rețelei."
 
 #: panels/network/connection-editor/ce-page-details.c:85
 msgid "Forget Connection?"
@@ -4137,12 +4137,12 @@ msgstr "Prin cablu"
 msgid "Add new connection"
 msgstr "Adaugă o nouă conexiune"
 
-#: panels/network/net-device-wifi.c:881
+#: panels/network/net-device-wifi.c:888
 msgid "Network deleted"
 msgstr "Rețea ștearsă"
 
 #. Translators: %d is the number of network connections deleted.
-#: panels/network/net-device-wifi.c:896
+#: panels/network/net-device-wifi.c:903
 #, c-format
 msgid "%d network deleted"
 msgid_plural "%d networks deleted"
@@ -4150,19 +4150,19 @@ msgstr[0] "%d rețea ștearsă"
 msgstr[1] "%d rețele șterse"
 msgstr[2] "%d de rețele șterse"
 
-#: panels/network/net-device-wifi.c:1130
+#: panels/network/net-device-wifi.c:1137
 msgid "System policy prohibits use as a Hotspot"
 msgstr "Regulile sistemului interzic utilizarea ca punct de acces"
 
-#: panels/network/net-device-wifi.c:1133
+#: panels/network/net-device-wifi.c:1140
 msgid "Wireless device does not support Hotspot mode"
 msgstr "Dispozitivul fără cablu nu acceptă modul „punct de acces”"
 
-#: panels/network/net-device-wifi.c:1159
+#: panels/network/net-device-wifi.c:1166
 msgid "Searching for networks…"
 msgstr "Se caută rețele…"
 
-#: panels/network/net-device-wifi.c:1176
+#: panels/network/net-device-wifi.c:1183
 msgid "No saved networks"
 msgstr "Nicio rețea salvată"
 
@@ -6329,9 +6329,9 @@ msgid ""
 "operating system configuration change, or because of malicious software on "
 "this system."
 msgstr ""
-"Această problemă ar putea fi cauzată de o modificare a parametrilor firmware-"
-"ului UEFI, o modificare a parametrilor sistemului de operare sau din cauza "
-"programelor rău intenționate din acest sistem."
+"Această problemă ar putea fi cauzată de o schimbare a parametrilor firmware-"
+"ului UEFI, o schimbare a parametrilor sistemului sau din cauza programelor "
+"rău intenționate din acest sistem."
 
 #. TRANSLATORS: this is to explain an event that has already happened
 #: panels/privacy/firmware-security/cc-firmware-security-page.c:163
@@ -6339,8 +6339,8 @@ msgid ""
 "This issue could have been caused by a change in the UEFI firmware settings, "
 "or because of malicious software on this system."
 msgstr ""
-"Această problemă ar fi putut fi cauzată de o modificare a parametrilor "
-"firmware-ului UEFI sau din cauza software-ului rău intenționat din acest "
+"Această problemă ar fi putut fi cauzată de o schimbare a parametrilor "
+"firmware-ului UEFI sau din cauza programelor rău intenționate din acest "
 "sistem."
 
 #. TRANSLATORS: this is to explain an event that has already happened
@@ -6349,9 +6349,8 @@ msgid ""
 "This issue could have been caused by an operating system configuration "
 "change, or because of malicious software on this system."
 msgstr ""
-"Această problemă ar fi putut fi cauzată de o modificare a configurației "
-"sistemului de operare sau din cauza software-ului rău intenționat de pe "
-"acest sistem."
+"Această problemă ar fi putut fi cauzată de o schimbare a parametrilor "
+"sistemului sau din cauza programelor rău intenționate din acest sistem."
 
 #. TRANSLATOR: this is the date in "%Y-%m-%d %H:%M:%S" format,
 #. for example: 2022-08-01 22:48:00
@@ -7542,7 +7541,7 @@ msgstr "Regiunea și limba"
 
 #: panels/system/region/cc-region-page.blp:16
 msgid "Language and format will be changed after next login"
-msgstr "Liimba și formatul vor fi modificate după următoarea autentificare"
+msgstr "Liimba și formatul vor fi schimbate după următoarea autentificare"
 
 #: panels/system/region/cc-region-page.blp:17
 msgid "Log _Out…"
@@ -8250,11 +8249,11 @@ msgstr "Nu se poate realiza conectarea la domeniul %s: %s"
 #: panels/system/users/cc-user-page.blp:131
 #: panels/system/users/cc-user-page.blp:161
 msgid "Unlock to Change This Setting"
-msgstr "Deblochează pentru a modifica această opțiune"
+msgstr "Deblochează pentru a schimba această opțiune"
 
 #: panels/system/users/cc-user-page.blp:38
 msgid "Change Avatar"
-msgstr "Modifică poza de profil"
+msgstr "Schimbă poza de profil"
 
 #: panels/system/users/cc-user-page.blp:57
 msgid "Remove Avatar"
@@ -8365,7 +8364,7 @@ msgstr "Administrare conturi de utilizator"
 
 #: panels/system/users/org.gnome.controlcenter.user-accounts.policy.in:12
 msgid "Authentication is required to change user data"
-msgstr "Autentificarea e necesară pentru a modifica datele utilizatorului"
+msgstr "Autentificarea e necesară pentru a schimba datele utilizatorului"
 
 #: panels/system/users/pw-utils.c:105
 msgctxt "Password hint"
