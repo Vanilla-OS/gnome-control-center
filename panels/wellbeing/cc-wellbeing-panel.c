@@ -6,7 +6,7 @@
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 2.1 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -19,7 +19,7 @@
  * Authors:
  *  - Philip Withnall <pwithnall@gnome.org>
  *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
 #include "config.h"
@@ -28,6 +28,9 @@
 #include <glib/gi18n-lib.h>
 #include <glib.h>
 #include <gio/gio.h>
+#ifdef HAVE_MALCONTENT
+#include <libmalcontent/malcontent.h>
+#endif
 
 #include "cc-break-schedule-row.h"
 #include "cc-duration-row.h"
@@ -59,6 +62,13 @@ struct _CcWellbeingPanel {
   GSettings *movement_break_settings;  /* (owned) */
 
   GListStore *movement_break_schedule_list;  /* (owned) */
+
+#ifdef HAVE_MALCONTENT
+  MctManager *policy_manager; /* (owned) */
+  MctSessionLimits *limits; /* (owned) */
+
+  AdwBanner *parental_controls_banner;
+#endif
 
   CcScreenTimeStatisticsRow *screen_time_statistics_row;
 
@@ -107,6 +117,7 @@ static void disable_screen_time_recording_button_clicked_cb (GtkButton *button,
                                                              gpointer   user_data);
 static void update_screen_time_limits_enabled (CcWellbeingPanel *self);
 static void update_daily_time_limit_and_grayscale_row_sensitivity (CcWellbeingPanel *self);
+static void update_settings_bindings (CcWellbeingPanel *self);
 
 static void movement_break_schedule_notify_selected_item_cb (GObject    *object,
                                                              GParamSpec *pspec,
@@ -217,6 +228,153 @@ settings_strv_add_or_remove_str (const GValue       *value,
   return g_variant_builder_end (&builder);
 }
 
+#ifdef HAVE_MALCONTENT
+static void
+get_session_limits_cb (GObject          *source,
+                       GAsyncResult     *res,
+                       CcWellbeingPanel *self)
+{
+
+  g_autoptr(GError) error = NULL;
+
+  g_clear_pointer (&self->limits, mct_session_limits_unref);
+  self->limits = mct_manager_get_session_limits_finish (self->policy_manager,
+                                                        res,
+                                                        &error);
+
+  if (error &&
+      !g_error_matches (error, MCT_MANAGER_ERROR, MCT_MANAGER_ERROR_DISABLED))
+    g_warning ("Error retrieving session limits: %s", error->message);
+
+  update_settings_bindings (self);
+  update_daily_time_limit_and_grayscale_row_sensitivity (self);
+}
+
+static void
+session_limits_changed_cb (CcWellbeingPanel *self,
+                           uid_t             uid)
+{
+  if (uid != getuid ())
+    return;
+
+  mct_manager_get_session_limits_async (self->policy_manager,
+                                        getuid (),
+                                        MCT_MANAGER_GET_VALUE_FLAGS_NONE,
+                                        cc_panel_get_cancellable (CC_PANEL (self)),
+                                        (GAsyncReadyCallback) get_session_limits_cb,
+                                        self);
+}
+
+static void
+system_bus_ready (GObject          *source,
+                  GAsyncResult     *res,
+                  CcWellbeingPanel *self)
+{
+  g_autoptr(GDBusConnection) bus = NULL;
+  g_autoptr(GError) error = NULL;
+
+  bus = g_bus_get_finish (res, &error);
+  if (!bus)
+    {
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        {
+          g_warning ("Error getting system bus while setting up session limits: %s",
+                      error->message);
+        }
+      return;
+    }
+
+  self->policy_manager = mct_manager_new (bus);
+
+  g_signal_connect_object (self->policy_manager,
+                           "session-limits-changed",
+                           G_CALLBACK (session_limits_changed_cb),
+                           self,
+                           G_CONNECT_SWAPPED);
+
+  mct_manager_get_session_limits_async (self->policy_manager,
+                                        getuid (),
+                                        MCT_MANAGER_GET_VALUE_FLAGS_NONE,
+                                        cc_panel_get_cancellable (CC_PANEL (self)),
+                                        (GAsyncReadyCallback) get_session_limits_cb,
+                                        self);
+}
+
+static void
+spawn_malcontent_control (CcWellbeingPanel *self)
+{
+  g_autoptr(GError) error = NULL;
+  const gchar *argv[] = { "malcontent-control",
+                          "--user", g_get_user_name (),
+                          NULL
+  };
+
+  if (!g_spawn_async (NULL, (char **)argv, NULL, G_SPAWN_SEARCH_PATH, NULL,
+                      NULL, NULL, &error))
+    {
+      g_debug ("Couldn't launch malcontent-control: %s", error->message);
+    }
+}
+
+static gboolean
+is_parental_controls_enabled (CcWellbeingPanel *self)
+{
+  if (!self->limits)
+    return FALSE;
+
+  return mct_session_limits_is_enabled (self->limits);
+}
+#endif
+
+static void
+update_settings_bindings (CcWellbeingPanel *self)
+{
+#ifdef HAVE_MALCONTENT
+  if (is_parental_controls_enabled (self))
+    {
+      gboolean daily_limit;
+      unsigned int limit_secs;
+
+      g_settings_unbind (self->screen_time_limit_row, "active");
+      g_settings_unbind (self->daily_time_limit_row, "duration");
+      g_settings_unbind (self->grayscale_row, "active");
+
+      g_clear_signal_handler (&self->screen_time_limits_settings_writable_changed_daily_limit_seconds_id, self->screen_time_limits_settings);
+
+      daily_limit = mct_session_limits_get_daily_limit (self->limits, &limit_secs);
+
+      adw_switch_row_set_active (self->screen_time_limit_row, daily_limit);
+      cc_duration_row_set_duration (CC_DURATION_ROW (self->daily_time_limit_row), limit_secs / 60);
+      adw_switch_row_set_active (self->grayscale_row, FALSE);
+
+      return;
+    }
+#endif
+  g_settings_bind (self->screen_time_limits_settings,
+                   "daily-limit-enabled",
+                   self->screen_time_limit_row,
+                   "active",
+                   G_SETTINGS_BIND_DEFAULT | G_SETTINGS_BIND_NO_SENSITIVITY);
+  g_settings_bind_with_mapping (self->screen_time_limits_settings,
+                                "daily-limit-seconds",
+                                self->daily_time_limit_row,
+                                "duration",
+                                G_SETTINGS_BIND_DEFAULT | G_SETTINGS_BIND_NO_SENSITIVITY,
+                                seconds_to_minutes,
+                                minutes_to_seconds,
+                                NULL,
+                                NULL);
+  g_settings_bind (self->screen_time_limits_settings,
+                   "grayscale",
+                   self->grayscale_row,
+                   "active",
+                   G_SETTINGS_BIND_DEFAULT | G_SETTINGS_BIND_NO_SENSITIVITY);
+
+  self->screen_time_limits_settings_changed_history_enabled_id =
+      g_signal_connect_swapped (self->screen_time_limits_settings, "changed::history-enabled",
+                                G_CALLBACK (update_screen_time_limits_enabled), self);
+}
+
 static void
 cc_wellbeing_panel_init (CcWellbeingPanel *self)
 {
@@ -246,33 +404,31 @@ cc_wellbeing_panel_init (CcWellbeingPanel *self)
 
   adw_combo_row_set_model (self->movement_break_schedule_row, G_LIST_MODEL (self->movement_break_schedule_list));
 
+#ifdef HAVE_MALCONTENT
+  /* Set up system bus connection checking if parental controls
+   * and session limits are enabled for the user. */
+  self->limits = NULL;
+  g_bus_get (G_BUS_TYPE_SYSTEM,
+             cc_panel_get_cancellable (CC_PANEL (self)),
+             (GAsyncReadyCallback) system_bus_ready,
+             self);
+
+  /* Parental Controls: Unavailable if malcontent-control is not available which
+   * can happen if libmalcontent is installed but malcontent-control is not. */
+  if (!g_find_program_in_path ("malcontent-control"))
+    adw_banner_set_button_label (self->parental_controls_banner, NULL);
+
+  g_signal_connect_object (self->parental_controls_banner,
+                           "button-clicked",
+                           G_CALLBACK (spawn_malcontent_control),
+                           self,
+                           G_CONNECT_SWAPPED);
+#endif
+
   /* Set up settings bindings for screen time limits. */
   self->screen_time_limits_settings = g_settings_new ("org.gnome.desktop.screen-time-limits");
 
-  g_settings_bind (self->screen_time_limits_settings,
-                   "daily-limit-enabled",
-                   self->screen_time_limit_row,
-                   "active",
-                   G_SETTINGS_BIND_DEFAULT | G_SETTINGS_BIND_NO_SENSITIVITY);
-  g_settings_bind_with_mapping (self->screen_time_limits_settings,
-                                "daily-limit-seconds",
-                                self->daily_time_limit_row,
-                                "duration",
-                                G_SETTINGS_BIND_DEFAULT | G_SETTINGS_BIND_NO_SENSITIVITY,
-                                seconds_to_minutes,
-                                minutes_to_seconds,
-                                NULL,
-                                NULL);
-  g_settings_bind (self->screen_time_limits_settings,
-                   "grayscale",
-                   self->grayscale_row,
-                   "active",
-                   G_SETTINGS_BIND_DEFAULT | G_SETTINGS_BIND_NO_SENSITIVITY);
-
-  self->screen_time_limits_settings_changed_history_enabled_id =
-      g_signal_connect_swapped (self->screen_time_limits_settings, "changed::history-enabled",
-                                G_CALLBACK (update_screen_time_limits_enabled), self);
-
+  update_settings_bindings (self);
   update_screen_time_limits_enabled (self);
 
   /* Sensitivity has to be handled separately for the screen time settings
@@ -416,12 +572,24 @@ update_daily_time_limit_and_grayscale_row_sensitivity (CcWellbeingPanel *self)
   gboolean daily_limit_seconds_writable = g_settings_is_writable (self->screen_time_limits_settings, "daily-limit-seconds");
   gboolean grayscale_writable = g_settings_is_writable (self->screen_time_limits_settings, "grayscale");
 
+#ifdef HAVE_MALCONTENT
+  gboolean session_limits_enabled = is_parental_controls_enabled (self);
+  adw_banner_set_revealed (self->parental_controls_banner, session_limits_enabled);
+#else
+  gboolean session_limits_enabled = FALSE;
+#endif
+
   gtk_widget_set_sensitive (GTK_WIDGET (self->screen_time_limit_row),
+                            !session_limits_enabled &&
                             history_enabled && daily_limit_enabled_writable);
   gtk_widget_set_sensitive (GTK_WIDGET (self->daily_time_limit_row),
+                            !session_limits_enabled &&
                             history_enabled && daily_limit_enabled && daily_limit_seconds_writable);
   gtk_widget_set_sensitive (GTK_WIDGET (self->grayscale_row),
+                            !session_limits_enabled &&
                             history_enabled && daily_limit_enabled && grayscale_writable);
+  gtk_widget_set_sensitive (GTK_WIDGET (self->screen_time_statistics_info_button),
+                            !session_limits_enabled);
 }
 
 static void
@@ -622,6 +790,11 @@ cc_wellbeing_panel_dispose (GObject *object)
   g_clear_object (&self->break_reminders_settings);
   g_clear_object (&self->screen_time_limits_settings);
 
+#ifdef HAVE_MALCONTENT
+  g_clear_pointer (&self->limits, mct_session_limits_unref);
+  g_clear_object (&self->policy_manager);
+#endif
+
   gtk_widget_dispose_template (GTK_WIDGET (object), CC_TYPE_WELLBEING_PANEL);
 
   G_OBJECT_CLASS (cc_wellbeing_panel_parent_class)->dispose (object);
@@ -657,6 +830,9 @@ cc_wellbeing_panel_class_init (CcWellbeingPanelClass *klass)
   gtk_widget_class_bind_template_child (widget_class, CcWellbeingPanel, movement_breaks_row);
   gtk_widget_class_bind_template_child (widget_class, CcWellbeingPanel, movement_break_schedule_row);
   gtk_widget_class_bind_template_child (widget_class, CcWellbeingPanel, sounds_row);
+#ifdef HAVE_MALCONTENT
+  gtk_widget_class_bind_template_child (widget_class, CcWellbeingPanel, parental_controls_banner);
+#endif
 
   gtk_widget_class_bind_template_callback (widget_class, enable_screen_time_recording_button_clicked_cb);
   gtk_widget_class_bind_template_callback (widget_class, disable_screen_time_recording_button_clicked_cb);

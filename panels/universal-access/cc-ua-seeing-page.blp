@@ -52,27 +52,22 @@ template $CcUaSeeingPage: Adw.NavigationPage {
         }
 
         Adw.ActionRow {
-          title: _("_Animation Effects");
-          subtitle: _("Toggle animation effects throughout the user interface");
+          title: _("_Reduced Motion");
+          subtitle: _("Toggle reduced motion animations throughout the user interface");
           use-underline: true;
-          activatable-widget: animation_effects_switch;
+          activatable-widget: reduced_motion_switch;
 
           [suffix]
-          $CcListRowInfoButton {
-            text: _("Turning off animation effects will result in more sudden transitions and no motion in the user interface at all. This may introduce unwanted effects that may have a negative impact on some visual sensitivities.");
-            valign: center;
-          }
-
-          [suffix]
-          Switch animation_effects_switch {
+          Switch reduced_motion_switch {
             valign: center;
           }
         }
 
-        Adw.SwitchRow large_text_row {
-          title: _("_Large Text");
-          subtitle: _("Increase the size of all text in the user interface");
+        $CcListRow text_size_row {
+          title: _("_Text Size");
           use-underline: true;
+          show-arrow: true;
+          activated => $ua_text_size_row_activated_cb(template);
         }
 
         $CcListRow cursor_size_row {
@@ -92,6 +87,89 @@ template $CcUaSeeingPage: Adw.NavigationPage {
           title: _("Always Show Scroll_bars");
           subtitle: _("Make scrollbars always visible");
           use-underline: true;
+        }
+      }
+    };
+  };
+}
+
+Adw.Dialog text_size_dialog {
+  title: _("Text Size");
+  content-width: 500;
+  height-request: 360;
+
+  child: Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar {
+      show-start-title-buttons: false;
+      show-end-title-buttons: false;
+
+      [start]
+      Button {
+        label: _("Cancel");
+        clicked => $adw_dialog_close(text_size_dialog);
+      }
+
+      [end]
+      Button {
+        label: _("Apply");
+        clicked => $apply_text_size_changes(template);
+
+        styles [
+          "suggested-action",
+        ]
+      }
+    }
+
+    content: Adw.PreferencesPage {
+      description: _("Use the slider to adjust the size of user interface text");
+      description-centered: true;
+
+      Adw.PreferencesGroup {
+        Adw.PreferencesRow {
+          activatable: false;
+
+          child: Box {
+            spacing: 10;
+
+            Label text_size_label_small {
+              /* Translators: Single letter next to the text size slider */
+              label: _("A");
+              margin-start: 20;
+            }
+
+            Scale text_size_scale {
+              margin-top: 10;
+              margin-bottom: 10;
+              hexpand: true;
+              round-digits: 2;
+
+              adjustment: Adjustment {
+                lower: 1.00;
+                upper: 2.00;
+                value: 1.00;
+                step-increment: 0.01;
+                page-increment: 0.05;
+              };
+            }
+
+            Label text_size_label_large {
+              label: _("A");
+              margin-end: 20;
+            }
+          };
+        }
+      }
+
+      Adw.PreferencesGroup {
+        Label text_size_preview_label {
+          vexpand: true;
+          wrap: true;
+          label: _("Sample text");
+
+          styles [
+            "dim-label",
+          ]
         }
       }
     };

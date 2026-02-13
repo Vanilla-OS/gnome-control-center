@@ -216,7 +216,7 @@ ce_page_setup_mac_combo (GtkComboBoxText  *combo,
 gchar *
 ce_page_trim_address (const gchar *addr)
 {
-        char *space;
+        const char *space;
 
         if (!addr || *addr == '\0')
                 return NULL;

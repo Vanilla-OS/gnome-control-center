@@ -28,13 +28,7 @@
 #include "gsd-common-enums.h"
 #include "gsd-input-helper.h"
 
-#ifdef HAVE_X11
-#include <gdk/x11/gdkx.h>
-#include <X11/extensions/XInput2.h>
-#endif
-#ifdef GDK_WINDOWING_WAYLAND
 #include <gdk/wayland/gdkwayland.h>
-#endif
 
 typedef struct
 {
@@ -312,33 +306,9 @@ gsd_device_manager_real_lookup_device (GsdDeviceManager *manager,
 	GHashTableIter iter;
 	GsdDevice *device;
 
-#ifdef HAVE_X11
-	if (GDK_IS_X11_DISPLAY (display)) {
-                XIDeviceInfo *info;
-                int n_infos, i, source_id = 0;
-
-                gdk_x11_display_error_trap_push (display);
-                info = XIQueryDevice (gdk_x11_display_get_xdisplay (display),
-                                      gdk_x11_device_get_id (gdk_device),
-                                      &n_infos);
-                if (gdk_x11_display_error_trap_pop (display) != 0)
-                        return NULL;
-                if (!info || n_infos != 1)
-                        return NULL;
-
-                for (i = 0; i < info->num_classes; i++) {
-                        if (info->classes[i]->type == XIValuatorClass)
-                                source_id = info->classes[i]->sourceid;
-                }
-
-                if (source_id != 0)
-                        node_path = xdevice_get_device_node (source_id);
-        }
-#endif
-#ifdef GDK_WINDOWING_WAYLAND
 	if (GDK_IS_WAYLAND_DISPLAY (display))
 		node_path = g_strdup (gdk_wayland_device_get_node_path (gdk_device));
-#endif
+
 	if (!node_path)
 		return NULL;
 
@@ -426,12 +396,12 @@ create_device (GUdevDevice *udev_device, GUdevDevice *parent)
 	guint width, height;
 
 	name = g_udev_device_get_sysfs_attr (parent, "name");
-	vendor = g_udev_device_get_property (udev_device, "ID_VENDOR_ID");
-	product = g_udev_device_get_property (udev_device, "ID_MODEL_ID");
+	vendor = g_udev_device_get_sysfs_attr (udev_device, "device/id/vendor");
+	product = g_udev_device_get_sysfs_attr (udev_device, "device/id/product");
 
 	if (!vendor || !product) {
-		vendor = g_udev_device_get_sysfs_attr (udev_device, "device/id/vendor");
-		product = g_udev_device_get_sysfs_attr (udev_device, "device/id/product");
+		vendor = g_udev_device_get_property (udev_device, "ID_VENDOR_ID");
+		product = g_udev_device_get_property (udev_device, "ID_MODEL_ID");
 	}
 
 	width = g_udev_device_get_property_as_int (udev_device, "ID_INPUT_WIDTH_MM");

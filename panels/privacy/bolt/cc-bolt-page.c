@@ -550,7 +550,7 @@ cc_bolt_page_name_owner_changed (CcBoltPage *self)
       break;
 
     case BOLT_SECURITY_UNKNOWN:
-      text = _("Thunderbolt security level could not be determined.");;
+      text = _("Thunderbolt security level could not be determined.");
       break;
     }
 

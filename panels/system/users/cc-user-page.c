@@ -35,6 +35,7 @@
 #include "cc-fingerprint-manager.h"
 #include "cc-language-chooser.h"
 #include "cc-list-row.h"
+#include "cc-list-row-info-button.h"
 #include "cc-password-dialog.h"
 #include "cc-permission-infobar.h"
 #include "user-utils.h"
@@ -469,7 +470,7 @@ update_editable_state (CcUserPage *self)
     self->avatar_editable = (is_current_user (self->user) || !self->locked);
     g_object_notify (G_OBJECT (self), "avatar-editable");
 
-    self->editable = self->avatar_editable && act_user_is_local_account (self->user);
+    self->editable = self->avatar_editable;
     g_object_notify (G_OBJECT (self), "editable");
 }
 
@@ -479,9 +480,7 @@ spawn_malcontent_control (CcUserPage *self)
 {
     g_autoptr(GError) error = NULL;
     const gchar *argv[] = { "malcontent-control",
-#ifdef HAVE_MALCONTENT_0_10
                         "--user", act_user_get_user_name (self->user),
-#endif  /* HAVE_MALCONTENT_0_10 */
                         NULL
     };
 
@@ -641,6 +640,7 @@ cc_user_page_class_init (CcUserPageClass * klass)
                                                            FALSE,
                                                            G_PARAM_READABLE));
     g_type_ensure (CC_TYPE_LIST_ROW);
+    g_type_ensure (CC_TYPE_LIST_ROW_INFO_BUTTON);
     g_type_ensure (CC_TYPE_PERMISSION_INFOBAR);
 
     gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/system/users/cc-user-page.ui");

@@ -203,7 +203,7 @@ present_action_dialog (CcWacomStylusPage *page,
 							   cc_wacom_tool_get_name (page->stylus),
 							   button, key);
 
-	adw_dialog_present (ADW_DIALOG (action_dialog), GTK_WIDGET (page));;
+	adw_dialog_present (ADW_DIALOG (action_dialog), GTK_WIDGET (page));
 }
 
 static void

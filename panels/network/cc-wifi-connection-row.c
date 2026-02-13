@@ -196,7 +196,7 @@ update_ui (CcWifiConnectionRow *self)
       NMSettingWireless *sw;
       const gchar *name = NULL;
       g_autofree gchar *ssid_str = NULL;
-      gchar *ssid_pos;
+      const gchar *ssid_pos;
 
       sw = nm_connection_get_setting_wireless (self->connection);
 

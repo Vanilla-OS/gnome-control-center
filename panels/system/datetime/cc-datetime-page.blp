@@ -3,11 +3,15 @@ using Adw 1;
 
 $CcTzDialog timezone_dialog {
   tz-selected => $panel_tz_selection_changed_cb(template);
+  // Hide the dialog when there's no permission to change timezone
+  visible: bind timezone_row.sensitive;
 }
 
 Adw.Dialog datetime_dialog {
   title: _("Date & Time");
   content-width: 430;
+  // Hide the dialog when there's no permission to change time
+  visible: bind datetime_row.sensitive;
 
   child: Adw.ToolbarView {
     [top]
@@ -147,6 +151,16 @@ template $CcDateTimePage: Adw.NavigationPage {
                 name: "am-pm";
               }
             }
+          }
+
+          Adw.ComboRow week_start_day_row {
+            title: _("F_irst Day of the Week");
+            use-underline: true;
+            expression: expr $get_weekday_name() as <string>;
+
+            model: Adw.EnumListModel {
+              enum-type: typeof<$GDesktopWeekday>;
+            };
           }
         }
 
