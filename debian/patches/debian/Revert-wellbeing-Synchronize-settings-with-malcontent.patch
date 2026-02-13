@@ -1,0 +1,51 @@
+From: =?utf-8?b?Ik1hcmNvIFRyZXZpc2FuIChUcmV2acOxbyki?= <mail@3v1n0.net>
+Date: Sat, 14 Feb 2026 00:22:31 +0100
+Subject: Revert "wellbeing: Synchronize settings with malcontent"
+
+Drop malcontent code requiring new APIs
+
+This reverts commit 17e72fe9fa6ab5c6040ec48f0a520501bf7cc912.
+---
+ panels/wellbeing/cc-wellbeing-panel.c | 22 ----------------------
+ 1 file changed, 22 deletions(-)
+
+diff --git a/panels/wellbeing/cc-wellbeing-panel.c b/panels/wellbeing/cc-wellbeing-panel.c
+index ef24fa9..87c402a 100644
+--- a/panels/wellbeing/cc-wellbeing-panel.c
++++ b/panels/wellbeing/cc-wellbeing-panel.c
+@@ -246,7 +246,6 @@ get_session_limits_cb (GObject          *source,
+       !g_error_matches (error, MCT_MANAGER_ERROR, MCT_MANAGER_ERROR_DISABLED))
+     g_warning ("Error retrieving session limits: %s", error->message);
+ 
+-  update_settings_bindings (self);
+   update_daily_time_limit_and_grayscale_row_sensitivity (self);
+ }
+ 
+@@ -329,27 +328,6 @@ is_parental_controls_enabled (CcWellbeingPanel *self)
+ static void
+ update_settings_bindings (CcWellbeingPanel *self)
+ {
+-#ifdef HAVE_MALCONTENT
+-  if (is_parental_controls_enabled (self))
+-    {
+-      gboolean daily_limit;
+-      unsigned int limit_secs;
+-
+-      g_settings_unbind (self->screen_time_limit_row, "active");
+-      g_settings_unbind (self->daily_time_limit_row, "duration");
+-      g_settings_unbind (self->grayscale_row, "active");
+-
+-      g_clear_signal_handler (&self->screen_time_limits_settings_writable_changed_daily_limit_seconds_id, self->screen_time_limits_settings);
+-
+-      daily_limit = mct_session_limits_get_daily_limit (self->limits, &limit_secs);
+-
+-      adw_switch_row_set_active (self->screen_time_limit_row, daily_limit);
+-      cc_duration_row_set_duration (CC_DURATION_ROW (self->daily_time_limit_row), limit_secs / 60);
+-      adw_switch_row_set_active (self->grayscale_row, FALSE);
+-
+-      return;
+-    }
+-#endif
+   g_settings_bind (self->screen_time_limits_settings,
+                    "daily-limit-enabled",
+                    self->screen_time_limit_row,
