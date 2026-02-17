@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: gnome-control-center\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-control-center/"
 "issues\n"
-"POT-Creation-Date: 2025-10-08 10:14+0000\n"
-"PO-Revision-Date: 2025-11-05 22:17+0100\n"
+"POT-Creation-Date: 2025-11-04 20:58+0000\n"
+"PO-Revision-Date: 2025-11-05 22:15+0100\n"
 "Last-Translator: Милош Поповић <gpopac@gmail.com>\n"
 "Language-Team: Serbian <Serbian <gnome-sr@googlegroups.com>>\n"
 "Language: sr\n"
@@ -39,7 +39,7 @@ msgstr "Додај пречице на тастатури"
 #: panels/display/cc-display-panel.blp:139
 #: panels/display/cc-display-panel.blp:186
 #: panels/keyboard/cc-input-chooser.blp:16
-#: panels/keyboard/cc-keyboard-shortcut-dialog.blp:143
+#: panels/keyboard/cc-keyboard-shortcut-dialog.blp:144
 #: panels/keyboard/cc-keyboard-shortcut-editor.blp:13
 #: panels/network/cc-net-proxy-page.blp:15
 #: panels/network/cc-wifi-hotspot-dialog.blp:122
@@ -71,7 +71,7 @@ msgstr "_Откажи"
 #: panels/keyboard/cc-keyboard-shortcut-editor.blp:32
 #: panels/network/connection-editor/net-connection-editor.c:653
 #: panels/printers/pp-new-printer-dialog.ui:96
-#: panels/system/users/cc-add-user-dialog.c:362
+#: panels/system/users/cc-add-user-dialog.c:370
 #: panels/system/users/cc-add-user-dialog.ui:32
 #: panels/system/users/cc-add-user-dialog.ui:153
 #: panels/system/users/cc-enterprise-login-dialog.blp:47
@@ -134,7 +134,7 @@ msgid "Set which apps open links, files, and media"
 msgstr "Одредите који програм отвара везе, датотеке и медије"
 
 #: panels/applications/cc-applications-panel.blp:64
-#: panels/keyboard/cc-keyboard-shortcut-dialog.blp:88
+#: panels/keyboard/cc-keyboard-shortcut-dialog.blp:89
 #: panels/printers/cc-printers-panel.blp:96
 #: panels/system/datetime/cc-tz-dialog.blp:37
 #: panels/system/region/cc-format-chooser.blp:114 shell/cc-panel-list.blp:40
@@ -142,7 +142,7 @@ msgid "No Results Found"
 msgstr "Нисам нашао резултате"
 
 #: panels/applications/cc-applications-panel.blp:65
-#: panels/keyboard/cc-keyboard-shortcut-dialog.blp:89
+#: panels/keyboard/cc-keyboard-shortcut-dialog.blp:90
 #: panels/printers/cc-printers-panel.blp:97
 #: panels/system/datetime/cc-tz-dialog.blp:38
 #: panels/system/region/cc-format-chooser.blp:115 shell/cc-panel-list.blp:41
@@ -241,7 +241,7 @@ msgstr "Примање системских претрага и слање ис�
 #: panels/keyboard/cc-xkb-modifier-page.c:322
 #: panels/keyboard/keyboard-shortcuts.c:367 panels/network/panel-common.c:336
 #: panels/system/users/cc-user-page.c:367
-#: panels/system/users/cc-user-page.c:753 panels/wwan/cc-wwan-device-page.c:477
+#: panels/system/users/cc-user-page.c:753 panels/wwan/cc-wwan-device-page.c:475
 #: subprojects/gvc/gvc-mixer-control.c:1872
 msgid "Disabled"
 msgstr "Искључено"
@@ -386,69 +386,69 @@ msgstr "Потребне дозволе"
 msgid "Files & Links"
 msgstr "Датотеке и везе"
 
-#: panels/applications/cc-applications-panel.blp:398
+#: panels/applications/cc-applications-panel.blp:399
 msgid "File Types"
 msgstr "Врсте датотека"
 
-#: panels/applications/cc-applications-panel.blp:402
+#: panels/applications/cc-applications-panel.blp:403
 msgid "Link Types"
 msgstr "Врсте везе"
 
-#: panels/applications/cc-applications-panel.blp:407
+#: panels/applications/cc-applications-panel.blp:408
 msgid "_Reset"
 msgstr "_Поново постави"
 
-#: panels/applications/cc-applications-panel.blp:422
+#: panels/applications/cc-applications-panel.blp:424
 msgid "Storage"
 msgstr "Складиште"
 
-#: panels/applications/cc-applications-panel.blp:432
+#: panels/applications/cc-applications-panel.blp:434
 msgid "App"
 msgstr "Програм"
 
-#: panels/applications/cc-applications-panel.blp:440
+#: panels/applications/cc-applications-panel.blp:442
 msgid "Data"
 msgstr "Подаци"
 
-#: panels/applications/cc-applications-panel.blp:448
+#: panels/applications/cc-applications-panel.blp:450
 msgid "Cache"
 msgstr "Кеш"
 
-#: panels/applications/cc-applications-panel.blp:456
+#: panels/applications/cc-applications-panel.blp:458
 msgid "Total"
 msgstr "Укупно"
 
-#: panels/applications/cc-applications-panel.blp:466
+#: panels/applications/cc-applications-panel.blp:468
 msgid "_Clear Cache"
 msgstr "О_чисти кеш"
 
-#: panels/applications/cc-applications-panel.c:881
+#: panels/applications/cc-applications-panel.c:884
 msgid "System Bus"
 msgstr "Системска сабирница"
 
-#: panels/applications/cc-applications-panel.c:881
-#: panels/applications/cc-applications-panel.c:883
-#: panels/applications/cc-applications-panel.c:896
-#: panels/applications/cc-applications-panel.c:901
+#: panels/applications/cc-applications-panel.c:884
+#: panels/applications/cc-applications-panel.c:886
+#: panels/applications/cc-applications-panel.c:899
+#: panels/applications/cc-applications-panel.c:904
 msgid "Full access"
 msgstr "Пун приступ"
 
-#: panels/applications/cc-applications-panel.c:883
+#: panels/applications/cc-applications-panel.c:886
 msgid "Session Bus"
 msgstr "Сабирница сесије"
 
-#: panels/applications/cc-applications-panel.c:887
+#: panels/applications/cc-applications-panel.c:890
 #: panels/privacy/bolt/cc-bolt-page.blp:118
 #: panels/privacy/bolt/cc-bolt-page.blp:143
 #: panels/privacy/cc-privacy-panel.blp:57
 msgid "Devices"
 msgstr "Уређаји"
 
-#: panels/applications/cc-applications-panel.c:887
+#: panels/applications/cc-applications-panel.c:890
 msgid "Full access to /dev"
 msgstr "Пун приступ фасцикли /dev"
 
-#: panels/applications/cc-applications-panel.c:891
+#: panels/applications/cc-applications-panel.c:894
 #: panels/network/cc-network-panel.blp:7
 #: panels/network/gnome-network-panel.desktop.in:2
 #: panels/network/network-mobile.ui:235 panels/wwan/cc-wwan-device-page.blp:49
@@ -456,39 +456,39 @@ msgstr "Пун приступ фасцикли /dev"
 msgid "Network"
 msgstr "Мрежа"
 
-#: panels/applications/cc-applications-panel.c:891
+#: panels/applications/cc-applications-panel.c:894
 msgid "Has network access"
 msgstr "Има приступ мрежи"
 
-#: panels/applications/cc-applications-panel.c:896
-#: panels/applications/cc-applications-panel.c:898
+#: panels/applications/cc-applications-panel.c:899
+#: panels/applications/cc-applications-panel.c:901
 #: panels/search/cc-search-locations-page.c:421
 msgid "Home"
 msgstr "Личнo"
 
-#: panels/applications/cc-applications-panel.c:898
-#: panels/applications/cc-applications-panel.c:903
+#: panels/applications/cc-applications-panel.c:901
+#: panels/applications/cc-applications-panel.c:906
 msgid "Read-only"
 msgstr "Само за читање"
 
-#: panels/applications/cc-applications-panel.c:901
-#: panels/applications/cc-applications-panel.c:903
+#: panels/applications/cc-applications-panel.c:904
+#: panels/applications/cc-applications-panel.c:906
 msgid "File System"
 msgstr "Систем датотека"
 
-#: panels/applications/cc-applications-panel.c:907
+#: panels/applications/cc-applications-panel.c:910
 #: panels/keyboard/01-launchers.xml.in:6
 #: shell/appdata/org.gnome.Settings.metainfo.xml.in.in:7 shell/cc-window.blp:20
 #: shell/cc-window.c:804 shell/org.gnome.Settings.desktop.in:2
 msgid "Settings"
 msgstr "Подешавања"
 
-#: panels/applications/cc-applications-panel.c:907
+#: panels/applications/cc-applications-panel.c:910
 msgid "Can change settings"
 msgstr "Може променити подешавања"
 
 #. TRANSLATORS: %s is an app name.
-#: panels/applications/cc-applications-panel.c:911
+#: panels/applications/cc-applications-panel.c:914
 #, c-format
 msgid ""
 "%s requires access to the following system resources. To stop this access, "
@@ -497,7 +497,7 @@ msgstr ""
 "%s захтева приступ следећим ресурсима система. Уколико желите да онемогућите "
 "приступ, морате да уклоните апликацију."
 
-#: panels/applications/cc-applications-panel.c:915
+#: panels/applications/cc-applications-panel.c:918
 #, c-format
 msgid "%u permission"
 msgid_plural "%u permissions"
@@ -506,15 +506,34 @@ msgstr[1] "%u дозволе"
 msgstr[2] "%u дозвола"
 msgstr[3] "%u дозвола"
 
-#: panels/applications/cc-applications-panel.c:1087
+#: panels/applications/cc-applications-panel.c:1094
+msgid "Type removed"
+msgstr "Врста је уклоњена"
+
+#: panels/applications/cc-applications-panel.c:1095
+#: panels/background/cc-background-chooser.c:170
+#: panels/network/net-device-wifi.c:883 panels/printers/cc-printers-panel.c:673
+msgid "_Undo"
+msgstr "_Опозови"
+
+#: panels/applications/cc-applications-panel.c:1110
+#, c-format
+msgid "%d type removed"
+msgid_plural "%d types removed"
+msgstr[0] "%d врста је уклоњена"
+msgstr[1] "%d врсте су уклоњене"
+msgstr[2] "%d врста је уклоњено"
+msgstr[3] "Врста је уклоњена"
+
+#: panels/applications/cc-applications-panel.c:1139
 msgid "Remove Link Type"
 msgstr "Уклони врсту везе"
 
-#: panels/applications/cc-applications-panel.c:1118
+#: panels/applications/cc-applications-panel.c:1170
 msgid "Remove File Type"
 msgstr "Уклони врсту датотеке"
 
-#: panels/applications/cc-applications-panel.c:1251
+#: panels/applications/cc-applications-panel.c:1303
 #, c-format
 msgid "%u type"
 msgid_plural "%u types"
@@ -524,18 +543,18 @@ msgstr[2] "%u врста"
 msgstr[3] "%u врста"
 
 #. TRANSLATORS: %s is an app name.
-#: panels/applications/cc-applications-panel.c:1260
+#: panels/applications/cc-applications-panel.c:1312
 #, c-format
 msgid "%s is used to open the following types of files and links"
 msgstr "%s се користи за отварање следећих врста датотека и веза"
 
 #. TRANSLATORS: %s is an app name.
-#: panels/applications/cc-applications-panel.c:1303
+#: panels/applications/cc-applications-panel.c:1355
 #, c-format
 msgid "How much disk space %s is occupying with app data and caches"
 msgstr "Колико простора на диску %s заузима својим подацима и кешом"
 
-#: panels/applications/cc-applications-panel.c:1468
+#: panels/applications/cc-applications-panel.c:1520
 #, c-format
 msgid "%u action"
 msgid_plural "%u actions"
@@ -935,11 +954,6 @@ msgstr "апликација;програм;флетпек;дозволе;под
 #: panels/background/cc-background-chooser.c:169
 msgid "Background removed"
 msgstr "Позадина уклоњена"
-
-#: panels/background/cc-background-chooser.c:170
-#: panels/network/net-device-wifi.c:883 panels/printers/cc-printers-panel.c:673
-msgid "_Undo"
-msgstr "_Опозови"
 
 #. Translators: %d is the number of backgrounds deleted.
 #: panels/background/cc-background-chooser.c:186
@@ -2534,41 +2548,41 @@ msgstr "Пречице претраге"
 msgid "Search Shortcuts"
 msgstr "Пречице претраге"
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.blp:64
+#: panels/keyboard/cc-keyboard-shortcut-dialog.blp:65
 msgid "Activities _Overview Shortcut"
 msgstr "Активирај пречицу прегледа активно_сти"
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.blp:66
+#: panels/keyboard/cc-keyboard-shortcut-dialog.blp:67
 msgid "Use the Super key to open the overview"
 msgstr "Притисните Супер тастер да отворите преглед активности"
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.blp:72
+#: panels/keyboard/cc-keyboard-shortcut-dialog.blp:73
 msgid "_Reset All…"
 msgstr "_Врати све…"
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.blp:114
+#: panels/keyboard/cc-keyboard-shortcut-dialog.blp:115
 msgid "Add Custom Shortcuts"
 msgstr "Додајте произвољне пречице"
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.blp:115
+#: panels/keyboard/cc-keyboard-shortcut-dialog.blp:116
 msgid "Set up custom shortcuts for launching apps, running scripts, and more"
 msgstr ""
 "Поставите произвољне пречице за покретање програма, извршавање скрипти и још "
 "тога"
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.blp:120
+#: panels/keyboard/cc-keyboard-shortcut-dialog.blp:121
 msgid "_Add Shortcut…"
 msgstr "_Додај пречицу…"
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.blp:136
+#: panels/keyboard/cc-keyboard-shortcut-dialog.blp:137
 msgid "Reset All Shortcuts?"
 msgstr "Да вратим све пречице?"
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.blp:137
+#: panels/keyboard/cc-keyboard-shortcut-dialog.blp:138
 msgid "All changes to keyboard shortcuts will be lost"
 msgstr "Све проемне у пречицама тастатуре ће бити обрисане"
 
-#: panels/keyboard/cc-keyboard-shortcut-dialog.blp:144
+#: panels/keyboard/cc-keyboard-shortcut-dialog.blp:145
 msgid "_Reset All"
 msgstr "_Врати све"
 
@@ -2589,7 +2603,7 @@ msgstr ""
 "Притисните „Esc“ да откажете или „Backspace“ да онемогућите пречицу тастатуре"
 
 #: panels/keyboard/cc-keyboard-shortcut-editor.blp:125
-#: panels/keyboard/cc-keyboard-shortcut-row.blp:23
+#: panels/keyboard/cc-keyboard-shortcut-row.blp:22
 msgid "Reset Shortcut"
 msgstr "Поништи пречицу"
 
@@ -2659,7 +2673,7 @@ msgstr "Унесите нову пречицу да промените <b>%s</b>
 msgid "Add Custom Shortcut"
 msgstr "Додајте произвољну пречицу"
 
-#: panels/keyboard/cc-keyboard-shortcut-group.c:134
+#: panels/keyboard/cc-keyboard-shortcut-group.c:135
 #, c-format
 msgid "%d modified"
 msgid_plural "%d modified"
@@ -2668,9 +2682,9 @@ msgstr[1] "%d ставки је измењено"
 msgstr[2] "%d ставки је измењено"
 msgstr[3] "Једна ставка је измењена"
 
-#: panels/keyboard/cc-keyboard-shortcut-group.c:157
-msgid "Add a Shortcut"
-msgstr "Додај пречицу"
+#: panels/keyboard/cc-keyboard-shortcut-group.c:153
+msgid "_Add Shortcut"
+msgstr "_Додај пречицу"
 
 #: panels/keyboard/gnome-keyboard-panel.desktop.in:3
 msgid ""
@@ -3331,6 +3345,14 @@ msgstr "_Безбедност 802.1x"
 msgid "_Name"
 msgstr "_Назив"
 
+#: panels/network/connection-editor/ce-ip-address-entry.c:53
+msgid "IP address value not valid"
+msgstr "Вредност ИП адресе није исправна"
+
+#: panels/network/connection-editor/ce-netmask-entry.c:82
+msgid "Netmask value not valid"
+msgstr "Вредност мрежне маске није исправна"
+
 #: panels/network/connection-editor/ce-page-8021x-security.c:106
 #: panels/network/connection-editor/ce-page-security.c:416
 #: panels/network/connection-editor/details-page.blp:85
@@ -3591,21 +3613,21 @@ msgid "Automatic DNS is enabled. Did you intend to disable Automatic DNS?"
 msgstr ""
 "Аутоматски ДНС је омогућен. Да ли желите да онемогућите аутоматски ДНС?"
 
-#: panels/network/connection-editor/ce-page-ip4.c:293
-#: panels/network/connection-editor/ce-page-ip6.c:277
+#: panels/network/connection-editor/ce-page-ip4.c:296
+#: panels/network/connection-editor/ce-page-ip6.c:280
 msgid "Delete Address"
 msgstr "Обриши адресу"
 
-#: panels/network/connection-editor/ce-page-ip4.c:462
-#: panels/network/connection-editor/ce-page-ip6.c:434
+#: panels/network/connection-editor/ce-page-ip4.c:465
+#: panels/network/connection-editor/ce-page-ip6.c:437
 msgid "Delete Route"
 msgstr "Обриши руту"
 
-#: panels/network/connection-editor/ce-page-ip4.c:799
+#: panels/network/connection-editor/ce-page-ip4.c:802
 msgid "IPv4"
 msgstr "ИПв4"
 
-#: panels/network/connection-editor/ce-page-ip6.c:768
+#: panels/network/connection-editor/ce-page-ip6.c:771
 msgid "IPv6"
 msgstr "ИПв6"
 
@@ -3655,7 +3677,7 @@ msgstr "Вајергард"
 #: panels/system/about/cc-system-details-window.c:291
 #: panels/system/about/cc-system-details-window.c:343
 #: panels/system/about/cc-system-details-window.c:847
-#: panels/wwan/cc-wwan-details-dialog.c:100
+#: panels/wwan/cc-wwan-details-dialog.c:101
 msgid "Unknown"
 msgstr "Непознато"
 
@@ -3664,7 +3686,7 @@ msgid "Unsaved peer"
 msgstr "Несачувани парњак"
 
 #: panels/network/connection-editor/details-page.blp:19
-#: panels/wwan/cc-wwan-details-dialog.blp:66
+#: panels/wwan/cc-wwan-details-dialog.blp:34
 msgid "Signal Strength"
 msgstr "Јачина сигнала"
 
@@ -3899,8 +3921,8 @@ msgstr ""
 "Грешка: %s."
 
 #: panels/network/connection-editor/vpn-helpers.c:148
-#: panels/system/users/cc-add-user-dialog.c:87
-#: panels/system/users/cc-password-dialog.c:150 shell/cc-window.blp:77
+#: panels/system/users/cc-add-user-dialog.c:88
+#: panels/system/users/cc-password-dialog.c:165 shell/cc-window.blp:77
 msgid "_OK"
 msgstr "У _реду"
 
@@ -4155,7 +4177,7 @@ msgid "Add Ethernet Connection"
 msgstr "Додајте нову жичану везу"
 
 #: panels/network/network-mobile.ui:27
-#: panels/wwan/cc-wwan-details-dialog.blp:219
+#: panels/wwan/cc-wwan-details-dialog.blp:86
 msgid "IMEI"
 msgstr "ИМЕИ"
 
@@ -5582,7 +5604,7 @@ msgstr "Учитавам управљачке програме"
 
 #. Translators: Name of column showing printer manufacturers
 #: panels/printers/pp-ppd-selection-dialog.c:216
-#: panels/wwan/cc-wwan-details-dialog.blp:145
+#: panels/wwan/cc-wwan-details-dialog.blp:62
 msgid "Manufacturer"
 msgstr "Произвођач"
 
@@ -5594,7 +5616,7 @@ msgstr "Нема активних послова"
 
 #: panels/printers/pp-printer-entry.blp:57
 #: panels/system/about/cc-system-details-window.blp:67
-#: panels/wwan/cc-wwan-details-dialog.blp:168
+#: panels/wwan/cc-wwan-details-dialog.blp:70
 msgid "Model"
 msgstr "Мустра"
 
@@ -6386,7 +6408,7 @@ msgstr "Није исправно"
 #. TRANSLATORS: Status of Parental Controls setup
 #: panels/privacy/firmware-security/cc-firmware-security-utils.c:45
 #: panels/system/users/cc-user-page.c:365
-#: panels/system/users/cc-user-page.c:753 panels/wwan/cc-wwan-device-page.c:475
+#: panels/system/users/cc-user-page.c:753 panels/wwan/cc-wwan-device-page.c:473
 msgid "Enabled"
 msgstr "Омогућено"
 
@@ -7116,7 +7138,7 @@ msgid "Software Information"
 msgstr "Софтверски подаци"
 
 #: panels/system/about/cc-system-details-window.blp:110
-#: panels/wwan/cc-wwan-details-dialog.blp:193
+#: panels/wwan/cc-wwan-details-dialog.blp:78
 msgid "Firmware Version"
 msgstr "Издање фирмвера"
 
@@ -7203,7 +7225,7 @@ msgstr "Погледајте податке о вашем систему"
 #. "Preferred Applications" is the old name for the preference, so make
 #. sure that you use the same "translation" for those keywords
 #: panels/system/about/gnome-about-panel.desktop.in:18
-msgid "device;system;information;hostname;memory;processor;version;default;application;preferred;cd;dvd;usb;audio;video;disc;removable;media;autorun;"
+msgid "device;system;information;hostname;memory;processor;version;default;application;preferred;cd;dvd;usb;audio;video;disc;removable;media;autorun;winver;"
 msgstr "уређај;систем;информације;меморија;домаћин;хост;процесор;издање;верзија;основно;подразумевано;програм;апликација;омиљено;цд;двд;усб;звук;снимак;диск;уклоњиви;медијум;носач;самопокретање;винвер;uređaj;sistem;informacije;memorija;procesor;izdanje;verzija;osnovno;podrazumevano;program;aplikacija;omiljeno;cd;dvd;usb;zvuk;snimak;disk;uklonjivi;medijum;nosač;domacin;host;samopokretanje;vinver;device;system;information;memory;processor;version;default;application;preferred;cd;dvd;usb;audio;video;disc;removable;media;autorun;"
 
 #: panels/system/cc-system-panel.blp:16
@@ -7613,7 +7635,7 @@ msgstr "Подаци за пријаву"
 
 #: panels/system/remote-desktop/cc-desktop-sharing-page.blp:84
 #: panels/system/remote-desktop/cc-remote-login-page.blp:84
-#: panels/system/users/cc-add-user-dialog.ui:87
+#: panels/system/users/cc-add-user-dialog.ui:64
 #: panels/system/users/cc-enterprise-login-dialog.blp:81
 msgid "_Username"
 msgstr "_Корисник"
@@ -7726,19 +7748,23 @@ msgstr ""
 "Потребно је потврђивање идентитета за укључивање или искључивање удаљеног "
 "пријављивања"
 
-#: panels/system/users/cc-add-user-dialog.c:151
+#: panels/system/users/cc-add-user-dialog.c:152
 msgid "Failed to add account"
 msgstr "Нисам успео да додам налог"
 
-#: panels/system/users/cc-add-user-dialog.c:282
+#: panels/system/users/cc-add-user-dialog.c:290
+#: panels/system/users/cc-password-dialog.c:278
+#: panels/system/users/cc-password-dialog.c:363
 msgid "Passwords match"
 msgstr "Лозинке се подударају"
 
-#: panels/system/users/cc-add-user-dialog.c:282
+#: panels/system/users/cc-add-user-dialog.c:290
+#: panels/system/users/cc-password-dialog.c:274
+#: panels/system/users/cc-password-dialog.c:406
 msgid "Passwords do not match"
 msgstr "Лозинке се не подударају"
 
-#: panels/system/users/cc-add-user-dialog.c:362
+#: panels/system/users/cc-add-user-dialog.c:370
 #: panels/wwan/cc-wwan-sim-lock-dialog.blp:21
 msgid "_Next"
 msgstr "_Следеће"
@@ -7748,14 +7774,25 @@ msgid "Add User"
 msgstr "Додајте корисника"
 
 #: panels/system/users/cc-add-user-dialog.ui:53
-msgid "Account Type"
-msgstr "Врста налога"
+msgid "User Details"
+msgstr "Подаци о кориснику"
 
-#: panels/system/users/cc-add-user-dialog.ui:57
+#: panels/system/users/cc-add-user-dialog.ui:56
+msgid "Fu_ll Name"
+msgstr "Име и прези_ме"
+
+#: panels/system/users/cc-add-user-dialog.ui:73
+msgid ""
+"Usernames can only include lower case letters, numbers, hyphens and "
+"underscores."
+msgstr ""
+"Корисничка имена могу да укључују само мала слова, бројеве, црту и дољу црту."
+
+#: panels/system/users/cc-add-user-dialog.ui:84
 msgid "Ad_ministrator"
 msgstr "_Администратор"
 
-#: panels/system/users/cc-add-user-dialog.ui:62
+#: panels/system/users/cc-add-user-dialog.ui:89
 #: panels/system/users/cc-user-page.blp:139
 msgid ""
 "Administrators have extra abilities, including adding and removing users, "
@@ -7765,21 +7802,6 @@ msgstr ""
 "Администратори могу додавати и уклањати друге кориснике, мењати корисничка "
 "подешавања и уклањати програме. Родитељске контроле не могу бити примењене "
 "над администраторима."
-
-#: panels/system/users/cc-add-user-dialog.ui:76
-msgid "User Details"
-msgstr "Подаци о кориснику"
-
-#: panels/system/users/cc-add-user-dialog.ui:79
-msgid "Fu_ll Name"
-msgstr "Име и прези_ме"
-
-#: panels/system/users/cc-add-user-dialog.ui:95
-msgid ""
-"Usernames can only include lower case letters, numbers, hyphens and "
-"underscores."
-msgstr ""
-"Корисничка имена могу да укључују само мала слова, бројеве, црту и дољу црту."
 
 #: panels/system/users/cc-add-user-dialog.ui:107
 msgid "User sets password on _first login"
@@ -7793,14 +7815,14 @@ msgstr "_Сада постави лозинку"
 msgid "Set Password"
 msgstr "Постави лозинку"
 
-#: panels/system/users/cc-add-user-dialog.ui:219
+#: panels/system/users/cc-add-user-dialog.ui:220
 msgid ""
 "For a good password, mix upper case, lower case, numbers and punctuation."
 msgstr ""
 "За добру лозинку измешајте велика и мала слова, бројеве и знакове "
 "интерпункције."
 
-#: panels/system/users/cc-add-user-dialog.ui:229
+#: panels/system/users/cc-add-user-dialog.ui:230
 msgid "_Confirm Password"
 msgstr "По_тврди лозинку"
 
@@ -8139,15 +8161,15 @@ msgstr ""
 msgid "_Delete All"
 msgstr "Обриши _све"
 
-#: panels/system/users/cc-password-dialog.c:129
+#: panels/system/users/cc-password-dialog.c:137
 msgid "Please choose another password."
 msgstr "Изаберите другу лозинку."
 
-#: panels/system/users/cc-password-dialog.c:138
+#: panels/system/users/cc-password-dialog.c:146
 msgid "Please type your current password again."
 msgstr "Унесите вашу тренутну лозинку поново."
 
-#: panels/system/users/cc-password-dialog.c:144
+#: panels/system/users/cc-password-dialog.c:152
 msgid "Password could not be changed"
 msgstr "Лозинка не може бити промењена"
 
@@ -8163,23 +8185,19 @@ msgstr "П_ромени"
 msgid "Current Password"
 msgstr "Тренутна лозинка"
 
-#: panels/system/users/cc-password-dialog.ui:54
+#: panels/system/users/cc-password-dialog.ui:61
 msgid "New Password"
 msgstr "Нова лозинка"
 
-#: panels/system/users/cc-password-dialog.ui:82
+#: panels/system/users/cc-password-dialog.ui:89
 msgid "Confirm Password"
 msgstr "Потврди лозинку"
 
-#: panels/system/users/cc-password-dialog.ui:94
-msgid "The passwords do not match"
-msgstr "Лозинке се не подударају"
-
-#: panels/system/users/cc-password-dialog.ui:130
+#: panels/system/users/cc-password-dialog.ui:125
 msgid "Allow user to change their password on next login"
 msgstr "Дозволи кориснику да измени лозинку приликом следећег пријављивања"
 
-#: panels/system/users/cc-password-dialog.ui:142
+#: panels/system/users/cc-password-dialog.ui:137
 msgid "Set a password now"
 msgstr "Постави лозинку сада"
 
@@ -8442,47 +8460,56 @@ msgstr "Сјајна лозинка!"
 msgid "Authentication failed"
 msgstr "Потврђивање идентитета није успело"
 
-#: panels/system/users/run-passwd.c:469
+#: panels/system/users/run-passwd.c:470
 #, c-format
 msgid "The new password is too short"
 msgstr "Нова лозинка је превише кратка"
 
-#: panels/system/users/run-passwd.c:475
+#: panels/system/users/run-passwd.c:476
 #, c-format
 msgid "The new password is too simple"
 msgstr "Нова лозинка је превише једноставна"
 
-#: panels/system/users/run-passwd.c:481
+#: panels/system/users/run-passwd.c:482
 #, c-format
 msgid "The old and new passwords are too similar"
 msgstr "Стара и нова лозинка су сувише сличне"
 
-#: panels/system/users/run-passwd.c:484
+#: panels/system/users/run-passwd.c:485
 #, c-format
 msgid "The new password has already been used recently."
 msgstr "Нова лозинка је већ употребљавана у скорије време."
 
-#: panels/system/users/run-passwd.c:487
+#: panels/system/users/run-passwd.c:488
 #, c-format
 msgid "The new password must contain numeric or special characters"
 msgstr "Нова лозинка мора да садржи нумеричке или специјалне знакове"
 
-#: panels/system/users/run-passwd.c:491
+#: panels/system/users/run-passwd.c:492
 #, c-format
 msgid "The old and new passwords are the same"
 msgstr "Стара и нова лозинка су исте"
 
-#: panels/system/users/run-passwd.c:495
+#: panels/system/users/run-passwd.c:496
 #, c-format
 msgid "Your password has been changed since you initially authenticated!"
 msgstr "Ваша лозинка је измењена од када сте на почетку потврдили идентитет!"
 
-#: panels/system/users/run-passwd.c:499
+#: panels/system/users/run-passwd.c:500
 #, c-format
 msgid "The new password does not contain enough different characters"
 msgstr "Нова лозинка не садржи довољно различитих знакова"
 
-#: panels/system/users/run-passwd.c:503 panels/wwan/cc-wwan-errors-private.h:72
+#: panels/system/users/run-passwd.c:503
+#, c-format
+msgid ""
+"Password does not meet your organization's security policies. Try a "
+"different password or contact your system administrator."
+msgstr ""
+"Лозинка не испуњава сигурносне одредбе ваше организације. Покушајте другом "
+"лозинком или контактирајте администратора вашег система."
+
+#: panels/system/users/run-passwd.c:507 panels/wwan/cc-wwan-errors-private.h:72
 #, c-format
 msgid "Unknown error"
 msgstr "Непозната грешка"
@@ -9091,7 +9118,7 @@ msgstr "Олакшајте посматрање, слушање, куцање, �
 
 #. Translators: Search terms to find the Accessibility panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
 #: panels/universal-access/gnome-universal-access-panel.desktop.in:14
-msgid "Keyboard;Mouse;a11y;Accessibility;Universal;Access;Contrast;Cursor;Sound;Zoom;Screen;Reader;big;high;large;text;font;size;AccessX;Sticky;Keys;Slow;Bounce;Mouse;Double;click;Delay;Speed;Assist;Repeat;Blink;Pointer;find;locate;visual;hearing;audio;typing;animations;"
+msgid "Keyboard;Mouse;a11y;Accessibility;Universal;Access;Contrast;Cursor;Sound;Zoom;Screen;Reader;big;high;large;text;font;size;AccessX;Sticky;Keys;Slow;Bounce;Mouse;Double;click;Delay;Speed;Assist;Repeat;Blink;Pointer;find;locate;visual;hearing;audio;typing;animations;overamplification;"
 msgstr ""
 "Keyboard;Mouse;a11y;Accessibility;Universal;Access;Contrast;Cursor;Sound;Zoom;Screen;Reader;big;high;large;text;font;size;AccessX;Sticky;Keys;Slow;Bounce;Mouse;Double;click;Delay;Speed;Assist;Repeat;Blink;visual;hearing;audio;typing;animations;overamplification;тастатура;миш;a11y;приступачност;контраст;универзални "
 "приступ;зум;читач;екран;текст;слова;величина;Икс;приступ;лепљиви;тастери;спори;одскочни;миш;двоструки;клик;застој;понови;трепни;визуелно;слух;аудио;звук;куцање;прекомерно;појачањеtastatura;miš;pristupačnost;kontrast;zum;čitač;ekran;tekst;slova;veličina;Iks;pristup;lepljivi;tasteri;spori;odskočni;miš;dvostruki;klik;zastoj;ponovi;trepni;vizuelno;univerzalni "
@@ -9685,47 +9712,47 @@ msgstr "<b>Грешка:</b> Грешка мобилне опреме"
 msgid "Modem Details"
 msgstr "Појединости модема"
 
-#: panels/wwan/cc-wwan-details-dialog.blp:13
+#: panels/wwan/cc-wwan-details-dialog.blp:15
 msgid "Modem Status"
 msgstr "Стање модема"
 
-#: panels/wwan/cc-wwan-details-dialog.blp:20
+#: panels/wwan/cc-wwan-details-dialog.blp:18
 msgid "Carrier"
 msgstr "Оператер"
 
-#: panels/wwan/cc-wwan-details-dialog.blp:43
+#: panels/wwan/cc-wwan-details-dialog.blp:26
 msgid "Network Type"
 msgstr "Врста мреже"
 
-#: panels/wwan/cc-wwan-details-dialog.blp:89
+#: panels/wwan/cc-wwan-details-dialog.blp:42
 msgid "Network Status"
 msgstr "Стање мреже"
 
-#: panels/wwan/cc-wwan-details-dialog.blp:113
+#: panels/wwan/cc-wwan-details-dialog.blp:50
 msgid "Own Number"
 msgstr "Сопствени број"
 
-#: panels/wwan/cc-wwan-details-dialog.blp:138
+#: panels/wwan/cc-wwan-details-dialog.blp:59
 msgid "Device Details"
 msgstr "Појединости уређаја"
 
-#: panels/wwan/cc-wwan-details-dialog.c:80
+#: panels/wwan/cc-wwan-details-dialog.c:81
 msgid "Not Registered"
 msgstr "Нерегистрован"
 
-#: panels/wwan/cc-wwan-details-dialog.c:84
+#: panels/wwan/cc-wwan-details-dialog.c:85
 msgid "Registered"
 msgstr "Регистрован"
 
-#: panels/wwan/cc-wwan-details-dialog.c:88
+#: panels/wwan/cc-wwan-details-dialog.c:89
 msgid "Roaming"
 msgstr "Роминг"
 
-#: panels/wwan/cc-wwan-details-dialog.c:92
+#: panels/wwan/cc-wwan-details-dialog.c:93
 msgid "Searching"
 msgstr "Претражујем"
 
-#: panels/wwan/cc-wwan-details-dialog.c:96
+#: panels/wwan/cc-wwan-details-dialog.c:97
 msgid "Denied"
 msgstr "Забрањено"
 
@@ -9962,37 +9989,37 @@ msgstr "Закључајте СИМ ПИН-ом"
 msgid "M_odem Details"
 msgstr "П_ојединости модема"
 
-#: panels/wwan/cc-wwan-device-page.c:186
+#: panels/wwan/cc-wwan-device-page.c:185
 msgid "Unlock SIM card"
 msgstr "Откључај СИМ картицу"
 
-#: panels/wwan/cc-wwan-device-page.c:187 panels/wwan/cc-wwan-device-page.c:235
+#: panels/wwan/cc-wwan-device-page.c:186 panels/wwan/cc-wwan-device-page.c:234
 msgid "Unlock"
 msgstr "Откључај"
 
-#: panels/wwan/cc-wwan-device-page.c:188
+#: panels/wwan/cc-wwan-device-page.c:187
 msgid "Cancel"
 msgstr "Откажи"
 
-#: panels/wwan/cc-wwan-device-page.c:192
+#: panels/wwan/cc-wwan-device-page.c:191
 #, c-format
 msgid "Please provide PIN code for SIM %d"
 msgstr "Доставите ПИН код за СИМ %d"
 
-#: panels/wwan/cc-wwan-device-page.c:193
+#: panels/wwan/cc-wwan-device-page.c:192
 msgid "Enter PIN to unlock your SIM card"
 msgstr "Упишите ПИН да откључате вашу СИМ картицу"
 
-#: panels/wwan/cc-wwan-device-page.c:197
+#: panels/wwan/cc-wwan-device-page.c:196
 #, c-format
 msgid "Please provide PUK code for SIM %d"
 msgstr "Доставите ПУК код за СИМ %d"
 
-#: panels/wwan/cc-wwan-device-page.c:198
+#: panels/wwan/cc-wwan-device-page.c:197
 msgid "Enter PUK to unlock your SIM card"
 msgstr "Упишите ПУК да откључате вашу СИМ картицу"
 
-#: panels/wwan/cc-wwan-device-page.c:216
+#: panels/wwan/cc-wwan-device-page.c:215
 #, c-format
 msgid "Wrong password entered. You have %1$u try left"
 msgid_plural "Wrong password entered. You have %1$u tries left"
@@ -10001,7 +10028,7 @@ msgstr[1] "Уписана је погрешна лозинка. Остала с�
 msgstr[2] "Уписана је погрешна лозинка. Остало вам је %1$u покушаја"
 msgstr[3] "Уписана је погрешна лозинка. Остао вам је један покушај"
 
-#: panels/wwan/cc-wwan-device-page.c:219
+#: panels/wwan/cc-wwan-device-page.c:218
 #, c-format
 msgid "You have %u try left"
 msgid_plural "You have %u tries left"
@@ -10010,23 +10037,23 @@ msgstr[1] "Остала су вам %u покушаја"
 msgstr[2] "Остало вам је %u покушаја"
 msgstr[3] "Остао вам је један покушај"
 
-#: panels/wwan/cc-wwan-device-page.c:224
+#: panels/wwan/cc-wwan-device-page.c:223
 msgid "Wrong password entered."
 msgstr "Уписали сте погрешну лозинку."
 
-#: panels/wwan/cc-wwan-device-page.c:269
+#: panels/wwan/cc-wwan-device-page.c:268
 msgid "PUK code should be an 8 digit number"
 msgstr "ПУК код треба бити број од 8 цифара"
 
-#: panels/wwan/cc-wwan-device-page.c:293
+#: panels/wwan/cc-wwan-device-page.c:292
 msgid "Enter New PIN"
 msgstr "Упишите нови ПИН"
 
-#: panels/wwan/cc-wwan-device-page.c:297
+#: panels/wwan/cc-wwan-device-page.c:296
 msgid "PIN code should be a 4-8 digit number"
 msgstr "ПИН код треба бити број од 4-8 цифара"
 
-#: panels/wwan/cc-wwan-device-page.c:315
+#: panels/wwan/cc-wwan-device-page.c:314
 msgid "Unlocking…"
 msgstr "Откључавам…"
 
@@ -10405,33 +10432,14 @@ msgstr[3] "Један улаз"
 msgid "System Sounds"
 msgstr "Системски звуци"
 
-#~ msgid "Type removed"
-#~ msgstr "Врста је уклоњена"
+#~ msgid "Add a Shortcut"
+#~ msgstr "Додај пречицу"
 
-#, c-format
-#~ msgid "%d type removed"
-#~ msgid_plural "%d types removed"
-#~ msgstr[0] "%d врста је уклоњена"
-#~ msgstr[1] "%d врсте су уклоњене"
-#~ msgstr[2] "%d врста је уклоњено"
-#~ msgstr[3] "Врста је уклоњена"
+#~ msgid "Account Type"
+#~ msgstr "Врста налога"
 
-#~ msgid "_Add Shortcut"
-#~ msgstr "_Додај пречицу"
-
-#~ msgid "IP address value not valid"
-#~ msgstr "Вредност ИП адресе није исправна"
-
-#~ msgid "Netmask value not valid"
-#~ msgstr "Вредност мрежне маске није исправна"
-
-#, c-format
-#~ msgid ""
-#~ "Password does not meet your organization's security policies. Try a "
-#~ "different password or contact your system administrator."
-#~ msgstr ""
-#~ "Лозинка не испуњава сигурносне одредбе ваше организације. Покушајте "
-#~ "другом лозинком или контактирајте администратора вашег система."
+#~ msgid "The passwords do not match"
+#~ msgstr "Лозинке се не подударају"
 
 #~ msgid "The measuring instrument does not support printer profiling."
 #~ msgstr "Инструмент за мерење не подржава профилисање штампача."

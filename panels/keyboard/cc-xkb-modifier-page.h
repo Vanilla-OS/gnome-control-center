@@ -22,6 +22,7 @@
 
 #include <adwaita.h>
 #include <gtk/gtk.h>
+#include <linux/input-event-codes.h>
 
 G_BEGIN_DECLS
 
@@ -29,6 +30,7 @@ typedef struct
 {
   gchar *label;
   gchar *xkb_option;
+  guint event_code;
 } CcXkbOption;
 
 typedef struct
@@ -36,8 +38,11 @@ typedef struct
   gchar *prefix;
   gchar *title;
   gchar *description;
+  gchar *switch_label;
+  gchar *unset_label;
+  gboolean switch_inverted;
+
   CcXkbOption *options;
-  gchar *default_option;
 } CcXkbModifier;
 
 #define CC_TYPE_XKB_MODIFIER_PAGE (cc_xkb_modifier_page_get_type())

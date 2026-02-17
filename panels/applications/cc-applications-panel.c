@@ -34,7 +34,6 @@
 #include "cc-applications-row.h"
 #include "cc-list-row-info-button.h"
 #include "cc-list-row.h"
-#include "cc-default-apps-page.h"
 #include "cc-removable-media-settings.h"
 #include "cc-applications-resources.h"
 #include "cc-applications-row.h"
@@ -148,6 +147,10 @@ struct _CcApplicationsPanel
   AdwActionRow    *storage_page_total_row;
   AdwButtonRow    *clear_cache_button_row;
 
+  AdwToastOverlay *toast_overlay;
+  AdwToast        *toast;
+  GList           *removed_itens;
+
   guint64          app_size;
   guint64          cache_size;
   guint64          data_size;
@@ -177,18 +180,6 @@ gnome_software_is_installed (void)
 }
 
 /* Callbacks */
-
-static gboolean
-privacy_link_cb (CcApplicationsPanel *self)
-{
-  CcShell *shell = cc_panel_get_shell (CC_PANEL (self));
-  g_autoptr(GError) error = NULL;
-
-  if (!cc_shell_set_active_panel_from_id (shell, "location", NULL, &error))
-    g_warning ("Failed to switch to privacy panel: %s", error->message);
-
-  return TRUE;
-}
 
 static void
 open_software_cb (CcApplicationsPanel *self)
@@ -772,7 +763,6 @@ add_snap_permissions (CcApplicationsPanel *self,
                                                   "mir",
                                                   "unity7", "unity8",
                                                   "wayland",
-                                                  "x11",
                                                   NULL };
 
       /* Skip if not relating to this snap */
@@ -1055,17 +1045,66 @@ update_permissions_group (CcApplicationsPanel *self,
 }
 
 /* --- handler section --- */
+static void
+on_remove_undo (CcApplicationsPanel *self)
+{
+  GList *l;
+
+  for (l = self->removed_itens; l; l = l->next)
+    g_app_info_add_supports_type (self->current_app_info, l->data, NULL);
+
+  update_handler_dialog (self, self->current_app_info);
+  g_clear_pointer (&self->removed_itens, g_list_free);
+}
+
+static void
+on_remove_toast_dismissed (CcApplicationsPanel *self)
+{
+  self->toast = NULL;
+  adw_toast_overlay_dismiss_all (self->toast_overlay);
+  g_clear_pointer (&self->removed_itens, g_list_free);
+}
+
 
 static void
 unset_cb (CcApplicationsPanel *self,
-          GtkButton           *button)
+          GtkButton *button)
 {
-  const gchar *type;
-
-  type = (const gchar *)g_object_get_data (G_OBJECT (button), "type");
+  gchar *type = g_object_get_data (G_OBJECT (button), "type");
+  self->removed_itens = g_list_append (self->removed_itens, g_strdup (type));
 
   g_app_info_remove_supports_type (self->current_app_info, type, NULL);
-  update_handler_dialog (self, self->current_app_info);
+  update_handler_dialog (self, self->current_app_info);  
+
+  if (!self->toast)
+    {
+      self->toast = adw_toast_new (_("Type removed"));
+      adw_toast_set_button_label (self->toast, _("_Undo"));
+
+      g_signal_connect_swapped (self->toast,
+                                "button-clicked",
+                                G_CALLBACK (on_remove_undo),
+                                self);
+      g_signal_connect_swapped (self->toast,
+                                "dismissed",
+                                G_CALLBACK (on_remove_toast_dismissed),
+                                self);
+    }
+  else
+    {
+      g_autofree gchar *message = NULL;
+
+      message = g_strdup_printf (ngettext ("%d type removed",
+                                           "%d types removed",
+                                           g_list_length (self->removed_itens)),
+                                 g_list_length (self->removed_itens));
+
+      adw_toast_set_title (self->toast, message);
+
+      g_object_ref (self->toast);
+    }
+
+  adw_toast_overlay_add_toast (self->toast_overlay, self->toast);
 }
 
 static void
@@ -1075,7 +1114,7 @@ add_scheme (CcApplicationsPanel *self,
   g_autofree gchar *title = NULL;
   GtkWidget *button;
   GtkWidget *row;
-  gchar *scheme;
+  const gchar *scheme;
 
   scheme = strrchr (type, '/') + 1;
   title = g_strdup_printf ("%s://", scheme);
@@ -1785,6 +1824,8 @@ cc_applications_panel_dispose (GObject *object)
 
   g_clear_pointer (&self->sandbox_info_button, gtk_widget_unparent);
 
+  on_remove_toast_dismissed (self);
+
   remove_all_handler_rows (self);
 #ifdef HAVE_SNAP
   remove_snap_permissions (self);
@@ -1935,6 +1976,7 @@ cc_applications_panel_class_init (CcApplicationsPanelClass *klass)
   gtk_widget_class_bind_template_child (widget_class, CcApplicationsPanel, storage_page_total_row);
   gtk_widget_class_bind_template_child (widget_class, CcApplicationsPanel, general_group);
   gtk_widget_class_bind_template_child (widget_class, CcApplicationsPanel, view_details_button);
+  gtk_widget_class_bind_template_child (widget_class, CcApplicationsPanel, toast_overlay);
 
   gtk_widget_class_bind_template_callback (widget_class, camera_cb);
   gtk_widget_class_bind_template_callback (widget_class, location_cb);
@@ -1945,7 +1987,6 @@ cc_applications_panel_class_init (CcApplicationsPanelClass *klass)
   gtk_widget_class_bind_template_callback (widget_class, wallpaper_cb);
   gtk_widget_class_bind_template_callback (widget_class, screenshot_cb);
   gtk_widget_class_bind_template_callback (widget_class, shortcuts_cb);
-  gtk_widget_class_bind_template_callback (widget_class, privacy_link_cb);
   gtk_widget_class_bind_template_callback (widget_class, sound_cb);
   gtk_widget_class_bind_template_callback (widget_class, clear_cache_cb);
   gtk_widget_class_bind_template_callback (widget_class, open_software_cb);

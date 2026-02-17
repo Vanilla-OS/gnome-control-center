@@ -15,7 +15,7 @@
         "--own-name=org.gnome.SessionManager",
         "--share=ipc",
         "--share=network",
-        "--socket=x11",
+        "--socket=fallback-x11",
         "--socket=pulseaudio",
         "--socket=session-bus",
         "--socket=system-bus",
@@ -302,6 +302,19 @@
             	"-Dgtk_doc=false",
             	"-Dintrospection=false",
             	"-Dtests=false"
+            ],
+            "modules": [
+                {
+                    "name" : "gweather-locations",
+                    "buildsystem" : "meson",
+                    "sources" : [
+                        {
+                            "type" : "git",
+                            "url" : "https://gitlab.gnome.org/GNOME/gweather-locations",
+                            "branch" : "main"
+                        }
+                    ]
+                }
             ],
             "sources" : [
                 {
@@ -744,17 +757,10 @@
             "name" : "mutter",
             "buildsystem" : "meson",
             "config-opts" : [
-                "-Dgles2=false",
-                "-Dglx=false",
-                "-Dx11=true",
                 "-Dxwayland=false",
-                "-Dwayland=false",
-                "-Dlogind=false",
                 "-Dbash_completion=false",
-                "-Dnative_backend=false",
                 "-Dremote_desktop=false",
                 "-Degl_device=false",
-                "-Dudev=false",
                 "-Dstartup_notification=false",
                 "-Dintrospection=true",
                 "-Ddocs=false",
@@ -793,6 +799,30 @@
                                     "url" : "https://github.com/vcrhonek/hwdata.git"
                                 }
                             ]
+                        }
+                    ]
+                },
+                {
+                    "name" : "libinput",
+                    "buildsystem" : "meson",
+                    "config-opts" : [
+                        "-Dmtdev=false"
+                    ],
+                    "sources" : [
+                        {
+                            "type" : "git",
+                            "branch" : "main",
+                            "url" : "https://gitlab.freedesktop.org/libinput/libinput.git"
+                        }
+                    ]
+                },
+                {
+                    "name" : "libxcvt",
+                    "buildsystem" : "meson",
+                    "sources" : [
+                        {
+                            "type" : "git",
+                            "url" : "https://gitlab.freedesktop.org/xorg/lib/libxcvt.git"
                         }
                     ]
                 }
@@ -902,6 +932,63 @@
             ]
         },
         {
+            "name" : "malcontent",
+            "buildsystem" : "meson",
+            "sources" : [
+                {
+                    "type" : "git",
+                    "branch" : "main",
+                    "url" : "https://gitlab.freedesktop.org/pwithnall/malcontent.git"
+                }
+            ],
+            "config-opts" : [
+                "-Dui=disabled"
+            ],
+            "modules" : [
+                {
+                    "name" : "systemd",
+                    "buildsystem" : "meson",
+                    "sources" : [
+                        {
+                            "type" : "git",
+                            "branch" : "main",
+                            "url" : "https://github.com/systemd/systemd.git"
+                        }
+                    ],
+                    "config-opts" : [
+                        "-Drepart=disabled",
+                        "-Dsysupdate=disabled",
+                        "-Dbashcompletiondir=no",
+                        "-Ddbuspolicydir=/app/share/dbus-1/system.d",
+                        "-Ddbussessionservicedir=/app/share/dbus-1/session.d",
+                        "-Ddbussystemservicedir=/app/share/dbus-1/system.d",
+                        "-Ddbus-interfaces-dir=/app/share/dbus-1/interfaces",
+                        "-Dxdg-autostart=false",
+                        "-Dinstall-sysconfdir=false",
+                        "-Dsshconfdir=no",
+                        "-Dsshdconfdir=no",
+                        "-Dsshdprivsepdir=no"
+                    ]
+                },
+                {
+                    "name" : "pam",
+                    "buildsystem" : "meson",
+                    "sources" : [
+                        {
+                            "type" : "git",
+                            "url" : "https://github.com/linux-pam/linux-pam.git"
+                        }
+                    ],
+                    "config-opts" : [
+                        "-Deconf=disabled",
+                        "-Dvendordir=/app/share/pam",
+                        "-Dsecuredir=/app/share/pam/security",
+                        "-Dsconfigdir=/app/share/pam"
+                    ]
+                }
+            ]
+        },
+        {
             "name" : "gnome-control-center",
             "buildsystem" : "meson",
             "sources" : [
@@ -913,7 +1000,8 @@
             "config-opts" : [
                 "-Dsnap=false",
                 "-Dtests=false",
-                "-Dprofile=development"
+                "-Dprofile=development",
+                "-Dmalcontent=true"
             ]
         }
     ]

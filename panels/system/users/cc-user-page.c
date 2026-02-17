@@ -470,7 +470,7 @@ update_editable_state (CcUserPage *self)
     self->avatar_editable = (is_current_user (self->user) || !self->locked);
     g_object_notify (G_OBJECT (self), "avatar-editable");
 
-    self->editable = self->avatar_editable && act_user_is_local_account (self->user);
+    self->editable = self->avatar_editable;
     g_object_notify (G_OBJECT (self), "editable");
 }
 
@@ -480,9 +480,7 @@ spawn_malcontent_control (CcUserPage *self)
 {
     g_autoptr(GError) error = NULL;
     const gchar *argv[] = { "malcontent-control",
-#ifdef HAVE_MALCONTENT_0_10
                         "--user", act_user_get_user_name (self->user),
-#endif  /* HAVE_MALCONTENT_0_10 */
                         NULL
     };
 

@@ -1,100 +1,137 @@
-============
-Version 49.4
-============
+================
+Version 50.beta
+================
 
 - Various translation updates
 
-Sound/Bluetooth
-- Update libgvc to fix crashes with new pipewire
+Build
+- Update libgnome-volume-control revision (fixing sound/bluetooth crash)
 
-============
-Version 49.3
-============
+Accessibility
+- Add new text-size setting with slider
+- Map crosshairs length nonlinearly and set new default
 
+Date & Time
+- Add first day of week settings
+
+Keyboard
+- Set system keyboard mapping on single user systems
+
+Power
+- Fix infinite loop when switching battery charge modes
+
+Remote Desktop
+- Handle when keyring is locked
+
+Wacom
+- Show link to mouse settings for pucks
+
+Wellbeing
+- Disable info button when using malcontent
+- Synchronize settings with malcontent
+
+================
+Version 50.alpha
+================
+
+- Remove X11 backend
+- Port remaining UI definition files to Blueprint
+- Fix various compiler warnings and memory leaks
 - Various translation updates
+
+Dependency updates
+- blueprint-compiler >= 0.19
+- malcontent >= 0.14.alpha (new dependency)
+
+About
+- Add "winver" to keywords for About page
+
+Accessibility
+- Replace "enable animations" with "reduced motion"
+- Add magnify, magnifier, and overamplification keywords to desktop file
 
 Applications
 - Fix monitoring app filter changes
+- Add toast confirmation when removing file/link association
+- Fix "Type" being character wrapped in certain locales
+- Remove unused callbacks and includes
 
-Date and Time
+Background
+- Scale checkmark properly
+
+Color management
+- Fix calibration and restarting functionality
+- Fix issues when running calibration multiple times
+- Fix small memory leak
+- Remove use of goto in C code
+
+Common
+- Redesign split-row widget
+- Port keyboard-shortcut-group to Blueprint
+
+Date & Time
 - Make sure timezone dialog always shows search entry
 - Fix timezone search assuming unicode casing
+- Sync subdialogs visibility with user permissions
+
+Display
+- Wrap "AM/PM" buttons into stack pages
 
 Keyboard
-- Increase input dialog height
+- Update for new default activities overview shortcut
+- Add layout default to alternate char page
+- Allow default Alternate Character keys
+- Add None option for alternate key (lv3)
+- Improve xkb-modifier-page with better translation support
+- Port keyboard-shortcut-group to Blueprint
+- Use AdwButtonRow to add a custom shortcut
+- Increase input chooser dialog height
+
+Mobile Networks
+- Port "Modem Details" dialog to AdwDialog
+- Port modem details rows to CcListRow
+- Use "property" style for the rows
+
+Mouse & Touchpad
+- Don't let primary buttons shrink
+
+Multitasking
+- Add save/restore toggle switch
 
 Network
 - Actually turn off wifi when only managing a single device
+- Clarify no saved networks title
+- Show a status page if there are no saved Wi-Fi networks
+- Show "No Saved Networks" page after deleting last connection
+- Don't show hyphen in long passwords in QR code dialog
+- Announce to the screen reader when an IP address is wrong
+
+Power
+- Fix battery model string leak
+- Port CcBatteryRow to Blueprint
 
 Region
 - Always set all variables when setting system locale
+- Fix name of the US measurement system
+- Increase language chooser dialog height
 
-==============
-Version 49.2.2
-==============
-
-- Revert libgxdp updates
-
-  The libgxdp updates depend on changes in gsettings-desktop-schemas
-  that are part of the GNOME 50 cycle. Revert the pinned ref
-  to the one we had before, until we branch libgxdp for GNOME 49.
-
-==============
-Version 49.2.1
-==============
-
-- Fix libgxdp induced crash of g-c-c-global-shortcuts-provider
-
-============
-Version 49.2
-============
-
-- Various translation updates
-
-Applications
-- Fix "Type" being character wrapped in certain locales
-
-Color
-- Fix calibration not working
-- Fix issues when running the calibration multiple times
-- Fix restarting after calibration
-
-Date and Time
-- Fix enabling AM/PM mode only when used for times
-
-Keyboard
-- Fix translation of keyboard modifier entries
-- Handle new activities overview shortcut (Super instead of Super_L)
-
-Network
-- Don't show hyphen in long WiFi passwords in QR code dialog
+Sound
+- Better distinguish input and outputs rows in panel
+- Ignore loopbacks
 
 Users
-- Ensure info button widget type
-
-============
-Version 49.1
-============
-
-- Various translation updates
-
-Appearance
-- Fix scaling of selected background checkmark icon
-
-Date and Time
-- Fix timezone and time dialog permissions for showing dialogs
-
-Mouse
-- Prevent left-right primary mouse buttons from shrinking
-
-Network
-- Improve accessibility of IP entry rows
-
-Users
-- Improve accessibility of entry feedback for invalid usernames and passwords
+- Port CcPasswordDialog and CcAddUserDialog to Blueprint
+- Use CcEntryFeedback for password states
+- Announce password verify entry state changes to screen reader
+- Update admin switch position in add user dialog
+- Allow changing password with remote user
 
 Wacom
-- Reverse main and fallback mechanisms for getting vendor and product
+- Reverse main & fallback mechanisms for getting vendor & product
+
+Wellbeing
+- Handle accounts managed by malcontent
+- Add SPDX comment to bar chart documentation diagram
 
 ============
 Version 49.0

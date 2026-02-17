@@ -68,6 +68,7 @@ struct _NetDeviceWifi
         AdwPreferencesGroup     *saved_networks_box;
         CcWifiConnectionList    *saved_networks_list;
         AdwDialog               *saved_networks_dialog;
+        GtkStack                *saved_networks_stack;
         AdwToastOverlay         *saved_networks_toast_overlay;
         AdwToast                *saved_networks_undo_toast;
         GPtrArray               *saved_networks_forgotten_rows;
@@ -369,10 +370,9 @@ nm_device_wifi_refresh_ui (NetDeviceWifi *self)
 
         status = panel_device_status_to_localized_string (self->device, NULL);
         adw_window_title_set_subtitle (self->wifi_headerbar_title, status);
+
         /* update list of APs */
         show_wifi_list (self);
-
-        gtk_widget_set_visible (GTK_WIDGET (self->saved_network_row), !cc_wifi_connection_list_is_empty (self->saved_networks_list));
 }
 
 static void
@@ -817,11 +817,6 @@ really_forgotten (GObject              *source_object,
                 g_warning ("failed to delete connection %s: %s",
                            nm_object_get_path (NM_OBJECT (source_object)),
                            error->message);
-
-        if (cc_wifi_connection_list_is_empty (self->saved_networks_list)) {
-            adw_dialog_close (self->saved_networks_dialog);
-            gtk_widget_set_visible (GTK_WIDGET (self->saved_network_row), FALSE);
-        }
 }
 
 static void
@@ -865,6 +860,17 @@ static void
 on_saved_networks_forget_undo (NetDeviceWifi *self)
 {
         g_ptr_array_set_free_func (self->saved_networks_forgotten_rows, undo_forget);
+        gtk_stack_set_visible_child_name (self->saved_networks_stack, "saved-networks-page");
+}
+
+static gboolean
+deleted_row_is_last (CcWifiConnectionList *list, GtkWidget *row)
+{
+        GtkListBox *listbox;
+
+        listbox = cc_wifi_connection_list_get_list_box (list);
+        return !gtk_list_box_get_row_at_index (listbox, 1) &&
+               !gtk_widget_get_visible (GTK_WIDGET (row));
 }
 
 static void
@@ -911,6 +917,12 @@ forget_selected (NetDeviceWifi *self, CcWifiConnectionRow *row, CcWifiConnection
         }
 
         adw_toast_overlay_add_toast (self->saved_networks_toast_overlay, self->saved_networks_undo_toast);
+
+        if (deleted_row_is_last (list, GTK_WIDGET (row)))
+                gtk_stack_set_visible_child_name (self->saved_networks_stack, "no-saved-networks-page");
+        else
+                gtk_stack_set_visible_child_name (self->saved_networks_stack, "saved-networks-page");
+
 }
 
 static gint
@@ -1102,6 +1114,7 @@ net_device_wifi_class_init (NetDeviceWifiClass *klass)
         gtk_widget_class_bind_template_child (widget_class, NetDeviceWifi, listbox_box);
         gtk_widget_class_bind_template_child (widget_class, NetDeviceWifi, stack);
         gtk_widget_class_bind_template_child (widget_class, NetDeviceWifi, saved_networks_dialog);
+        gtk_widget_class_bind_template_child (widget_class, NetDeviceWifi, saved_networks_stack);
         gtk_widget_class_bind_template_child (widget_class, NetDeviceWifi, saved_networks_toast_overlay);
         gtk_widget_class_bind_template_child (widget_class, NetDeviceWifi, saved_networks_box);
 
@@ -1180,7 +1193,6 @@ net_device_wifi_new (CcPanel *panel, NMClient *client, NMDevice *device)
 
         /* Set up the Saved Networks list */
         list = cc_wifi_connection_list_new (self->client, NM_DEVICE_WIFI (device), FALSE, FALSE, FALSE, TRUE, FALSE);
-        cc_wifi_connection_list_set_placeholder_text (list, _("No saved networks"));
         self->saved_networks_list = g_object_ref_sink (list);
         adw_preferences_group_add (self->saved_networks_box, GTK_WIDGET (list));
 

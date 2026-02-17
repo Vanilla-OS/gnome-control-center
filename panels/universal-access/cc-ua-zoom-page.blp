@@ -139,20 +139,20 @@ template $CcUaZoomPage: Adw.NavigationPage {
             use-underline: true;
 
             [suffix]
+            /* This scale is nonlinearly mapped, changing these values requires C code changes too. */
             Scale crosshair_length_scale {
               marks [
                 /* Translators: This is a mark in the Crosshair Length scale */
-                mark (20, bottom, _("Short")),
+                mark (0, bottom, _("Short")),
+                mark (20),
                 /* Translators: This is a mark in the Crosshair Length scale */
-                mark (4096, bottom, _("Long")),
+                mark (100, bottom, _("Long")),
               ]
 
               adjustment: Adjustment {
-                lower: 20;
-                upper: 4096;
-                value: 4096;
+                upper: 100;
                 step-increment: 1;
-                page-increment: 100;
+                page-increment: 10;
               };
             }
           }
@@ -189,17 +189,17 @@ template $CcUaZoomPage: Adw.NavigationPage {
 
             marks [
               /* Translators: This is a mark in the Brightness scale */
-              mark (-0.75, bottom, _("Low")),
+              mark (-0.8, bottom, _("Low")),
               /* Translators: This is a mark in the Brightness scale */
-              mark (0.75, bottom, _("High")),
+              mark (0.8, bottom, _("High")),
               mark (0),
             ]
 
             adjustment: Adjustment {
-              lower: -0.75;
-              upper: 0.75;
-              step-increment: 0.1;
-              page-increment: 0.1;
+              lower: -0.8;
+              upper: 0.8;
+              step-increment: 0.02;
+              page-increment: 0.2;
               value-changed => $ua_zoom_brightness_value_changed_cb(template);
             };
           }
@@ -213,17 +213,17 @@ template $CcUaZoomPage: Adw.NavigationPage {
           Scale contrast_scale {
             marks [
               /* Translators: This is a mark in the Contrast scale */
-              mark (-0.75, bottom, _("Low")),
+              mark (-0.8, bottom, _("Low")),
               /* Translators: This is a mark in the Contrast scale */
-              mark (0.75, bottom, _("High")),
+              mark (0.8, bottom, _("High")),
               mark (0),
             ]
 
             adjustment: Adjustment {
-              lower: -0.75;
-              upper: 0.75;
-              step-increment: 0.1;
-              page-increment: 0.1;
+              lower: -0.8;
+              upper: 0.8;
+              step-increment: 0.02;
+              page-increment: 0.2;
               value-changed => $ua_zoom_contrast_value_changed_cb(template);
             };
           }
@@ -244,8 +244,8 @@ template $CcUaZoomPage: Adw.NavigationPage {
 
             adjustment: Adjustment {
               upper: 1;
-              step-increment: 0.1;
-              page-increment: 0.2;
+              step-increment: 0.01;
+              page-increment: 0.1;
             };
           }
         }
