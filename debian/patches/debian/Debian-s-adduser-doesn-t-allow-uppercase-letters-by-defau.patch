@@ -9,10 +9,10 @@ Bug-Debian: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=910141
  1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/panels/system/users/cc-add-user-dialog.c b/panels/system/users/cc-add-user-dialog.c
-index c0f17ea..7703341 100644
+index 0d8a248..55a95ff 100644
 --- a/panels/system/users/cc-add-user-dialog.c
 +++ b/panels/system/users/cc-add-user-dialog.c
-@@ -164,6 +164,7 @@ create_user_done (ActUserManager  *manager,
+@@ -165,6 +165,7 @@ create_user_done (ActUserManager  *manager,
  static void
  create_user (CcAddUserDialog *self)
  {
@@ -20,7 +20,7 @@ index c0f17ea..7703341 100644
          ActUserManager *manager;
          const gchar *username;
          const gchar *name;
-@@ -175,11 +176,12 @@ create_user (CcAddUserDialog *self)
+@@ -176,11 +177,12 @@ create_user (CcAddUserDialog *self)
          username = gtk_editable_get_text (GTK_EDITABLE (self->username_row));
          account_type = gtk_switch_get_active (self->account_type_switch) ? ACT_USER_ACCOUNT_TYPE_ADMINISTRATOR : ACT_USER_ACCOUNT_TYPE_STANDARD;
  

@@ -1,7 +1,14 @@
-Description: Debian/Ubuntu do not have Malcontent 0.14 Alpha yet; 0.13 is OK.
-Author: Nathan Pratta Teodosio <nteodosio@ubuntu.com>
-Forwarded: not-needed
+From: Nathan Pratta Teodosio <nteodosio@ubuntu.com>
+Date: Fri, 30 Jan 2026 09:48:53 +0100
+Subject: Debian/Ubuntu do not have Malcontent 0.14 Alpha yet; 0.13 is OK.
 
+Forwarded: not-needed
+---
+ meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/meson.build b/meson.build
+index 696d30c..5a19ff5 100644
 --- a/meson.build
 +++ b/meson.build
 @@ -137,7 +137,7 @@ libadwaita_version = '>= 1.8.alpha'
@@ -10,6 +17,6 @@ Forwarded: not-needed
  pulse_req_version = '>= 2.0'
 -malcontent_version = '>= 0.14.alpha'
 +malcontent_version = '>= 0.13'
-
+ 
  gtk_dep = dependency(
    'gtk4',
