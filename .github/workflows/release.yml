@@ -94,7 +94,7 @@ jobs:
     - name: Build debian package
       run: |
         wget https://github.com/vanilla-os/gnome-control-center/tarball/main
-        mv main ../gnome-control-center_49.1.1~99-orchid-stable.orig.tar.gz
+        mv main ../gnome-control-center_50~beta-1.1~99-orchid-stable.orig.tar.gz
         dpkg-buildpackage -b -uc -us
         apt install -y \
           libaccountsservice-dev:arm64 \
