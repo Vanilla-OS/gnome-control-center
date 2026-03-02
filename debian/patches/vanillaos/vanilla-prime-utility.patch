@@ -9,7 +9,7 @@ Subject: vanilla-prime-utility
  2 files changed, 51 insertions(+)
 
 diff --git a/panels/display/cc-display-panel.blp b/panels/display/cc-display-panel.blp
-index f40b2cf..a179c32 100644
+index f40b2cf..589e232 100644
 --- a/panels/display/cc-display-panel.blp
 +++ b/panels/display/cc-display-panel.blp
 @@ -117,6 +117,21 @@ template $CcDisplayPanel: $CcPanel {
@@ -35,7 +35,7 @@ index f40b2cf..a179c32 100644
      };
    }
 diff --git a/panels/display/cc-display-panel.c b/panels/display/cc-display-panel.c
-index d9de82c..d6beb69 100644
+index d9de82c..e870abc 100644
 --- a/panels/display/cc-display-panel.c
 +++ b/panels/display/cc-display-panel.c
 @@ -97,6 +97,7 @@ struct _CcDisplayPanel
