@@ -33,6 +33,7 @@
 #include "cc-keyboard-item.h"
 #include "cc-keyboard-shortcut-row.h"
 #include "cc-keyboard-shortcut-group.h"
+#include "cc-ui-util.h"
 
 struct _CcKeyboardShortcutGroup
 {
@@ -147,19 +148,11 @@ shortcut_group_row_new (gpointer item,
   /* Row to add custom shortcut */
   if (GTK_IS_STRING_OBJECT (item))
     {
-      GtkWidget *icon;
-
-      row = adw_preferences_row_new ();
-      gtk_list_box_row_set_activatable (GTK_LIST_BOX_ROW (row), TRUE);
+      row = adw_button_row_new ();
       gtk_list_box_row_set_selectable (GTK_LIST_BOX_ROW (row), FALSE);
-      gtk_accessible_update_property (GTK_ACCESSIBLE (row),
-                                      GTK_ACCESSIBLE_PROPERTY_LABEL,
-                                      _("Add a Shortcut"),
-                                      -1);
-      icon = gtk_image_new_from_icon_name ("list-add-symbolic");
-      gtk_widget_set_margin_top (icon, 15);
-      gtk_widget_set_margin_bottom (icon, 15);
-      gtk_list_box_row_set_child (GTK_LIST_BOX_ROW (row), icon);
+      adw_preferences_row_set_title (ADW_PREFERENCES_ROW (row), _("_Add Shortcut"));
+      adw_preferences_row_set_use_underline (ADW_PREFERENCES_ROW (row), TRUE);
+      adw_button_row_set_start_icon_name (ADW_BUTTON_ROW (row), "list-add-symbolic");
 
       return row;
 
@@ -329,9 +322,19 @@ static void
 cc_keyboard_shortcut_group_class_init (CcKeyboardShortcutGroupClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
   object_class->get_property = cc_keyboard_shortcut_group_get_property;
   object_class->finalize = cc_keyboard_shortcut_group_finalize;
+
+  gtk_widget_class_set_template_from_resource (widget_class,
+                                               "/org/gnome/control-center/"
+                                               "keyboard/cc-keyboard-shortcut-group.ui");
+
+  gtk_widget_class_bind_template_child (widget_class, CcKeyboardShortcutGroup, shortcut_list_box);
+
+  gtk_widget_class_bind_template_callback (widget_class, shortcut_group_row_activated_cb);
+  gtk_widget_class_bind_template_callback (widget_class, cc_util_keynav_propagate_vertical);
 
   /**
    * CcKeyboardShortcutGroup:empty:
@@ -368,14 +371,7 @@ cc_keyboard_shortcut_group_class_init (CcKeyboardShortcutGroupClass *klass)
 static void
 cc_keyboard_shortcut_group_init (CcKeyboardShortcutGroup *self)
 {
-  self->shortcut_list_box = GTK_LIST_BOX (gtk_list_box_new ());
-  gtk_widget_add_css_class (GTK_WIDGET (self->shortcut_list_box), "boxed-list");
-  g_signal_connect_object (self->shortcut_list_box, "row-activated",
-                           G_CALLBACK (shortcut_group_row_activated_cb),
-                           self, G_CONNECT_SWAPPED);
-
-  adw_preferences_group_add (ADW_PREFERENCES_GROUP (self),
-                             GTK_WIDGET (self->shortcut_list_box));
+  gtk_widget_init_template (GTK_WIDGET (self));
 }
 
 GtkWidget *

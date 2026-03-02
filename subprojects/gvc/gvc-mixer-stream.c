@@ -532,8 +532,6 @@ gvc_mixer_stream_get_port (GvcMixerStream *stream)
                 }
         }
 
-        g_assert_not_reached ();
-
         return NULL;
 }
 
@@ -626,9 +624,13 @@ gvc_mixer_stream_set_ports (GvcMixerStream *stream,
                             GList          *ports)
 {
         g_return_val_if_fail (GVC_IS_MIXER_STREAM (stream), FALSE);
-        g_return_val_if_fail (stream->priv->ports == NULL, FALSE);
 
-        stream->priv->ports = g_list_sort (ports, (GCompareFunc) sort_ports);
+        if (stream->priv->ports) {
+                g_list_free_full (stream->priv->ports, (GDestroyNotify) free_port);
+                stream->priv->ports = NULL;
+        }
+        if (ports)
+                stream->priv->ports = g_list_sort (ports, (GCompareFunc) sort_ports);
 
         return TRUE;
 }

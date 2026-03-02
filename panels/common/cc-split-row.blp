@@ -2,14 +2,32 @@ using Gtk 4.0;
 using Adw 1;
 
 template $CcSplitRow: $CcContentRow {
+  styles [
+    "split-row",
+  ]
+
   [content]
   Box box {
     hexpand: true;
     homogeneous: true;
-    spacing: 24;
+    spacing: 3;
 
-    Box {
+    Box default_option_box {
+      accessible-role: radio;
       orientation: vertical;
+      can-focus: true;
+      focusable: true;
+      receives-default: true;
+
+      accessibility {
+        labelled-by: default_option_title;
+        described-by: default_option_subtitle;
+      }
+
+      styles [
+        "activatable",
+        "card",
+      ]
 
       EventControllerMotion {
         enter => $on_option_focus_enter_cb(default_option_mask);
@@ -17,10 +35,15 @@ template $CcSplitRow: $CcContentRow {
       }
 
       GestureClick {
-        released => $gtk_widget_activate(default_option_checkbutton);
+        released => $on_option_released_cb(default_option_box);
       }
 
       Adw.Bin {
+        margin-top: 9;
+        margin-bottom: 9;
+        margin-start: 9;
+        margin-end: 9;
+
         styles [
           "background",
           "frame",
@@ -29,8 +52,8 @@ template $CcSplitRow: $CcContentRow {
         Picture default_option_picture {
           hexpand: true;
           halign: center;
-          margin-top: 18;
-          margin-bottom: 18;
+          margin-top: 6;
+          margin-bottom: 6;
           margin-start: 6;
           margin-end: 6;
           height-request: 128;
@@ -41,12 +64,18 @@ template $CcSplitRow: $CcContentRow {
         }
       }
 
-      CheckButton default_option_checkbutton {
-        margin-start: 6;
-        group: alternative_option_checkbutton;
-        toggled => $on_checkbutton_toggled_cb(template);
+      Box {
+        margin-start: 15;
+        margin-bottom: 9;
 
-        child: Box {
+        Adw.Bin default_checkbutton_image {
+          css-name: "radio";
+          can-target: false;
+          valign: center;
+          halign: center;
+        }
+
+        Box {
           valign: center;
           margin-start: 6;
           orientation: vertical;
@@ -55,7 +84,7 @@ template $CcSplitRow: $CcContentRow {
             "title",
           ]
 
-          Label {
+          Label default_option_title {
             use-underline: true;
             xalign: 0.0;
             wrap: true;
@@ -67,7 +96,7 @@ template $CcSplitRow: $CcContentRow {
             ]
           }
 
-          Label {
+          Label default_option_subtitle {
             xalign: 0.0;
             wrap: true;
             wrap-mode: word_char;
@@ -77,12 +106,26 @@ template $CcSplitRow: $CcContentRow {
               "subtitle",
             ]
           }
-        };
+        }
       }
     }
 
-    Box {
+    Box alternative_option_box {
+      accessible-role: radio;
       orientation: vertical;
+      can-focus: true;
+      focusable: true;
+      receives-default: true;
+
+      accessibility {
+        labelled-by: alternative_option_title;
+        described-by: alternative_option_subtitle;
+      }
+
+      styles [
+        "activatable",
+        "card",
+      ]
 
       EventControllerMotion {
         enter => $on_option_focus_enter_cb(alternative_option_mask);
@@ -90,10 +133,15 @@ template $CcSplitRow: $CcContentRow {
       }
 
       GestureClick {
-        released => $gtk_widget_activate(alternative_option_checkbutton);
+        released => $on_option_released_cb(alternative_option_box);
       }
 
       Adw.Bin {
+        margin-top: 9;
+        margin-bottom: 9;
+        margin-start: 9;
+        margin-end: 9;
+
         styles [
           "background",
           "frame",
@@ -102,8 +150,8 @@ template $CcSplitRow: $CcContentRow {
         Picture alternative_option_picture {
           hexpand: true;
           halign: center;
-          margin-top: 18;
-          margin-bottom: 18;
+          margin-top: 6;
+          margin-bottom: 6;
           margin-start: 6;
           margin-end: 6;
           height-request: 128;
@@ -114,11 +162,17 @@ template $CcSplitRow: $CcContentRow {
         }
       }
 
-      CheckButton alternative_option_checkbutton {
-        margin-start: 6;
-        toggled => $on_checkbutton_toggled_cb(template);
+      Box {
+        margin-start: 15;
+        margin-bottom: 9;
 
-        child: Box {
+        Adw.Bin alternative_checkbutton_image {
+          css-name: "radio";
+          can-target: false;
+          valign: center;
+        }
+
+        Box {
           valign: center;
           margin-start: 6;
           orientation: vertical;
@@ -127,7 +181,7 @@ template $CcSplitRow: $CcContentRow {
             "title",
           ]
 
-          Label {
+          Label alternative_option_title {
             use-underline: true;
             xalign: 0.0;
             wrap: true;
@@ -139,7 +193,7 @@ template $CcSplitRow: $CcContentRow {
             ]
           }
 
-          Label {
+          Label alternative_option_subtitle {
             xalign: 0.0;
             wrap: true;
             wrap-mode: word_char;
@@ -149,17 +203,8 @@ template $CcSplitRow: $CcContentRow {
               "subtitle",
             ]
           }
-        };
+        }
       }
     }
   }
-}
-
-SizeGroup size_group {
-  mode: both;
-
-  widgets [
-    default_option_checkbutton,
-    alternative_option_checkbutton,
-  ]
 }

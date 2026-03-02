@@ -244,3 +244,24 @@ cc_util_app_id_to_display_name (const char *app_id)
 
   return g_strdup (app_id);
 }
+
+/**
+ * cc_util_get_localized_weekday_name:
+ * @iso_weekday_number: ISO day number (Monday: 1, Sunday: 7)
+ * 
+ * Returns: (transfer full): the name of the weekday in active locale.
+ */
+char *
+cc_util_get_localized_weekday_name (gint iso_weekday_number)
+{
+  g_autoptr (GDateTime) first_sunday = NULL;
+  g_autoptr (GDateTime) item_date = NULL;
+
+  /* 1970-01-04 was a Sunday */
+  first_sunday = g_date_time_new_from_unix_utc_usec (G_TIME_SPAN_DAY * 3);
+  item_date = g_date_time_add_days (first_sunday, iso_weekday_number);
+
+  g_assert_nonnull (item_date);
+
+  return g_date_time_format (item_date, "%A");
+}

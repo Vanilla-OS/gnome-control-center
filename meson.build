@@ -1,6 +1,6 @@
 project(
   'gnome-control-center', 'c',
-        version : '49.1',
+        version : '50.beta',
         license : 'GPL2+',
   meson_version : '>= 0.60.0'
 )
@@ -29,7 +29,7 @@ config_h = configuration_data()
 
 py = import('python')
 python = py.find_installation('python3')
-blueprint_compiler = find_program('blueprint-compiler', version: '>= 0.17')
+blueprint_compiler = find_program('blueprint-compiler', version: '>= 0.19')
 
 config_h.set_quoted('TEST_NM_PYTHON', python.full_path())
 
@@ -134,12 +134,27 @@ libgvc = subproject(
 libgvc_dep = libgvc.get_variable('libgvc_dep')
 
 libadwaita_version = '>= 1.8.alpha'
+gtk_version = '>= 4.15.2'
 goa_req_version = '>= 3.51.0'
 pulse_req_version = '>= 2.0'
+malcontent_version = '>= 0.14.alpha'
 
 gtk_dep = dependency(
   'gtk4',
-  version: '>= 4.15.2',
+  version: gtk_version,
+  fallback: 'gtk',
+  default_options: [
+    'introspection=disabled',
+    'build-demos=false',
+    'build-testsuite=false',
+    'build-tests=false',
+    'build-examples=false',
+  ]
+)
+
+gtk_wayland_dep = dependency(
+  'gtk4-wayland',
+  version: gtk_version,
   fallback: 'gtk',
   default_options: [
     'introspection=disabled',
@@ -205,7 +220,7 @@ gnome_desktop_dep = dependency('gnome-desktop-4')
 gnome_bg_dep = dependency('gnome-bg-4')
 gnome_settings_dep = dependency('gnome-settings-daemon', version: '>= 48.rc', fallback: 'gsd')
 goa_dep = dependency('goa-1.0', version: goa_req_version, fallback: 'goa')
-gsettings_desktop_dep = dependency('gsettings-desktop-schemas', version: '>= 48.alpha')  # actually requires commit 9d55553, just after alpha
+gsettings_desktop_dep = dependency('gsettings-desktop-schemas', version: '>= 50.alpha')
 libxml_dep = dependency('libxml-2.0')
 pulse_dep = dependency('libpulse', version: pulse_req_version)
 pulse_mainloop_dep = dependency('libpulse-mainloop-glib', version: pulse_req_version)
@@ -266,13 +281,6 @@ config_h.set10('HAVE_CUPS_HTTPCONNECT2',
                cc.has_function('httpConnect2', dependencies: cups_dep),
                description: 'Define if httpConnect2() is available in CUPS')
 
-# X11
-have_x11_support = get_option('x11')
-if have_x11_support
-  x11_dep = dependency('x11', version: '>= 1.8')
-  xi_dep = dependency('xi', version: '>= 1.2')
-endif
-config_h.set('HAVE_X11', have_x11_support, description: 'Defined if X11 support is enabled')
 
 # IBus support
 enable_ibus = get_option('ibus')
@@ -298,9 +306,17 @@ config_h.set('HAVE_SNAP', enable_snap,
 # malcontent support
 enable_malcontent = get_option('malcontent')
 if enable_malcontent
-  malcontent_dep = dependency('malcontent-0', version: '>= 0.7.0')
-  config_h.set('HAVE_MALCONTENT_0_10', malcontent_dep.version().version_compare('>= 0.10.0'),
-               description: 'Define to 1 if malcontent ≥ 0.10.0')
+  malcontent_dep = dependency(
+    'malcontent-0',
+    version: malcontent_version,
+    fallback: [
+      'malcontent',
+      'libmalcontent_dep'
+    ],
+    default_options: [
+      'libgsystemservice:gtk_doc=false',
+    ],
+  )
 endif
 config_h.set('HAVE_MALCONTENT', enable_malcontent,
              description: 'Define to 1 if malcontent support is enabled')
@@ -409,7 +425,6 @@ summary({
     'GNOME Bluetooth': host_is_linux_not_s390,
     'NetworkManager': host_is_linux,
     'Wacom': host_is_linux_not_s390,
-    'X11 xupport': have_x11_support,
   },
   section: 'Dependencies',
   bool_yn: true,

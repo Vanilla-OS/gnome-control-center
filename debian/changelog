@@ -1,3 +1,58 @@
+gnome-control-center (1:50~beta-1) unstable; urgency=medium
+
+  [ Jeremy Bícha ]
+  * New upstream release
+  * Bump minimum gtk4
+
+  [ Nathan Pratta Teodosio ]
+  * Remove kbd-lv3.patch, applied upstream.
+  * d/control: Depend on blueprint-compiler >= 0.19.0.
+  * Add patch to lower required malcontent version
+
+  [ Marco Trevisan (Treviño) ]
+  * debian/control: Bump build dependencies as per 50 update
+  * Add additional patch to lower required malcontent version
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Mon, 16 Feb 2026 18:02:30 -0500
+
+gnome-control-center (1:49.4-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Tue, 27 Jan 2026 17:15:47 -0500
+
+gnome-control-center (1:49.3-1) unstable; urgency=medium
+
+  [ Jeremy Bícha ]
+  * New upstream release
+  * Enable malcontent on all Linux architectures
+  * Bump Standards Version to 4.7.3
+
+  [ Alessandro Astone ]
+  * Enable malcontent for Ubuntu as well
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Mon, 05 Jan 2026 09:56:54 -0500
+
+gnome-control-center (1:49.2.2-1) unstable; urgency=medium
+
+  * New upstream release (Closes: #1121346)
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Fri, 28 Nov 2025 06:45:48 -0500
+
+gnome-control-center (1:49.2.1-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Wed, 26 Nov 2025 11:13:50 -0500
+
+gnome-control-center (1:49.2-1) unstable; urgency=medium
+
+  * New upstream release
+  * Add Depends: upower (Closes: #1081577)
+  * Remove obsolete Rules-Requires-Root: no field
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Mon, 24 Nov 2025 08:33:53 -0500
+
 gnome-control-center (1:49.1.1~99-orchid) unstable; urgency=medium
 
   * Merge debian/1%49.1-2
@@ -3520,7 +3575,7 @@ control-center (1:2.6.0.2-1) experimental; urgency=low
     + Updated dependencies to libnautilus2 2.6.0.
     + Added a conflict on acme, since it's now a part of control-center
     + Changed the build dependency on libxrender-dev to libxcursor-dev
-    (Closes #240483)
+    (Closes: #240483)
 
  -- Arnaud Patard <arnaud.patard@rtp-net.org>  Thu,  1 Apr 2004 00:09:52 +0200
 

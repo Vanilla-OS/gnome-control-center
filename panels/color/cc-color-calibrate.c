@@ -152,18 +152,29 @@ cc_color_calibrate_calib_setup_screen (CcColorCalibrate *calibrate,
 {
   g_autofree char *session_path = NULL;
 
-  calibrate->color_manager =
-    cc_dbus_color_manager_proxy_new_for_bus_sync (
-      G_BUS_TYPE_SESSION,
-      G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START,
-      "org.gnome.Mutter.ColorManager",
-      "/org/gnome/Mutter/ColorManager",
-      NULL, error);
+  if (calibrate->calibration_session)
+    {
+      cc_dbus_color_manager_calibration_call_stop_sync (calibrate->calibration_session,
+                                                        NULL, NULL);
+    }
+  g_clear_object (&calibrate->calibration_session);
+
   if (!calibrate->color_manager)
-    return FALSE;
+    {
+      calibrate->color_manager =
+        cc_dbus_color_manager_proxy_new_for_bus_sync (
+          G_BUS_TYPE_SESSION,
+          G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START,
+          "org.gnome.Mutter.ColorManager",
+          "/org/gnome/Mutter/ColorManager",
+          NULL, error);
+
+      if (!calibrate->color_manager)
+        return FALSE;
+    }
 
   if (!cc_dbus_color_manager_call_calibrate_monitor_sync (calibrate->color_manager,
-                                                          "name",
+                                                          name,
                                                           &session_path,
                                                           NULL, error))
     return FALSE;
@@ -175,17 +186,19 @@ cc_color_calibrate_calib_setup_screen (CcColorCalibrate *calibrate,
       "org.gnome.Mutter.ColorManager",
       session_path,
       NULL, error);
+
   if (!calibrate->calibration_session)
     return FALSE;
 
   calibrate->gamma_size =
     cc_dbus_color_manager_calibration_get_gamma_lut_size (calibrate->calibration_session);
+
   if (calibrate->gamma_size == 0)
     {
       g_set_error_literal (error,
-                           CD_SESSION_ERROR,
-                           CD_SESSION_ERROR_INTERNAL,
-                           "gamma size is zero");
+                            CD_SESSION_ERROR,
+                            CD_SESSION_ERROR_INTERNAL,
+                            "gamma size is zero");
       return FALSE;
     }
 
@@ -767,50 +780,49 @@ gboolean
 cc_color_calibrate_setup (CcColorCalibrate *calibrate,
                           GError **error)
 {
-  gboolean ret = TRUE;
-
   g_return_val_if_fail (CC_IS_COLOR_CALIBRATE (calibrate), FALSE);
   g_return_val_if_fail (calibrate->device_kind != CD_SENSOR_CAP_UNKNOWN, FALSE);
 
-  /* use logind to disable system state idle */
-  calibrate->proxy_inhibit = g_dbus_proxy_new_for_bus_sync (G_BUS_TYPE_SYSTEM,
-                                                            G_DBUS_PROXY_FLAGS_NONE,
-                                                            NULL,
-                                                            "org.freedesktop.login1",
-                                                            "/org/freedesktop/login1",
-                                                            "org.freedesktop.login1.Manager",
-                                                            NULL,
-                                                            error);
-  if (calibrate->proxy_inhibit == NULL)
+  if (!calibrate->proxy_inhibit)
     {
-      ret = FALSE;
-      goto out;
+      /* use logind to disable system state idle */
+      calibrate->proxy_inhibit = g_dbus_proxy_new_for_bus_sync (G_BUS_TYPE_SYSTEM,
+                                                                G_DBUS_PROXY_FLAGS_NONE,
+                                                                NULL,
+                                                                "org.freedesktop.login1",
+                                                                "/org/freedesktop/login1",
+                                                                "org.freedesktop.login1.Manager",
+                                                                NULL,
+                                                                error);
+      if (calibrate->proxy_inhibit == NULL)
+        return FALSE;
     }
 
-  /* start the calibration session daemon */
-  calibrate->proxy_helper = g_dbus_proxy_new_for_bus_sync (G_BUS_TYPE_SESSION,
-                                                           G_DBUS_PROXY_FLAGS_NONE,
-                                                           NULL,
-                                                           CD_SESSION_DBUS_SERVICE,
-                                                           CD_SESSION_DBUS_PATH,
-                                                           CD_SESSION_DBUS_INTERFACE_DISPLAY,
-                                                           NULL,
-                                                           error);
-  if (calibrate->proxy_helper == NULL)
+  if (!calibrate->proxy_helper)
     {
-      ret = FALSE;
-      goto out;
+      /* start the calibration session daemon */
+      calibrate->proxy_helper = g_dbus_proxy_new_for_bus_sync (G_BUS_TYPE_SESSION,
+                                                               G_DBUS_PROXY_FLAGS_NONE,
+                                                               NULL,
+                                                               CD_SESSION_DBUS_SERVICE,
+                                                               CD_SESSION_DBUS_PATH,
+                                                               CD_SESSION_DBUS_INTERFACE_DISPLAY,
+                                                               NULL,
+                                                               error);
+      if (calibrate->proxy_helper == NULL)
+        return FALSE;
+
+      g_signal_connect_object (calibrate->proxy_helper,
+                               "g-properties-changed",
+                               G_CALLBACK (cc_color_calibrate_property_changed_cb),
+                               calibrate, G_CONNECT_SWAPPED);
+      g_signal_connect_object (calibrate->proxy_helper,
+                               "g-signal",
+                               G_CALLBACK (cc_color_calibrate_signal_cb),
+                               calibrate, G_CONNECT_SWAPPED);
     }
-  g_signal_connect_object (calibrate->proxy_helper,
-                           "g-properties-changed",
-                           G_CALLBACK (cc_color_calibrate_property_changed_cb),
-                           calibrate, G_CONNECT_SWAPPED);
-  g_signal_connect_object (calibrate->proxy_helper,
-                           "g-signal",
-                           G_CALLBACK (cc_color_calibrate_signal_cb),
-                           calibrate, G_CONNECT_SWAPPED);
-out:
-  return ret;
+
+  return TRUE;
 }
 
 static GdkMonitor *
@@ -855,6 +867,8 @@ cc_color_calibrate_start (CcColorCalibrate *calibrate,
   g_autoptr(GdkMonitor) monitor = NULL;
 
   g_return_val_if_fail (CC_IS_COLOR_CALIBRATE (calibrate), FALSE);
+
+  calibrate->session_error_code = CD_SESSION_ERROR_NONE;
 
   /* get screen */
   name = cd_device_get_metadata_item (calibrate->device,
@@ -910,8 +924,10 @@ cc_color_calibrate_start (CcColorCalibrate *calibrate,
   /* show correct buttons */
   widget = GTK_WIDGET (gtk_builder_get_object (calibrate->builder,
                                                "button_cancel"));
+  gtk_widget_set_visible (widget, TRUE);
   widget = GTK_WIDGET (gtk_builder_get_object (calibrate->builder,
                                                "button_start"));
+  gtk_widget_set_visible (widget, TRUE);
   widget = GTK_WIDGET (gtk_builder_get_object (calibrate->builder,
                                                "button_resume"));
   gtk_widget_set_visible (widget, FALSE);

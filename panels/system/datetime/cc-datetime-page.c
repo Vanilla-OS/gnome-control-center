@@ -23,6 +23,7 @@
 #include "config.h"
 #include "cc-list-row.h"
 #include "cc-time-editor.h"
+#include "cc-util.h"
 #include "cc-datetime-page.h"
 #include "cc-permission-infobar.h"
 
@@ -33,6 +34,7 @@
 #include "date-endian.h"
 #define GNOME_DESKTOP_USE_UNSTABLE_API
 
+#include <adwaita.h>
 #include <gdesktop-enums.h>
 #include "gdesktop-enums-types.h"
 #include <string.h>
@@ -61,6 +63,7 @@
 
 #define CALENDAR_SCHEMA "org.gnome.desktop.calendar"
 #define CALENDAR_SHOW_WEEK_NUMBERS_KEY "show-weekdate"
+#define CALENDAR_WEEK_START_DAY_KEY "week-start-day"
 
 #define FILECHOOSER_SCHEMA "org.gtk.Settings.FileChooser"
 
@@ -95,6 +98,7 @@ struct _CcDateTimePage
   AdwSwitchRow *date_row;
   AdwSwitchRow *seconds_row;
   AdwSwitchRow *week_numbers_row;
+  AdwComboRow *week_start_day_row;
   GtkListBox *date_box;
   GtkSingleSelection *month_model;
   GtkPopover  *month_popover;
@@ -211,6 +215,19 @@ static void on_month_selection_changed_cb (CcDateTimePage *self);
 
 static void time_changed_cb (CcDateTimePage *self,
                              CcTimeEditor   *editor);
+
+static gchar*
+get_weekday_name (AdwEnumListItem *item,
+                  gpointer         user_data)
+{
+  gint selected_value;
+
+  selected_value = adw_enum_list_item_get_value (item);
+  if (selected_value == 0)
+    return g_strdup (_("Locale Default"));
+
+  return cc_util_get_localized_weekday_name (selected_value);
+}
 
 /* Update the widgets based on the system time */
 static void
@@ -805,6 +822,7 @@ cc_date_time_page_class_init (CcDateTimePageClass *klass)
   g_type_ensure (CC_TYPE_TIME_EDITOR);
   g_type_ensure (CC_TYPE_TZ_DIALOG);
   g_type_ensure (G_DESKTOP_TYPE_CLOCK_FORMAT);
+  g_type_ensure (G_DESKTOP_TYPE_WEEKDAY);
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/system/datetime/cc-datetime-page.ui");
 
@@ -819,6 +837,7 @@ cc_date_time_page_class_init (CcDateTimePageClass *klass)
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePage, date_row);
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePage, seconds_row);
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePage, week_numbers_row);
+  gtk_widget_class_bind_template_child (widget_class, CcDateTimePage, week_start_day_row);
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePage, month_model);
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePage, month_popover);
   gtk_widget_class_bind_template_child (widget_class, CcDateTimePage, month_row);
@@ -833,8 +852,44 @@ cc_date_time_page_class_init (CcDateTimePageClass *klass)
   gtk_widget_class_bind_template_callback (widget_class, list_box_row_activated);
   gtk_widget_class_bind_template_callback (widget_class, change_clock_settings_cb);
   gtk_widget_class_bind_template_callback (widget_class, on_date_box_row_activated_cb);
+  gtk_widget_class_bind_template_callback (widget_class, get_weekday_name);
 
   bind_textdomain_codeset (GETTEXT_PACKAGE_TIMEZONES, "UTF-8");
+}
+
+static GVariant *
+set_week_start_day_setting (const GValue       *property_value,
+                            const GVariantType *expected_type,
+                            gpointer            user_data)
+{
+  g_autoptr (GEnumClass) schema_weekday_enum_class = g_type_class_ref (G_DESKTOP_TYPE_WEEKDAY);
+  guint selected_index = g_value_get_uint (property_value);
+  GEnumValue *enum_value;
+
+  if (selected_index >= schema_weekday_enum_class->n_values)
+    selected_index = 0; /* 'default' */
+
+  enum_value = g_enum_get_value (schema_weekday_enum_class, selected_index);
+  return g_variant_new_take_string (g_strdup (enum_value->value_nick));
+}
+
+static gboolean
+get_week_start_day_setting (GValue   *property_value,
+                            GVariant *setting_source,
+                            gpointer  user_data)
+{
+  g_autoptr (GEnumClass) schema_weekday_enum_class = g_type_class_ref (G_DESKTOP_TYPE_WEEKDAY);
+  const gchar *nick = g_variant_get_string (setting_source, NULL);
+  GEnumValue *enum_value = g_enum_get_value_by_nick (schema_weekday_enum_class, nick);
+
+  enum_value = g_enum_get_value_by_nick (schema_weekday_enum_class, nick);
+  if (enum_value)
+    {
+      g_value_set_uint (property_value, enum_value->value);
+      return TRUE;
+    }
+
+  return FALSE;
 }
 
 static void
@@ -956,6 +1011,13 @@ cc_date_time_page_init (CcDateTimePage *self)
   g_settings_bind (self->calendar_settings, CALENDAR_SHOW_WEEK_NUMBERS_KEY,
                    self->week_numbers_row, "active",
                    G_SETTINGS_BIND_DEFAULT);
+
+  g_settings_bind_with_mapping (self->calendar_settings, CALENDAR_WEEK_START_DAY_KEY,
+                                self->week_start_day_row, "selected",
+                                G_SETTINGS_BIND_DEFAULT,
+                                get_week_start_day_setting,
+                                set_week_start_day_setting,
+                                NULL, NULL);
 
   update_time (self);
 
