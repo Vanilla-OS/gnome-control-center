@@ -1,6 +1,6 @@
 project(
   'gnome-control-center', 'c',
-        version : '50.beta',
+        version : '50.rc',
         license : 'GPL2+',
   meson_version : '>= 0.60.0'
 )
@@ -210,6 +210,22 @@ subproject('libgxdp',
     'werror=false',
   ],
 )
+
+gmobile_dep = dependency(
+  'gmobile',
+  version: '>= 0.6.0',
+  default_options: [
+    'examples=false',
+    'introspection=false',
+    'gtk_doc=false',
+    'tests=false',
+    'vapi=false',
+    'hwdb=false',
+  ],
+  required: false,
+)
+config_h.set('HAVE_GMOBILE', gmobile_dep.found(),
+             description: 'Define to 1 if gmobile is available')
 
 accounts_dep = dependency('accountsservice', version: '>= 23.11.69')
 colord_dep = dependency('colord', version: '>= 0.1.34')

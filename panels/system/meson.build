@@ -112,6 +112,10 @@ deps = common_deps + [
   udisks2,
 ]
 
+if gmobile_dep.found()
+  deps += gmobile_dep
+endif
+
 if enable_ibus
   deps += ibus_dep
 endif

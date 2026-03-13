@@ -122,6 +122,13 @@ template $CcWwanDevicePage: Box {
               show-arrow: true;
               title: _("M_odem Details");
             }
+
+            Adw.ComboRow sim_slot_row {
+              use-underline: true;
+              title: _("Primary S_IM Slot");
+
+              model: StringList sim_slot_string_list {};
+            }
           }
         }
       };
