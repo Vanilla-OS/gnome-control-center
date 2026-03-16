@@ -50,7 +50,7 @@ struct _CcUaSeeingPage
 
   AdwSwitchRow       *high_contrast_row;
   AdwSwitchRow       *status_shapes_row;
-  GtkSwitch          *reduced_motion_switch;
+  AdwSwitchRow       *reduced_motion_row;
   CcListRow          *text_size_row;
   GtkScale           *text_size_scale;
   CcListRow          *cursor_size_row;
@@ -170,11 +170,9 @@ get_reduced_motion_mapping (GValue   *value,
                             GVariant *variant,
                             gpointer  user_data)
 {
-  guint32 val;
+  const char *val = g_variant_get_string (variant, NULL);
 
-  val = g_variant_get_uint32 (variant);
-
-  if (val == 0)
+  if (!g_strcmp0 (val, "no-preference"))
     g_value_set_boolean (value, FALSE);
   else
     g_value_set_boolean (value, TRUE);
@@ -190,7 +188,7 @@ set_reduced_motion_mapping (const GValue       *value,
   GSettings *settings = user_data;
 
   if (g_value_get_boolean (value))
-    return g_variant_new_uint32 (1);
+    return g_variant_new_string ("reduce");
 
   g_settings_reset (settings, KEY_REDUCED_MOTION);
 
@@ -321,7 +319,7 @@ cc_ua_seeing_page_class_init (CcUaSeeingPageClass *klass)
 
   gtk_widget_class_bind_template_child (widget_class, CcUaSeeingPage, high_contrast_row);
   gtk_widget_class_bind_template_child (widget_class, CcUaSeeingPage, status_shapes_row);
-  gtk_widget_class_bind_template_child (widget_class, CcUaSeeingPage, reduced_motion_switch);
+  gtk_widget_class_bind_template_child (widget_class, CcUaSeeingPage, reduced_motion_row);
   gtk_widget_class_bind_template_child (widget_class, CcUaSeeingPage, text_size_row);
   gtk_widget_class_bind_template_child (widget_class, CcUaSeeingPage, text_size_scale);
   gtk_widget_class_bind_template_child (widget_class, CcUaSeeingPage, cursor_size_row);
@@ -364,7 +362,7 @@ cc_ua_seeing_page_init (CcUaSeeingPage *self)
 
   /* Reduced motion */
   g_settings_bind_with_mapping (self->a11y_interface_settings, KEY_REDUCED_MOTION,
-                                self->reduced_motion_switch, "active",
+                                self->reduced_motion_row, "active",
                                 G_SETTINGS_BIND_DEFAULT,
                                 get_reduced_motion_mapping,
                                 set_reduced_motion_mapping,
