@@ -1,5 +1,6 @@
 location-page-Do-not-leak-app-info-and-time.patch
 camera-page-Do-not-leak-AppInfo.patch
+remote-desktop-Correctly-handle-nullable-error-from-secre.patch
 debian/Debian-s-adduser-doesn-t-allow-uppercase-letters-by-defau.patch
 debian/Ignore-result-of-test-network-panel.patch
 debian/meson:relax-malcontent-version.patch

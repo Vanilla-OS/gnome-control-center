@@ -1,0 +1,29 @@
+From: Mitchell Augustin <mitchell.augustin@canonical.com>
+Date: Thu, 26 Mar 2026 12:10:39 -0500
+Subject: remote-desktop: Correctly handle nullable error from
+ secret_collection_for_alias_sync
+
+secret_collection_for_alias_sync can return NULL, so we must handle this case:
+https://gitlab.gnome.org/GNOME/libsecret/-/blob/ed63e1a96851dcd6bd90abbec5b2b1999afabdc6/libsecret/secret-collection.c#L2205
+
+Fixes: 5940af5b ("remote-desktop, desktop-sharing: Handle when keyring is locked")
+Bug-Ubuntu: https://launchpad.net/bugs/2000063
+Forwarded: https://gitlab.gnome.org/GNOME/gnome-control-center/-/merge_requests/3362
+Applied-upstream: 51~alpha, commit:0652652b
+---
+ panels/system/remote-desktop/cc-desktop-sharing-page.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/panels/system/remote-desktop/cc-desktop-sharing-page.c b/panels/system/remote-desktop/cc-desktop-sharing-page.c
+index e10c56f..4b4e285 100644
+--- a/panels/system/remote-desktop/cc-desktop-sharing-page.c
++++ b/panels/system/remote-desktop/cc-desktop-sharing-page.c
+@@ -461,7 +461,7 @@ unlock_gnome_keyring (CcDesktopSharingPage *self)
+                                                  NULL, &error);
+   if (!collection)
+     {
+-      g_debug ("Can't load secret collection: %s", error->message);
++      g_debug ("Can't load secret collection: %s", error ? error->message : "No such collection");
+       return;
+     }
+ 
