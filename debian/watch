@@ -1,4 +1,7 @@
-version=4
-opts="searchmode=plain, uversionmangle=s/\.(alpha|beta|rc)/~$1/, downloadurlmangle=s|cache.json||" \
-https://download.gnome.org/sources/@PACKAGE@/cache.json \
-	[\d.]+/@PACKAGE@-([\d.]+\.?(?:alpha|beta|rc)?[\d.]*)@ARCHIVE_EXT@
+Version: 5
+
+Source: https://download.gnome.org/sources/@PACKAGE@/cache.json
+Matching-Pattern: [\d.]+/@PACKAGE@-([\d.]+\.?(?:alpha|beta|rc)?[\d.]*)@ARCHIVE_EXT@
+Download-Url-Mangle: s|cache.json||
+Search-Mode: plain
+Uversion-Mangle: s/\.(alpha|beta|rc)/~$1/
