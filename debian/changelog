@@ -2,12 +2,22 @@ gnome-control-center (1:50.0-1) UNRELEASED; urgency=medium
 
   [ Simon McVittie ]
   * New upstream release
+  * Integrate a subset of the changes made by Ubuntu:
+    - d/p/location-page-Do-not-leak-app-info-and-time.patch,
+      d/p/camera-page-Do-not-leak-AppInfo.patch:
+      Add memory leak fixes, from Ubuntu via upstream gnome-50 branch.
+      Thanks to Marco Trevisan
+    - d/p/remote-desktop-Correctly-handle-nullable-error-from-secre.patch:
+      Add a crash fix, from Ubuntu via upstream main branch.
+      Thanks to Mitchell Augustin (LP: #2000063)
+    - d/rules: Use SVG Ubuntu logo when compiled for Ubuntu.
+      Thanks to Alessandro Astone
   * d/watch: Update to v5 format
 
   [ Nathan Pratta Teodosio ]
   * d/control: Depend on blueprint-compiler >= 0.19.0
 
- -- Simon McVittie <smcv@debian.org>  Sat, 28 Mar 2026 14:20:20 +0000
+ -- Simon McVittie <smcv@debian.org>  Sat, 28 Mar 2026 15:00:56 +0000
 
 gnome-control-center (1:50~beta-1) unstable; urgency=medium
 
