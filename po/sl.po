@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-control-center master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-control-center/issues\n"
-"POT-Creation-Date: 2026-01-22 10:44+0000\n"
-"PO-Revision-Date: 2026-01-23 11:56+0100\n"
+"POT-Creation-Date: 2026-02-09 08:54+0000\n"
+"PO-Revision-Date: 2026-02-09 23:50+0100\n"
 "Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
@@ -172,7 +172,7 @@ msgstr "Prejme sistemska iskanja in pošlji zadetke"
 #. translators:
 #. * The device has been disabled
 #: panels/applications/cc-applications-panel.blp:227 panels/applications/cc-applications-panel.blp:269 panels/applications/cc-applications-panel.blp:290 panels/applications/cc-applications-panel.blp:304 panels/applications/cc-applications-panel.blp:318 panels/keyboard/cc-keyboard-panel.c:87
-#: panels/keyboard/cc-keyboard-shortcut-editor.blp:120 panels/keyboard/keyboard-shortcuts.c:367 panels/network/panel-common.c:336 panels/system/users/cc-user-page.c:368 panels/system/users/cc-user-page.c:753 panels/wwan/cc-wwan-device-page.c:475 subprojects/gvc/gvc-mixer-control.c:1872
+#: panels/keyboard/cc-keyboard-shortcut-editor.blp:120 panels/keyboard/keyboard-shortcuts.c:367 panels/network/panel-common.c:336 panels/system/users/cc-user-page.c:368 panels/system/users/cc-user-page.c:753 panels/wwan/cc-wwan-device-page.c:483 subprojects/gvc/gvc-mixer-control.c:1910
 msgid "Disabled"
 msgstr "Onemogočeno"
 
@@ -2243,7 +2243,7 @@ msgstr "Tipka za izmenjavo omogoča uporabo dodatnih znakov. Ti so pogosto natis
 msgid "Layout Default"
 msgstr "Privzeta postavitev"
 
-#: panels/keyboard/cc-keyboard-panel.c:66
+#: panels/keyboard/cc-keyboard-panel.c:66 panels/universal-access/cc-ua-seeing-page.c:123
 msgid "Default"
 msgstr "Privzeto"
 
@@ -3646,7 +3646,7 @@ msgstr "Kako pogosto naj bo soležniku poslan overjen prazen paket za ohranjanje
 msgid "seconds"
 msgstr "sekund"
 
-#: panels/network/connection-editor/wireguard-peer.blp:227
+#: panels/network/connection-editor/wireguard-peer.blp:227 panels/universal-access/cc-ua-seeing-page.blp:115
 msgid "Apply"
 msgstr "Uveljavi"
 
@@ -4319,7 +4319,7 @@ msgid "Not charging"
 msgstr "Naprava se ne polni"
 
 #. TRANSLATORS: primary battery
-#: panels/power/cc-battery-row.c:142 panels/power/cc-battery-row.c:172
+#: panels/power/cc-battery-row.c:142 panels/power/cc-battery-row.c:172 panels/wwan/cc-wwan-device-page.c:514
 msgid "Empty"
 msgstr "Prazno"
 
@@ -4934,7 +4934,7 @@ msgid "Server requires authentication"
 msgstr "Strežnik zahteva overitev"
 
 #. Translators: this is the "go back" action of a button
-#: panels/printers/pp-new-printer-dialog.ui:78 panels/system/users/cc-fingerprint-dialog.blp:24 panels/wacom/cc-wacom-stylus-page.c:425 panels/wwan/cc-wwan-apn-dialog.blp:20
+#: panels/printers/pp-new-printer-dialog.ui:78 panels/system/users/cc-fingerprint-dialog.blp:24 panels/wacom/cc-wacom-stylus-page.c:426 panels/wwan/cc-wwan-apn-dialog.blp:20
 msgid "Back"
 msgstr "Nazaj"
 
@@ -5806,7 +5806,7 @@ msgstr "Ni veljavno"
 
 #. TRANSLATORS: if the function is enabled through BIOS or OS settings.
 #. TRANSLATORS: Status of Parental Controls setup
-#: panels/privacy/firmware-security/cc-firmware-security-utils.c:45 panels/system/users/cc-user-page.c:366 panels/system/users/cc-user-page.c:753 panels/wwan/cc-wwan-device-page.c:473
+#: panels/privacy/firmware-security/cc-firmware-security-utils.c:45 panels/system/users/cc-user-page.c:366 panels/system/users/cc-user-page.c:753 panels/wwan/cc-wwan-device-page.c:481
 msgid "Enabled"
 msgstr "Omogočeno"
 
@@ -6668,94 +6668,102 @@ msgstr "_24-urni"
 msgid "AM / _PM"
 msgstr "_12-urni"
 
-#: panels/system/datetime/cc-datetime-page.blp:158
+#: panels/system/datetime/cc-datetime-page.blp:157
+msgid "F_irst Day of the Week"
+msgstr "Prvi dan v tednu"
+
+#: panels/system/datetime/cc-datetime-page.blp:168
 msgid "Clock &amp; Calendar"
 msgstr "Čas in koledar"
 
-#: panels/system/datetime/cc-datetime-page.blp:159
+#: panels/system/datetime/cc-datetime-page.blp:169
 msgid "Control how the time and date is shown in the top bar"
 msgstr "Upravljanje prikaza datuma in časa v vrhnji orodni vrstici"
 
-#: panels/system/datetime/cc-datetime-page.blp:162
+#: panels/system/datetime/cc-datetime-page.blp:172
 msgid "_Week Day"
 msgstr "_Dan v tednu"
 
-#: panels/system/datetime/cc-datetime-page.blp:167
+#: panels/system/datetime/cc-datetime-page.blp:177
 msgid "D_ate"
 msgstr "_Datum"
 
-#: panels/system/datetime/cc-datetime-page.blp:172
+#: panels/system/datetime/cc-datetime-page.blp:182
 msgid "_Seconds"
 msgstr "_Sekunde"
 
-#: panels/system/datetime/cc-datetime-page.blp:177
+#: panels/system/datetime/cc-datetime-page.blp:187
 msgid "Week _Numbers"
 msgstr "Številke _tednov"
 
-#: panels/system/datetime/cc-datetime-page.blp:178
+#: panels/system/datetime/cc-datetime-page.blp:188
 msgid "Shown in the dropdown calendar"
 msgstr "Prikazano v spustnem koledarju"
 
-#: panels/system/datetime/cc-datetime-page.blp:211
+#: panels/system/datetime/cc-datetime-page.blp:221
 msgid "January"
 msgstr "januar"
 
-#: panels/system/datetime/cc-datetime-page.blp:212
+#: panels/system/datetime/cc-datetime-page.blp:222
 msgid "February"
 msgstr "februar"
 
-#: panels/system/datetime/cc-datetime-page.blp:213
+#: panels/system/datetime/cc-datetime-page.blp:223
 msgid "March"
 msgstr "marec"
 
-#: panels/system/datetime/cc-datetime-page.blp:214
+#: panels/system/datetime/cc-datetime-page.blp:224
 msgid "April"
 msgstr "april"
 
-#: panels/system/datetime/cc-datetime-page.blp:215
+#: panels/system/datetime/cc-datetime-page.blp:225
 msgid "May"
 msgstr "maj"
 
-#: panels/system/datetime/cc-datetime-page.blp:216
+#: panels/system/datetime/cc-datetime-page.blp:226
 msgid "June"
 msgstr "junij"
 
-#: panels/system/datetime/cc-datetime-page.blp:217
+#: panels/system/datetime/cc-datetime-page.blp:227
 msgid "July"
 msgstr "julij"
 
-#: panels/system/datetime/cc-datetime-page.blp:218
+#: panels/system/datetime/cc-datetime-page.blp:228
 msgid "August"
 msgstr "avgust"
 
-#: panels/system/datetime/cc-datetime-page.blp:219
+#: panels/system/datetime/cc-datetime-page.blp:229
 msgid "September"
 msgstr "september"
 
-#: panels/system/datetime/cc-datetime-page.blp:220
+#: panels/system/datetime/cc-datetime-page.blp:230
 msgid "October"
 msgstr "oktober"
 
-#: panels/system/datetime/cc-datetime-page.blp:221
+#: panels/system/datetime/cc-datetime-page.blp:231
 msgid "November"
 msgstr "november"
 
-#: panels/system/datetime/cc-datetime-page.blp:222
+#: panels/system/datetime/cc-datetime-page.blp:232
 msgid "December"
 msgstr "december"
 
+#: panels/system/datetime/cc-datetime-page.c:227
+msgid "Locale Default"
+msgstr "Privzeta področna nastavitev"
+
 #. Translators: This is the full date and time format used in 12-hour mode.
-#: panels/system/datetime/cc-datetime-page.c:237
+#: panels/system/datetime/cc-datetime-page.c:254
 msgid "%e %B %Y, %l:%M %p"
 msgstr "%e %B %Y, %l:%M %p"
 
 #. Translators: This is the full date and time format used in 24-hour mode.
-#: panels/system/datetime/cc-datetime-page.c:242
+#: panels/system/datetime/cc-datetime-page.c:259
 msgid "%e %B %Y, %R"
 msgstr "%e %B %Y, %R"
 
 #. Translators: "city, country"
-#: panels/system/datetime/cc-datetime-page.c:402
+#: panels/system/datetime/cc-datetime-page.c:419
 #, c-format
 msgctxt "timezone loc"
 msgid "%s, %s"
@@ -6763,7 +6771,7 @@ msgstr "%s, %s"
 
 #. Update the timezone on the listbow row
 #. Translators: "timezone (details)"
-#: panels/system/datetime/cc-datetime-page.c:419
+#: panels/system/datetime/cc-datetime-page.c:436
 #, c-format
 msgctxt "timezone desc"
 msgid "%s (%s)"
@@ -6809,7 +6817,7 @@ msgstr "Jezikovna določila"
 
 #: panels/system/region/cc-format-chooser.blp:68
 msgid "Search locales"
-msgstr "Proišči jezikovne nabore"
+msgstr "Preišči jezikovne nabore"
 
 #: panels/system/region/cc-format-chooser.blp:82
 msgid "Common Formats"
@@ -6964,8 +6972,8 @@ msgid "_Generate New Password"
 msgstr "Ustvari _novo geslo"
 
 #: panels/system/remote-desktop/cc-desktop-sharing-page.blp:140 panels/system/remote-desktop/cc-remote-login-page.blp:131
-msgid "_Verify Encryption"
-msgstr "_Overi šifriranje"
+msgid "_Verify Fingerprint"
+msgstr "_Preveri prstni odtis"
 
 #: panels/system/remote-desktop/cc-desktop-sharing-page.c:357 panels/system/remote-desktop/cc-remote-login-page.c:96
 msgid "Device address copied to clipboard"
@@ -7847,13 +7855,13 @@ msgstr "_Časovni zamik dvojnega klika"
 
 #. Translators: This is a mark in the Crosshair Length scale
 #: panels/universal-access/cc-ua-mouse-page.blp:41 panels/universal-access/cc-ua-mouse-page.blp:74 panels/universal-access/cc-ua-mouse-page.blp:103 panels/universal-access/cc-ua-typing-page.blp:118 panels/universal-access/cc-ua-typing-page.blp:163 panels/universal-access/cc-ua-typing-page.blp:203
-#: panels/universal-access/cc-ua-zoom-page.blp:145
+#: panels/universal-access/cc-ua-zoom-page.blp:146
 msgid "Short"
 msgstr "Kratko"
 
 #. Translators: This is a mark in the Crosshair Length scale
 #: panels/universal-access/cc-ua-mouse-page.blp:43 panels/universal-access/cc-ua-mouse-page.blp:76 panels/universal-access/cc-ua-mouse-page.blp:105 panels/universal-access/cc-ua-typing-page.blp:120 panels/universal-access/cc-ua-typing-page.blp:165 panels/universal-access/cc-ua-typing-page.blp:205
-#: panels/universal-access/cc-ua-zoom-page.blp:147
+#: panels/universal-access/cc-ua-zoom-page.blp:149
 msgid "Long"
 msgstr "Dolgo"
 
@@ -7893,7 +7901,7 @@ msgstr "Prag premikanja:"
 msgid "Small"
 msgstr "Majhen"
 
-#: panels/universal-access/cc-ua-mouse-page.blp:128
+#: panels/universal-access/cc-ua-mouse-page.blp:128 panels/universal-access/cc-ua-seeing-page.c:123
 msgid "Large"
 msgstr "Velik"
 
@@ -7970,65 +7978,82 @@ msgid "Toggle reduced motion animations throughout the user interface"
 msgstr "Preklopi animacije z manj gibanja po vsem uporabniškem vmesniku"
 
 #: panels/universal-access/cc-ua-seeing-page.blp:67
-msgid "_Large Text"
-msgstr "_Povečano besedilo"
+msgid "_Text Size"
+msgstr "_Velikost besedila"
 
-#: panels/universal-access/cc-ua-seeing-page.blp:68
-msgid "Increase the size of all text in the user interface"
-msgstr "Povečaj velikost besedila v uporabniškem vmesniku"
-
-#: panels/universal-access/cc-ua-seeing-page.blp:73
+#: panels/universal-access/cc-ua-seeing-page.blp:74
 msgid "_Cursor Size"
 msgstr "_Velikost kazalke"
 
-#: panels/universal-access/cc-ua-seeing-page.blp:74
+#: panels/universal-access/cc-ua-seeing-page.blp:75
 msgid "Increase the size of the cursor"
 msgstr "Povečaj velikost kazalke"
 
-#: panels/universal-access/cc-ua-seeing-page.blp:80
+#: panels/universal-access/cc-ua-seeing-page.blp:81
 msgid "_Sound Keys"
 msgstr "O_zvočene tipke"
 
-#: panels/universal-access/cc-ua-seeing-page.blp:81
+#: panels/universal-access/cc-ua-seeing-page.blp:82
 msgid "Beep when Num Lock or Caps Lock are turned on or off"
 msgstr "Zapiska, kadar je pritisnjena tipka za zaklep številčnice ali velikih črk"
 
-#: panels/universal-access/cc-ua-seeing-page.blp:86
+#: panels/universal-access/cc-ua-seeing-page.blp:87
 msgid "Always Show Scroll_bars"
 msgstr "_Vedno pokaži vrstice drsnika"
 
-#: panels/universal-access/cc-ua-seeing-page.blp:87
+#: panels/universal-access/cc-ua-seeing-page.blp:88
 msgid "Make scrollbars always visible"
 msgstr "Drsniki so vedno vidni"
 
+#: panels/universal-access/cc-ua-seeing-page.blp:97
+msgid "Text Size"
+msgstr "Velikost besedila"
+
+#: panels/universal-access/cc-ua-seeing-page.blp:109 panels/wwan/cc-wwan-device-page.c:191
+msgid "Cancel"
+msgstr "Prekliči"
+
+#: panels/universal-access/cc-ua-seeing-page.blp:125
+msgid "Use the slider to adjust the size of user interface text"
+msgstr "Uporabite drsnik za prilagajanje velikosti besedila v uporabniškem vmesniku"
+
+#. Translators: Single letter next to the text size slider
+#: panels/universal-access/cc-ua-seeing-page.blp:137 panels/universal-access/cc-ua-seeing-page.blp:157
+msgid "A"
+msgstr "A"
+
+#: panels/universal-access/cc-ua-seeing-page.blp:168
+msgid "Sample text"
+msgstr "Vzorčno besedilo"
+
 #. translators: the labels will read:
 #. * Cursor Size: Default
-#: panels/universal-access/cc-ua-seeing-page.c:165
+#: panels/universal-access/cc-ua-seeing-page.c:215
 msgctxt "cursor size"
 msgid "Default"
 msgstr "privzeta"
 
-#: panels/universal-access/cc-ua-seeing-page.c:168
+#: panels/universal-access/cc-ua-seeing-page.c:218
 msgctxt "cursor size"
 msgid "Medium"
 msgstr "srednja"
 
-#: panels/universal-access/cc-ua-seeing-page.c:171
+#: panels/universal-access/cc-ua-seeing-page.c:221
 msgctxt "cursor size"
 msgid "Large"
 msgstr "velika"
 
-#: panels/universal-access/cc-ua-seeing-page.c:174
+#: panels/universal-access/cc-ua-seeing-page.c:224
 msgctxt "cursor size"
 msgid "Larger"
 msgstr "zelo velika"
 
-#: panels/universal-access/cc-ua-seeing-page.c:177
+#: panels/universal-access/cc-ua-seeing-page.c:227
 msgctxt "cursor size"
 msgid "Largest"
 msgstr "največja"
 
-#: panels/universal-access/cc-ua-seeing-page.c:181
+#: panels/universal-access/cc-ua-seeing-page.c:231
 #, c-format
 msgid "%d pixel"
 msgid_plural "%d pixels"
@@ -8441,7 +8466,7 @@ msgstr "Ni zaznane tablice"
 msgid "Please plug in or turn on your Wacom tablet"
 msgstr "Priklopite in prižgite tablico Wacom."
 
-#: panels/wacom/cc-wacom-stylus-action-dialog.blp:100 panels/wacom/cc-wacom-stylus-action-dialog.blp:132 panels/wacom/cc-wacom-stylus-page.c:432
+#: panels/wacom/cc-wacom-stylus-action-dialog.blp:100 panels/wacom/cc-wacom-stylus-action-dialog.blp:132 panels/wacom/cc-wacom-stylus-page.c:433
 msgid "Assign Keystroke"
 msgstr "Dodeli tipkovno bližnjico"
 
@@ -8449,12 +8474,12 @@ msgstr "Dodeli tipkovno bližnjico"
 msgid "Press Esc to cancel"
 msgstr "Pritisnite ubežnico (Esc) za preklic"
 
-#: panels/wacom/cc-wacom-stylus-action-dialog.c:248
+#: panels/wacom/cc-wacom-stylus-action-dialog.c:238
 #, c-format
 msgid "Choose an action when button %d on the stylus is pressed"
 msgstr "Izbor dejanja, ko je pritisnjen gumb %d pisala"
 
-#: panels/wacom/cc-wacom-stylus-action-dialog.c:251
+#: panels/wacom/cc-wacom-stylus-action-dialog.c:241
 #, c-format
 msgid "Button %d Mapping"
 msgstr "Preslikava gumba %d"
@@ -8491,24 +8516,24 @@ msgstr "Gumb _3"
 msgid "_Eraser Pressure Feel"
 msgstr "Občutek pritiska _radirke"
 
-#: panels/wacom/cc-wacom-stylus-page.c:415
+#: panels/wacom/cc-wacom-stylus-page.c:416
 msgid "Left Mousebutton Click"
 msgstr "Klik levega gumba miške"
 
-#: panels/wacom/cc-wacom-stylus-page.c:418
+#: panels/wacom/cc-wacom-stylus-page.c:419
 msgid "Middle Mousebutton Click"
 msgstr "Klik srednjega gumba miške"
 
-#: panels/wacom/cc-wacom-stylus-page.c:421
+#: panels/wacom/cc-wacom-stylus-page.c:422
 msgid "Right Mousebutton Click"
 msgstr "Klik desnega gumba miške"
 
 #. Translators: this is the "go forward" action of a button
-#: panels/wacom/cc-wacom-stylus-page.c:429
+#: panels/wacom/cc-wacom-stylus-page.c:430
 msgid "Forward"
 msgstr "Naprej"
 
-#: panels/wacom/cc-wacom-stylus-page.c:435
+#: panels/wacom/cc-wacom-stylus-page.c:436
 msgid "Switch Monitor"
 msgstr "Preklopi zaslon"
 
@@ -8924,179 +8949,179 @@ msgstr "Poteka iskanje …"
 msgid "Denied"
 msgstr "Zavrnjeno"
 
-#: panels/wwan/cc-wwan-device.c:988
+#: panels/wwan/cc-wwan-device.c:1019
 msgid "2G Only"
 msgstr "Le G2"
 
-#: panels/wwan/cc-wwan-device.c:991
+#: panels/wwan/cc-wwan-device.c:1022
 msgid "3G Only"
 msgstr "Le G3"
 
-#: panels/wwan/cc-wwan-device.c:994
+#: panels/wwan/cc-wwan-device.c:1025
 msgid "4G Only"
 msgstr "Le G4"
 
-#: panels/wwan/cc-wwan-device.c:997
+#: panels/wwan/cc-wwan-device.c:1028
 msgid "5G Only"
 msgstr "Le 5G"
 
-#: panels/wwan/cc-wwan-device.c:1007
+#: panels/wwan/cc-wwan-device.c:1038
 msgid "2G, 3G, 4G, 5G (Preferred)"
 msgstr "2G, 3G, 4G, 5G (prednostno)"
 
-#: panels/wwan/cc-wwan-device.c:1009
+#: panels/wwan/cc-wwan-device.c:1040
 msgid "2G, 3G, 4G (Preferred), 5G"
 msgstr "2G, 3G, 4G (prednostno), 5G"
 
-#: panels/wwan/cc-wwan-device.c:1011
+#: panels/wwan/cc-wwan-device.c:1042
 msgid "2G, 3G (Preferred), 4G, 5G"
 msgstr "2G, 3G (prednostno), 4G, 5G"
 
-#: panels/wwan/cc-wwan-device.c:1013
+#: panels/wwan/cc-wwan-device.c:1044
 msgid "2G (Preferred), 3G, 4G, 5G"
 msgstr "2G (prednostno), 3G, 4G, 5G"
 
-#: panels/wwan/cc-wwan-device.c:1015
+#: panels/wwan/cc-wwan-device.c:1046
 msgid "2G, 3G, 4G, 5G"
 msgstr "2G, 3G, 4G, 5G"
 
-#: panels/wwan/cc-wwan-device.c:1022
+#: panels/wwan/cc-wwan-device.c:1053
 msgid "2G, 3G, 4G (Preferred)"
 msgstr "2G, 3G, 4G (prednostno)"
 
-#: panels/wwan/cc-wwan-device.c:1024
+#: panels/wwan/cc-wwan-device.c:1055
 msgid "2G, 3G (Preferred), 4G"
 msgstr "2G, 3G (prednostno), 4G"
 
-#: panels/wwan/cc-wwan-device.c:1026
+#: panels/wwan/cc-wwan-device.c:1057
 msgid "2G (Preferred), 3G, 4G"
 msgstr "2G (prednostno), 3G, 4G"
 
-#: panels/wwan/cc-wwan-device.c:1028
+#: panels/wwan/cc-wwan-device.c:1059
 msgid "2G, 3G, 4G"
 msgstr "2G, 3G, 4G"
 
-#: panels/wwan/cc-wwan-device.c:1035
+#: panels/wwan/cc-wwan-device.c:1066
 msgid "3G, 4G, 5G (Preferred)"
 msgstr "3G, 4G, 5G (prednostno)"
 
-#: panels/wwan/cc-wwan-device.c:1037
+#: panels/wwan/cc-wwan-device.c:1068
 msgid "3G, 4G (Preferred), 5G"
 msgstr "3G, 4G (prednostno), 5G"
 
-#: panels/wwan/cc-wwan-device.c:1039
+#: panels/wwan/cc-wwan-device.c:1070
 msgid "3G (Preferred), 4G, 5G"
 msgstr "3G (prednostno), 4G, 5G"
 
-#: panels/wwan/cc-wwan-device.c:1041
+#: panels/wwan/cc-wwan-device.c:1072
 msgid "3G, 4G, 5G"
 msgstr "3G, 4G, 5G"
 
-#: panels/wwan/cc-wwan-device.c:1048
+#: panels/wwan/cc-wwan-device.c:1079
 msgid "2G, 4G, 5G (Preferred)"
 msgstr "2G, 4G, 5G (prednostno)"
 
-#: panels/wwan/cc-wwan-device.c:1050
+#: panels/wwan/cc-wwan-device.c:1081
 msgid "2G, 4G (Preferred), 5G"
 msgstr "2G, 4G (prednostno), 5G"
 
-#: panels/wwan/cc-wwan-device.c:1052
+#: panels/wwan/cc-wwan-device.c:1083
 msgid "2G (Preferred), 4G, 5G"
 msgstr "2G (prednostno), 4G, 5G"
 
-#: panels/wwan/cc-wwan-device.c:1054
+#: panels/wwan/cc-wwan-device.c:1085
 msgid "2G, 4G, 5G"
 msgstr "2G, 4G, 5G"
 
-#: panels/wwan/cc-wwan-device.c:1061
+#: panels/wwan/cc-wwan-device.c:1092
 msgid "2G, 3G, 5G (Preferred)"
 msgstr "2G, 3G, 5G (prednostno)"
 
-#: panels/wwan/cc-wwan-device.c:1063
+#: panels/wwan/cc-wwan-device.c:1094
 msgid "2G, 3G (Preferred), 5G"
 msgstr "2G, 3G (prednostno), 5G"
 
-#: panels/wwan/cc-wwan-device.c:1065
+#: panels/wwan/cc-wwan-device.c:1096
 msgid "2G (Preferred), 3G, 5G"
 msgstr "2G (prednostno), 3G, 5G"
 
-#: panels/wwan/cc-wwan-device.c:1067
+#: panels/wwan/cc-wwan-device.c:1098
 msgid "2G, 3G, 5G"
 msgstr "2G, 3G, 5G"
 
-#: panels/wwan/cc-wwan-device.c:1073
+#: panels/wwan/cc-wwan-device.c:1104
 msgid "3G, 4G (Preferred)"
 msgstr "3G, 4G (prednostno)"
 
-#: panels/wwan/cc-wwan-device.c:1075
+#: panels/wwan/cc-wwan-device.c:1106
 msgid "3G (Preferred), 4G"
 msgstr "3G (prednostno), 4G"
 
-#: panels/wwan/cc-wwan-device.c:1077
+#: panels/wwan/cc-wwan-device.c:1108
 msgid "3G, 4G"
 msgstr "3G, 4G"
 
-#: panels/wwan/cc-wwan-device.c:1083
+#: panels/wwan/cc-wwan-device.c:1114
 msgid "2G, 4G (Preferred)"
 msgstr "2G, 4G (prednostno)"
 
-#: panels/wwan/cc-wwan-device.c:1085
+#: panels/wwan/cc-wwan-device.c:1116
 msgid "2G (Preferred), 4G"
 msgstr "2G (prednostno), 4G"
 
-#: panels/wwan/cc-wwan-device.c:1087
+#: panels/wwan/cc-wwan-device.c:1118
 msgid "2G, 4G"
 msgstr "2G, 4G"
 
-#: panels/wwan/cc-wwan-device.c:1093
+#: panels/wwan/cc-wwan-device.c:1124
 msgid "2G, 3G (Preferred)"
 msgstr "2G, 3G (prednostno)"
 
-#: panels/wwan/cc-wwan-device.c:1095
+#: panels/wwan/cc-wwan-device.c:1126
 msgid "2G (Preferred), 3G"
 msgstr "2G (prednostno), 3G"
 
-#: panels/wwan/cc-wwan-device.c:1097
+#: panels/wwan/cc-wwan-device.c:1128
 msgid "2G, 3G"
 msgstr "2G, 3G"
 
-#: panels/wwan/cc-wwan-device.c:1103
+#: panels/wwan/cc-wwan-device.c:1134
 msgid "2G, 5G (Preferred)"
 msgstr "2G, 5G (prednostno)"
 
-#: panels/wwan/cc-wwan-device.c:1105
+#: panels/wwan/cc-wwan-device.c:1136
 msgid "2G (Preferred), 5G"
 msgstr "2G (prednostno), 5G"
 
-#: panels/wwan/cc-wwan-device.c:1107
+#: panels/wwan/cc-wwan-device.c:1138
 msgid "2G, 5G"
 msgstr "2G, 5G"
 
-#: panels/wwan/cc-wwan-device.c:1113
+#: panels/wwan/cc-wwan-device.c:1144
 msgid "3G, 5G (Preferred)"
 msgstr "3G, 5G (prednostno)"
 
-#: panels/wwan/cc-wwan-device.c:1115
+#: panels/wwan/cc-wwan-device.c:1146
 msgid "3G (Preferred), 5G"
 msgstr "3G (prednostno), 5G"
 
-#: panels/wwan/cc-wwan-device.c:1117
+#: panels/wwan/cc-wwan-device.c:1148
 msgid "3G, 5G"
 msgstr "3G, 5G"
 
-#: panels/wwan/cc-wwan-device.c:1123
+#: panels/wwan/cc-wwan-device.c:1154
 msgid "4G, 5G (Preferred)"
 msgstr "4G, 5G (prednostno)"
 
-#: panels/wwan/cc-wwan-device.c:1125
+#: panels/wwan/cc-wwan-device.c:1156
 msgid "4G (Preferred), 5G"
 msgstr "4G (prednostno), 5G"
 
-#: panels/wwan/cc-wwan-device.c:1127
+#: panels/wwan/cc-wwan-device.c:1158
 msgid "4G, 5G"
 msgstr "4G, 5G"
 
-#: panels/wwan/cc-wwan-device.c:1131
+#: panels/wwan/cc-wwan-device.c:1162
 msgctxt "Network mode"
 msgid "Unknown"
 msgstr "Neznano"
@@ -9157,37 +9182,37 @@ msgstr "Zakleni kartico SIM s kodo PIN"
 msgid "M_odem Details"
 msgstr "Podrobnosti _modema"
 
-#: panels/wwan/cc-wwan-device-page.c:185
+#: panels/wwan/cc-wwan-device-page.blp:128
+msgid "Primary S_IM Slot"
+msgstr "Reža za primarni S_IM"
+
+#: panels/wwan/cc-wwan-device-page.c:189
 msgid "Unlock SIM card"
 msgstr "Odkleni kartico SIM"
 
-#: panels/wwan/cc-wwan-device-page.c:186 panels/wwan/cc-wwan-device-page.c:234
+#: panels/wwan/cc-wwan-device-page.c:190 panels/wwan/cc-wwan-device-page.c:238
 msgid "Unlock"
 msgstr "Odkleni"
 
-#: panels/wwan/cc-wwan-device-page.c:187
-msgid "Cancel"
-msgstr "Prekliči"
-
-#: panels/wwan/cc-wwan-device-page.c:191
+#: panels/wwan/cc-wwan-device-page.c:195
 #, c-format
 msgid "Please provide PIN code for SIM %d"
 msgstr "Vpisati je treba kodo PIN za kartico SIM %d"
 
-#: panels/wwan/cc-wwan-device-page.c:192
+#: panels/wwan/cc-wwan-device-page.c:196
 msgid "Enter PIN to unlock your SIM card"
 msgstr "Vpišite kodo PIN za odklepanje kartice SIM"
 
-#: panels/wwan/cc-wwan-device-page.c:196
+#: panels/wwan/cc-wwan-device-page.c:200
 #, c-format
 msgid "Please provide PUK code for SIM %d"
 msgstr "Vpisati je treba kodo PUK za kartico SIM %d"
 
-#: panels/wwan/cc-wwan-device-page.c:197
+#: panels/wwan/cc-wwan-device-page.c:201
 msgid "Enter PUK to unlock your SIM card"
 msgstr "Vpišite kodo PUK za odklepanje kartice SIM"
 
-#: panels/wwan/cc-wwan-device-page.c:215
+#: panels/wwan/cc-wwan-device-page.c:219
 #, c-format
 msgid "Wrong password entered. You have %1$u try left"
 msgid_plural "Wrong password entered. You have %1$u tries left"
@@ -9196,7 +9221,7 @@ msgstr[1] "Vpisano je napačno geslo. Na voljo imate še %u poskus."
 msgstr[2] "Vpisano je napačno geslo. Na voljo imate še %u poskusa."
 msgstr[3] "Vpisano je napačno geslo. Na voljo imate še %u poskuse."
 
-#: panels/wwan/cc-wwan-device-page.c:218
+#: panels/wwan/cc-wwan-device-page.c:222
 #, c-format
 msgid "You have %u try left"
 msgid_plural "You have %u tries left"
@@ -9205,25 +9230,34 @@ msgstr[1] "Na voljo imate še %u poskus."
 msgstr[2] "Na voljo imate še %u poskusa"
 msgstr[3] "Na voljo imate še %u poskuse."
 
-#: panels/wwan/cc-wwan-device-page.c:223
+#: panels/wwan/cc-wwan-device-page.c:227
 msgid "Wrong password entered."
 msgstr "Vpisano je napačno geslo"
 
-#: panels/wwan/cc-wwan-device-page.c:268
+#: panels/wwan/cc-wwan-device-page.c:272
 msgid "PUK code should be an 8 digit number"
 msgstr "Koda PUK mora biti 8-znakovna vrednost"
 
-#: panels/wwan/cc-wwan-device-page.c:292
+#: panels/wwan/cc-wwan-device-page.c:296
 msgid "Enter New PIN"
 msgstr "Vpiši novo kodo PIN"
 
-#: panels/wwan/cc-wwan-device-page.c:296
+#: panels/wwan/cc-wwan-device-page.c:300
 msgid "PIN code should be a 4-8 digit number"
 msgstr "Koda PIN mora biti dolžine 4–8 znakov"
 
-#: panels/wwan/cc-wwan-device-page.c:314
+#: panels/wwan/cc-wwan-device-page.c:318
 msgid "Unlocking…"
 msgstr "Poteka odklepanje …"
+
+#. Translators: This refers to a sim slot in a modem.
+#. * For example: "Slot 1 [Operator Name]", "Slot 1" or "Slot 2 [Empty]".
+#. * Notice that all variations above are valid. Sometimes "Operator Name"
+#. * will be ommitted.
+#: panels/wwan/cc-wwan-device-page.c:527
+#, c-format
+msgid "Slot %d %s"
+msgstr "Reža %d %s"
 
 #: panels/wwan/cc-wwan-errors-private.h:40
 msgid "Phone failure"
@@ -9345,15 +9379,19 @@ msgstr "Prepričajte se, da naprava podpira brezžični protokol WAN/Cellular"
 msgid "Wireless Wan is disabled when airplane mode is on"
 msgstr "Brezžično omrežje Wan je onemogočeno, kadar je omogočen letalski način"
 
-#: panels/wwan/cc-wwan-panel.blp:90
+#: panels/wwan/cc-wwan-panel.blp:74
+msgid "Loading Devices"
+msgstr "Nalaganje naprav"
+
+#: panels/wwan/cc-wwan-panel.blp:99
 msgid "Data Connection"
 msgstr "Podatkovna povezava"
 
-#: panels/wwan/cc-wwan-panel.blp:91
+#: panels/wwan/cc-wwan-panel.blp:100
 msgid "SIM card used for internet"
 msgstr "Kartica SIM za dostop do interneta"
 
-#: panels/wwan/cc-wwan-panel.c:366 panels/wwan/cc-wwan-panel.c:397
+#: panels/wwan/cc-wwan-panel.c:366 panels/wwan/cc-wwan-panel.c:399
 #, c-format
 msgid "SIM %d"
 msgstr "SIM %d"
@@ -9551,7 +9589,7 @@ msgstr "Prekliče iskanje"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1879
+#: subprojects/gvc/gvc-mixer-control.c:1917
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -9562,7 +9600,7 @@ msgstr[3] "%u izhodi"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1889
+#: subprojects/gvc/gvc-mixer-control.c:1927
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
@@ -9571,6 +9609,6 @@ msgstr[1] "%u vhod"
 msgstr[2] "%u vhoda"
 msgstr[3] "%u vhodi"
 
-#: subprojects/gvc/gvc-mixer-control.c:2872
+#: subprojects/gvc/gvc-mixer-control.c:2910
 msgid "System Sounds"
 msgstr "Sistemski zvoki"

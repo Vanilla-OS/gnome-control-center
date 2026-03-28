@@ -30,6 +30,7 @@ G_DECLARE_FINAL_TYPE (CcWacomStylusActionDialog, cc_wacom_stylus_action_dialog, 
 GtkWidget* cc_wacom_stylus_action_dialog_new (GSettings  *settings,
 					      const char *stylus_name,
 					      guint       button,
-					      const char *key);
+					      const char *key,
+					      const char *keybinding_key);
 
 G_END_DECLS

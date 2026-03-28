@@ -195,13 +195,14 @@ cc_wacom_stylus_page_set_property (GObject      *object,
 static void
 present_action_dialog (CcWacomStylusPage *page,
 		       guint		 button,
-		       const char        *key)
+		       const char        *key,
+		       const char        *keybinding_key)
 {
 	GtkWidget *action_dialog;
 
 	action_dialog = cc_wacom_stylus_action_dialog_new (page->stylus_settings,
 							   cc_wacom_tool_get_name (page->stylus),
-							   button, key);
+							   button, key, keybinding_key);
 
 	adw_dialog_present (ADW_DIALOG (action_dialog), GTK_WIDGET (page));
 }
@@ -209,19 +210,19 @@ present_action_dialog (CcWacomStylusPage *page,
 static void
 on_stylus_button1_action_activated (CcWacomStylusPage *page)
 {
-	present_action_dialog (page, 1, "button-action");
+	present_action_dialog (page, 1, "button-action", "button-keybinding");
 }
 
 static void
 on_stylus_button2_action_activated (CcWacomStylusPage *page)
 {
-	present_action_dialog (page, 2, "secondary-button-action");
+	present_action_dialog (page, 2, "secondary-button-action", "secondary-button-keybinding");
 }
 
 static void
 on_stylus_button3_action_activated (CcWacomStylusPage *page)
 {
-	present_action_dialog (page, 3, "tertiary-button-action");
+	present_action_dialog (page, 3, "tertiary-button-action", "tertiary-button-keybinding");
 }
 
 static void

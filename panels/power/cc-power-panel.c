@@ -36,6 +36,19 @@
 #include "cc-power-resources.h"
 #include "cc-ui-util.h"
 
+/* This enum represents the availability of power actions, ordered from least
+ * to most available so that the code can compare w/ inequality operators */
+typedef enum
+{
+  /* Power action isn't available */
+  ACTION_UNAVAILABLE,
+  /* Power action is available, but suitable only for interactive use (i.e.
+   * explicitly triggered by user action) */
+  ACTION_INTERACTIVE,
+  /* Power action is available and usable for automatic power management */
+  ACTION_AUTOMATIC,
+} ActionAvailability;
+
 struct _CcPowerPanel
 {
   CcPanel            parent_instance;
@@ -80,6 +93,10 @@ struct _CcPowerPanel
   GPtrArray     *devices;
   gboolean       has_batteries;
   char          *chassis_type;
+
+  ActionAvailability can_shutdown;
+  ActionAvailability can_suspend;
+  ActionAvailability can_hibernate;
 
   GDBusProxy    *iio_proxy;
   guint          iio_proxy_watch_id;
@@ -129,10 +146,13 @@ static void
 update_power_saver_low_battery_row_visibility (CcPowerPanel *self)
 {
   g_autoptr(UpDevice) composite = NULL;
-  UpDeviceKind kind;
+  UpDeviceKind kind = UP_DEVICE_KIND_UNKNOWN;
 
-  composite = up_client_get_display_device (self->up_client);
-  g_object_get (composite, "kind", &kind, NULL);
+  if (self->up_client)
+    {
+      composite = up_client_get_display_device (self->up_client);
+      g_object_get (composite, "kind", &kind, NULL);
+    }
   gtk_widget_set_visible (GTK_WIDGET (self->power_saver_low_battery_row),
                           self->power_profiles_proxy && kind == UP_DEVICE_KIND_BATTERY);
 }
@@ -235,7 +255,7 @@ static void
 up_client_changed (CcPowerPanel *self)
 {
   gint i;
-  UpDeviceKind kind;
+  UpDeviceKind kind = UP_DEVICE_KIND_UNKNOWN;
   guint n_batteries;
   gboolean on_ups;
   gboolean charge_threshold_supported;
@@ -253,8 +273,12 @@ up_client_changed (CcPowerPanel *self)
   charge_threshold_enabled = FALSE;
   on_ups = FALSE;
   n_batteries = 0;
-  composite = up_client_get_display_device (self->up_client);
-  g_object_get (composite, "kind", &kind, NULL);
+  if (self->up_client)
+    {
+      composite = up_client_get_display_device (self->up_client);
+      g_object_get (composite, "kind", &kind, NULL);
+    }
+
   if (kind == UP_DEVICE_KIND_UPS)
     {
       on_ups = TRUE;
@@ -529,17 +553,6 @@ get_sleep_type (GValue   *value,
   return TRUE;
 }
 
-static void
-update_suspend_notice_visibility (CcPowerPanel *self)
-{
-  gboolean suspend = adw_switch_row_get_active (self->suspend_on_ac_switch_row);
-  if (self->has_batteries) {
-    suspend = suspend && adw_switch_row_get_active (self->suspend_on_battery_switch_row);
-  }
-
-  gtk_widget_set_visible (GTK_WIDGET (self->suspend_notice_group), !suspend);
-}
-
 static GVariant *
 set_sleep_type (const GValue       *value,
                 const GVariantType *expected_type,
@@ -550,55 +563,84 @@ set_sleep_type (const GValue       *value,
   return g_variant_new_string (sleep_str);
 }
 
-static void
-populate_power_button_row (CcNumberRow *row,
-                           gboolean     can_suspend,
-                           gboolean     can_hibernate)
+static gboolean
+populate_power_button_row (CcPowerPanel *self)
 {
+  static const char *hidden_on_chassis[] = {
+    "vm", /* Hard-coded to shutdown via logind (not interactive, as below!) */
+    "tablet", /* Should be left to the default action of suspending */
+    "handset", /* This means phone. Similar to tablet */
+    NULL
+  };
   static const struct {
     char *name;
     GsdPowerButtonActionType value;
+    size_t availability;
   } actions[] = {
-    { N_("Suspend"), GSD_POWER_BUTTON_ACTION_SUSPEND },
-    { N_("Power Off"), GSD_POWER_BUTTON_ACTION_INTERACTIVE },
-    { N_("Hibernate"), GSD_POWER_BUTTON_ACTION_HIBERNATE },
-    { N_("Nothing"), GSD_POWER_BUTTON_ACTION_NOTHING }
+    { N_("Suspend"), GSD_POWER_BUTTON_ACTION_SUSPEND, offsetof (CcPowerPanel, can_suspend) },
+    { N_("Power Off"), GSD_POWER_BUTTON_ACTION_INTERACTIVE, offsetof (CcPowerPanel, can_shutdown) },
+    { N_("Hibernate"), GSD_POWER_BUTTON_ACTION_HIBERNATE, offsetof (CcPowerPanel, can_hibernate) },
+    { N_("Nothing"), GSD_POWER_BUTTON_ACTION_NOTHING, 0 }
   };
+  guint n_options = 0;
   guint i;
+
+  if (g_strv_contains (hidden_on_chassis, self->chassis_type))
+    return FALSE;
 
   for (i = 0; i < G_N_ELEMENTS (actions); i++)
     {
       const char *name = actions[i].name;
       const int value = actions[i].value;
 
-      if (!can_suspend && value == GSD_POWER_BUTTON_ACTION_SUSPEND)
-        continue;
+      if (value != GSD_POWER_BUTTON_ACTION_NOTHING)
+        {
+          const size_t offset = actions[i].availability;
+          ActionAvailability availability = G_STRUCT_MEMBER (ActionAvailability,
+                                                             self, offset);
+          if (availability < ACTION_INTERACTIVE)
+            continue;
+        }
 
-      if (!can_hibernate && value == GSD_POWER_BUTTON_ACTION_HIBERNATE)
-        continue;
-
-      cc_number_row_add_value_full (row, value, _(name), CC_NUMBER_ORDER_DEFAULT);
+      cc_number_row_add_value_full (self->power_button_row, value, _(name),
+                                    CC_NUMBER_ORDER_DEFAULT);
+      n_options++;
     }
+
+  return n_options > 1;
 }
 
-static gboolean
-can_suspend_or_hibernate (CcPowerPanel *self,
-                          const char   *method_name)
+static ActionAvailability
+can_power_action (CcPowerPanel    *self,
+                  GDBusConnection *connection,
+                  const char      *method_name)
 {
-  g_autoptr(GDBusConnection) connection = NULL;
+  static const char *allowed_automatic_states[] = {
+    "yes", /* Action is allowed without authentication */
+
+    /* Introduced in systemd v260. The action is normally available without
+     * authentication, but an inhibitor is temporarily... */
+    "inhibited", /* ...demanding auth */
+    "inhibitor-blocked", /* ...blocking the action */
+    NULL
+  };
+  static const char *allowed_interactive_states[] = {
+    "challenge", /* Action is allowed with authentication */
+
+    /* Introduced in systemd v260. The action is normally available with
+     * authentication, but an inhibitor is temporarily blocking the action */
+    "challenge-inhibitor-blocked",
+    NULL
+  };
+  static const char *known_unavailable_states[] = {
+    "no", /* Action disabled by administrator */
+    "na", /* Action entirely unavailable */
+    NULL
+  };
+
   g_autoptr(GVariant) variant = NULL;
   g_autoptr(GError) error = NULL;
   const char *s;
-
-  connection = g_bus_get_sync (G_BUS_TYPE_SYSTEM,
-                               cc_panel_get_cancellable (CC_PANEL (self)),
-                               &error);
-  if (!connection)
-    {
-      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
-        g_warning ("system bus not available: %s", error->message);
-      return FALSE;
-    }
 
   variant = g_dbus_connection_call_sync (connection,
                                          "org.freedesktop.login1",
@@ -616,11 +658,65 @@ can_suspend_or_hibernate (CcPowerPanel *self,
     {
       if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
         g_debug ("Failed to call %s(): %s", method_name, error->message);
-      return FALSE;
+      return ACTION_UNAVAILABLE;
     }
 
   g_variant_get (variant, "(&s)", &s);
-  return g_strcmp0 (s, "yes") == 0;
+
+  if (g_strv_contains (allowed_automatic_states, s))
+    return ACTION_AUTOMATIC;
+
+  if (g_strv_contains (allowed_interactive_states, s))
+    return ACTION_INTERACTIVE;
+
+  if (!g_strv_contains (known_unavailable_states, s))
+    g_warning ("%s() returned unknown state: %s", method_name, s);
+
+  return ACTION_UNAVAILABLE;
+}
+
+static void
+setup_can_power_actions (CcPowerPanel *self)
+{
+  g_autoptr(GSettings) lockdown_settings = NULL;
+  g_autoptr(GDBusConnection) connection = NULL;
+  g_autoptr(GError) error = NULL;
+
+  lockdown_settings = g_settings_new ("org.gnome.desktop.lockdown");
+
+  connection = g_bus_get_sync (G_BUS_TYPE_SYSTEM,
+                               cc_panel_get_cancellable (CC_PANEL (self)),
+                               &error);
+  if (!connection)
+    {
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        g_warning ("system bus not available: %s", error->message);
+      return;
+    }
+
+  if (g_settings_get_boolean (lockdown_settings, "disable-log-out"))
+    self->can_shutdown = ACTION_UNAVAILABLE;
+  else
+    self->can_shutdown = can_power_action (self, connection, "CanPowerOff");
+
+  self->can_suspend = can_power_action (self, connection, "CanSuspend");
+  self->can_hibernate = can_power_action (self, connection, "CanHibernate");
+}
+
+static void
+update_suspend_notice_visibility (CcPowerPanel *self)
+{
+  gboolean supported, enabled;
+
+  supported = self->can_suspend == ACTION_AUTOMATIC &&
+              g_strcmp0 (self->chassis_type, "vm") != 0;
+
+  enabled = adw_switch_row_get_active (self->suspend_on_ac_switch_row);
+  if (enabled && self->has_batteries)
+    enabled = adw_switch_row_get_active (self->suspend_on_battery_switch_row);
+
+  gtk_widget_set_visible (GTK_WIDGET (self->suspend_notice_group),
+                          supported && !enabled);
 }
 
 static void
@@ -781,8 +877,7 @@ setup_power_saving (CcPowerPanel *self)
     }
 
   /* Automatic suspend rows */
-  if (can_suspend_or_hibernate (self, "CanSuspend") && 
-      g_strcmp0 (self->chassis_type, "vm") != 0)
+  if (self->can_suspend == ACTION_AUTOMATIC && g_strcmp0 (self->chassis_type, "vm") != 0)
     {
       gtk_widget_set_visible (GTK_WIDGET (self->suspend_on_ac_group), TRUE);
 
@@ -799,6 +894,8 @@ setup_power_saving (CcPowerPanel *self)
       setup_suspend_delay_rows (self);
 
       set_ac_battery_ui_mode (self);
+
+      update_suspend_notice_visibility (self);
     }
 }
 
@@ -1193,24 +1290,13 @@ switch_to_single_page_layout (CcPowerPanel *self)
 static void
 setup_general_section (CcPowerPanel *self)
 {
-  gboolean can_suspend, can_hibernate, show_section = FALSE;
+  gboolean show_section = FALSE;
 
-  can_suspend = can_suspend_or_hibernate (self, "CanSuspend");
-  can_hibernate = can_suspend_or_hibernate (self, "CanHibernate");
-
-  if ((can_hibernate || can_suspend) &&
-      g_strcmp0 (self->chassis_type, "vm") != 0 &&
-      g_strcmp0 (self->chassis_type, "tablet") != 0 &&
-      g_strcmp0 (self->chassis_type, "handset") != 0)
+  if (populate_power_button_row (self))
     {
       gtk_widget_set_visible (GTK_WIDGET (self->power_button_row), TRUE);
-
-      populate_power_button_row (self->power_button_row,
-                                 can_suspend,
-                                 can_hibernate);
-
-      cc_number_row_bind_settings (self->power_button_row, self->gsd_settings, "power-button-action");
-
+      cc_number_row_bind_settings (self->power_button_row, self->gsd_settings,
+                                   "power-button-action");
       show_section = TRUE;
     }
 
@@ -1351,8 +1437,10 @@ cc_power_panel_init (CcPowerPanel *self)
   self->chassis_type = cc_hostname_get_chassis_type (cc_hostname_get_default ());
 
   self->up_client = up_client_new ();
-  self->devices = up_client_get_devices2 (self->up_client);
+  self->devices = self->up_client ? up_client_get_devices2 (self->up_client) : g_ptr_array_new ();
   self->has_batteries = devices_have_batteries (self->devices);
+
+  setup_can_power_actions (self);
 
   self->gsd_settings = g_settings_new ("org.gnome.settings-daemon.plugins.power");
   self->session_settings = g_settings_new ("org.gnome.desktop.session");
@@ -1377,8 +1465,11 @@ cc_power_panel_init (CcPowerPanel *self)
   setup_general_section (self);
 
   /* populate batteries */
-  g_signal_connect_object (self->up_client, "device-added", G_CALLBACK (up_client_device_added), self, G_CONNECT_SWAPPED);
-  g_signal_connect_object (self->up_client, "device-removed", G_CALLBACK (up_client_device_removed), self, G_CONNECT_SWAPPED);
+  if (self->up_client)
+    {
+      g_signal_connect_object (self->up_client, "device-added", G_CALLBACK (up_client_device_added), self, G_CONNECT_SWAPPED);
+      g_signal_connect_object (self->up_client, "device-removed", G_CALLBACK (up_client_device_removed), self, G_CONNECT_SWAPPED);
+    }
 
   for (i = 0; self->devices != NULL && i < self->devices->len; i++) {
     UpDevice *device = g_ptr_array_index (self->devices, i);
