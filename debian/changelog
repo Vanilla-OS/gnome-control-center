@@ -1,4 +1,6 @@
-gnome-control-center (1:50.0-1) UNRELEASED; urgency=medium
+gnome-control-center (1:50.0-1) unstable; urgency=medium
+
+  * Team upload
 
   [ Simon McVittie ]
   * New upstream release
@@ -15,9 +17,9 @@ gnome-control-center (1:50.0-1) UNRELEASED; urgency=medium
   * d/watch: Update to v5 format
 
   [ Nathan Pratta Teodosio ]
-  * d/control: Depend on blueprint-compiler >= 0.19.0
+  * d/control: Build-Depend on blueprint-compiler >= 0.19.0
 
- -- Simon McVittie <smcv@debian.org>  Sat, 28 Mar 2026 15:00:56 +0000
+ -- Simon McVittie <smcv@debian.org>  Sat, 28 Mar 2026 17:48:21 +0000
 
 gnome-control-center (1:50~beta-1) unstable; urgency=medium
 
