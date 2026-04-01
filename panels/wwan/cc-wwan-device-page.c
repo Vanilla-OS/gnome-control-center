@@ -70,6 +70,8 @@ struct _CcWwanDevicePage
   CcListRow     *network_name_row;
   GtkListBox    *network_settings_list;
   CcListRow     *sim_lock_row;
+  AdwComboRow   *sim_slot_row;
+  GtkStringList *sim_slot_string_list;
   GtkButton     *unlock_button;
 
   AdwToastOverlay *toast_overlay;
@@ -77,11 +79,13 @@ struct _CcWwanDevicePage
   CcWwanDevice  *device;
   CcWwanData    *wwan_data;
   GDBusProxy    *wwan_proxy;
+  GCancellable  *cancellable;
 
   GtkWindow     *apn_dialog;
   GtkWindow     *network_mode_dialog;
   GtkWindow     *network_dialog;
   GtkWindow     *sim_lock_dialog;
+  GtkWindow     *sim_slot_dialog;
 
   gint                 sim_index;
   /* Set if a change is triggered in a signal’s callback,
@@ -125,7 +129,7 @@ wwan_device_page_handle_data_row (CcWwanDevicePage *self,
   else
     cc_wwan_data_set_roaming_enabled (self->wwan_data, active);
 
-  cc_wwan_data_save_settings (self->wwan_data, NULL, NULL, NULL);
+  cc_wwan_data_save_settings (self->wwan_data, self->cancellable, NULL, NULL);
 }
 
 static gboolean
@@ -174,7 +178,7 @@ cc_wwan_device_page_new_prompt (CcWwanDevicePage *self,
   const gchar *message = NULL;
   guint num;
 
-  prompt = GCR_PROMPT (gcr_system_prompt_open (-1, NULL, &error));
+  prompt = GCR_PROMPT (gcr_system_prompt_open (-1, self->cancellable, &error));
 
   if (error)
     {
@@ -268,7 +272,7 @@ wwan_device_unlock_clicked_cb (CcWwanDevicePage *self)
       warning = _("PUK code should be an 8 digit number");
       while (password && !cc_wwan_device_pin_valid (password, lock))
         {
-          password = gcr_prompt_password (prompt, NULL, &error);
+          password = gcr_prompt_password (prompt, self->cancellable, &error);
           gcr_prompt_set_warning (prompt, warning);
         }
 
@@ -296,7 +300,7 @@ wwan_device_unlock_clicked_cb (CcWwanDevicePage *self)
   warning = _("PIN code should be a 4-8 digit number");
   while (password && !cc_wwan_device_pin_valid (password, MM_MODEM_LOCK_SIM_PIN))
     {
-      password = gcr_prompt_password (prompt, NULL, &error);
+      password = gcr_prompt_password (prompt, self->cancellable, &error);
       gcr_prompt_set_warning (prompt, warning);
     }
 
@@ -316,13 +320,13 @@ wwan_device_unlock_clicked_cb (CcWwanDevicePage *self)
 
   if (lock == MM_MODEM_LOCK_SIM_PIN)
     cc_wwan_device_send_pin (self->device, pin,
-                             NULL, /* cancellable */
+                             self->cancellable,
                              cc_wwan_device_page_unlocked_cb,
                              self);
   else if (lock == MM_MODEM_LOCK_SIM_PUK)
     {
       cc_wwan_device_send_puk (self->device, puk, pin,
-                               NULL, /* Cancellable */
+                               self->cancellable,
                                cc_wwan_device_page_unlocked_cb,
                                self);
     }
@@ -408,6 +412,10 @@ wwan_advanced_settings_activated_cb (CcWwanDevicePage *self,
     {
       wwan_data_show_apn_dialog (self);
     }
+  else if (GTK_WIDGET (row) == GTK_WIDGET (self->sim_slot_row))
+    {
+        /* NOP handling sim_slot_row, since it is a combo row. */
+    }
   else
     {
       g_return_if_reached ();
@@ -479,6 +487,52 @@ cc_wwan_locks_changed_cb (CcWwanDevicePage *self)
 }
 
 static void
+wwan_device_set_primary_sim_slot_cb (CcWwanDevicePage *self)
+{
+  guint primary_slot = adw_combo_row_get_selected (self->sim_slot_row);
+
+  cc_wwan_device_set_primary_sim_slot (self->device, primary_slot + 1, self->cancellable);
+  g_debug ("Setting primary sim slot to %d", primary_slot);
+}
+
+static void
+cc_wwan_update_sim_slots_row (CcWwanDevicePage *self)
+{
+  g_autoptr(GPtrArray) sim_slots = cc_wwan_device_get_sim_slots (self->device, self->cancellable);
+  int i;
+
+  /* There's nothing the user can do if we get zero slots. Hide the row. */
+  gtk_widget_set_visible (GTK_WIDGET (self->sim_slot_row), sim_slots->len > 0);
+
+  for (i = 0; i < sim_slots->len; i++) {
+    MMSim *sim = g_ptr_array_index (sim_slots, i);
+    g_autofree gchar *slot_state = NULL;
+    g_autofree gchar *sim_label = NULL;
+
+    /* Empty slot - no SIM card inserted */
+    if (sim == NULL)
+      slot_state = g_strdup_printf ("[%s]", _("Empty"));
+    else {
+      const gchar *operator_name = mm_sim_get_operator_name (sim);
+      if (operator_name)
+        slot_state = g_strdup_printf ("[%s]", operator_name);
+      else
+        slot_state = g_strdup ("");
+    }
+
+    /* Translators: This refers to a sim slot in a modem.
+     * For example: "Slot 1 [Operator Name]", "Slot 1" or "Slot 2 [Empty]".
+     * Notice that all variations above are valid. Sometimes "Operator Name"
+     * will be ommitted.*/
+    sim_label = g_strdup_printf (_("Slot %d %s"), i+1, slot_state);
+    gtk_string_list_append (self->sim_slot_string_list, sim_label);
+  }
+
+  adw_combo_row_set_selected (self->sim_slot_row,
+                              cc_wwan_device_get_primary_sim_slot (self->device) - 1);
+}
+
+static void
 cc_wwan_device_page_set_property (GObject      *object,
                                   guint         prop_id,
                                   const GValue *value,
@@ -524,6 +578,9 @@ cc_wwan_device_page_constructed (GObject *object)
 
   cc_wwan_device_page_update (self);
   cc_wwan_locks_changed_cb (self);
+  cc_wwan_update_sim_slots_row (self);
+
+  g_signal_connect_swapped (self->sim_slot_row, "notify::selected", (GCallback)wwan_device_set_primary_sim_slot_cb, self);
 }
 
 static void
@@ -535,7 +592,11 @@ cc_wwan_device_page_dispose (GObject *object)
   g_clear_pointer (&self->network_mode_dialog, gtk_window_destroy);
   g_clear_pointer (&self->network_dialog, gtk_window_destroy);
   g_clear_pointer (&self->sim_lock_dialog, gtk_window_destroy);
+  g_clear_pointer (&self->sim_slot_dialog, gtk_window_destroy);
 
+  g_cancellable_cancel (self->cancellable);
+
+  g_clear_object (&self->cancellable);
   g_clear_object (&self->wwan_proxy);
   g_clear_object (&self->device);
 
@@ -577,6 +638,8 @@ cc_wwan_device_page_class_init (CcWwanDevicePageClass *klass)
   gtk_widget_class_bind_template_child (widget_class, CcWwanDevicePage, network_name_row);
   gtk_widget_class_bind_template_child (widget_class, CcWwanDevicePage, network_settings_list);
   gtk_widget_class_bind_template_child (widget_class, CcWwanDevicePage, sim_lock_row);
+  gtk_widget_class_bind_template_child (widget_class, CcWwanDevicePage, sim_slot_row);
+  gtk_widget_class_bind_template_child (widget_class, CcWwanDevicePage, sim_slot_string_list);
   gtk_widget_class_bind_template_child (widget_class, CcWwanDevicePage, unlock_button);
 
   gtk_widget_class_bind_template_callback (widget_class, wwan_device_unlock_clicked_cb);
@@ -589,6 +652,8 @@ static void
 cc_wwan_device_page_init (CcWwanDevicePage *self)
 {
   gtk_widget_init_template (GTK_WIDGET (self));
+
+  self->cancellable = g_cancellable_new ();
 }
 
 static void

@@ -1,0 +1,26 @@
+From: =?utf-8?b?Ik1hcmNvIFRyZXZpc2FuIChUcmV2acOxbyki?= <mail@3v1n0.net>
+Date: Fri, 20 Mar 2026 19:50:18 +0100
+Subject: location-page: Do not leak app info and time
+
+(cherry picked from commit 3c6a9f34dbb4f8d121bb6dff882d48f3f341812c)
+
+Applied-upstream: 50.1, commit:424ab477019afc4878a8d1b960bddcc44ef49ca0
+---
+ panels/privacy/location/cc-location-page.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/panels/privacy/location/cc-location-page.c b/panels/privacy/location/cc-location-page.c
+index 87d830e..b169c1c 100644
+--- a/panels/privacy/location/cc-location-page.c
++++ b/panels/privacy/location/cc-location-page.c
+@@ -171,8 +171,8 @@ add_location_app (CcLocationPage *self,
+                   gint64          last_used)
+ {
+   LocationAppStateData *data;
+-  GDesktopAppInfo *app_info;
+-  GDateTime *t;
++  g_autoptr(GDesktopAppInfo) app_info = NULL;
++  g_autoptr(GDateTime) t = NULL;
+   GtkWidget *row, *w;
+   GIcon *icon;
+   gchar *last_used_str;

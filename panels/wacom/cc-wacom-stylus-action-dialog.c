@@ -214,7 +214,8 @@ GtkWidget*
 cc_wacom_stylus_action_dialog_new (GSettings   *settings,
 				   const char  *stylus_name,
 				   guint        button,
-				   const char  *key)
+				   const char  *key,
+				   const char  *keybinding_key)
 {
 	CcWacomStylusActionDialog *dialog = g_object_new (CC_TYPE_WACOM_STYLUS_ACTION_DIALOG, NULL);
 	GDesktopStylusButtonAction action;
@@ -230,18 +231,7 @@ cc_wacom_stylus_action_dialog_new (GSettings   *settings,
 
 	dialog->settings = settings;
 	dialog->key = g_strdup (key);
-
-	switch (button) {
-		case 1:
-			dialog->keybinding_button = "button-keybinding";
-			break;
-		case 2:
-			dialog->keybinding_button = "secondary-button-keybinding";
-			break;
-		case 3:
-			dialog->keybinding_button = "tertiary-button-keybinding";
-			break;
-	}
+	dialog->keybinding_button = g_strdup (keybinding_key);
 
 	adw_dialog_set_title (ADW_DIALOG (dialog), stylus_name);
 

@@ -69,6 +69,14 @@
                 <para>The following panel names can be specified:</para>
 
                 <variablelist>
+                         <varlistentry>
+                                <term><option>applications</option></term>
+
+                                <listitem><para>The applications panel lets you
+                                configure application permissions and
+                                default applications.</para></listitem>
+                        </varlistentry>
+
                         <varlistentry>
                                 <term><option>background</option></term>
 
@@ -94,16 +102,6 @@
                         </varlistentry>
 
                         <varlistentry>
-                                <term><option>datetime</option></term>
-
-                                <listitem><para>The datetime panel lets you
-                                set the timezone and time format.</para>
-                                <para>Some operations in this panel
-                                affect all user accounts on the computer
-                                and require privieges.</para></listitem>
-                        </varlistentry>
-
-                        <varlistentry>
                                 <term><option>display</option></term>
 
                                 <listitem><para>The display panel configures
@@ -114,15 +112,6 @@
                                 the black bar.</para></listitem>
                         </varlistentry>
 
-                        <varlistentry>
-                                <term><option>info-overview</option></term>
-
-                                <listitem><para>The info-overview panel shows a general
-                                overview of the system configuration. It also
-                                lets you change the default applications for
-                                various tasks and the handling of removable
-                                media.</para></listitem>
-                        </varlistentry>
 
                         <varlistentry>
                                 <term><option>keyboard</option></term>
@@ -143,6 +132,15 @@
                                 <listitem><para>The mouse panel can change
                                 how mice and touchpads react to user
                                 input.</para></listitem>
+                        </varlistentry>
+
+                        <varlistentry>
+
+                                <term><option>multitasking</option></term>
+
+                                <listitem><para>The multitasking panel lets you
+                                configure desktop features such as hot
+                                corners and workspaces.</para></listitem>
                         </varlistentry>
 
                         <varlistentry>
@@ -213,15 +211,7 @@
                                 </para></listitem>
                         </varlistentry>
 
-                        <varlistentry>
-                                <term><option>region</option></term>
 
-                                <listitem><para>The region panel
-                                contains regional settings such as
-                                the display language, formatting for
-                                times, dates, numbers, and input sources.
-                                </para></listitem>
-                        </varlistentry>
 
                         <varlistentry>
                                 <term><option>search</option></term>
@@ -232,13 +222,7 @@
                                 </para></listitem>
                         </varlistentry>
 
-                        <varlistentry>
-                                <term><option>screen</option></term>
 
-                                <listitem><para>The screen panel contains
-                                settings that control the screen brightness
-                                and screen lock behavior.</para></listitem>
-                        </varlistentry>
 
                         <varlistentry>
                                 <term><option>sharing</option></term>
@@ -253,15 +237,16 @@
 
                                 <listitem><para>The sound panel shows
                                 all known sound devices and their configuration,
-                                including volume and balance settings.</para>
-                                <para>You can open this panel on a
-                                specific tab by passing
-                                <option>output</option>,
-                                <option>input</option>,
-                                <option>hardware</option>,
-                                <option>effects</option> or
-                                <option>applications</option> as extra
-                                argument.</para></listitem>
+                                including volume and balance settings.</para></listitem>
+                        </varlistentry>
+
+                        <varlistentry>
+                                <term><option>system</option></term>
+
+                                <listitem><para>The system panel contains
+                                settings for the system, such as
+                                date and time, language and region, users,
+                                and about this computer.</para></listitem>
                         </varlistentry>
 
                         <varlistentry>
@@ -273,18 +258,7 @@
                                 keyboard and AccessX options.</para></listitem>
                         </varlistentry>
 
-                        <varlistentry>
-                                <term><option>user-accounts</option></term>
 
-                                <listitem><para>The user-accounts panel
-                                shows all user accounts that exist on the
-                                computer and allows to change them in some
-                                ways, such as changing the user name, password
-                                or permissions. It also allows to create
-                                or remove accounts.</para>
-                                <para>Some operations in this panel require
-                                privileges.</para></listitem>
-                        </varlistentry>
 
                         <varlistentry>
                                 <term><option>wacom</option></term>
@@ -292,6 +266,28 @@
                                 <listitem><para>the wacom panel shows
                                 connected Wacom graphics tablets and lets
                                 you calibrate and configure such devices.</para></listitem>
+                        </varlistentry>
+
+                        <varlistentry>
+                                <term><option>wellbeing</option></term>
+
+                                <listitem><para>The wellbeing panel allows
+                                you to configure usage limits and breaks.</para></listitem>
+                        </varlistentry>
+
+                        <varlistentry>
+                                <term><option>wifi</option></term>
+
+                                <listitem><para>The wifi panel lets you
+                                configure your Wi-Fi connections.</para></listitem>
+                        </varlistentry>
+
+                        <varlistentry>
+                                <term><option>wwan</option></term>
+
+                                <listitem><para>The wwan panel lets you
+                                configure your mobile broadband connections.</para>
+                                </listitem>
                         </varlistentry>
 
                 </variablelist>
@@ -329,11 +325,7 @@
                                 and exits.</para></listitem>
                         </varlistentry>
 
-                        <varlistentry>
-                                <term><option>-o</option>, <option>--overview</option></term>
 
-                                <listitem><para>Opens the overview.</para></listitem>
-			</varlistentry>
 
                         <varlistentry>
 				<term><option>-s</option> <replaceable>term</replaceable>, <option>--search</option> <replaceable>term</replaceable></term>

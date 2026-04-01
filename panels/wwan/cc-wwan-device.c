@@ -90,6 +90,37 @@ enum {
 
 static GParamSpec *properties[N_PROPS];
 
+void
+cc_wwan_device_set_primary_sim_slot (CcWwanDevice *self, guint sim_slot, GCancellable *cancellable)
+{
+  GError *error = NULL;
+
+  mm_modem_set_primary_sim_slot_sync (self->modem, sim_slot, cancellable, &error);
+
+  if (error)
+    g_warning ("Error:%s", error->message);
+}
+
+guint
+cc_wwan_device_get_primary_sim_slot (CcWwanDevice *self)
+{
+  return mm_modem_get_primary_sim_slot (self->modem);
+}
+
+GPtrArray *
+cc_wwan_device_get_sim_slots (CcWwanDevice *self, GCancellable *cancellable)
+{
+  GError *error = NULL;
+  GPtrArray *sim_slots;
+
+  sim_slots = mm_modem_list_sim_slots_sync (self->modem, cancellable, &error);
+
+  if (error)
+    g_warning ("Error:%s", error->message);
+
+  return sim_slots;
+} 
+
 static void
 cc_wwan_device_state_changed_cb (CcWwanDevice *self)
 {

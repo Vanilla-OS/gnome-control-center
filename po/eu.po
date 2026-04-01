@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: gnome-control-center master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-control-center/"
 "issues\n"
-"POT-Creation-Date: 2026-01-05 14:17+0000\n"
-"PO-Revision-Date: 2026-01-10 17:20+0100\n"
+"POT-Creation-Date: 2026-02-10 13:00+0000\n"
+"PO-Revision-Date: 2026-02-23 19:59+0100\n"
 "Last-Translator: Ibai Oihanguren Sala <ibaios@disroot.org>\n"
 "Language-Team: Basque\n"
 "Language: eu\n"
@@ -23,6 +23,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"\n"
 "X-DL-VCS-Web: https://gitlab.gnome.org/GNOME/gnome-control-center/\n"
 "X-DL-Lang: eu\n"
 "X-DL-Module: gnome-control-center\n"
@@ -247,8 +248,8 @@ msgstr "Jaso sistema-bilaketak eta bidali emaitzak"
 #: panels/keyboard/cc-keyboard-shortcut-editor.blp:120
 #: panels/keyboard/keyboard-shortcuts.c:367 panels/network/panel-common.c:336
 #: panels/system/users/cc-user-page.c:368
-#: panels/system/users/cc-user-page.c:753 panels/wwan/cc-wwan-device-page.c:475
-#: subprojects/gvc/gvc-mixer-control.c:1872
+#: panels/system/users/cc-user-page.c:753 panels/wwan/cc-wwan-device-page.c:483
+#: subprojects/gvc/gvc-mixer-control.c:1910
 msgid "Disabled"
 msgstr "Desgaituta"
 
@@ -510,10 +511,8 @@ msgstr[0] "Baimen %u"
 msgstr[1] "%u baimen"
 
 #: panels/applications/cc-applications-panel.c:1081
-#, fuzzy
-#| msgid "%s removed"
 msgid "Type removed"
-msgstr "%s kendu da"
+msgstr "Mota kendu da"
 
 #: panels/applications/cc-applications-panel.c:1082
 #: panels/background/cc-background-chooser.c:170
@@ -522,12 +521,11 @@ msgid "_Undo"
 msgstr "_Desegin"
 
 #: panels/applications/cc-applications-panel.c:1097
-#, fuzzy, c-format
-#| msgid "%s removed"
+#, c-format
 msgid "%d type removed"
 msgid_plural "%d types removed"
-msgstr[0] "%s kendu da"
-msgstr[1] "%s kendu da"
+msgstr[0] "Mota %d kendu da"
+msgstr[1] "%d mota kendu dira"
 
 #: panels/applications/cc-applications-panel.c:1126
 msgid "Remove Link Type"
@@ -1240,7 +1238,7 @@ msgstr "Web-kamera integratuta"
 #: panels/color/cc-color-common.c:65
 #, c-format
 msgid "%s Monitor"
-msgstr "%s pantaila"
+msgstr "%s monitorea"
 
 #. TRANSLATORS: a flatbed scanner device, e.g. 'Epson Scanner'
 #: panels/color/cc-color-common.c:69
@@ -1765,6 +1763,7 @@ msgid "Error — some settings cannot be unlocked"
 msgstr "Errorea — zenbait ezarpen ezin dira desblokeatu"
 
 #: panels/common/cc-permission-infobar.c:55
+#: panels/system/remote-desktop/cc-desktop-sharing-page.blp:10
 msgid "Some settings are locked"
 msgstr "Ezarpen batzuk blokeatuta daude"
 
@@ -1772,23 +1771,23 @@ msgstr "Ezarpen batzuk blokeatuta daude"
 msgid "_Unlock…"
 msgstr "_Desblokeatu…"
 
-#: panels/common/cc-timelike-editor.blp:17
+#: panels/common/cc-timelike-editor.blp:25
 msgid "Increment Hour"
 msgstr "Gehitu orduak"
 
-#: panels/common/cc-timelike-editor.blp:40
+#: panels/common/cc-timelike-editor.blp:48
 msgid "Increment Minute"
 msgstr "Gehitu minutuak"
 
-#: panels/common/cc-timelike-editor.blp:52
+#: panels/common/cc-timelike-editor.blp:60
 msgid "Time"
 msgstr "Ordua"
 
-#: panels/common/cc-timelike-editor.blp:69
+#: panels/common/cc-timelike-editor.blp:77
 msgid "Decrement Hour"
 msgstr "Gutxitu orduak"
 
-#: panels/common/cc-timelike-editor.blp:92
+#: panels/common/cc-timelike-editor.blp:100
 msgid "Decrement Minute"
 msgstr "Gutxitu minutuak"
 
@@ -2446,22 +2445,15 @@ msgstr ""
 "Batzuetan hirugarren aukera gisa inprimatuta ageri dira zure teklatuan."
 
 #: panels/keyboard/cc-keyboard-panel.c:65
-#, fuzzy
-#| msgctxt "cursor size"
-#| msgid "Default"
 msgid "Layout Default"
-msgstr "Lehenetsia"
+msgstr "Diseinu-lehenespena"
 
 #: panels/keyboard/cc-keyboard-panel.c:66
-#, fuzzy
-#| msgctxt "cursor size"
-#| msgid "Default"
+#: panels/universal-access/cc-ua-seeing-page.c:123
 msgid "Default"
 msgstr "Lehenetsia"
 
 #: panels/keyboard/cc-keyboard-panel.c:69
-#, fuzzy
-#| msgid "None"
 msgctxt "keyboard key"
 msgid "None"
 msgstr "Bat ere ez"
@@ -2696,10 +2688,8 @@ msgstr[0] "%d aldatu da"
 msgstr[1] "%d aldatu da"
 
 #: panels/keyboard/cc-keyboard-shortcut-group.c:153
-#, fuzzy
-#| msgid "_Add Shortcut…"
 msgid "_Add Shortcut"
-msgstr "Ge_hitu lasterbidea…"
+msgstr "Ge_hitu lasterbidea"
 
 #: panels/keyboard/gnome-keyboard-panel.desktop.in:3
 msgid ""
@@ -2737,7 +2727,8 @@ msgstr "E_zkerra"
 msgid "_Right"
 msgstr "E_skuina"
 
-#: panels/mouse/cc-mouse-panel.blp:92
+#. Translators: This will be presented as the text of a link to the Mouse & Touchpad panel
+#: panels/mouse/cc-mouse-panel.blp:92 panels/wacom/cc-wacom-page.c:712
 msgid "Mouse"
 msgstr "Sagua"
 
@@ -2935,10 +2926,8 @@ msgid "Trackpad;Pointer;Click;Tap;Double;Button;Trackball;Scroll;"
 msgstr "Trackpad;Erakuslea;Klik;Sakatu;Bikoitza;Botoia;Trackball;Korritu;"
 
 #: panels/multitasking/cc-multitasking-panel.blp:11
-#, fuzzy
-#| msgid "_Active Screen Edges"
 msgid "Screen Edges"
-msgstr "Pantailaren ertz _aktiboak"
+msgstr "Pantaila-ertzak"
 
 #: panels/multitasking/cc-multitasking-panel.blp:16
 msgid "_Hot Corner"
@@ -2949,10 +2938,8 @@ msgid "Touch the top-left corner to open the Activities Overview"
 msgstr "Ukitu goiko ezkerreko izkina jardueren ikuspegi orokorra irekitzeko"
 
 #: panels/multitasking/cc-multitasking-panel.blp:28
-#, fuzzy
-#| msgid "Windows software"
 msgid "_Window Resize"
-msgstr "Windows softwarea"
+msgstr "_Leihoaren tamaina-aldaketa"
 
 #: panels/multitasking/cc-multitasking-panel.blp:29
 msgid ""
@@ -2963,11 +2950,12 @@ msgstr ""
 
 #: panels/multitasking/cc-multitasking-panel.blp:44
 msgid "Reopen Windows After Login"
-msgstr ""
+msgstr "Berrireki leihoak saioa hasi ondoren"
 
 #: panels/multitasking/cc-multitasking-panel.blp:45
 msgid "Restore windows that were open when you last used the computer"
 msgstr ""
+"Leheneratu ordenagailua erabili zen azken aldian irekita zeuden leihoak"
 
 #: panels/multitasking/cc-multitasking-panel.blp:50
 msgid "Workspaces"
@@ -3058,7 +3046,7 @@ msgstr "K_onfigurazioa"
 #: panels/network/connection-editor/ip6-page.blp:36
 #: panels/network/connection-editor/ip6-page.blp:187
 #: panels/network/connection-editor/ip6-page.blp:242
-#: panels/wacom/cc-wacom-page.c:675
+#: panels/wacom/cc-wacom-page.c:684
 msgid "Automatic"
 msgstr "Automatikoa"
 
@@ -3699,9 +3687,9 @@ msgstr "WireGuard"
 #: panels/privacy/firmware-security/cc-firmware-security-dialog.c:167
 #: panels/sound/cc-alert-chooser-page.c:350
 #: panels/system/about/cc-about-page.c:73
-#: panels/system/about/cc-system-details-window.c:286
-#: panels/system/about/cc-system-details-window.c:338
-#: panels/system/about/cc-system-details-window.c:837
+#: panels/system/about/cc-system-details-window.c:290
+#: panels/system/about/cc-system-details-window.c:342
+#: panels/system/about/cc-system-details-window.c:872
 #: panels/wwan/cc-wwan-details-dialog.c:101
 msgid "Unknown"
 msgstr "Ezezaguna"
@@ -4108,6 +4096,7 @@ msgid "seconds"
 msgstr "segundo"
 
 #: panels/network/connection-editor/wireguard-peer.blp:227
+#: panels/universal-access/cc-ua-seeing-page.blp:115
 msgid "Apply"
 msgstr "Aplikatu"
 
@@ -4251,16 +4240,12 @@ msgid "Saved Wi-Fi Networks"
 msgstr "Gordetako haririk gabeko sareak"
 
 #: panels/network/network-wifi.blp:105
-#, fuzzy
-#| msgid "Saved Networks"
 msgid "No Saved Networks"
-msgstr "Gordetako sareak"
+msgstr "Ez dago sarerik gordeta"
 
 #: panels/network/network-wifi.blp:106
-#, fuzzy
-#| msgid "Saved Wi-Fi Networks"
 msgid "Saved Wi-Fi networks will appear here"
-msgstr "Gordetako haririk gabeko sareak"
+msgstr "Gordetako wifi-sareak hemen agertuko dira"
 
 #. TRANSLATORS: device status
 #: panels/network/panel-common.c:37
@@ -4784,6 +4769,7 @@ msgstr "Kargarik ez"
 
 #. TRANSLATORS: primary battery
 #: panels/power/cc-battery-row.c:142 panels/power/cc-battery-row.c:172
+#: panels/wwan/cc-wwan-device-page.c:514
 msgid "Empty"
 msgstr "Hutsa"
 
@@ -4978,47 +4964,47 @@ msgstr ""
 "Esekitze automatikoa gaituta uztea gomendatzen da."
 
 #. TRANSLATORS: This is the same title as the title from the .ui file, but without mnemonic
-#: panels/power/cc-power-panel.c:208
+#: panels/power/cc-power-panel.c:211
 msgid "Power Saving"
 msgstr "Energia aurreztea"
 
-#: panels/power/cc-power-panel.c:304
+#: panels/power/cc-power-panel.c:311
 msgid "Battery Levels"
 msgstr "Bateria-mailak"
 
 #. Translators: UPS is an Uninterruptible Power Supply:
 #. * https://en.wikipedia.org/wiki/Uninterruptible_power_supply
-#: panels/power/cc-power-panel.c:309
+#: panels/power/cc-power-panel.c:316
 msgid "UPS"
 msgstr "UPS"
 
-#: panels/power/cc-power-panel.c:312
+#: panels/power/cc-power-panel.c:319
 msgid "Battery Level"
 msgstr "Bateria-maila"
 
-#: panels/power/cc-power-panel.c:551
+#: panels/power/cc-power-panel.c:569
 msgid "Suspend"
 msgstr "Eseki"
 
-#: panels/power/cc-power-panel.c:552
+#: panels/power/cc-power-panel.c:570
 msgid "Power Off"
 msgstr "Itzali"
 
-#: panels/power/cc-power-panel.c:553
+#: panels/power/cc-power-panel.c:571
 msgid "Hibernate"
 msgstr "Hibernatu"
 
-#: panels/power/cc-power-panel.c:554
+#: panels/power/cc-power-panel.c:572
 msgid "Nothing"
 msgstr "Ezer ez"
 
-#: panels/power/cc-power-panel.c:859
+#: panels/power/cc-power-panel.c:877
 msgid "Performance mode temporarily disabled due to high operating temperature"
 msgstr ""
 "Errendimendu modua desgaitu egin da aldi batez laneko tenperatura asko igo "
 "delako"
 
-#: panels/power/cc-power-panel.c:861
+#: panels/power/cc-power-panel.c:879
 msgid ""
 "Lap detected: performance mode temporarily unavailable. Move the device to a "
 "stable surface to restore."
@@ -5026,11 +5012,11 @@ msgstr ""
 "Eramangarria detektatu da: errendimendu modua ez dago erabilgarri momentu "
 "honetan. Eraman gailua gainazal egonkor batera hura leheneratzeko."
 
-#: panels/power/cc-power-panel.c:863
+#: panels/power/cc-power-panel.c:881
 msgid "Performance mode temporarily disabled"
 msgstr "Errendimendu modua desgaitu egin da aldi batez"
 
-#: panels/power/cc-power-panel.c:905
+#: panels/power/cc-power-panel.c:923
 msgid ""
 "Power saver enabled due to low battery. Previous mode will be restored when "
 "battery is charged."
@@ -5039,13 +5025,13 @@ msgstr ""
 "dagoenean aurreko modua leheneratuko da."
 
 #. translators: "%s" is an application name
-#: panels/power/cc-power-panel.c:913
+#: panels/power/cc-power-panel.c:931
 #, c-format
 msgid "Power Saver mode activated by “%s”"
 msgstr "Energia aurrezteko modua aktibatuta: “%s”"
 
 #. translators: "%s" is an application name
-#: panels/power/cc-power-panel.c:917
+#: panels/power/cc-power-panel.c:935
 #, c-format
 msgid "Performance mode activated by “%s”"
 msgstr "Errendimendu modua aktibatuta: “%s”"
@@ -5438,7 +5424,7 @@ msgstr "Zerbitzariak autentifikazioa eskatzen du"
 #. Translators: this is the "go back" action of a button
 #: panels/printers/pp-new-printer-dialog.ui:78
 #: panels/system/users/cc-fingerprint-dialog.blp:24
-#: panels/wacom/cc-wacom-stylus-page.c:425
+#: panels/wacom/cc-wacom-stylus-page.c:426
 #: panels/wwan/cc-wwan-apn-dialog.blp:20
 msgid "Back"
 msgstr "Atzera"
@@ -5673,7 +5659,7 @@ msgstr "Inprimatze-aukerak"
 #. Translators: Set this printer as default
 #: panels/printers/pp-printer-entry.blp:233
 msgid "Use Printer by Default"
-msgstr "Erabili inprimagailu lehenetsia"
+msgstr "Ezarri inprimagailu lehenetsi gisa"
 
 #. Translators: This button executes command which cleans print heads of the printer.
 #: panels/printers/pp-printer-entry.blp:239
@@ -6436,7 +6422,7 @@ msgstr "Ez baliozkoa"
 #. TRANSLATORS: Status of Parental Controls setup
 #: panels/privacy/firmware-security/cc-firmware-security-utils.c:45
 #: panels/system/users/cc-user-page.c:366
-#: panels/system/users/cc-user-page.c:753 panels/wwan/cc-wwan-device-page.c:473
+#: panels/system/users/cc-user-page.c:753 panels/wwan/cc-wwan-device-page.c:481
 msgid "Enabled"
 msgstr "Gaituta"
 
@@ -6836,10 +6822,10 @@ msgid "File Sharing _Address"
 msgstr "Fitxategiak partekatzeko _helbidea"
 
 #: panels/sharing/cc-sharing-panel.blp:73
-#: panels/system/remote-desktop/cc-desktop-sharing-page.blp:47
-#: panels/system/remote-desktop/cc-desktop-sharing-page.blp:68
-#: panels/system/remote-desktop/cc-desktop-sharing-page.blp:89
-#: panels/system/remote-desktop/cc-desktop-sharing-page.blp:106
+#: panels/system/remote-desktop/cc-desktop-sharing-page.blp:57
+#: panels/system/remote-desktop/cc-desktop-sharing-page.blp:78
+#: panels/system/remote-desktop/cc-desktop-sharing-page.blp:99
+#: panels/system/remote-desktop/cc-desktop-sharing-page.blp:116
 #: panels/system/remote-desktop/cc-remote-login-page.blp:46
 #: panels/system/remote-desktop/cc-remote-login-page.blp:68
 #: panels/system/remote-desktop/cc-remote-login-page.blp:89
@@ -7076,16 +7062,12 @@ msgid "No Sound Playing"
 msgstr "Ez dago soinurik erreproduzitzen"
 
 #: panels/sound/cc-volume-levels-page.blp:27
-#, fuzzy
-#| msgid "Output"
 msgid "Outputs"
-msgstr "Irteera"
+msgstr "Irteerak"
 
 #: panels/sound/cc-volume-levels-page.blp:32
-#, fuzzy
-#| msgid "Input"
 msgid "Inputs"
-msgstr "Sarrera"
+msgstr "Sarrerak"
 
 #: panels/sound/cc-volume-slider.blp:7 panels/sound/cc-volume-slider.c:52
 msgid "Mute"
@@ -7218,43 +7200,41 @@ msgstr "Birtualizazioa"
 msgid "Kernel Version"
 msgstr "Kernelaren bertsioa"
 
-#: panels/system/about/cc-system-details-window.c:312
+#: panels/system/about/cc-system-details-window.c:316
 msgid "Graphics"
 msgstr "Grafikoak"
 
-#: panels/system/about/cc-system-details-window.c:314
+#: panels/system/about/cc-system-details-window.c:318
 #, c-format
 msgid "Graphics %d"
 msgstr "%d grafikoak"
 
 #. translators: This is the type of architecture for the OS
-#: panels/system/about/cc-system-details-window.c:356
+#: panels/system/about/cc-system-details-window.c:360
 #, c-format
 msgid "64-bit"
 msgstr "64 bit"
 
 #. translators: This is the type of architecture for the OS
-#: panels/system/about/cc-system-details-window.c:359
+#: panels/system/about/cc-system-details-window.c:363
 #, c-format
 msgid "32-bit"
 msgstr "32 bit"
 
-#: panels/system/about/cc-system-details-window.c:611
+#: panels/system/about/cc-system-details-window.c:646
 msgid "Wayland"
 msgstr "Wayland"
 
-#: panels/system/about/cc-system-details-window.c:613
-#, fuzzy
-#| msgid "Unknown"
+#: panels/system/about/cc-system-details-window.c:648
 msgctxt "Windowing system (Wayland, or Unknown)"
 msgid "Unknown"
 msgstr "Ezezaguna"
 
-#: panels/system/about/cc-system-details-window.c:781
+#: panels/system/about/cc-system-details-window.c:816
 msgid "**Windowing System:**"
 msgstr "**Leiho-sistema:**"
 
-#: panels/system/about/cc-system-details-window.c:797
+#: panels/system/about/cc-system-details-window.c:832
 msgid "Details copied to clipboard"
 msgstr "Xehetasunak arbelean kopiatu dira"
 
@@ -7268,13 +7248,11 @@ msgstr "Ikusi sistemari buruzko informazioa"
 #. "Preferred Applications" is the old name for the preference, so make
 #. sure that you use the same "translation" for those keywords
 #: panels/system/about/gnome-about-panel.desktop.in:18
-#, fuzzy
-#| msgid "device;system;information;hostname;memory;processor;version;default;application;preferred;cd;dvd;usb;audio;video;disc;removable;media;autorun;"
 msgid "device;system;information;hostname;memory;processor;version;default;application;preferred;cd;dvd;usb;audio;video;disc;removable;media;autorun;winver;"
 msgstr ""
 "gailua;sistema;informazioa;ostalari-"
 "izena;memoria;prozesadorea;bertsioa;lehenetsia;aplikazioa;hobetsia;cd;dvd;usb;audioa;bideoa;diskoa;aldagarria;euskarria;auto-"
-"exekuzioa;"
+"exekuzioa;winver;"
 
 #: panels/system/cc-system-panel.blp:16
 msgid "_Region &amp; Language"
@@ -7384,94 +7362,102 @@ msgstr "_24 ordu"
 msgid "AM / _PM"
 msgstr "AM / _PM"
 
-#: panels/system/datetime/cc-datetime-page.blp:158
+#: panels/system/datetime/cc-datetime-page.blp:157
+msgid "F_irst Day of the Week"
+msgstr "Asteko _lehen eguna"
+
+#: panels/system/datetime/cc-datetime-page.blp:168
 msgid "Clock &amp; Calendar"
 msgstr "Ordua eta egutegia"
 
-#: panels/system/datetime/cc-datetime-page.blp:159
+#: panels/system/datetime/cc-datetime-page.blp:169
 msgid "Control how the time and date is shown in the top bar"
 msgstr "Kontrolatu ordua eta data nola erakusten diren goiko barran"
 
-#: panels/system/datetime/cc-datetime-page.blp:162
+#: panels/system/datetime/cc-datetime-page.blp:172
 msgid "_Week Day"
 msgstr "_Asteguna"
 
-#: panels/system/datetime/cc-datetime-page.blp:167
+#: panels/system/datetime/cc-datetime-page.blp:177
 msgid "D_ate"
 msgstr "_Data"
 
-#: panels/system/datetime/cc-datetime-page.blp:172
+#: panels/system/datetime/cc-datetime-page.blp:182
 msgid "_Seconds"
 msgstr "_Segundoak"
 
-#: panels/system/datetime/cc-datetime-page.blp:177
+#: panels/system/datetime/cc-datetime-page.blp:187
 msgid "Week _Numbers"
 msgstr "Asteko _zenbakiak"
 
-#: panels/system/datetime/cc-datetime-page.blp:178
+#: panels/system/datetime/cc-datetime-page.blp:188
 msgid "Shown in the dropdown calendar"
 msgstr "Erakutsi goitibeherako egutegian"
 
-#: panels/system/datetime/cc-datetime-page.blp:211
+#: panels/system/datetime/cc-datetime-page.blp:221
 msgid "January"
 msgstr "Urtarrila"
 
-#: panels/system/datetime/cc-datetime-page.blp:212
+#: panels/system/datetime/cc-datetime-page.blp:222
 msgid "February"
 msgstr "Otsaila"
 
-#: panels/system/datetime/cc-datetime-page.blp:213
+#: panels/system/datetime/cc-datetime-page.blp:223
 msgid "March"
 msgstr "Martxoa"
 
-#: panels/system/datetime/cc-datetime-page.blp:214
+#: panels/system/datetime/cc-datetime-page.blp:224
 msgid "April"
 msgstr "Apirila"
 
-#: panels/system/datetime/cc-datetime-page.blp:215
+#: panels/system/datetime/cc-datetime-page.blp:225
 msgid "May"
 msgstr "Maiatza"
 
-#: panels/system/datetime/cc-datetime-page.blp:216
+#: panels/system/datetime/cc-datetime-page.blp:226
 msgid "June"
 msgstr "Ekaina"
 
-#: panels/system/datetime/cc-datetime-page.blp:217
+#: panels/system/datetime/cc-datetime-page.blp:227
 msgid "July"
 msgstr "Uztaila"
 
-#: panels/system/datetime/cc-datetime-page.blp:218
+#: panels/system/datetime/cc-datetime-page.blp:228
 msgid "August"
 msgstr "Abuztua"
 
-#: panels/system/datetime/cc-datetime-page.blp:219
+#: panels/system/datetime/cc-datetime-page.blp:229
 msgid "September"
 msgstr "Iraila"
 
-#: panels/system/datetime/cc-datetime-page.blp:220
+#: panels/system/datetime/cc-datetime-page.blp:230
 msgid "October"
 msgstr "Urria"
 
-#: panels/system/datetime/cc-datetime-page.blp:221
+#: panels/system/datetime/cc-datetime-page.blp:231
 msgid "November"
 msgstr "Azaroa"
 
-#: panels/system/datetime/cc-datetime-page.blp:222
+#: panels/system/datetime/cc-datetime-page.blp:232
 msgid "December"
 msgstr "Abendua"
 
+#: panels/system/datetime/cc-datetime-page.c:227
+msgid "Locale Default"
+msgstr "Hizkuntza-lehenespena"
+
 #. Translators: This is the full date and time format used in 12-hour mode.
-#: panels/system/datetime/cc-datetime-page.c:237
+#: panels/system/datetime/cc-datetime-page.c:254
 msgid "%e %B %Y, %l:%M %p"
 msgstr "%Y/%B/%e, %l:%M %p"
 
 #. Translators: This is the full date and time format used in 24-hour mode.
-#: panels/system/datetime/cc-datetime-page.c:242
+#: panels/system/datetime/cc-datetime-page.c:259
 msgid "%e %B %Y, %R"
 msgstr "%Y/%B/%e, %R"
 
 #. Translators: "city, country"
-#: panels/system/datetime/cc-datetime-page.c:402
+#: panels/system/datetime/cc-datetime-page.c:419
 #, c-format
 msgctxt "timezone loc"
 msgid "%s, %s"
@@ -7479,7 +7465,7 @@ msgstr "%s, %s"
 
 #. Update the timezone on the listbow row
 #. Translators: "timezone (details)"
-#: panels/system/datetime/cc-datetime-page.c:419
+#: panels/system/datetime/cc-datetime-page.c:436
 #, c-format
 msgctxt "timezone desc"
 msgid "%s (%s)"
@@ -7575,11 +7561,9 @@ msgstr "Papera"
 
 #. Translators: "US Customary" refers to the measurement system as used in the USA
 #: panels/system/region/cc-format-preview.c:149
-#, fuzzy
-#| msgid "Custom"
 msgctxt "measurement format"
 msgid "US Customary"
-msgstr "Pertsonalizatua"
+msgstr "US Customary"
 
 #: panels/system/region/cc-format-preview.c:151
 msgctxt "measurement format"
@@ -7641,7 +7625,11 @@ msgstr "Hautatu bistaratze-hizkuntza eta -formatuak"
 msgid "Language;Layout;Keyboard;Input;"
 msgstr "Hizkuntza;Diseinua;Teklatua;Sarrera;"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.blp:9
+#: panels/system/remote-desktop/cc-desktop-sharing-page.blp:11
+msgid "Unlock…"
+msgstr "Desblokeatu…"
+
+#: panels/system/remote-desktop/cc-desktop-sharing-page.blp:19
 msgid ""
 "Share your existing desktop with other devices. The remote connection uses "
 "the existing screen resolution."
@@ -7649,24 +7637,24 @@ msgstr ""
 "Partekatu mahaigaina beste gailu batzuekin. Urruneko konexioak uneko "
 "pantaila-bereizmena erabiliko du."
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.blp:22
+#: panels/system/remote-desktop/cc-desktop-sharing-page.blp:32
 msgid "_Desktop Sharing"
 msgstr "_Mahaigaina partekatzea"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.blp:27
+#: panels/system/remote-desktop/cc-desktop-sharing-page.blp:37
 msgid "Remote _Control"
 msgstr "Urruneko _kontrola"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.blp:29
+#: panels/system/remote-desktop/cc-desktop-sharing-page.blp:39
 msgid "Allows desktop shares to control the screen"
 msgstr "Mahaigain-partekatzeak pantaila kontrolatzea ahalbidetzen du"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.blp:34
+#: panels/system/remote-desktop/cc-desktop-sharing-page.blp:44
 #: panels/system/remote-desktop/cc-remote-login-page.blp:33
 msgid "How to Connect"
 msgstr "Nola konektatu"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.blp:35
+#: panels/system/remote-desktop/cc-desktop-sharing-page.blp:45
 #: panels/system/remote-desktop/cc-remote-login-page.blp:34
 msgid ""
 "Use a remote desktop app to connect using the RDP protocol. Additional "
@@ -7676,59 +7664,59 @@ msgstr ""
 "Gailuaren sareko kokalekuari buruzko informazio gehigarria ere beharrezkoa "
 "izan daiteke."
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.blp:38
+#: panels/system/remote-desktop/cc-desktop-sharing-page.blp:48
 #: panels/system/remote-desktop/cc-remote-login-page.blp:37
 msgid "_Hostname"
 msgstr "_Ostalari-izena"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.blp:59
+#: panels/system/remote-desktop/cc-desktop-sharing-page.blp:69
 #: panels/system/remote-desktop/cc-remote-login-page.blp:58
 msgid "_Port"
 msgstr "A_taka"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.blp:81
+#: panels/system/remote-desktop/cc-desktop-sharing-page.blp:91
 #: panels/system/remote-desktop/cc-remote-login-page.blp:81
 msgid "Login Details"
 msgstr "Saio-hasieraren xehetasunak"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.blp:84
+#: panels/system/remote-desktop/cc-desktop-sharing-page.blp:94
 #: panels/system/remote-desktop/cc-remote-login-page.blp:84
 #: panels/system/users/cc-add-user-dialog.blp:56
 #: panels/system/users/cc-enterprise-login-dialog.blp:81
 msgid "_Username"
 msgstr "_Erabiltzaile-izena:"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.blp:101
+#: panels/system/remote-desktop/cc-desktop-sharing-page.blp:111
 #: panels/system/remote-desktop/cc-remote-login-page.blp:101
 msgid "P_assword"
 msgstr "P_asahitza"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.blp:123
+#: panels/system/remote-desktop/cc-desktop-sharing-page.blp:133
 #: panels/system/remote-desktop/cc-remote-login-page.blp:124
 msgid "_Generate New Password"
 msgstr "_Sortu pasahitz berria"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.blp:130
+#: panels/system/remote-desktop/cc-desktop-sharing-page.blp:140
 #: panels/system/remote-desktop/cc-remote-login-page.blp:131
-msgid "_Verify Encryption"
-msgstr "Egiaztatu zi_fratzea"
+msgid "_Verify Fingerprint"
+msgstr "E_giaztatu hatz-marka"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.c:355
+#: panels/system/remote-desktop/cc-desktop-sharing-page.c:357
 #: panels/system/remote-desktop/cc-remote-login-page.c:96
 msgid "Device address copied to clipboard"
 msgstr "Gailuaren helbidea arbelean kopiatu da"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.c:364
+#: panels/system/remote-desktop/cc-desktop-sharing-page.c:366
 #: panels/system/remote-desktop/cc-remote-login-page.c:105
 msgid "Port number copied to clipboard"
 msgstr "Ataka-zenbakia arbelean kopiatu da"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.c:375
+#: panels/system/remote-desktop/cc-desktop-sharing-page.c:377
 #: panels/system/remote-desktop/cc-remote-login-page.c:116
 msgid "Username copied to clipboard"
 msgstr "Erabiltzaile-izena arbelean kopiatu da"
 
-#: panels/system/remote-desktop/cc-desktop-sharing-page.c:386
+#: panels/system/remote-desktop/cc-desktop-sharing-page.c:388
 #: panels/system/remote-desktop/cc-remote-login-page.c:127
 msgid "Password copied to clipboard"
 msgstr "Pasahitza arbelean kopiatu da"
@@ -8563,6 +8551,8 @@ msgid ""
 "Password does not meet your organization's security policies. Try a "
 "different password or contact your system administrator."
 msgstr ""
+"Pasahitzak ez ditu betetzen zure erakundearen segurtasun-politikak. Erabili "
+"beste pasahitz bat edo hitz egin zure sistemaren administratzailearekin."
 
 #: panels/system/users/run-passwd.c:507 panels/wwan/cc-wwan-errors-private.h:72
 #, c-format
@@ -8689,7 +8679,7 @@ msgstr "_Klik bikoitzaren atzerapena"
 #: panels/universal-access/cc-ua-typing-page.blp:118
 #: panels/universal-access/cc-ua-typing-page.blp:163
 #: panels/universal-access/cc-ua-typing-page.blp:203
-#: panels/universal-access/cc-ua-zoom-page.blp:145
+#: panels/universal-access/cc-ua-zoom-page.blp:146
 msgid "Short"
 msgstr "Laburra"
 
@@ -8700,7 +8690,7 @@ msgstr "Laburra"
 #: panels/universal-access/cc-ua-typing-page.blp:120
 #: panels/universal-access/cc-ua-typing-page.blp:165
 #: panels/universal-access/cc-ua-typing-page.blp:205
-#: panels/universal-access/cc-ua-zoom-page.blp:147
+#: panels/universal-access/cc-ua-zoom-page.blp:149
 msgid "Long"
 msgstr "Luzea"
 
@@ -8744,6 +8734,7 @@ msgid "Small"
 msgstr "Txikia"
 
 #: panels/universal-access/cc-ua-mouse-page.blp:128
+#: panels/universal-access/cc-ua-seeing-page.c:123
 msgid "Large"
 msgstr "Handia"
 
@@ -8815,79 +8806,95 @@ msgid "Use shapes to indicate state in addition to or instead of color"
 msgstr "Erabili formak egoera adierazteko, koloreaz gain"
 
 #: panels/universal-access/cc-ua-seeing-page.blp:55
-#, fuzzy
-#| msgid "Reduce _Animation"
 msgid "_Reduced Motion"
-msgstr "Murriztu _animazioa"
+msgstr "Mugimendu _motela"
 
 #: panels/universal-access/cc-ua-seeing-page.blp:56
-#, fuzzy
-#| msgid "Toggle animation effects throughout the user interface"
 msgid "Toggle reduced motion animations throughout the user interface"
-msgstr "Aktibatu eta desaktibatu erabiltzaile-interfazearen animazio-efektuak"
+msgstr "Aktibatu eta desaktibatu mugimendu motela erabiltzaile-interfazean"
 
 #: panels/universal-access/cc-ua-seeing-page.blp:67
-msgid "_Large Text"
-msgstr "Testu _handia"
+msgid "_Text Size"
+msgstr "_Testu-tamaina"
 
-#: panels/universal-access/cc-ua-seeing-page.blp:68
-msgid "Increase the size of all text in the user interface"
-msgstr "Handitu testu guztiaren tamaina erabiltzaile-interfazean"
-
-#: panels/universal-access/cc-ua-seeing-page.blp:73
+#: panels/universal-access/cc-ua-seeing-page.blp:74
 msgid "_Cursor Size"
 msgstr "_Kurtsorearen tamaina"
 
-#: panels/universal-access/cc-ua-seeing-page.blp:74
+#: panels/universal-access/cc-ua-seeing-page.blp:75
 msgid "Increase the size of the cursor"
 msgstr "Handiagotu kurtsorearen tamaina"
 
-#: panels/universal-access/cc-ua-seeing-page.blp:80
-msgid "_Sound Keys"
-msgstr "_Teklak soinuarekin"
-
 #: panels/universal-access/cc-ua-seeing-page.blp:81
+msgid "_Sound Keys"
+msgstr "Teklak _soinuarekin"
+
+#: panels/universal-access/cc-ua-seeing-page.blp:82
 msgid "Beep when Num Lock or Caps Lock are turned on or off"
 msgstr ""
 "Jo soinua zenbakiak blokeatzeko edo maiuskulak blokeatzeko teklak aktibatzen "
 "edo desaktibatzen direnean"
 
-#: panels/universal-access/cc-ua-seeing-page.blp:86
+#: panels/universal-access/cc-ua-seeing-page.blp:87
 msgid "Always Show Scroll_bars"
 msgstr "Erakutsi beti _korritze-barrak"
 
-#: panels/universal-access/cc-ua-seeing-page.blp:87
+#: panels/universal-access/cc-ua-seeing-page.blp:88
 msgid "Make scrollbars always visible"
 msgstr "Erakutsi beti korritze-barrak"
 
+#: panels/universal-access/cc-ua-seeing-page.blp:97
+msgid "Text Size"
+msgstr "Testu-tamaina"
+
+#: panels/universal-access/cc-ua-seeing-page.blp:109
+#: panels/wwan/cc-wwan-device-page.c:191
+msgid "Cancel"
+msgstr "Utzi"
+
+#: panels/universal-access/cc-ua-seeing-page.blp:125
+msgid "Use the slider to adjust the size of user interface text"
+msgstr ""
+"Erabili graduatzailea erabiltzaile-interfazearen testuaren tamaina doitzeko"
+
+#. Translators: Single letter next to the text size slider
+#: panels/universal-access/cc-ua-seeing-page.blp:137
+#: panels/universal-access/cc-ua-seeing-page.blp:157
+msgid "A"
+msgstr "A"
+
+#: panels/universal-access/cc-ua-seeing-page.blp:168
+msgid "Sample text"
+msgstr "Adibideko testua"
+
 #. translators: the labels will read:
 #. * Cursor Size: Default
-#: panels/universal-access/cc-ua-seeing-page.c:165
+#: panels/universal-access/cc-ua-seeing-page.c:215
 msgctxt "cursor size"
 msgid "Default"
 msgstr "Lehenetsia"
 
-#: panels/universal-access/cc-ua-seeing-page.c:168
+#: panels/universal-access/cc-ua-seeing-page.c:218
 msgctxt "cursor size"
 msgid "Medium"
 msgstr "Tartekoa"
 
-#: panels/universal-access/cc-ua-seeing-page.c:171
+#: panels/universal-access/cc-ua-seeing-page.c:221
 msgctxt "cursor size"
 msgid "Large"
 msgstr "Handia"
 
-#: panels/universal-access/cc-ua-seeing-page.c:174
+#: panels/universal-access/cc-ua-seeing-page.c:224
 msgctxt "cursor size"
 msgid "Larger"
 msgstr "Oso handia"
 
-#: panels/universal-access/cc-ua-seeing-page.c:177
+#: panels/universal-access/cc-ua-seeing-page.c:227
 msgctxt "cursor size"
 msgid "Largest"
 msgstr "Oso oso handia"
 
-#: panels/universal-access/cc-ua-seeing-page.c:181
+#: panels/universal-access/cc-ua-seeing-page.c:231
 #, c-format
 msgid "%d pixel"
 msgid_plural "%d pixels"
@@ -9171,12 +9178,10 @@ msgstr ""
 
 #. Translators: Search terms to find the Accessibility panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
 #: panels/universal-access/gnome-universal-access-panel.desktop.in:14
-#, fuzzy
-#| msgid "Keyboard;Mouse;a11y;Accessibility;Universal;Access;Contrast;Cursor;Sound;Zoom;Screen;Reader;big;high;large;text;font;size;AccessX;Sticky;Keys;Slow;Bounce;Mouse;Double;click;Delay;Speed;Assist;Repeat;Blink;Pointer;find;locate;visual;hearing;audio;typing;animations;"
 msgid "Keyboard;Mouse;a11y;Accessibility;Universal;Access;Contrast;Cursor;Sound;Zoom;Screen;Reader;big;high;large;text;font;size;AccessX;Sticky;Keys;Slow;Bounce;Mouse;Double;click;Delay;Speed;Assist;Repeat;Blink;Pointer;find;locate;visual;hearing;audio;typing;animations;overamplification;magnify;magnifier;magnification;"
 msgstr ""
 "Teklatua;Sagua;a11y;Irisgarritasuna;Irisgarritasuna;Unibertsala;Kontrastea;Kurtsorea;Soinua;Zooma;Pantaila;Irakurgailua;handia;altua;handia;testua;letra-"
-"tipoa;tamaina;AccessX;Itsaskorra;Teklak;Geldoa;Errebotea;Sagua;Bikoitza;klik;Atzerapena;Abiadura;Lagundu;Errepikatu;Keinua;erakuslea;aurkitu;kokatu;bisuala;entzumena;audioa;idazketa;animazioak;"
+"tipoa;tamaina;AccessX;Itsaskorra;Teklak;Geldoa;Errebotea;Sagua;Bikoitza;klik;Atzerapena;Abiadura;Lagundu;Errepikatu;Keinua;erakuslea;aurkitu;kokatu;bisuala;entzumena;audioa;idazketa;animazioak;gainanplifikazioa;handiagotu;lupa;handiagotzea;"
 
 #: panels/wacom/button-mapping.blp:6
 msgid "Map Buttons"
@@ -9279,29 +9284,35 @@ msgstr "Botoiaren kokalekua"
 msgid "The location of the physical buttons on the tablet"
 msgstr "Botoi fisikoek tabletan duten kokalekua"
 
-#: panels/wacom/cc-wacom-page.blp:55
+#: panels/wacom/cc-wacom-page.blp:69
 msgctxt "display setting"
 msgid "Map to _Monitor"
 msgstr "Mapatu _pantailarekin"
 
-#: panels/wacom/cc-wacom-page.blp:61
+#: panels/wacom/cc-wacom-page.blp:75
 msgid "_Keep Aspect Ratio"
 msgstr "Mantendu a_spektu-erlazioa"
 
-#: panels/wacom/cc-wacom-page.blp:62
+#: panels/wacom/cc-wacom-page.blp:76
 msgid "Only use a portion of the tablet surface to keep monitor aspect ratio"
 msgstr ""
 "Erabili tableta-gainazalaren zati bat soilik, pantailaren aspektu-erlazioa "
 "mantentzeko"
 
-#: panels/wacom/cc-wacom-page.blp:67
+#: panels/wacom/cc-wacom-page.blp:81
 msgid "_Calibrate"
 msgstr "_Kalibratu"
 
 #. All displays item
-#: panels/wacom/cc-wacom-page.c:662
+#: panels/wacom/cc-wacom-page.c:671
 msgid "All Displays"
 msgstr "Pantaila guztiak"
+
+#. Translators: %s is a link to the Mouse & Touchpad panel with the label "Mouse"
+#: panels/wacom/cc-wacom-page.c:714
+#, c-format
+msgid "Mouse devices can be configured in %s settings"
+msgstr "Saguak %s ezarpenetan konfiguratu daitezke"
 
 #: panels/wacom/cc-wacom-panel.blp:49
 msgid "No tablet detected"
@@ -9313,7 +9324,7 @@ msgstr "Konektatu edo piztu Wacom tableta"
 
 #: panels/wacom/cc-wacom-stylus-action-dialog.blp:100
 #: panels/wacom/cc-wacom-stylus-action-dialog.blp:132
-#: panels/wacom/cc-wacom-stylus-page.c:432
+#: panels/wacom/cc-wacom-stylus-page.c:433
 msgid "Assign Keystroke"
 msgstr "Esleitu tekla-sakatzea"
 
@@ -9321,12 +9332,12 @@ msgstr "Esleitu tekla-sakatzea"
 msgid "Press Esc to cancel"
 msgstr "Sakatu Esc uzteko"
 
-#: panels/wacom/cc-wacom-stylus-action-dialog.c:248
+#: panels/wacom/cc-wacom-stylus-action-dialog.c:238
 #, c-format
 msgid "Choose an action when button %d on the stylus is pressed"
 msgstr "Aldatu ekintza arkatzaren %d botoia sakatzen denean"
 
-#: panels/wacom/cc-wacom-stylus-action-dialog.c:251
+#: panels/wacom/cc-wacom-stylus-action-dialog.c:241
 #, c-format
 msgid "Button %d Mapping"
 msgstr "%d. botoiaren mapatzea"
@@ -9365,24 +9376,24 @@ msgstr "_3. botoia"
 msgid "_Eraser Pressure Feel"
 msgstr "_Borragomaren presioaren sentikortasuna"
 
-#: panels/wacom/cc-wacom-stylus-page.c:415
+#: panels/wacom/cc-wacom-stylus-page.c:416
 msgid "Left Mousebutton Click"
 msgstr "Ezkerreko sagu-botoiaren klik egitea"
 
-#: panels/wacom/cc-wacom-stylus-page.c:418
+#: panels/wacom/cc-wacom-stylus-page.c:419
 msgid "Middle Mousebutton Click"
 msgstr "Erdiko sagu-botoiaren klik egitea"
 
-#: panels/wacom/cc-wacom-stylus-page.c:421
+#: panels/wacom/cc-wacom-stylus-page.c:422
 msgid "Right Mousebutton Click"
 msgstr "Eskuineko sagu-botoiaren klik egitea"
 
 #. Translators: this is the "go forward" action of a button
-#: panels/wacom/cc-wacom-stylus-page.c:429
+#: panels/wacom/cc-wacom-stylus-page.c:430
 msgid "Forward"
 msgstr "Aurrera"
 
-#: panels/wacom/cc-wacom-stylus-page.c:435
+#: panels/wacom/cc-wacom-stylus-page.c:436
 msgid "Switch Monitor"
 msgstr "Aldatu monitorea"
 
@@ -9629,16 +9640,13 @@ msgstr ""
 "daturik eskuragarri."
 
 #: panels/wellbeing/cc-wellbeing-panel.blp:17
-#, fuzzy
-#| msgid "Open the Parental Controls app"
 msgid "Some settings are being managed by the Parental Controls app"
-msgstr "Ireki gurasoen kontrolerako aplikazioa"
+msgstr ""
+"Ezarpen batzuk gurasoen kontrolaren aplikazioaren bidez kudeatzen ari dira"
 
 #: panels/wellbeing/cc-wellbeing-panel.blp:18
-#, fuzzy
-#| msgid "_Parental Controls"
 msgid "Open _Parental Controls"
-msgstr "_Gurasoen kontrola"
+msgstr "Ireki _gurasoen kontrola"
 
 #: panels/wellbeing/cc-wellbeing-panel.blp:23
 msgid "Screen Time"
@@ -9828,179 +9836,179 @@ msgstr "Bilatzen"
 msgid "Denied"
 msgstr "Ukatua"
 
-#: panels/wwan/cc-wwan-device.c:988
+#: panels/wwan/cc-wwan-device.c:1019
 msgid "2G Only"
 msgstr "2G soilik"
 
-#: panels/wwan/cc-wwan-device.c:991
+#: panels/wwan/cc-wwan-device.c:1022
 msgid "3G Only"
 msgstr "3G soilik"
 
-#: panels/wwan/cc-wwan-device.c:994
+#: panels/wwan/cc-wwan-device.c:1025
 msgid "4G Only"
 msgstr "4G soilik"
 
-#: panels/wwan/cc-wwan-device.c:997
+#: panels/wwan/cc-wwan-device.c:1028
 msgid "5G Only"
 msgstr "5G soilik"
 
-#: panels/wwan/cc-wwan-device.c:1007
+#: panels/wwan/cc-wwan-device.c:1038
 msgid "2G, 3G, 4G, 5G (Preferred)"
 msgstr "2G, 3G, 4G, 5G (hobetsia)"
 
-#: panels/wwan/cc-wwan-device.c:1009
+#: panels/wwan/cc-wwan-device.c:1040
 msgid "2G, 3G, 4G (Preferred), 5G"
 msgstr "2G, 3G, 4G (hobetsia), 5G"
 
-#: panels/wwan/cc-wwan-device.c:1011
+#: panels/wwan/cc-wwan-device.c:1042
 msgid "2G, 3G (Preferred), 4G, 5G"
 msgstr "2G, 3G (hobetsia), 4G, 5G"
 
-#: panels/wwan/cc-wwan-device.c:1013
+#: panels/wwan/cc-wwan-device.c:1044
 msgid "2G (Preferred), 3G, 4G, 5G"
 msgstr "2G (hobetsia), 3G, 4G, 5G"
 
-#: panels/wwan/cc-wwan-device.c:1015
+#: panels/wwan/cc-wwan-device.c:1046
 msgid "2G, 3G, 4G, 5G"
 msgstr "2G, 3G, 4G, 5G"
 
-#: panels/wwan/cc-wwan-device.c:1022
+#: panels/wwan/cc-wwan-device.c:1053
 msgid "2G, 3G, 4G (Preferred)"
 msgstr "2G, 3G, 4G (hobetsia)"
 
-#: panels/wwan/cc-wwan-device.c:1024
+#: panels/wwan/cc-wwan-device.c:1055
 msgid "2G, 3G (Preferred), 4G"
 msgstr "2G, 3G (hobetsia), 4G"
 
-#: panels/wwan/cc-wwan-device.c:1026
+#: panels/wwan/cc-wwan-device.c:1057
 msgid "2G (Preferred), 3G, 4G"
 msgstr "2G (hobetsia), 3G, 4G"
 
-#: panels/wwan/cc-wwan-device.c:1028
+#: panels/wwan/cc-wwan-device.c:1059
 msgid "2G, 3G, 4G"
 msgstr "2G, 3G, 4G"
 
-#: panels/wwan/cc-wwan-device.c:1035
+#: panels/wwan/cc-wwan-device.c:1066
 msgid "3G, 4G, 5G (Preferred)"
 msgstr "3G, 4G, 5G (hobetsia)"
 
-#: panels/wwan/cc-wwan-device.c:1037
+#: panels/wwan/cc-wwan-device.c:1068
 msgid "3G, 4G (Preferred), 5G"
 msgstr "3G, 4G (hobetsia), 5G"
 
-#: panels/wwan/cc-wwan-device.c:1039
+#: panels/wwan/cc-wwan-device.c:1070
 msgid "3G (Preferred), 4G, 5G"
 msgstr "3G (hobetsia), 4G, 5G"
 
-#: panels/wwan/cc-wwan-device.c:1041
+#: panels/wwan/cc-wwan-device.c:1072
 msgid "3G, 4G, 5G"
 msgstr "3G, 4G, 5G"
 
-#: panels/wwan/cc-wwan-device.c:1048
+#: panels/wwan/cc-wwan-device.c:1079
 msgid "2G, 4G, 5G (Preferred)"
 msgstr "2G, 4G, 5G (hobetsia)"
 
-#: panels/wwan/cc-wwan-device.c:1050
+#: panels/wwan/cc-wwan-device.c:1081
 msgid "2G, 4G (Preferred), 5G"
 msgstr "2G, 4G (hobetsia), 5G"
 
-#: panels/wwan/cc-wwan-device.c:1052
+#: panels/wwan/cc-wwan-device.c:1083
 msgid "2G (Preferred), 4G, 5G"
 msgstr "2G (hobetsia), 4G, 5G"
 
-#: panels/wwan/cc-wwan-device.c:1054
+#: panels/wwan/cc-wwan-device.c:1085
 msgid "2G, 4G, 5G"
 msgstr "2G, 4G, 5G"
 
-#: panels/wwan/cc-wwan-device.c:1061
+#: panels/wwan/cc-wwan-device.c:1092
 msgid "2G, 3G, 5G (Preferred)"
 msgstr "2G, 3G, 5G (hobetsia)"
 
-#: panels/wwan/cc-wwan-device.c:1063
+#: panels/wwan/cc-wwan-device.c:1094
 msgid "2G, 3G (Preferred), 5G"
 msgstr "2G, 3G (hobetsia), 5G"
 
-#: panels/wwan/cc-wwan-device.c:1065
+#: panels/wwan/cc-wwan-device.c:1096
 msgid "2G (Preferred), 3G, 5G"
 msgstr "2G (hobetsia), 3G, 5G"
 
-#: panels/wwan/cc-wwan-device.c:1067
+#: panels/wwan/cc-wwan-device.c:1098
 msgid "2G, 3G, 5G"
 msgstr "2G, 3G, 5G"
 
-#: panels/wwan/cc-wwan-device.c:1073
+#: panels/wwan/cc-wwan-device.c:1104
 msgid "3G, 4G (Preferred)"
 msgstr "3G, 4G (hobetsia)"
 
-#: panels/wwan/cc-wwan-device.c:1075
+#: panels/wwan/cc-wwan-device.c:1106
 msgid "3G (Preferred), 4G"
 msgstr "3G (hobetsia), 4G"
 
-#: panels/wwan/cc-wwan-device.c:1077
+#: panels/wwan/cc-wwan-device.c:1108
 msgid "3G, 4G"
 msgstr "3G, 4G"
 
-#: panels/wwan/cc-wwan-device.c:1083
+#: panels/wwan/cc-wwan-device.c:1114
 msgid "2G, 4G (Preferred)"
 msgstr "2G, 4G (hobetsia)"
 
-#: panels/wwan/cc-wwan-device.c:1085
+#: panels/wwan/cc-wwan-device.c:1116
 msgid "2G (Preferred), 4G"
 msgstr "2G (hobetsia), 4G"
 
-#: panels/wwan/cc-wwan-device.c:1087
+#: panels/wwan/cc-wwan-device.c:1118
 msgid "2G, 4G"
 msgstr "2G, 4G"
 
-#: panels/wwan/cc-wwan-device.c:1093
+#: panels/wwan/cc-wwan-device.c:1124
 msgid "2G, 3G (Preferred)"
 msgstr "2G, 3G (hobetsia)"
 
-#: panels/wwan/cc-wwan-device.c:1095
+#: panels/wwan/cc-wwan-device.c:1126
 msgid "2G (Preferred), 3G"
 msgstr "2G (hobetsia), 3G"
 
-#: panels/wwan/cc-wwan-device.c:1097
+#: panels/wwan/cc-wwan-device.c:1128
 msgid "2G, 3G"
 msgstr "2G, 3G"
 
-#: panels/wwan/cc-wwan-device.c:1103
+#: panels/wwan/cc-wwan-device.c:1134
 msgid "2G, 5G (Preferred)"
 msgstr "2G, 5G (hobetsia)"
 
-#: panels/wwan/cc-wwan-device.c:1105
+#: panels/wwan/cc-wwan-device.c:1136
 msgid "2G (Preferred), 5G"
 msgstr "2G (hobetsia), 5G"
 
-#: panels/wwan/cc-wwan-device.c:1107
+#: panels/wwan/cc-wwan-device.c:1138
 msgid "2G, 5G"
 msgstr "2G, 5G"
 
-#: panels/wwan/cc-wwan-device.c:1113
+#: panels/wwan/cc-wwan-device.c:1144
 msgid "3G, 5G (Preferred)"
 msgstr "3G, 5G (hobetsia)"
 
-#: panels/wwan/cc-wwan-device.c:1115
+#: panels/wwan/cc-wwan-device.c:1146
 msgid "3G (Preferred), 5G"
 msgstr "3G (hobetsia), 5G"
 
-#: panels/wwan/cc-wwan-device.c:1117
+#: panels/wwan/cc-wwan-device.c:1148
 msgid "3G, 5G"
 msgstr "3G, 5G"
 
-#: panels/wwan/cc-wwan-device.c:1123
+#: panels/wwan/cc-wwan-device.c:1154
 msgid "4G, 5G (Preferred)"
 msgstr "4G, 5G (hobetsia)"
 
-#: panels/wwan/cc-wwan-device.c:1125
+#: panels/wwan/cc-wwan-device.c:1156
 msgid "4G (Preferred), 5G"
 msgstr "4G (hobetsia), 5G"
 
-#: panels/wwan/cc-wwan-device.c:1127
+#: panels/wwan/cc-wwan-device.c:1158
 msgid "4G, 5G"
 msgstr "4G, 5G"
 
-#: panels/wwan/cc-wwan-device.c:1131
+#: panels/wwan/cc-wwan-device.c:1162
 msgctxt "Network mode"
 msgid "Unknown"
 msgstr "Ezezaguna"
@@ -10061,69 +10069,78 @@ msgstr "Blokeatu SIM txartela PINarekin"
 msgid "M_odem Details"
 msgstr "M_odemaren xehetasunak"
 
-#: panels/wwan/cc-wwan-device-page.c:185
+#: panels/wwan/cc-wwan-device-page.blp:128
+msgid "Primary S_IM Slot"
+msgstr "S_IM arteka nagusia"
+
+#: panels/wwan/cc-wwan-device-page.c:189
 msgid "Unlock SIM card"
 msgstr "Desblokeatu SIM txartela"
 
-#: panels/wwan/cc-wwan-device-page.c:186 panels/wwan/cc-wwan-device-page.c:234
+#: panels/wwan/cc-wwan-device-page.c:190 panels/wwan/cc-wwan-device-page.c:238
 msgid "Unlock"
 msgstr "Desblokeatu"
 
-#: panels/wwan/cc-wwan-device-page.c:187
-msgid "Cancel"
-msgstr "Utzi"
-
-#: panels/wwan/cc-wwan-device-page.c:191
+#: panels/wwan/cc-wwan-device-page.c:195
 #, c-format
 msgid "Please provide PIN code for SIM %d"
 msgstr "Sartu %d SIM txartelaren PIN kodea"
 
-#: panels/wwan/cc-wwan-device-page.c:192
+#: panels/wwan/cc-wwan-device-page.c:196
 msgid "Enter PIN to unlock your SIM card"
 msgstr "Sartu PIN kodea zure SIM txartela desblokeatzeko"
 
-#: panels/wwan/cc-wwan-device-page.c:196
+#: panels/wwan/cc-wwan-device-page.c:200
 #, c-format
 msgid "Please provide PUK code for SIM %d"
 msgstr "Sartu %d SIM txartelaren PUK kodea"
 
-#: panels/wwan/cc-wwan-device-page.c:197
+#: panels/wwan/cc-wwan-device-page.c:201
 msgid "Enter PUK to unlock your SIM card"
 msgstr "Sartu PUK kodea a zure SIM txartela desblokeatzeko"
 
-#: panels/wwan/cc-wwan-device-page.c:215
+#: panels/wwan/cc-wwan-device-page.c:219
 #, c-format
 msgid "Wrong password entered. You have %1$u try left"
 msgid_plural "Wrong password entered. You have %1$u tries left"
 msgstr[0] "Pasahitz okerra sartu da. Aukera %1$u geratzen zaizu"
 msgstr[1] "Pasahitz okerra sartu da. %1$u aukera geratzen zaizkizu"
 
-#: panels/wwan/cc-wwan-device-page.c:218
+#: panels/wwan/cc-wwan-device-page.c:222
 #, c-format
 msgid "You have %u try left"
 msgid_plural "You have %u tries left"
 msgstr[0] "Aukera %u geratzen zaizu"
 msgstr[1] "%u aukera geratzen zaizkizu"
 
-#: panels/wwan/cc-wwan-device-page.c:223
+#: panels/wwan/cc-wwan-device-page.c:227
 msgid "Wrong password entered."
 msgstr "Pasahitz okerra sartu da."
 
-#: panels/wwan/cc-wwan-device-page.c:268
+#: panels/wwan/cc-wwan-device-page.c:272
 msgid "PUK code should be an 8 digit number"
 msgstr "PUK kodea 8 digituko zenbakia da"
 
-#: panels/wwan/cc-wwan-device-page.c:292
+#: panels/wwan/cc-wwan-device-page.c:296
 msgid "Enter New PIN"
 msgstr "Sartu PIN berria"
 
-#: panels/wwan/cc-wwan-device-page.c:296
+#: panels/wwan/cc-wwan-device-page.c:300
 msgid "PIN code should be a 4-8 digit number"
 msgstr "PIN kodeak 4-8 digitu zenbakia izan behar du"
 
-#: panels/wwan/cc-wwan-device-page.c:314
+#: panels/wwan/cc-wwan-device-page.c:318
 msgid "Unlocking…"
 msgstr "Desblokeatzen…"
+
+#. Translators: This refers to a sim slot in a modem.
+#. * For example: "Slot 1 [Operator Name]", "Slot 1" or "Slot 2 [Empty]".
+#. * Notice that all variations above are valid. Sometimes "Operator Name"
+#. * will be ommitted.
+#: panels/wwan/cc-wwan-device-page.c:527
+#, c-format
+msgid "Slot %d %s"
+msgstr "Arteka: %d %s"
 
 #: panels/wwan/cc-wwan-errors-private.h:40
 msgid "Phone failure"
@@ -10245,15 +10262,19 @@ msgstr "Ziurtatu haririk gabeko WAN/Cellular gailua daukazula"
 msgid "Wireless Wan is disabled when airplane mode is on"
 msgstr "Haririk gabeko WANa desgaitu egiten da hegazkin moduan piztean"
 
-#: panels/wwan/cc-wwan-panel.blp:90
+#: panels/wwan/cc-wwan-panel.blp:74
+msgid "Loading Devices"
+msgstr "Gailuak kargatzea"
+
+#: panels/wwan/cc-wwan-panel.blp:99
 msgid "Data Connection"
 msgstr "Datu-konexioa"
 
-#: panels/wwan/cc-wwan-panel.blp:91
+#: panels/wwan/cc-wwan-panel.blp:100
 msgid "SIM card used for internet"
 msgstr "Interneterako erabilitako SIM txartela"
 
-#: panels/wwan/cc-wwan-panel.c:366 panels/wwan/cc-wwan-panel.c:397
+#: panels/wwan/cc-wwan-panel.c:366 panels/wwan/cc-wwan-panel.c:399
 #, c-format
 msgid "SIM %d"
 msgstr "%d SIMa"
@@ -10466,7 +10487,7 @@ msgstr "Utzi bilaketa"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1879
+#: subprojects/gvc/gvc-mixer-control.c:1917
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -10475,16 +10496,22 @@ msgstr[1] "%u irteera"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1889
+#: subprojects/gvc/gvc-mixer-control.c:1927
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "Sarrera %u"
 msgstr[1] "%u sarrera"
 
-#: subprojects/gvc/gvc-mixer-control.c:2872
+#: subprojects/gvc/gvc-mixer-control.c:2910
 msgid "System Sounds"
 msgstr "Sistemaren soinuak"
+
+#~ msgid "_Verify Encryption"
+#~ msgstr "Egiaztatu zi_fratzea"
+
+#~ msgid "_Large Text"
+#~ msgstr "Testu _handia"
 
 #~ msgid "Add a Shortcut"
 #~ msgstr "Gehitu lasterbidea"
@@ -10621,9 +10648,6 @@ msgstr "Sistemaren soinuak"
 
 #~ msgid "Fingerprint Manager"
 #~ msgstr "Hatz-marken kudeatzailea"
-
-#~ msgid "Fingerprint"
-#~ msgstr "Hatz-marka"
 
 #~ msgid "The size of the cursor can be increased to make it easier to see"
 #~ msgstr ""
@@ -11786,9 +11810,6 @@ msgstr "Sistemaren soinuak"
 #~ msgid "Don't leave traces"
 #~ msgstr "Ez utzi aztarnarik"
 
-#~ msgid "Primary Menu"
-#~ msgstr "Menu nagusia"
-
 #, c-format
 #~ msgid ""
 #~ "%s has the following permissions built-in. These cannot be altered. If "
@@ -12756,9 +12777,6 @@ msgstr "Sistemaren soinuak"
 
 #~ msgid "Hypertext Files"
 #~ msgstr "Hipertestu-fitxategiak"
-
-#~ msgid "Text Files"
-#~ msgstr "Testu-fitxategiak"
 
 #~ msgid "Image Files"
 #~ msgstr "Irudi-fitxategiak"

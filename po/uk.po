@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: gnome-control-center\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-control-center/iss"
 "ues\n"
-"POT-Creation-Date: 2026-01-22 10:44+0000\n"
-"PO-Revision-Date: 2026-01-26 02:42+0200\n"
+"POT-Creation-Date: 2026-02-09 08:54+0000\n"
+"PO-Revision-Date: 2026-02-09 17:53+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -240,8 +240,8 @@ msgstr "Отримання сигналів системи про пошук і 
 #: panels/keyboard/cc-keyboard-shortcut-editor.blp:120
 #: panels/keyboard/keyboard-shortcuts.c:367 panels/network/panel-common.c:336
 #: panels/system/users/cc-user-page.c:368
-#: panels/system/users/cc-user-page.c:753 panels/wwan/cc-wwan-device-page.c:475
-#: subprojects/gvc/gvc-mixer-control.c:1872
+#: panels/system/users/cc-user-page.c:753 panels/wwan/cc-wwan-device-page.c:483
+#: subprojects/gvc/gvc-mixer-control.c:1910
 msgid "Disabled"
 msgstr "Вимкнено"
 
@@ -505,7 +505,6 @@ msgstr[2] "%u прав доступу"
 msgstr[3] "%u право доступу"
 
 #: panels/applications/cc-applications-panel.c:1081
-#| msgid "%s removed"
 msgid "Type removed"
 msgstr "Тип вилучено"
 
@@ -517,7 +516,6 @@ msgstr "_Скасувати"
 
 #: panels/applications/cc-applications-panel.c:1097
 #, c-format
-#| msgid "%s removed"
 msgid "%d type removed"
 msgid_plural "%d types removed"
 msgstr[0] "вилучено %d тип"
@@ -2470,19 +2468,15 @@ msgstr ""
 "варіант."
 
 #: panels/keyboard/cc-keyboard-panel.c:65
-#| msgctxt "cursor size"
-#| msgid "Default"
 msgid "Layout Default"
 msgstr "Типове компонування"
 
 #: panels/keyboard/cc-keyboard-panel.c:66
-#| msgctxt "cursor size"
-#| msgid "Default"
+#: panels/universal-access/cc-ua-seeing-page.c:123
 msgid "Default"
 msgstr "Типове"
 
 #: panels/keyboard/cc-keyboard-panel.c:69
-#| msgid "None"
 msgctxt "keyboard key"
 msgid "None"
 msgstr "Немає"
@@ -2957,7 +2951,6 @@ msgid "Trackpad;Pointer;Click;Tap;Double;Button;Trackball;Scroll;"
 msgstr "Сенсор;Вказівник;Клік;Стукіт;Подвійний;Кнопка;Кулька;Прокрутити;"
 
 #: panels/multitasking/cc-multitasking-panel.blp:11
-#| msgid "_Active Screen Edges"
 msgid "Screen Edges"
 msgstr "Краї екрана"
 
@@ -2970,7 +2963,6 @@ msgid "Touch the top-left corner to open the Activities Overview"
 msgstr "Торкніться верхнього лівого кута, щоб відкрити огляд «Діяльності»"
 
 #: panels/multitasking/cc-multitasking-panel.blp:28
-#| msgid "Windows software"
 msgid "_Window Resize"
 msgstr "З_міна розмірів вікон"
 
@@ -4136,6 +4128,7 @@ msgid "seconds"
 msgstr "секунд"
 
 #: panels/network/connection-editor/wireguard-peer.blp:227
+#: panels/universal-access/cc-ua-seeing-page.blp:115
 msgid "Apply"
 msgstr "Застосувати"
 
@@ -4281,12 +4274,10 @@ msgid "Saved Wi-Fi Networks"
 msgstr "Збережені мережі Wi-Fi"
 
 #: panels/network/network-wifi.blp:105
-#| msgid "Saved Networks"
 msgid "No Saved Networks"
 msgstr "Немає збережених мереж"
 
 #: panels/network/network-wifi.blp:106
-#| msgid "Saved Wi-Fi Networks"
 msgid "Saved Wi-Fi networks will appear here"
 msgstr "Тут буде показано збережені мережі Wi-Fi"
 
@@ -4824,6 +4815,7 @@ msgstr "Не заряджається"
 
 #. TRANSLATORS: primary battery
 #: panels/power/cc-battery-row.c:142 panels/power/cc-battery-row.c:172
+#: panels/wwan/cc-wwan-device-page.c:514
 msgid "Empty"
 msgstr "Вичерпано"
 
@@ -5485,7 +5477,7 @@ msgstr "Сервер потребує засвідчення"
 #. Translators: this is the "go back" action of a button
 #: panels/printers/pp-new-printer-dialog.ui:78
 #: panels/system/users/cc-fingerprint-dialog.blp:24
-#: panels/wacom/cc-wacom-stylus-page.c:425
+#: panels/wacom/cc-wacom-stylus-page.c:426
 #: panels/wwan/cc-wwan-apn-dialog.blp:20
 msgid "Back"
 msgstr "Назад"
@@ -6492,7 +6484,7 @@ msgstr "Нечинний"
 #. TRANSLATORS: Status of Parental Controls setup
 #: panels/privacy/firmware-security/cc-firmware-security-utils.c:45
 #: panels/system/users/cc-user-page.c:366
-#: panels/system/users/cc-user-page.c:753 panels/wwan/cc-wwan-device-page.c:473
+#: panels/system/users/cc-user-page.c:753 panels/wwan/cc-wwan-device-page.c:481
 msgid "Enabled"
 msgstr "Увімкнено"
 
@@ -7146,12 +7138,10 @@ msgid "No Sound Playing"
 msgstr "Звук не відтворюється"
 
 #: panels/sound/cc-volume-levels-page.blp:27
-#| msgid "Output"
 msgid "Outputs"
 msgstr "Виведення"
 
 #: panels/sound/cc-volume-levels-page.blp:32
-#| msgid "Input"
 msgid "Inputs"
 msgstr "Введення"
 
@@ -7317,7 +7307,6 @@ msgid "Wayland"
 msgstr "Wayland"
 
 #: panels/system/about/cc-system-details-window.c:613
-#| msgid "Unknown"
 msgctxt "Windowing system (Wayland, or Unknown)"
 msgid "Unknown"
 msgstr "Невідома"
@@ -7340,7 +7329,6 @@ msgstr "Переглянути інформацію про вашу систем
 #. "Preferred Applications" is the old name for the preference, so make
 #. sure that you use the same "translation" for those keywords
 #: panels/system/about/gnome-about-panel.desktop.in:18
-#| msgid "device;system;information;hostname;memory;processor;version;default;application;preferred;cd;dvd;usb;audio;video;disc;removable;media;autorun;"
 msgid ""
 "device;system;information;hostname;memory;processor;version;default;applicati"
 "on;preferred;cd;dvd;usb;audio;video;disc;removable;media;autorun;winver;"
@@ -7457,94 +7445,102 @@ msgstr "_24 години"
 msgid "AM / _PM"
 msgstr "До / після по_лудня "
 
-#: panels/system/datetime/cc-datetime-page.blp:158
+#: panels/system/datetime/cc-datetime-page.blp:157
+msgid "F_irst Day of the Week"
+msgstr "П_ерший день тижня"
+
+#: panels/system/datetime/cc-datetime-page.blp:168
 msgid "Clock &amp; Calendar"
 msgstr "Годинник і календар"
 
-#: panels/system/datetime/cc-datetime-page.blp:159
+#: panels/system/datetime/cc-datetime-page.blp:169
 msgid "Control how the time and date is shown in the top bar"
 msgstr "Керує тим, як буде показано дату і час на верхній панелі"
 
-#: panels/system/datetime/cc-datetime-page.blp:162
+#: panels/system/datetime/cc-datetime-page.blp:172
 msgid "_Week Day"
 msgstr "Д_ень тижня"
 
-#: panels/system/datetime/cc-datetime-page.blp:167
+#: panels/system/datetime/cc-datetime-page.blp:177
 msgid "D_ate"
 msgstr "Д_ата"
 
-#: panels/system/datetime/cc-datetime-page.blp:172
+#: panels/system/datetime/cc-datetime-page.blp:182
 msgid "_Seconds"
 msgstr "С_екунди"
 
-#: panels/system/datetime/cc-datetime-page.blp:177
+#: panels/system/datetime/cc-datetime-page.blp:187
 msgid "Week _Numbers"
 msgstr "_Номери тижнів"
 
-#: panels/system/datetime/cc-datetime-page.blp:178
+#: panels/system/datetime/cc-datetime-page.blp:188
 msgid "Shown in the dropdown calendar"
 msgstr "Показано на перекидному календарі"
 
-#: panels/system/datetime/cc-datetime-page.blp:211
+#: panels/system/datetime/cc-datetime-page.blp:221
 msgid "January"
 msgstr "Січень"
 
-#: panels/system/datetime/cc-datetime-page.blp:212
+#: panels/system/datetime/cc-datetime-page.blp:222
 msgid "February"
 msgstr "Лютий"
 
-#: panels/system/datetime/cc-datetime-page.blp:213
+#: panels/system/datetime/cc-datetime-page.blp:223
 msgid "March"
 msgstr "Березень"
 
-#: panels/system/datetime/cc-datetime-page.blp:214
+#: panels/system/datetime/cc-datetime-page.blp:224
 msgid "April"
 msgstr "Квітень"
 
-#: panels/system/datetime/cc-datetime-page.blp:215
+#: panels/system/datetime/cc-datetime-page.blp:225
 msgid "May"
 msgstr "Травень"
 
-#: panels/system/datetime/cc-datetime-page.blp:216
+#: panels/system/datetime/cc-datetime-page.blp:226
 msgid "June"
 msgstr "Червень"
 
-#: panels/system/datetime/cc-datetime-page.blp:217
+#: panels/system/datetime/cc-datetime-page.blp:227
 msgid "July"
 msgstr "Липень"
 
-#: panels/system/datetime/cc-datetime-page.blp:218
+#: panels/system/datetime/cc-datetime-page.blp:228
 msgid "August"
 msgstr "Серпень"
 
-#: panels/system/datetime/cc-datetime-page.blp:219
+#: panels/system/datetime/cc-datetime-page.blp:229
 msgid "September"
 msgstr "Вересень"
 
-#: panels/system/datetime/cc-datetime-page.blp:220
+#: panels/system/datetime/cc-datetime-page.blp:230
 msgid "October"
 msgstr "Жовтень"
 
-#: panels/system/datetime/cc-datetime-page.blp:221
+#: panels/system/datetime/cc-datetime-page.blp:231
 msgid "November"
 msgstr "Листопад"
 
-#: panels/system/datetime/cc-datetime-page.blp:222
+#: panels/system/datetime/cc-datetime-page.blp:232
 msgid "December"
 msgstr "Грудень"
 
+#: panels/system/datetime/cc-datetime-page.c:227
+msgid "Locale Default"
+msgstr "Типове для локалі"
+
 #. Translators: This is the full date and time format used in 12-hour mode.
-#: panels/system/datetime/cc-datetime-page.c:237
+#: panels/system/datetime/cc-datetime-page.c:254
 msgid "%e %B %Y, %l:%M %p"
 msgstr "%e %B %Y, %l:%M %p"
 
 #. Translators: This is the full date and time format used in 24-hour mode.
-#: panels/system/datetime/cc-datetime-page.c:242
+#: panels/system/datetime/cc-datetime-page.c:259
 msgid "%e %B %Y, %R"
 msgstr "%e %B %Y, %R"
 
 #. Translators: "city, country"
-#: panels/system/datetime/cc-datetime-page.c:402
+#: panels/system/datetime/cc-datetime-page.c:419
 #, c-format
 msgctxt "timezone loc"
 msgid "%s, %s"
@@ -7552,7 +7548,7 @@ msgstr "%s, %s"
 
 #. Update the timezone on the listbow row
 #. Translators: "timezone (details)"
-#: panels/system/datetime/cc-datetime-page.c:419
+#: panels/system/datetime/cc-datetime-page.c:436
 #, c-format
 msgctxt "timezone desc"
 msgid "%s (%s)"
@@ -7652,7 +7648,6 @@ msgstr "Папір"
 
 #. Translators: "US Customary" refers to the measurement system as used in the USA
 #: panels/system/region/cc-format-preview.c:149
-#| msgid "Custom"
 msgctxt "measurement format"
 msgid "US Customary"
 msgstr "Митний США"
@@ -7718,7 +7713,6 @@ msgid "Language;Layout;Keyboard;Input;"
 msgstr "Мова;Розкладка;Клавіатура;Введення;"
 
 #: panels/system/remote-desktop/cc-desktop-sharing-page.blp:11
-#| msgid "_Unlock…"
 msgid "Unlock…"
 msgstr "Розблокувати…"
 
@@ -7791,8 +7785,8 @@ msgstr "С_творити пароль"
 
 #: panels/system/remote-desktop/cc-desktop-sharing-page.blp:140
 #: panels/system/remote-desktop/cc-remote-login-page.blp:131
-msgid "_Verify Encryption"
-msgstr "П_еревірити шифрування"
+msgid "_Verify Fingerprint"
+msgstr "П_еревірити відбиток"
 
 #: panels/system/remote-desktop/cc-desktop-sharing-page.c:357
 #: panels/system/remote-desktop/cc-remote-login-page.c:96
@@ -8780,7 +8774,7 @@ msgstr "Затримка п_одвійного клацання"
 #: panels/universal-access/cc-ua-typing-page.blp:118
 #: panels/universal-access/cc-ua-typing-page.blp:163
 #: panels/universal-access/cc-ua-typing-page.blp:203
-#: panels/universal-access/cc-ua-zoom-page.blp:145
+#: panels/universal-access/cc-ua-zoom-page.blp:146
 msgid "Short"
 msgstr "Коротка"
 
@@ -8791,7 +8785,7 @@ msgstr "Коротка"
 #: panels/universal-access/cc-ua-typing-page.blp:120
 #: panels/universal-access/cc-ua-typing-page.blp:165
 #: panels/universal-access/cc-ua-typing-page.blp:205
-#: panels/universal-access/cc-ua-zoom-page.blp:147
+#: panels/universal-access/cc-ua-zoom-page.blp:149
 msgid "Long"
 msgstr "Довга"
 
@@ -8835,6 +8829,7 @@ msgid "Small"
 msgstr "Малий"
 
 #: panels/universal-access/cc-ua-mouse-page.blp:128
+#: panels/universal-access/cc-ua-seeing-page.c:123
 msgid "Large"
 msgstr "Великий"
 
@@ -8907,76 +8902,95 @@ msgstr ""
 "нього"
 
 #: panels/universal-access/cc-ua-seeing-page.blp:55
-#| msgid "Reduce _Animation"
 msgid "_Reduced Motion"
 msgstr "Спр_ощений рух"
 
 #: panels/universal-access/cc-ua-seeing-page.blp:56
-#| msgid "Toggle animation effects throughout the user interface"
 msgid "Toggle reduced motion animations throughout the user interface"
 msgstr ""
 "Увімкнути або вимкнути анімації зі спрощеним рухом в інтерфейсі користувача"
 
 #: panels/universal-access/cc-ua-seeing-page.blp:67
-msgid "_Large Text"
-msgstr "Ве_ликий текст"
+msgid "_Text Size"
+msgstr "Розмір _шрифту"
 
-#: panels/universal-access/cc-ua-seeing-page.blp:68
-msgid "Increase the size of all text in the user interface"
-msgstr "Збільшити розмір усіх текстових елементів в інтерфейсі користувача"
-
-#: panels/universal-access/cc-ua-seeing-page.blp:73
+#: panels/universal-access/cc-ua-seeing-page.blp:74
 msgid "_Cursor Size"
 msgstr "Р_озмір курсора"
 
-#: panels/universal-access/cc-ua-seeing-page.blp:74
+#: panels/universal-access/cc-ua-seeing-page.blp:75
 msgid "Increase the size of the cursor"
 msgstr "Збільшити розмір вказівника"
 
-#: panels/universal-access/cc-ua-seeing-page.blp:80
+#: panels/universal-access/cc-ua-seeing-page.blp:81
 msgid "_Sound Keys"
 msgstr "Зв_укові клавіші"
 
-#: panels/universal-access/cc-ua-seeing-page.blp:81
+#: panels/universal-access/cc-ua-seeing-page.blp:82
 msgid "Beep when Num Lock or Caps Lock are turned on or off"
 msgstr "Подавати гудок, коли перемикається Num Lock або Caps Lock"
 
-#: panels/universal-access/cc-ua-seeing-page.blp:86
+#: panels/universal-access/cc-ua-seeing-page.blp:87
 msgid "Always Show Scroll_bars"
 msgstr "Завжди показувати смужки _гортання"
 
-#: panels/universal-access/cc-ua-seeing-page.blp:87
+#: panels/universal-access/cc-ua-seeing-page.blp:88
 msgid "Make scrollbars always visible"
 msgstr "Зробити смужки гортання завжди видимими"
 
+#: panels/universal-access/cc-ua-seeing-page.blp:97
+msgid "Text Size"
+msgstr "Розмір шрифту"
+
+#: panels/universal-access/cc-ua-seeing-page.blp:109
+#: panels/wwan/cc-wwan-device-page.c:191
+msgid "Cancel"
+msgstr "Скасувати"
+
+#: panels/universal-access/cc-ua-seeing-page.blp:125
+msgid "Use the slider to adjust the size of user interface text"
+msgstr ""
+"Скористайтеся повзунком для коригування розміру шрифту в інтерфейсі "
+"користувача"
+
+#. Translators: Single letter next to the text size slider
+#: panels/universal-access/cc-ua-seeing-page.blp:137
+#: panels/universal-access/cc-ua-seeing-page.blp:157
+msgid "A"
+msgstr "А"
+
+#: panels/universal-access/cc-ua-seeing-page.blp:168
+msgid "Sample text"
+msgstr "Зразок тексту"
+
 #. translators: the labels will read:
 #. * Cursor Size: Default
-#: panels/universal-access/cc-ua-seeing-page.c:165
+#: panels/universal-access/cc-ua-seeing-page.c:215
 msgctxt "cursor size"
 msgid "Default"
 msgstr "Типовий"
 
-#: panels/universal-access/cc-ua-seeing-page.c:168
+#: panels/universal-access/cc-ua-seeing-page.c:218
 msgctxt "cursor size"
 msgid "Medium"
 msgstr "Середній"
 
-#: panels/universal-access/cc-ua-seeing-page.c:171
+#: panels/universal-access/cc-ua-seeing-page.c:221
 msgctxt "cursor size"
 msgid "Large"
 msgstr "Великий"
 
-#: panels/universal-access/cc-ua-seeing-page.c:174
+#: panels/universal-access/cc-ua-seeing-page.c:224
 msgctxt "cursor size"
 msgid "Larger"
 msgstr "Більший"
 
-#: panels/universal-access/cc-ua-seeing-page.c:177
+#: panels/universal-access/cc-ua-seeing-page.c:227
 msgctxt "cursor size"
 msgid "Largest"
 msgstr "Найбільший"
 
-#: panels/universal-access/cc-ua-seeing-page.c:181
+#: panels/universal-access/cc-ua-seeing-page.c:231
 #, c-format
 msgid "%d pixel"
 msgid_plural "%d pixels"
@@ -9260,7 +9274,6 @@ msgstr "Полегшує читання, слухання, набирання, �
 
 #. Translators: Search terms to find the Accessibility panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
 #: panels/universal-access/gnome-universal-access-panel.desktop.in:14
-#| msgid "Keyboard;Mouse;a11y;Accessibility;Universal;Access;Contrast;Cursor;Sound;Zoom;Screen;Reader;big;high;large;text;font;size;AccessX;Sticky;Keys;Slow;Bounce;Mouse;Double;click;Delay;Speed;Assist;Repeat;Blink;Pointer;find;locate;visual;hearing;audio;typing;animations;"
 msgid ""
 "Keyboard;Mouse;a11y;Accessibility;Universal;Access;Contrast;Cursor;Sound;Zoom"
 ";Screen;Reader;big;high;large;text;font;size;AccessX;Sticky;Keys;Slow;Bounce;"
@@ -9408,7 +9421,6 @@ msgstr "Усі дисплеї"
 #. Translators: %s is a link to the Mouse & Touchpad panel with the label "Mouse"
 #: panels/wacom/cc-wacom-page.c:714
 #, c-format
-#| msgid "System volume can be adjusted in %s settings"
 msgid "Mouse devices can be configured in %s settings"
 msgstr "Пристрої-миші можна налаштувати у параметрах %s"
 
@@ -9422,7 +9434,7 @@ msgstr "Під'єднайте або ввімкніть планшет Wacom"
 
 #: panels/wacom/cc-wacom-stylus-action-dialog.blp:100
 #: panels/wacom/cc-wacom-stylus-action-dialog.blp:132
-#: panels/wacom/cc-wacom-stylus-page.c:432
+#: panels/wacom/cc-wacom-stylus-page.c:433
 msgid "Assign Keystroke"
 msgstr "Призначити клавішу"
 
@@ -9430,12 +9442,12 @@ msgstr "Призначити клавішу"
 msgid "Press Esc to cancel"
 msgstr "Натисніть Esc, щоб скасувати"
 
-#: panels/wacom/cc-wacom-stylus-action-dialog.c:248
+#: panels/wacom/cc-wacom-stylus-action-dialog.c:238
 #, c-format
 msgid "Choose an action when button %d on the stylus is pressed"
 msgstr "Виберіть дію у відповідь на натискання кнопки %d на стилі"
 
-#: panels/wacom/cc-wacom-stylus-action-dialog.c:251
+#: panels/wacom/cc-wacom-stylus-action-dialog.c:241
 #, c-format
 msgid "Button %d Mapping"
 msgstr "Прив'язка кнопки %d"
@@ -9474,24 +9486,24 @@ msgstr "Кнопка _3"
 msgid "_Eraser Pressure Feel"
 msgstr "Ч_утливість гумки"
 
-#: panels/wacom/cc-wacom-stylus-page.c:415
+#: panels/wacom/cc-wacom-stylus-page.c:416
 msgid "Left Mousebutton Click"
 msgstr "Клацання лівою кнопкою миші"
 
-#: panels/wacom/cc-wacom-stylus-page.c:418
+#: panels/wacom/cc-wacom-stylus-page.c:419
 msgid "Middle Mousebutton Click"
 msgstr "Клацання середньою кнопкою миші"
 
-#: panels/wacom/cc-wacom-stylus-page.c:421
+#: panels/wacom/cc-wacom-stylus-page.c:422
 msgid "Right Mousebutton Click"
 msgstr "Клацання правою кнопкою миші"
 
 #. Translators: this is the "go forward" action of a button
-#: panels/wacom/cc-wacom-stylus-page.c:429
+#: panels/wacom/cc-wacom-stylus-page.c:430
 msgid "Forward"
 msgstr "Вперед"
 
-#: panels/wacom/cc-wacom-stylus-page.c:435
+#: panels/wacom/cc-wacom-stylus-page.c:436
 msgid "Switch Monitor"
 msgstr "Перемкнути монітор"
 
@@ -9733,12 +9745,10 @@ msgstr ""
 "Замінник стовпчикової діаграми використання екранного часу. Поки даних немає."
 
 #: panels/wellbeing/cc-wellbeing-panel.blp:17
-#| msgid "Open the Parental Controls app"
 msgid "Some settings are being managed by the Parental Controls app"
 msgstr "Деякі параметри керуються програмою «Батьківський контроль»"
 
 #: panels/wellbeing/cc-wellbeing-panel.blp:18
-#| msgid "_Parental Controls"
 msgid "Open _Parental Controls"
 msgstr "Відкрити «_Батьківський контроль»"
 
@@ -9934,179 +9944,179 @@ msgstr "Пошук"
 msgid "Denied"
 msgstr "Відмовлено"
 
-#: panels/wwan/cc-wwan-device.c:988
+#: panels/wwan/cc-wwan-device.c:1019
 msgid "2G Only"
 msgstr "Лише 2G"
 
-#: panels/wwan/cc-wwan-device.c:991
+#: panels/wwan/cc-wwan-device.c:1022
 msgid "3G Only"
 msgstr "Лише 3G"
 
-#: panels/wwan/cc-wwan-device.c:994
+#: panels/wwan/cc-wwan-device.c:1025
 msgid "4G Only"
 msgstr "Лише 4G"
 
-#: panels/wwan/cc-wwan-device.c:997
+#: panels/wwan/cc-wwan-device.c:1028
 msgid "5G Only"
 msgstr "Лише 5G"
 
-#: panels/wwan/cc-wwan-device.c:1007
+#: panels/wwan/cc-wwan-device.c:1038
 msgid "2G, 3G, 4G, 5G (Preferred)"
 msgstr "2G, 3G, 4G? 5G (бажаний)"
 
-#: panels/wwan/cc-wwan-device.c:1009
+#: panels/wwan/cc-wwan-device.c:1040
 msgid "2G, 3G, 4G (Preferred), 5G"
 msgstr "2G, 3G, 4G (бажаний), 5G"
 
-#: panels/wwan/cc-wwan-device.c:1011
+#: panels/wwan/cc-wwan-device.c:1042
 msgid "2G, 3G (Preferred), 4G, 5G"
 msgstr "2G, 3G (бажаний), 4G, 5G"
 
-#: panels/wwan/cc-wwan-device.c:1013
+#: panels/wwan/cc-wwan-device.c:1044
 msgid "2G (Preferred), 3G, 4G, 5G"
 msgstr "2G (бажаний), 3G, 4G, 5G"
 
-#: panels/wwan/cc-wwan-device.c:1015
+#: panels/wwan/cc-wwan-device.c:1046
 msgid "2G, 3G, 4G, 5G"
 msgstr "2G, 3G, 4G, 5G"
 
-#: panels/wwan/cc-wwan-device.c:1022
+#: panels/wwan/cc-wwan-device.c:1053
 msgid "2G, 3G, 4G (Preferred)"
 msgstr "2G, 3G, 4G (бажаний)"
 
-#: panels/wwan/cc-wwan-device.c:1024
+#: panels/wwan/cc-wwan-device.c:1055
 msgid "2G, 3G (Preferred), 4G"
 msgstr "2G, 3G (бажаний), 4G"
 
-#: panels/wwan/cc-wwan-device.c:1026
+#: panels/wwan/cc-wwan-device.c:1057
 msgid "2G (Preferred), 3G, 4G"
 msgstr "2G (бажаний), 3G, 4G"
 
-#: panels/wwan/cc-wwan-device.c:1028
+#: panels/wwan/cc-wwan-device.c:1059
 msgid "2G, 3G, 4G"
 msgstr "2G, 3G, 4G"
 
-#: panels/wwan/cc-wwan-device.c:1035
+#: panels/wwan/cc-wwan-device.c:1066
 msgid "3G, 4G, 5G (Preferred)"
 msgstr "3G, 4G, 5G (бажаний)"
 
-#: panels/wwan/cc-wwan-device.c:1037
+#: panels/wwan/cc-wwan-device.c:1068
 msgid "3G, 4G (Preferred), 5G"
 msgstr "3G, 4G (бажаний), 5G"
 
-#: panels/wwan/cc-wwan-device.c:1039
+#: panels/wwan/cc-wwan-device.c:1070
 msgid "3G (Preferred), 4G, 5G"
 msgstr "3G (бажаний), 4G, 5G"
 
-#: panels/wwan/cc-wwan-device.c:1041
+#: panels/wwan/cc-wwan-device.c:1072
 msgid "3G, 4G, 5G"
 msgstr "3G, 4G, 5G"
 
-#: panels/wwan/cc-wwan-device.c:1048
+#: panels/wwan/cc-wwan-device.c:1079
 msgid "2G, 4G, 5G (Preferred)"
 msgstr "2G, 4G, 5G (бажаний)"
 
-#: panels/wwan/cc-wwan-device.c:1050
+#: panels/wwan/cc-wwan-device.c:1081
 msgid "2G, 4G (Preferred), 5G"
 msgstr "2G, 4G (бажаний), 5G"
 
-#: panels/wwan/cc-wwan-device.c:1052
+#: panels/wwan/cc-wwan-device.c:1083
 msgid "2G (Preferred), 4G, 5G"
 msgstr "2G (бажаний), 4G, 5G"
 
-#: panels/wwan/cc-wwan-device.c:1054
+#: panels/wwan/cc-wwan-device.c:1085
 msgid "2G, 4G, 5G"
 msgstr "2G, 4G, 5G"
 
-#: panels/wwan/cc-wwan-device.c:1061
+#: panels/wwan/cc-wwan-device.c:1092
 msgid "2G, 3G, 5G (Preferred)"
 msgstr "2G, 3G, 5G (бажаний)"
 
-#: panels/wwan/cc-wwan-device.c:1063
+#: panels/wwan/cc-wwan-device.c:1094
 msgid "2G, 3G (Preferred), 5G"
 msgstr "2G, 3G (бажаний), 5G"
 
-#: panels/wwan/cc-wwan-device.c:1065
+#: panels/wwan/cc-wwan-device.c:1096
 msgid "2G (Preferred), 3G, 5G"
 msgstr "2G (бажаний), 3G, 5G"
 
-#: panels/wwan/cc-wwan-device.c:1067
+#: panels/wwan/cc-wwan-device.c:1098
 msgid "2G, 3G, 5G"
 msgstr "2G, 3G, 5G"
 
-#: panels/wwan/cc-wwan-device.c:1073
+#: panels/wwan/cc-wwan-device.c:1104
 msgid "3G, 4G (Preferred)"
 msgstr "3G, 4G (бажаний)"
 
-#: panels/wwan/cc-wwan-device.c:1075
+#: panels/wwan/cc-wwan-device.c:1106
 msgid "3G (Preferred), 4G"
 msgstr "3G (бажаний), 4G"
 
-#: panels/wwan/cc-wwan-device.c:1077
+#: panels/wwan/cc-wwan-device.c:1108
 msgid "3G, 4G"
 msgstr "3G, 4G"
 
-#: panels/wwan/cc-wwan-device.c:1083
+#: panels/wwan/cc-wwan-device.c:1114
 msgid "2G, 4G (Preferred)"
 msgstr "2G, 4G (бажаний)"
 
-#: panels/wwan/cc-wwan-device.c:1085
+#: panels/wwan/cc-wwan-device.c:1116
 msgid "2G (Preferred), 4G"
 msgstr "2G (бажаний), 4G"
 
-#: panels/wwan/cc-wwan-device.c:1087
+#: panels/wwan/cc-wwan-device.c:1118
 msgid "2G, 4G"
 msgstr "2G, 4G"
 
-#: panels/wwan/cc-wwan-device.c:1093
+#: panels/wwan/cc-wwan-device.c:1124
 msgid "2G, 3G (Preferred)"
 msgstr "2G, 3G (бажаний)"
 
-#: panels/wwan/cc-wwan-device.c:1095
+#: panels/wwan/cc-wwan-device.c:1126
 msgid "2G (Preferred), 3G"
 msgstr "2G (бажаний), 3G"
 
-#: panels/wwan/cc-wwan-device.c:1097
+#: panels/wwan/cc-wwan-device.c:1128
 msgid "2G, 3G"
 msgstr "2G, 3G"
 
-#: panels/wwan/cc-wwan-device.c:1103
+#: panels/wwan/cc-wwan-device.c:1134
 msgid "2G, 5G (Preferred)"
 msgstr "2G, 5G (бажаний)"
 
-#: panels/wwan/cc-wwan-device.c:1105
+#: panels/wwan/cc-wwan-device.c:1136
 msgid "2G (Preferred), 5G"
 msgstr "2G (бажаний), 5G"
 
-#: panels/wwan/cc-wwan-device.c:1107
+#: panels/wwan/cc-wwan-device.c:1138
 msgid "2G, 5G"
 msgstr "2G, 5G"
 
-#: panels/wwan/cc-wwan-device.c:1113
+#: panels/wwan/cc-wwan-device.c:1144
 msgid "3G, 5G (Preferred)"
 msgstr "3G, 5G (бажаний)"
 
-#: panels/wwan/cc-wwan-device.c:1115
+#: panels/wwan/cc-wwan-device.c:1146
 msgid "3G (Preferred), 5G"
 msgstr "3G (бажаний), 5G"
 
-#: panels/wwan/cc-wwan-device.c:1117
+#: panels/wwan/cc-wwan-device.c:1148
 msgid "3G, 5G"
 msgstr "3G, 5G"
 
-#: panels/wwan/cc-wwan-device.c:1123
+#: panels/wwan/cc-wwan-device.c:1154
 msgid "4G, 5G (Preferred)"
 msgstr "4G, 5G (бажаний)"
 
-#: panels/wwan/cc-wwan-device.c:1125
+#: panels/wwan/cc-wwan-device.c:1156
 msgid "4G (Preferred), 5G"
 msgstr "4G (бажаний), 5G"
 
-#: panels/wwan/cc-wwan-device.c:1127
+#: panels/wwan/cc-wwan-device.c:1158
 msgid "4G, 5G"
 msgstr "4G, 5G"
 
-#: panels/wwan/cc-wwan-device.c:1131
+#: panels/wwan/cc-wwan-device.c:1162
 msgctxt "Network mode"
 msgid "Unknown"
 msgstr "Невідомий"
@@ -10167,37 +10177,38 @@ msgstr "Заблокувати SIM-картку за допомогою пінк
 msgid "M_odem Details"
 msgstr "Параметри м_одему"
 
-#: panels/wwan/cc-wwan-device-page.c:185
+#: panels/wwan/cc-wwan-device-page.blp:128
+#| msgid "Primary Menu"
+msgid "Primary S_IM Slot"
+msgstr "Основний слот S_IM"
+
+#: panels/wwan/cc-wwan-device-page.c:189
 msgid "Unlock SIM card"
 msgstr "Розблокувати SIM-картку"
 
-#: panels/wwan/cc-wwan-device-page.c:186 panels/wwan/cc-wwan-device-page.c:234
+#: panels/wwan/cc-wwan-device-page.c:190 panels/wwan/cc-wwan-device-page.c:238
 msgid "Unlock"
 msgstr "Розблокувати"
 
-#: panels/wwan/cc-wwan-device-page.c:187
-msgid "Cancel"
-msgstr "Скасувати"
-
-#: panels/wwan/cc-wwan-device-page.c:191
+#: panels/wwan/cc-wwan-device-page.c:195
 #, c-format
 msgid "Please provide PIN code for SIM %d"
 msgstr "Будь ласка, вкажіть пінкод для SIM-картки %d"
 
-#: panels/wwan/cc-wwan-device-page.c:192
+#: panels/wwan/cc-wwan-device-page.c:196
 msgid "Enter PIN to unlock your SIM card"
 msgstr "Введіть пінкод для розблокування вашої SIM-картки"
 
-#: panels/wwan/cc-wwan-device-page.c:196
+#: panels/wwan/cc-wwan-device-page.c:200
 #, c-format
 msgid "Please provide PUK code for SIM %d"
 msgstr "Будь ласка, вкажіть PUK-код для SIM-картки %d"
 
-#: panels/wwan/cc-wwan-device-page.c:197
+#: panels/wwan/cc-wwan-device-page.c:201
 msgid "Enter PUK to unlock your SIM card"
 msgstr "Введіть PUK-код для розблокування вашої SIM-картки"
 
-#: panels/wwan/cc-wwan-device-page.c:215
+#: panels/wwan/cc-wwan-device-page.c:219
 #, c-format
 msgid "Wrong password entered. You have %1$u try left"
 msgid_plural "Wrong password entered. You have %1$u tries left"
@@ -10206,7 +10217,7 @@ msgstr[1] "Введено помилковий пароль. У вас лиши�
 msgstr[2] "Введено помилковий пароль. У вас лишилося %1$u спроб"
 msgstr[3] "Введено помилковий пароль. У вас лишилася %1$u спроба"
 
-#: panels/wwan/cc-wwan-device-page.c:218
+#: panels/wwan/cc-wwan-device-page.c:222
 #, c-format
 msgid "You have %u try left"
 msgid_plural "You have %u tries left"
@@ -10215,25 +10226,34 @@ msgstr[1] "У вас лишилося %u спроби"
 msgstr[2] "У вас лишилося %u спроб"
 msgstr[3] "У вас лишилася одна спроба"
 
-#: panels/wwan/cc-wwan-device-page.c:223
+#: panels/wwan/cc-wwan-device-page.c:227
 msgid "Wrong password entered."
 msgstr "Введено помилковий пароль."
 
-#: panels/wwan/cc-wwan-device-page.c:268
+#: panels/wwan/cc-wwan-device-page.c:272
 msgid "PUK code should be an 8 digit number"
 msgstr "PUK-код має бути 8-цифровим числом"
 
-#: panels/wwan/cc-wwan-device-page.c:292
+#: panels/wwan/cc-wwan-device-page.c:296
 msgid "Enter New PIN"
 msgstr "Введіть новий пінкод"
 
-#: panels/wwan/cc-wwan-device-page.c:296
+#: panels/wwan/cc-wwan-device-page.c:300
 msgid "PIN code should be a 4-8 digit number"
 msgstr "Пінкод має бути числом, у якому має бути від 4 до 8 цифр"
 
-#: panels/wwan/cc-wwan-device-page.c:314
+#: panels/wwan/cc-wwan-device-page.c:318
 msgid "Unlocking…"
 msgstr "Розблокування…"
+
+#. Translators: This refers to a sim slot in a modem.
+#. * For example: "Slot 1 [Operator Name]", "Slot 1" or "Slot 2 [Empty]".
+#. * Notice that all variations above are valid. Sometimes "Operator Name"
+#. * will be ommitted.
+#: panels/wwan/cc-wwan-device-page.c:527
+#, c-format
+msgid "Slot %d %s"
+msgstr "Слот %d %s"
 
 #: panels/wwan/cc-wwan-errors-private.h:40
 msgid "Phone failure"
@@ -10356,15 +10376,20 @@ msgstr ""
 msgid "Wireless Wan is disabled when airplane mode is on"
 msgstr "Бездротову WAN вимкнено, коли увімкнено режим польоту"
 
-#: panels/wwan/cc-wwan-panel.blp:90
+#: panels/wwan/cc-wwan-panel.blp:74
+#| msgid "Pending Devices"
+msgid "Loading Devices"
+msgstr "Завантаження пристроїв"
+
+#: panels/wwan/cc-wwan-panel.blp:99
 msgid "Data Connection"
 msgstr "З'єднання із передаванням даних"
 
-#: panels/wwan/cc-wwan-panel.blp:91
+#: panels/wwan/cc-wwan-panel.blp:100
 msgid "SIM card used for internet"
 msgstr "SIM-картка для інтернету"
 
-#: panels/wwan/cc-wwan-panel.c:366 panels/wwan/cc-wwan-panel.c:397
+#: panels/wwan/cc-wwan-panel.c:366 panels/wwan/cc-wwan-panel.c:399
 #, c-format
 msgid "SIM %d"
 msgstr "SIM-картка %d"
@@ -10580,7 +10605,7 @@ msgstr "Скасувати пошук"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1879
+#: subprojects/gvc/gvc-mixer-control.c:1917
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -10591,7 +10616,7 @@ msgstr[3] "%u вивід"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1889
+#: subprojects/gvc/gvc-mixer-control.c:1927
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
@@ -10600,9 +10625,15 @@ msgstr[1] "%u входи"
 msgstr[2] "%u входів"
 msgstr[3] "%u вхід"
 
-#: subprojects/gvc/gvc-mixer-control.c:2872
+#: subprojects/gvc/gvc-mixer-control.c:2910
 msgid "System Sounds"
 msgstr "Системні звуки"
+
+#~ msgid "_Verify Encryption"
+#~ msgstr "П_еревірити шифрування"
+
+#~ msgid "_Large Text"
+#~ msgstr "Ве_ликий текст"
 
 #~ msgid "No saved networks"
 #~ msgstr "Немає збережених мереж"
@@ -10741,9 +10772,6 @@ msgstr "Системні звуки"
 
 #~ msgid "Fingerprint Manager"
 #~ msgstr "Керування відбитками"
-
-#~ msgid "Fingerprint"
-#~ msgstr "Відбиток"
 
 #~ msgid "The size of the cursor can be increased to make it easier to see"
 #~ msgstr "Можна збільшити розмір вказівника, щоб він став помітнішим"
@@ -11891,9 +11919,6 @@ msgstr "Системні звуки"
 
 #~ msgid "Test Your _Settings"
 #~ msgstr "Випробувати ваші _параметри"
-
-#~ msgid "Primary Menu"
-#~ msgstr "Основне меню"
 
 #~ msgid "Try clicking, double clicking, scrolling"
 #~ msgstr "Випробувати клацання, подвійне клацання, гортання"
