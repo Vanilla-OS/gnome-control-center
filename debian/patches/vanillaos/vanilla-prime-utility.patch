@@ -35,7 +35,7 @@ index f40b2cf..589e232 100644
      };
    }
 diff --git a/panels/display/cc-display-panel.c b/panels/display/cc-display-panel.c
-index d9de82c..e870abc 100644
+index 8a4f5dc..ba7e363 100644
 --- a/panels/display/cc-display-panel.c
 +++ b/panels/display/cc-display-panel.c
 @@ -97,6 +97,7 @@ struct _CcDisplayPanel
