@@ -1,13 +1,14 @@
 Source: gnome-control-center
-Section: gnome
+Standards-Version: 4.7.4
 Maintainer: Debian GNOME Maintainers <pkg-gnome-maintainers@lists.alioth.debian.org>
 Uploaders: Jeremy Bícha <jbicha@ubuntu.com>,
            Laurent Bigonville <bigon@debian.org>,
            Marco Trevisan (Treviño) <marco@ubuntu.com>
+Section: gnome
 Build-Depends: debhelper-compat (= 13),
+               dh-sequence-gnome (>= 0.22.2),
                blueprint-compiler (>= 0.19.0),
                desktop-file-utils,
-               dh-sequence-gnome (>= 0.22.2),
                gnome-settings-daemon-dev (>= 48~rc),
                gobject-introspection (>= 1.80),
                gsettings-desktop-schemas-dev (>= 50~alpha),
@@ -15,7 +16,7 @@ Build-Depends: debhelper-compat (= 13),
                libaccountsservice-dev (>= 23.11.69),
                libadwaita-1-dev (>= 1.8~alpha),
                libcolord-dev,
-               libcolord-gtk4-dev (>= 0.1.24),
+               libcolord-gtk4-dev,
                libcups2-dev,
                libgcr-4-dev [linux-any],
                libgdk-pixbuf-2.0-dev,
@@ -30,14 +31,14 @@ Build-Depends: debhelper-compat (= 13),
                libgtk-4-dev (>= 4.21),
                libgtop2-dev,
                libgudev-1.0-dev [linux-any],
-               libhandy-1-dev (>= 1.2.0),
+               libhandy-1-dev,
                libibus-1.0-dev,
                libjson-glib-dev,
                libkrb5-dev,
                libmalcontent-0-dev (>= 0.13) [linux-any],
                libmm-glib-dev [linux-any],
                libnm-dev (>= 1.52.0) [linux-any],
-               libnma-gtk4-dev (>= 1.10.2) [linux-any],
+               libnma-gtk4-dev [linux-any],
                libpolkit-gobject-1-dev,
                libpulse-dev,
                libpwquality-dev,
@@ -50,14 +51,14 @@ Build-Depends: debhelper-compat (= 13),
                libxml2-dev,
                libxml2-utils,
                locales,
-               meson (>= 0.60.0),
+               meson,
+               pkexec,
                python3-dbusmock <!nocheck>,
                shared-mime-info,
-               tecla (>= 47),
-               tzdata <!nocheck>,
-Standards-Version: 4.7.3
-Vcs-Git: https://salsa.debian.org/gnome-team/gnome-control-center.git
+               tecla,
+               tzdata <!nocheck>
 Vcs-Browser: https://salsa.debian.org/gnome-team/gnome-control-center
+Vcs-Git: https://salsa.debian.org/gnome-team/gnome-control-center.git
 
 Package: gnome-control-center
 Architecture: any
@@ -75,7 +76,7 @@ Depends: accountsservice (>= 23.11.69),
          heif-thumbnailer,
          libjxl-gdk-pixbuf,
          mutter-common (>= 47),
-         tecla (>= 47),
+         tecla,
          upower,
          webp-pixbuf-loader,
          ${misc:Depends},
@@ -100,9 +101,8 @@ Recommends: cracklib-runtime,
             rygel | rygel-tracker,
             system-config-printer-common
 Suggests: gnome-software | gnome-packagekit,
-          gstreamer1.0-plugins-good (>= 1.18.0),
-Breaks: gnome-remote-desktop (<< 42),
-        gnome-shell (<< 49)
+          gstreamer1.0-plugins-good
+Breaks: gnome-shell (<< 49)
 Description: utilities to configure the GNOME desktop
  This package contains configuration applets for the GNOME desktop,
  allowing to set accessibility configuration, desktop fonts, keyboard

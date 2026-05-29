@@ -1,3 +1,19 @@
+gnome-control-center (1:50.1-1) unstable; urgency=medium
+
+  [ Jeremy Bícha ]
+  * New upstream release
+  * Remove 2 patches applied in new release
+  * Update Standards Version to 4.7.4
+
+  [ Alessandro Astone ]
+  * d/p/debian, d/control: Set keyboard configuration the debian way.
+    Debian policy prohibits localed from setting the keyboard config.
+    Instead, we shall use the keyboard-configuration package.
+    Add a dependency on pkexec which we use to elevate privileges to run the
+    keyboard configuration. (LP: #2101934)
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Fri, 17 Apr 2026 22:01:49 -0400
+
 gnome-control-center (1:50.0-1~99-orchid) unstable; urgency=medium
 
   * Merge debian/1%50.0-1 
