@@ -12,10 +12,10 @@ Forwarded: not-needed
  panels/keyboard/cc-input-list-box.c                | 29 +++++++---
  .../gnome-control-center-set-debian-keyboard       | 61 ++++++++++++++++++++++
  panels/keyboard/meson.build                        | 17 ++++++
- .../org.gnome.controlcenter.keyboard.policy.in.in} | 12 ++---
- 5 files changed, 107 insertions(+), 13 deletions(-)
+ .../org.gnome.controlcenter.keyboard.policy.in.in  | 22 ++++++++
+ 5 files changed, 123 insertions(+), 7 deletions(-)
  create mode 100755 panels/keyboard/gnome-control-center-set-debian-keyboard
- copy panels/{system/secure-shell/org.gnome.controlcenter.remote-login-helper.policy.in.in => keyboard/org.gnome.controlcenter.keyboard.policy.in.in} (60%)
+ create mode 100644 panels/keyboard/org.gnome.controlcenter.keyboard.policy.in.in
 
 diff --git a/panels/common/gnome-control-center.rules.in b/panels/common/gnome-control-center.rules.in
 index 8532d1e..dc0cfad 100644
@@ -184,38 +184,31 @@ index d26c4bf..f87ca97 100644
 +install_data('gnome-control-center-set-debian-keyboard', install_dir: control_center_libexecdir)
 +
  subdir('icons')
-diff --git a/panels/system/secure-shell/org.gnome.controlcenter.remote-login-helper.policy.in.in b/panels/keyboard/org.gnome.controlcenter.keyboard.policy.in.in
-similarity index 60%
-copy from panels/system/secure-shell/org.gnome.controlcenter.remote-login-helper.policy.in.in
-copy to panels/keyboard/org.gnome.controlcenter.keyboard.policy.in.in
-index dc2606e..7f550f3 100644
---- a/panels/system/secure-shell/org.gnome.controlcenter.remote-login-helper.policy.in.in
+diff --git a/panels/keyboard/org.gnome.controlcenter.keyboard.policy.in.in b/panels/keyboard/org.gnome.controlcenter.keyboard.policy.in.in
+new file mode 100644
+index 0000000..7f550f3
+--- /dev/null
 +++ b/panels/keyboard/org.gnome.controlcenter.keyboard.policy.in.in
-@@ -2,21 +2,21 @@
- <!DOCTYPE policyconfig PUBLIC
-  "-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN"
-  "http://www.freedesktop.org/standards/PolicyKit/1.0/policyconfig.dtd">
--<policyconfig>
- 
+@@ -0,0 +1,22 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<!DOCTYPE policyconfig PUBLIC
++ "-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN"
++ "http://www.freedesktop.org/standards/PolicyKit/1.0/policyconfig.dtd">
++
 +<policyconfig>
-   <vendor>The GNOME Project</vendor>
-   <vendor_url>http://www.gnome.org/</vendor_url>
- 
--  <action id="org.gnome.controlcenter.remote-login-helper">
--    <description>Enable or disable remote login</description>
--    <message>Authentication is required to enable or disable remote login</message>
++  <vendor>The GNOME Project</vendor>
++  <vendor_url>http://www.gnome.org/</vendor_url>
++
 +  <action id="org.gnome.controlcenter.set-keyboard">
 +    <description>Change system keyboard settings</description>
 +    <message>To change global keyboard settings, you need to authenticate.</message>
-     <defaults>
-       <allow_any>no</allow_any>
-       <allow_inactive>no</allow_inactive>
-       <allow_active>auth_admin_keep</allow_active>
-     </defaults>
--    <annotate key="org.freedesktop.policykit.imply">org.freedesktop.systemd1.manage-units org.freedesktop.systemd1.manage-unit-files</annotate>
++    <defaults>
++      <allow_any>no</allow_any>
++      <allow_inactive>no</allow_inactive>
++      <allow_active>auth_admin_keep</allow_active>
++    </defaults>
 +    <annotate key="org.freedesktop.policykit.exec.path">@libexecdir@/gnome-control-center-set-debian-keyboard</annotate>
 +    <annotate key="org.freedesktop.policykit.imply">org.freedesktop.locale1.set-keyboard</annotate>
-   </action>
- 
- </policyconfig>
--
++  </action>
++
++</policyconfig>
