@@ -63,6 +63,7 @@ jobs:
           libxml2-utils \
           locales \
           meson \
+          pkexec \
           python3-dbusmock \
           tecla \
           xvfb \
