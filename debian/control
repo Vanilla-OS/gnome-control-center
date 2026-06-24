@@ -3,7 +3,7 @@ Standards-Version: 4.7.4
 Maintainer: Debian GNOME Maintainers <pkg-gnome-maintainers@lists.alioth.debian.org>
 Uploaders: Jeremy Bícha <jbicha@ubuntu.com>,
            Laurent Bigonville <bigon@debian.org>,
-           Marco Trevisan (Treviño) <marco@ubuntu.com>
+           Marco Trevisan (Treviño) <marco@ubuntu.com>,
 Section: gnome
 Build-Depends: debhelper-compat (= 14),
                dh-sequence-gnome (>= 0.22.2),
@@ -56,7 +56,7 @@ Build-Depends: debhelper-compat (= 14),
                python3-dbusmock <!nocheck>,
                shared-mime-info,
                tecla,
-               tzdata <!nocheck>
+               tzdata <!nocheck>,
 Vcs-Browser: https://salsa.debian.org/gnome-team/gnome-control-center
 Vcs-Git: https://salsa.debian.org/gnome-team/gnome-control-center.git
 
@@ -97,10 +97,10 @@ Recommends: cracklib-runtime,
             power-profiles-daemon,
             realmd,
             rygel | rygel-tracker,
-            system-config-printer-common
+            system-config-printer-common,
 Suggests: gnome-software | gnome-packagekit,
-          gstreamer1.0-plugins-good
-Breaks: gnome-shell (<< 49)
+          gstreamer1.0-plugins-good,
+Breaks: gnome-shell (<< 49),
 Description: utilities to configure the GNOME desktop
  This package contains configuration applets for the GNOME desktop,
  allowing to set accessibility configuration, desktop fonts, keyboard
