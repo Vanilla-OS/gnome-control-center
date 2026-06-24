@@ -5,7 +5,7 @@ Uploaders: Jeremy Bícha <jbicha@ubuntu.com>,
            Laurent Bigonville <bigon@debian.org>,
            Marco Trevisan (Treviño) <marco@ubuntu.com>
 Section: gnome
-Build-Depends: debhelper-compat (= 13),
+Build-Depends: debhelper-compat (= 14),
                dh-sequence-gnome (>= 0.22.2),
                blueprint-compiler (>= 0.19.0),
                desktop-file-utils,
@@ -79,8 +79,6 @@ Depends: accountsservice (>= 23.11.69),
          tecla,
          upower,
          webp-pixbuf-loader,
-         ${misc:Depends},
-         ${shlibs:Depends}
 Recommends: cracklib-runtime,
             cups-pk-helper,
             fwupd [linux-any],
@@ -117,14 +115,12 @@ Architecture: all
 Multi-Arch: foreign
 Section: devel
 Depends: gnome-control-center-data,
-         ${misc:Depends}
 Description: utilities to configure the GNOME desktop
  This package contains the file required to get the keydirs location
 
 Package: gnome-control-center-data
 Architecture: all
 Multi-Arch: foreign
-Depends: ${misc:Depends}
 Description: configuration applets for GNOME - data files
  This package contains data files (icons, pixmaps, locales files) needed by
  the configuration applets in the gnome-control-center package.
