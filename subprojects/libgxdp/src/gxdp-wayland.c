@@ -74,7 +74,7 @@ init_x11_interop (void)
   if (!x11_interop)
     {
       g_warning ("Missing X11 interop protocol support, "
-                 "portal dialogs may missbehave");
+                 "portal dialogs may misbehave");
     }
 }
 
@@ -105,6 +105,17 @@ get_high_contrast (GValue   *value,
   return TRUE;
 }
 
+static gboolean
+get_xft_dpi (GValue   *value,
+             GVariant *variant,
+             gpointer  user_data)
+{
+  g_value_set_int (value,
+                   g_variant_get_double (variant) * 96 * 1024);
+
+  return TRUE;
+}
+
 #define MAX_KEYS 20
 
 static void
@@ -130,7 +141,7 @@ init_settings (void)
         { "enable-animations", "gtk-enable-animations" },
         { "gtk-enable-primary-paste", "gtk-enable-primary-paste" },
         { "overlay-scrolling", "gtk-overlay-scrolling" },
-        { "text-scaling-factor", "gtk-xft-dpi" },
+        { "text-scaling-factor", "gtk-xft-dpi", get_xft_dpi },
       },
     },
     {
@@ -233,7 +244,7 @@ gxdp_wayland_init (GxdpServiceClientType   service_client_type,
   if (!proxy)
     {
       g_warning ("Compositor service channel missing, "
-                 "portals dialogs may missbehave (%s)",
+                 "portal dialogs may misbehave (%s)",
                  local_error->message);
       return init_gtk_wayland_fallback (error);
     }
@@ -247,7 +258,7 @@ gxdp_wayland_init (GxdpServiceClientType   service_client_type,
         NULL, &local_error))
     {
       g_warning ("Failed to open service channel Wayland connection, "
-                 "portals dialogs may missbehave (%s).",
+                 "portal dialogs may misbehave (%s).",
                  local_error->message);
 
       return init_gtk_wayland_fallback (error);
@@ -259,7 +270,7 @@ gxdp_wayland_init (GxdpServiceClientType   service_client_type,
   if (fd < 0)
     {
       g_warning ("Failed to acquire Wayland connection file descriptor, "
-                 "portals dialogs may missbehave (%s).",
+                 "portal dialogs may misbehave (%s).",
                  local_error->message);
 
       return init_gtk_wayland_fallback (error);

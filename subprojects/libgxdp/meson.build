@@ -13,3 +13,5 @@ subdir('src')
 if get_option('tests')
   subdir('tests')
 endif
+
+summary('Tests', get_option('tests'))
