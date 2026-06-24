@@ -1,8 +1,9 @@
-gnome-control-center (1:50.3-1) UNRELEASED; urgency=medium
+gnome-control-center (1:50.3-1) unstable; urgency=medium
 
   * New upstream release
+  * Update debhelper compat to 14
 
- -- Jeremy Bícha <jbicha@ubuntu.com>  Wed, 24 Jun 2026 08:10:07 -0400
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Wed, 24 Jun 2026 08:15:42 -0400
 
 gnome-control-center (1:50.1-1) unstable; urgency=medium
 
