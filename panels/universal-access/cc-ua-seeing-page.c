@@ -75,46 +75,42 @@ struct _CcUaSeeingPage {
 
 G_DEFINE_FINAL_TYPE (CcUaSeeingPage, cc_ua_seeing_page, ADW_TYPE_NAVIGATION_PAGE)
 
-static void
-set_label_scale (CcUaSeeingPage *self, GtkLabel *label, double scale)
+/* Unlike the widget's Pango context, gtk-font-name has no text scaling applied */
+static double
+get_unscaled_font_size (GtkWidget *widget)
 {
-    PangoContext *pango_ctx;
-    PangoFontDescription *font_desc;
-    double default_font_size;
+    g_autofree char *font_name = NULL;
+    g_autoptr(PangoFontDescription) font_desc = NULL;
+    int font_size = 0;
+
+    g_object_get (gtk_widget_get_settings (widget), "gtk-font-name", &font_name, NULL);
+
+    if (font_name)
+        font_desc = pango_font_description_from_string (font_name);
+
+    if (font_desc)
+        font_size = pango_font_description_get_size (font_desc);
+
+    if (font_size <= 0)
+        return 11 * PANGO_SCALE * 96.0 / 72; /* Assuming 11 pt, 96 dpi */
+
+    if (pango_font_description_get_size_is_absolute (font_desc))
+        return font_size;
+
+    return font_size * 96.0 / 72; /* 96 dpi */
+}
+
+static void
+set_label_scale (GtkLabel *label, double scale)
+{
     g_autoptr(PangoAttribute) attr = NULL;
     g_autoptr(PangoAttrList) new_attrs = NULL;
 
-    pango_ctx = gtk_widget_get_pango_context (GTK_WIDGET (label));
-    font_desc = pango_context_get_font_description (pango_ctx);
-
-    if (font_desc) {
-        default_font_size = pango_font_description_get_size (font_desc);
-
-        /* We need absolute size without text scaling applied */
-        if (pango_font_description_get_size_is_absolute (font_desc))
-            default_font_size /= g_settings_get_double (self->interface_settings, KEY_TEXT_SCALING_FACTOR);
-        else
-            default_font_size *= 96.0 / 72; /* 96 dpi */
-    } else {
-        default_font_size = 11 * PANGO_SCALE * 96.0 / 72; /* Assuming 11 pt, 96 dpi */
-    }
-
-    attr = pango_attr_size_new_absolute (round (scale * default_font_size));
+    attr = pango_attr_size_new_absolute (round (scale * get_unscaled_font_size (GTK_WIDGET (label))));
     new_attrs = pango_attr_list_new ();
     pango_attr_list_insert (new_attrs, g_steal_pointer (&attr));
 
     gtk_label_set_attributes (label, new_attrs);
-}
-
-static void
-update_text_size_row_label (CcUaSeeingPage *self)
-{
-    const gchar *label = NULL;
-    double text_scaling_factor;
-
-    text_scaling_factor = g_settings_get_double (self->interface_settings, KEY_TEXT_SCALING_FACTOR);
-    label = text_scaling_factor > DPI_FACTOR_NORMAL ? _("Large") : _("Default");
-    cc_list_row_set_secondary_label (self->text_size_row, label);
 }
 
 static void
@@ -123,8 +119,6 @@ apply_text_size_changes (CcUaSeeingPage *self)
     g_settings_set_double (self->interface_settings, KEY_TEXT_SCALING_FACTOR,
                            gtk_range_get_value (GTK_RANGE (self->text_size_scale)));
     adw_dialog_close (self->text_size_dialog);
-
-    update_text_size_row_label (self);
 }
 
 static void
@@ -135,7 +129,27 @@ ua_text_size_value_changed (GtkRange *text_size_range, gpointer user_data)
 
     gtk_range_set_value (text_size_range, value);
 
-    set_label_scale (self, self->text_size_preview_label, value);
+    set_label_scale (self->text_size_preview_label, value);
+}
+
+static void
+on_text_scaling_factor_changed (CcUaSeeingPage *self)
+{
+    g_assert (CC_IS_UA_SEEING_PAGE (self));
+
+    double current_factor = g_settings_get_double (self->interface_settings, KEY_TEXT_SCALING_FACTOR);
+
+    gtk_range_set_value (GTK_RANGE (self->text_size_scale), current_factor);
+}
+
+static gboolean
+get_text_size_label_mapping (GValue *value, GVariant *variant, gpointer user_data)
+{
+    double text_scaling_factor = g_variant_get_double (variant);
+
+    g_value_set_string (value, text_scaling_factor > DPI_FACTOR_NORMAL ? _("Large") : _("Default"));
+
+    return TRUE;
 }
 
 static void
@@ -346,9 +360,14 @@ cc_ua_seeing_page_init (CcUaSeeingPage *self)
                          g_settings_get_double (self->interface_settings, KEY_TEXT_SCALING_FACTOR));
     g_signal_connect (GTK_RANGE (self->text_size_scale), "value-changed", G_CALLBACK (ua_text_size_value_changed),
                       self);
-    update_text_size_row_label (self);
-    set_label_scale (self, self->text_size_label_small, 1.0);
-    set_label_scale (self, self->text_size_label_large, 2.0);
+    set_label_scale (self->text_size_label_small, 1.0);
+    set_label_scale (self->text_size_label_large, 2.0);
+    g_signal_connect_object (self->interface_settings, "changed::" KEY_TEXT_SCALING_FACTOR,
+                             G_CALLBACK (on_text_scaling_factor_changed), self, G_CONNECT_SWAPPED);
+
+    g_settings_bind_with_mapping (self->interface_settings, KEY_TEXT_SCALING_FACTOR, self->text_size_row,
+                                  "secondary-label", G_SETTINGS_BIND_GET, get_text_size_label_mapping, NULL, NULL,
+                                  NULL);
 
     /* Sound Keys */
     g_settings_bind (self->kb_settings, KEY_TOGGLEKEYS_ENABLED, self->sound_keys_row, "active",
