@@ -1,5 +1,6 @@
 ---
-Bug-Database: https://gitlab.gnome.org/GNOME/gnome-control-center/-/issues
-Bug-Submit: https://gitlab.gnome.org/GNOME/gnome-control-center/-/issues/new
+Bug-Database: https://gitlab.gnome.org/GNOME/gnome-control-center/-/work_items
+Bug-Submit: https://gitlab.gnome.org/GNOME/gnome-control-center/-/work_items/new
 Repository: https://gitlab.gnome.org/GNOME/gnome-control-center.git
 Repository-Browse: https://gitlab.gnome.org/GNOME/gnome-control-center
+Security-Contact: https://gitlab.gnome.org/Teams/Releng/security
