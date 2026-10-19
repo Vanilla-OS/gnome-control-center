@@ -17,7 +17,7 @@ Debian Unstable does not yet have gtk 4.23
  3 files changed, 7 insertions(+), 40 deletions(-)
 
 diff --git a/meson.build b/meson.build
-index 49fca1b..ef4ea76 100644
+index 61e1d55..80861c1 100644
 --- a/meson.build
 +++ b/meson.build
 @@ -129,7 +129,7 @@ libgvc = subproject(

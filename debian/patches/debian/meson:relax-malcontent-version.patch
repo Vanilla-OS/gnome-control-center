@@ -8,7 +8,7 @@ Forwarded: not-needed
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/meson.build b/meson.build
-index 1c77445..49fca1b 100644
+index 89f9998..61e1d55 100644
 --- a/meson.build
 +++ b/meson.build
 @@ -132,7 +132,7 @@ libadwaita_version = '>= 1.8.alpha'

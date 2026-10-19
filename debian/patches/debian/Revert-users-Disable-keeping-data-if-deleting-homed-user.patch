@@ -15,7 +15,7 @@ Debian Unstable does not yet have accountsservice 26
  3 files changed, 3 insertions(+), 19 deletions(-)
 
 diff --git a/meson.build b/meson.build
-index ef4ea76..9777d36 100644
+index 80861c1..1544a4c 100644
 --- a/meson.build
 +++ b/meson.build
 @@ -222,8 +222,7 @@ gmobile_dep = dependency(
@@ -29,7 +29,7 @@ index ef4ea76..9777d36 100644
  gdk_pixbuf_dep = dependency('gdk-pixbuf-2.0', version: '>= 2.23.0')
  gio_dep = dependency('gio-2.0')
 diff --git a/panels/system/users/cc-user-page.blp b/panels/system/users/cc-user-page.blp
-index ecbd13c..554500a 100644
+index b6b808a..8e1381e 100644
 --- a/panels/system/users/cc-user-page.blp
 +++ b/panels/system/users/cc-user-page.blp
 @@ -188,6 +188,7 @@ template $CcUserPage: Adw.NavigationPage {
