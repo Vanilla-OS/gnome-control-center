@@ -32,7 +32,7 @@ Build-Depends:
  libgoa-1.0-dev (>= 3.51.0),
  libgoa-backend-1.0-dev (>= 3.51.0),
  libgsound-dev,
- libgtk-4-dev (>= 4.22),
+ libgtk-4-dev (>= 4.23),
  libgtop2-dev,
  libgudev-1.0-dev [linux-any],
  libibus-1.0-dev,
