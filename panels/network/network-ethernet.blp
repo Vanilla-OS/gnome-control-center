@@ -14,6 +14,30 @@ template $NetDeviceEthernet: Adw.PreferencesGroup {
     ]
   };
 
+  ListBox empty_connection_list {
+    selection-mode: none;
+
+    [placeholder]
+    Label {
+      label: _("Not set up");
+      wrap: true;
+      max-width-chars: 50;
+
+      styles [
+        "dim-label",
+        "cc-placeholder-row",
+      ]
+    }
+
+    styles [
+      "boxed-list",
+    ]
+
+    accessibility {
+      label: _("Wired");
+    }
+  }
+
   Stack connection_stack {
     ListBox connection_list {
       selection-mode: none;
@@ -22,6 +46,10 @@ template $NetDeviceEthernet: Adw.PreferencesGroup {
       styles [
         "boxed-list",
       ]
+
+      accessibility {
+        label: _("Wired");
+      }
     }
 
     ListBox details_listbox {

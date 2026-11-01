@@ -25,9 +25,8 @@
 
 #include "cc-mouse-test.h"
 
-struct _CcMouseTest
-{
-    AdwWindow  parent_instance;
+struct _CcMouseTest {
+    AdwWindow parent_instance;
 
     GtkWidget *arrow_down;
     GtkWidget *arrow_up;
@@ -42,11 +41,10 @@ struct _CcMouseTest
     guint reset_timeout_id;
 };
 
-G_DEFINE_TYPE (CcMouseTest, cc_mouse_test, ADW_TYPE_WINDOW);
+G_DEFINE_FINAL_TYPE (CcMouseTest, cc_mouse_test, ADW_TYPE_WINDOW);
 
 static void
-on_scroll_adjustment_changed_cb (GtkAdjustment *adjustment,
-                                 gpointer       user_data)
+on_scroll_adjustment_changed_cb (GtkAdjustment *adjustment, gpointer user_data)
 {
     CcMouseTest *self = CC_MOUSE_TEST (user_data);
     gboolean is_bottom, is_top;
@@ -73,11 +71,7 @@ reset_indicators (CcMouseTest *self)
 }
 
 static void
-on_test_button_clicked_cb (GtkGestureClick *gesture,
-                           gint             n_press,
-                           gdouble          x,
-                           gdouble          y,
-                           gpointer         user_data)
+on_test_button_clicked_cb (GtkGestureClick *gesture, gint n_press, gdouble x, gdouble y, gpointer user_data)
 {
     CcMouseTest *self = CC_MOUSE_TEST (user_data);
     guint button;
@@ -96,8 +90,7 @@ on_test_button_clicked_cb (GtkGestureClick *gesture,
     }
 
     /* Reset the buttons to default state after double_click_delay * 2 */
-    self->reset_timeout_id =
-        g_timeout_add (self->double_click_delay * 2, (GSourceFunc) reset_indicators, self);
+    self->reset_timeout_id = g_timeout_add (self->double_click_delay * 2, (GSourceFunc) reset_indicators, self);
 }
 
 static void
@@ -105,18 +98,6 @@ on_mouse_test_show_cb (CcMouseTest *self)
 {
     /* Always scroll back to the top */
     gtk_adjustment_set_value (self->scrolled_window_adjustment, 0);
-}
-
-static void
-setup_dialog (CcMouseTest *self)
-{
-    g_autoptr(GtkCssProvider) provider = NULL;
-
-    provider = gtk_css_provider_new ();
-    gtk_css_provider_load_from_resource (provider, "/org/gnome/control-center/mouse/mouse-test.css");
-    gtk_style_context_add_provider_for_display (gdk_display_get_default (),
-                                                GTK_STYLE_PROVIDER (provider),
-                                                GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 }
 
 static void
@@ -137,7 +118,7 @@ cc_mouse_test_class_init (CcMouseTestClass *klass)
 
     object_class->finalize = cc_mouse_test_finalize;
 
-    gtk_widget_class_add_binding_action (widget_class, GDK_KEY_Escape, 0, "window.close", NULL);
+    gtk_widget_class_add_binding_action (widget_class, GDK_KEY_Escape, GDK_NO_MODIFIER_MASK, "window.close", NULL);
 
     gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/control-center/mouse/cc-mouse-test.ui");
 
@@ -164,8 +145,6 @@ cc_mouse_test_init (CcMouseTest *self)
 
     mouse_settings = g_settings_new ("org.gnome.desktop.peripherals.mouse");
     self->double_click_delay = g_settings_get_int (mouse_settings, "double-click");
-
-    setup_dialog (self);
 }
 
 GtkWidget *

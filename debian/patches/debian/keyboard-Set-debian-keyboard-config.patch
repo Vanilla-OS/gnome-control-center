@@ -9,13 +9,13 @@ Bug-Ubuntu: https://launchpad.net/bugs/2101934
 Forwarded: not-needed
 ---
  panels/common/gnome-control-center.rules.in        |  1 +
- panels/keyboard/cc-input-list-box.c                | 29 +++++++---
+ panels/keyboard/cc-input-list-box.c                | 27 ++++++++--
  .../gnome-control-center-set-debian-keyboard       | 61 ++++++++++++++++++++++
  panels/keyboard/meson.build                        | 17 ++++++
  .../org.gnome.controlcenter.keyboard.policy.in.in} | 12 ++---
- 5 files changed, 107 insertions(+), 13 deletions(-)
+ 5 files changed, 107 insertions(+), 11 deletions(-)
  create mode 100755 panels/keyboard/gnome-control-center-set-debian-keyboard
- copy panels/{system/secure-shell/org.gnome.controlcenter.remote-login-helper.policy.in.in => keyboard/org.gnome.controlcenter.keyboard.policy.in.in} (60%)
+ copy panels/{system/remote-desktop/org.gnome.controlcenter.remote-session-helper.policy.in.in => keyboard/org.gnome.controlcenter.keyboard.policy.in.in} (60%)
 
 diff --git a/panels/common/gnome-control-center.rules.in b/panels/common/gnome-control-center.rules.in
 index 8532d1e..dc0cfad 100644
@@ -30,60 +30,58 @@ index 8532d1e..dc0cfad 100644
  	    subject.local &&
  	    subject.active &&
 diff --git a/panels/keyboard/cc-input-list-box.c b/panels/keyboard/cc-input-list-box.c
-index 4758aeb..439cd5e 100644
+index ad14ea0..e610ad6 100644
 --- a/panels/keyboard/cc-input-list-box.c
 +++ b/panels/keyboard/cc-input-list-box.c
-@@ -619,6 +619,12 @@ set_localed_input (CcInputListBox *self)
-   g_autoptr(GString) variants = NULL;
-   GtkListBoxRow *row;
-   gint i = 0;
-+  const char *locale_helper;
-+  const char * const *argv;
-+  g_auto(GStrv) envp = NULL;
-+  g_autoptr(GError) error = NULL;
-+  GSpawnFlags spawn_flags;
-+  GPid child_pid;
+@@ -592,6 +592,12 @@ set_localed_input (CcInputListBox *self)
+     g_autoptr(GString) variants = NULL;
+     GtkListBoxRow *row;
+     gint i = 0;
++    const char *locale_helper;
++    const char * const *argv;
++    g_auto(GStrv) envp = NULL;
++    g_autoptr(GError) error = NULL;
++    GSpawnFlags spawn_flags;
++    GPid child_pid;
  
-   layouts = g_string_new ("");
-   variants = g_string_new ("");
-@@ -648,11 +654,20 @@ set_localed_input (CcInputListBox *self)
+     layouts = g_string_new ("");
+     variants = g_string_new ("");
+@@ -621,9 +627,20 @@ set_localed_input (CcInputListBox *self)
+         }
      }
-   }
  
--  g_dbus_proxy_call (self->localed,
--                     "SetX11Keyboard",
--                     g_variant_new ("(ssssbb)", layouts->str, "", variants->str, "", TRUE, TRUE),
--                     G_DBUS_CALL_FLAGS_NONE,
--                     -1, NULL, NULL, NULL);
-+  locale_helper = LIBEXECDIR "/gnome-control-center-set-debian-keyboard";
-+  envp = g_get_environ ();
-+  envp = g_environ_unsetenv (envp, "SHELL");
-+  argv = (const char * const []) { "pkexec", locale_helper, layouts->str, variants->str, NULL };
-+  spawn_flags = G_SPAWN_DO_NOT_REAP_CHILD |
+-    g_dbus_proxy_call (self->localed, "SetX11Keyboard",
+-                       g_variant_new ("(ssssbb)", layouts->str, "", variants->str, "", TRUE, TRUE),
+-                       G_DBUS_CALL_FLAGS_NONE, -1, NULL, NULL, NULL);
++    locale_helper = LIBEXECDIR "/gnome-control-center-set-debian-keyboard";
++    envp = g_get_environ ();
++    envp = g_environ_unsetenv (envp, "SHELL");
++    argv = (const char * const []) { "pkexec", locale_helper, layouts->str, variants->str, NULL };
++    spawn_flags = G_SPAWN_DO_NOT_REAP_CHILD |
 +                G_SPAWN_SEARCH_PATH |
 +                G_SPAWN_CHILD_INHERITS_STDOUT |
 +                G_SPAWN_CHILD_INHERITS_STDERR |
 +                G_SPAWN_STDIN_FROM_DEV_NULL;
 +
-+  if (!g_spawn_async (NULL, (char **)argv, envp, spawn_flags, NULL, NULL, &child_pid, &error))
++    if (!g_spawn_async (NULL, (char **)argv, envp, spawn_flags, NULL, NULL, &child_pid, &error))
 +          g_warning ("Failed to launch %s as root: %s", locale_helper, error->message);
-+  else
++    else
 +          g_spawn_close_pid (child_pid);
  }
  
  static void
-@@ -726,9 +741,9 @@ setup_localed_proxy (CcInputListBox *self)
-   g_autoptr(GDBusConnection) bus = NULL;
-   g_autoptr(GError) error = NULL;
+@@ -697,9 +714,9 @@ setup_localed_proxy (CcInputListBox *self)
+     g_autoptr(GDBusConnection) bus = NULL;
+     g_autoptr(GError) error = NULL;
  
--  self->permission = polkit_permission_new_sync ("org.freedesktop.locale1.set-locale", NULL, NULL, &error);
-+  self->permission = polkit_permission_new_sync ("org.gnome.controlcenter.set-keyboard", NULL, NULL, &error);
-   if (self->permission == NULL) {
--    g_debug ("Could not get 'org.freedesktop.locale1.set-locale' permission: %s",
-+    g_debug ("Could not get 'org.gnome.controlcenter.set-keyboard' permission: %s",
-              error->message);
-     return;
-   }
+-    self->permission = polkit_permission_new_sync ("org.freedesktop.locale1.set-locale", NULL, NULL, &error);
++    self->permission = polkit_permission_new_sync ("org.gnome.controlcenter.set-keyboard", NULL, NULL, &error);
+     if (self->permission == NULL) {
+-        g_debug ("Could not get 'org.freedesktop.locale1.set-locale' permission: %s", error->message);
++        g_debug ("Could not get 'org.gnome.controlcenter.set-keyboard' permission: %s", error->message);
+         return;
+     }
+ 
 diff --git a/panels/keyboard/gnome-control-center-set-debian-keyboard b/panels/keyboard/gnome-control-center-set-debian-keyboard
 new file mode 100755
 index 0000000..5667378
@@ -152,7 +150,7 @@ index 0000000..5667378
 +
 +echo "Keyboard configuration successfully updated!"
 diff --git a/panels/keyboard/meson.build b/panels/keyboard/meson.build
-index d26c4bf..f87ca97 100644
+index b1e507b..740ba65 100644
 --- a/panels/keyboard/meson.build
 +++ b/panels/keyboard/meson.build
 @@ -130,6 +130,7 @@ keyboard_panel_lib = static_library(
@@ -184,12 +182,12 @@ index d26c4bf..f87ca97 100644
 +install_data('gnome-control-center-set-debian-keyboard', install_dir: control_center_libexecdir)
 +
  subdir('icons')
-diff --git a/panels/system/secure-shell/org.gnome.controlcenter.remote-login-helper.policy.in.in b/panels/keyboard/org.gnome.controlcenter.keyboard.policy.in.in
+diff --git a/panels/system/remote-desktop/org.gnome.controlcenter.remote-session-helper.policy.in.in b/panels/keyboard/org.gnome.controlcenter.keyboard.policy.in.in
 similarity index 60%
-copy from panels/system/secure-shell/org.gnome.controlcenter.remote-login-helper.policy.in.in
+copy from panels/system/remote-desktop/org.gnome.controlcenter.remote-session-helper.policy.in.in
 copy to panels/keyboard/org.gnome.controlcenter.keyboard.policy.in.in
-index dc2606e..7f550f3 100644
---- a/panels/system/secure-shell/org.gnome.controlcenter.remote-login-helper.policy.in.in
+index 28beba3..7f550f3 100644
+--- a/panels/system/remote-desktop/org.gnome.controlcenter.remote-session-helper.policy.in.in
 +++ b/panels/keyboard/org.gnome.controlcenter.keyboard.policy.in.in
 @@ -2,21 +2,21 @@
  <!DOCTYPE policyconfig PUBLIC
@@ -201,9 +199,9 @@ index dc2606e..7f550f3 100644
    <vendor>The GNOME Project</vendor>
    <vendor_url>http://www.gnome.org/</vendor_url>
  
--  <action id="org.gnome.controlcenter.remote-login-helper">
--    <description>Enable or disable remote login</description>
--    <message>Authentication is required to enable or disable remote login</message>
+-  <action id="org.gnome.controlcenter.remote-session-helper">
+-  <description>Enable or disable remote sessions</description>
+-    <message>Authentication is required to enable or disable remote sessions</message>
 +  <action id="org.gnome.controlcenter.set-keyboard">
 +    <description>Change system keyboard settings</description>
 +    <message>To change global keyboard settings, you need to authenticate.</message>
@@ -212,7 +210,7 @@ index dc2606e..7f550f3 100644
        <allow_inactive>no</allow_inactive>
        <allow_active>auth_admin_keep</allow_active>
      </defaults>
--    <annotate key="org.freedesktop.policykit.imply">org.freedesktop.systemd1.manage-units org.freedesktop.systemd1.manage-unit-files</annotate>
+-    <annotate key="org.freedesktop.policykit.imply">org.freedesktop.systemd1.manage-units org.freedesktop.systemd1.manage-unit-files org.gnome.remotedesktop.configure-system-daemon</annotate>
 +    <annotate key="org.freedesktop.policykit.exec.path">@libexecdir@/gnome-control-center-set-debian-keyboard</annotate>
 +    <annotate key="org.freedesktop.policykit.imply">org.freedesktop.locale1.set-keyboard</annotate>
    </action>

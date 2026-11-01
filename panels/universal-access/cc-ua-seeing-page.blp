@@ -29,7 +29,7 @@ template $CcUaSeeingPage: Adw.NavigationPage {
           }
 
           Adw.ButtonRow configure_screen_reader_row {
-            title: _("Co_nfigure");
+            title: _("Co_nfigure Screen Reader");
             use-underline: true;
             sensitive: bind screen_reader_row.active;
             activated => $configure_screen_reader_activated_cb(template);
@@ -80,6 +80,12 @@ template $CcUaSeeingPage: Adw.NavigationPage {
         Adw.SwitchRow show_scrollbars_row {
           title: _("Always Show Scroll_bars");
           subtitle: _("Make scrollbars always visible");
+          use-underline: true;
+        }
+
+        Adw.SwitchRow keyboard_focus_always_visible_row {
+          title: _("Always Show Keyboard Focus");
+          subtitle: _("Keep the focus always visible when navigating with the keyboard");
           use-underline: true;
         }
       }

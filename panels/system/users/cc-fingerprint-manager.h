@@ -22,14 +22,13 @@
 
 #pragma once
 
-#include <glib-object.h>
 #include <act/act.h>
+#include <glib-object.h>
 
 G_BEGIN_DECLS
 
 #define CC_TYPE_FINGERPRINT_MANAGER (cc_fingerprint_manager_get_type ())
-G_DECLARE_FINAL_TYPE (CcFingerprintManager, cc_fingerprint_manager, CC, FINGERPRINT_MANAGER, GObject)
-
+G_DECLARE_FINAL_TYPE (CcFingerprintManager, cc_fingerprint_manager, CC, FINGERPRINT_MANAGER, GObject);
 /**
  * CcFingerprintManager:
  * @CC_FINGERPRINT_STATE_NONE: Fingerprint recognition is not available
@@ -40,34 +39,33 @@ G_DECLARE_FINAL_TYPE (CcFingerprintManager, cc_fingerprint_manager, CC, FINGERPR
  * The status of the fingerprint support.
  */
 typedef enum {
-  CC_FINGERPRINT_STATE_NONE,
-  CC_FINGERPRINT_STATE_UPDATING,
-  CC_FINGERPRINT_STATE_ENABLED,
-  CC_FINGERPRINT_STATE_DISABLED,
+    CC_FINGERPRINT_STATE_NONE,
+    CC_FINGERPRINT_STATE_UPDATING,
+    CC_FINGERPRINT_STATE_ENABLED,
+    CC_FINGERPRINT_STATE_DISABLED,
 } CcFingerprintState;
 
-typedef void (*CcFingerprintStateUpdated) (CcFingerprintManager *fp_manager,
-                                           CcFingerprintState    state,
-                                           gpointer              user_data,
-                                           GError               *error);
+typedef void (*CcFingerprintStateUpdated) (CcFingerprintManager *fp_manager, CcFingerprintState state,
+                                           gpointer user_data, GError *error);
 
-CcFingerprintManager * cc_fingerprint_manager_new (ActUser *user);
+CcFingerprintManager *cc_fingerprint_manager_new (ActUser *user);
 
 CcFingerprintState cc_fingerprint_manager_get_state (CcFingerprintManager *fp_manager);
 
-ActUser * cc_fingerprint_manager_get_user (CcFingerprintManager *fp_manager);
+ActUser *cc_fingerprint_manager_get_user (CcFingerprintManager *fp_manager);
 
-void cc_fingerprint_manager_update_state (CcFingerprintManager     *fp_manager,
-                                          CcFingerprintStateUpdated callback,
-                                          gpointer                  user_data);
+void cc_fingerprint_manager_update_state (CcFingerprintManager *fp_manager, CcFingerprintStateUpdated callback,
+                                          gpointer user_data);
 
-void cc_fingerprint_manager_get_devices (CcFingerprintManager *fp_manager,
-                                         GCancellable         *cancellable,
-                                         GAsyncReadyCallback   res,
-                                         gpointer              user_data);
+void cc_fingerprint_manager_get_devices (CcFingerprintManager *fp_manager, GCancellable *cancellable,
+                                         GAsyncReadyCallback res, gpointer user_data);
 
-GList *cc_fingerprint_manager_get_devices_finish (CcFingerprintManager *fp_manager,
-                                                  GAsyncResult         *res,
-                                                  GError              **error);
+GList *cc_fingerprint_manager_get_devices_finish (CcFingerprintManager *fp_manager, GAsyncResult *res, GError **error);
+
+void cc_fingerprint_manager_delete_enrolled_fingers (CcFingerprintManager *fp_manager, GCancellable *cancellable,
+                                                     GAsyncReadyCallback res, gpointer user_data);
+
+gboolean cc_fingerprint_manager_delete_enrolled_fingers_finish (CcFingerprintManager *fp_manager, GAsyncResult *res,
+                                                                GError **error);
 
 G_END_DECLS

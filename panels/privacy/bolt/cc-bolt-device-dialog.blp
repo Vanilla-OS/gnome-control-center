@@ -1,22 +1,16 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $CcBoltDeviceDialog: Adw.Window {
+template $CcBoltDeviceDialog: Adw.Dialog {
   title: _("Device Identifier");
-  modal: true;
-  hide-on-close: true;
-  width-request: 480;
-  height-request: 360;
+  content-width: 480;
 
-  Box {
-    orientation: vertical;
+  Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar {}
 
-    Adw.HeaderBar {
-      show-end-title-buttons: true;
-    }
-
-    Adw.ToastOverlay toast_overlay {
-      Adw.PreferencesPage {
+    content: Adw.ToastOverlay toast_overlay {
+      child: Adw.PreferencesPage {
         Adw.PreferencesGroup {
           Adw.ActionRow status_row {
             title: _("Status");
@@ -49,59 +43,35 @@ template $CcBoltDeviceDialog: Adw.Window {
 
           ListBox parents_devices {}
         }
-      }
-    }
 
-    Box button_box {
-      orientation: horizontal;
-      spacing: 12;
-      margin-start: 72;
-      margin-end: 72;
-      margin-top: 36;
-      margin-bottom: 0;
-      hexpand: true;
+        Adw.PreferencesGroup {
+          header-suffix: Adw.Spinner spinner {
+            visible: false;
+          };
 
-      Adw.Spinner spinner {
-        visible: false;
-      }
+          Adw.ButtonRow connect_button {
+            title: _("_Authorize and Connect");
+            use-underline: true;
+            receives-default: true;
+            activated => $on_connect_button_clicked_cb(template);
 
-      Button connect_button {
-        hexpand: true;
-        label: _("Authorize and Connect");
-        receives-default: true;
-        clicked => $on_connect_button_clicked_cb(template);
+            styles [
+              "suggested-action",
+            ]
+          }
 
-        styles [
-          "suggested-action",
-        ]
-      }
+          Adw.ButtonRow forget_button {
+            title: _("_Forget Device");
+            use-underline: true;
+            receives-default: false;
+            activated => $on_forget_button_clicked_cb(template);
 
-      Button forget_button {
-        hexpand: true;
-        label: _("Forget Device");
-        receives-default: false;
-        clicked => $on_forget_button_clicked_cb(template);
-
-        styles [
-          "destructive-action",
-        ]
-      }
-
-      Box spinner_box {}
-    }
+            styles [
+              "destructive-action",
+            ]
+          }
+        }
+      };
+    };
   }
-}
-
-SizeGroup actions_sizegroup {
-  widgets [
-    forget_button,
-    connect_button,
-  ]
-}
-
-SizeGroup spinner_sizegroup {
-  widgets [
-    spinner,
-    spinner_box,
-  ]
 }

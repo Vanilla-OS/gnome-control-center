@@ -18,19 +18,15 @@
 #pragma once
 
 #include <gtk/gtk.h>
-#include <pulse/pulseaudio.h>
 #include <gvc-channel-map.h>
 #include <gvc-mixer-control.h>
 
 G_BEGIN_DECLS
 
 #define CC_TYPE_SUBWOOFER_SLIDER (cc_subwoofer_slider_get_type ())
-G_DECLARE_FINAL_TYPE (CcSubwooferSlider, cc_subwoofer_slider, CC, SUBWOOFER_SLIDER, GtkWidget)
+G_DECLARE_FINAL_TYPE (CcSubwooferSlider, cc_subwoofer_slider, CC, SUBWOOFER_SLIDER, GtkWidget);
+void cc_subwoofer_slider_set_mixer_control (CcSubwooferSlider *self, GvcMixerControl *mixer_control);
 
-void cc_subwoofer_slider_set_mixer_control (CcSubwooferSlider *self,
-                                            GvcMixerControl   *mixer_control);
-
-void cc_subwoofer_slider_set_channel_map   (CcSubwooferSlider *self,
-                                            GvcChannelMap     *channel_map);
+void cc_subwoofer_slider_set_channel_map (CcSubwooferSlider *self, GvcChannelMap *channel_map);
 
 G_END_DECLS

@@ -18,7 +18,6 @@
 #pragma once
 
 #include <gtk/gtk.h>
-#include <pulse/pulseaudio.h>
 #include <gvc-mixer-control.h>
 #include <gvc-mixer-stream.h>
 
@@ -27,17 +26,12 @@
 G_BEGIN_DECLS
 
 #define CC_TYPE_VOLUME_SLIDER (cc_volume_slider_get_type ())
-G_DECLARE_FINAL_TYPE (CcVolumeSlider, cc_volume_slider, CC, VOLUME_SLIDER, GtkWidget)
+G_DECLARE_FINAL_TYPE (CcVolumeSlider, cc_volume_slider, CC, VOLUME_SLIDER, GtkWidget);
+void cc_volume_slider_set_mixer_control (CcVolumeSlider *self, GvcMixerControl *mixer_control);
 
-void cc_volume_slider_set_mixer_control (CcVolumeSlider  *self,
-                                         GvcMixerControl *mixer_control);
+void cc_volume_slider_set_stream (CcVolumeSlider *self, GvcMixerStream *stream, CcStreamType type);
 
-void cc_volume_slider_set_stream        (CcVolumeSlider  *self,
-                                         GvcMixerStream  *stream,
-                                         CcStreamType     type);
-
-void cc_volume_slider_set_is_amplified  (CcVolumeSlider  *self,
-                                         gboolean         is_amplified);
+void cc_volume_slider_set_is_amplified (CcVolumeSlider *self, gboolean is_amplified);
 
 GvcMixerStream *cc_volume_slider_get_stream (CcVolumeSlider *self);
 

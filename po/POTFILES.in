@@ -55,11 +55,11 @@ panels/keyboard/cc-input-row.blp
 panels/keyboard/cc-keyboard-manager.c
 panels/keyboard/cc-keyboard-panel.blp
 panels/keyboard/cc-keyboard-panel.c
-panels/keyboard/cc-keyboard-shortcut-dialog.blp
-panels/keyboard/cc-keyboard-shortcut-dialog.c
 panels/keyboard/cc-keyboard-shortcut-editor.blp
 panels/keyboard/cc-keyboard-shortcut-editor.c
 panels/keyboard/cc-keyboard-shortcut-group.c
+panels/keyboard/cc-keyboard-shortcut-page.blp
+panels/keyboard/cc-keyboard-shortcut-page.c
 panels/keyboard/cc-keyboard-shortcut-row.blp
 panels/keyboard/cc-xkb-modifier-page.c
 panels/keyboard/gnome-keyboard-panel.desktop.in
@@ -197,8 +197,6 @@ panels/sound/cc-volume-slider.c
 panels/sound/gnome-sound-panel.desktop.in
 panels/system/about/cc-about-page.blp
 panels/system/about/cc-about-page.c
-panels/system/about/cc-system-details-window.blp
-panels/system/about/cc-system-details-window.c
 panels/system/about/gnome-about-panel.desktop.in
 panels/system/cc-system-panel.blp
 panels/system/datetime/cc-datetime-page.blp
@@ -243,6 +241,7 @@ panels/system/users/pw-utils.c
 panels/system/users/run-passwd.c
 panels/system/users/user-utils.c
 panels/universal-access/cc-cursor-size-page.blp
+panels/universal-access/cc-cursor-size-page.c
 panels/universal-access/cc-ua-hearing-page.blp
 panels/universal-access/cc-ua-hearing-page.c
 panels/universal-access/cc-ua-mouse-page.blp

@@ -18,15 +18,12 @@
 #pragma once
 
 #include <gtk/gtk.h>
-#include <pulse/pulseaudio.h>
 #include <gvc-channel-map.h>
 
 G_BEGIN_DECLS
 
 #define CC_TYPE_FADE_SLIDER (cc_fade_slider_get_type ())
-G_DECLARE_FINAL_TYPE (CcFadeSlider, cc_fade_slider, CC, FADE_SLIDER, GtkWidget)
-
-void cc_fade_slider_set_channel_map (CcFadeSlider  *self,
-                                     GvcChannelMap *channel_map);
+G_DECLARE_FINAL_TYPE (CcFadeSlider, cc_fade_slider, CC, FADE_SLIDER, GtkWidget);
+void cc_fade_slider_set_channel_map (CcFadeSlider *self, GvcChannelMap *channel_map);
 
 G_END_DECLS

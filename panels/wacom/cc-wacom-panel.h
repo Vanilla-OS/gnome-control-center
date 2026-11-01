@@ -27,20 +27,15 @@
 G_BEGIN_DECLS
 
 #define CC_TYPE_WACOM_PANEL (cc_wacom_panel_get_type ())
-G_DECLARE_FINAL_TYPE (CcWacomPanel, cc_wacom_panel, CC, WACOM_PANEL, CcPanel)
-
+G_DECLARE_FINAL_TYPE (CcWacomPanel, cc_wacom_panel, CC, WACOM_PANEL, CcPanel);
 void cc_wacom_panel_static_init_func (void);
 
-void  cc_wacom_panel_switch_to_panel (CcWacomPanel *self,
-				      const char   *panel);
+void cc_wacom_panel_switch_to_panel (CcWacomPanel *self, const char *panel);
 
-void  cc_wacom_panel_set_osd_visibility (CcWacomPanel *self,
-                                         guint32        device_id);
+GDBusProxy *cc_wacom_panel_get_gsd_wacom_bus_proxy (CcWacomPanel *self);
 
-GDBusProxy * cc_wacom_panel_get_gsd_wacom_bus_proxy (CcWacomPanel *self);
+GDBusProxy *cc_wacom_panel_get_input_mapping_bus_proxy (CcWacomPanel *self);
 
-GDBusProxy * cc_wacom_panel_get_input_mapping_bus_proxy (CcWacomPanel *self);
-
-const char * cc_wacom_panel_get_stylus_button_action_label (GDesktopStylusButtonAction action);
+const char *cc_wacom_panel_get_stylus_button_action_label (GDesktopStylusButtonAction action);
 
 G_END_DECLS

@@ -31,4 +31,5 @@ typedef enum _GxdpServiceClientType
 } GxdpServiceClientType;
 
 gboolean gxdp_init_gtk (GxdpServiceClientType   service_client_type,
+                        const char            **portal_interfaces,
                         GError                **error);

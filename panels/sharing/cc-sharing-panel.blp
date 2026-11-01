@@ -2,11 +2,13 @@ using Gtk 4.0;
 using Adw 1;
 
 template $CcSharingPanel: $CcPanel {
+  title: _("Sharing");
+
   child: Adw.ToolbarView {
     [top]
     Adw.HeaderBar {}
 
-    content: Adw.PreferencesPage sharing_panel {
+    content: Adw.PreferencesPage {
       Adw.PreferencesGroup {
         margin-bottom: 12;
 
@@ -16,13 +18,14 @@ template $CcSharingPanel: $CcPanel {
         }
       }
 
-      Adw.PreferencesGroup main_list_box {
+      Adw.PreferencesGroup {
         $CcListRow personal_file_sharing_row {
           icon-name: "folder-remote-symbolic";
           show-arrow: true;
           subtitle: _("Share files with other devices on the current network");
           title: _("_File Sharing");
-          activated => $adw_dialog_present(personal_file_sharing_dialog);
+          action-name: "navigation.push";
+          action-target: "'file-sharing'";
         }
 
         $CcListRow media_sharing_row {
@@ -30,129 +33,128 @@ template $CcSharingPanel: $CcPanel {
           show-arrow: true;
           subtitle: _("Stream music, photos and videos to devices on the current network");
           title: _("_Media Sharing");
-          activated => $adw_dialog_present(media_sharing_dialog);
+          action-name: "navigation.push";
+          action-target: "'media-sharing'";
         }
       }
     };
   };
-}
 
-Adw.Dialog personal_file_sharing_dialog {
-  title: _("File Sharing");
-  content-width: 360;
+  [subpage]
+  Adw.NavigationPage {
+    tag: "file-sharing";
+    title: _("File Sharing");
 
-  child: Adw.ToolbarView {
-    [top]
-    Adw.HeaderBar {}
+    child: Adw.ToolbarView {
+      [top]
+      Adw.HeaderBar {}
 
-    content: Adw.ToastOverlay personal_file_sharing_toast_overlay {
-      child: Adw.PreferencesPage personal_file_sharing_page {
-        Adw.PreferencesGroup {
-          Adw.ActionRow personal_file_sharing_enable_row {
-            title: _("_File Sharing");
-            use-underline: true;
-
-            [suffix]
-            $CcListRowInfoButton personal_file_sharing_info_button {
-              valign: center;
+      content: Adw.ToastOverlay personal_file_sharing_toast_overlay {
+        child: Adw.PreferencesPage personal_file_sharing_prefs_page {
+          Adw.PreferencesGroup {
+            Adw.ActionRow personal_file_sharing_enable_row {
+              title: _("_File Sharing");
+              use-underline: true;
             }
-          }
 
-          Adw.ActionRow personal_file_sharing_address_row {
-            title: _("File Sharing _Address");
-            use-underline: true;
-            use-markup: false;
-
-            styles [
-              "property",
-            ]
-
-            [suffix]
-            Button {
-              valign: center;
-              tooltip-text: _("Copy");
-              icon-name: "edit-copy-symbolic";
-              clicked => $on_copy_personal_file_sharing_address_clicked(template);
+            Adw.ActionRow personal_file_sharing_address_row {
+              title: _("File Sharing _Address");
+              use-underline: true;
+              use-markup: false;
 
               styles [
-                "flat",
+                "property",
               ]
+
+              [suffix]
+              Button {
+                valign: center;
+                tooltip-text: _("Copy");
+                icon-name: "edit-copy-symbolic";
+                clicked => $on_copy_personal_file_sharing_address_clicked(template);
+
+                styles [
+                  "flat",
+                ]
+              }
             }
+          }
+
+          Adw.PreferencesGroup {
+            Adw.ButtonRow {
+              title: _("_Open Public Folder");
+              end-icon-name: "adw-external-link-symbolic";
+              use-underline: true;
+              activated => $on_public_folder_row_clicked(template);
+            }
+          }
+
+          Adw.PreferencesGroup {
+            title: _("Security");
+
+            Adw.ActionRow {
+              title: _("_Require Password");
+              use-underline: true;
+              activatable-widget: personal_file_sharing_require_password_switch;
+
+              [suffix]
+              $CcListRowInfoButton {
+                valign: center;
+                text: _("Password is required on devices that want to access shared content.\nIt may still be possible for devices on this network to see what content is being shared.");
+              }
+
+              Switch personal_file_sharing_require_password_switch {
+                valign: center;
+              }
+            }
+
+            Adw.PasswordEntryRow personal_file_sharing_password_entry_row {
+              title: _("_Password");
+              use-underline: true;
+            }
+          }
+        };
+      };
+    };
+  }
+
+  [subpage]
+  Adw.NavigationPage {
+    tag: "media-sharing";
+    title: _("Media Sharing");
+
+    child: Adw.ToolbarView {
+      [top]
+      Adw.HeaderBar {}
+
+      content: Adw.PreferencesPage media_sharing_page {
+        description: _("Media sharing allows streaming pictures, music and video to DLNA enabled devices on the current network.");
+
+        Adw.PreferencesGroup {
+          Adw.ActionRow media_sharing_enable_row {
+            title: _("_Media Sharing");
+            use-underline: true;
           }
         }
 
-        Adw.PreferencesGroup {
-          Adw.ButtonRow {
-            title: _("_Open Public Folder");
-            end-icon-name: "adw-external-link-symbolic";
-            use-underline: true;
-            activated => $on_public_folder_row_clicked(template);
-          }
-        }
+        Adw.PreferencesGroup media_sharing_folders_group {
+          title: _("Folders");
 
-        Adw.PreferencesGroup {
-          title: _("Security");
+          ListBox shared_folders_listbox {
+            selection-mode: none;
 
-          Adw.ActionRow {
-            title: _("_Require Password");
-            use-underline: true;
-            activatable-widget: personal_file_sharing_require_password_switch;
+            styles [
+              "boxed-list",
+            ]
 
-            [suffix]
-            $CcListRowInfoButton {
-              valign: center;
-              text: _("Password is required on devices that want to access shared content.\nIt may still be possible for devices on this network to see what content is being shared.");
+            accessibility {
+              labelled-by: [
+                media_sharing_folders_group,
+              ];
             }
-
-            Switch personal_file_sharing_require_password_switch {
-              valign: center;
-            }
-          }
-
-          Adw.PasswordEntryRow personal_file_sharing_password_entry_row {
-            title: _("_Password");
-            use-underline: true;
           }
         }
       };
     };
-  };
-}
-
-Adw.Dialog media_sharing_dialog {
-  can-close: false;
-  title: _("Media Sharing");
-  content-width: 360;
-
-  child: Adw.ToolbarView {
-    [top]
-    Adw.HeaderBar {}
-
-    content: Adw.PreferencesPage media_sharing_page {
-      Adw.PreferencesGroup {
-        Adw.ActionRow media_sharing_enable_row {
-          title: _("_Media Sharing");
-          use-underline: true;
-
-          [suffix]
-          $CcListRowInfoButton {
-            valign: center;
-            text: _("Media sharing allows streaming pictures, music and video to DLNA enabled devices on the current network.");
-          }
-        }
-      }
-
-      Adw.PreferencesGroup {
-        title: _("Folders");
-
-        ListBox shared_folders_listbox {
-          selection-mode: none;
-
-          styles [
-            "boxed-list",
-          ]
-        }
-      }
-    };
-  };
+  }
 }

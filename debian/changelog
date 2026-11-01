@@ -1,4 +1,47 @@
-gnome-control-center (1:50.3-1vanilla1) unstable; urgency=medium
+gnome-control-center (1:51.1-1) unstable; urgency=medium
+
+  * New upstream release
+  * Run wrap-and-sort -ast
+  * Remove patch avoiding gtk4 4.24
+  * Update minimum gtk4
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Mon, 19 Oct 2026 11:38:41 +0200
+
+gnome-control-center (1:51.0-1) unstable; urgency=medium
+
+  * New upstream release
+  * Update minimum gtk4
+  * Remove "50 release notes" patch
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Fri, 11 Sep 2026 20:14:48 +0200
+
+gnome-control-center (1:51~rc.1-1) unstable; urgency=medium
+
+  [ Jeremy Bícha ]
+  * New upstream release
+
+  [ Marco Trevisan (Treviño) ]
+  * Update minimum gsettings-desktop-schemas
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Tue, 01 Sep 2026 07:21:56 +0200
+
+gnome-control-center (1:51~beta-1) unstable; urgency=medium
+
+  [ Jeremy Bícha ]
+  * New upstream release
+  * Add patch to point to the 50 release notes instead of 51
+  * Add 2 patches to revert changes that require newer gtk4 & accountsservice
+  * Remove remote desktop patch applied in new release
+  * Remove obsolete Build-Depends: libhandy-1-dev
+  * Update minimum gnome-desktop and gsettings-desktop-schemas
+
+  [ Alessandro Astone ]
+  * Add Build-Depends: libgnome-qr-gtk-4-dev
+  * Rebase patches
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Sun, 09 Aug 2026 14:46:19 +0200
+
+ gnome-control-center (1:50.3-1vanilla1) unstable; urgency=medium
 
   * Merge debian/1%50.3-1
 

@@ -1,6 +1,6 @@
-/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*-
+/* cc-keyboard-shortcut-page.h
  *
- * Copyright (C) 2023 Cyber Phantom <inam123451@gmail.com>
+ * Copyright (C) 2020 System76, Inc.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,21 +15,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  *
+ * Author: Ian Douglas Scott <idscott@system76.com>
+ *
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #pragma once
 
-#include <gtk/gtk.h>
+#include <adwaita.h>
 
 G_BEGIN_DECLS
 
-#define CC_TYPE_INFO_ENTRY (cc_info_entry_get_type ())
-G_DECLARE_FINAL_TYPE (CcInfoEntry, cc_info_entry, CC, INFO_ENTRY, GtkBox)
-
-void cc_info_entry_set_value (CcInfoEntry   *self,
-                              const gchar   *value);
-GtkWidget *cc_info_entry_new (const gchar   *label,
-                              const gchar   *value);
+#define CC_TYPE_KEYBOARD_SHORTCUT_PAGE (cc_keyboard_shortcut_page_get_type ())
+G_DECLARE_FINAL_TYPE (CcKeyboardShortcutPage, cc_keyboard_shortcut_page, CC, KEYBOARD_SHORTCUT_PAGE, AdwNavigationPage);
+GtkWidget *cc_keyboard_shortcut_page_new (void);
 
 G_END_DECLS
-

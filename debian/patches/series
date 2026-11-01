@@ -1,8 +1,8 @@
-remote-desktop-Correctly-handle-nullable-error-from-secre.patch
 debian/Debian-s-adduser-doesn-t-allow-uppercase-letters-by-defau.patch
 debian/Ignore-result-of-test-network-panel.patch
 debian/meson:relax-malcontent-version.patch
 debian/Revert-wellbeing-Synchronize-settings-with-malcontent.patch
 debian/keyboard-Set-debian-keyboard-config.patch
+debian/Revert-users-Disable-keeping-data-if-deleting-homed-user.patch
 vanillaos/vanilla-updates-utility.patch
 vanillaos/vanilla-prime-utility.patch

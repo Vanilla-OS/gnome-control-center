@@ -1,5 +1,5 @@
 /* -*- mode: c; style: linux -*-
- * 
+ *
  * Copyright (C) 2012 Red Hat, Inc.
  *
  * Written by: Ondrej Holy <oholy@redhat.com>
@@ -25,8 +25,7 @@
 G_BEGIN_DECLS
 
 #define CC_TYPE_MOUSE_TEST (cc_mouse_test_get_type ())
-G_DECLARE_FINAL_TYPE (CcMouseTest, cc_mouse_test, CC, MOUSE_TEST, AdwWindow)
-
+G_DECLARE_FINAL_TYPE (CcMouseTest, cc_mouse_test, CC, MOUSE_TEST, AdwWindow);
 GtkWidget *cc_mouse_test_new (void);
 
 G_END_DECLS

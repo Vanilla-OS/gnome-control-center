@@ -30,16 +30,13 @@ G_BEGIN_DECLS
 
 #define CC_TYPE_TIMELIKE_EDITOR_LAYOUT (cc_timelike_editor_layout_get_type ())
 
-G_DECLARE_FINAL_TYPE (CcTimelikeEditorLayout, cc_timelike_editor_layout, CC, TIMELIKE_EDITOR_LAYOUT, GtkLayoutManager)
-
+G_DECLARE_FINAL_TYPE (CcTimelikeEditorLayout, cc_timelike_editor_layout, CC, TIMELIKE_EDITOR_LAYOUT, GtkLayoutManager);
 CcTimelikeEditorLayout *cc_timelike_editor_layout_new (void);
 
 unsigned int cc_timelike_editor_layout_get_row_spacing (CcTimelikeEditorLayout *self);
-void cc_timelike_editor_layout_set_row_spacing (CcTimelikeEditorLayout *self,
-                                                unsigned int            row_spacing);
+void cc_timelike_editor_layout_set_row_spacing (CcTimelikeEditorLayout *self, unsigned int row_spacing);
 
 unsigned int cc_timelike_editor_layout_get_column_spacing (CcTimelikeEditorLayout *self);
-void cc_timelike_editor_layout_set_column_spacing (CcTimelikeEditorLayout *self,
-                                                   unsigned int            column_spacing);
+void cc_timelike_editor_layout_set_column_spacing (CcTimelikeEditorLayout *self, unsigned int column_spacing);
 
 G_END_DECLS

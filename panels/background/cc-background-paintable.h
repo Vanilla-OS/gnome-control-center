@@ -28,21 +28,16 @@
 G_BEGIN_DECLS
 
 #define CC_TYPE_BACKGROUND_PAINTABLE (cc_background_paintable_get_type ())
-G_DECLARE_FINAL_TYPE (CcBackgroundPaintable, cc_background_paintable, CC, BACKGROUND_PAINTABLE, GObject)
-
+G_DECLARE_FINAL_TYPE (CcBackgroundPaintable, cc_background_paintable, CC, BACKGROUND_PAINTABLE, GObject);
 typedef enum {
     CC_BACKGROUND_PAINT_LIGHT = 1 << 0,
-    CC_BACKGROUND_PAINT_DARK  = 1 << 1
+    CC_BACKGROUND_PAINT_DARK = 1 << 1
 } CcBackgroundPaintFlags;
 
-#define CC_BACKGROUND_PAINT_LIGHT_DARK (CC_BACKGROUND_PAINT_LIGHT |	\
-                                        CC_BACKGROUND_PAINT_DARK)
+#define CC_BACKGROUND_PAINT_LIGHT_DARK (CC_BACKGROUND_PAINT_LIGHT | CC_BACKGROUND_PAINT_DARK)
 
-CcBackgroundPaintable * cc_background_paintable_new (GnomeDesktopThumbnailFactory *thumbnail_factory,
-                                                     CcBackgroundItem             *item,
-                                                     CcBackgroundPaintFlags        paint_flags,
-                                                     int                           width,
-                                                     int                           height,
-                                                     GtkWidget                    *container);
+CcBackgroundPaintable *cc_background_paintable_new (GnomeDesktopThumbnailFactory *thumbnail_factory,
+                                                    CcBackgroundItem *item, CcBackgroundPaintFlags paint_flags,
+                                                    int width, int height, GtkWidget *container);
 
 G_END_DECLS

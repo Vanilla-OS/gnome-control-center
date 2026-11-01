@@ -21,21 +21,17 @@
 
 #pragma once
 
-#include <gtk/gtk.h>
-#include <adwaita.h>
 #include <NetworkManager.h>
+#include <adwaita.h>
+#include <gtk/gtk.h>
 
 #include "net-connection-editor.h"
 
 G_BEGIN_DECLS
 
 #define CE_TYPE_PAGE_DETAILS (ce_page_details_get_type ())
-G_DECLARE_FINAL_TYPE (CEPageDetails, ce_page_details, CE, PAGE_DETAILS, AdwBin)
-
-CEPageDetails *ce_page_details_new (NMConnection        *connection,
-                                    NMDevice            *device,
-                                    NMAccessPoint       *ap,
-                                    NetConnectionEditor *editor,
-                                    gboolean            is_new_connection);
+G_DECLARE_FINAL_TYPE (CEPageDetails, ce_page_details, CE, PAGE_DETAILS, AdwBin);
+CEPageDetails *ce_page_details_new (NMConnection *connection, NMDevice *device, NMAccessPoint *ap,
+                                    NetConnectionEditor *editor, gboolean is_new_connection);
 
 G_END_DECLS

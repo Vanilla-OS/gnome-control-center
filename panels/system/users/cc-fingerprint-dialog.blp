@@ -2,257 +2,189 @@ using Gtk 4.0;
 using Adw 1;
 
 template $CcFingerprintDialog: Adw.Dialog {
-  content-width: 600;
-  content-height: 400;
-  can-close: false;
+  content-width: 480;
+  content-height: 540;
+
+  closed => $on_dialog_closed_cb(template);
 
   child: Adw.ToolbarView {
     [top]
     Adw.HeaderBar titlebar {
       [start]
-      Button cancel_button {
-        can-focus: false;
-        receives-default: false;
-        valign: center;
-        use-underline: true;
-        label: _("_Cancel");
-        clicked => $cancel_button_clicked_cb(template);
-      }
-
-      [start]
       Button back_button {
         tooltip-text: _("Back");
-        can-focus: false;
         receives-default: false;
         valign: center;
         icon-name: "go-previous-symbolic";
         clicked => $back_button_clicked_cb(template);
       }
-
-      [end]
-      Box {
-        Adw.Spinner spinner {}
-
-        Button done_button {
-          use-underline: true;
-          sensitive: false;
-          label: _("_Done");
-          clicked => $done_button_clicked_cb(template);
-
-          styles [
-            "suggested-action",
-          ]
-        }
-      }
     }
 
-    content: Box {
-      orientation: vertical;
-
-      InfoBar error_infobar {
-        name: "error_infobar";
-        visible: false;
-        can-focus: false;
-
-        styles [
-          "error",
-        ]
-
-        Box {
-          can-focus: false;
-          spacing: 16;
-
-          Label infobar_error {
-            can-focus: false;
-            halign: start;
-            hexpand: false;
-            wrap: true;
-          }
-        }
+    content: Stack stack {
+      StackPage {
+        child: Adw.StatusPage error_page {
+          title: _("Error");
+          icon-name: "face-sad-symbolic";
+        };
       }
 
-      ScrolledWindow {
-        halign: fill;
-        valign: fill;
-        propagate-natural-width: true;
-        can-focus: false;
-        hscrollbar-policy: never;
+      StackPage {
+        child: Adw.StatusPage no_devices_found {
+          /* Translators: This is the empty state page label which states that there are no devices ready. */
+          title: _("No fingerprint device");
+          icon-name: "fingerprint-detection-symbolic";
 
-        Stack stack {
-          transition-duration: 300;
-          margin-start: 20;
-          margin-end: 20;
-          margin-top: 30;
-          margin-bottom: 30;
+          description: _("Ensure the device is properly connected");
 
-          StackPage {
-            child: Box no_devices_found {
-              name: _("No fingerprint device");
-              orientation: vertical;
-              valign: center;
-              spacing: 12;
+          styles [ "fingerprint-status-page" ]
+        };
+      }
 
-              styles [
-                "dim-label",
-              ]
+      StackPage {
+        child: Adw.StatusPage no_fingerprints_enrolled_page {
+          title: _("Fingerprint Authentication");
+          description: _("Use fingerprints to unlock the screen and identify yourself when prompted");
+          icon-name: "fingerprint-detection-symbolic";
+          margin-start: 32;
+          margin-end: 32;
 
-              Image {
-                icon-name: "fingerprint-detection-symbolic";
-                pixel-size: 192;
-              }
+          styles [ "fingerprint-status-page" ]
 
-              Label {
-                /* Translators: This is the empty state page label which states that there are no devices ready. */
-                label: _("No Fingerprint device");
+          child: Button {
+            label: _("_Scan Finger");
+            use-underline: true;
+            halign: center;
 
-                styles [
-                  "title-1",
-                ]
-              }
+            clicked => $on_add_fingerprint_button_activated_cb(template);
 
-              Label {
-                label: _("Ensure the device is properly connected");
-                wrap: true;
-              }
-            };
+            styles [ "suggested-action", "pill" ]
+          };
+        };
+      }
+
+      StackPage {
+        name: "fingerprint-device";
+        title: _("Fingerprint Device");
+
+        child: Adw.PreferencesPage device_selector {
+          description: _("Choose the fingerprint device you want to configure");
+
+          Adw.PreferencesGroup devices_list {
+          }
+        };
+      }
+
+      StackPage {
+        title: _("Select Finger");
+
+        child: Adw.PreferencesPage finger_selection_page {
+          Adw.PreferencesGroup right_hand_finger_group {
+            title: _("Right Hand");
+          }
+          Adw.PreferencesGroup left_hand_finger_group {
+            title: _("Left Hand");
+          }
+        };
+      }
+
+      StackPage {
+        title: _("Fingerprint Authentication");
+
+        child: Adw.PreferencesPage prints_manager {
+
+          description: _("The following fingerprints can be used for authentication");
+          margin-start: 6;
+          margin-end: 6;
+
+          Adw.PreferencesGroup prints_group {
+            title: _("Fingerprints");
           }
 
-          StackPage {
-            name: "fingerprint-device";
-            title: _("Fingerprint Device");
+          Adw.PreferencesGroup {
+            Adw.ButtonRow add_finger_button {
+              title: _("Add Fingerprint");
+              end-icon-name: "go-next-symbolic";
 
-            child: Box device_selector {
-              can-focus: false;
+              activated => $on_add_fingerprint_button_activated_cb(template);
+            }
+          }
+
+          Adw.PreferencesGroup {
+            MenuButton verify_state_menu_button {
+              visible: true;
               halign: center;
               valign: center;
-              spacing: 10;
-              orientation: vertical;
-
-              Label {
-                label: _("Choose the fingerprint device you want to configure");
-                wrap: true;
-                halign: start;
-
-                styles [
-                  "heading",
-                ]
-              }
-
-              ScrolledWindow {
-                can-focus: false;
-                hscrollbar-policy: never;
-                propagate-natural-height: true;
-
-                ListBox devices_list {
-                  selection-mode: none;
-                  valign: center;
-                  row-activated => $select_device_row(template);
-
-                  styles [
-                    "frame",
-                  ]
-                }
-              }
-            };
-          }
-
-          StackPage {
-            title: _("Fingerprint Login");
-
-            child: Box prints_manager {
-              orientation: vertical;
-              valign: fill;
-              spacing: 12;
-
-              Label {
-                label: _("Fingerprint login allows you to unlock and log into your device with your finger");
-                wrap: true;
-              }
-
-              FlowBox prints_gallery {
-                styles [
-                  "prints-gallery",
-                ]
-
-                column-spacing: 12;
-                row-spacing: 12;
-                homogeneous: true;
-                halign: center;
-                valign: center;
-                vexpand: true;
-                min-children-per-line: 1;
-                max-children-per-line: 3;
-                activate-on-single-click: true;
-                selection-mode: none;
-                child-activated => $on_print_activated_cb(template);
-              }
-
-              Button delete_prints_button {
-                visible: false;
-                halign: end;
-                use-underline: true;
-                label: _("_Delete Fingerprints");
-                margin-top: 10;
-                margin-bottom: 10;
-                clicked => $delete_prints_button_clicked_cb(template);
-
-                styles [
-                  "destructive-action",
-                ]
-              }
-            };
-          }
-
-          StackPage {
-            title: _("Fingerprint Enroll");
-
-            child: Box enrollment_view {
-              orientation: vertical;
-              valign: fill;
-              spacing: 12;
-
               styles [
-                "enrollment",
+                "fingerprint-status-menu",
+                "circular",
+                "flat",
               ]
 
-              Label enroll_message {
-                wrap: true;
+              Image verify_state_image {
+                icon-name: "fingerprint-detection-symbolic";
               }
 
-              Box {
-                spacing: 12;
-                halign: fill;
-                valign: center;
-                vexpand: true;
-                hexpand: true;
-                orientation: vertical;
-
-                Box enroll_print_bin {
-                  hexpand: true;
-                }
-
-                Entry enroll_print_entry {
-                  valign: end;
+              popover: Popover {
+                Label {
                   halign: center;
-                  editable: false;
-                  sensitive: false;
-                  width-request: 200;
+                  margin-bottom: 6;
+                  margin-end: 6;
+                  margin-start: 6;
+                  margin-top: 6;
+                  max-width-chars: 30;
+                  valign: center;
+                  wrap: true;
+                  label: _("Touch the fingerprint reader to check the scanned fingers");
                 }
-              }
-            };
+              };
+            }
           }
-        }
+        };
+      }
+
+      StackPage {
+        child: Adw.StatusPage enrollment_view {
+          icon-name: "fingerprint-detection-symbolic";
+
+          styles [ "fingerprint-status-page" ]
+
+          child: Box {
+            spacing: 24;
+            orientation: vertical;
+
+            ProgressBar progress_bar {
+              halign: center;
+              width-request: 200;
+            }
+
+            Adw.Spinner spinner {}
+
+            Button cancel_button {
+              margin-top: 10;
+              visible: bind done_button.visible inverted;
+              receives-default: false;
+              halign: center;
+              use-underline: true;
+              label: _("_Cancel");
+
+              clicked => $cancel_button_clicked_cb(template);
+
+              styles [ "pill" ]
+            }
+
+            Button done_button {
+              visible: false;
+              halign: center;
+              use-underline: true;
+              label: _("_Done");
+
+              clicked => $done_button_clicked_cb(template);
+
+              styles [ "suggested-action", "pill" ]
+            }
+          };
+        };
       }
     };
   };
-}
-
-Popover add_print_popover {
-  position: bottom;
-
-  Box add_print_popover_box {
-    can-focus: false;
-    spacing: 6;
-    orientation: vertical;
-  }
 }

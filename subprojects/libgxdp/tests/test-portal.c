@@ -41,7 +41,7 @@ main (int    argc,
   wayland_handle = g_strdup_printf ("wayland:%s", argv[1]);
   x11_handle = g_strdup_printf ("x11:%s", argv[2]);
 
-  gxdp_init_gtk (GXDP_SERVICE_CLIENT_TYPE_PORTAL_BACKEND, &error);
+  gxdp_init_gtk (GXDP_SERVICE_CLIENT_TYPE_PORTAL_BACKEND, NULL, &error);
   g_assert_no_error (error);
 
   external_wayland_window = gxdp_external_window_new_from_handle (wayland_handle);

@@ -1,6 +1,6 @@
 project(
   'gnome-control-center', 'c',
-        version : '50.3',
+        version : '51.1',
         license : 'GPL2+',
   meson_version : '>= 0.60.0'
 )
@@ -35,10 +35,6 @@ config_h.set_quoted('TEST_NM_PYTHON', python.full_path())
 
 application_id = 'org.gnome.Settings'
 
-if get_option('profile') == 'development'
-    application_id += '.' + 'Devel'
-endif
-
 version_split = meson.project_version().split('.')
 
 # defines
@@ -49,7 +45,6 @@ set_defines = [
   ['PACKAGE_VERSION', meson.project_version()],
   ['VERSION', meson.project_version()],
   ['MAJOR_VERSION', version_split[0]],
-  ['PROFILE', get_option('profile')],
   # i18n
   ['GETTEXT_PACKAGE', control_center_gettext]
 ]
@@ -134,7 +129,7 @@ libgvc = subproject(
 libgvc_dep = libgvc.get_variable('libgvc_dep')
 
 libadwaita_version = '>= 1.8.alpha'
-gtk_version = '>= 4.15.2'
+gtk_version = '>= 4.23.0'
 goa_req_version = '>= 3.51.0'
 pulse_req_version = '>= 2.0'
 malcontent_version = '>= 0.14.alpha'
@@ -227,16 +222,18 @@ gmobile_dep = dependency(
 config_h.set('HAVE_GMOBILE', gmobile_dep.found(),
              description: 'Define to 1 if gmobile is available')
 
-accounts_dep = dependency('accountsservice', version: '>= 23.11.69')
+accounts_dep = dependency('accountsservice', version: '>= 26.27.3')
+
 colord_dep = dependency('colord', version: '>= 0.1.34')
 gdk_pixbuf_dep = dependency('gdk-pixbuf-2.0', version: '>= 2.23.0')
 gio_dep = dependency('gio-2.0')
 glib_dep = dependency('glib-2.0', version: '>= 2.76.6')
-gnome_desktop_dep = dependency('gnome-desktop-4')
+gnome_desktop_dep = dependency('gnome-desktop-4', version: '>= 51.alpha')
 gnome_bg_dep = dependency('gnome-bg-4')
+gnome_qr_gtk_dep = dependency('gnome-qr-gtk-4')
 gnome_settings_dep = dependency('gnome-settings-daemon', version: '>= 48.rc', fallback: 'gsd')
 goa_dep = dependency('goa-1.0', version: goa_req_version, fallback: 'goa')
-gsettings_desktop_dep = dependency('gsettings-desktop-schemas', version: '>= 50.alpha')
+gsettings_desktop_dep = dependency('gsettings-desktop-schemas', version: '>= 51.beta')
 libxml_dep = dependency('libxml-2.0')
 pulse_dep = dependency('libpulse', version: pulse_req_version)
 pulse_mainloop_dep = dependency('libpulse-mainloop-glib', version: pulse_req_version)
@@ -345,6 +342,11 @@ config_h.set('HAVE_LOCATION_SERVICES', location_services.enabled(),
 # Snap support and wellbeing panel
 json_glib_dep = dependency('json-glib-1.0')
 
+# SSHD socket activation support
+ssh_socket_activation = get_option('ssh_socket_activation')
+config_h.set('HAVE_SSH_SOCKET_ACTIVATION', ssh_socket_activation,
+             description: 'Whether SSH socket activation is enabled')
+
 if host_is_linux
   # ModemManager
   mm_dep =  dependency('mm-glib', version: '>= 0.7')
@@ -352,6 +354,7 @@ if host_is_linux
   network_manager_deps = [
     dependency('libnm', version: '>= 1.52.0'),
     dependency('libnma-gtk4', version: '>= 1.10.2'),
+    gnome_qr_gtk_dep,
     mm_dep,
   ]
 endif

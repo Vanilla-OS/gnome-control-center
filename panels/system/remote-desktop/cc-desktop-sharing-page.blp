@@ -14,18 +14,7 @@ template $CcDesktopSharingPage: Adw.Bin {
       }
 
       Adw.PreferencesPage {
-        Adw.PreferencesGroup {
-          Label {
-            label: _("Share your existing desktop with other devices. The remote connection uses the existing screen resolution.");
-            hexpand: true;
-            wrap: true;
-            justify: center;
-
-            styles [
-              "dim-label",
-            ]
-          }
-        }
+        description: _("Share your existing desktop with other devices. The remote connection uses the existing screen resolution.");
 
         Adw.PreferencesGroup {
           Adw.SwitchRow desktop_sharing_row {
@@ -137,6 +126,7 @@ template $CcDesktopSharingPage: Adw.Bin {
 
           Adw.ButtonRow verify_encryption_button_row {
             sensitive: false;
+            /* Translators: "Fingerprint" refers to verifying a TLS/cryptographic key fingerprint for Remote Desktop, not a fingerprint scanner for user authentication. */
             title: _("_Verify Fingerprint");
             use-underline: true;
             activated => $on_verify_encryption_button_row_activated(template);

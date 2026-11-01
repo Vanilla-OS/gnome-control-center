@@ -94,8 +94,8 @@ check-merge-request:
 
 .container-setup:
   variables:
-    FDO_DISTRIBUTION_TAG: '2024-11-24.0'
-    FDO_DISTRIBUTION_VERSION: 41
+    FDO_DISTRIBUTION_TAG: '2026-05-07.0'
+    FDO_DISTRIBUTION_VERSION: rawhide
     FDO_DISTRIBUTION_PACKAGES:
       util-linux
       git

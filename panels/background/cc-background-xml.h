@@ -19,28 +19,21 @@
 
 #pragma once
 
-#include <gtk/gtk.h>
 #include <gio/gio.h>
+#include <gtk/gtk.h>
 
 G_BEGIN_DECLS
 
 #define CC_TYPE_BACKGROUND_XML (cc_background_xml_get_type ())
-G_DECLARE_FINAL_TYPE (CcBackgroundXml, cc_background_xml, CC, BACKGROUND_XML, GObject)
-
+G_DECLARE_FINAL_TYPE (CcBackgroundXml, cc_background_xml, CC, BACKGROUND_XML, GObject);
 CcBackgroundXml *cc_background_xml_new (void);
 
-void cc_background_xml_save                          (CcBackgroundItem   *item,
-						      const char         *filename);
+void cc_background_xml_save (CcBackgroundItem *item, const char *filename);
 
-CcBackgroundItem *cc_background_xml_get_item         (const char         *filename);
-gboolean cc_background_xml_load_xml                  (CcBackgroundXml    *data,
-						      const char         *filename);
-void cc_background_xml_load_list_async               (CcBackgroundXml    *xml,
-						      GCancellable       *cancellable,
-						      GAsyncReadyCallback callback,
-						      gpointer            user_data);
-gboolean cc_background_xml_load_list_finish          (CcBackgroundXml    *xml,
-						      GAsyncResult       *result,
-						      GError            **error);
+CcBackgroundItem *cc_background_xml_get_item (const char *filename);
+gboolean cc_background_xml_load_xml (CcBackgroundXml *data, const char *filename);
+void cc_background_xml_load_list_async (CcBackgroundXml *xml, GCancellable *cancellable, GAsyncReadyCallback callback,
+                                        gpointer user_data);
+gboolean cc_background_xml_load_list_finish (CcBackgroundXml *xml, GAsyncResult *result, GError **error);
 
 G_END_DECLS

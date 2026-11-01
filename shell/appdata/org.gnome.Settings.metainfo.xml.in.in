@@ -51,9 +51,39 @@
   </kudos>
 
   <releases>
-    <release version="50.3" date="2026-07-24" type="stable"/>
-    <release version="50.2" date="2026-05-29" type="stable"/>
-    <release version="50.1" date="2026-04-13" type="stable"/>
+    <release version="51.1" date="2026-10-12" type="stable">
+      <description>
+        <ul>
+          <li>Handle more printer cartride ink level metadata</li>
+          <li>Fix text-size-slider not updating when backend changed</li>
+          <li>Fix APN settings actions in Mobile Networks</li>
+          <li>Various bugfixes and improvements</li>
+          <li>Various translation updates</li>
+        </ul>
+      </description>
+    </release>
+    <release version="51.0" date="2026-09-11" type="stable">
+      <description>
+        <ul>
+          <li>New interface for enrolling and managing fingerprints</li>
+          <li>New "Auto Rotate" display setting for devices with an accelerometer</li>
+          <li>New option to disable the touchpad while a mouse is connected</li>
+          <li>Support for configuring DNS search domains</li>
+          <li>System Details have been merged into the main About page, which now links to the GNOME release notes</li>
+          <li>Numerous accessibility improvements, including moving focus to the panel content when navigating the sidebar</li>
+          <li>Default application menus now show application icons</li>
+          <li>Wi-Fi sharing now uses the standard GNOME QR code widget</li>
+          <li>The Wellbeing and Device Security pages now fit narrow screens</li>
+          <li>Removed support for the insecure WEP Wi-Fi encryption</li>
+          <li>Various bugfixes and improvements</li>
+          <li>Various translation updates</li>
+        </ul>
+      </description>
+    </release>
+    <release version="51~rc.1" date="2026-08-31" type="development"/>
+    <release version="51~rc" date="2026-08-31" type="development"/>
+    <release version="51~beta" date="2026-08-03" type="development"/>
+    <release version="51~alpha" date="2026-06-24" type="development"/>
     <release version="50.0" date="2026-03-13" type="stable"/>
     <release version="50~rc" date="2026-02-27" type="development"/>
     <release version="50~beta" date="2026-02-02" type="development"/>

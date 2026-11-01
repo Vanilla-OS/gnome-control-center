@@ -18,6 +18,8 @@
  * Author: Thomas Wood <thomas.wood@intel.com>
  *
  */
+#include "config.h"
+
 #include "cc-secure-shell.h"
 #include "cc-systemd-service.h"
 
@@ -28,109 +30,118 @@
 #define SSHD_SERVICE "sshd.service"
 #endif
 
-typedef struct
-{
-  AdwSwitchRow *widget;
-  GtkWidget    *row;
-  GCancellable *cancellable;
+#if defined(HAVE_SSH_SOCKET_ACTIVATION)
+#ifndef SSHD_SOCKET
+#define SSHD_SOCKET "ssh.socket"
+#endif
+#endif
+
+typedef struct {
+    AdwSwitchRow *widget;
+    GtkWidget *row;
+    GCancellable *cancellable;
 } CallbackData;
 
 G_DEFINE_AUTOPTR_CLEANUP_FUNC (CallbackData, g_free)
 
 void
-cc_secure_shell_get_enabled (AdwSwitchRow  *widget)
+cc_secure_shell_get_enabled (AdwSwitchRow *widget)
 {
-  /* disable the switch until the current state is known */
-  gtk_widget_set_sensitive (GTK_WIDGET (widget), FALSE);
+    gboolean sshd_enabled;
 
-  adw_switch_row_set_active (widget, cc_get_service_state (SSHD_SERVICE, G_BUS_TYPE_SYSTEM) == CC_SERVICE_STATE_ENABLED);
+    /* disable the switch until the current state is known */
+    gtk_widget_set_sensitive (GTK_WIDGET (widget), FALSE);
 
-  gtk_widget_set_sensitive (GTK_WIDGET (widget), TRUE);
+    sshd_enabled = cc_get_service_state (SSHD_SERVICE, G_BUS_TYPE_SYSTEM) == CC_SERVICE_STATE_ENABLED;
+
+#ifdef HAVE_SSH_SOCKET_ACTIVATION
+    sshd_enabled |= cc_get_service_state (SSHD_SOCKET, G_BUS_TYPE_SYSTEM) == CC_SERVICE_STATE_ENABLED;
+#endif
+
+    adw_switch_row_set_active (widget, sshd_enabled);
+    gtk_widget_set_sensitive (GTK_WIDGET (widget), TRUE);
 }
 
 static void
-enable_ssh_service (GError** error)
+enable_ssh_service (GError **error)
 {
-  cc_enable_service (SSHD_SERVICE, G_BUS_TYPE_SYSTEM, error);
-}
+#ifdef HAVE_SSH_SOCKET_ACTIVATION
+    g_autoptr(GError) local_error = NULL;
 
-static void
-disable_ssh_service (GError** error)
-{
-  cc_disable_service (SSHD_SERVICE, G_BUS_TYPE_SYSTEM, error);
-}
-
-static void
-on_permission_acquired (GObject      *source_object,
-                        GAsyncResult *res,
-                        gpointer      user_data)
-{
-  GPermission             *permission = (GPermission*) source_object;
-  g_autoptr(CallbackData)  callback_data = user_data;
-  g_autoptr(GError)        error = NULL;
-
-  if (!g_permission_acquire_finish (permission, res, &error))
-    {
-      g_warning ("Cannot acquire '%s' permission: %s",
-                 "org.gnome.controlcenter.remote-login-helper",
-                 error->message);
-    }
-  else
-    {
-      if (g_permission_get_allowed (permission))
-        {
-          if (adw_switch_row_get_active (callback_data->widget))
-            enable_ssh_service (&error);
-          else
-            disable_ssh_service (&error);
-
-          /* Switch state should match service state */
-          return;
-        }
-      else
-        {
-          g_warning ("Permission: %s not granted",
-                     "org.gnome.controlcenter.remote-login-helper");
-        }
+    if (cc_enable_service (SSHD_SOCKET, G_BUS_TYPE_SYSTEM, &local_error)) {
+        /* If the socket is available, we want to disable the service */
+        cc_disable_service (SSHD_SERVICE, G_BUS_TYPE_SYSTEM, NULL);
+        return;
     }
 
-  /* If permission could not be acquired, or permission was not granted,
-   * switch might be out of sync, update switch state */
-  cc_secure_shell_get_enabled (callback_data->widget);
+    g_warning ("Failed to enable '%s' socket: %s. Enabling '%s' service instead.", SSHD_SOCKET, local_error->message,
+               SSHD_SERVICE);
+#endif
+
+    cc_enable_service (SSHD_SERVICE, G_BUS_TYPE_SYSTEM, error);
+}
+
+static void
+disable_ssh_service (GError **error)
+{
+    if (!cc_disable_service (SSHD_SERVICE, G_BUS_TYPE_SYSTEM, error))
+        return;
+
+#ifdef HAVE_SSH_SOCKET_ACTIVATION
+    cc_disable_service (SSHD_SOCKET, G_BUS_TYPE_SYSTEM, error);
+#endif
+}
+
+static void
+on_permission_acquired (GObject *source_object, GAsyncResult *res, gpointer user_data)
+{
+    GPermission *permission = (GPermission *) source_object;
+    g_autoptr(CallbackData) callback_data = user_data;
+    g_autoptr(GError) error = NULL;
+
+    if (!g_permission_acquire_finish (permission, res, &error)) {
+        g_warning ("Cannot acquire '%s' permission: %s", "org.gnome.controlcenter.remote-login-helper", error->message);
+    } else {
+        if (g_permission_get_allowed (permission)) {
+            if (adw_switch_row_get_active (callback_data->widget))
+                enable_ssh_service (&error);
+            else
+                disable_ssh_service (&error);
+
+            /* Switch state should match service state */
+            return;
+        } else {
+            g_warning ("Permission: %s not granted", "org.gnome.controlcenter.remote-login-helper");
+        }
+    }
+
+    /* If permission could not be acquired, or permission was not granted,
+     * switch might be out of sync, update switch state */
+    cc_secure_shell_get_enabled (callback_data->widget);
 }
 
 void
-cc_secure_shell_set_enabled (GCancellable *cancellable,
-                             AdwSwitchRow    *widget)
+cc_secure_shell_set_enabled (GCancellable *cancellable, AdwSwitchRow *widget)
 {
-  GPermission       *permission;
-  g_autoptr(GError)  error = NULL;
+    GPermission *permission;
+    g_autoptr(GError) error = NULL;
 
-  CallbackData *callback_data;
+    CallbackData *callback_data;
 
-  if (GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), "set-from-dbus")) == 1)
-    {
-      g_object_set_data (G_OBJECT (widget), "set-from-dbus", NULL);
-      return;
+    if (GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), "set-from-dbus")) == 1) {
+        g_object_set_data (G_OBJECT (widget), "set-from-dbus", NULL);
+        return;
     }
 
-  callback_data = g_new0 (CallbackData, 1);
-  callback_data->widget = widget;
-  callback_data->cancellable = cancellable;
+    callback_data = g_new0 (CallbackData, 1);
+    callback_data->widget = widget;
+    callback_data->cancellable = cancellable;
 
-  permission = polkit_permission_new_sync ("org.gnome.controlcenter.remote-login-helper",
-                                           NULL, NULL, &error);
+    permission = polkit_permission_new_sync ("org.gnome.controlcenter.remote-login-helper", NULL, NULL, &error);
 
-  if (permission != NULL)
-    {
-      g_permission_acquire_async (permission, callback_data->cancellable,
-                                  on_permission_acquired, callback_data);
-    }
-  else
-    {
-      g_warning ("Cannot create '%s' permission: %s",
-                "org.gnome.controlcenter.remote-login-helper",
-                error->message);
+    if (permission != NULL) {
+        g_permission_acquire_async (permission, callback_data->cancellable, on_permission_acquired, callback_data);
+    } else {
+        g_warning ("Cannot create '%s' permission: %s", "org.gnome.controlcenter.remote-login-helper", error->message);
     }
 }
-
