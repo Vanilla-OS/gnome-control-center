@@ -15,7 +15,7 @@ Debian Unstable does not yet have accountsservice 26
  3 files changed, 3 insertions(+), 19 deletions(-)
 
 diff --git a/meson.build b/meson.build
-index 80861c1..1544a4c 100644
+index 61e1d55..1b8cdf3 100644
 --- a/meson.build
 +++ b/meson.build
 @@ -222,8 +222,7 @@ gmobile_dep = dependency(

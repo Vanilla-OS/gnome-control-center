@@ -1,5 +1,14 @@
+From: Debian GNOME Maintainers
+ <pkg-gnome-maintainers@lists.alioth.debian.org>
+Date: Sun, 1 Nov 2026 12:21:29 -0500
+Subject: vanilla-updates-utility
+
+---
+ panels/system/cc-system-panel.c | 46 ++++++-----------------------------------
+ 1 file changed, 6 insertions(+), 40 deletions(-)
+
 diff --git a/panels/system/cc-system-panel.c b/panels/system/cc-system-panel.c
-index 81f77f76d..b2d1d1347 100644
+index 81f77f7..b2d1d13 100644
 --- a/panels/system/cc-system-panel.c
 +++ b/panels/system/cc-system-panel.c
 @@ -51,45 +51,16 @@ struct _CcSystemPanel {

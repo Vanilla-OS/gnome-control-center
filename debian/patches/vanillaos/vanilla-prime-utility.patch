@@ -1,5 +1,15 @@
+From: Debian GNOME Maintainers
+ <pkg-gnome-maintainers@lists.alioth.debian.org>
+Date: Sun, 1 Nov 2026 12:21:29 -0500
+Subject: vanilla-prime-utility
+
+---
+ panels/display/cc-display-panel.blp | 15 +++++++++++++++
+ panels/display/cc-display-panel.c   | 36 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 51 insertions(+)
+
 diff --git a/panels/display/cc-display-panel.blp b/panels/display/cc-display-panel.blp
-index 010df7b72..0824b91a8 100644
+index 010df7b..0824b91 100644
 --- a/panels/display/cc-display-panel.blp
 +++ b/panels/display/cc-display-panel.blp
 @@ -115,6 +115,21 @@ template $CcDisplayPanel: $CcPanel {
@@ -25,7 +35,7 @@ index 010df7b72..0824b91a8 100644
    };
  
 diff --git a/panels/display/cc-display-panel.c b/panels/display/cc-display-panel.c
-index eb2ddb321..f570772d3 100644
+index eb2ddb3..f570772 100644
 --- a/panels/display/cc-display-panel.c
 +++ b/panels/display/cc-display-panel.c
 @@ -97,6 +97,7 @@ struct _CcDisplayPanel {
