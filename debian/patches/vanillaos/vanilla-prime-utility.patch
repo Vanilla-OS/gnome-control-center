@@ -1,53 +1,43 @@
-From: Debian GNOME Maintainers
- <pkg-gnome-maintainers@lists.alioth.debian.org>
-Date: Thu, 22 May 2025 10:42:33 -0500
-Subject: vanilla-prime-utility
-
----
- panels/display/cc-display-panel.blp | 15 +++++++++++++++
- panels/display/cc-display-panel.c   | 36 ++++++++++++++++++++++++++++++++++++
- 2 files changed, 51 insertions(+)
-
 diff --git a/panels/display/cc-display-panel.blp b/panels/display/cc-display-panel.blp
-index f40b2cf..589e232 100644
+index 010df7b72..0824b91a8 100644
 --- a/panels/display/cc-display-panel.blp
 +++ b/panels/display/cc-display-panel.blp
-@@ -117,6 +117,21 @@ template $CcDisplayPanel: $CcPanel {
-             action-target: "'night-light'";
-           }
+@@ -115,6 +115,21 @@ template $CcDisplayPanel: $CcPanel {
+           action-target: "'night-light'";
          }
+       }
 +
-+        Adw.PreferencesGroup {
-+          Adw.ActionRow prime_utility_row {
-+            title: _("GPU Profile Management (PRIME)");
-+            activatable: true;
-+            use-underline: true;
-+            activated => $cc_display_panel_prime(template);
-+
-+            [suffix]
-+            Gtk.Image {
-+              icon-name: "adw-external-link-symbolic";
-+              valign: center;
-+            }
++      Adw.PreferencesGroup {
++      Adw.ActionRow prime_utility_row {
++          title: _("GPU Profile Management (PRIME)");
++          activatable: true;
++          use-underline: true;
++          activated => $cc_display_panel_prime(template);
++    
++          [suffix]
++          Gtk.Image {
++          icon-name: "adw-external-link-symbolic";
++          valign: center;
 +          }
 +        }
-       };
++      }
      };
-   }
+   };
+ 
 diff --git a/panels/display/cc-display-panel.c b/panels/display/cc-display-panel.c
-index 8a4f5dc..ba7e363 100644
+index eb2ddb321..f570772d3 100644
 --- a/panels/display/cc-display-panel.c
 +++ b/panels/display/cc-display-panel.c
-@@ -97,6 +97,7 @@ struct _CcDisplayPanel
-   AdwNavigationPage *display_settings_page;
-   AdwComboRow    *primary_display_row;
-   AdwPreferencesGroup *single_display_settings_group;
-+  AdwActionRow *prime_utility_row;
+@@ -97,6 +97,7 @@ struct _CcDisplayPanel {
+     AdwNavigationPage *display_settings_page;
+     AdwComboRow *primary_display_row;
+     AdwPreferencesGroup *single_display_settings_group;
++    AdwActionRow *prime_utility_row;
  
-   GtkShortcut *escape_shortcut;
+     GtkShortcut *escape_shortcut;
  
-@@ -541,6 +542,37 @@ on_toplevel_escape_pressed_cb (GtkWidget      *widget,
-   return GDK_EVENT_PROPAGATE;
+@@ -497,6 +498,37 @@ on_toplevel_escape_pressed_cb (GtkWidget *widget, GVariant *args, CcDisplayPanel
+     return GDK_EVENT_PROPAGATE;
  }
  
 +static gboolean
@@ -84,21 +74,21 @@ index 8a4f5dc..ba7e363 100644
  static void
  cc_display_panel_constructed (GObject *object)
  {
-@@ -611,6 +643,7 @@ cc_display_panel_class_init (CcDisplayPanelClass *klass)
-   gtk_widget_class_bind_template_callback (widget_class, on_primary_display_selected_item_changed_cb);
-   gtk_widget_class_bind_template_callback (widget_class, on_screen_changed);
-   gtk_widget_class_bind_template_callback (widget_class, on_toplevel_escape_pressed_cb);
-+  gtk_widget_class_bind_template_callback (widget_class, cc_display_panel_prime);
+@@ -562,6 +594,7 @@ cc_display_panel_class_init (CcDisplayPanelClass *klass)
+     gtk_widget_class_bind_template_callback (widget_class, on_primary_display_selected_item_changed_cb);
+     gtk_widget_class_bind_template_callback (widget_class, on_screen_changed);
+     gtk_widget_class_bind_template_callback (widget_class, on_toplevel_escape_pressed_cb);
++    gtk_widget_class_bind_template_callback (widget_class, cc_display_panel_prime);
  }
  
  static void
-@@ -1100,6 +1133,9 @@ cc_display_panel_init (CcDisplayPanel *self)
-   else
-     g_clear_object (&self->up_client);
+@@ -1006,6 +1039,9 @@ cc_display_panel_init (CcDisplayPanel *self)
+     } else
+         g_clear_object (&self->up_client);
  
-+  if (!does_prime_utility_exist ())
-+    gtk_widget_set_visible (GTK_WIDGET (self->prime_utility_row), false);
++    if (!does_prime_utility_exist ())
++      gtk_widget_set_visible (GTK_WIDGET (self->prime_utility_row), false);
 +
-   g_signal_connect (self, "map", G_CALLBACK (mapped_cb), NULL);
+     g_signal_connect (self, "map", G_CALLBACK (mapped_cb), NULL);
  
-   cc_object_storage_create_dbus_proxy (G_BUS_TYPE_SESSION,
+     cc_object_storage_create_dbus_proxy (
