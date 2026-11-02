@@ -38,7 +38,6 @@ jobs:
           libgirepository1.0-dev \
           libgnome-bg-4-dev \
           libgnome-bluetooth-ui-3.0-dev \
-          libgnome-rr-4-dev \
           libgnutls28-dev \
           libgoa-backend-1.0-dev \
           libgsound-dev \
@@ -72,7 +71,6 @@ jobs:
           libgcr-4-dev:arm64 \
           libgnome-bg-4-dev:arm64 \
           libgnome-bluetooth-ui-3.0-dev:arm64 \
-          libgnome-rr-4-dev:arm64 \
           libgnutls28-dev:arm64 \
           libgoa-backend-1.0-dev:arm64 \
           libgsound-dev:arm64 \
