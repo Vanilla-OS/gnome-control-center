@@ -97,7 +97,6 @@ jobs:
         dpkg-buildpackage -b -uc -us
         apt install -y \
           libaccountsservice-dev:arm64 \
-          libhandy-1-dev:arm64 \
           libmm-glib-dev:arm64 \
           libupower-glib-dev:arm64
         dpkg-buildpackage -a arm64 -B -d -uc -us
