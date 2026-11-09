@@ -1,3 +1,10 @@
+gnome-control-center (1:51.1-2) unstable; urgency=medium
+
+  * Remove patch avoiding newer accountsservice
+  * Update minimum accountsservice
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Thu, 05 Nov 2026 14:21:22 +0100
+
 gnome-control-center (1:51.1-1vanilla1) unstable; urgency=medium
 
   * Merge debian/1%51.1-1
